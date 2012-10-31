@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -265,10 +265,6 @@ public final class Spoutcraft {
 
 	public static WidgetManager getWidgetManager() {
 		return client.getWidgetManager();
-	}
-
-	public static ChatManager getChatManager() {
-		return client.getChatManager();
 	}
 
 	public static boolean hasPermission(String permission) {

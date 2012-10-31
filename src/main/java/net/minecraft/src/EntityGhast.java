@@ -124,7 +124,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 
 				if (this.attackCounter == 20) {
 					this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-					EntityFireball var17 = new EntityFireball(this.worldObj, this, var11, var13, var15);
+					EntityLargeFireball var17 = new EntityLargeFireball(this.worldObj, this, var11, var13, var15);
 					double var18 = 4.0D;
 					Vec3 var20 = this.getLook(1.0F);
 					var17.posX = this.posX + var20.xCoord * var18;

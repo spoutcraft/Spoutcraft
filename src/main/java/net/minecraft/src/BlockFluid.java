@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.Random;
 // Spout Start
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 // Spout End
 
 public abstract class BlockFluid extends Block {
@@ -32,7 +32,7 @@ public abstract class BlockFluid extends Block {
 			return 0xffffff;
 		}
 		int color = par1IBlockAccess.getWaterColorCache(par2, par3, par4);
-		if (color == -1 || ConfigReader.fancyBiomeColors) {
+		if (color == -1 || Configuration.isFancyBiomeColors()) {
 		
 			int var5 = 0;
 			int var6 = 0;
@@ -171,7 +171,7 @@ public abstract class BlockFluid extends Block {
 	 * Returns a vector indicating the direction and intensity of fluid flow.
 	 */
 	private Vec3 getFlowVector(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-		Vec3 var5 = Vec3.getVec3Pool().getVecFromPool(0.0D, 0.0D, 0.0D);
+		Vec3 var5 = par1IBlockAccess.func_82732_R().getVecFromPool(0.0D, 0.0D, 0.0D);
 		int var6 = this.getEffectiveFlowDecay(par1IBlockAccess, par2, par3, par4);
 
 		for (int var7 = 0; var7 < 4; ++var7) {

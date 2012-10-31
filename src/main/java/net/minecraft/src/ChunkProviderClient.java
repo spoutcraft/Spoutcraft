@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.spoutcraft.client.ChunkComparator;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 // Spout
 import gnu.trove.map.hash.TLongObjectHashMap;
@@ -128,4 +128,6 @@ public class ChunkProviderClient implements IChunkProvider {
 	public int getLoadedChunkCount() {
 		return chunkMapping.size(); // Spout - this.chunkListing.size();
 	}
+	
+	public void func_82695_e(int par1, int par2) {}
 }

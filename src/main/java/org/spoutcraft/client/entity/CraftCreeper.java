@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -42,13 +42,6 @@ public class CraftCreeper extends CraftMonster implements Creeper {
 	}
 
 	public void setPowered(boolean powered) {
-		//Entity entity = this.getEntityCreeper().spoutEntity;
 
-		// TODO Add event!
-		if (powered) {
-			getEntityCreeper().setPowered(true);
-		} else {
-			getEntityCreeper().setPowered(false);
-		}
 	}
 }

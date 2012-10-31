@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class EntityThrowable extends Entity {
+public abstract class EntityThrowable extends Entity implements IProjectile {
 	private int xTile = -1;
 	private int yTile = -1;
 	private int zTile = -1;
@@ -142,14 +142,14 @@ public abstract class EntityThrowable extends Entity {
 			++this.ticksInAir;
 		}
 
-		Vec3 var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-		Vec3 var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+		Vec3 var15 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
+		Vec3 var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 		MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-		var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-		var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+		var15 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
+		var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 		if (var3 != null) {
-			var2 = Vec3.getVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+			var2 = this.worldObj.func_82732_R().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 		}
 
 		if (!this.worldObj.isRemote) {
@@ -183,7 +183,11 @@ public abstract class EntityThrowable extends Entity {
 		}
 
 		if (var3 != null) {
-			this.onImpact(var3);
+			if (var3.typeOfHit == EnumMovingObjectType.TILE && this.worldObj.getBlockId(var3.blockX, var3.blockY, var3.blockZ) == Block.portal.blockID) {
+				this.setInPortal();
+			} else {
+				this.onImpact(var3);
+			}
 		}
 
 		this.posX += this.motionX;

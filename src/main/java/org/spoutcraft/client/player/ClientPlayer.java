@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -115,11 +115,11 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer {
 	}
 
 	public void sendMessage(String msg) {
-		SpoutClient.getHandle().ingameGUI.addChatMessage(msg);
+		SpoutClient.getHandle().ingameGUI.getChatGUI().printChatMessage(msg);
 	}
 
 	public void setCompassTarget(Location loc) {
-		SpoutClient.getHandle().thePlayer.setSpawnChunk(new ChunkCoordinates(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+		SpoutClient.getHandle().thePlayer.setSpawnChunk(new ChunkCoordinates(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), true);
 		SpoutClient.getHandle().theWorld.getWorldInfo().setSpawnPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
@@ -138,7 +138,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer {
 	}
 
 	public void chat(String msg) {
-		SpoutClient.getInstance().getChatManager().sendChat(msg);
+		
 	}
 
 	public boolean performCommand(String command) {

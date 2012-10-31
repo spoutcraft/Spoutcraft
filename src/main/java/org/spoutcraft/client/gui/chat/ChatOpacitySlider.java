@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -21,11 +21,11 @@ package org.spoutcraft.client.gui.chat;
 
 import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class ChatOpacitySlider extends GenericSlider {
 	public ChatOpacitySlider() {
-		setSliderPosition(ConfigReader.chatOpacity);
+		setSliderPosition(Configuration.getChatOpacity());
 		updateText();
 	}
 
@@ -35,7 +35,7 @@ public class ChatOpacitySlider extends GenericSlider {
 
 	@Override
 	public void onSliderDrag(SliderDragEvent event) {
-		ConfigReader.chatOpacity = event.getNewPosition();
+		Configuration.setChatOpacity(event.getNewPosition());
 		updateText();
 	}
 }

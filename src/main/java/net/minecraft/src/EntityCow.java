@@ -36,21 +36,28 @@ public class EntityCow extends EntityAnimal {
 	 * Returns the sound this mob makes while it's alive.
 	 */
 	protected String getLivingSound() {
-		return "mob.cow";
+		return "mob.cow.say";
 	}
 
 	/**
 	 * Returns the sound this mob makes when it is hurt.
 	 */
 	protected String getHurtSound() {
-		return "mob.cowhurt";
+		return "mob.cow.hurt";
 	}
 
 	/**
 	 * Returns the sound this mob makes on death.
 	 */
 	protected String getDeathSound() {
-		return "mob.cowhurt";
+		return "mob.cow.hurt";
+	}
+
+	/**
+	 * Plays step sound at given x, y, z for the entity
+	 */
+	protected void playStepSound(int par1, int par2, int par3, int par4) {
+		this.worldObj.playSoundAtEntity(this, "mob.cow.step", 0.15F, 1.0F);
 	}
 
 	/**

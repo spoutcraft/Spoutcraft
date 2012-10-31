@@ -15,7 +15,6 @@ public class EntityBlaze extends EntityMob {
 		super(par1World);
 		this.texture = "/mob/fire.png";
 		this.isImmuneToFire = true;
-		this.attackStrength = 6;
 		this.experienceValue = 10;
 		// Spout Start
 		this.spoutEntity = new CraftBlaze(this);

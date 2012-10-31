@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -70,7 +70,7 @@ public class WorldModel extends FilterModel {
 
 	public void playWorld(int i) {
 		Minecraft mc = SpoutClient.getHandle();
-		EnumGameType gameType = worlds.get(i).func_75790_f();
+		EnumGameType gameType = worlds.get(i).getEnumGameType();
 		String s = worlds.get(i).getFileName();
 		if (s == null) {
 			s = (new StringBuilder()).append("World").append(i).toString();

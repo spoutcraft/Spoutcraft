@@ -24,7 +24,7 @@ public class EntityXPOrb extends Entity {
 	/** This is how much XP this orb has. */
 	public int xpValue; // Spout private -> public
 	private EntityPlayer field_80001_f;
-	private int field_80002_g;
+	private int closestPlayer;
 
 	public EntityXPOrb(World par1World, double par2, double par4, double par6, int par8) {
 		super(par1World);
@@ -102,12 +102,12 @@ public class EntityXPOrb extends Entity {
 		this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
 		double var1 = 8.0D;
 
-		if (this.field_80002_g < this.xpColor - 20 + this.entityId % 100) {
+		if (this.closestPlayer < this.xpColor - 20 + this.entityId % 100) {
 			if (this.field_80001_f == null || this.field_80001_f.getDistanceSqToEntity(this) > var1 * var1) {
 				this.field_80001_f = this.worldObj.getClosestPlayerToEntity(this, var1);
 			}
 
-			this.field_80002_g = this.xpColor;
+			this.closestPlayer = this.xpColor;
 		}
 
 		if (this.field_80001_f != null) {

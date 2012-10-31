@@ -75,7 +75,12 @@ public class BlockTrapDoor extends Block {
 
 	public void setBlockBoundsForBlockRender(int par1) {
 		float var2 = 0.1875F;
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, var2, 1.0F);
+
+		if ((par1 & 8) != 0) {
+			this.setBlockBounds(0.0F, 1.0F - var2, 0.0F, 1.0F, 1.0F, 1.0F);
+		} else {
+			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, var2, 1.0F);
+		}
 
 		if (isTrapdoorOpen(par1)) {
 			if ((par1 & 3) == 0) {

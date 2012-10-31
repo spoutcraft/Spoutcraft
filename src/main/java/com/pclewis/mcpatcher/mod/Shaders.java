@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.glu.GLU;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.io.FileUtil;
 
 public class Shaders {
@@ -88,8 +88,8 @@ public class Shaders {
 	private static boolean enabled= true;
 
 	public static void setup(int type) {
-		System.out.println("OpenGL Version: " + GL11.glGetString(GL11.GL_VERSION));
-		System.out.println("OpenGL Platform: " + GL11.glGetString(GL11.GL_VENDOR));
+		//System.out.println("OpenGL Version: " + GL11.glGetString(GL11.GL_VERSION));
+		//System.out.println("OpenGL Platform: " + GL11.glGetString(GL11.GL_VENDOR));
 
 		if(!(enabled)) return;
 		mc = Minecraft.theMinecraft;
@@ -295,7 +295,7 @@ public class Shaders {
 		if (!isShadowPass) {
 			mc = var0;
 			if (!isInitialized) {
-				init(ConfigReader.shaderType);
+				init(Configuration.getShaderType());
 			}
 
 			if (mc.displayWidth != renderWidth || mc.displayHeight != renderHeight) {
@@ -753,7 +753,8 @@ public class Shaders {
 
 		//Try Eclipse Path
 		try {
-			File file = new File(FileUtil.getConfigDir().getAbsolutePath() + "/../../../" + fileName);
+			File file = new File(FileUtil.getConfigDir().getAbsolutePath() + "/../src/main/resources" + fileName.substring(4));
+			file = file.getCanonicalFile();
 			reader = new BufferedReader(new FileReader(file));
 			return reader;
 		}

@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 // Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.GuiAddWaypoint;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.packet.PacketRenderDistance;
@@ -27,6 +27,12 @@ public class EntityPlayerSP extends EntityPlayer {
 	private MouseFilter field_71162_ch = new MouseFilter();
 	private MouseFilter field_21904_bK = new MouseFilter();
 	private MouseFilter field_21902_bL = new MouseFilter();
+
+	/** The amount of time an entity has been in a Portal */
+	public float timeInPortal;
+
+	/** The amount of time an entity has been in a Portal the previous tick */
+	public float prevTimeInPortal;
 	// Spout Start
 	public FixedLocation lastClickLocation = null;
 	private KeyBinding fogKey = null;
@@ -38,7 +44,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.dimension = par4;
 		// Spout Start
 		if (par3Session != null && par3Session.username != null && par3Session.username.length() > 0) {
-			this.skinUrl = "http://static.spout.org/skin/" + ChatColor.stripColor(par3Session.username) + ".png";
+			this.skinUrl = "http://cdn.spout.org/game/vanilla/skin/" + ChatColor.stripColor(par3Session.username) + ".png";
 			this.vip = Resources.getVIP(ChatColor.stripColor(par3Session.username));
 			if (vip != null) {
 				this.displayName = vip.getTitle();
@@ -189,11 +195,11 @@ public class EntityPlayerSP extends EntityPlayer {
 			if (this.capabilities.isFlying) {
 				// Spout Start
 				if (this.movementInput.flyingDown) { 
-					this.motionY -= 0.15D * ConfigReader.flightSpeedMultiplier;
+					this.motionY -= 0.15D * Configuration.getFlightSpeedFactor();
 				}
 
 				if (this.movementInput.flyingUp) {
-					this.motionY += 0.15D * ConfigReader.flightSpeedMultiplier;
+					this.motionY += 0.15D * Configuration.getFlightSpeedFactor();
 				}
 				// Spout End
 			}
@@ -212,10 +218,8 @@ public class EntityPlayerSP extends EntityPlayer {
 			var1 *= 1.1F;
 		}
 
-		// Spout Start
-		float landMoveFactor = this.speedOnGround * ((isSprinting() || runToggle) ? 1.3F : 1F);
+		float landMoveFactor = this.speedOnGround * (isSprinting() ? 1.3F : 1F);
 		var1 *= (landMoveFactor * this.getSpeedModifier() / this.speedOnGround + 1.0F) / 2.0F;
-		// Spout End
 		if (this.isUsingItem() && this.getItemInUse().itemID == Item.bow.shiftedIndex) {
 			int var2 = this.getItemInUseDuration();
 			float var3 = (float)var2 / 20.0F;
@@ -256,8 +260,12 @@ public class EntityPlayerSP extends EntityPlayer {
 		}
 	}
 
-	public void displayGUIEditSign(TileEntitySign par1TileEntitySign) {
-		this.mc.displayGuiScreen(new GuiEditSign(par1TileEntitySign));
+	public void displayGUIEditSign(TileEntity par1TileEntity) {
+		if (par1TileEntity instanceof TileEntitySign) {
+			this.mc.displayGuiScreen(new GuiEditSign((TileEntitySign)par1TileEntity));
+		} else if (par1TileEntity instanceof TileEntityCommandBlock) {
+			this.mc.displayGuiScreen(new GuiCommandBlock((TileEntityCommandBlock)par1TileEntity));
+		}
 	}
 
 	public void displayGUIChest(IInventory par1IInventory) {
@@ -272,12 +280,20 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiEnchantment(this.inventory, this.worldObj, par1, par2, par3));
 	}
 
+	public void func_82244_d(int par1, int par2, int par3) {
+		this.mc.displayGuiScreen(new GuiRepair(this.inventory, this.worldObj, par1, par2, par3));
+	}
+
 	public void displayGUIFurnace(TileEntityFurnace par1TileEntityFurnace) {
 		this.mc.displayGuiScreen(new GuiFurnace(this.inventory, par1TileEntityFurnace));
 	}
 
 	public void displayGUIBrewingStand(TileEntityBrewingStand par1TileEntityBrewingStand) {
 		this.mc.displayGuiScreen(new GuiBrewingStand(this.inventory, par1TileEntityBrewingStand));
+	}
+
+	public void func_82240_a(TileEntityBeacon par1TileEntityBeacon) {
+		this.mc.displayGuiScreen(new GuiBeacon(this.inventory, par1TileEntityBeacon));
 	}
 
 	public void displayGUIDispenser(TileEntityDispenser par1TileEntityDispenser) {
@@ -324,7 +340,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 
 	public void addChatMessage(String par1Str) {
-		this.mc.ingameGUI.addChatMessageTranslate(par1Str); // Spout - keep old chat GUI
+		this.mc.ingameGUI.getChatGUI().printChatMessage(par1Str);
 	}
 
 	public void addStat(StatBase par1StatBase, int par2) {
@@ -421,8 +437,19 @@ public class EntityPlayerSP extends EntityPlayer {
 		//this.mc.ingameGUI.getChatGUI().printChatMessage(par1Str); // Spout removed
 	}
 
-	public boolean canCommandSenderUseCommand(String par1Str) {
-		return this.worldObj.getWorldInfo().areCommandsAllowed();
+	public boolean canCommandSenderUseCommand(int par1, String par2Str) {
+		return par1 <= 0;
+	}
+
+	public ChunkCoordinates func_82114_b() {
+		return new ChunkCoordinates(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
+	}
+
+	/**
+	 * Returns the item that this EntityLiving is holding, if any.
+	 */
+	public ItemStack getHeldItem() {
+		return this.inventory.getCurrentItem();
 	}
 	
 	// Spout
@@ -442,7 +469,8 @@ public class EntityPlayerSP extends EntityPlayer {
 				fogKey = settings.keyBindToggleFog;
 				settings.keyBindToggleFog = new KeyBinding("key.fog", -1);
 				if (view != newView) {
-					settings.renderDistance = newView;
+					Configuration.setRenderDistance(newView);
+					Configuration.write();
 					if (this instanceof EntityClientPlayerMP && Spoutcraft.getClient().isSpoutEnabled()) {
 						SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)newView));
 					}

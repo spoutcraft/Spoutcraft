@@ -20,7 +20,7 @@ public class BlockPane extends Block
         super(par1, par2, par4Material);
         this.sideTextureIndex = par3;
         this.canDropItself = par5;
-        this.setCreativeTab(CreativeTabs.tabDeco);
+        this.setCreativeTab(CreativeTabs.tabDecorations);
     }
 
     /**

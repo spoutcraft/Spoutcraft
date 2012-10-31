@@ -235,17 +235,13 @@ public abstract class EntityCreature extends EntityLiving {
 	 * This method returns a value to be applied directly to entity speed, this factor is less than 1 when a slowdown
 	 * potion effect is applied, more than 1 when a haste potion effect is applied and 2 for fleeing entities.
 	 */
-	protected float getSpeedModifier() {
-		if (this.isAIEnabled()) {
-			return 1.0F;
-		} else {
-			float var1 = super.getSpeedModifier();
+	public float getSpeedModifier() {
+		float var1 = super.getSpeedModifier();
 
-			if (this.fleeingTick > 0) {
-				var1 *= 2.0F;
-			}
-
-			return var1;
+		if (this.fleeingTick > 0 && !this.isAIEnabled()) {
+			var1 *= 2.0F;
 		}
+
+		return var1;
 	}
 }

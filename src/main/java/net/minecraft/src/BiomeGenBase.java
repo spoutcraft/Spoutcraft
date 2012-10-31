@@ -83,6 +83,7 @@ public abstract class BiomeGenBase {
 	 * Holds the classes of any creature that can be spawned in the biome as friendly creature.
 	 */
 	protected List spawnableCreatureList;
+	protected List field_82914_M;
 
 	/**
 	 * Holds the classes of any aquatic creature that can be spawned in the water of the biome.
@@ -118,6 +119,7 @@ public abstract class BiomeGenBase {
 		this.spawnableMonsterList = new ArrayList();
 		this.spawnableCreatureList = new ArrayList();
 		this.spawnableWaterCreatureList = new ArrayList();
+		this.field_82914_M = new ArrayList();
 		this.enableRain = true;
 		this.worldGeneratorTrees = new WorldGenTrees(false);
 		this.worldGeneratorBigTree = new WorldGenBigTree(false);
@@ -137,6 +139,7 @@ public abstract class BiomeGenBase {
 		this.spawnableMonsterList.add(new SpawnListEntry(EntitySlime.class, 10, 4, 4));
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityEnderman.class, 1, 1, 4));
 		this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySquid.class, 10, 4, 4));
+		this.field_82914_M.add(new SpawnListEntry(EntityBat.class, 10, 8, 8));
 	}
 
 	/**
@@ -251,7 +254,7 @@ public abstract class BiomeGenBase {
 	 * Returns the correspondent list of the EnumCreatureType informed.
 	 */
 	public List getSpawnableList(EnumCreatureType par1EnumCreatureType) {
-		return par1EnumCreatureType == EnumCreatureType.monster ? this.spawnableMonsterList : (par1EnumCreatureType == EnumCreatureType.creature ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.waterCreature ? this.spawnableWaterCreatureList : null));
+				return par1EnumCreatureType == EnumCreatureType.monster ? this.spawnableMonsterList : (par1EnumCreatureType == EnumCreatureType.creature ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.waterCreature ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.ambient ? this.field_82914_M : null)));
 	}
 
 	/**

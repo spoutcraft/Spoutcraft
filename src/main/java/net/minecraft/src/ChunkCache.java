@@ -225,6 +225,10 @@ public class ChunkCache implements IBlockAccess {
 		return var4 == null ? false : (var4.blockMaterial.isOpaque() && var4.renderAsNormalBlock() ? true : (var4 instanceof BlockStairs ? (this.getBlockMetadata(par1, par2, par3) & 4) == 4 : (var4 instanceof BlockHalfSlab ? (this.getBlockMetadata(par1, par2, par3) & 8) == 8 : false)));
 	}
 
+	public Vec3Pool func_82732_R() {
+		return this.worldObj.func_82732_R();
+	}
+
 	/**
 	 * Returns true if the block at the specified coordinates is empty
 	 */
@@ -310,6 +314,14 @@ public class ChunkCache implements IBlockAccess {
 	 */
 	public int getHeight() {
 		return 256;
+	}
+
+	/**
+	 * Is this block powering in the specified direction Args: x, y, z, direction
+	 */
+	public boolean isBlockProvidingPowerTo(int par1, int par2, int par3, int par4) {
+		int var5 = this.getBlockId(par1, par2, par3);
+		return var5 == 0 ? false : Block.blocksList[var5].isIndirectlyPoweringTo(this, par1, par2, par3, par4);
 	}
 
 // Spout Start

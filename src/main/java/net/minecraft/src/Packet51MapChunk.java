@@ -53,7 +53,7 @@ public class Packet51MapChunk extends Packet {
 		this.xCh = par1Chunk.xPosition;
 		this.zCh = par1Chunk.zPosition;
 		this.includeInitialize = par2;
-		Packet51MapChunkData var4 = func_73594_a(par1Chunk, par2, par3);
+		Packet51MapChunkData var4 = getMapChunkData(par1Chunk, par2, par3);
 		Deflater var5 = new Deflater(-1);
 		this.yChMax = var4.field_74581_c;
 		this.yChMin = var4.field_74580_b;
@@ -154,7 +154,7 @@ public class Packet51MapChunk extends Packet {
 		return this.field_73596_g;
 	}
 
-	public static Packet51MapChunkData func_73594_a(Chunk par0Chunk, boolean par1, int par2) {
+	public static Packet51MapChunkData getMapChunkData(Chunk par0Chunk, boolean par1, int par2) {
 		int var3 = 0;
 		ExtendedBlockStorage[] var4 = par0Chunk.getBlockStorageArray();
 		int var5 = 0;

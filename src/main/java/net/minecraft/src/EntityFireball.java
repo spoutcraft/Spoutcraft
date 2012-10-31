@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.spoutcraft.client.entity.CraftFireball;
 
-public class EntityFireball extends Entity {
+public abstract class EntityFireball extends Entity {
 	private int xTile = -1;
 	private int yTile = -1;
 	private int zTile = -1;
@@ -103,14 +103,14 @@ public class EntityFireball extends Entity {
 				++this.ticksInAir;
 			}
 
-			Vec3 var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-			Vec3 var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			Vec3 var15 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
+			Vec3 var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-			var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-			var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			var15 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
+			var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 			if (var3 != null) {
-				var2 = Vec3.getVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+				var2 = this.worldObj.func_82732_R().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 			}
 
 			Entity var4 = null;
@@ -169,7 +169,7 @@ public class EntityFireball extends Entity {
 
 			this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 			this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-			float var17 = 0.95F;
+			float var17 = this.func_82341_c();
 
 			if (this.isInWater()) {
 				for (int var19 = 0; var19 < 4; ++var19) {
@@ -191,19 +191,14 @@ public class EntityFireball extends Entity {
 		}
 	}
 
+	protected float func_82341_c() {
+		return 0.95F;
+	}
+
 	/**
 	 * Called when this EntityFireball hits a block or entity.
 	 */
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
-		if (!this.worldObj.isRemote) {
-			if (par1MovingObjectPosition.entityHit != null) {
-				par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6);
-			}
-
-			this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, 1.0F, true);
-			this.setDead();
-		}
-	}
+	protected abstract void onImpact(MovingObjectPosition var1);
 
 	/**
 	 * (abstract) Protected helper method to write subclass entity data to NBT.

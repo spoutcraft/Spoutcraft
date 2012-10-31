@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.pclewis.mcpatcher.mod.Shaders;
-
 import net.minecraft.src.Entity;
 
 import org.bukkit.util.config.Configuration;
@@ -44,7 +42,7 @@ public class MinimapConfig {
 	private static volatile MinimapConfig instance;
 	private final Configuration config;
 
-	private boolean enabled = Shaders.isOpenGL(2);
+	private boolean enabled = false;
 	private boolean coords = true;
 	private int zoom = 1;
 	private boolean color = true;
@@ -81,7 +79,7 @@ public class MinimapConfig {
 		config = new Configuration(file);
 		if (load) {
 			config.load();
-			enabled = config.getBoolean("minimap.enabled", enabled);
+			enabled = config.getBoolean("minimap.visible", enabled);
 			coords = config.getBoolean("minimap.coords", coords);
 			zoom = config.getInt("minimap.zoom", zoom);
 			color = config.getBoolean("minimap.color", color);
@@ -167,7 +165,7 @@ public class MinimapConfig {
 	}
 
 	public synchronized void save() {
-		config.setProperty("minimap.enabled", enabled);
+		config.setProperty("minimap.visible", enabled);
 		config.setProperty("minimap.coords", coords);
 		config.setProperty("minimap.zoom", zoom);
 		config.setProperty("minimap.color", color);

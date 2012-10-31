@@ -6,7 +6,7 @@ public class BlockTorch extends Block {
 	protected BlockTorch(int par1, int par2) {
 		super(par1, par2, Material.circuits);
 		this.setTickRandomly(true);
-		this.setCreativeTab(CreativeTabs.tabDeco);
+		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class BlockTorch extends Block {
 			return true;
 		} else {
 			int var5 = par1World.getBlockId(par2, par3, par4);
-			return var5 == Block.fence.blockID || var5 == Block.netherFence.blockID || var5 == Block.glass.blockID;
+			return var5 == Block.fence.blockID || var5 == Block.netherFence.blockID || var5 == Block.glass.blockID || var5 == Block.field_82515_ce.blockID;
 		}
 	}
 

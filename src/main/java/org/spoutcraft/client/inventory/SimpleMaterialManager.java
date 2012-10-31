@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import java.util.List;
 import gnu.trove.map.hash.TIntByteHashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.Item;
 
 import org.spoutcraft.api.util.map.TIntPairFloatHashMap;
@@ -261,7 +262,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		Item rawItem = Item.itemsList[itemstack.itemID];
 		List<String> list;
 		if (rawItem != null) {
-			list = itemstack.getItemNameandInformation();
+			list = itemstack.func_82840_a(Minecraft.theMinecraft.thePlayer, Minecraft.theMinecraft.gameSettings.field_82882_x);
 		} else {
 			list = new ArrayList<String>();
 		}

@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.spoutcraft.client.ScheduledTextFieldUpdate;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.*;
 import org.spoutcraft.client.packet.*;
 import org.spoutcraft.api.entity.Player;
@@ -558,7 +558,7 @@ public class GuiScreen extends Gui
 	}
 
 	protected boolean shouldShowTooltip() {
-		return !ConfigReader.delayedTooltips
+		return !Configuration.isDelayedTooltips()
 				|| System.currentTimeMillis() - TOOLTIP_DELAY > lastMouseMove;
 	}
 	// Spout End
@@ -632,7 +632,7 @@ public class GuiScreen extends Gui
 				ScreenType screen = ScreenUtil.getType(this);
 				int i = Keyboard.getEventKey();
 				boolean keyReleased = Keyboard.getEventKeyState();
-				PacketKeyPress packet = new PacketKeyPress((byte) i, keyReleased, (MovementInputFromOptions) player.movementInput, screen);
+				PacketKeyPress packet = new PacketKeyPress(i, keyReleased, (MovementInputFromOptions) player.movementInput, screen);
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
 			}
 			((SimpleKeyBindingManager)SpoutClient.getInstance().getKeyBindingManager()).pressKey(Keyboard.getEventKey(), Keyboard.getEventKeyState(), ScreenUtil.getType(this).getCode());

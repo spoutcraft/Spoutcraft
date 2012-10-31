@@ -180,9 +180,9 @@ public class WorldRenderer {
 						}
 					}
 
-					if(tessellator.textureOverride != texture){
+					if(tessellator.texture != texture){
 						tessellator.draw();
-						tessellator.textureOverride = texture;
+						tessellator.texture = texture;
 						tessellator.startDrawingQuads();
 					}
 					
@@ -283,7 +283,7 @@ public class WorldRenderer {
 
 				if (drawBlock) {
 					tessellator.draw();
-					tessellator.textureOverride = 0;
+					tessellator.texture = 0;
 					GL11.glPopMatrix();
 					GL11.glEndList();
 					game.renderEngine.bindTexture(defaultTexture);

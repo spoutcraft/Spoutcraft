@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -34,6 +34,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.src.GuiIngameMenu;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.StringTranslate;
 
@@ -52,10 +53,11 @@ import org.spoutcraft.api.gui.RenderUtil;
 import org.spoutcraft.api.gui.Texture;
 import org.spoutcraft.api.gui.WidgetAnchor;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
-import org.spoutcraft.client.gui.settings.GameSettingsScreen;
+import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
+import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.special.Holiday;
@@ -65,7 +67,7 @@ public class MainMenu extends GuiScreen {
 	public static String mcVersion = "Unknown Version";
 	final static List<String> splashes = new ArrayList<String>(1000);
 	public static boolean hasLoaded = false;
-	Button singleplayer, multiplayer, textures, addons, about, options, fastLogin, quit, language;
+	Button singleplayer, multiplayer, textures, addons, about, options, quit, language;
 	Texture background, logo;
 	Label splashText, buildNumber, animate, debugText;
 	static String timeOfDay = "";
@@ -81,8 +83,6 @@ public class MainMenu extends GuiScreen {
 
 	public MainMenu() {
 		splashText = new GenericLabel(getSplashText());
-		fastLogin = new GenericButton(ChatColor.GREEN + "Fast Login");
-		fastLogin.setVisible(ConfigReader.fastLogin);
 
 		updateBackgrounds();
 
@@ -205,8 +205,6 @@ public class MainMenu extends GuiScreen {
 
 		StringTranslate translate = StringTranslate.getInstance();
 
-		fastLogin.setGeometry(width - 110, height - 205, 100, 20);
-
 		singleplayer = new GenericButton(translate.translateKey("menu.singleplayer"));
 		singleplayer.setGeometry(width - 110, height - 180, 100, 20);
 
@@ -256,7 +254,7 @@ public class MainMenu extends GuiScreen {
 		textWidth /= 100;
 		animate.setGeometry(width - textWidth - 2, height - 8, textWidth, 10);
 		animate.setScale(0.75F);
-		switch (ConfigReader.mainMenuState) {
+		switch (Configuration.getMainMenuState()) {
 			case 1:
 				animate.setTextColor(new Color(0x00EE00));
 				break;
@@ -273,7 +271,7 @@ public class MainMenu extends GuiScreen {
 		debugText.setGeometry(1, 1, 12, 100);
 		debugText.setVisible(false);
 
-		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, addons, buildNumber, about, options, background, logo, splashText, fastLogin, quit, animate, debugText);
+		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, addons, buildNumber, about, options, background, logo, splashText, quit, animate, debugText);
 	}
 
 	@Override
@@ -295,15 +293,10 @@ public class MainMenu extends GuiScreen {
 			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiNewAbout(this));
 		}
 		if (options == btn) {
-			mc.displayGuiScreen(new GameSettingsScreen(this));
+			mc.displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(this));
 		}
 		if (quit == btn) {
 			mc.shutdownMinecraftApplet();
-		}
-		if (fastLogin == btn) {
-			ConfigReader.fastLogin = !ConfigReader.fastLogin;
-			ConfigReader.write();
-			fastLogin.setText((ConfigReader.fastLogin ? ChatColor.GREEN : ChatColor.RED) + "Fast Login");
 		}
 	}
 
@@ -320,7 +313,7 @@ public class MainMenu extends GuiScreen {
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-			mc.displayGuiScreen(new GameSettingsScreen(this));
+			mc.displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
 		}
 
 		long time = System.currentTimeMillis();
@@ -337,7 +330,7 @@ public class MainMenu extends GuiScreen {
 				poorFPSCount = 0;
 			}
 			if (poorFPSCount > 3) {
-				ConfigReader.mainMenuState = 3;
+				Configuration.setMainMenuState(3);
 			}
 		}
 		lastTime = time;
@@ -352,12 +345,12 @@ public class MainMenu extends GuiScreen {
 			clickDelay--;
 		}
 		if (Mouse.isButtonDown(0) && this.isInBoundingRect(animate, mouseX, mouseY) && clickDelay == 0) {
-			ConfigReader.mainMenuState++;
-			if (ConfigReader.mainMenuState > 3) {
-				ConfigReader.mainMenuState = 1;
+			Configuration.setMainMenuState(Configuration.getMainMenuState() + 1);
+			if (Configuration.getMainMenuState() > 3) {
+				Configuration.setMainMenuState(1);
 			}
-			ConfigReader.write();
-			switch (ConfigReader.mainMenuState) {
+			Configuration.write();
+			switch (Configuration.getMainMenuState()) {
 				case 1:
 					animate.setTextColor(new Color(0x00EE00));
 					break;
@@ -430,7 +423,7 @@ class BackgroundTexture extends GenericTexture {
 		org.newdawn.slick.opengl.Texture tex = CustomTextureManager.getTextureFromJar(getUrl());
 		GL11.glPushMatrix();
 		if (tex != null) {
-			if (ConfigReader.mainMenuState != 3) {
+			if (Configuration.getMainMenuState() != 3) {
 				animate(tex);
 			} else {
 				((MCRenderDelegate) Spoutcraft.getRenderDelegate()).drawTexture(tex, (int) this.getActualWidth(), (int) this.getActualHeight(), white, false, -1, -1, false, GL11.GL_LINEAR);
@@ -457,7 +450,7 @@ class BackgroundTexture extends GenericTexture {
 
 		GL11.glScaled(this.getActualWidth() / (adjustedWidth - adjustedX), this.getActualHeight() / (adjustedHeight - adjustedY), 1D);
 		GL11.glTranslatef(-adjustedX, -adjustedY, 0F);
-		((MCRenderDelegate) Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, white, false, -1, -1, ConfigReader.mainMenuState == 1, GL11.GL_NEAREST);
+		((MCRenderDelegate) Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, white, false, -1, -1, Configuration.getMainMenuState() == 1, GL11.GL_NEAREST);
 
 		if (zoomIn && panTime < maxPanTime) {
 			panTime++;

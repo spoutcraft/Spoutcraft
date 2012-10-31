@@ -9,7 +9,7 @@ public class ItemMonsterPlacer extends Item {
 	public ItemMonsterPlacer(int par1) {
 		super(par1);
 		this.setHasSubtypes(true);
-		this.setTabToDisplayOn(CreativeTabs.tabMisc);
+		this.setCreativeTab(CreativeTabs.tabMisc);
 	}
 
 	public String getItemDisplayName(ItemStack par1ItemStack) {
@@ -23,9 +23,9 @@ public class ItemMonsterPlacer extends Item {
 		return var2;
 	}
 
-	public int getColorFromDamage(int par1, int par2) {
-		EntityEggInfo var3 = (EntityEggInfo)EntityList.entityEggs.get(Integer.valueOf(par1));
-		return var3 != null ? (par2 == 0 ? Colorizer.colorizeSpawnerEgg(var3.primaryColor, par1, par2) : Colorizer.colorizeSpawnerEgg(var3.secondaryColor, par1, par2)) : Colorizer.colorizeSpawnerEgg(16777215, par1, par2); // Spout HD
+	public int func_82790_a(ItemStack par1ItemStack, int par2) {
+		EntityEggInfo var3 = (EntityEggInfo)EntityList.entityEggs.get(par1ItemStack.getItemDamage());
+		return var3 != null ? (par2 == 0 ? var3.primaryColor : var3.secondaryColor) : 16777215;
 	}
 
 	public boolean requiresMultipleRenderPasses() {
@@ -39,7 +39,11 @@ public class ItemMonsterPlacer extends Item {
 		return par2 > 0 ? super.getIconFromDamageForRenderPass(par1, par2) + 16 : super.getIconFromDamageForRenderPass(par1, par2);
 	}
 
-	public boolean tryPlaceIntoWorld(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
+	/**
+	 * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
+	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
+	 */
+	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
 		if (par3World.isRemote) {
 			return true;
 		} else {
@@ -69,20 +73,17 @@ public class ItemMonsterPlacer extends Item {
 		if (!EntityList.entityEggs.containsKey(Integer.valueOf(par1))) {
 			return false;
 		} else {
-			Entity var8 = EntityList.createEntityByID(par1, par0World);
+			Entity var8 = null;
 
-			if (var8 != null) {
-				var8.setLocationAndAngles(par2, par4, par6, par0World.rand.nextFloat() * 360.0F, 0.0F);
+			for (int var9 = 0; var9 < 1; ++var9) {
+				var8 = EntityList.createEntityByID(par1, par0World);
 
-				if (var8 instanceof EntityVillager) {
-					EntityVillager var9 = (EntityVillager)var8;
-					var9.setProfession(var9.getRNG().nextInt(5));
-					par0World.spawnEntityInWorld(var9);
-					return true;
+				if (var8 != null) {
+					var8.setLocationAndAngles(par2, par4, par6, par0World.rand.nextFloat() * 360.0F, 0.0F);
+					((EntityLiving)var8).func_82163_bD();
+					par0World.spawnEntityInWorld(var8);
+					((EntityLiving)var8).playLivingSound();
 				}
-
-				par0World.spawnEntityInWorld(var8);
-				((EntityLiving)var8).playLivingSound();
 			}
 
 			return var8 != null;

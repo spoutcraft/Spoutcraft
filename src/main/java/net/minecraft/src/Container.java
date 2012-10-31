@@ -21,9 +21,10 @@ public abstract class Container {
 	 */
 	protected List crafters = new ArrayList();
 	private Set playerList = new HashSet();
-	
 	// Spout Start
-	public abstract IInventory getIInventory();
+	public IInventory getIInventory() {
+		return null;
+	}
 	
 	public boolean isSortableInventory() {
 		return false;
@@ -48,6 +49,10 @@ public abstract class Container {
 			par1ICrafting.sendContainerAndContentsToPlayer(this, this.getInventory());
 			this.updateCraftingResults();
 		}
+	}
+
+	public void func_82847_b(ICrafting par1ICrafting) {
+		this.crafters.remove(par1ICrafting);
 	}
 
 	/**
@@ -112,140 +117,179 @@ public abstract class Container {
 		return (Slot)this.inventorySlots.get(par1);
 	}
 
-	/**
-	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
-	 */
-	public ItemStack transferStackInSlot(int par1) {
-		Slot var2 = (Slot)this.inventorySlots.get(par1);
-		return var2 != null ? var2.getStack() : null;
+	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2) {
+		Slot var3 = (Slot)this.inventorySlots.get(par2);
+		return var3 != null ? var3.getStack() : null;
 	}
 
-	public ItemStack slotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer) {
+	public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
 		ItemStack var5 = null;
+		InventoryPlayer var6 = par4EntityPlayer.inventory;
+		Slot var7;
+		ItemStack var8;
+		int var10;
+		ItemStack var11;
 
-		if (par2 > 1) {
-			return null;
-		} else {
-			if (par2 == 0 || par2 == 1) {
-				InventoryPlayer var6 = par4EntityPlayer.inventory;
+		if ((par3 == 0 || par3 == 1) && (par2 == 0 || par2 == 1)) {
+			if (par1 == -999) {
+				if (var6.getItemStack() != null && par1 == -999) {
+					if (par2 == 0) {
+						par4EntityPlayer.dropPlayerItem(var6.getItemStack());
+						var6.setItemStack((ItemStack)null);
+					}
 
-				if (par1 == -999) {
-					if (var6.getItemStack() != null && par1 == -999) {
-						if (par2 == 0) {
-							par4EntityPlayer.dropPlayerItem(var6.getItemStack());
+					if (par2 == 1) {
+						par4EntityPlayer.dropPlayerItem(var6.getItemStack().splitStack(1));
+
+						if (var6.getItemStack().stackSize == 0) {
 							var6.setItemStack((ItemStack)null);
 						}
+					}
+				}
+			} else if (par3 == 1) {
+				var7 = (Slot)this.inventorySlots.get(par1);
 
-						if (par2 == 1) {
-							par4EntityPlayer.dropPlayerItem(var6.getItemStack().splitStack(1));
+				if (var7 != null && var7.func_82869_a(par4EntityPlayer)) {
+					var8 = this.func_82846_b(par4EntityPlayer, par1);
 
-							if (var6.getItemStack().stackSize == 0) {
+					if (var8 != null) {
+						int var12 = var8.itemID;
+						var5 = var8.copy();
+
+						if (var7 != null && var7.getStack() != null && var7.getStack().itemID == var12) {
+							this.retrySlotClick(par1, par2, true, par4EntityPlayer);
+						}
+					}
+				}
+			} else {
+				if (par1 < 0) {
+					return null;
+				}
+
+				var7 = (Slot)this.inventorySlots.get(par1);
+
+				if (var7 != null) {
+					var8 = var7.getStack();
+					ItemStack var13 = var6.getItemStack();
+
+					if (var8 != null) {
+						var5 = var8.copy();
+					}
+
+					if (var8 == null) {
+						if (var13 != null && var7.isItemValid(var13)) {
+							var10 = par2 == 0 ? var13.stackSize : 1;
+
+							if (var10 > var7.getSlotStackLimit()) {
+								var10 = var7.getSlotStackLimit();
+							}
+
+							var7.putStack(var13.splitStack(var10));
+
+							if (var13.stackSize == 0) {
 								var6.setItemStack((ItemStack)null);
 							}
 						}
-					}
-				} else if (par3) {
-					ItemStack var7 = this.transferStackInSlot(par1);
-
-					if (var7 != null) {
-						int var8 = var7.itemID;
-						var5 = var7.copy();
-						Slot var9 = (Slot)this.inventorySlots.get(par1);
-
-						if (var9 != null && var9.getStack() != null && var9.getStack().itemID == var8) {
-							this.retrySlotClick(par1, par2, par3, par4EntityPlayer);
-						}
-					}
-				} else {
-					if (par1 < 0) {
-						return null;
-					}
-
-					Slot var12 = (Slot)this.inventorySlots.get(par1);
-
-					if (var12 != null) {
-						ItemStack var13 = var12.getStack();
-						ItemStack var14 = var6.getItemStack();
-
-						if (var13 != null) {
-							var5 = var13.copy();
-						}
-
-						int var10;
-
+					} else if (var7.func_82869_a(par4EntityPlayer)) {
 						if (var13 == null) {
-							if (var14 != null && var12.isItemValid(var14)) {
-								var10 = par2 == 0 ? var14.stackSize : 1;
-
-								if (var10 > var12.getSlotStackLimit()) {
-									var10 = var12.getSlotStackLimit();
-								}
-
-								var12.putStack(var14.splitStack(var10));
-
-								if (var14.stackSize == 0) {
-									var6.setItemStack((ItemStack)null);
-								}
-							}
-						} else if (var14 == null) {
-							var10 = par2 == 0 ? var13.stackSize : (var13.stackSize + 1) / 2;
-							ItemStack var11 = var12.decrStackSize(var10);
+							var10 = par2 == 0 ? var8.stackSize : (var8.stackSize + 1) / 2;
+							var11 = var7.decrStackSize(var10);
 							var6.setItemStack(var11);
 
-							if (var13.stackSize == 0) {
-								var12.putStack((ItemStack)null);
+							if (var8.stackSize == 0) {
+								var7.putStack((ItemStack)null);
 							}
 
-							var12.onPickupFromSlot(var6.getItemStack());
-						} else if (var12.isItemValid(var14)) {
-							if (var13.itemID == var14.itemID && (!var13.getHasSubtypes() || var13.getItemDamage() == var14.getItemDamage()) && ItemStack.func_77970_a(var13, var14)) {
-								var10 = par2 == 0 ? var14.stackSize : 1;
+							var7.func_82870_a(par4EntityPlayer, var6.getItemStack());
+						} else if (var7.isItemValid(var13)) {
+							if (var8.itemID == var13.itemID && (!var8.getHasSubtypes() || var8.getItemDamage() == var13.getItemDamage()) && ItemStack.func_77970_a(var8, var13)) {
+								var10 = par2 == 0 ? var13.stackSize : 1;
 
-								if (var10 > var12.getSlotStackLimit() - var13.stackSize) {
-									var10 = var12.getSlotStackLimit() - var13.stackSize;
+								if (var10 > var7.getSlotStackLimit() - var8.stackSize) {
+									var10 = var7.getSlotStackLimit() - var8.stackSize;
 								}
 
-								if (var10 > var14.getMaxStackSize() - var13.stackSize) {
-									var10 = var14.getMaxStackSize() - var13.stackSize;
+								if (var10 > var13.getMaxStackSize() - var8.stackSize) {
+									var10 = var13.getMaxStackSize() - var8.stackSize;
 								}
 
-								var14.splitStack(var10);
+								var13.splitStack(var10);
 
-								if (var14.stackSize == 0) {
+								if (var13.stackSize == 0) {
 									var6.setItemStack((ItemStack)null);
 								}
 
-								var13.stackSize += var10;
-							} else if (var14.stackSize <= var12.getSlotStackLimit()) {
-								var12.putStack(var14);
-								var6.setItemStack(var13);
+								var8.stackSize += var10;
+							} else if (var13.stackSize <= var7.getSlotStackLimit()) {
+								var7.putStack(var13);
+								var6.setItemStack(var8);
 							}
-						} else if (var13.itemID == var14.itemID && var14.getMaxStackSize() > 1 && (!var13.getHasSubtypes() || var13.getItemDamage() == var14.getItemDamage()) && ItemStack.func_77970_a(var13, var14)) {
-							var10 = var13.stackSize;
+						} else if (var8.itemID == var13.itemID && var13.getMaxStackSize() > 1 && (!var8.getHasSubtypes() || var8.getItemDamage() == var13.getItemDamage()) && ItemStack.func_77970_a(var8, var13)) {
+							var10 = var8.stackSize;
 
-							if (var10 > 0 && var10 + var14.stackSize <= var14.getMaxStackSize()) {
-								var14.stackSize += var10;
-								var13 = var12.decrStackSize(var10);
+							if (var10 > 0 && var10 + var13.stackSize <= var13.getMaxStackSize()) {
+								var13.stackSize += var10;
+								var8 = var7.decrStackSize(var10);
 
-								if (var13.stackSize == 0) {
-									var12.putStack((ItemStack)null);
+								if (var8.stackSize == 0) {
+									var7.putStack((ItemStack)null);
 								}
 
-								var12.onPickupFromSlot(var6.getItemStack());
+								var7.func_82870_a(par4EntityPlayer, var6.getItemStack());
 							}
 						}
-
-						var12.onSlotChanged();
 					}
+
+					var7.onSlotChanged();
 				}
 			}
+		} else if (par3 == 2 && par2 >= 0 && par2 < 9) {
+			var7 = (Slot)this.inventorySlots.get(par1);
 
-			return var5;
+			if (var7.func_82869_a(par4EntityPlayer)) {
+				var8 = var6.getStackInSlot(par2);
+				boolean var9 = var8 == null || var7.inventory == var6 && var7.isItemValid(var8);
+				var10 = -1;
+
+				if (!var9) {
+					var10 = var6.getFirstEmptyStack();
+					var9 |= var10 > -1;
+				}
+
+				if (var7.getHasStack() && var9) {
+					var11 = var7.getStack();
+					var6.setInventorySlotContents(par2, var11);
+
+					if ((var7.inventory != var6 || !var7.isItemValid(var8)) && var8 != null) {
+						if (var10 > -1) {
+							var6.addItemStackToInventory(var8);
+							var7.putStack((ItemStack)null);
+							var7.func_82870_a(par4EntityPlayer, var11);
+						}
+					} else {
+						var7.putStack(var8);
+						var7.func_82870_a(par4EntityPlayer, var11);
+					}
+				} else if (!var7.getHasStack() && var8 != null && var7.isItemValid(var8)) {
+					var6.setInventorySlotContents(par2, (ItemStack)null);
+					var7.putStack(var8);
+				}
+			}
+		} else if (par3 == 3 && par4EntityPlayer.capabilities.isCreativeMode && var6.getItemStack() == null && par1 > 0) {
+			var7 = (Slot)this.inventorySlots.get(par1);
+
+			if (var7 != null && var7.getHasStack()) {
+				var8 = var7.getStack().copy();
+				var8.stackSize = var8.getMaxStackSize();
+				var6.setItemStack(var8);
+			}
 		}
+
+		return var5;
 	}
 
 	protected void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer) {
-		this.slotClick(par1, par2, par3, par4EntityPlayer);
+		this.slotClick(par1, par2, 1, par4EntityPlayer);
 	}
 
 	/**

@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -384,7 +384,7 @@ public class SpoutcraftWorld implements World {
 	}
 
 	public boolean createExplosion(double x, double y, double z, float power, boolean setFire) {
-		return handle.newExplosion(null, x, y, z, power, setFire) != null;
+		return handle.newExplosion(null, x, y, z, power, setFire, true) != null;
 	}
 
 	public boolean createExplosion(FixedLocation loc, float power) {

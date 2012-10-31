@@ -5,10 +5,11 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 import net.minecraft.client.Minecraft;
+//Spout start
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
-
+//Spout end
 public class WorldClient extends World {
 
 	/** The packets that need to be sent to the server. */
@@ -46,6 +47,7 @@ public class WorldClient extends World {
 	 */
 	public void tick() {
 		super.tick();
+		this.func_82738_a(this.func_82737_E() + 1L);
 		this.setWorldTime(this.getWorldTime() + 1L);
 		this.theProfiler.startSection("reEntryProcessing");
 
@@ -118,7 +120,7 @@ public class WorldClient extends World {
 	public void doPreChunk(int par1, int par2, boolean par3) {
 		if (par3) {
 			this.clientChunkProvider.loadChunk(par1, par2);
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(par1, par2));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(par1, par2)); //Spout
 		} else {
 			this.clientChunkProvider.unloadChunk(par1, par2);
 		}
@@ -198,10 +200,10 @@ public class WorldClient extends World {
 	}
 
 	/**
-	 * Lookup and return an Entity based on its ID
+	 * Returns the Entity with the given ID, or null if it doesn't exist in this World.
 	 */
 	public Entity getEntityByID(int par1) {
-		return (Entity)this.entityHashSet.lookup(par1);
+		return (Entity)(par1 == this.mc.thePlayer.entityId ? this.mc.thePlayer : (Entity)this.entityHashSet.lookup(par1));
 	}
 
 	public Entity removeEntityFromWorld(int par1) {
@@ -225,6 +227,10 @@ public class WorldClient extends World {
 	 */
 	public void sendQuittingDisconnectingPacket() {
 		this.sendQueue.quitWithPacket(new Packet255KickDisconnect("Quitting"));
+	}
+
+	public IUpdatePlayerListBox func_82735_a(EntityMinecart par1EntityMinecart) {
+		return new SoundUpdaterMinecart(this.mc.sndManager, par1EntityMinecart, this.mc.thePlayer);
 	}
 
 	/**
@@ -275,7 +281,7 @@ public class WorldClient extends World {
 		Random var5 = new Random();
 
 		// Spout Start
-		int num = ConfigReader.fancyParticles ? 1000 : 250;
+		int num = Configuration.isFancyParticles() ? 1000 : 250;
 		for (int var6 = 0; var6 < num; ++var6) {
 		// Spout End
 			int var7 = par1 + this.rand.nextInt(var4) - this.rand.nextInt(var4);

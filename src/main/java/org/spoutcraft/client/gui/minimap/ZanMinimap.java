@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -26,7 +26,8 @@ import net.minecraft.src.GuiSleepMP;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.settings.GameSettingsScreen;
+import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
+import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
 
 /**
  * Main Zanminimap class where everything happens
@@ -93,7 +94,7 @@ public class ZanMinimap {
 	}
 
 	private boolean isTransparentMenu() {
-		return Minecraft.theMinecraft.currentScreen instanceof GuiIngameMenu || Minecraft.theMinecraft.currentScreen instanceof GameSettingsScreen || Minecraft.theMinecraft.currentScreen instanceof GuiMinimapMenu || Minecraft.theMinecraft.currentScreen instanceof GuiMoveMinimap;
+		return Minecraft.theMinecraft.currentScreen instanceof GuiIngameMenu || Minecraft.theMinecraft.currentScreen instanceof GuiAdvancedOptions || Minecraft.theMinecraft.currentScreen instanceof GuiSimpleOptions || Minecraft.theMinecraft.currentScreen instanceof GuiMinimapMenu || Minecraft.theMinecraft.currentScreen instanceof GuiMoveMinimap;
 	}
 
 	private boolean isChatMenu() {

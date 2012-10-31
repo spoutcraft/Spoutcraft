@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -74,21 +74,22 @@ public class PacketSkinURL implements SpoutPacket {
 			// Check if these are the Minecraft skin/cape, if so, use defaults instead
 			String mcSkin = "http://s3.amazonaws.com/MinecraftSkins/" + e.username + ".png";
 			String mcCape = "http://s3.amazonaws.com/MinecraftCloaks/" + e.username + ".png";
+			System.out.println(e.username + " is going to be sent skinURL: " + skinURL);
 			if (this.skinURL.equalsIgnoreCase(mcSkin)) {
-				this.skinURL = "http://cdn.spout.org/skin/" + e.username + ".png";
+				this.skinURL = "http://cdn.spout.org/game/vanilla/skin/" + e.username + ".png";
 			}
 			if (this.cloakURL.equalsIgnoreCase(mcCape)) {
-				if (e.vip != null) {
+				if (e.vip != null && e.vip.getCape() != null) {
 					this.cloakURL = e.vip.getCape();
 				} else {
-					this.cloakURL = "http://cdn.spout.org/skin/" + e.username + ".png";
+					this.cloakURL = "http://cdn.spout.org/game/vanilla/cape/" + e.username + ".png";
 				}
 			}
 
-			if (!this.skinURL.equals("none")) {
+			if (!"none".equals(this.skinURL)) {
 				e.skinUrl = this.skinURL;
 			}
-			if (!this.cloakURL.equals("none")) {
+			if (!"none".equals(this.cloakURL)) {
 				e.updateCloak(cloakURL);
 			}
 			if (release) {

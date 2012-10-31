@@ -17,7 +17,7 @@ public class GameSettings {
 
 	/** GUI scale values */
 	private static final String[] GUISCALES = new String[] {"options.guiScale.auto", "options.guiScale.small", "options.guiScale.normal", "options.guiScale.large"};
-	private static final String[] field_74369_af = new String[] {"options.chat.visibility.full", "options.chat.visibility.system", "options.chat.visibility.hidden"};
+	private static final String[] CHAT_VISIBILITIES = new String[] {"options.chat.visibility.full", "options.chat.visibility.system", "options.chat.visibility.hidden"};
 	private static final String[] PARTICLES = new String[] {"options.particles.all", "options.particles.decreased", "options.particles.minimal"};
 
 	/** Limit framerate labels */
@@ -51,8 +51,11 @@ public class GameSettings {
 	public boolean serverTextures = true;
 	public boolean snooperEnabled = true;
 	public boolean fullScreen = false;
-	public boolean enableVsync = false;
-	public boolean field_80005_w = false;
+	public boolean enableVsync = true;
+	public boolean hideServerAddress = false;
+	public boolean field_82882_x = false;
+	public boolean field_82881_y = true;
+	public boolean field_82880_z = true;
 	public KeyBinding keyBindForward = new KeyBinding("key.forward", 17);
 	public KeyBinding keyBindLeft = new KeyBinding("key.left", 30);
 	public KeyBinding keyBindBack = new KeyBinding("key.back", 31);
@@ -66,7 +69,7 @@ public class GameSettings {
 	public KeyBinding keyBindUseItem = new KeyBinding("key.use", -99);
 	public KeyBinding keyBindPlayerList = new KeyBinding("key.playerlist", 15);
 	public KeyBinding keyBindPickBlock = new KeyBinding("key.pickItem", -98);
-	public KeyBinding field_74323_J = new KeyBinding("key.command", 53);
+	public KeyBinding keyBindCommand = new KeyBinding("key.command", 53);
 	// Spout Start
 	public KeyBinding keyBindToggleFog = new KeyBinding("Toggle Fog", Keyboard.KEY_F); 
 	public final KeyBinding keySneakToggle = new KeyBinding("Sneak Toggle", Keyboard.KEY_LCONTROL);
@@ -98,7 +101,7 @@ public class GameSettings {
 
 	/** true if debug info should be displayed instead of version */
 	public boolean showDebugInfo;
-	public boolean field_74329_Q;
+	public boolean showDebugProfilerChart;
 
 	/** The lastServer string. */
 	public String lastServer;
@@ -128,12 +131,12 @@ public class GameSettings {
 	public String language;
 
 	public GameSettings(Minecraft par1Minecraft, File par2File) {
-		this.keyBindings = new KeyBinding[] {this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.field_74323_J};
+		this.keyBindings = new KeyBinding[] {this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindCommand};
 		this.difficulty = 2;
 		this.hideGUI = false;
 		this.thirdPersonView = 0;
 		this.showDebugInfo = false;
-		this.field_74329_Q = false;
+		this.showDebugProfilerChart = false;
 		this.lastServer = "";
 		this.noclip = false;
 		this.smoothCamera = false;
@@ -151,12 +154,12 @@ public class GameSettings {
 	}
 
 	public GameSettings() {
-		this.keyBindings = new KeyBinding[] {this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.field_74323_J};
+		this.keyBindings = new KeyBinding[] {this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindCommand};
 		this.difficulty = 2;
 		this.hideGUI = false;
 		this.thirdPersonView = 0;
 		this.showDebugInfo = false;
-		this.field_74329_Q = false;
+		this.showDebugProfilerChart = false;
 		this.lastServer = "";
 		this.noclip = false;
 		this.smoothCamera = false;
@@ -309,6 +312,10 @@ public class GameSettings {
 			this.snooperEnabled = !this.snooperEnabled;
 		}
 
+		if (par1EnumOptions == EnumOptions.SHOW_CAPE) {
+			this.field_82880_z = !this.field_82880_z;
+		}
+
 		if (par1EnumOptions == EnumOptions.USE_FULLSCREEN) {
 			this.fullScreen = !this.fullScreen;
 
@@ -370,12 +377,15 @@ public class GameSettings {
 			case 13:
 				return this.enableVsync;
 
+			case 14:
+				return this.field_82880_z;
+
 			default:
 				return false;
 		}
 	}
 
-	private static String func_74299_a(String[] par0ArrayOfStr, int par1) {
+	private static String getTranslation(String[] par0ArrayOfStr, int par1) {
 		if (par1 < 0 || par1 >= par0ArrayOfStr.length) {
 			par1 = 0;
 		}
@@ -398,7 +408,7 @@ public class GameSettings {
 			boolean var4 = this.getOptionOrdinalValue(par1EnumOptions);
 			return var4 ? var3 + var2.translateKey("options.on") : var3 + var2.translateKey("options.off");
 		} else {
-			return par1EnumOptions == EnumOptions.RENDER_DISTANCE ? var3 + func_74299_a(RENDER_DISTANCES, this.renderDistance) : (par1EnumOptions == EnumOptions.DIFFICULTY ? var3 + func_74299_a(DIFFICULTIES, this.difficulty) : (par1EnumOptions == EnumOptions.GUI_SCALE ? var3 + func_74299_a(GUISCALES, this.guiScale) : (par1EnumOptions == EnumOptions.CHAT_VISIBILITY ? var3 + func_74299_a(field_74369_af, this.chatVisibility) : (par1EnumOptions == EnumOptions.PARTICLES ? var3 + func_74299_a(PARTICLES, this.particleSetting) : (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT ? var3 + func_74299_a(LIMIT_FRAMERATES, this.limitFramerate) : (par1EnumOptions == EnumOptions.GRAPHICS ? (this.fancyGraphics ? var3 + var2.translateKey("options.graphics.fancy") : var3 + var2.translateKey("options.graphics.fast")) : var3))))));
+			return par1EnumOptions == EnumOptions.RENDER_DISTANCE ? var3 + getTranslation(RENDER_DISTANCES, this.renderDistance) : (par1EnumOptions == EnumOptions.DIFFICULTY ? var3 + getTranslation(DIFFICULTIES, this.difficulty) : (par1EnumOptions == EnumOptions.GUI_SCALE ? var3 + getTranslation(GUISCALES, this.guiScale) : (par1EnumOptions == EnumOptions.CHAT_VISIBILITY ? var3 + getTranslation(CHAT_VISIBILITIES, this.chatVisibility) : (par1EnumOptions == EnumOptions.PARTICLES ? var3 + getTranslation(PARTICLES, this.particleSetting) : (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT ? var3 + getTranslation(LIMIT_FRAMERATES, this.limitFramerate) : (par1EnumOptions == EnumOptions.GRAPHICS ? (this.fancyGraphics ? var3 + var2.translateKey("options.graphics.fancy") : var3 + var2.translateKey("options.graphics.fast")) : var3))))));
 		}
 	}
 
@@ -535,7 +545,19 @@ public class GameSettings {
 					}
 
 					if (var3[0].equals("hideServerAddress")) {
-						this.field_80005_w = var3[1].equals("true");
+						this.hideServerAddress = var3[1].equals("true");
+					}
+
+					if (var3[0].equals("advancedItemTooltips")) {
+						this.field_82882_x = var3[1].equals("true");
+					}
+
+					if (var3[0].equals("pauseOnLostFocus")) {
+						this.field_82881_y = var3[1].equals("true");
+					}
+
+					if (var3[0].equals("showCape")) {
+						this.field_82880_z = var3[1].equals("true");
 					}
 
 					KeyBinding[] var4 = this.keyBindings;
@@ -613,7 +635,10 @@ public class GameSettings {
 			var1.println("snooperEnabled:" + this.snooperEnabled);
 			var1.println("fullscreen:" + this.fullScreen);
 			var1.println("enableVsync:" + this.enableVsync);
-			var1.println("hideServerAddress:" + this.field_80005_w);
+			var1.println("hideServerAddress:" + this.hideServerAddress);
+			var1.println("advancedItemTooltips:" + this.field_82882_x);
+			var1.println("pauseOnLostFocus:" + this.field_82881_y);
+			var1.println("showCape:" + this.field_82880_z);
 			KeyBinding[] var2 = this.keyBindings;
 			int var3 = var2.length;
 
@@ -636,9 +661,13 @@ public class GameSettings {
 			SpoutClient.enableSandbox(oldLock);
 		}
 		// Spout End
+		this.func_82879_c();
+	}
+
+	public void func_82879_c() {
 
 		if (this.mc.thePlayer != null) {
-			this.mc.thePlayer.sendQueue.addToSendQueue(new Packet204ClientInfo(this.language, this.renderDistance, this.chatVisibility, this.chatColours, this.difficulty));
+			this.mc.thePlayer.sendQueue.addToSendQueue(new Packet204ClientInfo(this.language, this.renderDistance, this.chatVisibility, this.chatColours, this.difficulty, this.field_82880_z));
 		}
 	}
 

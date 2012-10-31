@@ -15,9 +15,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.crypto.SecretKey;
 
+//Spout start
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
+//Spout end
 
-public class TcpConnection implements NetworkManager {
+public class TcpConnection implements INetworkManager {
 	public static AtomicInteger field_74471_a = new AtomicInteger();
 	public static AtomicInteger field_74469_b = new AtomicInteger();
 
@@ -119,7 +121,7 @@ public class TcpConnection implements NetworkManager {
 		} catch (SocketException var6) {
 			System.err.println(var6.getMessage());
 		}
-		
+
 		// Spout - start
 		ChunkNetCache.reset();
 		// Spout - end
@@ -138,6 +140,9 @@ public class TcpConnection implements NetworkManager {
 		this.readThread = null;
 	}
 
+	/**
+	 * Sets the NetHandler for this NetworkManager. Server-only.
+	 */
 	public void setNetHandler(NetHandler par1NetHandler) {
 		this.theNetHandler = par1NetHandler;
 	}
@@ -178,7 +183,7 @@ public class TcpConnection implements NetworkManager {
 
 				if (var2 != null) {
 					Packet.writePacket(var2, this.socketOutputStream);
-					
+
 					// Spout - start
 					ChunkNetCache.totalPacketUp.addAndGet(var2.getPacketSize());
 					// Spout - end
@@ -286,7 +291,7 @@ public class TcpConnection implements NetworkManager {
 				return false;
 			}
 			// Spout - end
-			Packet var2 = Packet.readPacket(this.socketInputStream, this.theNetHandler.isServerHandler());
+			Packet var2 = Packet.readPacket(this.socketInputStream, this.theNetHandler.isServerHandler(), this.networkSocket);
 
 			if (var2 != null) {
 				if (var2 instanceof Packet252SharedKey && !this.isInputBeingDecrypted) {

@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@ import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.WidgetAnchor;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.SafeButton;
 
 public class GuiURLConfirm extends GuiScreen {
@@ -113,7 +113,7 @@ public class GuiURLConfirm extends GuiScreen {
 	@Override
 	protected void buttonClicked(Button btn) {
 		if (btn.equals(doneAndNeverAskButton)) {
-			ConfigReader.askBeforeOpeningUrl = false;
+			Configuration.setAskBeforeOpeningUrl(false);
 		}
 		if (btn.equals(doneButton) || btn.equals(doneAndNeverAskButton)) {
 			try {

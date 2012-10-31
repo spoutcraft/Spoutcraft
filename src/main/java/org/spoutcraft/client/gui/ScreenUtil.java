@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -51,7 +51,8 @@ import org.spoutcraft.client.gui.minimap.GuiAddWaypoint;
 import org.spoutcraft.client.gui.minimap.GuiMinimapMenu;
 import org.spoutcraft.client.gui.minimap.GuiMoveMinimap;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
-import org.spoutcraft.client.gui.settings.GameSettingsScreen;
+import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
+import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
 
 public class ScreenUtil {
 	public static void open(ScreenType type) {
@@ -71,13 +72,13 @@ public class ScreenUtil {
 				toOpen = new GuiIngameMenu();
 				break;
 			case OPTIONS_MENU:
-				toOpen = new GameSettingsScreen(new GuiIngameMenu());
+				toOpen = GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu());
 				break;
 			case VIDEO_SETTINGS_MENU:
-				toOpen = new GameSettingsScreen(new GuiIngameMenu());
+				toOpen = GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu());
 				break;
 			case CONTROLS_MENU:
-				toOpen = new GuiControls(new GameSettingsScreen(new GuiIngameMenu()));
+				toOpen = new GuiControls(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
 				break;
 			case ACHIEVEMENTS_SCREEN:
 				toOpen = new GuiAchievements(statfile);
@@ -89,16 +90,16 @@ public class ScreenUtil {
 				toOpen = new GuiGameOver();
 				break;
 			case CHANGE_LANGUAGE:
-				toOpen = new GuiLanguage(new GameSettingsScreen(new GuiIngameMenu()), SpoutClient.getHandle().gameSettings);
+				toOpen = new GuiLanguage(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()), SpoutClient.getHandle().gameSettings);
 				break;
 			case MINIMAP_SETTINGS:
-				toOpen = new GuiMinimapMenu(new GameSettingsScreen(new GuiIngameMenu()));
+				toOpen = new GuiMinimapMenu(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
 				break;
 			case CHAT_SETTINGS:
-				toOpen = new GuiChatSettings(new GameSettingsScreen(new GuiIngameMenu()));
+				toOpen = new GuiChatSettings(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
 				break;
 			case MOVE_MINIMAP:
-				toOpen = new GuiMoveMinimap(new GuiMinimapMenu(new GameSettingsScreen(new GuiIngameMenu())));
+				toOpen = new GuiMoveMinimap(new GuiMinimapMenu(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu())));
 				break;
 			case OVERVIEW_MAP:
 				toOpen = new GuiOverviewMap();
@@ -117,7 +118,7 @@ public class ScreenUtil {
 		}
 		if (gui instanceof CustomScreen) {
 			screen = ScreenType.CUSTOM_SCREEN;
-		} else if (gui instanceof GameSettingsScreen) {
+		} else if (gui instanceof GuiAdvancedOptions) {
 			screen = ScreenType.VIDEO_SETTINGS_MENU;
 		} else if (gui instanceof GuiAchievements) {
 			screen = ScreenType.ACHIEVEMENTS_SCREEN;
