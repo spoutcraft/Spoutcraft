@@ -929,7 +929,7 @@ public class Chunk {
 			while (var9.hasNext()) {
 				Entity var10 = (Entity)var9.next();
 
-				if (par1Class.isAssignableFrom(var10.getClass()) && var10.boundingBox.intersectsWith(par2AxisAlignedBB) && (par4IEntitySelector == null || par4IEntitySelector.func_82704_a(var10))) {
+				if (par1Class.isAssignableFrom(var10.getClass()) && var10.boundingBox.intersectsWith(par2AxisAlignedBB) && (par4IEntitySelector == null || par4IEntitySelector.isEntityApplicable(var10))) {
 					par3List.add(var10);
 				}
 			}
@@ -941,10 +941,10 @@ public class Chunk {
 	 */
 	public boolean needsSaving(boolean par1) {
 		if (par1) {
-			if (this.hasEntities && this.worldObj.func_82737_E() != this.lastSaveTime) {
+			if (this.hasEntities && this.worldObj.getTotalWorldTime() != this.lastSaveTime) {
 				return true;
 			}
-		} else if (this.hasEntities && this.worldObj.func_82737_E() >= this.lastSaveTime + 600L) {
+		} else if (this.hasEntities && this.worldObj.getTotalWorldTime() >= this.lastSaveTime + 600L) {
 			return true;
 		}
 

@@ -97,6 +97,8 @@ public class EffectRenderer {
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, var9);
 				Tessellator var10 = Tessellator.instance;
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				GL11.glEnable(GL11.GL_BLEND);
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				var10.startDrawingQuads();
 
 				for (int var11 = 0; var11 < this.fxLayers[var8].size(); ++var11) {
@@ -112,6 +114,7 @@ public class EffectRenderer {
 				}
 
 				var10.draw();
+				GL11.glDisable(GL11.GL_BLEND);
 			}
 		}
 		// Spout Start
@@ -200,32 +203,32 @@ public class EffectRenderer {
 		if (var5 != 0) {
 			Block var6 = Block.blocksList[var5];
 			float var7 = 0.1F;
-			double var8 = (double)par1 + this.rand.nextDouble() * (var6.func_83007_w() - var6.func_83009_v() - (double)(var7 * 2.0F)) + (double)var7 + var6.func_83009_v();
-			double var10 = (double)par2 + this.rand.nextDouble() * (var6.func_83010_y() - var6.func_83008_x() - (double)(var7 * 2.0F)) + (double)var7 + var6.func_83008_x();
-			double var12 = (double)par3 + this.rand.nextDouble() * (var6.func_83006_A() - var6.func_83005_z() - (double)(var7 * 2.0F)) + (double)var7 + var6.func_83005_z();
+			double var8 = (double)par1 + this.rand.nextDouble() * (var6.getBlockBoundsMaxX() - var6.getBlockBoundsMinX() - (double)(var7 * 2.0F)) + (double)var7 + var6.getBlockBoundsMinX();
+			double var10 = (double)par2 + this.rand.nextDouble() * (var6.getBlockBoundsMaxY() - var6.getBlockBoundsMinY() - (double)(var7 * 2.0F)) + (double)var7 + var6.getBlockBoundsMinY();
+			double var12 = (double)par3 + this.rand.nextDouble() * (var6.getBlockBoundsMaxZ() - var6.getBlockBoundsMinZ() - (double)(var7 * 2.0F)) + (double)var7 + var6.getBlockBoundsMinZ();
 
 			if (par4 == 0) {
-				var10 = (double)par2 + var6.func_83008_x() - (double)var7;
+				var10 = (double)par2 + var6.getBlockBoundsMinY() - (double)var7;
 			}
 
 			if (par4 == 1) {
-				var10 = (double)par2 + var6.func_83010_y() + (double)var7;
+				var10 = (double)par2 + var6.getBlockBoundsMaxY() + (double)var7;
 			}
 
 			if (par4 == 2) {
-				var12 = (double)par3 + var6.func_83005_z() - (double)var7;
+				var12 = (double)par3 + var6.getBlockBoundsMinZ() - (double)var7;
 			}
 
 			if (par4 == 3) {
-				var12 = (double)par3 + var6.func_83006_A() + (double)var7;
+				var12 = (double)par3 + var6.getBlockBoundsMaxZ() + (double)var7;
 			}
 
 			if (par4 == 4) {
-				var8 = (double)par1 + var6.func_83009_v() - (double)var7;
+				var8 = (double)par1 + var6.getBlockBoundsMinX() - (double)var7;
 			}
 
 			if (par4 == 5) {
-				var8 = (double)par1 + var6.func_83007_w() + (double)var7;
+				var8 = (double)par1 + var6.getBlockBoundsMaxX() + (double)var7;
 			}
 		}
 			// Spout Start

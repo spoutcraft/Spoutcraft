@@ -44,7 +44,10 @@ public class ContainerChest extends Container {
 		return this.lowerChestInventory.isUseableByPlayer(par1EntityPlayer);
 	}
 
-	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2) {
+	/**
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
+	 */
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
 		ItemStack var3 = null;
 		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
@@ -75,5 +78,9 @@ public class ContainerChest extends Container {
 	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
 		super.onCraftGuiClosed(par1EntityPlayer);
 		this.lowerChestInventory.closeChest();
+	}
+
+	public IInventory func_85151_d() {
+		return this.lowerChestInventory;
 	}
 }

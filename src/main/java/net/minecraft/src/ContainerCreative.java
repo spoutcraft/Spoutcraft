@@ -68,7 +68,10 @@ class ContainerCreative extends Container {
 
 	protected void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer) {}
 
-	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2) {
+	/**
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
+	 */
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
 		if (par2 >= this.inventorySlots.size() - 9 && par2 < this.inventorySlots.size()) {
 			Slot var3 = (Slot)this.inventorySlots.get(par2);
 

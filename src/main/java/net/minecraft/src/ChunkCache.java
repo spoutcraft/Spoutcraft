@@ -225,8 +225,11 @@ public class ChunkCache implements IBlockAccess {
 		return var4 == null ? false : (var4.blockMaterial.isOpaque() && var4.renderAsNormalBlock() ? true : (var4 instanceof BlockStairs ? (this.getBlockMetadata(par1, par2, par3) & 4) == 4 : (var4 instanceof BlockHalfSlab ? (this.getBlockMetadata(par1, par2, par3) & 8) == 8 : false)));
 	}
 
-	public Vec3Pool func_82732_R() {
-		return this.worldObj.func_82732_R();
+	/**
+	 * Return the Vec3Pool object for this world.
+	 */
+	public Vec3Pool getWorldVec3Pool() {
+		return this.worldObj.getWorldVec3Pool();
 	}
 
 	/**

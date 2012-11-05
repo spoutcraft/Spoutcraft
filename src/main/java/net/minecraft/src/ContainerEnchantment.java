@@ -149,7 +149,7 @@ public class ContainerEnchantment extends Container {
 				List var4 = EnchantmentHelper.buildEnchantmentList(this.rand, var3, this.enchantLevels[par2]);
 
 				if (var4 != null) {
-					par1EntityPlayer.func_82242_a(-this.enchantLevels[par2]);
+					par1EntityPlayer.addExperienceLevel(-this.enchantLevels[par2]);
 					Iterator var5 = var4.iterator();
 
 					while (var5.hasNext()) {
@@ -186,7 +186,10 @@ public class ContainerEnchantment extends Container {
 		return this.worldPointer.getBlockId(this.posX, this.posY, this.posZ) != Block.enchantmentTable.blockID ? false : par1EntityPlayer.getDistanceSq((double)this.posX + 0.5D, (double)this.posY + 0.5D, (double)this.posZ + 0.5D) <= 64.0D;
 	}
 
-	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2) {
+	/**
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
+	 */
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
 		ItemStack var3 = null;
 		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
@@ -222,7 +225,7 @@ public class ContainerEnchantment extends Container {
 				return null;
 			}
 
-			var4.func_82870_a(par1EntityPlayer, var5);
+			var4.onPickupFromSlot(par1EntityPlayer, var5);
 		}
 
 		return var3;

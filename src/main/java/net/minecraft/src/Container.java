@@ -51,7 +51,10 @@ public abstract class Container {
 		}
 	}
 
-	public void func_82847_b(ICrafting par1ICrafting) {
+	/**
+	 * Remove this crafting listener from the listener list.
+	 */
+	public void removeCraftingFromCrafters(ICrafting par1ICrafting) {
 		this.crafters.remove(par1ICrafting);
 	}
 
@@ -117,7 +120,10 @@ public abstract class Container {
 		return (Slot)this.inventorySlots.get(par1);
 	}
 
-	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2) {
+	/**
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
+	 */
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
 		Slot var3 = (Slot)this.inventorySlots.get(par2);
 		return var3 != null ? var3.getStack() : null;
 	}
@@ -149,8 +155,8 @@ public abstract class Container {
 			} else if (par3 == 1) {
 				var7 = (Slot)this.inventorySlots.get(par1);
 
-				if (var7 != null && var7.func_82869_a(par4EntityPlayer)) {
-					var8 = this.func_82846_b(par4EntityPlayer, par1);
+				if (var7 != null && var7.canTakeStack(par4EntityPlayer)) {
+					var8 = this.transferStackInSlot(par4EntityPlayer, par1);
 
 					if (var8 != null) {
 						int var12 = var8.itemID;
@@ -190,7 +196,7 @@ public abstract class Container {
 								var6.setItemStack((ItemStack)null);
 							}
 						}
-					} else if (var7.func_82869_a(par4EntityPlayer)) {
+					} else if (var7.canTakeStack(par4EntityPlayer)) {
 						if (var13 == null) {
 							var10 = par2 == 0 ? var8.stackSize : (var8.stackSize + 1) / 2;
 							var11 = var7.decrStackSize(var10);
@@ -200,9 +206,9 @@ public abstract class Container {
 								var7.putStack((ItemStack)null);
 							}
 
-							var7.func_82870_a(par4EntityPlayer, var6.getItemStack());
+							vvar7.onPickupFromSlot(par4EntityPlayer, var6.getItemStack());
 						} else if (var7.isItemValid(var13)) {
-							if (var8.itemID == var13.itemID && (!var8.getHasSubtypes() || var8.getItemDamage() == var13.getItemDamage()) && ItemStack.func_77970_a(var8, var13)) {
+							if (var8.itemID == var13.itemID && (!var8.getHasSubtypes() || var8.getItemDamage() == var13.getItemDamage()) && ItemStack.areItemStackTagsEqual(var8, var13)) {
 								var10 = par2 == 0 ? var13.stackSize : 1;
 
 								if (var10 > var7.getSlotStackLimit() - var8.stackSize) {
@@ -235,7 +241,7 @@ public abstract class Container {
 									var7.putStack((ItemStack)null);
 								}
 
-								var7.func_82870_a(par4EntityPlayer, var6.getItemStack());
+								var7.onPickupFromSlot(par4EntityPlayer, var6.getItemStack());
 							}
 						}
 					}
@@ -246,7 +252,7 @@ public abstract class Container {
 		} else if (par3 == 2 && par2 >= 0 && par2 < 9) {
 			var7 = (Slot)this.inventorySlots.get(par1);
 
-			if (var7.func_82869_a(par4EntityPlayer)) {
+			if (var7.canTakeStack(par4EntityPlayer)) {
 				var8 = var6.getStackInSlot(par2);
 				boolean var9 = var8 == null || var7.inventory == var6 && var7.isItemValid(var8);
 				var10 = -1;
@@ -264,11 +270,11 @@ public abstract class Container {
 						if (var10 > -1) {
 							var6.addItemStackToInventory(var8);
 							var7.putStack((ItemStack)null);
-							var7.func_82870_a(par4EntityPlayer, var11);
+							var7.onPickupFromSlot(par4EntityPlayer, var11);
 						}
 					} else {
 						var7.putStack(var8);
-						var7.func_82870_a(par4EntityPlayer, var11);
+						var7.onPickupFromSlot(par4EntityPlayer, var11);
 					}
 				} else if (!var7.getHasStack() && var8 != null && var7.isItemValid(var8)) {
 					var6.setInventorySlotContents(par2, (ItemStack)null);
@@ -376,7 +382,7 @@ public abstract class Container {
 				var7 = (Slot)this.inventorySlots.get(var6);
 				var8 = var7.getStack();
 
-				if (var8 != null && var8.itemID == par1ItemStack.itemID && (!par1ItemStack.getHasSubtypes() || par1ItemStack.getItemDamage() == var8.getItemDamage()) && ItemStack.func_77970_a(par1ItemStack, var8)) {
+				if (var8 != null && var8.itemID == par1ItemStack.itemID && (!par1ItemStack.getHasSubtypes() || par1ItemStack.getItemDamage() == var8.getItemDamage()) && ItemStack.areItemStackTagsEqual(par1ItemStack, var8)) {
 					int var9 = var8.stackSize + par1ItemStack.stackSize;
 
 					if (var9 <= par1ItemStack.getMaxStackSize()) {
