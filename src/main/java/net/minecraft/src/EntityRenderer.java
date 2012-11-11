@@ -315,9 +315,9 @@ public class EntityRenderer {
 					var21 *= 0.1F;
 					var22 *= 0.1F;
 					var23 *= 0.1F;
-					MovingObjectPosition var24 = this.mc.theWorld.rayTraceBlocks(this.mc.theWorld.func_82732_R().getVecFromPool(var4 + (double)var21, var6 + (double)var22, var8 + (double)var23), this.mc.theWorld.func_82732_R().getVecFromPool(var4 - var14 + (double)var21 + (double)var23, var6 - var18 + (double)var22, var8 - var16 + (double)var23));
+					MovingObjectPosition var24 = this.mc.theWorld.rayTraceBlocks(this.mc.theWorld.getWorldVec3Pool().getVecFromPool(var4 + (double)var21, var6 + (double)var22, var8 + (double)var23), this.mc.theWorld.func_82732_R().getVecFromPool(var4 - var14 + (double)var21 + (double)var23, var6 - var18 + (double)var22, var8 - var16 + (double)var23));
 					if (var24 != null) {
-						double var25 = var24.hitVec.distanceTo(this.mc.theWorld.func_82732_R().getVecFromPool(var4, var6, var8));
+						double var25 = var24.hitVec.distanceTo(this.mc.theWorld.getWorldVec3Pool().getVecFromPool(var4, var6, var8));
 						if (var25 < var27) {
 							var27 = var25;
 						}
@@ -698,7 +698,7 @@ public class EntityRenderer {
 		this.mc.mcProfiler.endSection();
 		boolean var2 = Display.isActive();
 
-		if (!var2 && this.mc.gameSettings.field_82881_y) {
+		if (!var2 && this.mc.gameSettings.pauseOnLostFocus && (!this.mc.gameSettings.field_85185_A || !Mouse.isButtonDown(1))) {
 			if (Minecraft.getSystemTime() - this.prevFrameTime > 500L) {
 				this.mc.displayInGameMenu();
 			}
@@ -740,8 +740,8 @@ public class EntityRenderer {
 			int var10 = var9.getScaledWidth();
 			int var11 = var9.getScaledHeight();
 			int var12 = Mouse.getX() * var10 / this.mc.displayWidth;
-			int var14 = var11 - Mouse.getY() * var11 / this.mc.displayHeight - 1;
-			int var13 = func_78465_a(this.mc.gameSettings.limitFramerate);
+			int var13 = var11 - Mouse.getY() * var11 / this.mc.displayHeight - 1;
+			int var14 = func_78465_a(this.mc.gameSettings.limitFramerate);
 
 			if (this.mc.theWorld != null) {
 				this.mc.mcProfiler.startSection("level");
@@ -749,7 +749,7 @@ public class EntityRenderer {
 				if (this.mc.gameSettings.limitFramerate == 0) {
 					this.renderWorld(par1, 0L);
 				} else {
-					this.renderWorld(par1, this.renderEndNanoTime + (long)(1000000000 / var13));
+					this.renderWorld(par1, this.renderEndNanoTime + (long)(1000000000 / var14));
 				}
 
 				this.renderEndNanoTime = System.nanoTime();
@@ -766,7 +766,7 @@ public class EntityRenderer {
 						}
 					}
 
-					this.mc.ingameGUI.renderGameOverlay(par1, this.mc.currentScreen != null, var12, var14);
+					this.mc.ingameGUI.renderGameOverlay(par1, this.mc.currentScreen != null, var12, var13);
 					if (Configuration.getFastDebug() != 0) {
 						this.mc.gameSettings.showDebugInfo = false;
 					}
@@ -788,7 +788,7 @@ public class EntityRenderer {
 			if (this.mc.currentScreen != null) {
 				GL11.glClear(256);
 				// Spout Start
-				this.mc.currentScreen.drawScreenPre(var12, var14, par1);
+				this.mc.currentScreen.drawScreenPre(var12, var13, par1);
 				// Spout End
 				if (this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
 					this.mc.currentScreen.guiParticles.draw(par1);
@@ -1043,6 +1043,7 @@ public class EntityRenderer {
 			double var12 = 0.0D;
 			int var14 = 0;
 			int var15 = (int)(100.0F * var1 * var1);
+
 			if (this.mc.gameSettings.particleSetting == 1) {
 				var15 >>= 1;
 			} else if (this.mc.gameSettings.particleSetting == 2) {
@@ -1055,21 +1056,24 @@ public class EntityRenderer {
 				int var19 = var3.getPrecipitationHeight(var17, var18);
 				int var20 = var3.getBlockId(var17, var19 - 1, var18);
 				BiomeGenBase var21 = var3.getBiomeGenForCoords(var17, var18);
-				if (var19 <= var5 + var7 && var19 >= var5 - var7 && var21.canSpawnLightningBolt() && var21.getFloatTemperature() > 0.2F) {
+
+				if (var19 <= var5 + var7 && var19 >= var5 - var7 && var21.canSpawnLightningBolt() && var21.getFloatTemperature() >= 0.2F) {
 					float var22 = this.random.nextFloat();
 					float var23 = this.random.nextFloat();
+
 					if (var20 > 0) {
 						if (Block.blocksList[var20].blockMaterial == Material.lava) {
-							this.mc.effectRenderer.addEffect(new EntitySmokeFX(var3, (double)((float)var17 + var22), (double)((float)var19 + 0.1F) - Block.blocksList[var20].func_83008_x(), (double)((float)var18 + var23), 0.0D, 0.0D, 0.0D));
+							this.mc.effectRenderer.addEffect(new EntitySmokeFX(var3, (double)((float)var17 + var22), (double)((float)var19 + 0.1F) - Block.blocksList[var20].getBlockBoundsMinY(), (double)((float)var18 + var23), 0.0D, 0.0D, 0.0D));
 						} else {
 							++var14;
+
 							if (this.random.nextInt(var14) == 0) {
 								var8 = (double)((float)var17 + var22);
-								var10 = (double)((float)var19 + 0.1F) - Block.blocksList[var20].func_83008_x();
+								var10 = (double)((float)var19 + 0.1F) - Block.blocksList[var20].getBlockBoundsMinY();
 								var12 = (double)((float)var18 + var23);
 							}
 
-							this.mc.effectRenderer.addEffect(new EntityRainFX(var3, (double)((float)var17 + var22), (double)((float)var19 + 0.1F) - Block.blocksList[var20].func_83008_x(), (double)((float)var18 + var23)));
+							this.mc.effectRenderer.addEffect(new EntityRainFX(var3, (double)((float)var17 + var22), (double)((float)var19 + 0.1F) - Block.blocksList[var20].getBlockBoundsMinY(), (double)((float)var18 + var23)));
 						}
 					}
 				}
@@ -1077,10 +1081,11 @@ public class EntityRenderer {
 
 			if (var14 > 0 && this.random.nextInt(3) < this.rainSoundCounter++) {
 				this.rainSoundCounter = 0;
+
 				if (var10 > var2.posY + 1.0D && var3.getPrecipitationHeight(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posZ)) > MathHelper.floor_double(var2.posY)) {
-					this.mc.theWorld.playSoundEffect(var8, var10, var12, "ambient.weather.rain", 0.1F, 0.5F);
+					this.mc.theWorld.playSound(var8, var10, var12, "ambient.weather.rain", 0.1F, 0.5F);
 				} else {
-					this.mc.theWorld.playSoundEffect(var8, var10, var12, "ambient.weather.rain", 0.2F, 1.0F);
+					this.mc.theWorld.playSound(var8, var10, var12, "ambient.weather.rain", 0.2F, 1.0F);
 				}
 			}
 		}
@@ -1258,7 +1263,7 @@ public class EntityRenderer {
 		this.fogColorBlue = (float)var9.zCoord;
 		float var11;
 		if (this.mc.gameSettings.renderDistance < 2) {
-			Vec3 var10 = MathHelper.sin(var2.getCelestialAngleRadians(par1)) > 0.0F ? var2.func_82732_R().getVecFromPool(-1.0D, 0.0D, 0.0D) : var2.func_82732_R().getVecFromPool(1.0D, 0.0D, 0.0D);
+			Vec3 var10 = MathHelper.sin(var2.getCelestialAngleRadians(par1)) > 0.0F ? var2.getWorldVec3Pool().getVecFromPool(-1.0D, 0.0D, 0.0D) : var2.getWorldVec3Pool().getVecFromPool(1.0D, 0.0D, 0.0D);
 			var11 = (float)var3.getLook(par1).dotProduct(var10);
 			if (var11 < 0.0F) {
 				var11 = 0.0F;

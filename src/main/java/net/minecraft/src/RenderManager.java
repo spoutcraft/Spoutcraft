@@ -41,6 +41,7 @@ public class RenderManager {
 	public double viewerPosX;
 	public double viewerPosY;
 	public double viewerPosZ;
+	public static boolean field_85095_o = false;
 
 	private RenderManager() {
 		this.entityRenderMap.put(EntitySpider.class, new RenderSpider());
@@ -184,6 +185,9 @@ public class RenderManager {
 		Render var10 = this.getEntityRenderObject(par1Entity);
 
 		if (var10 != null) {
+			if (field_85095_o) {
+				this.func_85094_b(par1Entity, par2, par4, par6, par8, par9);
+			}
 			// Spout start
 			var10.setRenderManager(this);
 			try {
@@ -194,6 +198,50 @@ public class RenderManager {
 			} catch(NullPointerException ignore) { }
 			// Spout end
 		}
+	}
+
+	private void func_85094_b(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
+		GL11.glDepthMask(false);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glPushMatrix();
+		Tessellator var10 = Tessellator.instance;
+		var10.startDrawingQuads();
+		var10.setColorRGBA(255, 255, 255, 32);
+		double var11 = (double)(-par1Entity.width / 2.0F);
+		double var13 = (double)(-par1Entity.width / 2.0F);
+		double var15 = (double)(par1Entity.width / 2.0F);
+		double var17 = (double)(-par1Entity.width / 2.0F);
+		double var19 = (double)(-par1Entity.width / 2.0F);
+		double var21 = (double)(par1Entity.width / 2.0F);
+		double var23 = (double)(par1Entity.width / 2.0F);
+		double var25 = (double)(par1Entity.width / 2.0F);
+		double var27 = (double)par1Entity.height;
+		var10.addVertex(par2 + var11, par4 + var27, par6 + var13);
+		var10.addVertex(par2 + var11, par4, par6 + var13);
+		var10.addVertex(par2 + var15, par4, par6 + var17);
+		var10.addVertex(par2 + var15, par4 + var27, par6 + var17);
+		var10.addVertex(par2 + var23, par4 + var27, par6 + var25);
+		var10.addVertex(par2 + var23, par4, par6 + var25);
+		var10.addVertex(par2 + var19, par4, par6 + var21);
+		var10.addVertex(par2 + var19, par4 + var27, par6 + var21);
+		var10.addVertex(par2 + var15, par4 + var27, par6 + var17);
+		var10.addVertex(par2 + var15, par4, par6 + var17);
+		var10.addVertex(par2 + var23, par4, par6 + var25);
+		var10.addVertex(par2 + var23, par4 + var27, par6 + var25);
+		var10.addVertex(par2 + var19, par4 + var27, par6 + var21);
+		var10.addVertex(par2 + var19, par4, par6 + var21);
+		var10.addVertex(par2 + var11, par4, par6 + var13);
+		var10.addVertex(par2 + var11, par4 + var27, par6 + var13);
+		var10.draw();
+		GL11.glPopMatrix();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glDepthMask(true);
 	}
 
 	/**

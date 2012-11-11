@@ -23,7 +23,7 @@ public class ItemMonsterPlacer extends Item {
 		return var2;
 	}
 
-	public int func_82790_a(ItemStack par1ItemStack, int par2) {
+	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
 		EntityEggInfo var3 = (EntityEggInfo)EntityList.entityEggs.get(par1ItemStack.getItemDamage());
 		return var3 != null ? (par2 == 0 ? var3.primaryColor : var3.secondaryColor) : 16777215;
 	}
@@ -53,7 +53,7 @@ public class ItemMonsterPlacer extends Item {
 			par6 += Facing.offsetsZForSide[par7];
 			double var12 = 0.0D;
 
-			if (par7 == 1 && var11 == Block.fence.blockID || var11 == Block.netherFence.blockID) {
+			if (par7 == 1 && Block.blocksList[var11] != null && Block.blocksList[var11].getRenderType() == 11) {
 				var12 = 0.5D;
 			}
 
@@ -80,7 +80,7 @@ public class ItemMonsterPlacer extends Item {
 
 				if (var8 != null) {
 					var8.setLocationAndAngles(par2, par4, par6, par0World.rand.nextFloat() * 360.0F, 0.0F);
-					((EntityLiving)var8).func_82163_bD();
+					((EntityLiving)var8).initCreature();
 					par0World.spawnEntityInWorld(var8);
 					((EntityLiving)var8).playLivingSound();
 				}

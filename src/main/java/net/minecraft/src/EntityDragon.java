@@ -224,8 +224,8 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 					var13 = -50.0D;
 				}
 
-				Vec3 var15 = this.worldObj.func_82732_R().getVecFromPool(this.targetX - this.posX, this.targetY - this.posY, this.targetZ - this.posZ).normalize();
-				Vec3 var40 = this.worldObj.func_82732_R().getVecFromPool((double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F), this.motionY, (double)(-MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F))).normalize();
+				Vec3 var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.targetX - this.posX, this.targetY - this.posY, this.targetZ - this.posZ).normalize();
+				Vec3 var40 = this.worldObj.getWorldVec3Pool().getVecFromPool((double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F), this.motionY, (double)(-MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F))).normalize();
 				float var17 = (float)(var40.dotProduct(var15) + 0.5D) / 1.5F;
 
 				if (var17 < 0.0F) {
@@ -252,7 +252,7 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 					this.moveEntity(this.motionX, this.motionY, this.motionZ);
 				}
 
-				Vec3 var23 = this.worldObj.func_82732_R().getVecFromPool(this.motionX, this.motionY, this.motionZ).normalize();
+				Vec3 var23 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.motionX, this.motionY, this.motionZ).normalize();
 				float var24 = (float)(var23.dotProduct(var40) + 1.0D) / 2.0F;
 				var24 = 0.8F + 0.15F * var24;
 				this.motionX *= (double)var24;

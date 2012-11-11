@@ -57,7 +57,7 @@ public class EntityCow extends EntityAnimal {
 	 * Plays step sound at given x, y, z for the entity
 	 */
 	protected void playStepSound(int par1, int par2, int par3, int par4) {
-		this.worldObj.playSoundAtEntity(this, "mob.cow.step", 0.15F, 1.0F);
+		this.func_85030_a("mob.cow.step", 0.15F, 1.0F);
 	}
 
 	/**

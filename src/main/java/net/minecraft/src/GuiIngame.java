@@ -178,7 +178,7 @@ public class GuiIngame extends Gui {
 		this.mc.mcProfiler.startSection("debug");
 		GL11.glPushMatrix();
 		if (Configuration.getFastDebug() != 2) {
-			font.drawStringWithShadow("Minecraft 1.4.2 (" + this.mc.debug + ")", 2, 2, 16777215);
+			font.drawStringWithShadow("Minecraft 1.4.3 (" + this.mc.debug + ")", 2, 2, 16777215);
 			font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 			font.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
 			font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -334,14 +334,14 @@ public class GuiIngame extends Gui {
 	 * Renders dragon's (boss) health on the HUD
 	 */
 	private void renderBossHealth() {
-		if (BossStatus.field_82827_c != null && BossStatus.field_82826_b > 0) {
+		if (BossStatus.bossName != null && BossStatus.field_82826_b > 0) {
 			--BossStatus.field_82826_b;
 			FontRenderer var1 = this.mc.fontRenderer;
 			ScaledResolution var2 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 			int var3 = var2.getScaledWidth();
 			short var4 = 182;
 			int var5 = var3 / 2 - var4 / 2;
-			int var6 = (int)(BossStatus.field_82828_a * (float)(var4 + 1));
+			int var6 = (int)(BossStatus.healthScale * (float)(var4 + 1));
 			byte var7 = 12;
 			this.drawTexturedModalRect(var5, var7, 0, 74, var4, 5);
 			this.drawTexturedModalRect(var5, var7, 0, 74, var4, 5);
@@ -350,7 +350,7 @@ public class GuiIngame extends Gui {
 				this.drawTexturedModalRect(var5, var7, 0, 79, var6, 5);
 			}
 
-			String var8 = BossStatus.field_82827_c;
+			String var8 = BossStatus.bossName;
 			var1.drawStringWithShadow(var8, var3 / 2 - var1.getStringWidth(var8) / 2, var7 - 10, 16777215);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/icons.png"));
@@ -460,7 +460,7 @@ public class GuiIngame extends Gui {
 				GL11.glTranslatef((float)(-(par2 + 8)), (float)(-(par3 + 12)), 0.0F);
 			}
 
-			itemRenderer.func_82406_b(this.mc.fontRenderer, this.mc.renderEngine, var5, par2, par3);
+			itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, var5, par2, par3);
 
 			if (var6 > 0.0F) {
 				GL11.glPopMatrix();

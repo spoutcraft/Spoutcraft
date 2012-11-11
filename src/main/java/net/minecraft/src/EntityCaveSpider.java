@@ -47,5 +47,8 @@ public class EntityCaveSpider extends EntitySpider {
 		}
 	}
 
-	public void func_82163_bD() {}
+	/**
+	 * Initialize this creature.
+	 */
+	public void initCreature() {}
 }

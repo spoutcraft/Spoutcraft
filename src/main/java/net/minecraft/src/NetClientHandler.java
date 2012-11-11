@@ -183,7 +183,7 @@ public class NetClientHandler extends NetHandler {
 		this.mc.thePlayer.entityId = par1Packet1Login.clientEntityId;
 		this.currentServerMaxPlayers = par1Packet1Login.maxPlayers;
 		this.mc.playerController.setGameType(par1Packet1Login.gameType);
-		this.mc.gameSettings.func_82879_c();
+		this.mc.gameSettings.sendSettingsToServer();
 	}
 
 	public void handlePickupSpawn(Packet21PickupSpawn par1Packet21PickupSpawn) {
@@ -836,7 +836,7 @@ public class NetClientHandler extends NetHandler {
 
 	public void handleExplosion(Packet60Explosion par1Packet60Explosion) {
 		Explosion var2 = new Explosion(this.mc.theWorld, (Entity)null, par1Packet60Explosion.explosionX, par1Packet60Explosion.explosionY, par1Packet60Explosion.explosionZ, par1Packet60Explosion.explosionSize);
-		var2.field_77281_g = par1Packet60Explosion.chunkPositionRecords;
+		var2.affectedBlockPositions = par1Packet60Explosion.chunkPositionRecords;
 		var2.doExplosionB(true);
 		this.mc.thePlayer.motionX += (double)par1Packet60Explosion.func_73607_d();
 		this.mc.thePlayer.motionY += (double)par1Packet60Explosion.func_73609_f();
@@ -883,12 +883,12 @@ public class NetClientHandler extends NetHandler {
 				break;
 
 			case 7:
-				var2.func_82240_a(new TileEntityBeacon());
+				var2.displayGUIBeacon(new TileEntityBeacon());
 				var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
 				break;
 
 			case 8:
-				var2.func_82244_d(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
+				var2.displayGUIAnvil(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
 				var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
 		}
 	}
@@ -949,24 +949,28 @@ public class NetClientHandler extends NetHandler {
 	 * Updates Client side signs
 	 */
 	public void handleUpdateSign(Packet130UpdateSign par1Packet130UpdateSign) {
+		boolean var2 = false;
+
 		if (this.mc.theWorld.blockExists(par1Packet130UpdateSign.xPosition, par1Packet130UpdateSign.yPosition, par1Packet130UpdateSign.zPosition)) {
-			TileEntity var2 = this.mc.theWorld.getBlockTileEntity(par1Packet130UpdateSign.xPosition, par1Packet130UpdateSign.yPosition, par1Packet130UpdateSign.zPosition);
+			TileEntity var3 = this.mc.theWorld.getBlockTileEntity(par1Packet130UpdateSign.xPosition, par1Packet130UpdateSign.yPosition, par1Packet130UpdateSign.zPosition);
 
-			if (var2 instanceof TileEntitySign) {
-				TileEntitySign var3 = (TileEntitySign)var2;
+			if (var3 instanceof TileEntitySign) {
+				TileEntitySign var4 = (TileEntitySign)var3;
 
-				if (var3.isEditable()) {
-					for (int var4 = 0; var4 < 4; ++var4) {
-						var3.signText[var4] = par1Packet130UpdateSign.signLines[var4];
+				if (var4.isEditable()) {
+					for (int var5 = 0; var5 < 4; ++var5) {
+						var4.signText[var5] = par1Packet130UpdateSign.signLines[var5];
 					}
 
-					var3.onInventoryChanged();
-
-					// Spout Start
-					var3.recalculateText();
-					// Spout End
+					var4.onInventoryChanged();
 				}
+
+				var2 = true;
 			}
+		}
+
+		if (!var2 && this.mc.thePlayer != null) {
+			this.mc.thePlayer.sendChatToPlayer("Unable to locate sign at " + par1Packet130UpdateSign.xPosition + ", " + par1Packet130UpdateSign.yPosition + ", " + par1Packet130UpdateSign.zPosition);
 		}
 	}
 
@@ -1001,7 +1005,7 @@ public class NetClientHandler extends NetHandler {
 		Entity var2 = this.getEntityByID(par1Packet5PlayerInventory.entityID);
 
 		if (var2 != null) {
-			var2.func_70062_b(par1Packet5PlayerInventory.slot, par1Packet5PlayerInventory.getItemSlot());
+			var2.setCurrentItemOrArmor(par1Packet5PlayerInventory.slot, par1Packet5PlayerInventory.getItemSlot());
 		}
 	}
 
@@ -1116,7 +1120,7 @@ public class NetClientHandler extends NetHandler {
 		Entity var2 = this.getEntityByID(par1Packet42RemoveEntityEffect.entityId);
 
 		if (var2 instanceof EntityLiving) {
-			((EntityLiving)var2).removePotionEffect(par1Packet42RemoveEntityEffect.effectId);
+			((EntityLiving)var2).removePotionEffectClient(par1Packet42RemoveEntityEffect.effectId);
 		}
 	}
 

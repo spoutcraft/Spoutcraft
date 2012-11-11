@@ -96,7 +96,7 @@ public class EntityXPOrb extends Entity {
 			this.motionY = 0.20000000298023224D;
 			this.motionX = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
 			this.motionZ = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-			this.worldObj.playSoundAtEntity(this, "random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
+			this.func_85030_a("random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
 		}
 
 		this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
@@ -185,14 +185,18 @@ public class EntityXPOrb extends Entity {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		this.setBeenAttacked();
-		this.xpOrbHealth -= par2;
+		if (this.func_85032_ar()) {
+			return false;
+		} else {
+			this.setBeenAttacked();
+			this.xpOrbHealth -= par2;
 
-		if (this.xpOrbHealth <= 0) {
-			this.setDead();
+			if (this.xpOrbHealth <= 0) {
+				this.setDead();
+			}
+
+			return false;
 		}
-
-		return false;
 	}
 
 	/**
@@ -220,7 +224,7 @@ public class EntityXPOrb extends Entity {
 		if (!this.worldObj.isRemote) {
 			if (this.field_70532_c == 0 && par1EntityPlayer.xpCooldown == 0) {
 				par1EntityPlayer.xpCooldown = 2;
-				this.worldObj.playSoundAtEntity(this, "random.orb", 0.1F, 0.5F * ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.8F));
+				this.func_85030_a("random.orb", 0.1F, 0.5F * ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.8F));
 				par1EntityPlayer.onItemPickup(this, 1);
 				par1EntityPlayer.addExperience(this.xpValue);
 				this.setDead();

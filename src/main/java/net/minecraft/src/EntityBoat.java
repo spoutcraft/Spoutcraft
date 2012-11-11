@@ -77,7 +77,9 @@ public class EntityBoat extends Entity {
 	}
 
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		if(!this.worldObj.isRemote && !this.isDead) {
+		if (this.func_85032_ar()) {
+			return false;
+		} else if (!this.worldObj.isRemote && !this.isDead) {
 			this.setForwardDirection(-this.getForwardDirection());
 			this.setTimeSinceHit(10);
 			this.setDamageTaken(this.getDamageTaken() + par2 * 10);

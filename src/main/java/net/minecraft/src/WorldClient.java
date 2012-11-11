@@ -47,7 +47,7 @@ public class WorldClient extends World {
 	 */
 	public void tick() {
 		super.tick();
-		this.func_82738_a(this.func_82737_E() + 1L);
+		this.func_82738_a(this.getTotalWorldTime() + 1L);
 		this.setWorldTime(this.getWorldTime() + 1L);
 		this.theProfiler.startSection("reEntryProcessing");
 
@@ -352,11 +352,11 @@ public class WorldClient extends World {
 	/**
 	 * Adds some basic stats of the world to the given crash report.
 	 */
-	public CrashReport addWorldInfoToCrashReport(CrashReport par1CrashReport) {
-		par1CrashReport = super.addWorldInfoToCrashReport(par1CrashReport);
-		par1CrashReport.addCrashSectionCallable("Forced Entities", new CallableMPL1(this));
-		par1CrashReport.addCrashSectionCallable("Retry Entities", new CallableMPL2(this));
-		return par1CrashReport;
+	public CrashReportCategory addWorldInfoToCrashReport(CrashReport par1CrashReport) {
+		CrashReportCategory var2 = super.addWorldInfoToCrashReport(par1CrashReport);
+		var2.addCrashSectionCallable("Forced entities", new CallableMPL1(this));
+		var2.addCrashSectionCallable("Retry entities", new CallableMPL2(this));
+		return var2;
 	}
 
 	/**

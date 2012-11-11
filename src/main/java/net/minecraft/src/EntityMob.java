@@ -17,7 +17,7 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 	 * this to react to sunlight and start to burn.
 	 */
 	public void onLivingUpdate() {
-		this.func_82168_bl();
+		this.updateArmSwingProgress();
 		float var1 = this.getBrightness(1.0F);
 
 		if (var1 > 0.5F) {
@@ -51,7 +51,9 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		if (super.attackEntityFrom(par1DamageSource, par2)) {
+		if (this.func_85032_ar()) {
+			return false;
+		} else if (super.attackEntityFrom(par1DamageSource, par2)) {
 			Entity var3 = par1DamageSource.getEntity();
 
 			if (this.riddenByEntity != var3 && this.ridingEntity != var3) {
@@ -69,7 +71,7 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 	}
 
 	public boolean attackEntityAsMob(Entity par1Entity) {
-		int var2 = this.func_82193_c(par1Entity);
+		int var2 = this.getAttackStrength(par1Entity);
 
 		if (this.isPotionActive(Potion.damageBoost)) {
 			var2 += 3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier();
@@ -154,7 +156,10 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 		return this.isValidLightLevel() && super.getCanSpawnHere();
 	}
 
-	public int func_82193_c(Entity par1Entity) {
+	/**
+	 * Returns the amount of damage a mob should deal.
+	 */
+	public int getAttackStrength(Entity par1Entity) {
 		return 2;
 	}
 }

@@ -26,7 +26,10 @@ public class EntityGiantZombie extends EntityMob {
 		return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
 	}
 
-	public int func_82193_c(Entity par1Entity) {
+	/**
+	 * Returns the amount of damage a mob should deal.
+	 */
+	public int getAttackStrength(Entity par1Entity) {
 		return 50;
 	}
 }

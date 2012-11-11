@@ -252,7 +252,7 @@ public class ItemRenderer {
 		float var20;
 
 		if (var17 != null) {
-			var18 = Item.itemsList[var17.itemID].func_82790_a(var17, 0);
+			var18 = Item.itemsList[var17.itemID].getColorFromItemStack(var17, 0);
 			var20 = (float)(var18 >> 16 & 255) / 255.0F;
 			var21 = (float)(var18 >> 8 & 255) / 255.0F;
 			var10 = (float)(var18 & 255) / 255.0F;
@@ -420,7 +420,7 @@ public class ItemRenderer {
 
 			if (var17.getItem().requiresMultipleRenderPasses()) {
 				this.renderItem(var3, var17, 0);
-				int var25 = Item.itemsList[var17.itemID].func_82790_a(var17, 1);
+				int var25 = Item.itemsList[var17.itemID].getColorFromItemStack(var17, 1);
 				var13 = (float)(var25 >> 16 & 255) / 255.0F;
 				var14 = (float)(var25 >> 8 & 255) / 255.0F;
 				var15 = (float)(var25 & 255) / 255.0F;

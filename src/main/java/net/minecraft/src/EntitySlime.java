@@ -27,7 +27,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 		this.dataWatcher.addObject(16, new Byte((byte)1));
 	}
 
-	public void setSlimeSize(int par1) {
+	protected void setSlimeSize(int par1) {
 		this.dataWatcher.updateObject(16, new Byte((byte)par1));
 		this.setSize(0.6F * (float)par1, 0.6F * (float)par1);
 		this.setPosition(this.posX, this.posY, this.posZ);
@@ -89,9 +89,10 @@ public class EntitySlime extends EntityLiving implements IMob {
 		this.field_70812_c = this.field_70811_b;
 		boolean var1 = this.onGround;
 		super.onUpdate();
+		int var2;
 
 		if (this.onGround && !var1) {
-			int var2 = this.getSlimeSize();
+			var2 = this.getSlimeSize();
 
 			for (int var3 = 0; var3 < var2 * 8; ++var3) {
 				float var4 = this.rand.nextFloat() * (float)Math.PI * 2.0F;
@@ -102,7 +103,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 			}
 
 			if (this.makesSoundOnLand()) {
-				this.worldObj.playSoundAtEntity(this, this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+				this.func_85030_a(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
 			}
 
 			this.field_70813_a = -0.5F;
@@ -111,6 +112,12 @@ public class EntitySlime extends EntityLiving implements IMob {
 		}
 
 		this.func_70808_l();
+
+		if (this.worldObj.isRemote) {
+			var2 = this.getSlimeSize();
+			this.setSize(0.6F * (float)var2, 0.6F * (float)var2);
+		}
+
 	}
 
 	protected void updateEntityActionState() {
@@ -131,7 +138,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 			this.isJumping = true;
 
 			if (this.makesSoundOnJump()) {
-				this.worldObj.playSoundAtEntity(this, this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+				this.func_85030_athis.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
 			}
 
 			this.moveStrafing = 1.0F - this.rand.nextFloat() * 2.0F;
@@ -190,7 +197,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 			int var2 = this.getSlimeSize();
 
 			if (this.canEntityBeSeen(par1EntityPlayer) && this.getDistanceSqToEntity(par1EntityPlayer) < 0.6D * (double)var2 * 0.6D * (double)var2 && par1EntityPlayer.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackStrength())) {
-				this.worldObj.playSoundAtEntity(this, "mob.attack", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+				this.func_85030_a("mob.attack", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			}
 		}
 	}

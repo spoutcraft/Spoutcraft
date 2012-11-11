@@ -103,14 +103,14 @@ public abstract class EntityFireball extends Entity {
 				++this.ticksInAir;
 			}
 
-			Vec3 var15 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-			Vec3 var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			Vec3 var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			Vec3 var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-			var15 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-			var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 			if (var3 != null) {
-				var2 = this.worldObj.func_82732_R().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+				var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 			}
 
 			Entity var4 = null;
@@ -169,7 +169,7 @@ public abstract class EntityFireball extends Entity {
 
 			this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 			this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-			float var17 = this.func_82341_c();
+			float var17 = this.getMotionFactor();
 
 			if (this.isInWater()) {
 				for (int var19 = 0; var19 < 4; ++var19) {
@@ -191,7 +191,10 @@ public abstract class EntityFireball extends Entity {
 		}
 	}
 
-	protected float func_82341_c() {
+	/**
+	 * Return the motion factor for this projectile. The factor is multiplied by the original motion.
+	 */
+	protected float getMotionFactor() {
 		return 0.95F;
 	}
 
@@ -247,27 +250,31 @@ public abstract class EntityFireball extends Entity {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		this.setBeenAttacked();
-
-		if (par1DamageSource.getEntity() != null) {
-			Vec3 var3 = par1DamageSource.getEntity().getLookVec();
-
-			if (var3 != null) {
-				this.motionX = var3.xCoord;
-				this.motionY = var3.yCoord;
-				this.motionZ = var3.zCoord;
-				this.accelerationX = this.motionX * 0.1D;
-				this.accelerationY = this.motionY * 0.1D;
-				this.accelerationZ = this.motionZ * 0.1D;
-			}
-
-			if (par1DamageSource.getEntity() instanceof EntityLiving) {
-				this.shootingEntity = (EntityLiving)par1DamageSource.getEntity();
-			}
-
-			return true;
-		} else {
+		if (this.func_85032_ar()) {
 			return false;
+		} else {
+			this.setBeenAttacked();
+
+			if (par1DamageSource.getEntity() != null) {
+				Vec3 var3 = par1DamageSource.getEntity().getLookVec();
+
+				if (var3 != null) {
+					this.motionX = var3.xCoord;
+					this.motionY = var3.yCoord;
+					this.motionZ = var3.zCoord;
+					this.accelerationX = this.motionX * 0.1D;
+					this.accelerationY = this.motionY * 0.1D;
+					this.accelerationZ = this.motionZ * 0.1D;
+				}
+
+				if (par1DamageSource.getEntity() instanceof EntityLiving) {
+					this.shootingEntity = (EntityLiving)par1DamageSource.getEntity();
+				}
+
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 

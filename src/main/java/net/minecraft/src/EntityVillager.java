@@ -24,7 +24,9 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 	/** addDefaultEquipmentAndRecipies is called if this is true */
 	private boolean needsInitilization;
 	private int wealth;
-	private String field_82189_bL;
+
+	/** Last player to trade with this villager, used for aggressivity. */
+	private String lastBuyingPla;
 	private boolean field_82190_bM;
 	private float field_82191_bN;
 
@@ -123,9 +125,9 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 					this.addDefaultEquipmentAndRecipies(1);
 					this.needsInitilization = false;
 
-					if (this.villageObj != null && this.field_82189_bL != null) {
+					if (this.villageObj != null && this.lastBuyingPlayer != null) {
 						this.worldObj.setEntityState(this, (byte)14);
-						this.villageObj.func_82688_a(this.field_82189_bL, 1);
+						this.villageObj.setReputationForPlayer(this.lastBuyingPlayer, 1);
 					}
 				}
 
@@ -278,7 +280,7 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 					var2 = -3;
 				}
 
-				this.villageObj.func_82688_a(((EntityPlayer)par1EntityLiving).getCommandSenderName(), var2);
+				this.villageObj.setReputationForPlayer(((EntityPlayer)par1EntityLiving).getCommandSenderName(), var2);
 
 				if (this.isEntityAlive()) {
 					this.worldObj.setEntityState(this, (byte)13);
@@ -296,7 +298,7 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 
 			if (var2 != null) {
 				if (var2 instanceof EntityPlayer) {
-					this.villageObj.func_82688_a(((EntityPlayer)var2).getCommandSenderName(), -2);
+					this.villageObj.setReputationForPlayer(((EntityPlayer)var2).getCommandSenderName(), -2);
 				} else if (var2 instanceof IMob) {
 					this.villageObj.func_82692_h();
 				}
@@ -332,9 +334,9 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 			this.needsInitilization = true;
 
 			if (this.buyingPlayer != null) {
-				this.field_82189_bL = this.buyingPlayer.getCommandSenderName();
+				this.lastBuyingPlayer = this.buyingPlayer.getCommandSenderName();
 			} else {
-				this.field_82189_bL = null;
+				this.lastBuyingPlayer = null;
 			}
 		}
 
@@ -553,7 +555,10 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 		}
 	}
 
-	public void func_82163_bD() {
+	/**
+	 * Initialize this creature.
+	 */
+	public void initCreature() {
 		this.setProfession(this.worldObj.rand.nextInt(5));
 	}
 

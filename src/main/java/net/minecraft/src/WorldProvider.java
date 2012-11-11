@@ -64,7 +64,7 @@ public abstract class WorldProvider {
 	protected void registerWorldChunkManager() {
 		if (this.worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT) {
 			FlatGeneratorInfo var1 = FlatGeneratorInfo.func_82651_a(this.worldObj.getWorldInfo().func_82571_y());
-			this.worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.biomeList[var1.func_82648_a()], 0.5F, 0.5F);
+			this.worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.biomeList[var1.getBiome()], 0.5F, 0.5F);
 		} else {
 			this.worldChunkMgr = new WorldChunkManager(this.worldObj);
 		}
@@ -176,7 +176,7 @@ public abstract class WorldProvider {
 		var4 *= var3 * 0.94F + 0.06F;
 		var5 *= var3 * 0.94F + 0.06F;
 		var6 *= var3 * 0.91F + 0.09F;
-		return this.worldObj.func_82732_R().getVecFromPool((double)var4, (double)var5, (double)var6);
+		return this.worldObj.getWorldVec3Pool().getVecFromPool((double)var4, (double)var5, (double)var6);
 	}
 
 	/**

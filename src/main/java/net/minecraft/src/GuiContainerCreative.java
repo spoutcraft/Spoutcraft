@@ -175,8 +175,13 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 	 * Called when the screen is unloaded. Used to disable keyboard repeat events
 	 */
 	public void onGuiClosed() {
-		super.onGuiClosed();
-		this.mc.thePlayer.inventorySlots.func_82847_b(this.field_82324_x);
+		Keyboard.enableRepeatEvents(false);
+		NetClientHandler var1 = this.mc.getSendQueue();
+
+		if (var1 != null) {
+			var1.addToSendQueue(new Packet130UpdateSign(this.entitySign.xCoord, this.entitySign.yCoord, this.entitySign.zCoord, this.entitySign.signText));
+		}
+
 		Keyboard.enableRepeatEvents(false);
 	}
 
@@ -226,7 +231,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		while (var8.hasNext()) {
 			ItemStack var10 = (ItemStack)var8.next();
 			boolean var11 = false;
-			Iterator var6 = var10.func_82840_a(this.mc.thePlayer, this.mc.gameSettings.field_82882_x).iterator();
+			Iterator var6 = var10.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips).iterator();
 
 			while (true) {
 				if (var6.hasNext()) {
@@ -596,7 +601,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		ItemStack var10 = new ItemStack(par1CreativeTabs.getTabIconItem());
-		itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var10, var7, var8);
+		itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var7, var8);
 		itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var7, var8);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		itemRenderer.zLevel = 0.0F;

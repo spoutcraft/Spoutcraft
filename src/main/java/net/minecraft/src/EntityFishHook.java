@@ -216,14 +216,14 @@ public class EntityFishHook extends Entity {
 				++this.ticksInAir;
 			}
 
-			Vec3 var20 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-			Vec3 var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			Vec3 var20 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			Vec3 var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var20, var2);
-			var20 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-			var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			var20 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 			if (var3 != null) {
-				var2 = this.worldObj.func_82732_R().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+				var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 			}
 
 			Entity var4 = null;
@@ -320,7 +320,7 @@ public class EntityFishHook extends Entity {
 						if (this.rand.nextInt(var28) == 0) {
 							this.ticksCatchable = this.rand.nextInt(30) + 10;
 							this.motionY -= 0.20000000298023224D;
-							this.worldObj.playSoundAtEntity(this, "random.splash", 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+							this.worldObj.func_85030_a("random.splash", 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
 							float var30 = (float)MathHelper.floor_double(this.boundingBox.minY);
 							int var15;
 							float var17;

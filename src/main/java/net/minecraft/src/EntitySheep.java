@@ -9,7 +9,7 @@ public class EntitySheep extends EntityAnimal {
 	/**
 	 * Holds the RGB table of the sheep colors - in OpenGL glColor3f values - used to render the sheep colored fleece.
 	 */
-	public static float[][] fleeceColorTable = new float[][] {{1.0F, 1.0F, 1.0F}, {0.95F, 0.7F, 0.2F}, {0.9F, 0.5F, 0.85F}, {0.6F, 0.7F, 0.95F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.7F, 0.8F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.6F, 0.7F}, {0.7F, 0.4F, 0.9F}, {0.2F, 0.4F, 0.8F}, {0.5F, 0.4F, 0.3F}, {0.4F, 0.5F, 0.2F}, {0.8F, 0.3F, 0.3F}, {0.1F, 0.1F, 0.1F}}; // Spout removed final
+	public static final float[][] fleeceColorTable = new float[][] {{1.0F, 1.0F, 1.0F}, {0.85F, 0.5F, 0.2F}, {0.7F, 0.3F, 0.85F}, {0.4F, 0.6F, 0.85F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.5F, 0.65F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.5F, 0.6F}, {0.5F, 0.25F, 0.7F}, {0.2F, 0.3F, 0.7F}, {0.4F, 0.3F, 0.2F}, {0.4F, 0.5F, 0.2F}, {0.6F, 0.2F, 0.2F}, {0.1F, 0.1F, 0.1F}};
 
 	/**
 	 * Used to control movement as well as wool regrowth. Set to 40 on handleHealthUpdate and counts down with each tick.
@@ -28,7 +28,7 @@ public class EntitySheep extends EntityAnimal {
 		this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
-		this.tasks.addTask(2, new EntityAIMate(this, var2));
+		this.tasks.addTask(2, new EntityAIBreedSheep(this, var2));
 		this.tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.shiftedIndex, false));
 		this.tasks.addTask(4, new EntityAIFollowParent(this, 0.25F));
 		this.tasks.addTask(5, this.aiEatGrass);
@@ -130,7 +130,7 @@ public class EntitySheep extends EntityAnimal {
 			}
 
 			var2.damageItem(1, par1EntityPlayer);
-			this.worldObj.playSoundAtEntity(this, "mob.sheep.shear", 1.0F, 1.0F);
+			this.func_85030_a("mob.sheep.shear", 1.0F, 1.0F);
 		}
 
 		return super.interact(par1EntityPlayer);
@@ -179,7 +179,7 @@ public class EntitySheep extends EntityAnimal {
 	 * Plays step sound at given x, y, z for the entity
 	 */
 	protected void playStepSound(int par1, int par2, int par3, int par4) {
-		this.worldObj.playSoundAtEntity(this, "mob.sheep.step", 0.15F, 1.0F);
+			this.func_85030_a("mob.sheep.step", 0.15F, 1.0F);
 	}
 
 	public int getFleeceColor() {
@@ -253,7 +253,10 @@ public class EntitySheep extends EntityAnimal {
 		}
 	}
 
-	public void func_82163_bD() {
+	/**
+	 * Initialize this creature.
+	 */
+	public void initCreature() {
 		this.setFleeceColor(getRandomFleeceColor(this.worldObj.rand));
 	}
 }

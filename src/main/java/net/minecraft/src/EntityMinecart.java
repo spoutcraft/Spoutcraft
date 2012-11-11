@@ -80,7 +80,7 @@ public class EntityMinecart extends Entity implements IInventory {
 	 * pushable on contact, like boats or minecarts.
 	 */
 	public AxisAlignedBB getCollisionBox(Entity par1Entity) {
-		return par1Entity.boundingBox;
+		return par1Entity.canBePushed() ? par1Entity.boundingBox : null;
 	}
 
 	/**
@@ -131,59 +131,63 @@ public class EntityMinecart extends Entity implements IInventory {
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
 		if (!this.worldObj.isRemote && !this.isDead) {
-			this.func_70494_i(-this.func_70493_k());
-			this.func_70497_h(10);
-			this.setBeenAttacked();
-			this.setDamage(this.getDamage() + par2 * 10);
+			if (this.func_85032_ar()) {
+				return false;
+			} else {
+				this.func_70494_i(-this.func_70493_k());
+				this.func_70497_h(10);
+				this.setBeenAttacked();
+				this.setDamage(this.getDamage() + par2 * 10);
 
-			if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode) {
-				this.setDamage(100);
-			}
-
-			if (this.getDamage() > 40) {
-				if (this.riddenByEntity != null) {
-					this.riddenByEntity.mountEntity(this);
+				if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode) {
+					this.setDamage(100);
 				}
 
-				this.setDead();
-				this.dropItemWithOffset(Item.minecartEmpty.shiftedIndex, 1, 0.0F);
-
-				if (this.minecartType == 1) {
-					EntityMinecart var3 = this;
-
-					for (int var4 = 0; var4 < var3.getSizeInventory(); ++var4) {
-						ItemStack var5 = var3.getStackInSlot(var4);
-
-						if (var5 != null) {
-							float var6 = this.rand.nextFloat() * 0.8F + 0.1F;
-							float var7 = this.rand.nextFloat() * 0.8F + 0.1F;
-							float var8 = this.rand.nextFloat() * 0.8F + 0.1F;
-
-							while (var5.stackSize > 0) {
-								int var9 = this.rand.nextInt(21) + 10;
-
-								if (var9 > var5.stackSize) {
-									var9 = var5.stackSize;
-								}
-
-								var5.stackSize -= var9;
-								EntityItem var10 = new EntityItem(this.worldObj, this.posX + (double)var6, this.posY + (double)var7, this.posZ + (double)var8, new ItemStack(var5.itemID, var9, var5.getItemDamage()));
-								float var11 = 0.05F;
-								var10.motionX = (double)((float)this.rand.nextGaussian() * var11);
-								var10.motionY = (double)((float)this.rand.nextGaussian() * var11 + 0.2F);
-								var10.motionZ = (double)((float)this.rand.nextGaussian() * var11);
-								this.worldObj.spawnEntityInWorld(var10);
-							}
-						}
+				if (this.getDamage() > 40) {
+					if (this.riddenByEntity != null) {
+						this.riddenByEntity.mountEntity(this);
 					}
 
-					this.dropItemWithOffset(Block.chest.blockID, 1, 0.0F);
-				} else if (this.minecartType == 2) {
-					this.dropItemWithOffset(Block.stoneOvenIdle.blockID, 1, 0.0F);
-				}
-			}
+					this.setDead();
+					this.dropItemWithOffset(Item.minecartEmpty.shiftedIndex, 1, 0.0F);
 
-			return true;
+					if (this.minecartType == 1) {
+						EntityMinecart var3 = this;
+
+						for (int var4 = 0; var4 < var3.getSizeInventory(); ++var4) {
+							ItemStack var5 = var3.getStackInSlot(var4);
+
+							if (var5 != null) {
+								float var6 = this.rand.nextFloat() * 0.8F + 0.1F;
+								float var7 = this.rand.nextFloat() * 0.8F + 0.1F;
+								float var8 = this.rand.nextFloat() * 0.8F + 0.1F;
+
+								while (var5.stackSize > 0) {
+									int var9 = this.rand.nextInt(21) + 10;
+
+									if (var9 > var5.stackSize) {
+										var9 = var5.stackSize;
+									}
+
+									var5.stackSize -= var9;
+									EntityItem var10 = new EntityItem(this.worldObj, this.posX + (double)var6, this.posY + (double)var7, this.posZ + (double)var8, new ItemStack(var5.itemID, var9, var5.getItemDamage()));
+									float var11 = 0.05F;
+									var10.motionX = (double)((float)this.rand.nextGaussian() * var11);
+									var10.motionY = (double)((float)this.rand.nextGaussian() * var11 + 0.2F);
+									var10.motionZ = (double)((float)this.rand.nextGaussian() * var11);
+									this.worldObj.spawnEntityInWorld(var10);
+								}
+							}
+						}
+
+						this.dropItemWithOffset(Block.chest.blockID, 1, 0.0F);
+					} else if (this.minecartType == 2) {
+						this.dropItemWithOffset(Block.stoneOvenIdle.blockID, 1, 0.0F);
+					}
+				}
+
+				return true;
+			}
 		} else {
 			return true;
 		}
@@ -249,9 +253,12 @@ public class EntityMinecart extends Entity implements IInventory {
 		}
 	}
 
-	public void travelToTheEnd(int par1) {
+	/**
+	 * Teleports the entity to another dimension. Params: Dimension number to teleport to
+	 */
+	public void travelToDimension(int par1) {
 		this.field_82345_h = false;
-		super.travelToTheEnd(par1);
+		super.travelToDimension(par1);
 	}
 
 
@@ -312,6 +319,7 @@ public class EntityMinecart extends Entity implements IInventory {
 			int var8 = this.worldObj.getBlockId(var1, var2, var3);
 
 			if (BlockRail.isRailBlock(var8)) {
+				this.fallDistance = 0.0F;
 				Vec3 var9 = this.func_70489_a(this.posX, this.posY, this.posZ);
 				int var10 = this.worldObj.getBlockMetadata(var1, var2, var3);
 				this.posY = (double)var2;
@@ -729,7 +737,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				par3 += 0.5D;
 			}
 
-			return this.worldObj.func_82732_R().getVecFromPool(par1, par3, par5);
+			return this.worldObj.getWorldVec3Pool().getVecFromPool(par1, par3, par5);
 		} else {
 			return null;
 		}
@@ -826,8 +834,8 @@ public class EntityMinecart extends Entity implements IInventory {
 					if (par1Entity instanceof EntityMinecart) {
 						double var10 = par1Entity.posX - this.posX;
 						double var12 = par1Entity.posZ - this.posZ;
-						Vec3 var14 = this.worldObj.func_82732_R().getVecFromPool(var10, 0.0D, var12).normalize();
-						Vec3 var15 = this.worldObj.func_82732_R().getVecFromPool((double)MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F), 0.0D, (double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F)).normalize();
+						Vec3 var14 = this.worldObj.getWorldVec3Pool().getVecFromPool(var10, 0.0D, var12).normalize();
+						Vec3 var15 = this.worldObj.getWorldVec3Pool().getVecFromPool((double)MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F), 0.0D, (double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F)).normalize();
 						double var16 = Math.abs(var14.dotProduct(var15));
 
 						if (var16 < 0.800000011920929D) {
