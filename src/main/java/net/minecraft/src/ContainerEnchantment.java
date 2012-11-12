@@ -59,10 +59,9 @@ public class ContainerEnchantment extends Container {
 	 */
 	public void updateCraftingResults() {
 		super.updateCraftingResults();
-		Iterator var1 = this.crafters.iterator();
 
-		while (var1.hasNext()) {
-			ICrafting var2 = (ICrafting)var1.next();
+		for (int var1 = 0; var1 < this.crafters.size(); ++var1) {
+			ICrafting var2 = (ICrafting)this.crafters.get(var1);
 			var2.updateCraftingInventoryInfo(this, 0, this.enchantLevels[0]);
 			var2.updateCraftingInventoryInfo(this, 1, this.enchantLevels[1]);
 			var2.updateCraftingInventoryInfo(this, 2, this.enchantLevels[2]);

@@ -580,14 +580,9 @@ public class GameSettings {
 						this.field_85185_A = var3[1].equals("true");
 					}
 
-					KeyBinding[] var4 = this.keyBindings;
-					int var5 = var4.length;
-
-					for (int var6 = 0; var6 < var5; ++var6) {
-						KeyBinding var7 = var4[var6];
-
-						if (var3[0].equals("key_" + var7.keyDescription)) {
-							var7.keyCode = Integer.parseInt(var3[1]);
+					for (int var4 = 0; var4 < this.keyBindings.length; ++var4) {
+						if (var3[0].equals("key_" + this.keyBindings[var4].keyDescription)) {
+							this.keyBindings[var4].keyCode = Integer.parseInt(var3[1]);
 						}
 					}
 					// Spout Start
@@ -597,16 +592,16 @@ public class GameSettings {
 						}
 					}
 					// Spout End
-				} catch (Exception var8) {
+				} catch (Exception var5) {
 					System.out.println("Skipping bad option: " + var2);
 				}
 			}
 
 			KeyBinding.resetKeyBindingArrayAndHash();
 			var1.close();
-		} catch (Exception var9) {
+		} catch (Exception var6) {
 			System.out.println("Failed to load options");
-			var9.printStackTrace();
+			var6.printStackTrace();
 		}
 	}
 
@@ -660,12 +655,9 @@ public class GameSettings {
 			var1.println("pauseOnLostFocus:" + this.pauseOnLostFocus);
 			var1.println("showCape:" + this.showCape);
 			var1.println("touchscreen:" + this.field_85185_A);
-			KeyBinding[] var2 = this.keyBindings;
-			int var3 = var2.length;
 
-			for (int var4 = 0; var4 < var3; ++var4) {
-				KeyBinding var5 = var2[var4];
-				var1.println("key_" + var5.keyDescription + ":" + var5.keyCode);
+			for (int var2 = 0; var2 < this.keyBindings.length; ++var2) {
+				var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);
 			}
 			// Spout Start
 			for (int key = 0; key < this.spoutcraftBindings.length; ++key) {
@@ -674,9 +666,9 @@ public class GameSettings {
 			// Spout End
 
 			var1.close();
-		} catch (Exception var6) {
+		} catch (Exception var3) {
 			System.out.println("Failed to save options");
-			var6.printStackTrace();
+			var3.printStackTrace();
 		// Spout Start
 		} finally {
 			SpoutClient.enableSandbox(oldLock);

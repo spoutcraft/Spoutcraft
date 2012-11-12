@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.spoutcraft.client.entity.CraftPigZombie;
@@ -92,10 +91,9 @@ public class EntityPigZombie extends EntityZombie {
 
 			if (var3 instanceof EntityPlayer) {
 				List var4 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(32.0D, 32.0D, 32.0D));
-				Iterator var5 = var4.iterator();
 
-				while (var5.hasNext()) {
-					Entity var6 = (Entity)var5.next();
+				for (int var5 = 0; var5 < var4.size(); ++var5) {
+					Entity var6 = (Entity)var4.get(var5);
 
 					if (var6 instanceof EntityPigZombie) {
 						EntityPigZombie var7 = (EntityPigZombie)var6;

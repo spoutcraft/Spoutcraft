@@ -64,6 +64,7 @@ public class MinecraftApplet extends Applet {
 		this.setLayout(new BorderLayout());
 		this.add(this.mcCanvas, "Center");
 		this.mcCanvas.setFocusable(true);
+		this.mcCanvas.setFocusTraversalKeysEnabled(false);
 		this.validate();
 	}
 

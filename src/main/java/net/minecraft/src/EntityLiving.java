@@ -355,7 +355,9 @@ public abstract class EntityLiving extends Entity {
 	 * deal fall damage if landing on the ground.  Args: distanceFallenThisTick, onGround
 	 */
 	protected void updateFallState(double par1, boolean par3) {
-		this.handleWaterMovement();
+		if (!this.isInWater()) {
+			this.handleWaterMovement();
+		}
 
 		if (par3 && this.fallDistance > 0.0F) {
 			int var4 = MathHelper.floor_double(this.posX);
@@ -1264,7 +1266,7 @@ public abstract class EntityLiving extends Entity {
 				this.motionY = 0.2D;
 			}
 
-			if (this.worldObj.isRemote && (!this.worldObj.blockExists((int)this.posX, (int)this.posY, (int)this.posZ) || !this.worldObj.getChunkFromBlockCoords((int)this.posX, (int)this.posZ).isChunkLoaded)) {
+			if (this.worldObj.isRemote && (!this.worldObj.blockExists((int)this.posX, 0, (int)this.posZ) || !this.worldObj.getChunkFromBlockCoords((int)this.posX, (int)this.posZ).isChunkLoaded)) {
 				if (this.posY > 0.0D) {
 					this.motionY = -0.1D;
 				} else {
@@ -1576,10 +1578,8 @@ public abstract class EntityLiving extends Entity {
 		List var1 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
 		if (var1 != null && !var1.isEmpty()) {
-			Iterator var2 = var1.iterator();
-
-			while (var2.hasNext()) {
-				Entity var3 = (Entity)var2.next();
+			for (int var2 = 0; var2 < var1.size(); ++var2) {
+				Entity var3 = (Entity)var1.get(var2);
 
 				if (var3.canBePushed()) {
 					this.collideWithEntity(var3);

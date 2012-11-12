@@ -270,16 +270,13 @@ public class NetClientHandler extends NetHandler {
 				((Entity)var8).rotationPitch = 0.0F;
 			}
 
-			Entity[] var17 = ((Entity)var8).getParts();
+			Entity[] var14 = ((Entity)var8).getParts();
 
-			if (var17 != null) {
+			if (var14 != null) {
 				int var11 = par1Packet23VehicleSpawn.entityId - ((Entity)var8).entityId;
-				Entity[] var12 = var17;
-				int var13 = var17.length;
 
-				for (int var14 = 0; var14 < var13; ++var14) {
-					Entity var15 = var12[var14];
-					var15.entityId += var11;
+				for (int var12 = 0; var12 < var14.length; ++var12) {
+					var14[var12].entityId += var11;
 				}
 			}
 
@@ -288,11 +285,11 @@ public class NetClientHandler extends NetHandler {
 
 			if (par1Packet23VehicleSpawn.throwerEntityId > 0) {
 				if (par1Packet23VehicleSpawn.type == 60) {
-					Entity var16 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
+					Entity var13 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
 
-					if (var16 instanceof EntityLiving) {
-						EntityArrow var18 = (EntityArrow)var8;
-						var18.shootingEntity = var16;
+					if (var13 instanceof EntityLiving) {
+						EntityArrow var15 = (EntityArrow)var8;
+						var15.shootingEntity = var13;
 					}
 				}
 
@@ -715,12 +712,9 @@ public class NetClientHandler extends NetHandler {
 
 		if (var11 != null) {
 			int var12 = par1Packet24MobSpawn.entityId - var10.entityId;
-			Entity[] var13 = var11;
-			int var14 = var11.length;
 
-			for (int var15 = 0; var15 < var14; ++var15) {
-				Entity var16 = var13[var15];
-				var16.entityId += var12;
+			for (int var13 = 0; var13 < var11.length; ++var13) {
+				var11[var13].entityId += var12;
 			}
 		}
 
@@ -730,10 +724,10 @@ public class NetClientHandler extends NetHandler {
 		var10.motionY = (double)((float)par1Packet24MobSpawn.velocityY / 8000.0F);
 		var10.motionZ = (double)((float)par1Packet24MobSpawn.velocityZ / 8000.0F);
 		this.worldClient.addEntityToWorld(par1Packet24MobSpawn.entityId, var10);
-		List var17 = par1Packet24MobSpawn.getMetadata();
+		List var14 = par1Packet24MobSpawn.getMetadata();
 
-		if (var17 != null) {
-			var10.getDataWatcher().updateWatchedObjectsFromList(var17);
+		if (var14 != null) {
+			var10.getDataWatcher().updateWatchedObjectsFromList(var14);
 		}
 		// Spout Start: set the entity's title
 		if(var10.worldObj.customTitles.containsKey(var10.entityId)) {

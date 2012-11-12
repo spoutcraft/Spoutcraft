@@ -30,8 +30,9 @@ import org.spoutcraft.api.gui.Slot;
 
 // Spout End
 
-public class GuiScreen extends Gui
-{
+public class GuiScreen extends Gui {
+	public static final boolean field_90017_e = Minecraft.getOs() == EnumOS.MACOS;
+
 	/** Reference to the Minecraft object. */
 	protected Minecraft mc;
 
@@ -131,10 +132,8 @@ public class GuiScreen extends Gui
 	/**
 	 * Draws the screen and all the components in it.
 	 */
-	public void drawScreen(int par1, int par2, float par3)
-	{
-		for (int i = 0; i < controlList.size(); i++)
-		{
+	public void drawScreen(int par1, int par2, float par3) {
+		for (int i = 0; i < controlList.size(); i++) {
 			GuiButton guibutton = (GuiButton)controlList.get(i);
 			guibutton.drawButton(mc, par1, par2);
 		}
@@ -1100,7 +1099,8 @@ public class GuiScreen extends Gui
 	}
 
 	public static boolean isCtrlKeyDown() {
-		return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
+		boolean var0 = Keyboard.isKeyDown(28) && Keyboard.getEventCharacter() == 0;
+		return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157) || field_90017_e && (var0 || Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220));
 	}
 
 	public static boolean isShiftKeyDown() {

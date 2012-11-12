@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
-
 public class ContainerFurnace extends Container {
 	private TileEntityFurnace furnace;
 	private int lastCookTime = 0;
@@ -44,10 +42,9 @@ public class ContainerFurnace extends Container {
 	 */
 	public void updateCraftingResults() {
 		super.updateCraftingResults();
-		Iterator var1 = this.crafters.iterator();
 
-		while (var1.hasNext()) {
-			ICrafting var2 = (ICrafting)var1.next();
+		for (int var1 = 0; var1 < this.crafters.size(); ++var1) {
+			ICrafting var2 = (ICrafting)this.crafters.get(var1);
 
 			if (this.lastCookTime != this.furnace.furnaceCookTime) {
 				var2.updateCraftingInventoryInfo(this, 0, this.furnace.furnaceCookTime);

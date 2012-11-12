@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -45,6 +44,7 @@ public abstract class GuiContainer extends GuiScreen {
 	protected int guiTop;
 	private Slot theSlot;
 	private Slot field_85051_p = null;
+	private boolean field_90018_r = false;
 	private ItemStack field_85050_q = null;
 	private int field_85049_r = 0;
 	private int field_85048_s = 0;
@@ -345,6 +345,12 @@ public abstract class GuiContainer extends GuiScreen {
 
 		if (var16 != null) {
 			var8 = this.field_85050_q == null ? 8 : 0;
+
+			if (this.field_85050_q != null && this.field_90018_r) {
+				var16 = var16.copy();
+				var16.stackSize = MathHelper.ceiling_float_int((float)var16.stackSize / 2.0F);
+			}
+
 			this.func_85044_b(var16, par1 - var4 - var8, par2 - var5 - var8);
 		}
 
@@ -503,7 +509,13 @@ public abstract class GuiContainer extends GuiScreen {
 		int var2 = par1Slot.xDisplayPosition;
 		int var3 = par1Slot.yDisplayPosition;
 		ItemStack var4 = par1Slot.getStack();
-		boolean var5 = par1Slot == this.field_85051_p && this.field_85050_q != null;
+		boolean var5 = par1Slot == this.field_85051_p && this.field_85050_q != null && !this.field_90018_r;
+
+		if (par1Slot == this.field_85051_p && this.field_85050_q != null && this.field_90018_r && var4 != null) {
+			var4 = var4.copy();
+			var4.stackSize /= 2;
+		}
+
 		this.zLevel = 100.0F;
 		itemRenderer.zLevel = 100.0F;
 
@@ -589,6 +601,7 @@ public abstract class GuiContainer extends GuiScreen {
 					if (var5 != null && var5.getHasStack()) {
 						this.field_85051_p = var5;
 						this.field_85050_q = null;
+						this.field_90018_r = par3 == 1;
 					} else {
 						this.field_85051_p = null;
 					}

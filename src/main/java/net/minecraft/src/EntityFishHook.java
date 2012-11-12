@@ -229,11 +229,10 @@ public class EntityFishHook extends Entity {
 			Entity var4 = null;
 			List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 			double var6 = 0.0D;
-			Iterator var8 = var5.iterator();
 			double var13;
 
-			while (var8.hasNext()) {
-				Entity var9 = (Entity)var8.next();
+			for (int var8 = 0; var8 < var5.size(); ++var8) {
+				Entity var9 = (Entity)var5.get(var8);
 
 				if (var9.canBeCollidedWith() && (var9 != this.angler || this.ticksInAir >= 5)) {
 					float var10 = 0.3F;

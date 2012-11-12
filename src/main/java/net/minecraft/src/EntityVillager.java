@@ -142,7 +142,10 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 	 * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
 	 */
 	public boolean interact(EntityPlayer par1EntityPlayer) {
-		if (this.isEntityAlive() && !this.isTrading() && !this.isChild()) {
+		ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
+		boolean var3 = var2 != null && var2.itemID == Item.monsterPlacer.shiftedIndex;
+
+		if (!var3 && this.isEntityAlive() && !this.isTrading() && !this.isChild()) {
 			if (!this.worldObj.isRemote) {
 				this.setCustomer(par1EntityPlayer);
 				par1EntityPlayer.displayGUIMerchant(this);
@@ -564,6 +567,14 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 
 	public void func_82187_q() {
 		this.field_82190_bM = true;
+	}
+
+	public EntityVillager func_90012_b(EntityAgeable par1EntityAgeable) {
+		return new EntityVillager(this.worldObj);
+	}
+
+	public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable) {
+		return this.func_90012_b(par1EntityAgeable);
 	}
 
 	static {

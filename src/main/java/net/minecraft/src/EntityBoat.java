@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
 import java.util.List;
 // Spout Start
 import org.spoutcraft.client.entity.CraftBoat;
@@ -330,12 +329,11 @@ public class EntityBoat extends Entity {
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 			if (!this.worldObj.isRemote) {
 				List var16 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+				int var27;
 
 				if (var16 != null && !var16.isEmpty()) {
-					Iterator var28 = var16.iterator();
-
-					while (var28.hasNext()) {
-						Entity var18 = (Entity)var28.next();
+					for (var27 = 0; var27 < var16.size(); ++var27) {
+						Entity var18 = (Entity)var16.get(var27);
 
 						if (var18 != this.riddenByEntity && var18.canBePushed() && var18 instanceof EntityBoat) {
 							var18.applyEntityCollision(this);
@@ -344,19 +342,19 @@ public class EntityBoat extends Entity {
 				}
 
 				for (int var27 = 0; var27 < 4; ++var27) {
-					int var29 = MathHelper.floor_double(this.posX + ((double)(var27 % 2) - 0.5D) * 0.8D);
+					int var28 = MathHelper.floor_double(this.posX + ((double)(var27 % 2) - 0.5D) * 0.8D);
 					int var19 = MathHelper.floor_double(this.posZ + ((double)(var27 / 2) - 0.5D) * 0.8D);
 
 					for (int var20 = 0; var20 < 2; ++var20) {
 						int var21 = MathHelper.floor_double(this.posY) + var20;
-						int var22 = this.worldObj.getBlockId(var29, var21, var19);
-						int var23 = this.worldObj.getBlockMetadata(var29, var21, var19);
+						int var22 = this.worldObj.getBlockId(var28, var21, var19);
+						int var23 = this.worldObj.getBlockMetadata(var28, var21, var19);
 
 						if (var22 == Block.snow.blockID) {
-							this.worldObj.setBlockWithNotify(var29, var21, var19, 0);
+							this.worldObj.setBlockWithNotify(var28, var21, var19, 0);
 						} else if (var22 == Block.waterlily.blockID) {
-							Block.waterlily.dropBlockAsItemWithChance(this.worldObj, var29, var21, var19, var23, 0.3F, 0);
-							this.worldObj.setBlockWithNotify(var29, var21, var19, 0);
+							Block.waterlily.dropBlockAsItemWithChance(this.worldObj, var28, var21, var19, var23, 0.3F, 0);
+							this.worldObj.setBlockWithNotify(var28, var21, var19, 0);
 						}
 					}
 				}

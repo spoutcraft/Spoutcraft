@@ -141,7 +141,7 @@ public class EntityChicken extends EntityAnimal {
 	/**
 	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
 	 */
-	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
+	public EntityChicken spawnBabyAnimal(EntityAgeable par1EntityAgeable) {
 		return new EntityChicken(this.worldObj);
 	}
 
@@ -151,5 +151,9 @@ public class EntityChicken extends EntityAnimal {
 	 */
 	public boolean isBreedingItem(ItemStack par1ItemStack) {
 		return par1ItemStack != null && par1ItemStack.getItem() instanceof ItemSeeds;
+	}
+
+	public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable) {
+		return this.spawnBabyAnimal(par1EntityAgeable);
 	}
 }

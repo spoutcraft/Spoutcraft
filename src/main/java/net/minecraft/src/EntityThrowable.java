@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class EntityThrowable extends Entity implements IProjectile {
@@ -158,10 +157,9 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 			List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 			double var6 = 0.0D;
 			EntityLiving var8 = this.func_85052_h();
-			Iterator var9 = var5.iterator();
 
-			while (var9.hasNext()) {
-				Entity var10 = (Entity)var9.next();
+			for (int var9 = 0; var9 < var5.size(); ++var9) {
+				Entity var10 = (Entity)var5.get(var9);
 
 				if (var10.canBeCollidedWith() && (var10 != var8 || this.ticksInAir >= 5)) {
 					float var11 = 0.3F;

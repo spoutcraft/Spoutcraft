@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -63,11 +62,9 @@ public abstract class Container {
 	 */
 	public List getInventory() {
 		ArrayList var1 = new ArrayList();
-		Iterator var2 = this.inventorySlots.iterator();
 
-		while (var2.hasNext()) {
-			Slot var3 = (Slot)var2.next();
-			var1.add(var3.getStack());
+		for (int var2 = 0; var2 < this.inventorySlots.size(); ++var2) {
+			var1.add(((Slot)this.inventorySlots.get(var2)).getStack());
 		}
 
 		return var1;
@@ -84,11 +81,9 @@ public abstract class Container {
 			if (!ItemStack.areItemStacksEqual(var3, var2)) {
 				var3 = var2 == null ? null : var2.copy();
 				this.inventoryItemStacks.set(var1, var3);
-				Iterator var4 = this.crafters.iterator();
 
-				while (var4.hasNext()) {
-					ICrafting var5 = (ICrafting)var4.next();
-					var5.updateCraftingInventorySlot(this, var1, var3);
+				for (int var4 = 0; var4 < this.crafters.size(); ++var4) {
+					((ICrafting)this.crafters.get(var4)).updateCraftingInventorySlot(this, var1, var3);
 				}
 			}
 		}
@@ -102,18 +97,15 @@ public abstract class Container {
 	}
 
 	public Slot getSlotFromInventory(IInventory par1IInventory, int par2) {
-		Iterator var3 = this.inventorySlots.iterator();
-		Slot var4;
+		for (int var3 = 0; var3 < this.inventorySlots.size(); ++var3) {
+			Slot var4 = (Slot)this.inventorySlots.get(var3);
 
-		do {
-			if (!var3.hasNext()) {
-				return null;
+			if (var4.isSlotInInventory(par1IInventory, par2)) {
+				return var4;
 			}
+		}
 
-			var4 = (Slot)var3.next();
-		} while (!var4.isSlotInInventory(par1IInventory, par2));
-
-		return var4;
+		return null;
 	}
 
 	public Slot getSlot(int par1) {

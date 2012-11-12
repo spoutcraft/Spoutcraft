@@ -185,7 +185,7 @@ public class EntityPig extends EntityAnimal {
 	/**
 	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
 	 */
-	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
+	public EntityPig spawnBabyAnimal(EntityAgeable par1EntityAgeable) {
 		return new EntityPig(this.worldObj);
 	}
 
@@ -202,5 +202,9 @@ public class EntityPig extends EntityAnimal {
 	 */
 	public EntityAIControlledByPlayer getAIControlledByPlayer() {
 		return this.aiControlledByPlayer;
+	}
+
+	public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable) {
+		return this.spawnBabyAnimal(par1EntityAgeable);
 	}
 }

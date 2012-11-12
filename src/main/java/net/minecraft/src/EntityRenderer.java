@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.awt.image.BufferedImage;
 import java.nio.FloatBuffer;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
@@ -170,10 +169,9 @@ public class EntityRenderer {
 				float var9 = 1.0F;
 				List var10 = this.mc.theWorld.getEntitiesWithinAABBExcludingEntity(this.mc.renderViewEntity, this.mc.renderViewEntity.boundingBox.addCoord(var7.xCoord * var2, var7.yCoord * var2, var7.zCoord * var2).expand((double)var9, (double)var9, (double)var9));
 				double var11 = var4;
-				Iterator var13 = var10.iterator();
 
-				while (var13.hasNext()) {
-					Entity var14 = (Entity)var13.next();
+				for (int var13 = 0; var13 < var10.size(); ++var13) {
+					Entity var14 = (Entity)var10.get(var13);
 					if (var14.canBeCollidedWith()) {
 						float var15 = var14.getCollisionBorderSize();
 						AxisAlignedBB var16 = var14.boundingBox.expand((double)var15, (double)var15, (double)var15);
@@ -736,12 +734,12 @@ public class EntityRenderer {
 		this.mc.mcProfiler.endSection();
 		if (!this.mc.skipRenderWorld) {
 			anaglyphEnable = this.mc.gameSettings.anaglyph;
-			ScaledResolution var9 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-			int var10 = var9.getScaledWidth();
-			int var11 = var9.getScaledHeight();
-			int var12 = Mouse.getX() * var10 / this.mc.displayWidth;
-			int var13 = var11 - Mouse.getY() * var11 / this.mc.displayHeight - 1;
-			int var14 = func_78465_a(this.mc.gameSettings.limitFramerate);
+			ScaledResolution var13 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+			int var14 = var13.getScaledWidth();
+			int var15 = var13.getScaledHeight();
+			int var16 = Mouse.getX() * var14 / this.mc.displayWidth;
+			int var17 = var15 - Mouse.getY() * var15 / this.mc.displayHeight - 1;
+			int var18 = func_78465_a(this.mc.gameSettings.limitFramerate);
 
 			if (this.mc.theWorld != null) {
 				this.mc.mcProfiler.startSection("level");
@@ -749,7 +747,7 @@ public class EntityRenderer {
 				if (this.mc.gameSettings.limitFramerate == 0) {
 					this.renderWorld(par1, 0L);
 				} else {
-					this.renderWorld(par1, this.renderEndNanoTime + (long)(1000000000 / var14));
+					this.renderWorld(par1, this.renderEndNanoTime + (long)(1000000000 / var18));
 				}
 
 				this.renderEndNanoTime = System.nanoTime();
@@ -766,7 +764,7 @@ public class EntityRenderer {
 						}
 					}
 
-					this.mc.ingameGUI.renderGameOverlay(par1, this.mc.currentScreen != null, var12, var13);
+					this.mc.ingameGUI.renderGameOverlay(par1, this.mc.currentScreen != null, var16, var17);
 					if (Configuration.getFastDebug() != 0) {
 						this.mc.gameSettings.showDebugInfo = false;
 					}
@@ -788,7 +786,18 @@ public class EntityRenderer {
 			if (this.mc.currentScreen != null) {
 				GL11.glClear(256);
 				// Spout Start
-				this.mc.currentScreen.drawScreenPre(var12, var13, par1);
+
+				/*try {
+					this.mc.currentScreen.drawScreen(var16, var17, par1);
+				} catch (Throwable var12) {
+					CrashReport var10 = CrashReport.func_85055_a(var12, "Rendering screen");
+					CrashReportCategory var11 = var10.func_85058_a("Screen render details");
+					var11.addCrashSectionCallable("Screen name", new CallableScreenName(this));
+					var11.addCrashSectionCallable("Mouse location", new CallableMouseLocation(this, var16, var17));
+					var11.addCrashSectionCallable("Screen size", new CallableScreenSize(this, var13));
+					throw new ReportedException(var10);
+				}*/
+				this.mc.currentScreen.drawScreenPre(var16, var17, par1);
 				// Spout End
 				if (this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
 					this.mc.currentScreen.guiParticles.draw(par1);
@@ -1550,5 +1559,9 @@ public class EntityRenderer {
 		}
 
 		return var1;
+	}
+
+	static Minecraft func_90030_a(EntityRenderer par0EntityRenderer) {
+		return par0EntityRenderer.mc;
 	}
 }

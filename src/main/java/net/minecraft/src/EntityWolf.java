@@ -435,7 +435,7 @@ public class EntityWolf extends EntityTameable {
 	/**
 	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
 	 */
-	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
+	public EntityWolf spawnBabyAnimal(EntityAgeable par1EntityAgeable) {
 		EntityWolf var2 = new EntityWolf(this.worldObj);
 		var2.setOwner(this.getOwnerName());
 		var2.setTamed(true);
@@ -470,5 +470,9 @@ public class EntityWolf extends EntityTameable {
 
 	public boolean func_70922_bv() {
 		return this.dataWatcher.getWatchableObjectByte(19) == 1;
+	}
+
+	public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable) {
+		return this.spawnBabyAnimal(par1EntityAgeable);
 	}
 }

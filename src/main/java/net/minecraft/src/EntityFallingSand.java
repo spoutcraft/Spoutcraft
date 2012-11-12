@@ -212,10 +212,7 @@ public class EntityFallingSand extends Entity {
 		this.field_82155_f = par1;
 	}
 
-	/**
-	 * Returns true if the entity is on fire. Used by render to add the fire effect on rendering.
-	 */
-	public boolean isBurning() {
+	public boolean func_90999_ad() {
 		return false;
 	}
 }

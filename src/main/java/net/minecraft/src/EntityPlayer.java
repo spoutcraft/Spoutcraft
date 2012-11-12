@@ -398,10 +398,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		if (this.getHealth() > 0) {
 			List var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0D, 0.5D, 1.0D));
 			if (var3 != null) {
-				Iterator var4 = var3.iterator();
-
-				while (var4.hasNext()) {
-					Entity var5 = (Entity)var4.next();
+				for (int var4 = 0; var4 < var3.size(); ++var4) {
+					Entity var5 = (Entity)var3.get(var4);
 
 					if (!var5.isDead) {
 						this.collideWithPlayer(var5);
@@ -832,9 +830,19 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 					}
 
 					var2 += var4;
-					boolean var6 = par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), var2);
+					boolean var6 = false;
+					int var7 = EnchantmentHelper.func_90036_a(this);
 
-					if (var6) {
+					
+
+					if (par1Entity instanceof EntityLiving && var7 > 0 && !par1Entity.isBurning()) {
+						var6 = true;
+						par1Entity.setFire(1);
+					}
+
+					boolean var8 = par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), var2);
+
+					if (var8) {
 						if (var3 > 0) {
 							par1Entity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)var3 * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)var3 * 0.5F));
 							this.motionX *= 0.6D;
@@ -857,12 +865,12 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 						this.setLastAttackingEntity(par1Entity);
 					}
 
-					ItemStack var7 = this.getCurrentEquippedItem();
+					ItemStack var9 = this.getCurrentEquippedItem();
 
-					if (var7 != null && par1Entity instanceof EntityLiving) {
-						var7.hitEntity((EntityLiving)par1Entity, this);
+					if (var9 != null && par1Entity instanceof EntityLiving) {
+						var9.hitEntity((EntityLiving)par1Entity, this);
 
-						if (var7.stackSize <= 0) {
+						if (var9.stackSize <= 0) {
 							this.destroyCurrentEquippedItem();
 						}
 					}
@@ -873,10 +881,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 						}
 
 						this.addStat(StatList.damageDealtStat, var2);
-						int var8 = EnchantmentHelper.getFireAspectModifier(this, (EntityLiving)par1Entity);
 
-						if (var8 > 0 && var6) {
-							par1Entity.setFire(var8 * 4);
+						if (var7 > 0 && var8) {
+							par1Entity.setFire(var7 * 4);
+						} else if (var6) {
+							par1Entity.extinguish();
 						}
 					}
 

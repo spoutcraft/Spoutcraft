@@ -546,11 +546,8 @@ public abstract class World implements IBlockAccess {
 	 * Marks the block as needing an update with the renderer. Args: x, y, z
 	 */
 	public void markBlockNeedsUpdate(int par1, int par2, int par3) {
-		Iterator var4 = this.worldAccesses.iterator();
-
-		while (var4.hasNext()) {
-			IWorldAccess var5 = (IWorldAccess)var4.next();
-			var5.markBlockNeedsUpdate(par1, par2, par3);
+		for (int var4 = 0; var4 < this.worldAccesses.size(); ++var4) {
+			((IWorldAccess)this.worldAccesses.get(var4)).markBlockNeedsUpdate(par1, par2, par3);
 		}
 	}
 
@@ -586,20 +583,14 @@ public abstract class World implements IBlockAccess {
 	 * calls the 'MarkBlockAsNeedsUpdate' in all block accesses in this world
 	 */
 	public void markBlockAsNeedsUpdate(int par1, int par2, int par3) {
-		Iterator var4 = this.worldAccesses.iterator();
-
-		while (var4.hasNext()) {
-			IWorldAccess var5 = (IWorldAccess)var4.next();
-			var5.markBlockRangeNeedsUpdate(par1, par2, par3, par1, par2, par3);
+		for (int var4 = 0; var4 < this.worldAccesses.size(); ++var4) {
+			((IWorldAccess)this.worldAccesses.get(var4)).markBlockRangeNeedsUpdate(par1, par2, par3, par1, par2, par3);
 		}
 	}
 
 	public void markBlocksDirty(int par1, int par2, int par3, int par4, int par5, int par6) {
-		Iterator var7 = this.worldAccesses.iterator();
-
-		while (var7.hasNext()) {
-			IWorldAccess var8 = (IWorldAccess)var7.next();
-			var8.markBlockRangeNeedsUpdate(par1, par2, par3, par4, par5, par6);
+		for (int var7 = 0; var7 < this.worldAccesses.size(); ++var7) {
+			((IWorldAccess)this.worldAccesses.get(var7)).markBlockRangeNeedsUpdate(par1, par2, par3, par4, par5, par6);
 		}
 	}
 
@@ -850,11 +841,9 @@ public abstract class World implements IBlockAccess {
 					if (this.chunkExists(par2 >> 4, par4 >> 4)) {
 						Chunk var6 = this.getChunkFromChunkCoords(par2 >> 4, par4 >> 4);
 						var6.setLightValue(par1EnumSkyBlock, par2 & 15, par3, par4 & 15, par5);
-						Iterator var7 = this.worldAccesses.iterator();
 
-						while (var7.hasNext()) {
-							IWorldAccess var8 = (IWorldAccess)var7.next();
-							var8.markBlockNeedsUpdate2(par2, par3, par4);
+						for (int var7 = 0; var7 < this.worldAccesses.size(); ++var7) {
+							((IWorldAccess)this.worldAccesses.get(var7)).markBlockNeedsUpdate2(par2, par3, par4);
 						}
 					}
 				}
@@ -866,11 +855,8 @@ public abstract class World implements IBlockAccess {
 	 * all WorldAcceses mark this block as dirty
 	 */
 	public void markBlockNeedsUpdateForAll(int par1, int par2, int par3) {
-		Iterator var4 = this.worldAccesses.iterator();
-
-		while (var4.hasNext()) {
-			IWorldAccess var5 = (IWorldAccess)var4.next();
-			var5.markBlockNeedsUpdate2(par1, par2, par3);
+		for (int var4 = 0; var4 < this.worldAccesses.size(); ++var4) {
+			((IWorldAccess)this.worldAccesses.get(var4)).markBlockNeedsUpdate2(par1, par2, par3);
 		}
 	}
 
@@ -1091,24 +1077,17 @@ public abstract class World implements IBlockAccess {
 	 */
 	public void playSoundAtEntity(Entity par1Entity, String par2Str, float par3, float par4) {
 		if (par1Entity != null && par2Str != null) {
-			Iterator var5 = this.worldAccesses.iterator();
-
-			while (var5.hasNext()) {
-				IWorldAccess var6 = (IWorldAccess)var5.next();
-				var6.playSound(par2Str, par1Entity.posX, par1Entity.posY - (double)par1Entity.yOffset, par1Entity.posZ, par3, par4);
+			for (int var5 = 0; var5 < this.worldAccesses.size(); ++var5) {
+				((IWorldAccess)this.worldAccesses.get(var5)).playSound(par2Str, par1Entity.posX, par1Entity.posY - (double)par1Entity.yOffset, par1Entity.posZ, par3, par4);
 			}
 		}
 	}
 
 	public void func_85173_a(EntityPlayer par1EntityPlayer, String par2Str, float par3, float par4) {
 		if (par1EntityPlayer != null && par2Str != null) {
-			Iterator var5 = this.worldAccesses.iterator();
-
-			while (var5.hasNext()) {
-				IWorldAccess var6 = (IWorldAccess)var5.next();
-				var6.func_85102_a(par1EntityPlayer, par2Str, par1EntityPlayer.posX, par1EntityPlayer.posY - (double)par1EntityPlayer.yOffset, par1EntityPlayer.posZ, par3, par4);
+			for (int var5 = 0; var5 < this.worldAccesses.size(); ++var5) {
+				((IWorldAccess)this.worldAccesses.get(var5)).func_85102_a(par1EntityPlayer, par2Str, par1EntityPlayer.posX, par1EntityPlayer.posY - (double)par1EntityPlayer.yOffset, par1EntityPlayer.posZ, par3, par4);
 			}
-		}
 	}
 
 	/**
@@ -1118,11 +1097,8 @@ public abstract class World implements IBlockAccess {
 	 */
 	public void playSoundEffect(double par1, double par3, double par5, String par7Str, float par8, float par9) {
 		if (par7Str != null) {
-			Iterator var10 = this.worldAccesses.iterator();
-
-			while (var10.hasNext()) {
-				IWorldAccess var11 = (IWorldAccess)var10.next();
-				var11.playSound(par7Str, par1, par3, par5, par8, par9);
+			for (int var10 = 0; var10 < this.worldAccesses.size(); ++var10) {
+				((IWorldAccess)this.worldAccesses.get(var10)).playSound(par7Str, par1, par3, par5, par8, par9);
 			}
 		}
 	}
@@ -1136,11 +1112,8 @@ public abstract class World implements IBlockAccess {
 	 * Plays a record at the specified coordinates of the specified name. Args: recordName, x, y, z
 	 */
 	public void playRecord(String par1Str, int par2, int par3, int par4) {
-		Iterator var5 = this.worldAccesses.iterator();
-
-		while (var5.hasNext()) {
-			IWorldAccess var6 = (IWorldAccess)var5.next();
-			var6.playRecord(par1Str, par2, par3, par4);
+		for (int var5 = 0; var5 < this.worldAccesses.size(); ++var5) {
+			((IWorldAccess)this.worldAccesses.get(var5)).playRecord(par1Str, par2, par3, par4);
 		}
 	}
 
@@ -1148,11 +1121,8 @@ public abstract class World implements IBlockAccess {
 	 * Spawns a particle.  Args particleName, x, y, z, velX, velY, velZ
 	 */
 	public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {
-		Iterator var14 = this.worldAccesses.iterator();
-
-		while (var14.hasNext()) {
-			IWorldAccess var15 = (IWorldAccess)var14.next();
-			var15.spawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
+		for (int var14 = 0; var14 < this.worldAccesses.size(); ++var14) {
+			((IWorldAccess)this.worldAccesses.get(var14)).spawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
 		}
 	}
 
@@ -1196,11 +1166,8 @@ public abstract class World implements IBlockAccess {
 	 * Start the skin for this entity downloading, if necessary, and increment its reference counter
 	 */
 	public void obtainEntitySkin(Entity par1Entity) { // Spout protected -> public
-		Iterator var2 = this.worldAccesses.iterator();
-
-		while (var2.hasNext()) {
-			IWorldAccess var3 = (IWorldAccess)var2.next();
-			var3.obtainEntitySkin(par1Entity);
+		for (int var2 = 0; var2 < this.worldAccesses.size(); ++var2) {
+			((IWorldAccess)this.worldAccesses.get(var2)).obtainEntitySkin(par1Entity);
 		}
 	}
 
@@ -1208,11 +1175,8 @@ public abstract class World implements IBlockAccess {
 	 * Decrement the reference counter for this entity's skin image data
 	 */
 	public void releaseEntitySkin(Entity par1Entity) { // Spout protected -> public
-		Iterator var2 = this.worldAccesses.iterator();
-
-		while (var2.hasNext()) {
-			IWorldAccess var3 = (IWorldAccess)var2.next();
-			var3.releaseEntitySkin(par1Entity);
+		for (int var2 = 0; var2 < this.worldAccesses.size(); ++var2) {
+			((IWorldAccess)this.worldAccesses.get(var2)).releaseEntitySkin(par1Entity);
 		}
 	}
 
@@ -1300,22 +1264,20 @@ public abstract class World implements IBlockAccess {
 			}
 		}
 
-		double var15 = 0.25D;
-		List var17 = this.getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB.expand(var15, var15, var15));
-		Iterator var16 = var17.iterator();
+		double var14 = 0.25D;
+		List var16 = this.getEntitiesWithinAABBExcludingEntity(par1Entity, par2AxisAlignedBB.expand(var14, var14, var14));
 
-		while (var16.hasNext()) {
-			Entity var13 = (Entity)var16.next();
-			AxisAlignedBB var14 = var13.getBoundingBox();
+		for (int var15 = 0; var15 < var16.size(); ++var15) {
+			AxisAlignedBB var13 = ((Entity)var16.get(var15)).getBoundingBox();
 
-			if (var14 != null && var14.intersectsWith(par2AxisAlignedBB)) {
-				this.collidingBoundingBoxes.add(var14);
+			if (var13 != null && var13.intersectsWith(par2AxisAlignedBB)) {
+				this.collidingBoundingBoxes.add(var13);
 			}
 
-			var14 = par1Entity.getCollisionBox(var13);
+			var13 = par1Entity.getCollisionBox((Entity)var16.get(var15));
 
-			if (var14 != null && var14.intersectsWith(par2AxisAlignedBB)) {
-				this.collidingBoundingBoxes.add(var14);
+			if (var13 != null && var13.intersectsWith(par2AxisAlignedBB)) {
+				this.collidingBoundingBoxes.add(var13);
 			}
 		}
 
@@ -1597,8 +1559,8 @@ public abstract class World implements IBlockAccess {
 
 			try {
 				var2.onUpdate();
-			} catch (Throwable var8) {
-				var4 = CrashReport.func_85055_a(var8, "Ticking entity");
+			} catch (Throwable var6) {
+				var4 = CrashReport.func_85055_a(var6, "Ticking entity");
 				var5 = var4.func_85058_a("Entity being ticked");
 
 				if (var2 == null) {
@@ -1617,25 +1579,21 @@ public abstract class World implements IBlockAccess {
 
 		this.theProfiler.endStartSection("remove");
 		this.loadedEntityList.removeAll(this.unloadedEntityList);
-		Iterator var9 = this.unloadedEntityList.iterator();
 		int var3;
-		int var14;
+		int var13;
 
-		while (var9.hasNext()) {
-			var2 = (Entity)var9.next();
+		for (var1 = 0; var1 < this.unloadedEntityList.size(); ++var1) {
+			var2 = (Entity)this.unloadedEntityList.get(var1);
 			var3 = var2.chunkCoordX;
-			var14 = var2.chunkCoordZ;
+			var13 = var2.chunkCoordZ;
 
-			if (var2.addedToChunk && this.chunkExists(var3, var14)) {
-				this.getChunkFromChunkCoords(var3, var14).removeEntity(var2);
+			if (var2.addedToChunk && this.chunkExists(var3, var13)) {
+				this.getChunkFromChunkCoords(var3, var13).removeEntity(var2);
 			}
 		}
 
-		var9 = this.unloadedEntityList.iterator();
-
-		while (var9.hasNext()) {
-			var2 = (Entity)var9.next();
-			this.releaseEntitySkin(var2);
+		for (var1 = 0; var1 < this.unloadedEntityList.size(); ++var1) {
+			this.releaseEntitySkin((Entity)this.unloadedEntityList.get(var1));
 		}
 
 		this.unloadedEntityList.clear();
@@ -1658,8 +1616,8 @@ public abstract class World implements IBlockAccess {
 			if (!var2.isDead) {
 				try {
 					this.updateEntity(var2);
-				} catch (Throwable var6) {
-					var4 = CrashReport.func_85055_a(var6, "Ticking entity");
+				} catch (Throwable var7) {
+					var4 = CrashReport.func_85055_a(var7, "Ticking entity");
 					var5 = var4.func_85058_a("Entity being ticked");
 
 					if (var2 == null) {
@@ -1677,10 +1635,10 @@ public abstract class World implements IBlockAccess {
 
 			if (var2.isDead) {
 				var3 = var2.chunkCoordX;
-				var14 = var2.chunkCoordZ;
+				var13 = var2.chunkCoordZ;
 
-				if (var2.addedToChunk && this.chunkExists(var3, var14)) {
-					this.getChunkFromChunkCoords(var3, var14).removeEntity(var2);
+				if (var2.addedToChunk && this.chunkExists(var3, var13)) {
+					this.getChunkFromChunkCoords(var3, var13).removeEntity(var2);
 				}
 
 				this.loadedEntityList.remove(var1--);
@@ -1692,36 +1650,36 @@ public abstract class World implements IBlockAccess {
 
 		this.theProfiler.endStartSection("tileEntities");
 		this.scanningTileEntities = true;
-		var9 = this.loadedTileEntityList.iterator();
+		Iterator var14 = this.loadedTileEntityList.iterator();
 
-		while (var9.hasNext()) {
-			TileEntity var10 = (TileEntity)var9.next();
+		while (var14.hasNext()) {
+			TileEntity var9 = (TileEntity)var14.next();
 
-			if (!var10.isInvalid() && var10.func_70309_m() && this.blockExists(var10.xCoord, var10.yCoord, var10.zCoord)) {
+			if (!var9.isInvalid() && var9.func_70309_m() && this.blockExists(var9.xCoord, var9.yCoord, var9.zCoord)) {
 				try {
-					var10.updateEntity();
-				} catch (Throwable var7) {
-					var4 = CrashReport.func_85055_a(var7, "Ticking tile entity");
+					var9.updateEntity();
+				} catch (Throwable var8) {
+					var4 = CrashReport.func_85055_a(var8, "Ticking tile entity");
 					var5 = var4.func_85058_a("Tile entity being ticked");
 
-					if (var10 == null) {
+					if (var9 == null) {
 						var5.addCrashSection("Tile entity", "~~NULL~~");
 					} else {
-						var10.func_85027_a(var5);
+						var9.func_85027_a(var5);
 					}
 
 					throw new ReportedException(var4);
 				}
 			}
 
-			if (var10.isInvalid()) {
-				var9.remove();
+			if (var9.isInvalid()) {
+				var14.remove();
 
-				if (this.chunkExists(var10.xCoord >> 4, var10.zCoord >> 4)) {
-					Chunk var12 = this.getChunkFromChunkCoords(var10.xCoord >> 4, var10.zCoord >> 4);
+				if (this.chunkExists(var9.xCoord >> 4, var9.zCoord >> 4)) {
+					Chunk var11 = this.getChunkFromChunkCoords(var9.xCoord >> 4, var9.zCoord >> 4);
 
-					if (var12 != null) {
-						var12.removeChunkBlockTileEntity(var10.xCoord & 15, var10.yCoord, var10.zCoord & 15);
+					if (var11 != null) {
+						var11.removeChunkBlockTileEntity(var9.xCoord & 15, var9.yCoord, var9.zCoord & 15);
 					}
 				}
 			}
@@ -1730,32 +1688,23 @@ public abstract class World implements IBlockAccess {
 		this.scanningTileEntities = false;
 
 		if (!this.entityRemoval.isEmpty()) {
-			this.loadedTileEntityList.removeAll(this.entityRemoval);
-			this.entityRemoval.clear();
-		}
+			for (int var10 = 0; var10 < this.addedTileEntityList.size(); ++var10) {
+				TileEntity var12 = (TileEntity)this.addedTileEntityList.get(var10);
 
-		this.theProfiler.endStartSection("pendingTileEntities");
-
-		if (!this.addedTileEntityList.isEmpty()) {
-			Iterator var11 = this.addedTileEntityList.iterator();
-
-			while (var11.hasNext()) {
-				TileEntity var13 = (TileEntity)var11.next();
-
-				if (!var13.isInvalid()) {
-					if (!this.loadedTileEntityList.contains(var13)) {
-						this.loadedTileEntityList.add(var13);
+				if (!var12.isInvalid()) {
+					if (!this.loadedTileEntityList.contains(var12)) {
+						this.loadedTileEntityList.add(var12);
 					}
 
-					if (this.chunkExists(var13.xCoord >> 4, var13.zCoord >> 4)) {
-						Chunk var15 = this.getChunkFromChunkCoords(var13.xCoord >> 4, var13.zCoord >> 4);
+					if (this.chunkExists(var12.xCoord >> 4, var12.zCoord >> 4)) {
+						Chunk var15 = this.getChunkFromChunkCoords(var12.xCoord >> 4, var12.zCoord >> 4);
 
 						if (var15 != null) {
-							var15.setChunkBlockTileEntity(var13.xCoord & 15, var13.yCoord, var13.zCoord & 15, var13);
+							var15.setChunkBlockTileEntity(var12.xCoord & 15, var12.yCoord, var12.zCoord & 15, var12);
 						}
 					}
 
-					this.markBlockNeedsUpdate(var13.xCoord, var13.yCoord, var13.zCoord);
+					this.markBlockNeedsUpdate(var12.xCoord, var12.yCoord, var12.zCoord);
 				}
 			}
 
@@ -1869,18 +1818,16 @@ public abstract class World implements IBlockAccess {
 	 */
 	public boolean checkIfAABBIsClearExcludingEntity(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity) {
 		List var3 = this.getEntitiesWithinAABBExcludingEntity((Entity)null, par1AxisAlignedBB);
-		Iterator var4 = var3.iterator();
-		Entity var5;
 
-		do {
-			if (!var4.hasNext()) {
-				return true;
+		for (int var4 = 0; var4 < var3.size(); ++var4) {
+			Entity var5 = (Entity)var3.get(var4);
+
+			if (!var5.isDead && var5.preventEntitySpawning && var5 != par2Entity) {
+				return false;
 			}
+		}
 
-			var5 = (Entity)var4.next();
-		} while (var5.isDead || !var5.preventEntitySpawning || var5 == par2Entity);
-
-		return false;
+		return true;
 	}
 
 	/**
@@ -2209,10 +2156,8 @@ public abstract class World implements IBlockAccess {
 				TileEntity var5 = var4.getChunkBlockTileEntity(par1 & 15, par2, par3 & 15);
 
 				if (var5 == null) {
-					Iterator var6 = this.addedTileEntityList.iterator();
-
-					while (var6.hasNext()) {
-						TileEntity var7 = (TileEntity)var6.next();
+					for (int var6 = 0; var6 < this.addedTileEntityList.size(); ++var6) {
+						TileEntity var7 = (TileEntity)this.addedTileEntityList.get(var6);
 
 						if (!var7.isInvalid() && var7.xCoord == par1 && var7.yCoord == par2 && var7.zCoord == par3) {
 							var5 = var7;
@@ -2956,10 +2901,9 @@ public abstract class World implements IBlockAccess {
 		List var4 = this.getEntitiesWithinAABB(par1Class, par2AxisAlignedBB);
 		Entity var5 = null;
 		double var6 = Double.MAX_VALUE;
-		Iterator var8 = var4.iterator();
 
-		while (var8.hasNext()) {
-			Entity var9 = (Entity)var8.next();
+		for (int var8 = 0; var8 < var4.size(); ++var8) {
+			Entity var9 = (Entity)var4.get(var8);
 
 			if (var9 != par3Entity) {
 				double var10 = par3Entity.getDistanceSqToEntity(var9);
@@ -3504,10 +3448,8 @@ public abstract class World implements IBlockAccess {
 	 * value
 	 */
 	public void destroyBlockInWorldPartially(int par1, int par2, int par3, int par4, int par5) {
-		Iterator var6 = this.worldAccesses.iterator();
-
-		while (var6.hasNext()) {
-			IWorldAccess var7 = (IWorldAccess)var6.next();
+		for (int var6 = 0; var6 < this.worldAccesses.size(); ++var6) {
+			IWorldAccess var7 = (IWorldAccess)this.worldAccesses.get(var6);
 			var7.destroyBlockPartially(par1, par2, par3, par4, par5);
 		}
 	}

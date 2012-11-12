@@ -389,10 +389,8 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 	 * Attacks all entities inside this list, dealing 5 hearts of damage.
 	 */
 	private void attackEntitiesInList(List par1List) {
-		Iterator var2 = par1List.iterator();
-
-		while (var2.hasNext()) {
-			Entity var3 = (Entity)var2.next();
+		for (int var2 = 0; var2 < par1List.size(); ++var2) {
+			Entity var3 = (Entity)par1List.get(var2);
 
 			if (var3 instanceof EntityLiving) {
 				var3.attackEntityFrom(DamageSource.causeMobDamage(this), 10);

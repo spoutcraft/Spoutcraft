@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
@@ -22,6 +23,7 @@ public class EffectRenderer {
 	/** Reference to the World object. */
 	protected World worldObj;
 	private List[] fxLayers = new List[4];
+	private List field_90038_c = new ArrayList();
 	private RenderEngine renderer;
 
 	/** RNG. */
@@ -40,6 +42,10 @@ public class EffectRenderer {
 	}
 
 	public void addEffect(EntityFX par1EntityFX) {
+		this.field_90038_c.add(par1EntityFX);
+	}
+
+	private void func_90037_b(EntityFX par1EntityFX) {
 		int var2 = par1EntityFX.getFXLayer();
 
 		if (this.fxLayers[var2].size() >= 4000) {
@@ -51,15 +57,33 @@ public class EffectRenderer {
 
 	public void updateEffects() {
 		for (int var1 = 0; var1 < 4; ++var1) {
-			for (int var2 = 0; var2 < this.fxLayers[var1].size(); ++var2) {
-				EntityFX var3 = (EntityFX)this.fxLayers[var1].get(var2);
-				var3.onUpdate();
+			EntityFX var2 = null;
 
-				if (var3.isDead) {
-					this.fxLayers[var1].remove(var2--);
+			try {
+				for (int var3 = 0; var3 < this.fxLayers[var1].size(); ++var3) {
+					var2 = (EntityFX)this.fxLayers[var1].get(var3);
+					var2.onUpdate();
+
+					if (var2.isDead) {
+						this.fxLayers[var1].remove(var3--);
+					}
 				}
+			} catch (Throwable var7) {
+				CrashReport var4 = CrashReport.func_85055_a(var7, "Uncaught exception while ticking particles");
+				CrashReportCategory var5 = var4.func_85058_a("Particle engine details");
+				var5.addCrashSectionCallable("Last ticked particle", new CallableLastTickedParticle(this, var2));
+				var5.addCrashSection("Texture index", Integer.valueOf(var1));
+				throw new ReportedException(var4);
 			}
 		}
+
+		Iterator var8 = this.field_90038_c.iterator();
+
+		while (var8.hasNext()) {
+			this.func_90037_b((EntityFX)var8.next());
+		}
+
+		this.field_90038_c.clear();
 	}
 
 	/**
