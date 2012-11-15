@@ -151,7 +151,10 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.cameraPitch += (var2 - this.cameraPitch) * 0.8F;
 	}
 
-	public void func_70062_b(int par1, ItemStack par2ItemStack) {
+	/**
+	 * Sets the held item, or an armor slot. Slot 0 is held item. Slot 1-4 is armor. Params: Item, slot
+	 */
+	public void setCurrentItemOrArmor(int par1, ItemStack par2ItemStack) {
 		if (par1 == 0) {
 			this.inventory.mainInventory[this.inventory.currentItem] = par2ItemStack;
 		} else {
@@ -174,7 +177,10 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		return false;
 	}
 
-	public ChunkCoordinates func_82114_b() {
+	/**
+	 * Return the coordinates for this player as ChunkCoordinates.
+	 */
+	public ChunkCoordinates getPlayerCoordinates() {
 		return new ChunkCoordinates(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
 	}
 

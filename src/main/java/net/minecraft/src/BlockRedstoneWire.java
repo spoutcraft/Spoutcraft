@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -80,10 +79,9 @@ public class BlockRedstoneWire extends Block {
 		this.calculateCurrentChanges(par1World, par2, par3, par4, par2, par3, par4);
 		ArrayList var5 = new ArrayList(this.blocksNeedingUpdate);
 		this.blocksNeedingUpdate.clear();
-		Iterator var6 = var5.iterator();
 
-		while (var6.hasNext()) {
-			ChunkPosition var7 = (ChunkPosition)var6.next();
+		for (int var6 = 0; var6 < var5.size(); ++var6) {
+			ChunkPosition var7 = (ChunkPosition)var5.get(var6);
 			par1World.notifyBlocksOfNeighborChange(var7.x, var7.y, var7.z, this.blockID);
 		}
 	}

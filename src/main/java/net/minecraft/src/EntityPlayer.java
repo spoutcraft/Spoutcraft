@@ -23,7 +23,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	protected FoodStats foodStats = new FoodStats();
 	protected int flyToggleTimer = 0;
 	public byte field_71098_bD = 0;
-	public int score = 0;
 	public float prevCameraYaw;
 	public float cameraYaw;
 	public String username;
@@ -42,7 +41,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public float field_71082_cx;
 	public float field_71089_bV;
 	private ChunkCoordinates spawnChunk;
-	private boolean field_82248_d;
+
+	/**
+	 * Whether this player's spawn point is forced, preventing execution of bed checks.
+	 */
+	private boolean spawnForced;
 	private ChunkCoordinates startMinecartRidingCoordinate;
 	public PlayerCapabilities capabilities = new PlayerCapabilities();
 	public int experienceLevel;
@@ -88,6 +91,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		super.entityInit();
 		this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
 		this.dataWatcher.addObject(17, Byte.valueOf((byte)0));
+		this.dataWatcher.addObject(18, Integer.valueOf(0));
 	}
 
 	public ItemStack getItemInUse() {
@@ -226,13 +230,22 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			this.foodStats.onUpdate(this);
 		}
 	}
-
-	public int func_82145_z() {
+/**
+	 * Return the amount of time this entity should stay in a portal before being transported.
+	 */
+	public int getMaxInPortalTime() {
 		return this.capabilities.disableDamage ? 0 : 80;
 	}
 
-	public int func_82147_ab() {
+	/**
+	 * Return the amount of cooldown before this entity can use a portal again.
+	 */
+	public int getPortalCooldown() {
 		return 10;
+	}
+
+	protected void func_85030_a(String par1Str, float par2, float par3) {
+		this.worldObj.func_85173_a(this, par1Str, par2, par3);
 	}
 
 	protected void updateItemUse(ItemStack par1ItemStack, int par2) {
@@ -241,18 +254,23 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		}
 
 		if (par1ItemStack.getItemUseAction() == EnumAction.eat) {
+			if (par1ItemStack.getItemUseAction() == EnumAction.drink) {
+			this.func_85030_a("random.drink", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+		}
+
+		if (par1ItemStack.getItemUseAction() == EnumAction.eat) {
 			for (int var3 = 0; var3 < par2; ++var3) {
-				Vec3 var4 = this.worldObj.func_82732_R().getVecFromPool(((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+				Vec3 var4 = this.worldObj.getWorldVec3Pool().getVecFromPool(((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
 				var4.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 				var4.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
-				Vec3 var5 = this.worldObj.func_82732_R().getVecFromPool(((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
+				Vec3 var5 = this.worldObj.getWorldVec3Pool().getVecFromPool(((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
 				var5.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 				var5.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
 				var5 = var5.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
 				this.worldObj.spawnParticle("iconcrack_" + par1ItemStack.getItem().shiftedIndex, var5.xCoord, var5.yCoord, var5.zCoord, var4.xCoord, var4.yCoord + 0.05D, var4.zCoord);
 			}
 
-			this.worldObj.playSoundAtEntity(this, "random.eat", 0.5F + 0.5F * (float)this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+			this.func_85030_a("random.eat", 0.5F + 0.5F * (float)this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 		}
 	}
 
@@ -339,7 +357,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	}
 
 	protected void updateEntityActionState() {
-		this.func_82168_bl();
+		this.updateArmSwingProgress();
 	}
 
 	public void onLivingUpdate() {
@@ -378,12 +396,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		this.cameraYaw += (var1 - this.cameraYaw) * 0.4F;
 		this.cameraPitch += (var2 - this.cameraPitch) * 0.8F;
 		if (this.getHealth() > 0) {
-			List var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0D, 0.0D, 1.0D));
+			List var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0D, 0.5D, 1.0D));
 			if (var3 != null) {
-				Iterator var4 = var3.iterator();
-
-				while (var4.hasNext()) {
-					Entity var5 = (Entity)var4.next();
+				for (int var4 = 0; var4 < var3.size(); ++var4) {
+					Entity var5 = (Entity)var3.get(var4);
 
 					if (!var5.isDead) {
 						this.collideWithPlayer(var5);
@@ -398,7 +414,16 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	}
 
 	public int getScore() {
-		return this.score;
+		return this.dataWatcher.getWatchableObjectInt(18);
+	}
+
+	public void func_85040_s(int par1) {
+		this.dataWatcher.updateObject(18, Integer.valueOf(par1));
+	}
+
+	public void func_85039_t(int par1) {
+		int var2 = this.getScore();
+		this.dataWatcher.updateObject(18, Integer.valueOf(var2 + par1));
 	}
 
 	public void onDeath(DamageSource par1DamageSource) {
@@ -410,7 +435,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			this.dropPlayerItemWithRandomChoice(new ItemStack(Item.appleRed, 1), true);
 		}
 
-		if (!this.worldObj.func_82736_K().func_82766_b("keepInventory")) {
+		if (!this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
 			this.inventory.dropAllItems();
 		}
 
@@ -426,7 +451,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	}
 
 	public void addToPlayerScore(Entity par1Entity, int par2) {
-		this.score += par2;
+		this.func_85039_t(par2);
 		if (par1Entity instanceof EntityPlayer) {
 			this.addStat(StatList.playerKillsStat, 1);
 		} else {
@@ -519,6 +544,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		this.experience = par1NBTTagCompound.getFloat("XpP");
 		this.experienceLevel = par1NBTTagCompound.getInteger("XpLevel");
 		this.experienceTotal = par1NBTTagCompound.getInteger("XpTotal");
+		this.func_85040_s(par1NBTTagCompound.getInteger("Score"));
+
 		if (this.sleeping) {
 			this.playerLocation = new ChunkCoordinates(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
 			this.wakeUpPlayer(true, true, false);
@@ -526,7 +553,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 		if (par1NBTTagCompound.hasKey("SpawnX") && par1NBTTagCompound.hasKey("SpawnY") && par1NBTTagCompound.hasKey("SpawnZ")) {
 			this.spawnChunk = new ChunkCoordinates(par1NBTTagCompound.getInteger("SpawnX"), par1NBTTagCompound.getInteger("SpawnY"), par1NBTTagCompound.getInteger("SpawnZ"));
-			this.field_82248_d = par1NBTTagCompound.getBoolean("SpawnForced");
+			this.spawnForced = par1NBTTagCompound.getBoolean("SpawnForced");
 		}
 
 		this.foodStats.readNBT(par1NBTTagCompound);
@@ -547,11 +574,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		par1NBTTagCompound.setFloat("XpP", this.experience);
 		par1NBTTagCompound.setInteger("XpLevel", this.experienceLevel);
 		par1NBTTagCompound.setInteger("XpTotal", this.experienceTotal);
+		par1NBTTagCompound.setInteger("Score", this.getScore());
+
 		if (this.spawnChunk != null) {
 			par1NBTTagCompound.setInteger("SpawnX", this.spawnChunk.posX);
 			par1NBTTagCompound.setInteger("SpawnY", this.spawnChunk.posY);
 			par1NBTTagCompound.setInteger("SpawnZ", this.spawnChunk.posZ);
-			par1NBTTagCompound.setBoolean("SpawnForced", this.field_82248_d);
+			par1NBTTagCompound.setBoolean("SpawnForced", this.spawnForced);
 		}
 
 		this.foodStats.writeNBT(par1NBTTagCompound);
@@ -561,7 +590,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 	public void displayGUIChest(IInventory par1IInventory) {}
 
-	public void displayGUIEnchantment(int par1, int par2, int par3) {}
+	/**
+	 * Displays the GUI for interacting with an anvil.
+	 */
+	public void displayGUIAnvil(int par1, int par2, int par3) {}
 
 	public void func_82244_d(int par1, int par2, int par3) {}
 
@@ -578,7 +610,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	}
 
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		if (this.capabilities.disableDamage && !par1DamageSource.canHarmInCreative()) {
+		if (this.func_85032_ar()) {
+			return false;
+		} else if (this.capabilities.disableDamage && !par1DamageSource.canHarmInCreative()) {
 			return false;
 		} else {
 			this.entityAge = 0;
@@ -698,7 +732,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	}
 
 	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout protected -> public
-		if (!this.field_83001_bt) {
+		if (!this.func_85032_ar()) {
 			if (!par1DamageSource.isUnblockable() && this.isBlocking()) {
 				par2 = 1 + par2 >> 1;
 			}
@@ -718,7 +752,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 	public void displayGUIBrewingStand(TileEntityBrewingStand par1TileEntityBrewingStand) {}
 
-	public void func_82240_a(TileEntityBeacon par1TileEntityBeacon) {}
+	/**
+	 * Displays the GUI for interacting with a beacon.
+	 */
+	public void displayGUIBeacon(TileEntityBeacon par1TileEntityBeacon) {}
 
 	public void displayGUIMerchant(IMerchant par1IMerchant) {}
 
@@ -762,78 +799,98 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 	public void attackTargetEntityWithCurrentItem(Entity par1Entity) {
 		if (par1Entity.canAttackWithItem()) {
-			int var2 = this.inventory.getDamageVsEntity(par1Entity);
-			if (this.isPotionActive(Potion.damageBoost)) {
-				var2 += 3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier();
-			}
+			if (!par1Entity.func_85031_j(this)) {
+				int var2 = this.inventory.getDamageVsEntity(par1Entity);
 
-			if (this.isPotionActive(Potion.weakness)) {
-				var2 -= 2 << this.getActivePotionEffect(Potion.weakness).getAmplifier();
-			}
-
-			int var3 = 0;
-			int var4 = 0;
-			if (par1Entity instanceof EntityLiving) {
-				var4 = EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLiving)par1Entity);
-				var3 += EnchantmentHelper.getKnockbackModifier(this, (EntityLiving)par1Entity);
-			}
-
-			if (this.isSprinting()) {
-				++var3;
-			}
-
-			if (var2 > 0 || var4 > 0) {
-				boolean var5 = this.fallDistance > 0.0F && !this.onGround && !this.isOnLadder() && !this.isInWater() && !this.isPotionActive(Potion.blindness) && this.ridingEntity == null && par1Entity instanceof EntityLiving;
-				if (var5) {
-					var2 += this.rand.nextInt(var2 / 2 + 2);
+				if (this.isPotionActive(Potion.damageBoost)) {
+					var2 += 3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier();
 				}
 
-				var2 += var4;
-				boolean var6 = par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), var2);
-				if (var6) {
-					if (var3 > 0) {
-						par1Entity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)var3 * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)var3 * 0.5F));
-						this.motionX *= 0.6D;
-						this.motionZ *= 0.6D;
-						this.setSprinting(false);
-					}
-
-					if (var5) {
-						this.onCriticalHit(par1Entity);
-					}
-
-					if (var4 > 0) {
-						this.onEnchantmentCritical(par1Entity);
-					}
-
-					if (var2 >= 18) {
-						this.triggerAchievement(AchievementList.overkill);
-					}
-
-					this.setLastAttackingEntity(par1Entity);
+				if (this.isPotionActive(Potion.weakness)) {
+					var2 -= 2 << this.getActivePotionEffect(Potion.weakness).getAmplifier();
 				}
 
-				ItemStack var7 = this.getCurrentEquippedItem();
-				if (var7 != null && par1Entity instanceof EntityLiving) {
-					var7.hitEntity((EntityLiving)par1Entity, this);
-					if (var7.stackSize <= 0) {
-						this.destroyCurrentEquippedItem();
-					}
-				}
+				int var3 = 0;
+				int var4 = 0;
 
 				if (par1Entity instanceof EntityLiving) {
-					if (par1Entity.isEntityAlive()) {
-						this.alertWolves((EntityLiving)par1Entity, true);
-					}
-
-					this.addStat(StatList.damageDealtStat, var2);
-					int var8 = EnchantmentHelper.getFireAspectModifier(this, (EntityLiving)par1Entity);
-					if (var8 > 0 && var6) {
-						par1Entity.setFire(var8 * 4);
-					}
+					var4 = EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLiving)par1Entity);
+					var3 += EnchantmentHelper.getKnockbackModifier(this, (EntityLiving)par1Entity);
 				}
 
-				this.addExhaustion(0.3F);
+				if (this.isSprinting()) {
+					++var3;
+				}
+
+				if (var2 > 0 || var4 > 0) {
+					boolean var5 = this.fallDistance > 0.0F && !this.onGround && !this.isOnLadder() && !this.isInWater() && !this.isPotionActive(Potion.blindness) && this.ridingEntity == null && par1Entity instanceof EntityLiving;
+
+					if (var5) {
+						var2 += this.rand.nextInt(var2 / 2 + 2);
+					}
+
+					var2 += var4;
+					boolean var6 = false;
+					int var7 = EnchantmentHelper.func_90036_a(this);
+
+					
+
+					if (par1Entity instanceof EntityLiving && var7 > 0 && !par1Entity.isBurning()) {
+						var6 = true;
+						par1Entity.setFire(1);
+					}
+
+					boolean var8 = par1Entity.attackEntityFrom(DamageSource.causePlayerDamage(this), var2);
+
+					if (var8) {
+						if (var3 > 0) {
+							par1Entity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)var3 * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)var3 * 0.5F));
+							this.motionX *= 0.6D;
+							this.motionZ *= 0.6D;
+							this.setSprinting(false);
+						}
+
+						if (var5) {
+							this.onCriticalHit(par1Entity);
+						}
+
+						if (var4 > 0) {
+							this.onEnchantmentCritical(par1Entity);
+						}
+
+						if (var2 >= 18) {
+							this.triggerAchievement(AchievementList.overkill);
+						}
+
+						this.setLastAttackingEntity(par1Entity);
+					}
+
+					ItemStack var9 = this.getCurrentEquippedItem();
+
+					if (var9 != null && par1Entity instanceof EntityLiving) {
+						var9.hitEntity((EntityLiving)par1Entity, this);
+
+						if (var9.stackSize <= 0) {
+							this.destroyCurrentEquippedItem();
+						}
+					}
+
+					if (par1Entity instanceof EntityLiving) {
+						if (par1Entity.isEntityAlive()) {
+							this.alertWolves((EntityLiving)par1Entity, true);
+						}
+
+						this.addStat(StatList.damageDealtStat, var2);
+
+						if (var7 > 0 && var8) {
+							par1Entity.setFire(var7 * 4);
+						} else if (var6) {
+							par1Entity.extinguish();
+						}
+					}
+
+					this.addExhaustion(0.3F);
+				}
 			}
 		}
 	}
@@ -990,11 +1047,15 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		var3.loadChunk(par1ChunkCoordinates.posX - 3 >> 4, par1ChunkCoordinates.posZ + 3 >> 4);
 		var3.loadChunk(par1ChunkCoordinates.posX + 3 >> 4, par1ChunkCoordinates.posZ + 3 >> 4);
 
-		if (par0World.getBlockId(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ) != Block.bed.blockID) {
-			return par2 && par0World.isAirBlock(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ) && par0World.isAirBlock(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY + 1, par1ChunkCoordinates.posZ) ? par1ChunkCoordinates : null;
+		if (par0World.getBlockId(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ) == Block.bed.blockID) {
+			ChunkCoordinates var8 = BlockBed.getNearestEmptyChunkCoordinates(par0World, par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ, 0);
+			return var8;
 		} else {
-			ChunkCoordinates var4 = BlockBed.getNearestEmptyChunkCoordinates(par0World, par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ, 0);
-			return var4;
+			Material var4 = par0World.getBlockMaterial(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ);
+			Material var5 = par0World.getBlockMaterial(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY + 1, par1ChunkCoordinates.posZ);
+			boolean var6 = !var4.isSolid() && !var4.isLiquid();
+			boolean var7 = !var5.isSolid() && !var5.isLiquid();
+			return par2 && var6 && var7 ? par1ChunkCoordinates : null;
 		}
 	}
 
@@ -1055,7 +1116,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	}
 
 	public boolean func_82245_bX() {
-		return this.field_82248_d;
+		return this.spawnForced;
 	}
 
 	/**
@@ -1064,10 +1125,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public void setSpawnChunk(ChunkCoordinates par1ChunkCoordinates, boolean par2) {
 		if (par1ChunkCoordinates != null) {
 			this.spawnChunk = new ChunkCoordinates(par1ChunkCoordinates);
-			this.field_82248_d = par2;
+			this.spawnForced = par2;
 		} else {
 			this.spawnChunk = null;
-			this.field_82248_d = false;
+			this.spawnForced = false;
 		}
 	}
 
@@ -1185,6 +1246,18 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		}
 	}
 
+	/**
+	 * Sets the Entity inside a web block.
+	 */
+	public void setInWeb() {
+		if (!this.capabilities.isFlying) {
+			super.setInWeb();
+		}
+	}
+
+	/**
+	 * Gets the Icon Index of the item currently held
+	 */
 	public int getItemIcon(ItemStack par1ItemStack, int par2) {
 		int var3 = super.getItemIcon(par1ItemStack, par2);
 		if (par1ItemStack.itemID == Item.fishingRod.shiftedIndex && this.fishEntity != null) {
@@ -1213,7 +1286,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		return var3;
 	}
 
-	public ItemStack func_82169_q(int par1) {
+	public ItemStack getCurrentArmor(int par1) {
 		return this.inventory.armorItemInSlot(par1);
 	}
 
@@ -1222,7 +1295,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	protected void func_82162_bC() {}
 
 	public void addExperience(int par1) {
-		this.score += par1;
+		this.func_85039_t(par1);
 		int var2 = Integer.MAX_VALUE - this.experienceTotal;
 		if (par1 > var2) {
 			par1 = var2;
@@ -1232,12 +1305,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 		for (this.experienceTotal += par1; this.experience >= 1.0F; this.experience /= (float)this.xpBarCap()) {
 			this.experience = (this.experience - 1.0F) * (float)this.xpBarCap();
-			//this.increaseLevel();
-			experienceLevel++;
+			this.addExperienceLevel(1);
 		}
 	}
 
-	public void func_82242_a(int par1) {
+	/**
+	 * Add experience levels to this player.
+	 */
+	public void addExperienceLevel(int par1) {
 		this.experienceLevel += par1;
 
 		if (this.experienceLevel < 0) {
@@ -1246,7 +1321,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 		if (par1 > 0 && this.experienceLevel % 5 == 0 && (float)this.field_82249_h < (float)this.ticksExisted - 100.0F) {
 			float var2 = this.experienceLevel > 30 ? 1.0F : (float)this.experienceLevel / 30.0F;
-			this.worldObj.playSoundAtEntity(this, "random.levelup", var2 * 0.75F, 1.0F);
+			this.func_85030_a("random.levelup", var2 * 0.75F, 1.0F);
 			this.field_82249_h = this.ticksExisted;
 		}
 	}
@@ -1285,18 +1360,28 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		}
 	}
 
-	public boolean func_82246_f(int par1, int par2, int par3) {
+	/**
+	 * Returns true if the item the player is holding can harvest the block at the given coords. Args: x, y, z.
+	 */
+	public boolean canCurrentToolHarvestBlock(int par1, int par2, int par3) {
 		if (this.capabilities.allowEdit) {
 			return true;
 		} else {
 			int var4 = this.worldObj.getBlockId(par1, par2, par3);
 
-			if (var4 > 0 && this.getCurrentEquippedItem() != null) {
+			if (var4 > 0) {
 				Block var5 = Block.blocksList[var4];
-				ItemStack var6 = this.getCurrentEquippedItem();
 
-				if (var6.canHarvestBlock(var5) || var6.getStrVsBlock(var5) > 1.0F) {
+				if (var5.blockMaterial.func_85157_q()) {
 					return true;
+				}
+
+				if (this.getCurrentEquippedItem() != null) {
+					ItemStack var6 = this.getCurrentEquippedItem();
+
+					if (var6.canHarvestBlock(var5) || var6.getStrVsBlock(var5) > 1.0F) {
+						return true;
+					}
 				}
 			}
 
@@ -1309,7 +1394,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	}
 
 	protected int getExperiencePoints(EntityPlayer par1EntityPlayer) {
-		if (this.worldObj.func_82736_K().func_82766_b("keepInventory")) {
+		if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
 			return 0;
 		} else {
 			int var2 = this.experienceLevel * 7;
@@ -1335,15 +1420,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			this.experienceLevel = par1EntityPlayer.experienceLevel;
 			this.experienceTotal = par1EntityPlayer.experienceTotal;
 			this.experience = par1EntityPlayer.experience;
-			this.score = par1EntityPlayer.score;
+			this.func_85040_s(par1EntityPlayer.getScore());
 			this.field_82152_aq = par1EntityPlayer.field_82152_aq;
-		} else if (this.worldObj.func_82736_K().func_82766_b("keepInventory")) {
+		} else if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
 			this.inventory.copyInventory(par1EntityPlayer.inventory);
 			this.experienceLevel = par1EntityPlayer.experienceLevel;
 			this.experienceTotal = par1EntityPlayer.experienceTotal;
 			this.experience = par1EntityPlayer.experience;
-			this.score = par1EntityPlayer.score;
-		}
+			this.func_85040_s(par1EntityPlayer.getScore());
 
 		this.theInventoryEnderChest = par1EntityPlayer.theInventoryEnderChest;
 	}
@@ -1416,7 +1500,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		return this.inventory.getCurrentItem();
 	}
 
-	public void func_70062_b(int par1, ItemStack par2ItemStack) {
+	/**
+	 * Sets the held item, or an armor slot. Slot 0 is held item. Slot 1-4 is armor. Params: Item, slot
+	 */
+	public void setCurrentItemOrArmor(int par1, ItemStack par2ItemStack) {
 		this.inventory.armorInventory[par1] = par2ItemStack;
 	}
 

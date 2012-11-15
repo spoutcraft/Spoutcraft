@@ -68,7 +68,10 @@ public class ContainerMerchant extends Container {
 		return this.theMerchant.getCustomer() == par1EntityPlayer;
 	}
 
-	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2) {
+	/**
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
+	 */
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
 		ItemStack var3 = null;
 		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
@@ -104,7 +107,7 @@ public class ContainerMerchant extends Container {
 				return null;
 			}
 
-			var4.func_82870_a(par1EntityPlayer, var5);
+			var4.onPickupFromSlot(par1EntityPlayer, var5);
 		}
 
 		return var3;

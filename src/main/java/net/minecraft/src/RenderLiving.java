@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -222,6 +223,8 @@ public class RenderLiving extends Render {
 		if (!par1EntityLiving.func_82150_aj()) {
 			this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
 			this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+		} else {
+			this.mainModel.setRotationAngles(par2, par3, par4, par5, par6, par7, par1EntityLiving);
 		}
 	}
 
@@ -258,7 +261,46 @@ public class RenderLiving extends Render {
 		return (float)par1EntityLiving.ticksExisted + par2;
 	}
 
-	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {}
+	protected void func_85093_e(EntityLiving par1EntityLiving, float par2) {
+		int var3 = par1EntityLiving.func_85035_bI();
+
+		if (var3 > 0) {
+			EntityArrow var4 = new EntityArrow(par1EntityLiving.worldObj, par1EntityLiving.posX, par1EntityLiving.posY, par1EntityLiving.posZ);
+			Random var5 = new Random((long)par1EntityLiving.entityId);
+			RenderHelper.disableStandardItemLighting();
+
+			for (int var6 = 0; var6 < var3; ++var6) {
+				GL11.glPushMatrix();
+				ModelRenderer var7 = this.mainModel.func_85181_a(var5);
+				ModelBox var8 = (ModelBox)var7.cubeList.get(var5.nextInt(var7.cubeList.size()));
+				var7.postRender(0.0625F);
+				float var9 = var5.nextFloat();
+				float var10 = var5.nextFloat();
+				float var11 = var5.nextFloat();
+				float var12 = (var8.posX1 + (var8.posX2 - var8.posX1) * var9) / 16.0F;
+				float var13 = (var8.posY1 + (var8.posY2 - var8.posY1) * var10) / 16.0F;
+				float var14 = (var8.posZ1 + (var8.posZ2 - var8.posZ1) * var11) / 16.0F;
+				GL11.glTranslatef(var12, var13, var14);
+				var9 = var9 * 2.0F - 1.0F;
+				var10 = var10 * 2.0F - 1.0F;
+				var11 = var11 * 2.0F - 1.0F;
+				var9 *= -1.0F;
+				var10 *= -1.0F;
+				var11 *= -1.0F;
+				float var15 = MathHelper.sqrt_float(var9 * var9 + var11 * var11);
+				var4.prevRotationYaw = var4.rotationYaw = (float)(Math.atan2((double)var9, (double)var11) * 180.0D / Math.PI);
+				var4.prevRotationPitch = var4.rotationPitch = (float)(Math.atan2((double)var10, (double)var15) * 180.0D / Math.PI);
+				double var16 = 0.0D;
+				double var18 = 0.0D;
+				double var20 = 0.0D;
+				float var22 = 0.0F;
+				this.renderManager.renderEntityWithPosYaw(var4, var16, var18, var20, var22, par2);
+				GL11.glPopMatrix();
+			}
+
+			RenderHelper.enableStandardItemLighting();
+		}
+	}
 
 	protected int inheritRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
 		return this.shouldRenderPass(par1EntityLiving, par2, par3);

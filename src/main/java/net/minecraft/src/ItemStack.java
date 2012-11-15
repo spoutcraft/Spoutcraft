@@ -29,7 +29,9 @@ public class ItemStack { // Spout final -> gone
 
 	/** Damage dealt to the item or number of use. Raise when using items. */
 	private int itemDamage;
-	private EntityItemFrame field_82843_f;
+
+	/** Item frame this stack is on, or null if not on an item frame. */
+	private EntityItemFrame itemFrame;
 
 	public ItemStack(Block par1Block) {
 		this(par1Block, 1);
@@ -57,7 +59,7 @@ public class ItemStack { // Spout final -> gone
 
 	public ItemStack(int par1, int par2, int par3) {
 		this.stackSize = 0;
-		this.field_82843_f = null;
+		this.itemFrame = null;
 		this.itemID = par1;
 		this.stackSize = par2;
 		this.itemDamage = par3;
@@ -71,7 +73,7 @@ public class ItemStack { // Spout final -> gone
 
 	private ItemStack() {
 		this.stackSize = 0;
-		this.field_82843_f = null;
+		this.itemFrame = null;
 	}
 
 	/**
@@ -315,7 +317,7 @@ public class ItemStack { // Spout final -> gone
 		return var1;
 	}
 
-	public static boolean func_77970_a(ItemStack par0ItemStack, ItemStack par1ItemStack) {
+	public static boolean areItemStackTagsEqual(ItemStack par0ItemStack, ItemStack par1ItemStack) {
 		return par0ItemStack == null && par1ItemStack == null ? true : (par0ItemStack != null && par1ItemStack != null ? (par0ItemStack.stackTagCompound == null && par1ItemStack.stackTagCompound != null ? false : par0ItemStack.stackTagCompound == null || par0ItemStack.stackTagCompound.equals(par1ItemStack.stackTagCompound)) : false);
 	}
 
@@ -434,7 +436,10 @@ public class ItemStack { // Spout final -> gone
 		this.stackTagCompound = par1NBTTagCompound;
 	}
 
-	public String func_82833_r() {
+	/**
+	 * returns the display name of the itemstack
+	 */
+	public String getDisplayName() {
 		String var1 = this.getItem().getItemDisplayName(this);
 
 		if (this.stackTagCompound != null && this.stackTagCompound.hasKey("display")) {
@@ -448,7 +453,10 @@ public class ItemStack { // Spout final -> gone
 		return var1;
 	}
 
-	public void func_82834_c(String par1Str) {
+	/**
+	 * Sets the item's name (used by anvil to rename the items).
+	 */
+	public void setItemName(String par1Str) {
 		if (this.stackTagCompound == null) {
 			this.stackTagCompound = new NBTTagCompound();
 		}
@@ -460,14 +468,25 @@ public class ItemStack { // Spout final -> gone
 		this.stackTagCompound.getCompoundTag("display").setString("Name", par1Str);
 	}
 
-	public boolean func_82837_s() {
+	/**
+	 * Returns true if the itemstack has a display name
+	 */
+	public boolean hasDisplayName() {
 		return this.stackTagCompound == null ? false : (!this.stackTagCompound.hasKey("display") ? false : this.stackTagCompound.getCompoundTag("display").hasKey("Name"));
 	}
 
-	public List func_82840_a(EntityPlayer par1EntityPlayer, boolean par2) {
+	/**
+	 * Return a list of strings containing information about the item
+	 */
+	public List getTooltip(EntityPlayer par1EntityPlayer, boolean par2) {
+		
 		ArrayList var3 = new ArrayList();
 		Item var4 = Item.itemsList[this.itemID];
-		String var5 = this.func_82833_r();
+		String var5 = this.getDisplayName();
+
+		if (this.hasDisplayName()) {
+			var5 = "\u00a7o" + var5 + "\u00a7r";
+		}
 
 		if (par2) {
 			String var6 = "";
@@ -482,12 +501,8 @@ public class ItemStack { // Spout final -> gone
 			} else {
 				var5 = var5 + String.format("#%04d%s", new Object[] {Integer.valueOf(this.itemID), var6});
 			}
-		} else if (!this.func_82837_s()) {
-			if (this.itemID == Item.map.shiftedIndex) {
-				var5 = var5 + " #" + this.itemDamage;
-			}
-		} else {
-			var5 = "\u00a7o" + var5;
+		} else if (!this.hasDisplayName() && this.itemID == Item.map.shiftedIndex) {
+			var5 = var5 + " #" + this.itemDamage;
 		}
 
 		var3.add(var5);
@@ -590,23 +605,40 @@ public class ItemStack { // Spout final -> gone
 		return this.getItem().func_82788_x();
 	}
 
-	public boolean func_82839_y() {
-		return this.field_82843_f != null;
+	
+
+	/**
+	 * Return whether this stack is on an item frame.
+	 */
+	public boolean isOnItemFrame() {
+		return this.itemFrame != null;
 	}
 
-	public void func_82842_a(EntityItemFrame par1EntityItemFrame) {
-		this.field_82843_f = par1EntityItemFrame;
+	/**
+	 * Set the item frame this stack is on.
+	 */
+	public void setItemFrame(EntityItemFrame par1EntityItemFrame) {
+		this.itemFrame = par1EntityItemFrame;
 	}
 
-	public EntityItemFrame func_82836_z() {
-		return this.field_82843_f;
+	/**
+	 * Return the item frame this stack is on. Returns null if not on an item frame.
+	 */
+	public EntityItemFrame getItemFrame() {
+		return this.itemFrame;
 	}
 
-	public int func_82838_A() {
+	/**
+	 * Get this stack's repair cost, or 0 if no repair cost is defined.
+	 */
+	public int getRepairCost() {
 		return this.hasTagCompound() && this.stackTagCompound.hasKey("RepairCost") ? this.stackTagCompound.getInteger("RepairCost") : 0;
 	}
 
-	public void func_82841_c(int par1) {
+	/**
+	 * Set this stack's repair cost.
+	 */
+	public void setRepairCost(int par1) {
 		if (!this.hasTagCompound()) {
 			this.stackTagCompound = new NBTTagCompound();
 		}

@@ -50,7 +50,7 @@ public class Slot {
 	 */
 	protected void onCrafting(ItemStack par1ItemStack) {}
 
-	public void func_82870_a(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
+	public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
 		this.onSlotChanged();
 	}
 
@@ -119,7 +119,10 @@ public class Slot {
 		return par1IInventory == this.inventory && par2 == this.slotIndex;
 	}
 
-	public boolean func_82869_a(EntityPlayer par1EntityPlayer) {
+	/**
+	 * Return whether this slot's stack can be taken from this slot.
+	 */
+	public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
 		return true;
 	}
 }

@@ -35,7 +35,10 @@ public interface IBlockAccess {
 	 */
 	boolean doesBlockHaveSolidTopSurface(int var1, int var2, int var3);
 
-	Vec3Pool func_82732_R();
+	/**
+	 * Return the Vec3Pool object for this world.
+	 */
+	Vec3Pool getWorldVec3Pool();
 
 	/**
 	 * Is this block powering in the specified direction Args: x, y, z, direction

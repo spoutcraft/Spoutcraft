@@ -32,7 +32,9 @@ public class EntityGhast extends EntityFlying implements IMob {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		if ("fireball".equals(par1DamageSource.getDamageType()) && par1DamageSource.getEntity() instanceof EntityPlayer) {
+		if (this.func_85032_ar()) {
+			return false;
+		} else if ("fireball".equals(par1DamageSource.getDamageType()) && par1DamageSource.getEntity() instanceof EntityPlayer) {
 			super.attackEntityFrom(par1DamageSource, 1000);
 			((EntityPlayer)par1DamageSource.getEntity()).triggerAchievement(AchievementList.ghast);
 			return true;

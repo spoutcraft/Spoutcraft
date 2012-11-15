@@ -15,7 +15,9 @@ public class EntityCreeper extends EntityMob {
 	 */
 	private int timeSinceIgnited;
 	private int field_82225_f = 30;
-	private int field_82226_g = 3;
+
+	/** Explosion radius for this creeper. */
+	private int explosionRadius = 3;
 
 	public EntityCreeper(World par1World) {
 		super(par1World);
@@ -78,7 +80,7 @@ public class EntityCreeper extends EntityMob {
 		}
 
 		par1NBTTagCompound.setShort("Fuse", (short)this.field_82225_f);
-		par1NBTTagCompound.setByte("ExplosionRadius", (byte)this.field_82226_g);
+		par1NBTTagCompound.setByte("ExplosionRadius", (byte)this.explosionRadius);
 	}
 
 	/**
@@ -93,7 +95,7 @@ public class EntityCreeper extends EntityMob {
 		}
 
 		if (par1NBTTagCompound.hasKey("ExplosionRadius")) {
-			this.field_82226_g = par1NBTTagCompound.getByte("ExplosionRadius");
+			this.explosionRadius = par1NBTTagCompound.getByte("ExplosionRadius");
 		}
 	}
 
@@ -106,7 +108,7 @@ public class EntityCreeper extends EntityMob {
 			int var1 = this.getCreeperState();
 
 			if (var1 > 0 && this.timeSinceIgnited == 0) {
-				this.worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
+				this.func_85030_a("random.fuse", 1.0F, 0.5F);
 			}
 
 			this.timeSinceIgnited += var1;
@@ -119,12 +121,12 @@ public class EntityCreeper extends EntityMob {
 				this.timeSinceIgnited = this.field_82225_f;
 
 				if (!this.worldObj.isRemote) {
-					boolean var2 = this.worldObj.func_82736_K().func_82766_b("mobGriefing");
+					boolean var2 = this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
 
 					if (this.getPowered()) {
-						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (float)(this.field_82226_g * 2), var2);
+						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (float)(this.explosionRadius * 2), var2);
 					} else {
-						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (float)this.field_82226_g, var2);
+						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (float)this.explosionRadius, var2);
 					}
 
 					this.setDead();
@@ -156,7 +158,8 @@ public class EntityCreeper extends EntityMob {
 		super.onDeath(par1DamageSource);
 
 		if (par1DamageSource.getEntity() instanceof EntitySkeleton) {
-			this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(10), 1);
+			int var2 = Item.record13.shiftedIndex + this.rand.nextInt(Item.field_85180_cf.shiftedIndex - Item.record13.shiftedIndex + 1);
+			this.dropItem(var2, 1);
 		}
 	}
 

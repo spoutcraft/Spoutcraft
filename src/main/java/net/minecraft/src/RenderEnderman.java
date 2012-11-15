@@ -39,7 +39,7 @@ public class RenderEnderman extends RenderLiving {
 			var3 *= 1.0F;
 			GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			GL11.glScalef(var3, -var3, var3);
+			GL11.glScalef(-var3, -var3, var3);
 			int var4 = par1EntityEnderman.getBrightnessForRender(par2);
 			int var5 = var4 % 65536;
 			int var6 = var4 / 65536;

@@ -59,10 +59,9 @@ public class ContainerEnchantment extends Container {
 	 */
 	public void updateCraftingResults() {
 		super.updateCraftingResults();
-		Iterator var1 = this.crafters.iterator();
 
-		while (var1.hasNext()) {
-			ICrafting var2 = (ICrafting)var1.next();
+		for (int var1 = 0; var1 < this.crafters.size(); ++var1) {
+			ICrafting var2 = (ICrafting)this.crafters.get(var1);
 			var2.updateCraftingInventoryInfo(this, 0, this.enchantLevels[0]);
 			var2.updateCraftingInventoryInfo(this, 1, this.enchantLevels[1]);
 			var2.updateCraftingInventoryInfo(this, 2, this.enchantLevels[2]);
@@ -149,7 +148,7 @@ public class ContainerEnchantment extends Container {
 				List var4 = EnchantmentHelper.buildEnchantmentList(this.rand, var3, this.enchantLevels[par2]);
 
 				if (var4 != null) {
-					par1EntityPlayer.func_82242_a(-this.enchantLevels[par2]);
+					par1EntityPlayer.addExperienceLevel(-this.enchantLevels[par2]);
 					Iterator var5 = var4.iterator();
 
 					while (var5.hasNext()) {
@@ -186,7 +185,10 @@ public class ContainerEnchantment extends Container {
 		return this.worldPointer.getBlockId(this.posX, this.posY, this.posZ) != Block.enchantmentTable.blockID ? false : par1EntityPlayer.getDistanceSq((double)this.posX + 0.5D, (double)this.posY + 0.5D, (double)this.posZ + 0.5D) <= 64.0D;
 	}
 
-	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2) {
+	/**
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
+	 */
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
 		ItemStack var3 = null;
 		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
@@ -222,7 +224,7 @@ public class ContainerEnchantment extends Container {
 				return null;
 			}
 
-			var4.func_82870_a(par1EntityPlayer, var5);
+			var4.onPickupFromSlot(par1EntityPlayer, var5);
 		}
 
 		return var3;

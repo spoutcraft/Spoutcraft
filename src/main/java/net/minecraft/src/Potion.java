@@ -46,7 +46,9 @@ public class Potion {
 
 	/** The poison Potion object. */
 	public static final Potion poison = (new Potion(19, true, 5149489)).setPotionName("potion.poison").setIconIndex(6, 0).setEffectiveness(0.25D);
-	public static final Potion field_82731_v = (new Potion(20, true, 3484199)).setPotionName("potion.wither").setIconIndex(1, 2).setEffectiveness(0.25D);
+
+	/** The wither Potion object. */
+	public static final Potion wither = (new Potion(20, true, 3484199)).setPotionName("potion.wither").setIconIndex(1, 2).setEffectiveness(0.25D);
 	public static final Potion field_76434_w = null;
 	public static final Potion field_76444_x = null;
 	public static final Potion field_76443_y = null;
@@ -117,7 +119,7 @@ public class Potion {
 			if (par1EntityLiving.getHealth() > 1) {
 				par1EntityLiving.attackEntityFrom(DamageSource.magic, 1);
 			}
-		} else if (this.id == field_82731_v.id) {
+		} else if (this.id == wither.id) {
 			par1EntityLiving.attackEntityFrom(DamageSource.field_82727_n, 1);
 		} else if (this.id == hunger.id && par1EntityLiving instanceof EntityPlayer) {
 			((EntityPlayer)par1EntityLiving).addExhaustion(0.025F * (float)(par2 + 1));
@@ -166,7 +168,7 @@ public class Potion {
 		int var3;
 
 		if (this.id != regeneration.id && this.id != poison.id) {
-			if (this.id == field_82731_v.id) {
+			if (this.id == wither.id) {
 				var3 = 40 >> par2;
 				return var3 > 0 ? par1 % var3 == 0 : true;
 			} else {

@@ -179,11 +179,14 @@ public class EntitySpider extends EntityMob {
 		this.dataWatcher.updateObject(16, Byte.valueOf(var2));
 	}
 
-	public void func_82163_bD() {
+	/**
+	 * Initialize this creature.
+	 */
+	public void initCreature() {
 		if (this.worldObj.rand.nextInt(100) == 0) {
 			EntitySkeleton var1 = new EntitySkeleton(this.worldObj);
 			var1.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-			var1.func_82163_bD();
+			var1.initCreature();
 			this.worldObj.spawnEntityInWorld(var1);
 			var1.mountEntity(this);
 		}

@@ -224,8 +224,8 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 					var13 = -50.0D;
 				}
 
-				Vec3 var15 = this.worldObj.func_82732_R().getVecFromPool(this.targetX - this.posX, this.targetY - this.posY, this.targetZ - this.posZ).normalize();
-				Vec3 var40 = this.worldObj.func_82732_R().getVecFromPool((double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F), this.motionY, (double)(-MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F))).normalize();
+				Vec3 var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.targetX - this.posX, this.targetY - this.posY, this.targetZ - this.posZ).normalize();
+				Vec3 var40 = this.worldObj.getWorldVec3Pool().getVecFromPool((double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F), this.motionY, (double)(-MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F))).normalize();
 				float var17 = (float)(var40.dotProduct(var15) + 0.5D) / 1.5F;
 
 				if (var17 < 0.0F) {
@@ -252,7 +252,7 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 					this.moveEntity(this.motionX, this.motionY, this.motionZ);
 				}
 
-				Vec3 var23 = this.worldObj.func_82732_R().getVecFromPool(this.motionX, this.motionY, this.motionZ).normalize();
+				Vec3 var23 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.motionX, this.motionY, this.motionZ).normalize();
 				float var24 = (float)(var23.dotProduct(var40) + 1.0D) / 2.0F;
 				var24 = 0.8F + 0.15F * var24;
 				this.motionX *= (double)var24;
@@ -389,10 +389,8 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 	 * Attacks all entities inside this list, dealing 5 hearts of damage.
 	 */
 	private void attackEntitiesInList(List par1List) {
-		Iterator var2 = par1List.iterator();
-
-		while (var2.hasNext()) {
-			Entity var3 = (Entity)var2.next();
+		for (int var2 = 0; var2 < par1List.size(); ++var2) {
+			Entity var3 = (Entity)par1List.get(var2);
 
 			if (var3 instanceof EntityLiving) {
 				var3.attackEntityFrom(DamageSource.causeMobDamage(this), 10);

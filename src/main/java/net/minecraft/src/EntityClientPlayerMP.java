@@ -170,7 +170,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	 * with the reduced value. Args: damageAmount
 	 */
 	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout - public
-		if (!this.field_83001_bt) {
+		if (!this.func_85032_ar()) {
 			this.setEntityHealth(this.getHealth() - par2);
 		}
 		GuiChat.interruptChat(); // Spout

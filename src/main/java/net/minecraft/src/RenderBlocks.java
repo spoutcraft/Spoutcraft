@@ -128,7 +128,10 @@ public class RenderBlocks {
 		this.overrideBlockTexture = -1;
 	}
 
-	public void func_83020_a(double par1, double par3, double par5, double par7, double par9, double par11) {
+	/**
+	 * Sets the size and offset of the block to be rendered, ie: half size and rendered center block: 0.25D, 0.75D
+	 */
+	public void setRenderMinMax(double par1, double par3, double par5, double par7, double par9, double par11) {
 		if (!this.field_83023_m) {
 			this.field_83021_g = par1;
 			this.field_83026_h = par7;
@@ -141,12 +144,12 @@ public class RenderBlocks {
 
 	public void func_83018_a(Block par1Block) {
 		if (!this.field_83023_m) {
-			this.field_83021_g = par1Block.func_83009_v();
-			this.field_83026_h = par1Block.func_83007_w();
-			this.field_83027_i = par1Block.func_83008_x();
-			this.field_83024_j = par1Block.func_83010_y();
-			this.field_83025_k = par1Block.func_83005_z();
-			this.field_83022_l = par1Block.func_83006_A();
+			this.field_83021_g = par1Block.getBlockBoundsMinX();
+			this.field_83026_h = par1Block.getBlockBoundsMaxX();
+			this.field_83027_i = par1Block.getBlockBoundsMinY();
+			this.field_83024_j = par1Block.getBlockBoundsMaxY();
+			this.field_83025_k = par1Block.getBlockBoundsMinZ();
+			this.field_83022_l = par1Block.getBlockBoundsMaxZ();
 		}
 	}
 
@@ -196,16 +199,18 @@ public class RenderBlocks {
 		}
 
 		if (!BlockEndPortalFrame.isEnderEyeInserted(var5)) {
-			this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 0.8125D, 1.0D);
+			this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 0.8125D, 1.0D);
 			this.renderStandardBlock(par1Block, par2, par3, par4);
 			this.uvRotateTop = 0;
 			return true;
 		} else {
-			this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 0.8125D, 1.0D);
+			this.renderAllFaces = true;
+			this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 0.8125D, 1.0D);
 			this.renderStandardBlock(par1Block, par2, par3, par4);
 			this.overrideBlockTexture = 174;
-			this.func_83020_a(0.25D, 0.8125D, 0.25D, 0.75D, 1.0D, 0.75D);
+			this.setRenderMinMax(0.25D, 0.8125D, 0.25D, 0.75D, 1.0D, 0.75D);
 			this.renderStandardBlock(par1Block, par2, par3, par4);
+			this.renderAllFaces = false;
 			this.clearOverrideBlockTexture();
 			this.uvRotateTop = 0;
 			return true;
@@ -356,14 +361,14 @@ public class RenderBlocks {
 	}
 
 	private boolean renderBlockBrewingStand(BlockBrewingStand par1BlockBrewingStand, int par2, int par3, int par4) {
-		this.func_83020_a(0.4375D, 0.0D, 0.4375D, 0.5625D, 0.875D, 0.5625D);
+		this.setRenderMinMax(0.4375D, 0.0D, 0.4375D, 0.5625D, 0.875D, 0.5625D);
 		this.renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
 		this.overrideBlockTexture = 156;
-		this.func_83020_a(0.5625D, 0.0D, 0.3125D, 0.9375D, 0.125D, 0.6875D);
+		this.setRenderMinMax(0.5625D, 0.0D, 0.3125D, 0.9375D, 0.125D, 0.6875D);
 		this.renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
-		this.func_83020_a(0.125D, 0.0D, 0.0625D, 0.5D, 0.125D, 0.4375D);
+		this.setRenderMinMax(0.125D, 0.0D, 0.0625D, 0.5D, 0.125D, 0.4375D);
 		this.renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
-		this.func_83020_a(0.125D, 0.0D, 0.5625D, 0.5D, 0.125D, 0.9375D);
+		this.setRenderMinMax(0.125D, 0.0D, 0.5625D, 0.5D, 0.125D, 0.9375D);
 		this.renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
 		this.clearOverrideBlockTexture();
 		Tessellator var5 = Tessellator.instance;
@@ -540,14 +545,16 @@ public class RenderBlocks {
 			if (var17 != null) {
 				this.renderBlockByRenderType(var17, par2, par3, par4);
 			} else if (var19 == 9) {
+				this.renderAllFaces = true;
 				float var18 = 0.125F;
-				this.func_83020_a((double)(0.5F - var18), 0.0D, (double)(0.5F - var18), (double)(0.5F + var18), 0.25D, (double)(0.5F + var18));
+				this.setRenderMinMax((double)(0.5F - var18), 0.0D, (double)(0.5F - var18), (double)(0.5F + var18), 0.25D, (double)(0.5F + var18));
 				this.renderStandardBlock(Block.cactus, par2, par3, par4);
-				this.func_83020_a((double)(0.5F - var18), 0.25D, (double)(0.5F - var18), (double)(0.5F + var18), 0.5D, (double)(0.5F + var18));
+				this.setRenderMinMax((double)(0.5F - var18), 0.25D, (double)(0.5F - var18), (double)(0.5F + var18), 0.5D, (double)(0.5F + var18));
 				this.renderStandardBlock(Block.cactus, par2, par3, par4);
-				this.func_83020_a((double)(0.5F - var18), 0.5D, (double)(0.5F - var18), (double)(0.5F + var18), 0.75D, (double)(0.5F + var18));
+				this.setRenderMinMax((double)(0.5F - var18), 0.5D, (double)(0.5F - var18), (double)(0.5F + var18), 0.75D, (double)(0.5F + var18));
 				this.renderStandardBlock(Block.cactus, par2, par3, par4);
-				this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+				this.renderAllFaces = false;
+				this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 			} else if (var19 == 3) {
 				this.drawCrossedSquares(Block.sapling, 0, (double)par2, (double)par3, (double)par4, 0.75F);
 			} else if (var19 == 5) {
@@ -574,25 +581,29 @@ public class RenderBlocks {
 	}
 
 	private boolean func_82775_a(BlockAnvil par1BlockAnvil, int par2, int par3, int par4) {
-		Tessellator var5 = Tessellator.instance;
-		var5.setBrightness(par1BlockAnvil.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
-		float var6 = 1.0F;
-		int var7 = par1BlockAnvil.colorMultiplier(this.blockAccess, par2, par3, par4);
-		float var8 = (float)(var7 >> 16 & 255) / 255.0F;
-		float var9 = (float)(var7 >> 8 & 255) / 255.0F;
-		float var10 = (float)(var7 & 255) / 255.0F;
+		return this.func_85096_a(par1BlockAnvil, par2, par3, par4, this.blockAccess.getBlockMetadata(par2, par3, par4));
+	}
+
+	public boolean func_85096_a(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5) {
+		Tessellator var6 = Tessellator.instance;
+		var6.setBrightness(par1BlockAnvil.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
+		float var7 = 1.0F;
+		int var8 = par1BlockAnvil.colorMultiplier(this.blockAccess, par2, par3, par4);
+		float var9 = (float)(var8 >> 16 & 255) / 255.0F;
+		float var10 = (float)(var8 >> 8 & 255) / 255.0F;
+		float var11 = (float)(var8 & 255) / 255.0F;
 
 		if (EntityRenderer.anaglyphEnable) {
-			float var11 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
-			float var12 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
-			float var13 = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
-			var8 = var11;
+			float var12 = (var9 * 30.0F + var10 * 59.0F + var11 * 11.0F) / 100.0F;
+			float var13 = (var9 * 30.0F + var10 * 70.0F) / 100.0F;
+			float var14 = (var9 * 30.0F + var11 * 70.0F) / 100.0F;
 			var9 = var12;
 			var10 = var13;
+			var11 = var14;
 		}
 
-		var5.setColorOpaque_F(var6 * var8, var6 * var9, var6 * var10);
-		return this.func_82776_a(par1BlockAnvil, par2, par3, par4, this.blockAccess.getBlockMetadata(par2, par3, par4), false);
+		var6.setColorOpaque_F(var7 * var9, var7 * var10, var7 * var11);
+		return this.func_82776_a(par1BlockAnvil, par2, par3, par4, par5, false);
 	}
 
 	private boolean func_82776_a(BlockAnvil par1BlockAnvil, int par2, int par3, int par4, int par5, boolean par6) {
@@ -633,7 +644,7 @@ public class RenderBlocks {
 		var9 = this.func_82777_a(par1BlockAnvil, par2, par3, par4, 1, var9, 0.5F, 0.0625F, 0.625F, var8, par6, par5);
 		var9 = this.func_82777_a(par1BlockAnvil, par2, par3, par4, 2, var9, 0.25F, 0.3125F, 0.5F, var8, par6, par5);
 		this.func_82777_a(par1BlockAnvil, par2, par3, par4, 3, var9, 0.625F, 0.375F, 1.0F, var8, par6, par5);
-		this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+		this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 		this.uvRotateEast = 0;
 		this.uvRotateWest = 0;
 		this.uvRotateSouth = 0;
@@ -653,10 +664,14 @@ public class RenderBlocks {
 		par7 /= 2.0F;
 		par9 /= 2.0F;
 		par1BlockAnvil.field_82521_b = par5;
-		this.func_83020_a((double)(0.5F - par7), (double)par6, (double)(0.5F - par9), (double)(0.5F + par7), (double)(par6 + par8), (double)(0.5F + par9));
+		this.setRenderMinMax((double)(0.5F - par7), (double)par6, (double)(0.5F - par9), (double)(0.5F + par7), (double)(par6 + par8), (double)(0.5F + par9));
 
 		if (par11) {
 			Tessellator var14 = Tessellator.instance;
+			var14.startDrawingQuads();
+			var14.setNormal(0.0F, -1.0F, 0.0F);
+			this.renderBottomFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, par1BlockAnvil.getBlockTextureFromSideAndMetadata(0, par12));
+			var14.draw();
 			var14.startDrawingQuads();
 			var14.setNormal(0.0F, 1.0F, 0.0F);
 			this.renderTopFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, par1BlockAnvil.getBlockTextureFromSideAndMetadata(1, par12));
@@ -765,13 +780,13 @@ public class RenderBlocks {
 				case 0:
 				case 2:
 				default:
-					this.func_83020_a((double)(var22 / 16.0F + (float)var12), 0.125D, (double)(var24 / 16.0F + (float)var14), (double)(var23 / 16.0F + (float)var12), 0.25D, (double)(var25 / 16.0F + (float)var14));
+					this.setRenderMinMax((double)(var22 / 16.0F + (float)var12), 0.125D, (double)(var24 / 16.0F + (float)var14), (double)(var23 / 16.0F + (float)var12), 0.25D, (double)(var25 / 16.0F + (float)var14));
 					var8.addVertexWithUV((double)((float)par2 + var22 / 16.0F) + var12, (double)((float)par3 + 0.25F), (double)((float)par4 + var24 / 16.0F) + var14, (double)(((float)var20 + var22) / 256.0F), (double)(((float)var21 + var24) / 256.0F));
 					var8.addVertexWithUV((double)((float)par2 + var22 / 16.0F) + var12, (double)((float)par3 + 0.25F), (double)((float)par4 + var25 / 16.0F) + var14, (double)(((float)var20 + var22) / 256.0F), (double)(((float)var21 + var25) / 256.0F));
 					var8.addVertexWithUV((double)((float)par2 + var23 / 16.0F) + var12, (double)((float)par3 + 0.25F), (double)((float)par4 + var25 / 16.0F) + var14, (double)(((float)var20 + var23) / 256.0F), (double)(((float)var21 + var25) / 256.0F));
 					var8.addVertexWithUV((double)((float)par2 + var23 / 16.0F) + var12, (double)((float)par3 + 0.25F), (double)((float)par4 + var24 / 16.0F) + var14, (double)(((float)var20 + var23) / 256.0F), (double)(((float)var21 + var24) / 256.0F));
 					this.renderStandardBlock(par1Block, par2, par3, par4);
-					this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
+					this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D);
 					this.clearOverrideBlockTexture();
 			}
 		}
@@ -838,17 +853,17 @@ public class RenderBlocks {
 					this.uvRotateWest = 3;
 					this.uvRotateSouth = 3;
 					this.uvRotateNorth = 3;
-					this.func_83020_a(0.0D, 0.25D, 0.0D, 1.0D, 1.0D, 1.0D);
+					this.setRenderMinMax(0.0D, 0.25D, 0.0D, 1.0D, 1.0D, 1.0D);
 					break;
 
 				case 1:
-					this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D);
+					this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D);
 					break;
 
 				case 2:
 					this.uvRotateSouth = 1;
 					this.uvRotateNorth = 2;
-					this.func_83020_a(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D);
+					this.setRenderMinMax(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D);
 					break;
 
 				case 3:
@@ -856,7 +871,7 @@ public class RenderBlocks {
 					this.uvRotateNorth = 1;
 					this.uvRotateTop = 3;
 					this.uvRotateBottom = 3;
-					this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D);
+					this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D);
 					break;
 
 				case 4:
@@ -864,7 +879,7 @@ public class RenderBlocks {
 					this.uvRotateWest = 2;
 					this.uvRotateTop = 2;
 					this.uvRotateBottom = 1;
-					this.func_83020_a(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+					this.setRenderMinMax(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 					break;
 
 				case 5:
@@ -872,7 +887,7 @@ public class RenderBlocks {
 					this.uvRotateWest = 1;
 					this.uvRotateTop = 1;
 					this.uvRotateBottom = 2;
-					this.func_83020_a(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D);
+					this.setRenderMinMax(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D);
 			}
 
 			this.renderStandardBlock(par1Block, par2, par3, par4);
@@ -882,7 +897,7 @@ public class RenderBlocks {
 			this.uvRotateNorth = 0;
 			this.uvRotateTop = 0;
 			this.uvRotateBottom = 0;
-			this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+			this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 		} else {
 			switch (var8) {
 				case 0:
@@ -1007,7 +1022,7 @@ public class RenderBlocks {
 				this.uvRotateWest = 3;
 				this.uvRotateSouth = 3;
 				this.uvRotateNorth = 3;
-				this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D);
+				this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D);
 				this.renderStandardBlock(par1Block, par2, par3, par4);
 				this.renderPistonRodUD((double)((float)par2 + 0.375F), (double)((float)par2 + 0.625F), (double)((float)par3 + 0.25F), (double)((float)par3 + 0.25F + var12), (double)((float)par4 + 0.625F), (double)((float)par4 + 0.625F), var11 * 0.8F, var13);
 				this.renderPistonRodUD((double)((float)par2 + 0.625F), (double)((float)par2 + 0.375F), (double)((float)par3 + 0.25F), (double)((float)par3 + 0.25F + var12), (double)((float)par4 + 0.375F), (double)((float)par4 + 0.375F), var11 * 0.8F, var13);
@@ -1016,7 +1031,7 @@ public class RenderBlocks {
 				break;
 
 			case 1:
-				this.func_83020_a(0.0D, 0.75D, 0.0D, 1.0D, 1.0D, 1.0D);
+				this.setRenderMinMax(0.0D, 0.75D, 0.0D, 1.0D, 1.0D, 1.0D);
 				this.renderStandardBlock(par1Block, par2, par3, par4);
 				this.renderPistonRodUD((double)((float)par2 + 0.375F), (double)((float)par2 + 0.625F), (double)((float)par3 - 0.25F + 1.0F - var12), (double)((float)par3 - 0.25F + 1.0F), (double)((float)par4 + 0.625F), (double)((float)par4 + 0.625F), var11 * 0.8F, var13);
 				this.renderPistonRodUD((double)((float)par2 + 0.625F), (double)((float)par2 + 0.375F), (double)((float)par3 - 0.25F + 1.0F - var12), (double)((float)par3 - 0.25F + 1.0F), (double)((float)par4 + 0.375F), (double)((float)par4 + 0.375F), var11 * 0.8F, var13);
@@ -1027,7 +1042,7 @@ public class RenderBlocks {
 			case 2:
 				this.uvRotateSouth = 1;
 				this.uvRotateNorth = 2;
-				this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.25D);
+				this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.25D);
 				this.renderStandardBlock(par1Block, par2, par3, par4);
 				this.renderPistonRodSN((double)((float)par2 + 0.375F), (double)((float)par2 + 0.375F), (double)((float)par3 + 0.625F), (double)((float)par3 + 0.375F), (double)((float)par4 + 0.25F), (double)((float)par4 + 0.25F + var12), var11 * 0.6F, var13);
 				this.renderPistonRodSN((double)((float)par2 + 0.625F), (double)((float)par2 + 0.625F), (double)((float)par3 + 0.375F), (double)((float)par3 + 0.625F), (double)((float)par4 + 0.25F), (double)((float)par4 + 0.25F + var12), var11 * 0.6F, var13);
@@ -1040,7 +1055,7 @@ public class RenderBlocks {
 				this.uvRotateNorth = 1;
 				this.uvRotateTop = 3;
 				this.uvRotateBottom = 3;
-				this.func_83020_a(0.0D, 0.0D, 0.75D, 1.0D, 1.0D, 1.0D);
+				this.setRenderMinMax(0.0D, 0.0D, 0.75D, 1.0D, 1.0D, 1.0D);
 				this.renderStandardBlock(par1Block, par2, par3, par4);
 				this.renderPistonRodSN((double)((float)par2 + 0.375F), (double)((float)par2 + 0.375F), (double)((float)par3 + 0.625F), (double)((float)par3 + 0.375F), (double)((float)par4 - 0.25F + 1.0F - var12), (double)((float)par4 - 0.25F + 1.0F), var11 * 0.6F, var13);
 				this.renderPistonRodSN((double)((float)par2 + 0.625F), (double)((float)par2 + 0.625F), (double)((float)par3 + 0.375F), (double)((float)par3 + 0.625F), (double)((float)par4 - 0.25F + 1.0F - var12), (double)((float)par4 - 0.25F + 1.0F), var11 * 0.6F, var13);
@@ -1053,7 +1068,7 @@ public class RenderBlocks {
 				this.uvRotateWest = 2;
 				this.uvRotateTop = 2;
 				this.uvRotateBottom = 1;
-				this.func_83020_a(0.0D, 0.0D, 0.0D, 0.25D, 1.0D, 1.0D);
+				this.setRenderMinMax(0.0D, 0.0D, 0.0D, 0.25D, 1.0D, 1.0D);
 				this.renderStandardBlock(par1Block, par2, par3, par4);
 				this.renderPistonRodEW((double)((float)par2 + 0.25F), (double)((float)par2 + 0.25F + var12), (double)((float)par3 + 0.375F), (double)((float)par3 + 0.375F), (double)((float)par4 + 0.625F), (double)((float)par4 + 0.375F), var11 * 0.5F, var13);
 				this.renderPistonRodEW((double)((float)par2 + 0.25F), (double)((float)par2 + 0.25F + var12), (double)((float)par3 + 0.625F), (double)((float)par3 + 0.625F), (double)((float)par4 + 0.375F), (double)((float)par4 + 0.625F), var11, var13);
@@ -1066,7 +1081,7 @@ public class RenderBlocks {
 				this.uvRotateWest = 1;
 				this.uvRotateTop = 1;
 				this.uvRotateBottom = 2;
-				this.func_83020_a(0.75D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+				this.setRenderMinMax(0.75D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 				this.renderStandardBlock(par1Block, par2, par3, par4);
 				this.renderPistonRodEW((double)((float)par2 - 0.25F + 1.0F - var12), (double)((float)par2 - 0.25F + 1.0F), (double)((float)par3 + 0.375F), (double)((float)par3 + 0.375F), (double)((float)par4 + 0.625F), (double)((float)par4 + 0.375F), var11 * 0.5F, var13);
 				this.renderPistonRodEW((double)((float)par2 - 0.25F + 1.0F - var12), (double)((float)par2 - 0.25F + 1.0F), (double)((float)par3 + 0.625F), (double)((float)par3 + 0.625F), (double)((float)par4 + 0.375F), (double)((float)par4 + 0.625F), var11, var13);
@@ -1080,7 +1095,7 @@ public class RenderBlocks {
 		this.uvRotateNorth = 0;
 		this.uvRotateTop = 0;
 		this.uvRotateBottom = 0;
-		this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+		this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 		return true;
 	}
 
@@ -1098,21 +1113,21 @@ public class RenderBlocks {
 		float var11 = 0.1875F;
 		float var12 = 0.1875F;
 		if (var6 == 5) {
-			this.func_83020_a((double)(0.5F - var11), 0.0D, (double)(0.5F - var10), (double)(0.5F + var11), (double)var12, (double)(0.5F + var10));
+			this.setRenderMinMax((double)(0.5F - var11), 0.0D, (double)(0.5F - var10), (double)(0.5F + var11), (double)var12, (double)(0.5F + var10));
 		} else if (var6 == 6) {
-			this.func_83020_a((double)(0.5F - var10), 0.0D, (double)(0.5F - var11), (double)(0.5F + var10), (double)var12, (double)(0.5F + var11));
+			this.setRenderMinMax((double)(0.5F - var10), 0.0D, (double)(0.5F - var11), (double)(0.5F + var10), (double)var12, (double)(0.5F + var11));
 		} else if (var6 == 4) {
-			this.func_83020_a((double)(0.5F - var11), (double)(0.5F - var10), (double)(1.0F - var12), (double)(0.5F + var11), (double)(0.5F + var10), 1.0D);
+			this.setRenderMinMax((double)(0.5F - var11), (double)(0.5F - var10), (double)(1.0F - var12), (double)(0.5F + var11), (double)(0.5F + var10), 1.0D);
 		} else if (var6 == 3) {
-			this.func_83020_a((double)(0.5F - var11), (double)(0.5F - var10), 0.0D, (double)(0.5F + var11), (double)(0.5F + var10), (double)var12);
+			this.setRenderMinMax((double)(0.5F - var11), (double)(0.5F - var10), 0.0D, (double)(0.5F + var11), (double)(0.5F + var10), (double)var12);
 		} else if (var6 == 2) {
-			this.func_83020_a((double)(1.0F - var12), (double)(0.5F - var10), (double)(0.5F - var11), 1.0D, (double)(0.5F + var10), (double)(0.5F + var11));
+			this.setRenderMinMax((double)(1.0F - var12), (double)(0.5F - var10), (double)(0.5F - var11), 1.0D, (double)(0.5F + var10), (double)(0.5F + var11));
 		} else if (var6 == 1) {
-			this.func_83020_a(0.0D, (double)(0.5F - var10), (double)(0.5F - var11), (double)var12, (double)(0.5F + var10), (double)(0.5F + var11));
+			this.setRenderMinMax(0.0D, (double)(0.5F - var10), (double)(0.5F - var11), (double)var12, (double)(0.5F + var10), (double)(0.5F + var11));
 		} else if (var6 == 0) {
-			this.func_83020_a((double)(0.5F - var10), (double)(1.0F - var12), (double)(0.5F - var11), (double)(0.5F + var10), 1.0D, (double)(0.5F + var11));
+			this.setRenderMinMax((double)(0.5F - var10), (double)(1.0F - var12), (double)(0.5F - var11), (double)(0.5F + var10), 1.0D, (double)(0.5F + var11));
 		} else if (var6 == 7) {
-			this.func_83020_a((double)(0.5F - var11), (double)(1.0F - var12), (double)(0.5F - var10), (double)(0.5F + var11), 1.0D, (double)(0.5F + var10));
+			this.setRenderMinMax((double)(0.5F - var11), (double)(1.0F - var12), (double)(0.5F - var10), (double)(0.5F + var11), 1.0D, (double)(0.5F + var10));
 		}
 
 		this.renderStandardBlock(par1Block, par2, par3, par4);
@@ -1150,15 +1165,14 @@ public class RenderBlocks {
 		float var22 = 0.0625F;
 		float var23 = 0.0625F;
 		float var24 = 0.625F;
-		var21[0] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var22), 0.0D, (double)(-var23));
-		var21[1] = this.blockAccess.func_82732_R().getVecFromPool((double)var22, 0.0D, (double)(-var23));
-		var21[2] = this.blockAccess.func_82732_R().getVecFromPool((double)var22, 0.0D, (double)var23);
-		var21[3] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var22), 0.0D, (double)var23);
-		var21[4] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var22), (double)var24, (double)(-var23));
-		var21[5] = this.blockAccess.func_82732_R().getVecFromPool((double)var22, (double)var24, (double)(-var23));
-		var21[6] = this.blockAccess.func_82732_R().getVecFromPool((double)var22, (double)var24, (double)var23);
-		var21[7] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var22), (double)var24, (double)var23);
-
+		var21[0] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), 0.0D, (double)(-var23));
+		var21[1] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, 0.0D, (double)(-var23));
+		var21[2] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, 0.0D, (double)var23);
+		var21[3] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), 0.0D, (double)var23);
+		var21[4] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), (double)var24, (double)(-var23));
+		var21[5] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, (double)var24, (double)(-var23));
+		var21[6] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var22, (double)var24, (double)var23);
+		var21[7] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var22), (double)var24, (double)var23);
 		for (int var25 = 0; var25 < 8; ++var25) {
 			if (var7) {
 				var21[var25].zCoord -= 0.0625D;
@@ -1292,13 +1306,13 @@ public class RenderBlocks {
 		float var16 = 0.3F + var12;
 
 		if (var7 == 2) {
-			this.func_83020_a((double)(0.5F - var13), (double)var15, (double)(1.0F - var14), (double)(0.5F + var13), (double)var16, 1.0D);
+			this.setRenderMinMax((double)(0.5F - var13), (double)var15, (double)(1.0F - var14), (double)(0.5F + var13), (double)var16, 1.0D);
 		} else if (var7 == 0) {
-			this.func_83020_a((double)(0.5F - var13), (double)var15, 0.0D, (double)(0.5F + var13), (double)var16, (double)var14);
+			this.setRenderMinMax((double)(0.5F - var13), (double)var15, 0.0D, (double)(0.5F + var13), (double)var16, (double)var14);
 		} else if (var7 == 1) {
-			this.func_83020_a((double)(1.0F - var14), (double)var15, (double)(0.5F - var13), 1.0D, (double)var16, (double)(0.5F + var13));
+			this.setRenderMinMax((double)(1.0F - var14), (double)var15, (double)(0.5F - var13), 1.0D, (double)var16, (double)(0.5F + var13));
 		} else if (var7 == 3) {
-			this.func_83020_a(0.0D, (double)var15, (double)(0.5F - var13), (double)var14, (double)var16, (double)(0.5F + var13));
+			this.setRenderMinMax(0.0D, (double)var15, (double)(0.5F - var13), (double)var14, (double)var16, (double)(0.5F + var13));
 		}
 
 		this.renderStandardBlock(par1Block, par2, par3, par4);
@@ -1340,14 +1354,14 @@ public class RenderBlocks {
 		float var26 = 0.046875F;
 		float var27 = 0.046875F;
 		float var28 = 0.3125F;
-		var25[0] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var26), 0.0D, (double)(-var27));
-		var25[1] = this.blockAccess.func_82732_R().getVecFromPool((double)var26, 0.0D, (double)(-var27));
-		var25[2] = this.blockAccess.func_82732_R().getVecFromPool((double)var26, 0.0D, (double)var27);
-		var25[3] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var26), 0.0D, (double)var27);
-		var25[4] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var26), (double)var28, (double)(-var27));
-		var25[5] = this.blockAccess.func_82732_R().getVecFromPool((double)var26, (double)var28, (double)(-var27));
-		var25[6] = this.blockAccess.func_82732_R().getVecFromPool((double)var26, (double)var28, (double)var27);
-		var25[7] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var26), (double)var28, (double)var27);
+		var25[0] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var26), 0.0D, (double)(-var27));
+		var25[1] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var26, 0.0D, (double)(-var27));
+		var25[2] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var26, 0.0D, (double)var27);
+		var25[3] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var26), 0.0D, (double)var27);
+		var25[4] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var26), (double)var28, (double)(-var27));
+		var25[5] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var26, (double)var28, (double)(-var27));
+		var25[6] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var26, (double)var28, (double)var27);
+		var25[7] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var26), (double)var28, (double)var27);
 
 		for (int var29 = 0; var29 < 8; ++var29) {
 			var25[var29].zCoord += 0.0625D;
@@ -1445,14 +1459,14 @@ public class RenderBlocks {
 		float var62 = 0.09375F;
 		float var38 = 0.09375F;
 		float var39 = 0.03125F;
-		var25[0] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var26), 0.0D, (double)(-var27));
-		var25[1] = this.blockAccess.func_82732_R().getVecFromPool((double)var26, 0.0D, (double)(-var27));
-		var25[2] = this.blockAccess.func_82732_R().getVecFromPool((double)var26, 0.0D, (double)var27);
-		var25[3] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var26), 0.0D, (double)var27);
-		var25[4] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var26), (double)var28, (double)(-var27));
-		var25[5] = this.blockAccess.func_82732_R().getVecFromPool((double)var26, (double)var28, (double)(-var27));
-		var25[6] = this.blockAccess.func_82732_R().getVecFromPool((double)var26, (double)var28, (double)var27);
-		var25[7] = this.blockAccess.func_82732_R().getVecFromPool((double)(-var26), (double)var28, (double)var27);
+		var25[0] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var62), 0.0D, (double)(-var38));
+		var25[1] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var62, 0.0D, (double)(-var38));
+		var25[2] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var62, 0.0D, (double)var38);
+		var25[3] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var62), 0.0D, (double)var38);
+		var25[4] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var62), (double)var39, (double)(-var38));
+		var25[5] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var62, (double)var39, (double)(-var38));
+		var25[6] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var62, (double)var39, (double)var38);
+		var25[7] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var62), (double)var39, (double)var38);
 
 		for (int var40 = 0; var40 < 8; ++var40) {
 			var25[var40].zCoord += 0.21875D;
@@ -2874,6 +2888,7 @@ public class RenderBlocks {
 	public void renderTorchAtAngle(Block par1Block, double par2, double par4, double par6, double par8, double par10) {
 		Tessellator var12 = Tessellator.instance;
 		int var13 = par1Block.getBlockTextureFromSide(0);
+
 		if (this.overrideBlockTexture >= 0) {
 			var13 = this.overrideBlockTexture;
 		}
@@ -2888,34 +2903,42 @@ public class RenderBlocks {
 		double var22 = (double)var18 + 0.0234375D;
 		double var24 = (double)var16 + 0.03515625D;
 		double var26 = (double)var18 + 0.03125D;
+		double var28 = (double)var16 + 0.02734375D;
+		double var30 = (double)var18 + 0.05078125D;
+		double var32 = (double)var16 + 0.03515625D;
+		double var34 = (double)var18 + 0.05859375D;
 		par2 += 0.5D;
 		par6 += 0.5D;
-		double var28 = par2 - 0.5D;
-		double var30 = par2 + 0.5D;
-		double var32 = par6 - 0.5D;
-		double var34 = par6 + 0.5D;
-		double var36 = 0.0625D;
-		double var38 = 0.625D;
-		var12.addVertexWithUV(par2 + par8 * (1.0D - var38) - var36, par4 + var38, par6 + par10 * (1.0D - var38) - var36, var20, var22);
-		var12.addVertexWithUV(par2 + par8 * (1.0D - var38) - var36, par4 + var38, par6 + par10 * (1.0D - var38) + var36, var20, var26);
-		var12.addVertexWithUV(par2 + par8 * (1.0D - var38) + var36, par4 + var38, par6 + par10 * (1.0D - var38) + var36, var24, var26);
-		var12.addVertexWithUV(par2 + par8 * (1.0D - var38) + var36, par4 + var38, par6 + par10 * (1.0D - var38) - var36, var24, var22);
-		var12.addVertexWithUV(par2 - var36, par4 + 1.0D, var32, (double)var16, (double)var18);
-		var12.addVertexWithUV(par2 - var36 + par8, par4 + 0.0D, var32 + par10, (double)var16, (double)var19);
-		var12.addVertexWithUV(par2 - var36 + par8, par4 + 0.0D, var34 + par10, (double)var17, (double)var19);
-		var12.addVertexWithUV(par2 - var36, par4 + 1.0D, var34, (double)var17, (double)var18);
-		var12.addVertexWithUV(par2 + var36, par4 + 1.0D, var34, (double)var16, (double)var18);
-		var12.addVertexWithUV(par2 + par8 + var36, par4 + 0.0D, var34 + par10, (double)var16, (double)var19);
-		var12.addVertexWithUV(par2 + par8 + var36, par4 + 0.0D, var32 + par10, (double)var17, (double)var19);
-		var12.addVertexWithUV(par2 + var36, par4 + 1.0D, var32, (double)var17, (double)var18);
-		var12.addVertexWithUV(var28, par4 + 1.0D, par6 + var36, (double)var16, (double)var18);
-		var12.addVertexWithUV(var28 + par8, par4 + 0.0D, par6 + var36 + par10, (double)var16, (double)var19);
-		var12.addVertexWithUV(var30 + par8, par4 + 0.0D, par6 + var36 + par10, (double)var17, (double)var19);
-		var12.addVertexWithUV(var30, par4 + 1.0D, par6 + var36, (double)var17, (double)var18);
-		var12.addVertexWithUV(var30, par4 + 1.0D, par6 - var36, (double)var16, (double)var18);
-		var12.addVertexWithUV(var30 + par8, par4 + 0.0D, par6 - var36 + par10, (double)var16, (double)var19);
-		var12.addVertexWithUV(var28 + par8, par4 + 0.0D, par6 - var36 + par10, (double)var17, (double)var19);
-		var12.addVertexWithUV(var28, par4 + 1.0D, par6 - var36, (double)var17, (double)var18);
+		double var36 = par2 - 0.5D;
+		double var38 = par2 + 0.5D;
+		double var40 = par6 - 0.5D;
+		double var42 = par6 + 0.5D;
+		double var44 = 0.0625D;
+		double var46 = 0.625D;
+		var12.addVertexWithUV(par2 + par8 * (1.0D - var46) - var44, par4 + var46, par6 + par10 * (1.0D - var46) - var44, var20, var22);
+		var12.addVertexWithUV(par2 + par8 * (1.0D - var46) - var44, par4 + var46, par6 + par10 * (1.0D - var46) + var44, var20, var26);
+		var12.addVertexWithUV(par2 + par8 * (1.0D - var46) + var44, par4 + var46, par6 + par10 * (1.0D - var46) + var44, var24, var26);
+		var12.addVertexWithUV(par2 + par8 * (1.0D - var46) + var44, par4 + var46, par6 + par10 * (1.0D - var46) - var44, var24, var22);
+		var12.addVertexWithUV(par2 + var44 + par8, par4, par6 - var44 + par10, var32, var30);
+		var12.addVertexWithUV(par2 + var44 + par8, par4, par6 + var44 + par10, var32, var34);
+		var12.addVertexWithUV(par2 - var44 + par8, par4, par6 + var44 + par10, var28, var34);
+		var12.addVertexWithUV(par2 - var44 + par8, par4, par6 - var44 + par10, var28, var30);
+		var12.addVertexWithUV(par2 - var44, par4 + 1.0D, var40, (double)var16, (double)var18);
+		var12.addVertexWithUV(par2 - var44 + par8, par4 + 0.0D, var40 + par10, (double)var16, (double)var19);
+		var12.addVertexWithUV(par2 - var44 + par8, par4 + 0.0D, var42 + par10, (double)var17, (double)var19);
+		var12.addVertexWithUV(par2 - var44, par4 + 1.0D, var42, (double)var17, (double)var18);
+		var12.addVertexWithUV(par2 + var44, par4 + 1.0D, var42, (double)var16, (double)var18);
+		var12.addVertexWithUV(par2 + par8 + var44, par4 + 0.0D, var42 + par10, (double)var16, (double)var19);
+		var12.addVertexWithUV(par2 + par8 + var44, par4 + 0.0D, var40 + par10, (double)var17, (double)var19);
+		var12.addVertexWithUV(par2 + var44, par4 + 1.0D, var40, (double)var17, (double)var18);
+		var12.addVertexWithUV(var36, par4 + 1.0D, par6 + var44, (double)var16, (double)var18);
+		var12.addVertexWithUV(var36 + par8, par4 + 0.0D, par6 + var44 + par10, (double)var16, (double)var19);
+		var12.addVertexWithUV(var38 + par8, par4 + 0.0D, par6 + var44 + par10, (double)var17, (double)var19);
+		var12.addVertexWithUV(var38, par4 + 1.0D, par6 + var44, (double)var17, (double)var18);
+		var12.addVertexWithUV(var38, par4 + 1.0D, par6 - var44, (double)var16, (double)var18);
+		var12.addVertexWithUV(var38 + par8, par4 + 0.0D, par6 - var44 + par10, (double)var16, (double)var19);
+		var12.addVertexWithUV(var36 + par8, par4 + 0.0D, par6 - var44 + par10, (double)var17, (double)var19);
+		var12.addVertexWithUV(var36, par4 + 1.0D, par6 - var44, (double)var17, (double)var18);
 	}
 
 	// Spout Start
@@ -4691,13 +4714,13 @@ public class RenderBlocks {
 	private boolean func_82778_a(BlockBeacon par1BlockBeacon, int par2, int par3, int par4) {
 		float var5 = 0.1875F;
 		this.func_82774_a(Block.obsidian.blockIndexInTexture);
-		this.func_83020_a(0.125D, 0.0D, 0.125D, 0.875D, (double)var5, 0.875D);
+		this.setRenderMinMax(0.125D, 0.0D, 0.125D, 0.875D, (double)var5, 0.875D);
 		this.renderStandardBlock(par1BlockBeacon, par2, par3, par4);
 		this.func_82774_a(Block.glass.blockIndexInTexture);
-		this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+		this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 		this.renderStandardBlock(par1BlockBeacon, par2, par3, par4);
 		this.func_82774_a(41);
-		this.func_83020_a(0.1875D, (double)var5, 0.1875D, 0.8125D, 0.875D, 0.8125D);
+		this.setRenderMinMax(0.1875D, (double)var5, 0.1875D, 0.8125D, 0.875D, 0.8125D);
 		this.renderStandardBlock(par1BlockBeacon, par2, par3, par4);
 		this.clearOverrideBlockTexture();
 		return true;
@@ -4798,7 +4821,7 @@ public class RenderBlocks {
 		boolean var5 = false;
 		float var6 = 0.375F;
 		float var7 = 0.625F;
-		this.func_83020_a((double)var6, 0.0D, (double)var6, (double)var7, 1.0D, (double)var7);
+		this.setRenderMinMax((double)var6, 0.0D, (double)var6, (double)var7, 1.0D, (double)var7);
 		this.renderStandardBlock(par1BlockFence, par2, par3, par4);
 		var5 = true;
 		boolean var8 = false;
@@ -4829,13 +4852,13 @@ public class RenderBlocks {
 		float var19 = var13 ? 1.0F : var7;
 
 		if (var8) {
-			this.func_83020_a((double)var16, (double)var14, (double)var6, (double)var17, (double)var15, (double)var7);
+			this.setRenderMinMax((double)var16, (double)var14, (double)var6, (double)var17, (double)var15, (double)var7);
 			this.renderStandardBlock(par1BlockFence, par2, par3, par4);
 			var5 = true;
 		}
 
 		if (var9) {
-			this.func_83020_a((double)var6, (double)var14, (double)var18, (double)var7, (double)var15, (double)var19);
+			this.setRenderMinMax((double)var6, (double)var14, (double)var18, (double)var7, (double)var15, (double)var19);
 			this.renderStandardBlock(par1BlockFence, par2, par3, par4);
 			var5 = true;
 		}
@@ -4844,13 +4867,13 @@ public class RenderBlocks {
 		var15 = 0.5625F;
 
 		if (var8) {
-			this.func_83020_a((double)var16, (double)var14, (double)var6, (double)var17, (double)var15, (double)var7);
+			this.setRenderMinMax((double)var16, (double)var14, (double)var6, (double)var17, (double)var15, (double)var7);
 			this.renderStandardBlock(par1BlockFence, par2, par3, par4);
 			var5 = true;
 		}
 
 		if (var9) {
-			this.func_83020_a((double)var6, (double)var14, (double)var18, (double)var7, (double)var15, (double)var19);
+			this.setRenderMinMax((double)var6, (double)var14, (double)var18, (double)var7, (double)var15, (double)var19);
 			this.renderStandardBlock(par1BlockFence, par2, par3, par4);
 			var5 = true;
 		}
@@ -4860,43 +4883,43 @@ public class RenderBlocks {
 	}
 
 	public boolean func_82779_a(BlockWall par1BlockWall, int par2, int par3, int par4) {
-		boolean var5 = par1BlockWall.func_82538_d(this.blockAccess, par2 - 1, par3, par4);
-		boolean var6 = par1BlockWall.func_82538_d(this.blockAccess, par2 + 1, par3, par4);
-		boolean var7 = par1BlockWall.func_82538_d(this.blockAccess, par2, par3, par4 - 1);
-		boolean var8 = par1BlockWall.func_82538_d(this.blockAccess, par2, par3, par4 + 1);
+		boolean var5 = par1BlockWall.canConnectWallTo(this.blockAccess, par2 - 1, par3, par4);
+		boolean var6 = par1BlockWall.canConnectWallTo(this.blockAccess, par2 + 1, par3, par4);
+		boolean var7 = par1BlockWall.canConnectWallTo(this.blockAccess, par2, par3, par4 - 1);
+		boolean var8 = par1BlockWall.canConnectWallTo(this.blockAccess, par2, par3, par4 + 1);
 		boolean var9 = var7 && var8 && !var5 && !var6;
 		boolean var10 = !var7 && !var8 && var5 && var6;
 		boolean var11 = this.blockAccess.isAirBlock(par2, par3 + 1, par4);
 
 		if ((var9 || var10) && var11) {
 			if (var9) {
-				this.func_83020_a(0.3125D, 0.0D, 0.0D, 0.6875D, 0.8125D, 1.0D);
+				this.setRenderMinMax(0.3125D, 0.0D, 0.0D, 0.6875D, 0.8125D, 1.0D);
 				this.renderStandardBlock(par1BlockWall, par2, par3, par4);
 			} else {
-				this.func_83020_a(0.0D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
+				this.setRenderMinMax(0.0D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
 				this.renderStandardBlock(par1BlockWall, par2, par3, par4);
 			}
 		} else {
-			this.func_83020_a(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
+			this.setRenderMinMax(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
 			this.renderStandardBlock(par1BlockWall, par2, par3, par4);
 
 			if (var5) {
-				this.func_83020_a(0.0D, 0.0D, 0.3125D, 0.25D, 0.8125D, 0.6875D);
+				this.setRenderMinMax(0.0D, 0.0D, 0.3125D, 0.25D, 0.8125D, 0.6875D);
 				this.renderStandardBlock(par1BlockWall, par2, par3, par4);
 			}
 
 			if (var6) {
-				this.func_83020_a(0.75D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
+				this.setRenderMinMax(0.75D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
 				this.renderStandardBlock(par1BlockWall, par2, par3, par4);
 			}
 
 			if (var7) {
-				this.func_83020_a(0.3125D, 0.0D, 0.0D, 0.6875D, 0.8125D, 0.25D);
+				this.setRenderMinMax(0.3125D, 0.0D, 0.0D, 0.6875D, 0.8125D, 0.25D);
 				this.renderStandardBlock(par1BlockWall, par2, par3, par4);
 			}
 
 			if (var8) {
-				this.func_83020_a(0.3125D, 0.0D, 0.75D, 0.6875D, 0.8125D, 1.0D);
+				this.setRenderMinMax(0.3125D, 0.0D, 0.75D, 0.6875D, 0.8125D, 1.0D);
 				this.renderStandardBlock(par1BlockWall, par2, par3, par4);
 			}
 		}
@@ -4952,12 +4975,12 @@ public class RenderBlocks {
 			float var11 = 1.0F - (float)var6 / 16.0F;
 			float var12 = 1.0F - (float)(var6 + var9) / 16.0F;
 			var6 += var9;
-			this.func_83020_a((double)(0.5F - var10), (double)var12, (double)(0.5F - var10), (double)(0.5F + var10), (double)var11, (double)(0.5F + var10));
+			this.setRenderMinMax((double)(0.5F - var10), (double)var12, (double)(0.5F - var10), (double)(0.5F + var10), (double)var11, (double)(0.5F + var10));
 			this.renderStandardBlock(par1BlockDragonEgg, par2, par3, par4);
 		}
 
 		var5 = true;
-		this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+		this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 		return var5;
 	}
 
@@ -4973,7 +4996,7 @@ public class RenderBlocks {
 		float var13 = 0.3125F;
 		float var14 = 1.0F;
 
-		if ((var8 == 2 || var8 == 0) && this.blockAccess.getBlockId(par2 - 1, par3, par4) == Block.field_82515_ce.blockID && this.blockAccess.getBlockId(par2 + 1, par3, par4) == Block.field_82515_ce.blockID || (var8 == 3 || var8 == 1) && this.blockAccess.getBlockId(par2, par3, par4 - 1) == Block.field_82515_ce.blockID && this.blockAccess.getBlockId(par2, par3, par4 + 1) == Block.field_82515_ce.blockID) {
+		if ((var8 == 2 || var8 == 0) && this.blockAccess.getBlockId(par2 - 1, par3, par4) == Block.cobblestoneWall.blockID && this.blockAccess.getBlockId(par2 + 1, par3, par4) == Block.cobblestoneWall.blockID || (var8 == 3 || var8 == 1) && this.blockAccess.getBlockId(par2, par3, par4 - 1) == Block.cobblestoneWall.blockID && this.blockAccess.getBlockId(par2, par3, par4 + 1) == Block.cobblestoneWall.blockID) {
 			var9 -= 0.1875F;
 			var10 -= 0.1875F;
 			var11 -= 0.1875F;
@@ -4982,6 +5005,7 @@ public class RenderBlocks {
 			var14 -= 0.1875F;
 		}
 
+		this.renderAllFaces = true;
 		float var15;
 		float var17;
 		float var16;
@@ -4992,77 +5016,83 @@ public class RenderBlocks {
 			var16 = 0.125F;
 			var17 = 0.4375F;
 			var18 = 0.5625F;
-			this.func_83020_a((double)var15, (double)var13, (double)var17, (double)var16, (double)var14, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var13, (double)var17, (double)var16, (double)var14, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			var15 = 0.875F;
 			var16 = 1.0F;
-			this.func_83020_a((double)var15, (double)var13, (double)var17, (double)var16, (double)var14, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var13, (double)var17, (double)var16, (double)var14, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 		} else {
+			this.uvRotateTop = 1;
 			var15 = 0.4375F;
 			var16 = 0.5625F;
 			var17 = 0.0F;
 			var18 = 0.125F;
-			this.func_83020_a((double)var15, (double)var13, (double)var17, (double)var16, (double)var14, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var13, (double)var17, (double)var16, (double)var14, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			var17 = 0.875F;
 			var18 = 1.0F;
-			this.func_83020_a((double)var15, (double)var13, (double)var17, (double)var16, (double)var14, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var13, (double)var17, (double)var16, (double)var14, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
+			this.uvRotateTop = 0;
 		}
 
 		if (var7) {
+			if (var8 == 2 || var8 == 0) {
+				this.uvRotateTop = 1;
+			}
+
 			if (var8 == 3) {
-				this.func_83020_a(0.8125D, (double)var9, 0.0D, 0.9375D, (double)var12, 0.125D);
+				this.setRenderMinMax(0.8125D, (double)var9, 0.0D, 0.9375D, (double)var12, 0.125D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.8125D, (double)var9, 0.875D, 0.9375D, (double)var12, 1.0D);
+				this.setRenderMinMax(0.8125D, (double)var9, 0.875D, 0.9375D, (double)var12, 1.0D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.5625D, (double)var9, 0.0D, 0.8125D, (double)var10, 0.125D);
+				this.setRenderMinMax(0.5625D, (double)var9, 0.0D, 0.8125D, (double)var10, 0.125D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.5625D, (double)var9, 0.875D, 0.8125D, (double)var10, 1.0D);
+				this.setRenderMinMax(0.5625D, (double)var9, 0.875D, 0.8125D, (double)var10, 1.0D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.5625D, (double)var11, 0.0D, 0.8125D, (double)var12, 0.125D);
+				this.setRenderMinMax(0.5625D, (double)var11, 0.0D, 0.8125D, (double)var12, 0.125D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.5625D, (double)var11, 0.875D, 0.8125D, (double)var12, 1.0D);
+				this.setRenderMinMax(0.5625D, (double)var11, 0.875D, 0.8125D, (double)var12, 1.0D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			} else if (var8 == 1) {
-				this.func_83020_a(0.0625D, (double)var9, 0.0D, 0.1875D, (double)var12, 0.125D);
+				this.setRenderMinMax(0.0625D, (double)var9, 0.0D, 0.1875D, (double)var12, 0.125D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.0625D, (double)var9, 0.875D, 0.1875D, (double)var12, 1.0D);
+				this.setRenderMinMax(0.0625D, (double)var9, 0.875D, 0.1875D, (double)var12, 1.0D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.1875D, (double)var9, 0.0D, 0.4375D, (double)var10, 0.125D);
+				this.setRenderMinMax(0.1875D, (double)var9, 0.0D, 0.4375D, (double)var10, 0.125D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.1875D, (double)var9, 0.875D, 0.4375D, (double)var10, 1.0D);
+				this.setRenderMinMax(0.1875D, (double)var9, 0.875D, 0.4375D, (double)var10, 1.0D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.1875D, (double)var11, 0.0D, 0.4375D, (double)var12, 0.125D);
+				this.setRenderMinMax(0.1875D, (double)var11, 0.0D, 0.4375D, (double)var12, 0.125D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.1875D, (double)var11, 0.875D, 0.4375D, (double)var12, 1.0D);
+				this.setRenderMinMax(0.1875D, (double)var11, 0.875D, 0.4375D, (double)var12, 1.0D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			} else if (var8 == 0) {
-				this.func_83020_a(0.0D, (double)var9, 0.8125D, 0.125D, (double)var12, 0.9375D);
+				this.setRenderMinMax(0.0D, (double)var9, 0.8125D, 0.125D, (double)var12, 0.9375D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.875D, (double)var9, 0.8125D, 1.0D, (double)var12, 0.9375D);
+				this.setRenderMinMax(0.875D, (double)var9, 0.8125D, 1.0D, (double)var12, 0.9375D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.0D, (double)var9, 0.5625D, 0.125D, (double)var10, 0.8125D);
+				this.setRenderMinMax(0.0D, (double)var9, 0.5625D, 0.125D, (double)var10, 0.8125D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.875D, (double)var9, 0.5625D, 1.0D, (double)var10, 0.8125D);
+				this.setRenderMinMax(0.875D, (double)var9, 0.5625D, 1.0D, (double)var10, 0.8125D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.0D, (double)var11, 0.5625D, 0.125D, (double)var12, 0.8125D);
+				this.setRenderMinMax(0.0D, (double)var11, 0.5625D, 0.125D, (double)var12, 0.8125D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.875D, (double)var11, 0.5625D, 1.0D, (double)var12, 0.8125D);
+				this.setRenderMinMax(0.875D, (double)var11, 0.5625D, 1.0D, (double)var12, 0.8125D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			} else if (var8 == 2) {
-				this.func_83020_a(0.0D, (double)var9, 0.0625D, 0.125D, (double)var12, 0.1875D);
+				this.setRenderMinMax(0.0D, (double)var9, 0.0625D, 0.125D, (double)var12, 0.1875D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.875D, (double)var9, 0.0625D, 1.0D, (double)var12, 0.1875D);
+				this.setRenderMinMax(0.875D, (double)var9, 0.0625D, 1.0D, (double)var12, 0.1875D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.0D, (double)var9, 0.1875D, 0.125D, (double)var10, 0.4375D);
+				this.setRenderMinMax(0.0D, (double)var9, 0.1875D, 0.125D, (double)var10, 0.4375D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.875D, (double)var9, 0.1875D, 1.0D, (double)var10, 0.4375D);
+				this.setRenderMinMax(0.875D, (double)var9, 0.1875D, 1.0D, (double)var10, 0.4375D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.0D, (double)var11, 0.1875D, 0.125D, (double)var12, 0.4375D);
+				this.setRenderMinMax(0.0D, (double)var11, 0.1875D, 0.125D, (double)var12, 0.4375D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-				this.func_83020_a(0.875D, (double)var11, 0.1875D, 1.0D, (double)var12, 0.4375D);
+				this.setRenderMinMax(0.875D, (double)var11, 0.1875D, 1.0D, (double)var12, 0.4375D);
 				this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			}
 		} else if (var8 != 3 && var8 != 1) {
@@ -5070,50 +5100,53 @@ public class RenderBlocks {
 			var16 = 0.5F;
 			var17 = 0.4375F;
 			var18 = 0.5625F;
-			this.func_83020_a((double)var15, (double)var9, (double)var17, (double)var16, (double)var12, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var9, (double)var17, (double)var16, (double)var12, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			var15 = 0.5F;
 			var16 = 0.625F;
-			this.func_83020_a((double)var15, (double)var9, (double)var17, (double)var16, (double)var12, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var9, (double)var17, (double)var16, (double)var12, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			var15 = 0.625F;
 			var16 = 0.875F;
-			this.func_83020_a((double)var15, (double)var9, (double)var17, (double)var16, (double)var10, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var9, (double)var17, (double)var16, (double)var10, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-			this.func_83020_a((double)var15, (double)var11, (double)var17, (double)var16, (double)var12, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var11, (double)var17, (double)var16, (double)var12, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			var15 = 0.125F;
 			var16 = 0.375F;
-			this.func_83020_a((double)var15, (double)var9, (double)var17, (double)var16, (double)var10, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var9, (double)var17, (double)var16, (double)var10, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-			this.func_83020_a((double)var15, (double)var11, (double)var17, (double)var16, (double)var12, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var11, (double)var17, (double)var16, (double)var12, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 		} else {
+			this.uvRotateTop = 1;
 			var15 = 0.4375F;
 			var16 = 0.5625F;
 			var17 = 0.375F;
 			var18 = 0.5F;
-			this.func_83020_a((double)var15, (double)var9, (double)var17, (double)var16, (double)var12, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var9, (double)var17, (double)var16, (double)var12, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			var17 = 0.5F;
 			var18 = 0.625F;
-			this.func_83020_a((double)var15, (double)var9, (double)var17, (double)var16, (double)var12, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var9, (double)var17, (double)var16, (double)var12, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			var17 = 0.625F;
 			var18 = 0.875F;
-			this.func_83020_a((double)var15, (double)var9, (double)var17, (double)var16, (double)var10, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var9, (double)var17, (double)var16, (double)var10, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-			this.func_83020_a((double)var15, (double)var11, (double)var17, (double)var16, (double)var12, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var11, (double)var17, (double)var16, (double)var12, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 			var17 = 0.125F;
 			var18 = 0.375F;
-			this.func_83020_a((double)var15, (double)var9, (double)var17, (double)var16, (double)var10, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var9, (double)var17, (double)var16, (double)var10, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
-			this.func_83020_a((double)var15, (double)var11, (double)var17, (double)var16, (double)var12, (double)var18);
+			this.setRenderMinMax((double)var15, (double)var11, (double)var17, (double)var16, (double)var12, (double)var18);
 			this.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
 		}
 
-		this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+		this.renderAllFaces = false;
+		this.uvRotateTop = 0;
+		this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 		return var5;
 	}
 
@@ -5915,11 +5948,11 @@ public class RenderBlocks {
 			} else if (var6 == 10) {
 				for (var14 = 0; var14 < 2; ++var14) {
 					if (var14 == 0) {
-						this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.5D);
+						this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.5D);
 					}
 
 					if (var14 == 1) {
-						this.func_83020_a(0.0D, 0.0D, 0.5D, 1.0D, 0.5D, 1.0D);
+						this.setRenderMinMax(0.0D, 0.0D, 0.5D, 1.0D, 0.5D, 1.0D);
 					}
 
 					GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -5997,7 +6030,7 @@ public class RenderBlocks {
 					float var12 = 1.0F - (float)var14 / 16.0F;
 					float var13 = 1.0F - (float)(var14 + var17) / 16.0F;
 					var14 += var17;
-					this.func_83020_a((double)(0.5F - var11), (double)var13, (double)(0.5F - var11), (double)(0.5F + var11), (double)var12, (double)(0.5F + var11));
+					this.setRenderMinMax((double)(0.5F - var11), (double)var13, (double)(0.5F - var11), (double)(0.5F + var11), (double)var12, (double)(0.5F + var11));
 					var4.setNormal(0.0F, -1.0F, 0.0F);
 					this.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSide(0));
 					var4.setNormal(0.0F, 1.0F, 0.0F);
@@ -6014,27 +6047,27 @@ public class RenderBlocks {
 
 				var4.draw();
 				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-				this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+				this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 			} else if (var6 == 11) {
 				for (var14 = 0; var14 < 4; ++var14) {
 					var8 = 0.125F;
 
 					if (var14 == 0) {
-						this.func_83020_a((double)(0.5F - var8), 0.0D, 0.0D, (double)(0.5F + var8), 1.0D, (double)(var8 * 2.0F));
+						this.setRenderMinMax((double)(0.5F - var8), 0.0D, 0.0D, (double)(0.5F + var8), 1.0D, (double)(var8 * 2.0F));
 					}
 
 					if (var14 == 1) {
-						this.func_83020_a((double)(0.5F - var8), 0.0D, (double)(1.0F - var8 * 2.0F), (double)(0.5F + var8), 1.0D, 1.0D);
+						this.setRenderMinMax((double)(0.5F - var8), 0.0D, (double)(1.0F - var8 * 2.0F), (double)(0.5F + var8), 1.0D, 1.0D);
 					}
 
 					var8 = 0.0625F;
 
 					if (var14 == 2) {
-						this.func_83020_a((double)(0.5F - var8), (double)(1.0F - var8 * 3.0F), (double)(-var8 * 2.0F), (double)(0.5F + var8), (double)(1.0F - var8), (double)(1.0F + var8 * 2.0F));
+						this.setRenderMinMax((double)(0.5F - var8), (double)(1.0F - var8 * 3.0F), (double)(-var8 * 2.0F), (double)(0.5F + var8), (double)(1.0F - var8), (double)(1.0F + var8 * 2.0F));
 					}
 
 					if (var14 == 3) {
-						this.func_83020_a((double)(0.5F - var8), (double)(0.5F - var8 * 3.0F), (double)(-var8 * 2.0F), (double)(0.5F + var8), (double)(0.5F - var8), (double)(1.0F + var8 * 2.0F));
+						this.setRenderMinMax((double)(0.5F - var8), (double)(0.5F - var8 * 3.0F), (double)(-var8 * 2.0F), (double)(0.5F + var8), (double)(0.5F - var8), (double)(1.0F + var8 * 2.0F));
 					}
 
 					GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -6065,23 +6098,23 @@ public class RenderBlocks {
 					GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 				}
 
-				this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+				this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 			} else if (var6 == 21) {
 				for (var14 = 0; var14 < 3; ++var14) {
 					var8 = 0.0625F;
 
 					if (var14 == 0) {
-						this.func_83020_a((double)(0.5F - var8), 0.30000001192092896D, 0.0D, (double)(0.5F + var8), 1.0D, (double)(var8 * 2.0F));
+						this.setRenderMinMax((double)(0.5F - var8), 0.30000001192092896D, 0.0D, (double)(0.5F + var8), 1.0D, (double)(var8 * 2.0F));
 					}
 
 					if (var14 == 1) {
-						this.func_83020_a((double)(0.5F - var8), 0.30000001192092896D, (double)(1.0F - var8 * 2.0F), (double)(0.5F + var8), 1.0D, 1.0D);
+						this.setRenderMinMax((double)(0.5F - var8), 0.30000001192092896D, (double)(1.0F - var8 * 2.0F), (double)(0.5F + var8), 1.0D, 1.0D);
 					}
 
 					var8 = 0.0625F;
 
 					if (var14 == 2) {
-						this.func_83020_a((double)(0.5F - var8), 0.5D, 0.0D, (double)(0.5F + var8), (double)(1.0F - var8), 1.0D);
+						this.setRenderMinMax((double)(0.5F - var8), 0.5D, 0.0D, (double)(0.5F + var8), (double)(1.0F - var8), 1.0D);
 					}
 
 					GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -6114,11 +6147,11 @@ public class RenderBlocks {
 			} else if (var6 == 32) {
 				for (var14 = 0; var14 < 2; ++var14) {
 					if (var14 == 0) {
-						this.func_83020_a(0.0D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
+						this.setRenderMinMax(0.0D, 0.0D, 0.3125D, 1.0D, 0.8125D, 0.6875D);
 					}
 
 					if (var14 == 1) {
-						this.func_83020_a(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
+						this.setRenderMinMax(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
 					}
 
 					GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -6149,7 +6182,7 @@ public class RenderBlocks {
 					GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 				}
 
-				this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+				this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 			} else if (var6 == 35) {
 				GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 				this.func_82776_a((BlockAnvil)par1Block, 0, 0, 0, par2, true);
@@ -6157,13 +6190,13 @@ public class RenderBlocks {
 			} else if (var6 == 34) {
 				for (var14 = 0; var14 < 3; ++var14) {
 					if (var14 == 0) {
-						this.func_83020_a(0.125D, 0.0D, 0.125D, 0.875D, 0.1875D, 0.875D);
+						this.setRenderMinMax(0.125D, 0.0D, 0.125D, 0.875D, 0.1875D, 0.875D);
 						this.func_82774_a(Block.obsidian.blockIndexInTexture);
 					} else if (var14 == 1) {
-						this.func_83020_a(0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.875D, 0.8125D);
+						this.setRenderMinMax(0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.875D, 0.8125D);
 						this.func_82774_a(41);
 					} else if (var14 == 2) {
-						this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+						this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 						this.func_82774_a(Block.glass.blockIndexInTexture);
 					}
 
@@ -6195,7 +6228,7 @@ public class RenderBlocks {
 					GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 				}
 
-				this.func_83020_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+				this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 				this.clearOverrideBlockTexture();
 			}
 		} else {

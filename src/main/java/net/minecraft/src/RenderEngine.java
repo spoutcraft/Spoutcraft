@@ -390,12 +390,12 @@ public class RenderEngine {
 
 	public void updateDynamicTextures() {
 		int var1 = -1;
-		TextureFX var3;
 
-		for (Iterator var2 = this.textureList.iterator(); var2.hasNext(); var1 = this.func_82772_a(var3, var1)) {
-			var3 = (TextureFX)var2.next();
+		for (int var2 = 0; var2 < this.textureList.size(); ++var2) {
+			TextureFX var3 = (TextureFX)this.textureList.get(var2);
 			var3.anaglyphEnabled = this.options.anaglyph;
 			var3.onTick();
+			var1 = this.func_82772_a(var3, var1);
 		}
 	}
 

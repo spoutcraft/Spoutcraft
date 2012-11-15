@@ -37,11 +37,9 @@ public class NBTTagList extends NBTBase {
 
 		par1DataOutput.writeByte(this.tagType);
 		par1DataOutput.writeInt(this.tagList.size());
-		Iterator var2 = this.tagList.iterator();
 
-		while (var2.hasNext()) {
-			NBTBase var3 = (NBTBase)var2.next();
-			var3.write(par1DataOutput);
+		for (int var2 = 0; var2 < this.tagList.size(); ++var2) {
+			((NBTBase)this.tagList.get(var2)).write(par1DataOutput);
 		}
 	}
 

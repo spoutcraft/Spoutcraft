@@ -5,6 +5,9 @@ import java.util.Calendar;
 import org.spoutcraft.client.entity.CraftSkeleton; // Spout
 
 public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
+	private EntityAIArrowAttack field_85037_d = new EntityAIArrowAttack(this, 0.25F, 60, 10.0F);
+	private EntityAIAttackOnCollide field_85038_e = new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.31F, false);
+
 	public EntitySkeleton(World par1World) {
 		super(par1World);
 		this.texture = "/mob/skeleton.png";
@@ -17,6 +20,11 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 		this.tasks.addTask(6, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
+
+		if (par1World != null && !par1World.isRemote) {
+			this.func_85036_m();
+		}
+
 		// Spout Start
 		this.spoutEntity = new CraftSkeleton(this);
 		// Spout End
@@ -68,8 +76,8 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 
 	public boolean attackEntityAsMob(Entity par1Entity) {
 		if (super.attackEntityAsMob(par1Entity)) {
-			if (this.func_82202_m() == 1 && par1Entity instanceof EntityLiving) {
-				((EntityLiving)par1Entity).addPotionEffect(new PotionEffect(Potion.field_82731_v.id, 200));
+			if (this.getSkeletonType() == 1 && par1Entity instanceof EntityLiving) {
+				((EntityLiving)par1Entity).addPotionEffect(new PotionEffect(Potion.wither.id, 200));
 			}
 
 			return true;
@@ -78,8 +86,11 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 		}
 	}
 
-	public int func_82193_c(Entity par1Entity) {
-		if (this.func_82202_m() == 1) {
+	/**
+	 * Returns the amount of damage a mob should deal.
+	 */
+	public int getAttackStrength(Entity par1Entity) {
+		if (this.getSkeletonType() == 1) {
 			ItemStack var2 = this.getHeldItem();
 			int var3 = 4;
 
@@ -89,7 +100,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 
 			return var3;
 		} else {
-			return super.func_82193_c(par1Entity);
+			return super.getAttackStrength(par1Entity);
 		}
 	}
 
@@ -118,7 +129,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 
 						if (var3.getItemDamageForDisplay() >= var3.getMaxDamage()) {
 							this.renderBrokenItemStack(var3);
-							this.func_70062_b(4, (ItemStack)null);
+							this.setCurrentItemOrArmor(4, (ItemStack)null);
 						}
 					}
 
@@ -165,7 +176,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 		int var3;
 		int var4;
 
-		if (this.func_82202_m() == 1) {
+		if (this.getSkeletonType() == 1) {
 			var3 = this.rand.nextInt(3 + par2) - 1;
 
 			for (var4 = 0; var4 < var3; ++var4) {
@@ -187,47 +198,69 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 	}
 
 	protected void dropRareDrop(int par1) {
-		if (this.func_82202_m() == 1) {
-			this.entityDropItem(new ItemStack(Item.field_82799_bQ.shiftedIndex, 1, 1), 0.0F);
+		if (this.getSkeletonType() == 1) {
+			this.entityDropItem(new ItemStack(Item.skull.shiftedIndex, 1, 1), 0.0F);
 		}
 	}
 
 	protected void func_82164_bB() {
 		super.func_82164_bB();
-		this.func_70062_b(0, new ItemStack(Item.bow));
+		this.setCurrentItemOrArmor(0, new ItemStack(Item.bow));
 	}
 
 	/**
 	 * Returns the texture's file path as a String.
 	 */
 	public String getTexture() {
-		return this.func_82202_m() == 1 ? "/mob/skeleton_wither.png" : super.getTexture();
+		return this.getSkeletonType() == 1 ? "/mob/skeleton_wither.png" : super.getTexture();
 	}
 
-	public void func_82163_bD() {
+	/**
+	 * Initialize this creature.
+	 */
+	public void initCreature() {
 		if (this.worldObj.provider instanceof WorldProviderHell && this.getRNG().nextInt(5) > 0) {
-			this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, this.moveSpeed, false));
-			this.func_82201_a(1);
-			this.func_70062_b(0, new ItemStack(Item.swordStone));
+			this.tasks.addTask(4, this.field_85038_e);
+			this.setSkeletonType(1);
+			this.setCurrentItemOrArmor(0, new ItemStack(Item.swordStone));
 		} else {
-			this.tasks.addTask(4, new EntityAIArrowAttack(this, this.moveSpeed, 60, 10.0F));
+			this.tasks.addTask(4, this.field_85037_d);
 			this.func_82164_bB();
 			this.func_82162_bC();
 		}
 
-		this.field_82172_bs = this.rand.nextFloat() < field_82181_as[this.worldObj.difficultySetting];
+		if (this.rand.nextFloat() >= field_82181_as[this.worldObj.difficultySetting]) {
+			;
+		}
+
+		this.canPickUpLoot = true;
 
 		if (this.getCurrentItemOrArmor(4) == null) {
-			Calendar var1 = this.worldObj.func_83015_S();
+			Calendar var1 = this.worldObj.getCurrentDate();
 
 			if (var1.get(2) + 1 == 10 && var1.get(5) == 31 && this.rand.nextFloat() < 0.25F) {
-				this.func_70062_b(4, new ItemStack(this.rand.nextFloat() < 0.1F ? Block.pumpkinLantern : Block.pumpkin));
-				this.field_82174_bp[4] = 0.0F;
+				this.setCurrentItemOrArmor(4, new ItemStack(this.rand.nextFloat() < 0.1F ? Block.pumpkinLantern : Block.pumpkin));
+				this.equipmentDropChances[4] = 0.0F;
 			}
 		}
 	}
 
-	public void func_82196_d(EntityLiving par1EntityLiving) {
+	public void func_85036_m() {
+		this.tasks.func_85156_a(this.field_85038_e);
+		this.tasks.func_85156_a(this.field_85037_d);
+		ItemStack var1 = this.getHeldItem();
+
+		if (var1 != null && var1.itemID == Item.bow.shiftedIndex) {
+			this.tasks.addTask(4, this.field_85037_d);
+		} else {
+			this.tasks.addTask(4, this.field_85038_e);
+		}
+	}
+
+	/**
+	 * Attack the specified entity using a ranged attack.
+	 */
+	public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving) {
 		EntityArrow var2 = new EntityArrow(this.worldObj, this, par1EntityLiving, 1.6F, 12.0F);
 		int var3 = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, this.getHeldItem());
 		int var4 = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, this.getHeldItem());
@@ -240,19 +273,25 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 			var2.setKnockbackStrength(var4);
 		}
 
-		if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, this.getHeldItem()) > 0 || this.func_82202_m() == 1) {
+		if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, this.getHeldItem()) > 0 || this.getSkeletonType() == 1) {
 			var2.setFire(100);
 		}
 
-		this.worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+		this.worldObj.func_85030_a("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		this.worldObj.spawnEntityInWorld(var2);
 	}
 
-	public int func_82202_m() {
+	/**
+	 * Return this skeleton's type.
+	 */
+	public int getSkeletonType() {
 		return this.dataWatcher.getWatchableObjectByte(13);
 	}
 
-	public void func_82201_a(int par1) {
+	/**
+	 * Set this skeleton's type.
+	 */
+	public void setSkeletonType(int par1) {
 		this.dataWatcher.updateObject(13, Byte.valueOf((byte)par1));
 		this.isImmuneToFire = par1 == 1;
 
@@ -271,14 +310,10 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 
 		if (par1NBTTagCompound.hasKey("SkeletonType")) {
 			byte var2 = par1NBTTagCompound.getByte("SkeletonType");
-			this.func_82201_a(var2);
+			this.setSkeletonType(var2);
 		}
 
-		if (this.func_82202_m() == 1) {
-			this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, this.moveSpeed, false));
-		} else {
-			this.tasks.addTask(4, new EntityAIArrowAttack(this, this.moveSpeed, 60, 10.0F));
-		}
+		this.func_85036_m();
 	}
 
 	/**
@@ -286,6 +321,17 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setByte("SkeletonType", (byte)this.func_82202_m());
+		par1NBTTagCompound.setByte("SkeletonType", (byte)this.getSkeletonType());
+	}
+
+	/**
+	 * Sets the held item, or an armor slot. Slot 0 is held item. Slot 1-4 is armor. Params: Item, slot
+	 */
+	public void setCurrentItemOrArmor(int par1, ItemStack par2ItemStack) {
+		super.setCurrentItemOrArmor(par1, par2ItemStack);
+
+		if (!this.worldObj.isRemote && par1 == 0) {
+			this.func_85036_m();
+		}
 	}
 }

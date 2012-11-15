@@ -335,7 +335,7 @@ public class PotionHelper {
 						PotionEffect var11 = new PotionEffect(var6.getId(), var8, var9);
 
 						if ((par0 & 16384) != 0) {
-							var11.func_82721_a(true);
+							var11.setSplashPotion(true);
 						}
 
 						var2.add(var11);

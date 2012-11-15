@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
-
 public class ContainerFurnace extends Container {
 	private TileEntityFurnace furnace;
 	private int lastCookTime = 0;
@@ -44,10 +42,9 @@ public class ContainerFurnace extends Container {
 	 */
 	public void updateCraftingResults() {
 		super.updateCraftingResults();
-		Iterator var1 = this.crafters.iterator();
 
-		while (var1.hasNext()) {
-			ICrafting var2 = (ICrafting)var1.next();
+		for (int var1 = 0; var1 < this.crafters.size(); ++var1) {
+			ICrafting var2 = (ICrafting)this.crafters.get(var1);
 
 			if (this.lastCookTime != this.furnace.furnaceCookTime) {
 				var2.updateCraftingInventoryInfo(this, 0, this.furnace.furnaceCookTime);
@@ -85,7 +82,10 @@ public class ContainerFurnace extends Container {
 		return this.furnace.isUseableByPlayer(par1EntityPlayer);
 	}
 
-	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2) {
+	/**
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
+	 */
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
 		ItemStack var3 = null;
 		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
@@ -129,7 +129,7 @@ public class ContainerFurnace extends Container {
 				return null;
 			}
 
-			var4.func_82870_a(par1EntityPlayer, var5);
+			var4.onPickupFromSlot(par1EntityPlayer, var5);
 		}
 
 		return var3;

@@ -3,7 +3,6 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class CraftingManager {
@@ -133,6 +132,7 @@ public class CraftingManager {
 	 * Adds a recipe. See spreadsheet on first page for details.
 	 */
 	public void addRecipe(ItemStack par1ItemStack, Object ... par2ArrayOfObj) { // Spout private -> public
+		
 		String var3 = "";
 		int var4 = 0;
 		int var5 = 0;
@@ -215,12 +215,13 @@ public class CraftingManager {
 		this.recipes.add(new ShapelessRecipes(par1ItemStack, var3));
 	}
 
-	public ItemStack func_82787_a(InventoryCrafting par1InventoryCrafting, World par2World) {
+	public ItemStack findMatchingRecipe(InventoryCrafting par1InventoryCrafting, World par2World) {
 		int var3 = 0;
 		ItemStack var4 = null;
 		ItemStack var5 = null;
+		int var6;
 
-		for (int var6 = 0; var6 < par1InventoryCrafting.getSizeInventory(); ++var6) {
+		for (var6 = 0; var6 < par1InventoryCrafting.getSizeInventory(); ++var6) {
 			ItemStack var7 = par1InventoryCrafting.getStackInSlot(var6);
 
 			if (var7 != null) {
@@ -237,11 +238,11 @@ public class CraftingManager {
 		}
 
 		if (var3 == 2 && var4.itemID == var5.itemID && var4.stackSize == 1 && var5.stackSize == 1 && Item.itemsList[var4.itemID].isDamageable()) {
-			Item var13 = Item.itemsList[var4.itemID];
-			int var14 = var13.getMaxDamage() - var4.getItemDamageForDisplay();
-			int var8 = var13.getMaxDamage() - var5.getItemDamageForDisplay();
-			int var9 = var14 + var8 + var13.getMaxDamage() * 5 / 100;
-			int var10 = var13.getMaxDamage() - var9;
+			Item var11 = Item.itemsList[var4.itemID];
+			int var13 = var11.getMaxDamage() - var4.getItemDamageForDisplay();
+			int var8 = var11.getMaxDamage() - var5.getItemDamageForDisplay();
+			int var9 = var13 + var8 + var11.getMaxDamage() * 5 / 100;
+			int var10 = var11.getMaxDamage() - var9;
 
 			if (var10 < 0) {
 				var10 = 0;
@@ -249,18 +250,15 @@ public class CraftingManager {
 
 			return new ItemStack(var4.itemID, 1, var10);
 		} else {
-			Iterator var11 = this.recipes.iterator();
-			IRecipe var12;
+			for (var6 = 0; var6 < this.recipes.size(); ++var6) {
+				IRecipe var12 = (IRecipe)this.recipes.get(var6);
 
-			do {
-				if (!var11.hasNext()) {
-					return null;
+				if (var12.matches(par1InventoryCrafting, par2World)) {
+					return var12.getCraftingResult(par1InventoryCrafting);
 				}
+			}
 
-				var12 = (IRecipe)var11.next();
-			} while (!var12.matches(par1InventoryCrafting, par2World));
-
-			return var12.getCraftingResult(par1InventoryCrafting);
+			return null;
 		}
 	}
 

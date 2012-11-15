@@ -5,7 +5,11 @@ import java.util.Calendar;
 import org.spoutcraft.client.entity.CraftZombie; // Spout
 
 public class EntityZombie extends EntityMob {
-	private int field_82234_d = 0;
+
+	/**
+	 * Ticker used to determine the time remaining for this zombie to convert into a villager when cured.
+	 */
+	private int conversionTime = 0;
 
 	public EntityZombie(World par1World) {
 		super(par1World);
@@ -48,7 +52,7 @@ public class EntityZombie extends EntityMob {
 	 * Returns the texture's file path as a String.
 	 */
 	public String getTexture() {
-		return this.func_82231_m() ? "/mob/zombie_villager.png" : "/mob/zombie.png";
+		return this.isVillager() ? "/mob/zombie_villager.png" : "/mob/zombie.png";
 	}
 
 	public int getMaxHealth() {
@@ -82,15 +86,24 @@ public class EntityZombie extends EntityMob {
 		return this.getDataWatcher().getWatchableObjectByte(12) == 1;
 	}
 
-	public void func_82227_f(boolean par1) {
+	/**
+	 * Set whether this zombie is a child.
+	 */
+	public void setChild(boolean par1) {
 		this.getDataWatcher().updateObject(12, Byte.valueOf((byte)1));
 	}
 
-	public boolean func_82231_m() {
+	/**
+	 * Return whether this zombie is a villager.
+	 */
+	public boolean isVillager() {
 		return this.getDataWatcher().getWatchableObjectByte(13) == 1;
 	}
 
-	public void func_82229_g(boolean par1) {
+	/**
+	 * Set whether this zombie is a villager.
+	 */
+	public void setVillager(boolean par1) {
 		this.getDataWatcher().updateObject(13, Byte.valueOf((byte)(par1 ? 1 : 0)));
 	}
 
@@ -112,7 +125,7 @@ public class EntityZombie extends EntityMob {
 
 						if (var3.getItemDamageForDisplay() >= var3.getMaxDamage()) {
 							this.renderBrokenItemStack(var3);
-							this.func_70062_b(4, (ItemStack)null);
+							this.setCurrentItemOrArmor(4, (ItemStack)null);
 						}
 					}
 
@@ -133,18 +146,21 @@ public class EntityZombie extends EntityMob {
 	 */
 	public void onUpdate() {
 		if (!this.worldObj.isRemote && this.func_82230_o()) {
-			int var1 = this.func_82233_q();
-			this.field_82234_d -= var1;
+			int var1 = this.getConversionTimeBoost();
+			this.conversionTime -= var1;
 
-			if (this.field_82234_d <= 0) {
-				this.func_82232_p();
+			if (this.conversionTime <= 0) {
+				this.convertToVillager();
 			}
 		}
 
 		super.onUpdate();
 	}
 
-	public int func_82193_c(Entity par1Entity) {
+	/**
+	 * Returns the amount of damage a mob should deal.
+	 */
+	public int getAttackStrength(Entity par1Entity) {
 		ItemStack var2 = this.getHeldItem();
 		int var3 = 4;
 
@@ -180,7 +196,7 @@ public class EntityZombie extends EntityMob {
 	 * Plays step sound at given x, y, z for the entity
 	 */
 	protected void playStepSound(int par1, int par2, int par3, int par4) {
-		this.worldObj.playSoundAtEntity(this, "mob.zombie.step", 0.15F, 1.0F);
+		this.func_85030_a("mob.zombie.step", 0.15F, 1.0F);
 	}
 
 	/**
@@ -204,11 +220,11 @@ public class EntityZombie extends EntityMob {
 				break;
 
 			case 1:
-				this.dropItem(Item.field_82797_bK.shiftedIndex, 1);
+				this.dropItem(Item.carrot.shiftedIndex, 1);
 				break;
 
 			case 2:
-				this.dropItem(Item.field_82794_bL.shiftedIndex, 1);
+				this.dropItem(Item.potatoe.shiftedIndex, 1);
 		}
 	}
 
@@ -219,9 +235,9 @@ public class EntityZombie extends EntityMob {
 			int var1 = this.rand.nextInt(3);
 
 			if (var1 == 0) {
-				this.func_70062_b(0, new ItemStack(Item.swordSteel));
+				this.setCurrentItemOrArmor(0, new ItemStack(Item.swordSteel));
 			} else {
-				this.func_70062_b(0, new ItemStack(Item.shovelSteel));
+				this.setCurrentItemOrArmor(0, new ItemStack(Item.shovelSteel));
 			}
 		}
 	}
@@ -236,11 +252,11 @@ public class EntityZombie extends EntityMob {
 			par1NBTTagCompound.setBoolean("IsBaby", true);
 		}
 
-		if (this.func_82231_m()) {
+		if (this.isVillager()) {
 			par1NBTTagCompound.setBoolean("IsVillager", true);
 		}
 
-		par1NBTTagCompound.setInteger("ConversionTime", this.func_82230_o() ? this.field_82234_d : -1);
+		par1NBTTagCompound.setInteger("ConversionTime", this.func_82230_o() ? this.conversionTime : -1);
 	}
 
 	/**
@@ -250,15 +266,15 @@ public class EntityZombie extends EntityMob {
 		super.readEntityFromNBT(par1NBTTagCompound);
 
 		if (par1NBTTagCompound.getBoolean("IsBaby")) {
-			this.func_82227_f(true);
+			this.setChild(true);
 		}
 
 		if (par1NBTTagCompound.getBoolean("IsVillager")) {
-			this.func_82229_g(true);
+			this.setVillager(true);
 		}
 
 		if (par1NBTTagCompound.hasKey("ConversionTime") && par1NBTTagCompound.getInteger("ConversionTime") > -1) {
-			this.func_82228_a(par1NBTTagCompound.getInteger("ConversionTime"));
+			this.startConversion(par1NBTTagCompound.getInteger("ConversionTime"));
 		}
 	}
 
@@ -276,11 +292,11 @@ public class EntityZombie extends EntityMob {
 			EntityZombie var2 = new EntityZombie(this.worldObj);
 			var2.func_82149_j(par1EntityLiving);
 			this.worldObj.setEntityDead(par1EntityLiving);
-			var2.func_82163_bD();
-			var2.func_82229_g(true);
+			var2.initCreature();
+			var2.setVillager(true);
 
 			if (par1EntityLiving.isChild()) {
-				var2.func_82227_f(true);
+				var2.setChild(true);
 			}
 
 			this.worldObj.spawnEntityInWorld(var2);
@@ -288,22 +304,25 @@ public class EntityZombie extends EntityMob {
 		}
 	}
 
-	public void func_82163_bD() {
-		this.field_82172_bs = this.rand.nextFloat() < field_82181_as[this.worldObj.difficultySetting];
+	/**
+	 * Initialize this creature.
+	 */
+	public void initCreature() {
+		this.canPickUpLoot = this.rand.nextFloat() < field_82181_as[this.worldObj.difficultySetting];
 
 		if (this.worldObj.rand.nextFloat() < 0.05F) {
-			this.func_82229_g(true);
+			this.setVillager(true);
 		}
 
 		this.func_82164_bB();
 		this.func_82162_bC();
 
 		if (this.getCurrentItemOrArmor(4) == null) {
-			Calendar var1 = this.worldObj.func_83015_S();
+			Calendar var1 = this.worldObj.getCurrentDate();
 
 			if (var1.get(2) + 1 == 10 && var1.get(5) == 31 && this.rand.nextFloat() < 0.25F) {
-				this.func_70062_b(4, new ItemStack(this.rand.nextFloat() < 0.1F ? Block.pumpkinLantern : Block.pumpkin));
-				this.field_82174_bp[4] = 0.0F;
+				this.setCurrentItemOrArmor(4, new ItemStack(this.rand.nextFloat() < 0.1F ? Block.pumpkinLantern : Block.pumpkin));
+				this.equipmentDropChances[4] = 0.0F;
 			}
 		}
 	}
@@ -314,7 +333,7 @@ public class EntityZombie extends EntityMob {
 	public boolean interact(EntityPlayer par1EntityPlayer) {
 		ItemStack var2 = par1EntityPlayer.getCurrentEquippedItem();
 
-		if (var2 != null && var2.getItem() == Item.appleGold && var2.getItemDamage() == 0 && this.func_82231_m() && this.isPotionActive(Potion.weakness)) {
+		if (var2 != null && var2.getItem() == Item.appleGold && var2.getItemDamage() == 0 && this.isVillager() && this.isPotionActive(Potion.weakness)) {
 			if (!par1EntityPlayer.capabilities.isCreativeMode) {
 				--var2.stackSize;
 			}
@@ -324,7 +343,7 @@ public class EntityZombie extends EntityMob {
 			}
 
 			if (!this.worldObj.isRemote) {
-				this.func_82228_a(this.rand.nextInt(2401) + 3600);
+				this.startConversion(this.rand.nextInt(2401) + 3600);
 			}
 
 			return true;
@@ -333,10 +352,14 @@ public class EntityZombie extends EntityMob {
 		}
 	}
 
-	protected void func_82228_a(int par1) {
-		this.field_82234_d = par1;
+	/**
+	 * Starts converting this zombie into a villager. The zombie converts into a villager after the specified time in
+	 * ticks.
+	 */
+	protected void startConversion(int par1) {
+		this.conversionTime = par1;
 		this.getDataWatcher().updateObject(14, Byte.valueOf((byte)1));
-		this.func_82170_o(Potion.weakness.id);
+		this.removePotionEffect(Potion.weakness.id);
 		this.addPotionEffect(new PotionEffect(Potion.damageBoost.id, par1, Math.min(this.worldObj.difficultySetting - 1, 0)));
 		this.worldObj.setEntityState(this, (byte)16);
 	}
@@ -353,10 +376,13 @@ public class EntityZombie extends EntityMob {
 		return this.getDataWatcher().getWatchableObjectByte(14) == 1;
 	}
 
-	protected void func_82232_p() {
+	/**
+	 * Convert this zombie into a villager.
+	 */
+	protected void convertToVillager() {
 		EntityVillager var1 = new EntityVillager(this.worldObj);
 		var1.func_82149_j(this);
-		var1.func_82163_bD();
+		var1.initCreature();
 		var1.func_82187_q();
 
 		if (this.isChild()) {
@@ -369,7 +395,10 @@ public class EntityZombie extends EntityMob {
 		this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1017, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
 	}
 
-	protected int func_82233_q() {
+	/**
+	 * Return the amount of time decremented from conversionTime every tick.
+	 */
+	protected int getConversionTimeBoost() {
 		int var1 = 1;
 
 		if (this.rand.nextFloat() < 0.01F) {

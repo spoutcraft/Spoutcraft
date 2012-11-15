@@ -65,7 +65,7 @@ public class GuiIngameMenu extends GuiScreen {
 			case 4:
 				this.mc.displayGuiScreen((GuiScreen)null);
 				this.mc.setIngameFocus();
-				this.mc.sndManager.func_82461_f();
+				this.mc.sndManager.resumeAllSounds();
 				break;
 
 			case 5:

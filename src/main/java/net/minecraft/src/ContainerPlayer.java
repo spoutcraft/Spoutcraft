@@ -10,11 +10,11 @@ public class ContainerPlayer extends Container {
 
 	/** Determines if inventory manipulation should be handled. */
 	public boolean isLocalWorld = false;
-	private final EntityPlayer field_82862_h;
+	private final EntityPlayer thePlayer;
 
 	public ContainerPlayer(InventoryPlayer par1InventoryPlayer, boolean par2, EntityPlayer par3EntityPlayer) {
 		this.isLocalWorld = par2;
-		this.field_82862_h = par3EntityPlayer;
+		this.thePlayer = par3EntityPlayer;
 		this.addSlotToContainer(new SlotCrafting(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 144, 36));
 		int var4;
 		int var5;
@@ -57,7 +57,7 @@ public class ContainerPlayer extends Container {
 	 * Callback for when the crafting matrix is changed.
 	 */
 	public void onCraftMatrixChanged(IInventory par1IInventory) {
-		this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().func_82787_a(this.craftMatrix, this.field_82862_h.worldObj));
+		this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.thePlayer.worldObj));
 	}
 
 	/**
@@ -81,7 +81,10 @@ public class ContainerPlayer extends Container {
 		return true;
 	}
 
-	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2) {
+	/**
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
+	 */
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
 		ItemStack var3 = null;
 		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
@@ -131,7 +134,7 @@ public class ContainerPlayer extends Container {
 				return null;
 			}
 
-			var4.func_82870_a(par1EntityPlayer, var5);
+			var4.onPickupFromSlot(par1EntityPlayer, var5);
 		}
 
 		return var3;

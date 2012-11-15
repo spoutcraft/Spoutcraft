@@ -75,7 +75,7 @@ public class EntityChicken extends EntityAnimal {
 		this.field_70886_e += this.field_70889_i * 2.0F;
 
 		if (!this.isChild() && !this.worldObj.isRemote && --this.timeUntilNextEgg <= 0) {
-			this.worldObj.playSoundAtEntity(this, "mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+			this.func_85030_a("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			this.dropItem(Item.egg.shiftedIndex, 1);
 			this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
 		}
@@ -111,7 +111,7 @@ public class EntityChicken extends EntityAnimal {
 	 * Plays step sound at given x, y, z for the entity
 	 */
 	protected void playStepSound(int par1, int par2, int par3, int par4) {
-		this.worldObj.playSoundAtEntity(this, "mob.chicken.step", 0.15F, 1.0F);
+		this.func_85030_a("mob.chicken.step", 0.15F, 1.0F);
 	}
 
 	/**
@@ -141,14 +141,19 @@ public class EntityChicken extends EntityAnimal {
 	/**
 	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
 	 */
-	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
+	public EntityChicken spawnBabyAnimal(EntityAgeable par1EntityAgeable) {
 		return new EntityChicken(this.worldObj);
 	}
 
 	/**
-	 * Checks if the parameter is an wheat item.
+	 * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
+	 * the animal type)
 	 */
-	public boolean isWheat(ItemStack par1ItemStack) {
+	public boolean isBreedingItem(ItemStack par1ItemStack) {
 		return par1ItemStack != null && par1ItemStack.getItem() instanceof ItemSeeds;
+	}
+
+	public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable) {
+		return this.spawnBabyAnimal(par1EntityAgeable);
 	}
 }

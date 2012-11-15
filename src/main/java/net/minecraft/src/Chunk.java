@@ -816,12 +816,9 @@ public class Chunk {
 	public void onChunkLoad() {
 		this.isChunkLoaded = true;
 		this.worldObj.addTileEntity(this.chunkTileEntityMap.values());
-		List[] var1 = this.entityLists;
-		int var2 = var1.length;
 
-		for (int var3 = 0; var3 < var2; ++var3) {
-			List var4 = var1[var3];
-			this.worldObj.addLoadedEntities(var4);
+		for (int var1 = 0; var1 < this.entityLists.length; ++var1) {
+			this.worldObj.addLoadedEntities(this.entityLists[var1]);
 		}
 
 		// Spout Start
@@ -842,12 +839,8 @@ public class Chunk {
 			this.worldObj.markTileEntityForDespawn(var2);
 		}
 
-		List[] var5 = this.entityLists;
-		int var6 = var5.length;
-
-		for (int var3 = 0; var3 < var6; ++var3) {
-			List var4 = var5[var3];
-			this.worldObj.unloadEntities(var4);
+		for (int var3 = 0; var3 < this.entityLists.length; ++var3) {
+			this.worldObj.unloadEntities(this.entityLists[var3]);
 		}
 
 		// Spout Start
@@ -882,8 +875,8 @@ public class Chunk {
 			List var7 = this.entityLists[var6];
 			Iterator var8 = var7.iterator();
 
-			while (var8.hasNext()) {
-				Entity var9 = (Entity)var8.next();
+			for (int var8 = 0; var8 < var7.size(); ++var8) {
+				Entity var9 = (Entity)var7.get(var8);
 
 				if (var9 != par1Entity && var9.boundingBox.intersectsWith(par2AxisAlignedBB)) {
 					par3List.add(var9);
@@ -924,12 +917,11 @@ public class Chunk {
 
 		for (int var7 = var5; var7 <= var6; ++var7) {
 			List var8 = this.entityLists[var7];
-			Iterator var9 = var8.iterator();
 
-			while (var9.hasNext()) {
-				Entity var10 = (Entity)var9.next();
+			for (int var9 = 0; var9 < var8.size(); ++var9) {
+				Entity var10 = (Entity)var8.get(var9);
 
-				if (par1Class.isAssignableFrom(var10.getClass()) && var10.boundingBox.intersectsWith(par2AxisAlignedBB) && (par4IEntitySelector == null || par4IEntitySelector.func_82704_a(var10))) {
+				if (par1Class.isAssignableFrom(var10.getClass()) && var10.boundingBox.intersectsWith(par2AxisAlignedBB) && (par4IEntitySelector == null || par4IEntitySelector.isEntityApplicable(var10))) {
 					par3List.add(var10);
 				}
 			}
@@ -941,10 +933,10 @@ public class Chunk {
 	 */
 	public boolean needsSaving(boolean par1) {
 		if (par1) {
-			if (this.hasEntities && this.worldObj.func_82737_E() != this.lastSaveTime) {
+			if (this.hasEntities && this.worldObj.getTotalWorldTime() != this.lastSaveTime) {
 				return true;
 			}
-		} else if (this.hasEntities && this.worldObj.func_82737_E() >= this.lastSaveTime + 600L) {
+		} else if (this.hasEntities && this.worldObj.getTotalWorldTime() >= this.lastSaveTime + 600L) {
 			return true;
 		}
 

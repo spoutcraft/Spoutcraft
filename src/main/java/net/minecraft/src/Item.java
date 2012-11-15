@@ -144,18 +144,18 @@ public class Item {
 	public static Item writableBook = (new ItemWritableBook(130)).setIconCoord(11, 11).setItemName("writingBook").setCreativeTab(CreativeTabs.tabMisc);
 	public static Item writtenBook = (new ItemEditableBook(131)).setIconCoord(12, 11).setItemName("writtenBook");
 	public static Item emerald = (new Item(132)).setIconCoord(10, 11).setItemName("emerald").setCreativeTab(CreativeTabs.tabMaterials);
-	public static Item field_82802_bI = (new ItemHangingEntity(133, EntityItemFrame.class)).setIconCoord(14, 12).setItemName("frame");
-	public static Item field_82796_bJ = (new ItemReed(134, Block.field_82516_cf)).setIconCoord(13, 11).setItemName("flowerPot").setCreativeTab(CreativeTabs.tabDecorations);
-	public static Item field_82797_bK = (new ItemSeedFood(135, 4, 0.6F, Block.field_82513_cg.blockID, Block.tilledField.blockID)).setIconCoord(8, 7).setItemName("carrots");
-	public static Item field_82794_bL = (new ItemSeedFood(136, 1, 0.3F, Block.field_82514_ch.blockID, Block.tilledField.blockID)).setIconCoord(7, 7).setItemName("potato");
-	public static Item field_82795_bM = (new ItemFood(137, 6, 0.6F, false)).setIconCoord(6, 7).setItemName("potatoBaked");
-	public static Item field_82800_bN = (new ItemFood(138, 2, 0.3F, false)).setPotionEffect(Potion.poison.id, 5, 0, 0.6F).setIconCoord(6, 8).setItemName("potatoPoisonous");
-	public static ItemEmptyMap field_82801_bO = (ItemEmptyMap)(new ItemEmptyMap(139)).setIconCoord(13, 12).setItemName("emptyMap");
-	public static Item field_82798_bP = (new ItemFood(140, 6, 1.2F, false)).setIconCoord(6, 9).setItemName("carrotGolden").setPotionEffect(PotionHelper.field_82818_l);
-	public static Item field_82799_bQ = (new ItemSkull(141)).setItemName("skull");
-	public static Item field_82793_bR = (new ItemCarrotOnAStick(142)).setIconCoord(6, 6).setItemName("carrotOnAStick");
-	public static Item field_82792_bS = (new ItemSimpleFoiled(143)).setIconCoord(9, 11).setItemName("netherStar").setCreativeTab(CreativeTabs.tabMaterials);
-	public static Item field_82791_bT = (new ItemFood(144, 8, 0.3F, false)).setIconCoord(8, 9).setItemName("pumpkinPie").setCreativeTab(CreativeTabs.tabFood);
+	public static Item itemFrame = (new ItemHangingEntity(133, EntityItemFrame.class)).setIconCoord(14, 12).setItemName("frame");
+	public static Item flowerPot = (new ItemReed(134, Block.flowerPot)).setIconCoord(13, 11).setItemName("flowerPot").setCreativeTab(CreativeTabs.tabDecorations);
+	public static Item carrot = (new ItemSeedFood(135, 4, 0.6F, Block.carrot.blockID, Block.tilledField.blockID)).setIconCoord(8, 7).setItemName("carrots");
+	public static Item potatoe = (new ItemSeedFood(136, 1, 0.3F, Block.potatoe.blockID, Block.tilledField.blockID)).setIconCoord(7, 7).setItemName("potato");
+	public static Item bakedPotato = (new ItemFood(137, 6, 0.6F, false)).setIconCoord(6, 7).setItemName("potatoBaked");
+	public static Item poisonousPotato = (new ItemFood(138, 2, 0.3F, false)).setPotionEffect(Potion.poison.id, 5, 0, 0.6F).setIconCoord(6, 8).setItemName("potatoPoisonous");
+	public static ItemEmptyMap emptyMap = (ItemEmptyMap)(new ItemEmptyMap(139)).setIconCoord(13, 12).setItemName("emptyMap");
+	public static Item goldenCarrot = (new ItemFood(140, 6, 1.2F, false)).setIconCoord(6, 9).setItemName("carrotGolden").setPotionEffect(PotionHelper.field_82818_l);
+	public static Item skull = (new ItemSkull(141)).setItemName("skull");
+	public static Item carrotOnAStick = (new ItemCarrotOnAStick(142)).setIconCoord(6, 6).setItemName("carrotOnAStick");
+	public static Item netherStar = (new ItemSimpleFoiled(143)).setIconCoord(9, 11).setItemName("netherStar").setCreativeTab(CreativeTabs.tabMaterials);
+	public static Item pumpkinPie = (new ItemFood(144, 8, 0.3F, false)).setIconCoord(8, 9).setItemName("pumpkinPie").setCreativeTab(CreativeTabs.tabFood);
 	public static Item record13 = (new ItemRecord(2000, "13")).setIconCoord(0, 15).setItemName("record");
 	public static Item recordCat = (new ItemRecord(2001, "cat")).setIconCoord(1, 15).setItemName("record");
 	public static Item recordBlocks = (new ItemRecord(2002, "blocks")).setIconCoord(2, 15).setItemName("record");
@@ -167,6 +167,7 @@ public class Item {
 	public static Item recordStrad = (new ItemRecord(2008, "strad")).setIconCoord(8, 15).setItemName("record");
 	public static Item recordWard = (new ItemRecord(2009, "ward")).setIconCoord(9, 15).setItemName("record");
 	public static Item record11 = (new ItemRecord(2010, "11")).setIconCoord(10, 15).setItemName("record");
+	public static Item field_85180_cf = (new ItemRecord(2011, "wait")).setIconCoord(11, 15).setItemName("record");
 	public final int shiftedIndex;
 	protected int maxStackSize = 64;
 	private int maxDamage = 0;
@@ -345,7 +346,7 @@ public class Item {
 		return StatCollector.translateToLocal(this.getItemNameIS(par1ItemStack) + ".name");
 	}
 
-	public int func_82790_a(ItemStack par1ItemStack, int par2) {
+	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
 		return 16777215;
 	}
 
@@ -408,7 +409,7 @@ public class Item {
 		double var7 = par2EntityPlayer.prevPosX + (par2EntityPlayer.posX - par2EntityPlayer.prevPosX) * (double)var4;
 		double var9 = par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par2EntityPlayer.yOffset;
 		double var11 = par2EntityPlayer.prevPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.prevPosZ) * (double)var4;
-		Vec3 var13 = par1World.func_82732_R().getVecFromPool(var7, var9, var11);
+		Vec3 var13 = par1World.getWorldVec3Pool().getVecFromPool(var7, var9, var11);
 		float var14 = MathHelper.cos(-var6 * 0.017453292F - (float)Math.PI);
 		float var15 = MathHelper.sin(-var6 * 0.017453292F - (float)Math.PI);
 		float var16 = -MathHelper.cos(-var5 * 0.017453292F);
@@ -458,7 +459,10 @@ public class Item {
 		return true;
 	}
 
-	public boolean func_82789_a(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+	/**
+	 * Return whether this item is repairable in an anvil.
+	 */
+	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
 		return false;
 	}
 

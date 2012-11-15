@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.spoutcraft.client.entity.CraftPigZombie;
@@ -37,7 +36,7 @@ public class EntityPigZombie extends EntityZombie {
 		this.moveSpeed = this.entityToAttack != null ? 0.95F : 0.5F;
 
 		if (this.randomSoundDelay > 0 && --this.randomSoundDelay == 0) {
-			this.worldObj.playSoundAtEntity(this, "mob.zombiepig.zpigangry", this.getSoundVolume() * 2.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
+			this.func_85030_a("mob.zombiepig.zpigangry", this.getSoundVolume() * 2.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
 		}
 
 		super.onUpdate();
@@ -85,25 +84,28 @@ public class EntityPigZombie extends EntityZombie {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		Entity var3 = par1DamageSource.getEntity();
+		if (this.func_85032_ar()) {
+			return false;
+		} else {
+			Entity var3 = par1DamageSource.getEntity();
 
-		if (var3 instanceof EntityPlayer) {
-			List var4 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(32.0D, 32.0D, 32.0D));
-			Iterator var5 = var4.iterator();
+			if (var3 instanceof EntityPlayer) {
+				List var4 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(32.0D, 32.0D, 32.0D));
 
-			while (var5.hasNext()) {
-				Entity var6 = (Entity)var5.next();
+				for (int var5 = 0; var5 < var4.size(); ++var5) {
+					Entity var6 = (Entity)var4.get(var5);
 
-				if (var6 instanceof EntityPigZombie) {
-					EntityPigZombie var7 = (EntityPigZombie)var6;
-					var7.becomeAngryAt(var3);
+					if (var6 instanceof EntityPigZombie) {
+						EntityPigZombie var7 = (EntityPigZombie)var6;
+						var7.becomeAngryAt(var3);
+					}
 				}
+
+				this.becomeAngryAt(var3);
 			}
 
-			this.becomeAngryAt(var3);
+			return super.attackEntityFrom(par1DamageSource, par2);
 		}
-
-		return super.attackEntityFrom(par1DamageSource, par2);
 	}
 
 	/**
@@ -173,15 +175,21 @@ public class EntityPigZombie extends EntityZombie {
 	}
 
 	protected void func_82164_bB() {
-		this.func_70062_b(0, new ItemStack(Item.swordGold));
+		this.setCurrentItemOrArmor(0, new ItemStack(Item.swordGold));
 	}
 
-	public void func_82163_bD() {
-		super.func_82163_bD();
-		this.func_82229_g(false);
+	/**
+	 * Initialize this creature.
+	 */
+	public void initCreature() {
+		super.initCreature();
+		this.setVillager(false);
 	}
 
-	public int func_82193_c(Entity par1Entity) {
+	/**
+	 * Returns the amount of damage a mob should deal.
+	 */
+	public int getAttackStrength(Entity par1Entity) {
 		ItemStack var2 = this.getHeldItem();
 		int var3 = 5;
 
