@@ -30,7 +30,7 @@ public class ScreenShotHelper {
 		else return saveScreenshot(par0File, (String)null, par1, par2);
 	}
 
-	// Spout Start - method renamed from func_35879_a to saveScreenshot
+	// Spout Start - method renamed from func_74292_a to saveScreenshot
 	public static String saveScreenshot(File file, String imageFileName, int screenWidth, int screenHeight) {
 		ByteBuffer buffer = BufferUtils.createByteBuffer(screenWidth * screenHeight * 3);
 		byte[] pixelData = new byte[screenWidth * screenHeight * 3];

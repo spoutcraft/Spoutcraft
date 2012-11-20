@@ -124,14 +124,14 @@ public class EntityMagmaCube extends EntitySlime {
 	 * Returns the sound this mob makes when it is hurt.
 	 */
 	protected String getHurtSound() {
-		return "mob.slime";
+		return "mob.slime." + (this.getSlimeSize() > 1 ? "big" : "small");
 	}
 
 	/**
 	 * Returns the sound this mob makes on death.
 	 */
 	protected String getDeathSound() {
-		return "mob.slime";
+		return "mob.slime." + (this.getSlimeSize() > 1 ? "big" : "small");
 	}
 
 	/**

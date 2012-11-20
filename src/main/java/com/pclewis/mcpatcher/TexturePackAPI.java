@@ -16,7 +16,7 @@ public class TexturePackAPI {
 
     private static final ArrayList<Field> textureMapFields = new ArrayList<Field>();
 
-    private static TexturePackBase texturePack;
+    private static ITexturePack texturePack;
 
     static {
         try {
@@ -31,11 +31,11 @@ public class TexturePackAPI {
         }
     }
 
-    public static TexturePackBase getTexturePack() {
+    public static ITexturePack getTexturePack() {
         return texturePack;
     }
 
-    static TexturePackBase getCurrentTexturePack() {
+    static ITexturePack getCurrentTexturePack() {
         Minecraft minecraft = MCPatcherUtils.getMinecraft();
         if (minecraft == null) {
             return null;
@@ -103,7 +103,7 @@ public class TexturePackAPI {
         if (texturePack instanceof TexturePackDefault) {
             // nothing
         } else if (texturePack instanceof TexturePackCustom) {
-            ZipFile zipFile = ((TexturePackCustom) texturePack).field_77550_e;
+            ZipFile zipFile = ((TexturePackCustom) texturePack).texturePackZipFile;
             if (zipFile != null) {
                 for (ZipEntry entry : Collections.list(zipFile.entries())) {
                     final String name = entry.getName();
@@ -171,7 +171,7 @@ public class TexturePackAPI {
 
     protected InputStream getInputStreamImpl(String s) {
         if (texturePack == null) {
-            TexturePackBase currentTexturePack = getCurrentTexturePack();
+        	ITexturePack currentTexturePack = getCurrentTexturePack();
             if (currentTexturePack == null) {
                 return TexturePackAPI.class.getResourceAsStream(s);
             } else {
@@ -258,7 +258,7 @@ public class TexturePackAPI {
             if (texturePackList == null) {
                 return;
             }
-            TexturePackBase currentTexturePack = texturePackList.getSelectedTexturePack();
+            ITexturePack currentTexturePack = texturePackList.getSelectedTexturePack();
             if (currentTexturePack != texturePack) {
                 changeTexturePack(currentTexturePack);
             } else if (currentTexturePack instanceof TexturePackCustom) {
@@ -266,7 +266,7 @@ public class TexturePackAPI {
             }
         }
 
-        private static void changeTexturePack(TexturePackBase newPack) {
+        private static void changeTexturePack(ITexturePack newPack) {
             if (newPack != null && !changing) {
                 changing = true;
                 long timeDiff = -System.currentTimeMillis();
@@ -294,7 +294,7 @@ public class TexturePackAPI {
         }
 
         private static boolean openTexturePackFile(TexturePackCustom pack) {
-            if (pack.field_77550_e == null) {
+            if (pack.texturePackZipFile == null) {
                 return false;
             }
             if (pack.origZip != null) {
@@ -304,11 +304,11 @@ public class TexturePackAPI {
             OutputStream output = null;
             ZipFile newZipFile = null;
             try {
-                pack.lastModified = pack.field_77548_a.lastModified();
+                pack.lastModified = pack.texturePackFile.lastModified();
                 pack.tmpFile = File.createTempFile("tmpmc", ".zip");
                 pack.tmpFile.deleteOnExit();
-                MCPatcherUtils.close(pack.field_77550_e);
-                input = new FileInputStream(pack.field_77548_a);
+                MCPatcherUtils.close(pack.texturePackZipFile);
+                input = new FileInputStream(pack.texturePackFile);
                 output = new FileOutputStream(pack.tmpFile);
                 byte[] buffer = new byte[65536];
                 while (true) {
@@ -321,8 +321,8 @@ public class TexturePackAPI {
                 MCPatcherUtils.close(input);
                 MCPatcherUtils.close(output);
                 newZipFile = new ZipFile(pack.tmpFile);
-                pack.origZip = pack.field_77550_e;
-                pack.field_77550_e = newZipFile;
+                pack.origZip = pack.texturePackZipFile;
+                pack.texturePackZipFile = newZipFile;
                 newZipFile = null;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -337,8 +337,8 @@ public class TexturePackAPI {
 
         private static void closeTexturePackFile(TexturePackCustom pack) {
             if (pack.origZip != null) {
-                MCPatcherUtils.close(pack.field_77550_e);
-                pack.field_77550_e = pack.origZip;
+                MCPatcherUtils.close(pack.texturePackZipFile);
+                pack.texturePackZipFile = pack.origZip;
                 pack.origZip = null;
                 pack.tmpFile.delete();
                 pack.tmpFile = null;
@@ -354,13 +354,13 @@ public class TexturePackAPI {
                 return false;
             }
             lastCheckTime = now;
-            long lastModified = pack.field_77548_a.lastModified();
+            long lastModified = pack.texturePackFile.lastModified();
             if (lastModified == pack.lastModified || lastModified == 0 || pack.lastModified == 0) {
                 return false;
             }
             ZipFile tmpZip = null;
             try {
-                tmpZip = new ZipFile(pack.field_77548_a);
+                tmpZip = new ZipFile(pack.texturePackFile);
             } catch (IOException e) {
                 // file is still being written
                 return false;

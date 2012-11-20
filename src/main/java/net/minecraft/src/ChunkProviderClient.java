@@ -128,4 +128,6 @@ public class ChunkProviderClient implements IChunkProvider {
 	public int getLoadedChunkCount() {
 		return chunkMapping.size(); // Spout - this.chunkListing.size();
 	}
+	
+	public void func_82695_e(int par1, int par2) {}
 }

@@ -177,7 +177,7 @@ public class FileUtil {
 			SpoutClient.disableSandbox();
 		}
 
-		String fileName = Minecraft.theMinecraft.renderEngine.texturePack.selectedTexturePack.func_77538_c();
+		String fileName = Minecraft.theMinecraft.renderEngine.texturePack.selectedTexturePack.getTexturePackFileName();
 		File file = new File(getTexturePackDir(), fileName);
 		if (!file.exists()) {
 			file = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), fileName);

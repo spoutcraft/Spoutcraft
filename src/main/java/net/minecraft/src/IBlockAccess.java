@@ -35,6 +35,16 @@ public interface IBlockAccess {
 	 */
 	boolean doesBlockHaveSolidTopSurface(int var1, int var2, int var3);
 
+	/**
+	 * Return the Vec3Pool object for this world.
+	 */
+	Vec3Pool getWorldVec3Pool();
+
+	/**
+	 * Is this block powering in the specified direction Args: x, y, z, direction
+	 */
+	boolean isBlockProvidingPowerTo(int var1, int var2, int var3, int var4);
+
 	// Spout Start
 	public int getGrassColorCache(int x, int y, int z);
 

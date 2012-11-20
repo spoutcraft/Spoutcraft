@@ -22,7 +22,7 @@ package org.spoutcraft.client.gui.texturepacks;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.src.TexturePackBase;
+import net.minecraft.src.ITexturePack;
 import net.minecraft.src.TexturePackImplementation;
 import net.minecraft.src.TexturePackList;
 
@@ -70,7 +70,7 @@ public class TexturePacksModel extends AbstractListModel {
 
 			for (TexturePackItem item : oldPacks) {
 				boolean found = false;
-				for (TexturePackBase pack : getTextures()) {
+				for (ITexturePack pack : getTextures()) {
 					if (item.getPack() == pack) {
 						found = true;
 						break;
@@ -81,7 +81,7 @@ public class TexturePacksModel extends AbstractListModel {
 				}
 			}
 
-			for (TexturePackBase pack : getTextures()) {
+			for (ITexturePack pack : getTextures()) {
 				boolean found = false;
 				for (TexturePackItem item : oldPacks) {
 					if (item.getPack() == pack) {
@@ -99,11 +99,11 @@ public class TexturePacksModel extends AbstractListModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TexturePackBase> getTextures() {
-		return (List<TexturePackBase>)textures.availableTexturePacks();
+	public List<ITexturePack> getTextures() {
+		return (List<ITexturePack>)textures.availableTexturePacks();
 	}
 
-	public void changeTexturePack(TexturePackBase pack) {
+	public void changeTexturePack(ITexturePack pack) {
 		// TODO
 	}
 }

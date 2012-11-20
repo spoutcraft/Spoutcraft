@@ -27,6 +27,12 @@ public class EntityPlayerSP extends EntityPlayer {
 	private MouseFilter field_71162_ch = new MouseFilter();
 	private MouseFilter field_21904_bK = new MouseFilter();
 	private MouseFilter field_21902_bL = new MouseFilter();
+
+	/** The amount of time an entity has been in a Portal */
+	public float timeInPortal;
+
+	/** The amount of time an entity has been in a Portal the previous tick */
+	public float prevTimeInPortal;
 	// Spout Start
 	public FixedLocation lastClickLocation = null;
 	private KeyBinding fogKey = null;
@@ -229,16 +235,6 @@ public class EntityPlayerSP extends EntityPlayer {
 		return var1;
 	}
 
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("Score", this.score);
-	}
-
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		this.score = par1NBTTagCompound.getInteger("Score");
-	}
-
 	public void closeScreen() {
 		super.closeScreen();
 		this.mc.displayGuiScreen((GuiScreen)null);
@@ -254,8 +250,12 @@ public class EntityPlayerSP extends EntityPlayer {
 		}
 	}
 
-	public void displayGUIEditSign(TileEntitySign par1TileEntitySign) {
-		this.mc.displayGuiScreen(new GuiEditSign(par1TileEntitySign));
+	public void displayGUIEditSign(TileEntity par1TileEntity) {
+		if (par1TileEntity instanceof TileEntitySign) {
+			this.mc.displayGuiScreen(new GuiEditSign((TileEntitySign)par1TileEntity));
+		} else if (par1TileEntity instanceof TileEntityCommandBlock) {
+			this.mc.displayGuiScreen(new GuiCommandBlock((TileEntityCommandBlock)par1TileEntity));
+		}
 	}
 
 	public void displayGUIChest(IInventory par1IInventory) {
@@ -270,12 +270,26 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiEnchantment(this.inventory, this.worldObj, par1, par2, par3));
 	}
 
+	/**
+	 * Displays the GUI for interacting with an anvil.
+	 */
+	public void displayGUIAnvil(int par1, int par2, int par3) {
+		this.mc.displayGuiScreen(new GuiRepair(this.inventory, this.worldObj, par1, par2, par3));
+	}
+
 	public void displayGUIFurnace(TileEntityFurnace par1TileEntityFurnace) {
 		this.mc.displayGuiScreen(new GuiFurnace(this.inventory, par1TileEntityFurnace));
 	}
 
 	public void displayGUIBrewingStand(TileEntityBrewingStand par1TileEntityBrewingStand) {
 		this.mc.displayGuiScreen(new GuiBrewingStand(this.inventory, par1TileEntityBrewingStand));
+	}
+
+	/**
+	 * Displays the GUI for interacting with a beacon.
+	 */
+	public void displayGUIBeacon(TileEntityBeacon par1TileEntityBeacon) {
+		this.mc.displayGuiScreen(new GuiBeacon(this.inventory, par1TileEntityBeacon));
 	}
 
 	public void displayGUIDispenser(TileEntityDispenser par1TileEntityDispenser) {
@@ -322,7 +336,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 
 	public void addChatMessage(String par1Str) {
-		this.mc.ingameGUI.addChatMessageTranslate(par1Str); // Spout - keep old chat GUI
+		this.mc.ingameGUI.getChatGUI().printChatMessage(par1Str);
 	}
 
 	public void addStat(StatBase par1StatBase, int par2) {
@@ -419,8 +433,26 @@ public class EntityPlayerSP extends EntityPlayer {
 		//this.mc.ingameGUI.getChatGUI().printChatMessage(par1Str); // Spout removed
 	}
 
-	public boolean canCommandSenderUseCommand(String par1Str) {
-		return this.worldObj.getWorldInfo().areCommandsAllowed();
+	public boolean canCommandSenderUseCommand(int par1, String par2Str) {
+		return par1 <= 0;
+	}
+
+	/**
+	 * Return the coordinates for this player as ChunkCoordinates.
+	 */
+	public ChunkCoordinates getPlayerCoordinates() {
+		return new ChunkCoordinates(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
+	}
+
+	/**
+	 * Returns the item that this EntityLiving is holding, if any.
+	 */
+	public ItemStack getHeldItem() {
+		return this.inventory.getCurrentItem();
+	}
+
+	protected void func_85030_a(String par1Str, float par2, float par3) {
+		this.worldObj.playSound(this.posX, this.posY - (double)this.yOffset, this.posZ, par1Str, par2, par3);
 	}
 	
 	// Spout

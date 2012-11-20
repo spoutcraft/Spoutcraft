@@ -41,6 +41,7 @@ public class RenderManager {
 	public double viewerPosX;
 	public double viewerPosY;
 	public double viewerPosZ;
+	public static boolean field_85095_o = false;
 
 	private RenderManager() {
 		this.entityRenderMap.put(EntitySpider.class, new RenderSpider());
@@ -49,16 +50,17 @@ public class RenderManager {
 		this.entityRenderMap.put(EntitySheep.class, new RenderSheep(new ModelSheep2(), new ModelSheep1(), 0.7F));
 		this.entityRenderMap.put(EntityCow.class, new RenderCow(new ModelCow(), 0.7F));
 		this.entityRenderMap.put(EntityMooshroom.class, new RenderMooshroom(new ModelCow(), 0.7F));
-		this.entityRenderMap.put(EntityWolf.class, new RenderWolf(new ModelWolf(), 0.5F));
+		this.entityRenderMap.put(EntityWolf.class, new RenderWolf(new ModelWolf(), new ModelWolf(), 0.5F));
 		this.entityRenderMap.put(EntityChicken.class, new RenderChicken(new ModelChicken(), 0.3F));
 		this.entityRenderMap.put(EntityOcelot.class, new RenderOcelot(new ModelOcelot(), 0.4F));
 		this.entityRenderMap.put(EntitySilverfish.class, new RenderSilverfish());
 		this.entityRenderMap.put(EntityCreeper.class, new RenderCreeper());
 		this.entityRenderMap.put(EntityEnderman.class, new RenderEnderman());
 		this.entityRenderMap.put(EntitySnowman.class, new RenderSnowMan());
-		this.entityRenderMap.put(EntitySkeleton.class, new RenderBiped(new ModelSkeleton(), 0.5F));
+		this.entityRenderMap.put(EntitySkeleton.class, new RenderSkeleton());
+		this.entityRenderMap.put(EntityWitch.class, new RenderWitch());
 		this.entityRenderMap.put(EntityBlaze.class, new RenderBlaze());
-		this.entityRenderMap.put(EntityZombie.class, new RenderBiped(new ModelZombie(), 0.5F));
+		this.entityRenderMap.put(EntityZombie.class, new RenderZombie());
 		this.entityRenderMap.put(EntitySlime.class, new RenderSlime(new ModelSlime(16), new ModelSlime(0), 0.25F));
 		this.entityRenderMap.put(EntityMagmaCube.class, new RenderMagmaCube());
 		this.entityRenderMap.put(EntityPlayer.class, new RenderPlayer());
@@ -68,10 +70,13 @@ public class RenderManager {
 		this.entityRenderMap.put(EntityVillager.class, new RenderVillager());
 		this.entityRenderMap.put(EntityIronGolem.class, new RenderIronGolem());
 		this.entityRenderMap.put(EntityLiving.class, new RenderLiving(new ModelBiped(), 0.5F));
+		this.entityRenderMap.put(EntityBat.class, new RenderBat());
 		this.entityRenderMap.put(EntityDragon.class, new RenderDragon());
 		this.entityRenderMap.put(EntityEnderCrystal.class, new RenderEnderCrystal());
+		this.entityRenderMap.put(EntityWither.class, new RenderWither());
 		this.entityRenderMap.put(Entity.class, new RenderEntity());
 		this.entityRenderMap.put(EntityPainting.class, new RenderPainting());
+		this.entityRenderMap.put(EntityItemFrame.class, new RenderItemFrame());
 		this.entityRenderMap.put(EntityArrow.class, new RenderArrow());
 		this.entityRenderMap.put(EntitySnowball.class, new RenderSnowball(Item.snowball.getIconFromDamage(0)));
 		this.entityRenderMap.put(EntityEnderPearl.class, new RenderSnowball(Item.enderPearl.getIconFromDamage(0)));
@@ -79,8 +84,9 @@ public class RenderManager {
 		this.entityRenderMap.put(EntityEgg.class, new RenderSnowball(Item.egg.getIconFromDamage(0)));
 		this.entityRenderMap.put(EntityPotion.class, new RenderSnowball(154));
 		this.entityRenderMap.put(EntityExpBottle.class, new RenderSnowball(Item.expBottle.getIconFromDamage(0)));
-		this.entityRenderMap.put(EntityFireball.class, new RenderFireball(2.0F));
+		this.entityRenderMap.put(EntityLargeFireball.class, new RenderFireball(2.0F));
 		this.entityRenderMap.put(EntitySmallFireball.class, new RenderFireball(0.5F));
+		this.entityRenderMap.put(EntityWitherSkull.class, new RenderWitherSkull());
 		this.entityRenderMap.put(EntityItem.class, new RenderItem());
 		this.entityRenderMap.put(EntityXPOrb.class, new RenderXPOrb());
 		this.entityRenderMap.put(EntityTNTPrimed.class, new RenderTNTPrimed());
@@ -179,6 +185,9 @@ public class RenderManager {
 		Render var10 = this.getEntityRenderObject(par1Entity);
 
 		if (var10 != null) {
+			if (field_85095_o) {
+				this.func_85094_b(par1Entity, par2, par4, par6, par8, par9);
+			}
 			// Spout start
 			var10.setRenderManager(this);
 			try {
@@ -189,6 +198,50 @@ public class RenderManager {
 			} catch(NullPointerException ignore) { }
 			// Spout end
 		}
+	}
+
+	private void func_85094_b(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
+		GL11.glDepthMask(false);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glPushMatrix();
+		Tessellator var10 = Tessellator.instance;
+		var10.startDrawingQuads();
+		var10.setColorRGBA(255, 255, 255, 32);
+		double var11 = (double)(-par1Entity.width / 2.0F);
+		double var13 = (double)(-par1Entity.width / 2.0F);
+		double var15 = (double)(par1Entity.width / 2.0F);
+		double var17 = (double)(-par1Entity.width / 2.0F);
+		double var19 = (double)(-par1Entity.width / 2.0F);
+		double var21 = (double)(par1Entity.width / 2.0F);
+		double var23 = (double)(par1Entity.width / 2.0F);
+		double var25 = (double)(par1Entity.width / 2.0F);
+		double var27 = (double)par1Entity.height;
+		var10.addVertex(par2 + var11, par4 + var27, par6 + var13);
+		var10.addVertex(par2 + var11, par4, par6 + var13);
+		var10.addVertex(par2 + var15, par4, par6 + var17);
+		var10.addVertex(par2 + var15, par4 + var27, par6 + var17);
+		var10.addVertex(par2 + var23, par4 + var27, par6 + var25);
+		var10.addVertex(par2 + var23, par4, par6 + var25);
+		var10.addVertex(par2 + var19, par4, par6 + var21);
+		var10.addVertex(par2 + var19, par4 + var27, par6 + var21);
+		var10.addVertex(par2 + var15, par4 + var27, par6 + var17);
+		var10.addVertex(par2 + var15, par4, par6 + var17);
+		var10.addVertex(par2 + var23, par4, par6 + var25);
+		var10.addVertex(par2 + var23, par4 + var27, par6 + var25);
+		var10.addVertex(par2 + var19, par4 + var27, par6 + var21);
+		var10.addVertex(par2 + var19, par4, par6 + var21);
+		var10.addVertex(par2 + var11, par4, par6 + var13);
+		var10.addVertex(par2 + var11, par4 + var27, par6 + var13);
+		var10.draw();
+		GL11.glPopMatrix();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glDepthMask(true);
 	}
 
 	/**

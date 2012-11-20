@@ -46,4 +46,9 @@ public class EntityCaveSpider extends EntitySpider {
 			return false;
 		}
 	}
+
+	/**
+	 * Initialize this creature.
+	 */
+	public void initCreature() {}
 }
