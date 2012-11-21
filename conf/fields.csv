@@ -141,6 +141,8 @@ field_70278_an,velocityZ,0,
 field_70280_j,velocityY,0,
 field_70281_h,boatPitch,0,
 field_70282_i,velocityX,0,
+field_70284_d,shouldDropItem,0,
+field_70285_b,metadata,0,
 field_70286_c,fallTime,0,How long the block has been falling for.
 field_70287_a,blockID,0,
 field_70290_d,hoverStart,0,The EntityItem's random initial float height.
@@ -323,7 +325,6 @@ field_70715_bh,targetTasks,0,
 field_70716_bi,newPosRotationIncrements,0,The number of updates over which the new position and rotation are to be applied to the entity.
 field_70717_bb,attackingPlayer,0,The most recent player that has attacked this entity
 field_70718_bc,recentlyHit,0,"Set to 60 when hit by the player or the player's wolf, then decrements. Used to determine whether the entity should drop items on death."
-field_70719_bd,arrowHitTempCounter,0,"Set to 60 when hit by the player or the player's wolf, then decrements. Used to determine whether the entity should drop items on death."
 field_70720_be,arrowHitTimer,0,
 field_70721_aZ,legYaw,0,
 field_70722_aY,prevLegYaw,0,
@@ -447,8 +448,8 @@ field_70994_bF,slowed,0,"Activated if the dragon is flying though obsidian, whit
 field_70995_bG,deathTicks,0,
 field_71067_cb,experienceTotal,0,The total amount of experience the player has. This also includes the amount of experience within their Experience Bar.
 field_71068_ca,experienceLevel,0,The current experience level the player is on.
-field_71069_bz,inventorySlots,0,the crafting inventory in you get when opening your inventory
-field_71070_bA,craftingInventory,0,the crafting inventory you are currently using
+field_71069_bz,inventoryContainer,0,The Container for the player's inventory (which opens when they press E)
+field_71070_bA,openContainer,0,The Container the player has open.
 field_71071_by,inventory,0,Inventory of the player
 field_71072_f,itemInUseCount,0,This field starts off equal to getMaxItemUseDuration and is decremented on each tick
 field_71073_d,startMinecartRidingCoordinate,0,Holds the coordinate of the player when enter a minecraft to ride.
@@ -467,7 +468,6 @@ field_71088_bW,timeUntilPortal,0,
 field_71090_bL,xpCooldown,0,Used by EntityPlayer to prevent too many xp orbs from getting absorbed at once.
 field_71092_bJ,username,0,
 field_71093_bK,dimension,0,"Which dimension the player is in (-1 = the Nether, 0 = normal world)"
-field_71099_bE,score,0,
 field_71100_bB,foodStats,0,The player's food stats. (See class FoodStats)
 field_71101_bC,flyToggleTimer,0,"Used to tell if the player pressed jump twice. If this is at 0 and it's pressed (And they are allowed to fly, as defined in the player's movementInput) it sets this to 7. If it's pressed and it's greater than 0 enable fly."
 field_71102_ce,speedInAir,0,
@@ -1522,6 +1522,7 @@ field_73556_g,worldHeight,0,Defaults to 128
 field_73557_d,gameType,0,
 field_73558_e,dimension,0,"-1: The Nether, 0: The Overworld, 1: The End"
 field_73559_b,terrainType,0,
+field_73560_c,hardcoreMode,0,
 field_73561_a,clientEntityId,0,The player's entity ID
 field_73562_h,maxPlayers,0,The maximum players.
 field_73563_d,posY,0,
@@ -1745,6 +1746,7 @@ field_74001_a,message1,0,Unused class. Would contain a message drawn to the cent
 field_74022_d,serverSlotContainer,0,Slot container for the server list
 field_74023_b,lock,0,Lock object for use with synchronized()
 field_74025_c,parentScreen,0,A reference to the screen object that created this. Used for navigating between screens.
+field_74026_B,listofLanServers,0,
 field_74027_a,threadsPending,0,Number of outstanding ThreadPollServers threads
 field_74028_n,selectedServer,0,Index of the currently selected server
 field_74029_o,buttonEdit,0,The 'Edit' button
@@ -1965,9 +1967,7 @@ field_74385_A,enumFloat,0,
 field_74386_B,enumBoolean,0,
 field_74387_C,enumString,0,
 field_74414_a,enumOptionsMappingHelperArray,0,
-field_74416_a,mc,0,Reference to the Minecraft object.
 field_74417_a,theTcpConnection,0,
-field_74419_a,mc,0,Reference to the Minecraft object.
 field_74421_a,mc,0,Reference to the Minecraft object.
 field_74422_a,mcApplet,0,Reference to the MinecraftApplet object.
 field_74438_f,shutdownReason,0,
@@ -2009,7 +2009,7 @@ field_74515_c,keyDescription,0,
 field_74516_a,keybindArray,0,
 field_74522_a,colorBuffer,0,Float buffer used to set OpenGL material colors
 field_74532_a,mc,0,A reference to the Minecraft object.
-field_74533_a,enumOSMappingHelperArray,0,
+field_74534_a,arguments,0,"Arguments that were passed to Minecraft.jar (username, sessionid etc)"
 field_74536_a,mc,0,Minecraft instance
 field_74537_a,logo,0,BufferedImage object containing the Majong logo.
 field_74541_b,lineString,0,
@@ -2476,7 +2476,6 @@ field_75624_e,classToIDMapping,0,provides a mapping between an Entity Class and 
 field_75625_b,stringToClassMapping,0,Provides a mapping between entity classes and a string
 field_75626_c,classToStringMapping,0,Provides a mapping between a string and an entity classes
 field_75627_a,entityEggs,0,This is a HashMap of the Creative Entity Eggs/Spawners.
-field_75628_a,enumEntitySizeMappingHelperArray,0,
 field_75644_d,posZ,0,
 field_75645_e,speed,0,The speed at which the entity should move
 field_75646_b,posX,0,
@@ -2737,9 +2736,9 @@ field_76235_G,canBurn,0,Bool defining if the block can burn or not.
 field_76236_A,dragonEgg,0,
 field_76237_B,portal,0,Material used for portals
 field_76238_C,cake,0,"Cake's material, see BlockCake"
-field_76239_H,groundCover,0,"Indicates if the material is a form of ground cover, e.g. Snow"
+field_76239_H,replaceable,0,"Determines whether blocks with this material can be ""overwritten"" by other blocks when placed - eg snow, vines and tall grass."
 field_76240_I,isTranslucent,0,Indicates if the material is translucent
-field_76241_J,canHarvest,0,Determines if the materials is one that can be collected by the player.
+field_76241_J,requiresNoTool,0,Determines if the material can be harvested without a tool (or with the wrong tool)
 field_76242_K,mobilityFlag,0,"Mobility information flag. 0 indicates that this block is normal, 1 indicates that it can't push other blocks, 2 indicates that it can't be pushed."
 field_76243_f,iron,0,
 field_76244_g,water,0,
@@ -3315,7 +3314,9 @@ field_77481_a,grassBuffer,0,Color buffer for grass
 field_77482_b,syncher,0,
 field_77485_a,theWorld,0,Reference to the World object.
 field_77486_a,syncher,0,
+field_77490_b,lanServerIpPort,0,
 field_77491_c,timeLastSeen,0,Last time this LanServer was seen.
+field_77492_a,lanServerMotd,0,
 field_77494_b,entityLiving,0,Used as parameter to calculate the (magic) extra damage based on enchantments of current equipped player item.
 field_77495_a,livingModifier,0,Used to calculate the (magic) extra damage based on enchantments of current equipped player item.
 field_77496_b,source,0,Used as parameter to calculate the damage modifier (extra armor) on enchantments that the player have on equipped armors.
@@ -3339,6 +3340,8 @@ field_77546_b,firstDescriptionLine,0,First line of texture pack description (fro
 field_77547_c,secondDescriptionLine,0,Second line of texture pack description (from /pack.txt) displayed in the GUI
 field_77548_a,texturePackFile,0,File object for the texture pack's zip file in TexturePackCustom or the directory in TexturePackFolder.
 field_77550_e,texturePackZipFile,0,ZipFile object used to access the texture pack file's contents.
+field_77555_b,listOfLanServers,0,
+field_77556_a,wasUpdated,0,
 field_77574_d,recipeItems,0,Is a array of ItemStack that composes the recipe.
 field_77575_e,recipeOutput,0,Is the ItemStack that you get when craft the recipe.
 field_77576_b,recipeWidth,0,How many horizontal slots this recipe is wide.
@@ -3552,6 +3555,7 @@ field_77882_bY,maxDamageArray,0,Holds the 'base' maxDamage that each armorType h
 field_77885_a,blockID,0,The block ID of the Block associated with this ItemBlock
 field_77889_b,theHalfSlab,0,Instance of BlockHalfSlab.
 field_77890_c,theHalfSlab2,0,Instance of BlockHalfSlab.
+field_77891_a,isFullBlock,0,
 field_77895_b,blockNames,0,
 field_77896_a,blockRef,0,
 field_77918_f,speckledMelonEffect,0,
@@ -4155,6 +4159,8 @@ field_82134_g,secondaryEffect,0,Secondary potion effect given by this beacon.
 field_82136_e,levels,0,Level of this beacon's pyramid.
 field_82139_a,effectsList,0,List of effects that Beacon can apply
 field_82140_h,payment,0,Item given to this beacon as payment.
+field_82155_f,isAnvil,0,
+field_82157_e,isBreakingAnvil,0,
 field_82172_bs,canPickUpLoot,0,Whether this entity can pick up items from the ground.
 field_82173_br,swingProgressInt,0,
 field_82174_bp,equipmentDropChances,0,Chances for each equipment piece from dropping when this entity dies.
@@ -4168,6 +4174,7 @@ field_82192_a,mobSelector,0,Entity selector for IMob types.
 field_82199_d,witchDrops,0,List of items a witch should drop on death.
 field_82200_e,witchAttackTimer,0,"Timer used as interval for a witch's attack, decremented every tick if aggressive and when reaches zero the witch will throw a potion at the target entity."
 field_82219_bJ,attackEntitySelector,0,Selector used to determine the entities a wither boss should attack.
+field_82225_f,fuseTime,0,
 field_82226_g,explosionRadius,0,Explosion radius for this creeper.
 field_82234_d,conversionTime,0,Ticker used to determine the time remaining for this zombie to convert into a villager when cured.
 field_82237_a,currentFlightTarget,0,randomly selected ChunkCoordinates in a 7x6x7 box around the bat (y offset -2 to 4) towards which it will fly. upon getting close a new target will be selected
@@ -4202,8 +4209,10 @@ field_82320_o,theSlot,0,
 field_82321_q,buttonsNotDrawn,0,
 field_82322_p,beaconConfirmButton,0,
 field_82323_o,beacon,0,
+field_82332_a,hangingDirection,0,
 field_82337_e,itemDropChance,0,Chance for this item frame's item to drop from the frame.
 field_82346_a,theContainer,0,Container of this anvil's block.
+field_82354_a,command,0,The command this block will execute when powered.
 field_82365_a,difficulties,0,
 field_82373_c,directions,0,
 field_82374_e,facings,0,
@@ -4238,7 +4247,7 @@ field_82510_ck,anvil,0,
 field_82511_ci,woodenButton,0,
 field_82512_cj,skull,0,
 field_82513_cg,carrot,0,
-field_82514_ch,potatoe,0,
+field_82514_ch,potato,0,
 field_82515_ce,cobblestoneWall,0,
 field_82516_cf,flowerPot,0,
 field_82517_cc,commandBlock,0,
@@ -4248,16 +4257,18 @@ field_82527_a,dispenseBehaviorRegistry,0,Registry for all dispense behaviors.
 field_82537_a,sensible,0,"Whether this button is sensible to arrows, used by wooden buttons."
 field_82539_a,types,0,The types of the wall.
 field_82548_a,theChunkCoordinates,0,
-field_82550_a,mcServer,0,
 field_82552_a,mcServer,0,
 field_82553_a,mcServer,0,
 field_82555_a,mcServer,0,
 field_82557_a,mcServer,0,Reference to the MinecraftServer object.
+field_82564_f,showCape,0,
 field_82575_g,dayTime,0,Total time for this world.
+field_82576_c,generatorOptions,0,
 field_82577_x,theGameRules,0,
 field_82578_b,NBTTypes,0,
 field_82584_b,theNBTTagCompound,0,
 field_82587_b,theNBTTagCompound,0,
+field_82592_a,vec3dPool,0,
 field_82596_a,registryObjects,0,Objects registered on this registry.
 field_82597_b,defaultObject,0,"Default object for this registry, returned when an object is not found."
 field_82624_d,zPos,0,
@@ -4277,6 +4288,9 @@ field_82661_d,layerMinimumY,0,
 field_82662_b,layerFillBlock,0,Block type used on this set of layers.
 field_82663_c,layerFillBlockMeta,0,Block metadata used on this set of laeyrs.
 field_82664_a,layerCount,0,Amount of layers for this set of layers.
+field_82668_f,scatteredFeatureSpawnList,0,contains possible spawns for scattered features
+field_82669_g,maxDistanceBetweenScatteredFeatures,0,the maximum distance between scattered features
+field_82670_h,minDistanceBetweenScatteredFeatures,0,the minimum distance between scattered features
 field_82678_d,cropTypeC,0,Third crop type for this field.
 field_82679_b,cropTypeA,0,First crop type for this field.
 field_82680_c,cropTypeB,0,Second crop type for this field.
@@ -4303,7 +4317,7 @@ field_82786_e,maxTradeUses,0,Maximum times this trade can be used.
 field_82791_bT,pumpkinPie,0,
 field_82792_bS,netherStar,0,
 field_82793_bR,carrotOnAStick,0,
-field_82794_bL,potatoe,0,
+field_82794_bL,potato,0,
 field_82795_bM,bakedPotato,0,
 field_82796_bJ,flowerPot,0,
 field_82797_bK,carrot,0,
@@ -4481,6 +4495,8 @@ field_70274_d,boatX,1,
 field_70275_e,boatY,1,
 field_70277_c,boatPosRotationIncrements,1,
 field_70281_h,boatPitch,1,
+field_70284_d,shouldDropItem,1,
+field_70285_b,metadata,1,
 field_70286_c,fallTime,1,How long the block has been falling for.
 field_70287_a,blockID,1,
 field_70290_d,hoverStart,1,The EntityItem's random initial float height.
@@ -4618,7 +4634,6 @@ field_70715_bh,targetTasks,1,
 field_70716_bi,newPosRotationIncrements,1,The number of updates over which the new position and rotation are to be applied to the entity.
 field_70717_bb,attackingPlayer,1,The most recent player that has attacked this entity
 field_70718_bc,recentlyHit,1,"Set to 60 when hit by the player or the player's wolf, then decrements. Used to determine whether the entity should drop items on death."
-field_70719_bd,arrowHitTempCounter,1,"Set to 60 when hit by the player or the player's wolf, then decrements. Used to determine whether the entity should drop items on death."
 field_70720_be,arrowHitTimer,1,
 field_70721_aZ,legYaw,1,
 field_70722_aY,prevLegYaw,1,
@@ -4739,8 +4754,8 @@ field_70994_bF,slowed,1,"Activated if the dragon is flying though obsidian, whit
 field_70995_bG,deathTicks,1,
 field_71067_cb,experienceTotal,1,The total amount of experience the player has. This also includes the amount of experience within their Experience Bar.
 field_71068_ca,experienceLevel,1,The current experience level the player is on.
-field_71069_bz,inventorySlots,1,the crafting inventory in you get when opening your inventory
-field_71070_bA,craftingInventory,1,the crafting inventory you are currently using
+field_71069_bz,inventoryContainer,1,The Container for the player's inventory (which opens when they press E)
+field_71070_bA,openContainer,1,The Container the player has open.
 field_71071_by,inventory,1,Inventory of the player
 field_71072_f,itemInUseCount,1,This field starts off equal to getMaxItemUseDuration and is decremented on each tick
 field_71073_d,startMinecartRidingCoordinate,1,Holds the coordinate of the player when enter a minecraft to ride.
@@ -4756,7 +4771,6 @@ field_71088_bW,timeUntilPortal,1,
 field_71090_bL,xpCooldown,1,Used by EntityPlayer to prevent too many xp orbs from getting absorbed at once.
 field_71092_bJ,username,1,
 field_71093_bK,dimension,1,"Which dimension the player is in (-1 = the Nether, 0 = normal world)"
-field_71099_bE,score,1,
 field_71100_bB,foodStats,1,"The food object of the player, the general hunger logic."
 field_71101_bC,flyToggleTimer,1,"Used to tell if the player pressed jump twice. If this is at 0 and it's pressed (And they are allowed to fly, as defined in the player's movementInput) it sets this to 7. If it's pressed and it's greater than 0 enable fly."
 field_71102_ce,speedInAir,1,
@@ -4882,6 +4896,7 @@ field_71772_g,myServerAddress,1,
 field_71773_d,connectionCounter,1,
 field_71774_e,myServerSocket,1,
 field_71775_b,pendingConnections,1,
+field_71776_c,recentConnections,1,This map stores a list of InetAddresses and the last time which they connected at
 field_71777_a,logger,1,
 field_71778_h,myPort,1,
 field_71781_b,parameters,1,
@@ -5630,6 +5645,7 @@ field_73556_g,worldHeight,1,Defaults to 128
 field_73557_d,gameType,1,
 field_73558_e,dimension,1,"-1: The Nether, 0: The Overworld, 1: The End"
 field_73559_b,terrainType,1,
+field_73560_c,hardcoreMode,1,
 field_73561_a,clientEntityId,1,The player's entity ID
 field_73562_h,maxPlayers,1,The maximum players.
 field_73563_d,posY,1,
@@ -6140,7 +6156,6 @@ field_75624_e,classToIDMapping,1,provides a mapping between an Entity Class and 
 field_75625_b,stringToClassMapping,1,Provides a mapping between entity classes and a string
 field_75626_c,classToStringMapping,1,Provides a mapping between a string and an entity classes
 field_75627_a,entityEggs,1,This is a HashMap of the Creative Entity Eggs/Spawners.
-field_75628_a,enumEntitySizeMappingHelperArray,1,
 field_75644_d,posZ,1,
 field_75645_e,speed,1,The speed at which the entity should move
 field_75646_b,posX,1,
@@ -6386,9 +6401,9 @@ field_76235_G,canBurn,1,Bool defining if the block can burn or not.
 field_76236_A,dragonEgg,1,
 field_76237_B,portal,1,Material used for portals
 field_76238_C,cake,1,"Cake's material, see BlockCake"
-field_76239_H,groundCover,1,"Indicates if the material is a form of ground cover, e.g. Snow"
+field_76239_H,replaceable,1,"Determines whether blocks with this material can be ""overwritten"" by other blocks when placed - eg snow, vines and tall grass."
 field_76240_I,isTranslucent,1,Indicates if the material is translucent
-field_76241_J,canHarvest,1,Determines if the materials is one that can be collected by the player.
+field_76241_J,requiresNoTool,1,Determines if the material can be harvested without a tool (or with the wrong tool)
 field_76242_K,mobilityFlag,1,"Mobility information flag. 0 indicates that this block is normal, 1 indicates that it can't push other blocks, 2 indicates that it can't be pushed."
 field_76243_f,iron,1,
 field_76244_g,water,1,
@@ -7039,6 +7054,7 @@ field_77882_bY,maxDamageArray,1,Holds the 'base' maxDamage that each armorType h
 field_77885_a,blockID,1,The block ID of the Block associated with this ItemBlock
 field_77889_b,theHalfSlab,1,Instance of BlockHalfSlab.
 field_77890_c,theHalfSlab2,1,Instance of BlockHalfSlab.
+field_77891_a,isFullBlock,1,
 field_77895_b,blockNames,1,
 field_77896_a,blockRef,1,
 field_77918_f,speckledMelonEffect,1,
@@ -7118,6 +7134,8 @@ field_82134_g,secondaryEffect,1,Secondary potion effect given by this beacon.
 field_82136_e,levels,1,Level of this beacon's pyramid.
 field_82139_a,effectsList,1,List of effects that Beacon can apply
 field_82140_h,payment,1,Item given to this beacon as payment.
+field_82155_f,isAnvil,1,
+field_82157_e,isBreakingAnvil,1,
 field_82172_bs,canPickUpLoot,1,Whether this entity can pick up items from the ground.
 field_82173_br,swingProgressInt,1,
 field_82174_bp,equipmentDropChances,1,Chances for each equipment piece from dropping when this entity dies.
@@ -7131,13 +7149,16 @@ field_82192_a,mobSelector,1,Entity selector for IMob types.
 field_82199_d,witchDrops,1,List of items a witch should drop on death.
 field_82200_e,witchAttackTimer,1,"Timer used as interval for a witch's attack, decremented every tick if aggressive and when reaches zero the witch will throw a potion at the target entity."
 field_82219_bJ,attackEntitySelector,1,Selector used to determine the entities a wither boss should attack.
+field_82225_f,fuseTime,1,
 field_82226_g,explosionRadius,1,Explosion radius for this creeper.
 field_82234_d,conversionTime,1,Ticker used to determine the time remaining for this zombie to convert into a villager when cured.
 field_82237_a,spawnPosition,1,Coordinates of where the bat spawned.
 field_82248_d,spawnForced,1,"Whether this player's spawn point is forced, preventing execution of bed checks."
 field_82310_a,mcServer,1,Reference to the MinecraftServer object.
+field_82332_a,hangingDirection,1,
 field_82337_e,itemDropChance,1,Chance for this item frame's item to drop from the frame.
 field_82346_a,theContainer,1,Container of this anvil's block.
+field_82354_a,command,1,The command this block will execute when powered.
 field_82365_a,difficulties,1,
 field_82373_c,directions,1,
 field_82374_e,facings,1,
@@ -7162,7 +7183,7 @@ field_82510_ck,anvil,1,
 field_82511_ci,woodenButton,1,
 field_82512_cj,skull,1,
 field_82513_cg,carrot,1,
-field_82514_ch,potatoe,1,
+field_82514_ch,potato,1,
 field_82515_ce,cobblestoneWall,1,
 field_82516_cf,flowerPot,1,
 field_82517_cc,commandBlock,1,
@@ -7172,12 +7193,13 @@ field_82527_a,dispenseBehaviorRegistry,1,Registry for all dispense behaviors.
 field_82537_a,sensible,1,"Whether this button is sensible to arrows, used by wooden buttons."
 field_82539_a,types,1,The types of the wall.
 field_82548_a,theChunkCoordinates,1,
-field_82550_a,mcServer,1,
 field_82552_a,mcServer,1,
 field_82553_a,mcServer,1,
 field_82555_a,mcServer,1,
 field_82557_a,mcServer,1,Reference to the MinecraftServer object.
+field_82564_f,showCape,1,
 field_82575_g,totalWorldTime,1,Total time for this world.
+field_82576_c,generatorOptions,1,
 field_82577_x,theGameRules,1,
 field_82578_b,NBTTypes,1,
 field_82584_b,theNBTTagCompound,1,
@@ -7226,7 +7248,7 @@ field_82786_e,maxTradeUses,1,Maximum times this trade can be used.
 field_82791_bT,pumpkinPie,1,
 field_82792_bS,netherStar,1,
 field_82793_bR,carrotOnAStick,1,
-field_82794_bL,potatoe,1,
+field_82794_bL,potato,1,
 field_82795_bM,bakedPotato,1,
 field_82796_bJ,flowerPot,1,
 field_82797_bK,carrot,1,
