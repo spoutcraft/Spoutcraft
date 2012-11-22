@@ -252,7 +252,7 @@ public class ItemInWorldManager {
 			}
 
 			if (!par1EntityPlayer.isUsingItem()) {
-				((EntityPlayerMP)par1EntityPlayer).sendContainerToPlayer(par1EntityPlayer.inventorySlots);
+				((EntityPlayerMP) par1EntityPlayer).sendContainerToPlayer(par1EntityPlayer.inventoryContainer);
 			}
 
 			return true;

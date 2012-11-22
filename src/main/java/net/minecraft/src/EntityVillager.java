@@ -26,7 +26,7 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 	private int wealth;
 
 	/** Last player to trade with this villager, used for aggressivity. */
-	private String lastBuyingPla;
+	private String lastBuyingPlayer;
 	private boolean field_82190_bM;
 	private float field_82191_bN;
 

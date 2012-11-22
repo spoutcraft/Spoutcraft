@@ -103,8 +103,8 @@ public class EntityZombie extends EntityMob {
 	/**
 	 * Set whether this zombie is a villager.
 	 */
-	public void setVillager(boolean par1) {
-		this.getDataWatcher().updateObject(13, Byte.valueOf((byte)(par1 ? 1 : 0)));
+	public void setIsVillager(boolean par1) {
+		this.getDataWatcher().updateObject(13, Byte.valueOf((byte) (par1 ? 1 : 0)));
 	}
 
 	/**
@@ -224,7 +224,7 @@ public class EntityZombie extends EntityMob {
 				break;
 
 			case 2:
-				this.dropItem(Item.potatoe.shiftedIndex, 1);
+				this.dropItem(Item.potato.shiftedIndex, 1);
 		}
 	}
 
@@ -270,7 +270,7 @@ public class EntityZombie extends EntityMob {
 		}
 
 		if (par1NBTTagCompound.getBoolean("IsVillager")) {
-			this.setVillager(true);
+			this.setIsVillager(true);
 		}
 
 		if (par1NBTTagCompound.hasKey("ConversionTime") && par1NBTTagCompound.getInteger("ConversionTime") > -1) {
@@ -293,7 +293,7 @@ public class EntityZombie extends EntityMob {
 			var2.func_82149_j(par1EntityLiving);
 			this.worldObj.setEntityDead(par1EntityLiving);
 			var2.initCreature();
-			var2.setVillager(true);
+			var2.setIsVillager(true);
 
 			if (par1EntityLiving.isChild()) {
 				var2.setChild(true);
@@ -311,7 +311,7 @@ public class EntityZombie extends EntityMob {
 		this.canPickUpLoot = this.rand.nextFloat() < field_82181_as[this.worldObj.difficultySetting];
 
 		if (this.worldObj.rand.nextFloat() < 0.05F) {
-			this.setVillager(true);
+			this.setIsVillager(true);
 		}
 
 		this.func_82164_bB();

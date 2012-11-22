@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftSlime;
+import org.spoutcraft.client.entity.CraftSlime; // Spout
 
 public class EntitySlime extends EntityLiving implements IMob {
 	public float field_70813_a;
@@ -27,7 +27,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 		this.dataWatcher.addObject(16, new Byte((byte)1));
 	}
 
-	protected void setSlimeSize(int par1) {
+	public void setSlimeSize(int par1) { // Spout protected -> public
 		this.dataWatcher.updateObject(16, new Byte((byte)par1));
 		this.setSize(0.6F * (float)par1, 0.6F * (float)par1);
 		this.setPosition(this.posX, this.posY, this.posZ);
@@ -138,7 +138,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 			this.isJumping = true;
 
 			if (this.makesSoundOnJump()) {
-				this.func_85030_athis.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+				this.func_85030_a(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
 			}
 
 			this.moveStrafing = 1.0F - this.rand.nextFloat() * 2.0F;

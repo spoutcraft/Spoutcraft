@@ -725,6 +725,7 @@ func_71505_b,getCrashCause,0,Returns the Throwable object that is the cause for 
 func_71506_a,getSectionsInStringBuilder,0,Gets the various sections of the crash report into the given StringBuilder
 func_71507_a,addCrashSection,0,Adds a Crashreport section with the given name with the given value (convered .toString())
 func_71508_a,saveToFile,0,Saves the complete crash report to the given File.
+func_71509_c,getSections,0,Gets a string representation of all sections in the crash report.
 func_71514_a,getCommandAliases,0,
 func_71515_b,processCommand,0,
 func_71516_a,addTabCompletionOptions,0,Adds the strings available in this command to the given list of tab completion options.
@@ -856,6 +857,7 @@ func_71905_a,setBlockBounds,0,"Sets the bounds of the block.  minX, minY, minZ, 
 func_71906_q_,canSilkHarvest,0,"Return true if a player with Silk Touch can harvest this block directly, and not its normal drops."
 func_71907_b,setTickRandomly,0,Sets whether this block type will receive random update ticks
 func_71908_a,getPlayerRelativeBlockHardness,0,"Gets the hardness of block at the given coordinates in the given world, relative to the ability of the given EntityPlayer."
+func_71909_a,updateBlockMetadata,0,called before onBlockPlacedBy by ItemBlock and ItemReed
 func_71910_a,quantityDroppedWithBonus,0,Returns the usual quantity dropped by the block plus a bonus of 1 to 'i' (inclusive).
 func_71911_a_,getSelectedBoundingBoxFromPool,0,Returns the bounding box of the wired rectangular prism to render.
 func_71912_p,setRequiresSelfNotify,0,Blocks with this attribute will not notify all near blocks when it's metadata change. The default behavior is always notify every neightbor block when anything changes.
@@ -1000,6 +1002,7 @@ func_72272_c_,fertilize,0,Apply bonemeal to the crops.
 func_72273_l,getGrowthRate,0,"Gets the growth rate for the crop. Setup to encourage rows by halving growth rate if there is diagonals, crops on different sides that aren't opposing, and by adding growth for every crop next to this one (and for crop below this one). Args: x, y, z"
 func_72274_a,createNewTileEntity,0,Returns a new instance of a block's tile entity class. Called on placing the block.
 func_72276_j_,ejectRecord,0,Ejects the current record inside of the jukebox.
+func_72277_e,insertRecord,0,Inserts the given record into the JukeBox.
 func_72280_l,setDispenserDefaultDirection,0,sets Dispenser block direction so that the front faces an non-opaque block; chooses west to be direction if all surrounding blocks are opaque.
 func_72285_l,setDefaultDirection,0,set a blocks direction
 func_72286_a,updateFurnaceBlockState,0,Update which block ID the furnace is using depending on whether or not it is burning
@@ -1878,6 +1881,8 @@ func_74379_a,getEnumOptions,0,
 func_74380_a,getEnumFloat,0,
 func_74381_c,returnEnumOrdinal,0,
 func_74382_b,getEnumBoolean,0,
+func_74415_a,getModded,0,"Returns ""Definitely"" if the brand is not vanilla, ""Very likely"" if there are no signers for the Minecraft class, otherwise ""Probably not""."
+func_74418_a,getGLVersion,0,Gets what OpenGL version you have.
 func_74420_a,getLWJGLVersion,0,
 func_74423_d,serverShutdown,0,Shuts down the server. (Only actually used on the server)
 func_74424_a,networkShutdown,0,"Shuts down the network with the specified reason. Closes all streams and sockets, spawns NetworkMasterThread to stop reading and writing threads."
@@ -3069,6 +3074,7 @@ func_77175_a,comparer,0,Compares this tick entry to another tick entry for sorti
 func_77176_a,setScheduledTime,0,Sets the scheduled time for this tick entry
 func_77184_b,placeInExistingPortal,0,Place an entity in a nearby portal which already exists.
 func_77185_a,placeInPortal,0,"Place an entity in a nearby portal, creating one if necessary."
+func_77186_c,createPortal,0,Create a new portal near an entity.
 func_77188_a,creatureSpecificInit,0,"determines if a skeleton spawns on a spider, and if a sheep is a different color"
 func_77189_a,getRandomSpawningPointInChunk,0,"Given a chunk, find a random position in it."
 func_77190_a,canCreatureTypeSpawnAtLocation,0,Returns whether or not the specified creature type can spawn at the specified location.
@@ -3195,6 +3201,7 @@ func_77511_a,getMaxEnchantmentLevel,0,Returns the biggest level of the enchantme
 func_77512_a,getEnchantmentModifierLiving,0,Return the (magic) extra damage of the enchantments on player equipped item.
 func_77513_b,buildEnchantmentList,0,"Create a list of random EnchantmentData (enchantments) that can be added together to the ItemStack, the 3rd parameter is the total enchantability level."
 func_77514_a,calcItemStackEnchantability,0,"Returns the enchantability of itemstack, it's uses a singular formula for each index (2nd parameter: 0, 1 and 2), cutting to the max enchantability power of the table (3rd parameter)"
+func_77515_c,getFireAspectModifier,0,Return the fire aspect value of enchantments on equipped player item.
 func_77516_a,applyEnchantmentModifierArray,0,Executes the enchantment modifier on the array of ItemStack passed.
 func_77517_e,getFortuneModifier,0,Returns the fortune enchantment modifier of the current equipped item of player.
 func_77518_a,applyEnchantmentModifier,0,Executes the enchantment modifier on the ItemStack passed.
@@ -3442,6 +3449,7 @@ func_78277_a,renderUnicodeChar,0,"Render a single Unicode character at current (
 func_78278_a,renderCharAtPos,0,Pick how to render a single character and return the width used.
 func_78279_b,drawSplitString,0,Splits and draws a String with wordwrap (maximum length is parameter k)
 func_78280_d,wrapFormattedStringToWidth,0,Inserts newline and formatting into a string to wrap it within the specified width.
+func_78281_c,renderSplitStringNoShadow,0,renders a multi-line string with wordwrap (maximum length is parameter k) by means of renderSplitString
 func_78282_e,getFormatFromString,0,Digests a string for nonprinting formatting characters then returns a string containing only that formatting.
 func_78283_c,bidiReorder,0,Apply Unicode Bidirectional Algorithm to string and return a new possibly reordered string for visual rendering.
 func_78307_h,findClickedUrl,0,
@@ -4616,6 +4624,7 @@ func_71905_a,setBlockBounds,1,"Sets the bounds of the block.  minX, minY, minZ, 
 func_71906_q_,canSilkHarvest,1,"Return true if a player with Silk Touch can harvest this block directly, and not its normal drops."
 func_71907_b,setTickRandomly,1,Sets whether this block type will receive random update ticks
 func_71908_a,getPlayerRelativeBlockHardness,1,"Gets the hardness of block at the given coordinates in the given world, relative to the ability of the given EntityPlayer."
+func_71909_a,updateBlockMetadata,1,called before onBlockPlacedBy by ItemBlock and ItemReed
 func_71910_a,quantityDroppedWithBonus,1,Returns the usual quantity dropped by the block plus a bonus of 1 to 'i' (inclusive).
 func_71912_p,setRequiresSelfNotify,1,Blocks with this attribute will not notify all near blocks when it's metadata change. The default behavior is always notify every neightbor block when anything changes.
 func_71913_a,canCollideCheck,1,"Returns whether this block is collideable based on the arguments passed in Args: blockMetaData, unknownFlag"
@@ -4748,6 +4757,7 @@ func_72272_c_,fertilize,1,Apply bonemeal to the crops.
 func_72273_l,getGrowthRate,1,"Gets the growth rate for the crop. Setup to encourage rows by halving growth rate if there is diagonals, crops on different sides that aren't opposing, and by adding growth for every crop next to this one (and for crop below this one). Args: x, y, z"
 func_72274_a,createNewTileEntity,1,Returns a new instance of a block's tile entity class. Called on placing the block.
 func_72276_j_,ejectRecord,1,Ejects the current record inside of the jukebox.
+func_72277_e,insertRecord,1,Inserts the given record into the JukeBox.
 func_72280_l,setDispenserDefaultDirection,1,sets Dispenser block direction so that the front faces an non-opaque block; chooses west to be direction if all surrounding blocks are opaque.
 func_72285_l,setDefaultDirection,1,set a blocks direction
 func_72286_a,updateFurnaceBlockState,1,Update which block ID the furnace is using depending on whether or not it is burning
@@ -6194,6 +6204,7 @@ func_77175_a,comparer,1,Compares this tick entry to another tick entry for sorti
 func_77176_a,setScheduledTime,1,Sets the scheduled time for this tick entry
 func_77184_b,placeInExistingPortal,1,Place an entity in a nearby portal which already exists.
 func_77185_a,placeInPortal,1,"Place an entity in a nearby portal, creating one if necessary."
+func_77186_c,createPortal,1,Create a new portal near an entity.
 func_77188_a,creatureSpecificInit,1,"determines if a skeleton spawns on a spider, and if a sheep is a different color"
 func_77189_a,getRandomSpawningPointInChunk,1,"Given a chunk, find a random position in it."
 func_77190_a,canCreatureTypeSpawnAtLocation,1,Returns whether or not the specified creature type can spawn at the specified location.
@@ -6246,6 +6257,7 @@ func_77511_a,getMaxEnchantmentLevel,1,Returns the biggest level of the enchantme
 func_77512_a,getEnchantmentModifierLiving,1,Return the (magic) extra damage of the enchantments on player equipped item.
 func_77513_b,buildEnchantmentList,1,"Create a list of random EnchantmentData (enchantments) that can be added together to the ItemStack, the 3rd parameter is the total enchantability level."
 func_77514_a,calcItemStackEnchantability,1,"Returns the enchantability of itemstack, it's uses a singular formula for each index (2nd parameter: 0, 1 and 2), cutting to the max enchantability power of the table (3rd parameter)"
+func_77515_c,getFireAspectModifier,1,Return the fire aspect value of enchantments on equipped player item.
 func_77516_a,applyEnchantmentModifierArray,1,Executes the enchantment modifier on the array of ItemStack passed.
 func_77517_e,getFortuneModifier,1,Returns the fortune enchantment modifier of the current equipped item of player.
 func_77518_a,applyEnchantmentModifier,1,Executes the enchantment modifier on the ItemStack passed.

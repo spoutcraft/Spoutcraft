@@ -106,7 +106,7 @@ public class SpoutItem extends Item {
 		if (world.canPlaceEntityOnSide(id, x, y, z, false, side, player)) {
 			Block var8 = Block.blocksList[id];
 			if (world.setBlockAndMetadataWithNotify(x, y, z, id, 0)) {
-				Block.blocksList[id].updateBlockMetadata(world, x, y, z, side, xOffset, yOffset, zOffset);
+				Block.blocksList[id].func_85104_a(world, x, y, z, side, xOffset, yOffset, zOffset, 0);
 				Block.blocksList[id].onBlockPlacedBy(world, x, y, z, player);
 
 				world.world.getChunkAt(x, y, z).setCustomBlockId(x, y, z, (short) block.getCustomId());

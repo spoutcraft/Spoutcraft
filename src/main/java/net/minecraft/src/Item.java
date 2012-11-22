@@ -37,7 +37,7 @@ public class Item {
 	public static Item axeDiamond = (new ItemAxe(23, EnumToolMaterial.EMERALD)).setIconCoord(3, 7).setItemName("hatchetDiamond");
 	public static Item stick = (new Item(24)).setIconCoord(5, 3).setFull3D().setItemName("stick").setCreativeTab(CreativeTabs.tabMaterials);
 	public static Item bowlEmpty = (new Item(25)).setIconCoord(7, 4).setItemName("bowl").setCreativeTab(CreativeTabs.tabMaterials);
-	public static Item bowlSoup = (new ItemSoup(26, 8)).setIconCoord(8, 4).setItemName("mushroomStew");
+	public static Item bowlSoup = (new ItemSoup(26, 6)).setIconCoord(8, 4).setItemName("mushroomStew");
 	public static Item swordGold = (new ItemSword(27, EnumToolMaterial.GOLD)).setIconCoord(4, 4).setItemName("swordGold");
 	public static Item shovelGold = (new ItemSpade(28, EnumToolMaterial.GOLD)).setIconCoord(4, 5).setItemName("shovelGold");
 	public static Item pickaxeGold = (new ItemPickaxe(29, EnumToolMaterial.GOLD)).setIconCoord(4, 6).setItemName("pickaxeGold");
@@ -147,7 +147,7 @@ public class Item {
 	public static Item itemFrame = (new ItemHangingEntity(133, EntityItemFrame.class)).setIconCoord(14, 12).setItemName("frame");
 	public static Item flowerPot = (new ItemReed(134, Block.flowerPot)).setIconCoord(13, 11).setItemName("flowerPot").setCreativeTab(CreativeTabs.tabDecorations);
 	public static Item carrot = (new ItemSeedFood(135, 4, 0.6F, Block.carrot.blockID, Block.tilledField.blockID)).setIconCoord(8, 7).setItemName("carrots");
-	public static Item potatoe = (new ItemSeedFood(136, 1, 0.3F, Block.potatoe.blockID, Block.tilledField.blockID)).setIconCoord(7, 7).setItemName("potato");
+	public static Item potato = (new ItemSeedFood(136, 1, 0.3F, Block.potato.blockID, Block.tilledField.blockID)).setIconCoord(7, 7).setItemName("potato");
 	public static Item bakedPotato = (new ItemFood(137, 6, 0.6F, false)).setIconCoord(6, 7).setItemName("potatoBaked");
 	public static Item poisonousPotato = (new ItemFood(138, 2, 0.3F, false)).setPotionEffect(Potion.poison.id, 5, 0, 0.6F).setIconCoord(6, 8).setItemName("potatoPoisonous");
 	public static ItemEmptyMap emptyMap = (ItemEmptyMap)(new ItemEmptyMap(139)).setIconCoord(13, 12).setItemName("emptyMap");
@@ -277,7 +277,7 @@ public class Item {
 	}
 
 	/**
-	 * die sheep, place saddles, etc ...
+	 * dye sheep, place saddles, etc ...
 	 */
 	public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving) {
 		return false;

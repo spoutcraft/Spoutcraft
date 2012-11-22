@@ -10,6 +10,7 @@ import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.io.CustomTextureManager;
 
 public class RenderItem extends Render {
+
 	private RenderBlocks renderBlocks = new RenderBlocks();
 
 	/** The RNG used in RenderItem (for bobbing itemstacks on the ground) */
@@ -24,6 +25,7 @@ public class RenderItem extends Render {
 		this.shadowSize = 0.15F;
 		this.shadowOpaque = 0.75F;
 	}
+
 	// Spout Start
 	@Override
 	protected void loadTexture(String texture) {
@@ -34,6 +36,7 @@ public class RenderItem extends Render {
 			}
 		}
 	}
+
 	// Spout End
 
 	/**
@@ -49,7 +52,7 @@ public class RenderItem extends Render {
 		this.random.setSeed(187L);
 		ItemStack var10 = par1EntityItem.item;
 		if (var10.getItem() != null) {
-			GL11.glPushMatrix();
+			// GL11.glPushMatrix(); // Spout delate to later, if no custom design given
 			float var11 = MathHelper.sin(((float)par1EntityItem.age + par9) / 10.0F + par1EntityItem.hoverStart) * 0.1F + 0.1F;
 			float var12 = (((float)par1EntityItem.age + par9) / 20.0F + par1EntityItem.hoverStart) * (180F / (float)Math.PI);
 			byte var13 = 1;
@@ -85,30 +88,24 @@ public class RenderItem extends Render {
 						}
 					}
 				}
-				
-				/*org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
-				design = block != null ? block.getBlockDesign() : null;
-				if (design != null && design.getTextureAddon() != null && design.getTexureURL() != null) {
-					Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
-					if (texture != null) {
-						this.renderManager.renderEngine.bindTexture(texture.getTextureID());
-						custom = true;
-					}
-				}*/
+
+				/*
+				 * org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage()); design = block != null ? block.getBlockDesign() : null; if (design != null &&
+				 * design.getTextureAddon() != null && design.getTexureURL() != null) { Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL()); if
+				 * (texture != null) { this.renderManager.renderEngine.bindTexture(texture.getTextureID()); custom = true; } }
+				 */
 			}
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-			
+
 			if (design != null && custom) {
 				//GL11.glScalef(0.25F, 0.25F, 0.25F);
 				design.renderItemstack((org.spoutcraft.api.entity.Item)par1EntityItem.spoutEntity, (float)par2, (float)(par4 + var11), (float)par6, var12, 0.25F, random);
-			}
-			else{
-				GL11.glPushMatrix();
-				if(!custom)	{	
+			} else {
+				GL11.glPushMatrix(); // the push from above
+				if (!custom) {
 					if (var10.itemID < 256) {
 						this.loadTexture("/terrain.png");
-					}
-					else {
+					} else {
 						this.loadTexture("/gui/items.png");
 					}
 				}
@@ -195,6 +192,12 @@ public class RenderItem extends Render {
 
 					var15 = var10.getIconIndex();
 
+					if (var14 != null) {
+						this.loadTexture("/terrain.png");
+					} else {
+						this.loadTexture("/gui/items.png");
+					}
+
 					if (this.field_77024_a) {
 						var16 = Item.itemsList[var10.itemID].getColorFromItemStack(var10, 0);
 						var17 = (float)(var16 >> 16 & 255) / 255.0F;
@@ -203,24 +206,26 @@ public class RenderItem extends Render {
 						var20 = 1.0F;
 						GL11.glColor4f(var17 * var20, var24 * var20, var19 * var20, 1.0F);
 					}
+					
 					// Spout Start
 					this.renderItemBillboard(var15, var13, custom);
 					// Spout End
 				}
 			}
-			}
 
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			GL11.glPopMatrix();
+			} // Spout
 		}
 	}
+
 	// Spout Start
 	private void func_77020_a(int var1, int var2) {
 		renderItemBillboard(var1, var2, false);
 	}
 
 	private void renderItemBillboard(int par1, int par2, boolean customTexture) {
-	// Spout End
+		// Spout End
 		Tessellator var3 = Tessellator.instance;
 		float var4 = (float)(par1 % 16 * 16 + 0) / 256.0F;
 		float var5 = (float)(par1 % 16 * 16 + 16) / 256.0F;
@@ -296,17 +301,15 @@ public class RenderItem extends Render {
 		if (!custom) {
 			if (var6 < 256) {
 				loadTexture("/terrain.png");
-			}
-			else {
+			} else {
 				loadTexture("/gui/items.png");
 			}
 		}
 
 		if (design != null && custom) {
 			design.renderItemOnHUD((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.zLevel);
-		}
-		else if(var6 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
-		// Spout End
+		} else if (var6 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
+			// Spout End
 			Block var15 = Block.blocksList[var6];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
@@ -369,20 +372,19 @@ public class RenderItem extends Render {
 					GL11.glColor4f(var17, var16, var12, 1.0F);
 				}
 
-
 				// Spout Start
 				if (custom) {
 					Tessellator tes = Tessellator.instance;
 					tes.startDrawingQuads();
-					tes.addVertexWithUV((double) (par4 + 0), (double) (par5 + 16), (double) 0, 0, 0);
-					tes.addVertexWithUV((double) (par4 + 16), (double) (par5 + 16), (double) 0, 1, 0);
-					tes.addVertexWithUV((double) (par4 + 16), (double) (par5 + 0), (double) 0, 1, 1);
-					tes.addVertexWithUV((double) (par4 + 0), (double) (par5 + 0), (double) 0, 0, 1);
+					tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 16), (double)0, 0, 0);
+					tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 16), (double)0, 1, 0);
+					tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 0), (double)0, 1, 1);
+					tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 0), (double)0, 0, 1);
 					tes.draw();
 				} else
 					this.renderTexturedQuad(par4, par5, var8 % 16 * 16, var8 / 16 * 16, 16, 16);
 				// Spout End
-				
+
 				GL11.glEnable(GL11.GL_LIGHTING);
 			}
 		}
@@ -447,8 +449,7 @@ public class RenderItem extends Render {
 	}
 
 	/**
-	 * Renders the item's overlay information. Examples being stack count or damage on top of the item's image at the
-	 * specified position.
+	 * Renders the item's overlay information. Examples being stack count or damage on top of the item's image at the specified position.
 	 */
 	public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
 		if (par3ItemStack != null) {
@@ -465,15 +466,17 @@ public class RenderItem extends Render {
 			NBTTagList list = par3ItemStack.getAllEnchantmentTagList();
 			short max = -1;
 			short amnt = -1;
-			if(list != null) {
-				for(int i = 0; i < list.tagCount(); i++) {
+			if (list != null) {
+				for (int i = 0; i < list.tagCount(); i++) {
 					NBTBase tag = list.tagAt(i);
-					if(tag instanceof NBTTagCompound) {
-						NBTTagCompound ench = (NBTTagCompound) tag;
+					if (tag instanceof NBTTagCompound) {
+						NBTTagCompound ench = (NBTTagCompound)tag;
 						short id = ench.getShort("id");
 						short lvl = ench.getShort("lvl");
-						if(id == 254) amnt = lvl; //Enchantment DURABILITY = new SpoutEnchantment(254);
-						if(id == 255) max = lvl;  //Enchantment MAX_DURABILITY = new SpoutEnchantment(255);
+						if (id == 254)
+							amnt = lvl; //Enchantment DURABILITY = new SpoutEnchantment(254);
+						if (id == 255)
+							max = lvl; //Enchantment MAX_DURABILITY = new SpoutEnchantment(255);
 					}
 				}
 			}
@@ -500,8 +503,7 @@ public class RenderItem extends Render {
 	}
 
 	/**
-	 * Adds a quad to the tesselator at the specified position with the set width and height and color.  Args: tessellator,
-	 * x, y, width, height, color
+	 * Adds a quad to the tesselator at the specified position with the set width and height and color. Args: tessellator, x, y, width, height, color
 	 */
 	private void renderQuad(Tessellator par1Tessellator, int par2, int par3, int par4, int par5, int par6) {
 		par1Tessellator.startDrawingQuads();
@@ -514,8 +516,7 @@ public class RenderItem extends Render {
 	}
 
 	/**
-	 * Adds a textured quad to the tesselator at the specified position with the specified texture coords, width and
-	 * height.  Args: x, y, u, v, width, height
+	 * Adds a textured quad to the tesselator at the specified position with the specified texture coords, width and height. Args: x, y, u, v, width, height
 	 */
 	public void renderTexturedQuad(int par1, int par2, int par3, int par4, int par5, int par6) {
 		float var7 = 0.00390625F;
@@ -530,10 +531,9 @@ public class RenderItem extends Render {
 	}
 
 	/**
-	 * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-	 * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-	 * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
-	 * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
+	 * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then handing it off to a worker function which does the actual work. In all
+	 * probabilty, the class Render is generic (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1, double d2, float f, float f1). But JAD is pre
+	 * 1.5 so doesn't do that.
 	 */
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		this.doRenderItem((EntityItem)par1Entity, par2, par4, par6, par8, par9);

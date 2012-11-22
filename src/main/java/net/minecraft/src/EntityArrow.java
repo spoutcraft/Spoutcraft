@@ -97,23 +97,23 @@ public class EntityArrow extends Entity implements IProjectile {
 	/**
 	 * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
 	 */
-	public void setThrowableHeading(double var1, double var3, double var5, float var7, float var8) {
-		float var9 = MathHelper.sqrt_double(var1 * var1 + var3 * var3 + var5 * var5);
-		var1 /= (double)var9;
-		var3 /= (double)var9;
-		var5 /= (double)var9;
-		var1 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-		var3 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-		var5 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-		var1 *= (double)var7;
-		var3 *= (double)var7;
-		var5 *= (double)var7;
-		this.motionX = var1;
-		this.motionY = var3;
-		this.motionZ = var5;
-		float var10 = MathHelper.sqrt_double(var1 * var1 + var5 * var5);
-		this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(var1, var5) * 180.0D / Math.PI);
-		this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(var3, (double)var10) * 180.0D / Math.PI);
+	public void setThrowableHeading(double par1, double par3, double par5, float par7, float par8) {
+		float var9 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
+		par1 /= (double) var9;
+		par3 /= (double) var9;
+		par5 /= (double) var9;
+		par1 += this.rand.nextGaussian() * 0.007499999832361937D * (double) par8;
+		par3 += this.rand.nextGaussian() * 0.007499999832361937D * (double) par8;
+		par5 += this.rand.nextGaussian() * 0.007499999832361937D * (double) par8;
+		par1 *= (double) par7;
+		par3 *= (double) par7;
+		par5 *= (double) par7;
+		this.motionX = par1;
+		this.motionY = par3;
+		this.motionZ = par5;
+		float var10 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+		this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(par1, par5) * 180.0D / Math.PI);
+		this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(par3, (double) var10) * 180.0D / Math.PI);
 		this.ticksInGround = 0;
 	}
 
@@ -406,7 +406,7 @@ public class EntityArrow extends Entity implements IProjectile {
 			}
 
 			if (var2) {
-				this.worldObj.func_85030_a("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+				this.func_85030_a("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				par1EntityPlayer.onItemPickup(this, 1);
 				this.setDead();
 			}
@@ -447,6 +447,9 @@ public class EntityArrow extends Entity implements IProjectile {
 		return false;
 	}
 
+	/**
+	 * Whether the arrow has a stream of critical hit particles flying behind it.
+	 */
 	public void setIsCritical(boolean par1) {
 		byte var2 = this.dataWatcher.getWatchableObjectByte(16);
 
@@ -457,6 +460,9 @@ public class EntityArrow extends Entity implements IProjectile {
 		}
 	}
 
+	/**
+	 * Whether the arrow has a stream of critical hit particles flying behind it.
+	 */
 	public boolean getIsCritical() {
 		byte var1 = this.dataWatcher.getWatchableObjectByte(16);
 		return (var1 & 1) != 0;

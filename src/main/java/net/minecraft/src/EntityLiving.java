@@ -295,7 +295,7 @@ public abstract class EntityLiving extends Entity {
 		return this.entityAge;
 	}
 
-	public float func_70079_am() {
+	public float setRotationYawHead() {
 		return this.rotationYawHead;
 	}
 
@@ -340,7 +340,10 @@ public abstract class EntityLiving extends Entity {
 		this.attackTarget = par1EntityLiving;
 	}
 
-	public boolean isExplosiveMob(Class par1Class) {
+	/**
+	 * Returns true if this entity can attack entities of the specified class.
+	 */
+	public boolean canAttackClass(Class par1Class) {
 		return EntityCreeper.class != par1Class && EntityGhast.class != par1Class;
 	}
 
@@ -663,8 +666,6 @@ public abstract class EntityLiving extends Entity {
 	 * Called to update the entity's position/logic.
 	 */
 	public void onUpdate() {
-		super.onUpdate();
-
 		super.onUpdate();
 
 		if (!this.worldObj.isRemote) {
@@ -1128,7 +1129,7 @@ public abstract class EntityLiving extends Entity {
 
 			if (var3 > 0) {
 				StepSound var4 = Block.blocksList[var3].stepSound;
-				this.worldObj.func_85030_a(var4.getStepSound(), var4.getVolume() * 0.5F, var4.getPitch() * 0.75F);
+				this.func_85030_a(var4.getStepSound(), var4.getVolume() * 0.5F, var4.getPitch() * 0.75F);
 			}
 		}
 	}
@@ -1967,12 +1968,12 @@ public abstract class EntityLiving extends Entity {
 				if (this.activePotionsMap.isEmpty()) {
 					this.dataWatcher.updateObject(9, Byte.valueOf((byte)0));
 					this.dataWatcher.updateObject(8, Integer.valueOf(0));
-					this.func_82142_c(false);
+					this.setHasActivePotion(false);
 				} else {
 					var11 = PotionHelper.calcPotionLiquidColor(this.activePotionsMap.values());
 					this.dataWatcher.updateObject(9, Byte.valueOf((byte)(PotionHelper.func_82817_b(this.activePotionsMap.values()) ? 1 : 0)));
 					this.dataWatcher.updateObject(8, Integer.valueOf(var11));
-					this.func_82142_c(this.func_82165_m(Potion.invisibility.id));
+					this.setHasActivePotion(this.isPotionActive(Potion.invisibility.id));
 				}
 			}
 
@@ -1985,7 +1986,7 @@ public abstract class EntityLiving extends Entity {
 		if (var11 > 0) {
 			boolean var4 = false;
 
-			if (!this.func_82150_aj()) {
+			if (!this.getHasActivePotion()) {
 				var4 = this.rand.nextBoolean();
 			} else {
 				var4 = this.rand.nextInt(15) == 0;
@@ -2022,7 +2023,7 @@ public abstract class EntityLiving extends Entity {
 		return this.activePotionsMap.values();
 	}
 
-	public boolean func_82165_m(int par1) {
+	public boolean isPotionActive(int par1) {
 		return this.activePotionsMap.containsKey(Integer.valueOf(par1));
 	}
 
@@ -2191,14 +2192,20 @@ public abstract class EntityLiving extends Entity {
 		return this.equipment[par1 + 1];
 	}
 
-	public void func_70062_b(int par1, ItemStack par2ItemStack) {
-		this.field_82182_bS[par1] = par2ItemStack;
+	/**
+	 * Sets the held item, or an armor slot. Slot 0 is held item. Slot 1-4 is armor. Params: Item, slot
+	 */
+	public void setCurrentItemOrArmor(int par1, ItemStack par2ItemStack) {
+		this.equipment[par1] = par2ItemStack;
 	}
 
 	public ItemStack[] getLastActiveItems() {
-		return this.field_82182_bS;
+		return this.equipment;
 	}
 
+	/**
+	 * Drop the equipment for this entity.
+	 */
 	protected void dropEquipment(boolean par1, int par2) {
 		for (int var3 = 0; var3 < this.getLastActiveItems().length; ++var3) {
 			ItemStack var4 = this.getCurrentItemOrArmor(var3);
@@ -2250,7 +2257,7 @@ public abstract class EntityLiving extends Entity {
 				}
 
 				if (var4 == null) {
-					Item var5 = func_82161_a(var3 + 1, var1);
+					Item var5 = getArmorItemForSlot(var3 + 1, var1);
 
 					if (var5 != null) {
 						this.setCurrentItemOrArmor(var3 + 1, new ItemStack(var5));
@@ -2305,7 +2312,10 @@ public abstract class EntityLiving extends Entity {
 		}
 	}
 
-	public static Item func_82161_a(int par0, int par1) {
+	/**
+	 * Params: Armor slot, Item tier
+	 */
+	public static Item getArmorItemForSlot(int par0, int par1) {
 		switch (par0) {
 			case 4:
 				if (par1 == 0) {

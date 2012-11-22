@@ -31,7 +31,7 @@ public class RenderSpider extends RenderLiving {
 			GL11.glDisable(GL11.GL_ALPHA_TEST);
 			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 
-			if (par1EntitySpider.func_82150_aj()) {
+			if (par1EntitySpider.getHasActivePotion()) {
 				GL11.glDepthMask(false);
 			} else {
 				GL11.glDepthMask(true);

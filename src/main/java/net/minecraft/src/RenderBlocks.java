@@ -14,9 +14,21 @@ import com.pclewis.mcpatcher.mod.Shaders;
 
 public class RenderBlocks {
 
+	/** The IBlockAccess used by this instance of RenderBlocks */
 	public IBlockAccess blockAccess; // Spout private -> public
+	/**
+	 * If set to >=0, all block faces will be rendered using this texture index
+	 */
 	private int overrideBlockTexture = -1;
+
+	/**
+	 * Set to true if the texture should be flipped horizontally during render*Face
+	 */
 	private boolean flipTexture = false;
+
+	/**
+	 * If true, renders all faces on all blocks rather than using the logic in Block.shouldSideBeRendered. Unused.
+	 */
 	private boolean renderAllFaces = false;
 	//public static boolean fancyGrass = true; // Spout removed
 	public boolean useInventoryTint = true;
@@ -33,82 +45,300 @@ public class RenderBlocks {
 	private int uvRotateNorth = 0;
 	private int uvRotateTop = 0;
 	private int uvRotateBottom = 0;
+
+	/** Whether ambient occlusion is enabled or not */
 	private boolean enableAO;
+
+	/** Light value of the block itself */
 	private float lightValueOwn;
+
+	/** Light value one block less in x axis */
 	private float aoLightValueXNeg;
+
+	/** Light value one block more in y axis */
 	private float aoLightValueYNeg;
+
+	/** Light value one block more in z axis */
 	private float aoLightValueZNeg;
+
+	/** Light value one block more in x axis */
 	private float aoLightValueXPos;
+
+	/** Light value one block more in y axis */
 	private float aoLightValueYPos;
+
+	/** Light value one block more in z axis */
 	private float aoLightValueZPos;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion on the north/bottom/east corner.
+	 */
 	private float aoLightValueScratchXYZNNN;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the bottom face and the north face.
+	 */
 	private float aoLightValueScratchXYNN;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion on the north/bottom/west corner.
+	 */
 	private float aoLightValueScratchXYZNNP;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the bottom face and the east face.
+	 */
 	private float aoLightValueScratchYZNN;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the bottom face and the west face.
+	 */
 	private float aoLightValueScratchYZNP;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion on the south/bottom/east corner.
+	 */
 	private float aoLightValueScratchXYZPNN;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the bottom face and the south face.
+	 */
 	private float aoLightValueScratchXYPN;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion on the south/bottom/west corner.
+	 */
 	private float aoLightValueScratchXYZPNP;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion on the north/top/east corner.
+	 */
 	private float aoLightValueScratchXYZNPN;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the top face and the north face.
+	 */
 	private float aoLightValueScratchXYNP;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion on the north/top/west corner.
+	 */
 	private float aoLightValueScratchXYZNPP;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the top face and the east face.
+	 */
 	private float aoLightValueScratchYZPN;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion on the south/top/east corner.
+	 */
 	private float aoLightValueScratchXYZPPN;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the top face and the south face.
+	 */
 	private float aoLightValueScratchXYPP;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the top face and the west face.
+	 */
 	private float aoLightValueScratchYZPP;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion on the south/top/west corner.
+	 */
 	private float aoLightValueScratchXYZPPP;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the north face and the east face.
+	 */
 	private float aoLightValueScratchXZNN;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the south face and the east face.
+	 */
 	private float aoLightValueScratchXZPN;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the north face and the west face.
+	 */
 	private float aoLightValueScratchXZNP;
+
+	/**
+	 * Used as a scratch variable for ambient occlusion between the south face and the west face.
+	 */
 	private float aoLightValueScratchXZPP;
+
+	/** Ambient occlusion brightness XYZNNN */
 	private int aoBrightnessXYZNNN;
+
+	/** Ambient occlusion brightness XYNN */
 	private int aoBrightnessXYNN;
+
+	/** Ambient occlusion brightness XYZNNP */
 	private int aoBrightnessXYZNNP;
+
+	/** Ambient occlusion brightness YZNN */
 	private int aoBrightnessYZNN;
+
+	/** Ambient occlusion brightness YZNP */
 	private int aoBrightnessYZNP;
+
+	/** Ambient occlusion brightness XYZPNN */
 	private int aoBrightnessXYZPNN;
+
+	/** Ambient occlusion brightness XYPN */
 	private int aoBrightnessXYPN;
+
+	/** Ambient occlusion brightness XYZPNP */
 	private int aoBrightnessXYZPNP;
+
+	/** Ambient occlusion brightness XYZNPN */
 	private int aoBrightnessXYZNPN;
+
+	/** Ambient occlusion brightness XYNP */
 	private int aoBrightnessXYNP;
+
+	/** Ambient occlusion brightness XYZNPP */
 	private int aoBrightnessXYZNPP;
+
+	/** Ambient occlusion brightness YZPN */
 	private int aoBrightnessYZPN;
+
+	/** Ambient occlusion brightness XYZPPN */
 	private int aoBrightnessXYZPPN;
+
+	/** Ambient occlusion brightness XYPP */
 	private int aoBrightnessXYPP;
+
+	/** Ambient occlusion brightness YZPP */
 	private int aoBrightnessYZPP;
+
+	/** Ambient occlusion brightness XYZPPP */
 	private int aoBrightnessXYZPPP;
+
+	/** Ambient occlusion brightness XZNN */
 	private int aoBrightnessXZNN;
+
+	/** Ambient occlusion brightness XZPN */
 	private int aoBrightnessXZPN;
+
+	/** Ambient occlusion brightness XZNP */
 	private int aoBrightnessXZNP;
+
+	/** Ambient occlusion brightness XZPP */
 	private int aoBrightnessXZPP;
+
+	/** Ambient occlusion type (0=simple, 1=complex) */
 	private int aoType = 1;
+
+	/** Brightness top left */
 	private int brightnessTopLeft;
+
+	/** Brightness bottom left */
 	private int brightnessBottomLeft;
+
+	/** Brightness bottom right */
 	private int brightnessBottomRight;
+
+	/** Brightness top right */
 	private int brightnessTopRight;
+
+	/** Red color value for the top left corner */
 	private float colorRedTopLeft;
+
+	/** Red color value for the bottom left corner */
 	private float colorRedBottomLeft;
+
+	/** Red color value for the bottom right corner */
 	private float colorRedBottomRight;
+
+	/** Red color value for the top right corner */
 	private float colorRedTopRight;
+
+	/** Green color value for the top left corner */
 	private float colorGreenTopLeft;
+
+	/** Green color value for the bottom left corner */
 	private float colorGreenBottomLeft;
+
+	/** Green color value for the bottom right corner */
 	private float colorGreenBottomRight;
+
+	/** Green color value for the top right corner */
 	private float colorGreenTopRight;
+
+	/** Blue color value for the top left corner */
 	private float colorBlueTopLeft;
+
+	/** Blue color value for the bottom left corner */
 	private float colorBlueBottomLeft;
+
+	/** Blue color value for the bottom right corner */
 	private float colorBlueBottomRight;
+
+	/** Blue color value for the top right corner */
 	private float colorBlueTopRight;
+
+	/**
+	 * Grass flag for ambient occlusion on Center X, Positive Y, and Negative Z
+	 */
 	private boolean aoGrassXYZCPN;
+
+	/**
+	 * Grass flag for ambient occlusion on Positive X, Positive Y, and Center Z
+	 */
 	private boolean aoGrassXYZPPC;
+
+	/**
+	 * Grass flag for ambient occlusion on Negative X, Positive Y, and Center Z
+	 */
 	private boolean aoGrassXYZNPC;
+
+	/**
+	 * Grass flag for ambient occlusion on Center X, Positive Y, and Positive Z
+	 */
 	private boolean aoGrassXYZCPP;
+
+	/**
+	 * Grass flag for ambient occlusion on Negative X, Center Y, and Negative Z
+	 */
 	private boolean aoGrassXYZNCN;
+
+	/**
+	 * Grass flag for ambient occlusion on Positive X, Center Y, and Positive Z
+	 */
 	private boolean aoGrassXYZPCP;
+
+	/**
+	 * Grass flag for ambient occlusion on Negative X, Center Y, and Positive Z
+	 */
 	private boolean aoGrassXYZNCP;
+
+	/**
+	 * Grass flag for ambient occlusion on Positive X, Center Y, and Negative Z
+	 */
 	private boolean aoGrassXYZPCN;
+
+	/**
+	 * Grass flag for ambient occlusion on Center X, Negative Y, and Negative Z
+	 */
 	private boolean aoGrassXYZCNN;
+
+	/**
+	 * Grass flag for ambient occlusion on Positive X, Negative Y, and Center Z
+	 */
 	private boolean aoGrassXYZPNC;
+
+	/**
+	 * Grass flag for ambient occlusion on Negative X, Negative Y, and center Z
+	 */
 	private boolean aoGrassXYZNNC;
+
+	/**
+	 * Grass flag for ambient occlusion on Center X, Negative Y, and Positive Z
+	 */
 	private boolean aoGrassXYZCNP;
 	// Spout Start
 	public short[] customIds = null;
@@ -124,6 +354,9 @@ public class RenderBlocks {
 		this.overrideBlockTexture = par1;
 	}
 
+	/**
+	 * Clear override block texture
+	 */
 	public void clearOverrideBlockTexture() {
 		this.overrideBlockTexture = -1;
 	}
@@ -167,18 +400,27 @@ public class RenderBlocks {
 		this.field_83023_m = false;
 	}
 
+	/**
+	 * Renders a block using the given texture instead of the block's own default texture
+	 */
 	public void renderBlockUsingTexture(Block par1Block, int par2, int par3, int par4, int par5) {
 		this.overrideBlockTexture = par5;
 		this.renderBlockByRenderType(par1Block, par2, par3, par4);
 		this.overrideBlockTexture = -1;
 	}
 
+	/**
+	 * Render all faces of a block
+	 */
 	public void renderBlockAllFaces(Block par1Block, int par2, int par3, int par4) {
 		this.renderAllFaces = true;
 		this.renderBlockByRenderType(par1Block, par2, par3, par4);
 		this.renderAllFaces = false;
 	}
 
+	/**
+	 * Renders the block at the given coordinates using the block's rendering type
+	 */
 	public boolean renderBlockByRenderType(Block par1Block, int par2, int par3, int par4) {
 		int var5 = par1Block.getRenderType();
 		par1Block.setBlockBoundsBasedOnState(this.blockAccess, par2, par3, par4);
@@ -186,6 +428,9 @@ public class RenderBlocks {
 		return var5 == 0 ? this.renderStandardBlock(par1Block, par2, par3, par4) : (var5 == 31 ? this.renderBlockLog(par1Block, par2, par3, par4) : (var5 == 4 ? this.renderBlockFluids(par1Block, par2, par3, par4) : (var5 == 13 ? this.renderBlockCactus(par1Block, par2, par3, par4) : (var5 == 1 ? this.renderCrossedSquares(par1Block, par2, par3, par4) : (var5 == 19 ? this.renderBlockStem(par1Block, par2, par3, par4) : (var5 == 23 ? this.renderBlockLilyPad(par1Block, par2, par3, par4) : (var5 == 6 ? this.renderBlockCrops(par1Block, par2, par3, par4) : (var5 == 2 ? this.renderBlockTorch(par1Block, par2, par3, par4) : (var5 == 3 ? this.renderBlockFire(par1Block, par2, par3, par4) : (var5 == 5 ? this.renderBlockRedstoneWire(par1Block, par2, par3, par4) : (var5 == 8 ? this.renderBlockLadder(par1Block, par2, par3, par4) : (var5 == 7 ? this.renderBlockDoor(par1Block, par2, par3, par4) : (var5 == 9 ? this.renderBlockMinecartTrack((BlockRail)par1Block, par2, par3, par4) : (var5 == 10 ? this.renderBlockStairs((BlockStairs) par1Block, par2, par3, par4) : (var5 == 27 ? this.renderBlockDragonEgg((BlockDragonEgg)par1Block, par2, par3, par4) : (var5 == 11 ? this.renderBlockFence((BlockFence)par1Block, par2, par3, par4) : (var5 == 12 ? this.renderBlockLever(par1Block, par2, par3, par4) : (var5 == 29 ? this.renderBlockTripWireSource(par1Block, par2, par3, par4) : (var5 == 30 ? this.renderBlockTripWire(par1Block, par2, par3, par4) : (var5 == 14 ? this.renderBlockBed(par1Block, par2, par3, par4) : (var5 == 15 ? this.renderBlockRepeater(par1Block, par2, par3, par4) : (var5 == 16 ? this.renderPistonBase(par1Block, par2, par3, par4, false) : (var5 == 17 ? this.renderPistonExtension(par1Block, par2, par3, par4, true) : (var5 == 18 ? this.renderBlockPane((BlockPane)par1Block, par2, par3, par4) : (var5 == 20 ? this.renderBlockVine(par1Block, par2, par3, par4) : (var5 == 21 ? this.renderBlockFenceGate((BlockFenceGate)par1Block, par2, par3, par4) : (var5 == 24 ? this.renderBlockCauldron((BlockCauldron)par1Block, par2, par3, par4) : (var5 == 25 ? this.renderBlockBrewingStand((BlockBrewingStand)par1Block, par2, par3, par4) : (var5 == 26 ? this.renderBlockEndPortalFrame(par1Block, par2, par3, par4) : (var5 == 28 ? this.renderBlockCocoa((BlockCocoa)par1Block, par2, par3, par4) : false))))))))))))))))))))))))))))));
 	}
 
+	/**
+	 * Render BlockEndPortalFrame
+	 */
 	private boolean renderBlockEndPortalFrame(Block par1Block, int par2, int par3, int par4) {
 		int var5 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 		int var6 = var5 & 3;
@@ -217,6 +462,9 @@ public class RenderBlocks {
 		}
 	}
 
+	/**
+	 * render a bed at the given coordinates
+	 */
 	private boolean renderBlockBed(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		int var6 = this.blockAccess.getBlockMetadata(par2, par3, par4);
@@ -360,6 +608,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Render BlockBrewingStand
+	 */
 	private boolean renderBlockBrewingStand(BlockBrewingStand par1BlockBrewingStand, int par2, int par3, int par4) {
 		this.setRenderMinMax(0.4375D, 0.0D, 0.4375D, 0.5625D, 0.875D, 0.5625D);
 		this.renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
@@ -435,6 +686,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Render block cauldron
+	 */
 	private boolean renderBlockCauldron(BlockCauldron par1BlockCauldron, int par2, int par3, int par4) {
 		this.renderStandardBlock(par1BlockCauldron, par2, par3, par4);
 		Tessellator var5 = Tessellator.instance;
@@ -480,7 +734,10 @@ public class RenderBlocks {
 		return true;
 	}
 
-	private boolean func_82780_a(BlockFlowerPot par1BlockFlowerPot, int par2, int par3, int par4) {
+	/**
+	 * Renders flower pot
+	 */
+	private boolean renderBlockFlowerpot(BlockFlowerPot par1BlockFlowerPot, int par2, int par3, int par4) {
 		this.renderStandardBlock(par1BlockFlowerPot, par2, par3, par4);
 		Tessellator var5 = Tessellator.instance;
 		var5.setBrightness(par1BlockFlowerPot.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
@@ -580,7 +837,10 @@ public class RenderBlocks {
 		return true;
 	}
 
-	private boolean func_82775_a(BlockAnvil par1BlockAnvil, int par2, int par3, int par4) {
+	/**
+	 * Renders anvil
+	 */
+	private boolean renderBlockAnvil(BlockAnvil par1BlockAnvil, int par2, int par3, int par4) {
 		return this.func_85096_a(par1BlockAnvil, par2, par3, par4, this.blockAccess.getBlockMetadata(par2, par3, par4));
 	}
 
@@ -699,6 +959,9 @@ public class RenderBlocks {
 		return par6 + par8;
 	}
 
+	/**
+	 * Renders a torch block at the given coordinates
+	 */
 	public boolean renderBlockTorch(Block par1Block, int par2, int par3, int par4) {
 		int var5 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 		Tessellator var6 = Tessellator.instance;
@@ -722,6 +985,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * render a redstone repeater at the given coordinates
+	 */
 	private boolean renderBlockRepeater(Block par1Block, int par2, int par3, int par4) {
 		int var5 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 		int var6 = var5 & 3;
@@ -836,12 +1102,18 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Render all faces of the piston base
+	 */
 	public void renderPistonBaseAllFaces(Block par1Block, int par2, int par3, int par4) {
 		this.renderAllFaces = true;
 		this.renderPistonBase(par1Block, par2, par3, par4, true);
 		this.renderAllFaces = false;
 	}
 
+	/**
+	 * renders a block as a piston base
+	 */
 	private boolean renderPistonBase(Block par1Block, int par2, int par3, int par4, boolean par5) {
 		int var6 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 		boolean var7 = par5 || (var6 & 8) != 0;
@@ -943,6 +1215,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Render piston rod up/down
+	 */
 	private void renderPistonRodUD(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14) {
 		int var16 = 108;
 		if (this.overrideBlockTexture >= 0) {
@@ -963,6 +1238,9 @@ public class RenderBlocks {
 		var19.addVertexWithUV(par3, par7, par11, var24, var26);
 	}
 
+	/**
+	 * Render piston rod south/north
+	 */
 	private void renderPistonRodSN(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14) {
 		int var16 = 108;
 		if (this.overrideBlockTexture >= 0) {
@@ -983,6 +1261,9 @@ public class RenderBlocks {
 		var19.addVertexWithUV(par3, par7, par11, var24, var26);
 	}
 
+	/**
+	 * Render piston rod east/west
+	 */
 	private void renderPistonRodEW(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14) {
 		int var16 = 108;
 		if (this.overrideBlockTexture >= 0) {
@@ -1003,12 +1284,18 @@ public class RenderBlocks {
 		var19.addVertexWithUV(par3, par7, par11, var24, var26);
 	}
 
+	/**
+	 * Render all faces of the piston extension
+	 */
 	public void renderPistonExtensionAllFaces(Block par1Block, int par2, int par3, int par4, boolean par5) {
 		this.renderAllFaces = true;
 		this.renderPistonExtension(par1Block, par2, par3, par4, par5);
 		this.renderAllFaces = false;
 	}
 
+	/**
+	 * renders the pushing part of a piston
+	 */
 	private boolean renderPistonExtension(Block par1Block, int par2, int par3, int par4, boolean par5) {
 		int var6 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 		int var7 = BlockPistonExtension.getDirectionMeta(var6);
@@ -1099,6 +1386,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Renders a lever block at the given coordinates
+	 */
 	public boolean renderBlockLever(Block par1Block, int par2, int par3, int par4) {
 		int var5 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 		int var6 = var5 & 7;
@@ -1613,6 +1903,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Renders a trip wire block at the given coordinates
+	 */
 	public boolean renderBlockTripWire(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		int var6 = par1Block.getBlockTextureFromSide(0);
@@ -1944,6 +2237,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Renders a redstone wire block at the given coordinates
+	 */
 	public boolean renderBlockRedstoneWire(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		int var6 = this.blockAccess.getBlockMetadata(par2, par3, par4);
@@ -2165,6 +2461,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Renders a minecart track block at the given coordinates
+	 */
 	public boolean renderBlockMinecartTrack(BlockRail par1BlockRail, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		int var6 = this.blockAccess.getBlockMetadata(par2, par3, par4);
@@ -2246,6 +2545,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Renders a ladder block at the given coordinates
+	 */
 	public boolean renderBlockLadder(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		int var6 = par1Block.getBlockTextureFromSide(0);
@@ -2304,6 +2606,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Render block vine
+	 */
 	public boolean renderBlockVine(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		int var6 = par1Block.getBlockTextureFromSide(0);
@@ -2813,6 +3118,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Renders any block requiring croseed squares such as reeds, flowers, and mushrooms
+	 */
 	public boolean renderCrossedSquares(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		var5.setBrightness(par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
@@ -2846,6 +3154,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Render block stem
+	 */
 	public boolean renderBlockStem(Block par1Block, int par2, int par3, int par4) {
 		BlockStem var5 = (BlockStem)par1Block;
 		Tessellator var6 = Tessellator.instance;
@@ -2877,6 +3188,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Render block crops
+	 */
 	public boolean renderBlockCrops(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		var5.setBrightness(par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
@@ -2885,6 +3199,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Renders a torch at the given coordinates, with the base slanting at the given delta
+	 */
 	public void renderTorchAtAngle(Block par1Block, double par2, double par4, double par6, double par8, double par10) {
 		Tessellator var12 = Tessellator.instance;
 		int var13 = par1Block.getBlockTextureFromSide(0);
@@ -2942,6 +3259,9 @@ public class RenderBlocks {
 	}
 
 	// Spout Start
+	/**
+	 * Utility function to draw crossed swuares
+	 */
 	public void drawCrossedSquares(Block var1, int var2, double var3, double var5, double var7, float par9) {
 		drawCrossedSquares(var1, var2, var3, var5, var7, par9, false);
 	}
@@ -3000,6 +3320,9 @@ public class RenderBlocks {
 		var10.addVertexWithUV(var24, par5 + (double)par9, var30, var16, var18);
 	}
 
+	/**
+	 * Render block stem small
+	 */
 	public void renderBlockStemSmall(Block par1Block, int par2, double par3, double par5, double par7, double par9) {
 		Tessellator var11 = Tessellator.instance;
 		int var12 = par1Block.getBlockTextureFromSideAndMetadata(0, par2);
@@ -3035,6 +3358,9 @@ public class RenderBlocks {
 		var11.addVertexWithUV(var23, par7 + par3, var29, var17, var19);
 	}
 
+	/**
+	 * Render BlockLilyPad
+	 */
 	public boolean renderBlockLilyPad(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		int var6 = par1Block.blockIndexInTexture;
@@ -3078,6 +3404,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Render block stem big
+	 */
 	public void renderBlockStemBig(Block par1Block, int par2, int par3, double par4, double par6, double par8, double par10) {
 		Tessellator var12 = Tessellator.instance;
 		int var13 = par1Block.getBlockTextureFromSideAndMetadata(0, par2) + 16;
@@ -3124,6 +3453,9 @@ public class RenderBlocks {
 		}
 	}
 
+	/**
+	 * Render block crops implementation
+	 */
 	public void renderBlockCropsImpl(Block par1Block, int par2, double par3, double par5, double par7) {
 		Tessellator var9 = Tessellator.instance;
 		int var10 = par1Block.getBlockTextureFromSideAndMetadata(0, par2);
@@ -3179,6 +3511,9 @@ public class RenderBlocks {
 		var9.addVertexWithUV(var23, par5 + 1.0D, var27, var15, var17);
 	}
 
+	/**
+	 * Renders a block based on the BlockFluids class at the given coordinates
+	 */
 	public boolean renderBlockFluids(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		int var6 = par1Block.colorMultiplier(this.blockAccess, par2, par3, par4);
@@ -3353,6 +3688,9 @@ public class RenderBlocks {
 		}
 	}
 
+	/**
+	 * Get fluid height
+	 */
 	private float getFluidHeight(int par1, int par2, int par3, Material par4Material) {
 		int var5 = 0;
 		float var6 = 0.0F;
@@ -3439,6 +3777,9 @@ public class RenderBlocks {
 		var11.draw();
 	}
 
+	/**
+	 * Renders a standard cube block at the given coordinates
+	 */
 	public boolean renderStandardBlock(Block par1Block, int par2, int par3, int par4) {
 		int var5 = par1Block.colorMultiplier(this.blockAccess, par2, par3, par4);
 		float var6 = (float)(var5 >> 16 & 255) / 255.0F;
@@ -3456,6 +3797,9 @@ public class RenderBlocks {
 		return Minecraft.isAmbientOcclusionEnabled() && Block.lightValue[par1Block.blockID] == 0 ? this.renderStandardBlockWithAmbientOcclusion(par1Block, par2, par3, par4, var6, var7, var8) : this.renderStandardBlockWithColorMultiplier(par1Block, par2, par3, par4, var6, var7, var8);
 	}
 
+	/**
+	 * Renders a log block at the given coordinates
+	 */
 	public boolean renderBlockLog(Block par1Block, int par2, int par3, int par4) {
 		int var5 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 		int var6 = var5 & 12;
@@ -3623,7 +3967,7 @@ public class RenderBlocks {
 			}
 			// Spout End
 			if (this.aoType > 0) {
-				if (par1Block.minY <= 0.0D) {
+				if (this.field_83027_i <= 0.0D) {
 					--par3;
 				}
 
@@ -4415,6 +4759,9 @@ public class RenderBlocks {
 		return var8;
 	}
 
+	/**
+	 * Get ambient occlusion brightness
+	 */
 	private int getAoBrightness(int par1, int par2, int par3, int par4) {
 		if (par1 == 0) {
 			par1 = par4;
@@ -4431,6 +4778,9 @@ public class RenderBlocks {
 		return par1 + par2 + par3 + par4 >> 2 & 16711935;
 	}
 
+	/**
+	 * Renders a standard cube block at the given coordinates, with a given color ratio. Args: block, x, y, z, r, g, b
+	 */
 	public boolean renderStandardBlockWithColorMultiplier(Block par1Block, int par2, int par3, int par4, float par5, float par6, float par7) {
 		this.enableAO = false;
 		Tessellator var8 = Tessellator.instance;
@@ -4551,6 +4901,9 @@ public class RenderBlocks {
 		return var9;
 	}
 
+	/**
+	 * Renders a Cocoa block at the given coordinates
+	 */
 	private boolean renderBlockCocoa(BlockCocoa par1BlockCocoa, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		var5.setBrightness(par1BlockCocoa.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
@@ -4711,7 +5064,10 @@ public class RenderBlocks {
 		return true;
 	}
 
-	private boolean func_82778_a(BlockBeacon par1BlockBeacon, int par2, int par3, int par4) {
+	/**
+	 * Renders beacon block
+	 */
+	private boolean renderBlockBeacon(BlockBeacon par1BlockBeacon, int par2, int par3, int par4) {
 		float var5 = 0.1875F;
 		this.func_82774_a(Block.obsidian.blockIndexInTexture);
 		this.setRenderMinMax(0.125D, 0.0D, 0.125D, 0.875D, (double)var5, 0.875D);
@@ -4726,6 +5082,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Renders a cactus block at the given coordinates
+	 */
 	public boolean renderBlockCactus(Block par1Block, int par2, int par3, int par4) {
 		int var5 = par1Block.colorMultiplier(this.blockAccess, par2, par3, par4);
 		float var6 = (float)(var5 >> 16 & 255) / 255.0F;
@@ -4743,6 +5102,9 @@ public class RenderBlocks {
 		return this.renderBlockCactusImpl(par1Block, par2, par3, par4, var6, var7, var8);
 	}
 
+	/**
+	 * Render block cactus implementation
+	 */
 	public boolean renderBlockCactusImpl(Block par1Block, int par2, int par3, int par4, float par5, float par6, float par7) {
 		Tessellator var8 = Tessellator.instance;
 		boolean var9 = false;
@@ -4882,7 +5244,10 @@ public class RenderBlocks {
 		return var5;
 	}
 
-	public boolean func_82779_a(BlockWall par1BlockWall, int par2, int par3, int par4) {
+	/**
+	 * Renders wall block
+	 */
+	public boolean renderBlockWall(BlockWall par1BlockWall, int par2, int par3, int par4) {
 		boolean var5 = par1BlockWall.canConnectWallTo(this.blockAccess, par2 - 1, par3, par4);
 		boolean var6 = par1BlockWall.canConnectWallTo(this.blockAccess, par2 + 1, par3, par4);
 		boolean var7 = par1BlockWall.canConnectWallTo(this.blockAccess, par2, par3, par4 - 1);
@@ -4984,6 +5349,9 @@ public class RenderBlocks {
 		return var5;
 	}
 
+	/**
+	 * Render block fence gate
+	 */
 	public boolean renderBlockFenceGate(BlockFenceGate par1BlockFenceGate, int par2, int par3, int par4) {
 		boolean var5 = true;
 		int var6 = this.blockAccess.getBlockMetadata(par2, par3, par4);
@@ -5166,6 +5534,9 @@ public class RenderBlocks {
 		return true;
 	}
 
+	/**
+	 * Renders a door block at the given coordinates
+	 */
 	public boolean renderBlockDoor(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		boolean var6 = false;
@@ -5233,6 +5604,9 @@ public class RenderBlocks {
 		return var6;
 	}
 
+	/**
+	 * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
+	 */
 	public void renderBottomFace(Block par1Block, double par2, double par4, double par6, int par8) {
 		// Spout start
 		if(Shaders.isEnabled()) {
@@ -5333,6 +5707,9 @@ public class RenderBlocks {
 		}
 	}
 
+	/**
+	 * Renders the given texture to the top face of the block. Args: block, x, y, z, texture
+	 */
 	public void renderTopFace(Block par1Block, double par2, double par4, double par6, int par8) {
 		// Spout start
 		if(Shaders.isEnabled()) {
@@ -5433,6 +5810,9 @@ public class RenderBlocks {
 		}
 	}
 
+	/**
+	 * Renders the given texture to the east (z-negative) face of the block. Args: block, x, y, z, texture
+	 */
 	public void renderEastFace(Block par1Block, double par2, double par4, double par6, int par8) {
 		// Spout start
 		if(Shaders.isEnabled()) {
@@ -5683,7 +6063,6 @@ public class RenderBlocks {
 		if (this.field_83027_i < 0.0D || this.field_83024_j > 1.0D) {
 			var16 = (double)(((float)var11 + 0.0F) / 256.0F);
 			var18 = (double)(((float)var11 + 15.99F) / 256.0F);
-		}18 = (double)(((float)var11 + 15.99F) / 256.0F);
 		}
 
 		var20 = var14;
@@ -5749,6 +6128,9 @@ public class RenderBlocks {
 		}
 	}
 
+	/**
+	 * Renders the given texture to the south (x-positive) face of the block. Args: block, x, y, z, texture
+	 */
 	public void renderSouthFace(Block par1Block, double par2, double par4, double par6, int par8) {
 		// Spout start
 		if(Shaders.isEnabled()) {
@@ -5854,6 +6236,9 @@ public class RenderBlocks {
 		}
 	}
 
+	/**
+	 * Is called to render the image of a block on an inventory, as a held item, or as a an item on the ground
+	 */
 	public void renderBlockAsItem(Block par1Block, int par2, float par3) {
 		Tessellator var4 = Tessellator.instance;
 		boolean var5 = par1Block.blockID == Block.grass.blockID;
@@ -6280,6 +6665,9 @@ public class RenderBlocks {
 		}
 	}
 
+	/**
+	 * Checks to see if the item's render type indicates that it should be rendered as a regular block or not.
+	 */
 	public static boolean renderItemIn3d(int par0) {
 		return par0 == 0 ? true : (par0 == 31 ? true : (par0 == 13 ? true : (par0 == 10 ? true : (par0 == 11 ? true : (par0 == 27 ? true : (par0 == 22 ? true : (par0 == 21 ? true : (par0 == 16 ? true : (par0 == 26 ? true : (par0 == 32 ? true : (par0 == 34 ? true : par0 == 35)))))))))));
 	}

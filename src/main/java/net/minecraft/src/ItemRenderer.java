@@ -84,7 +84,7 @@ public class ItemRenderer {
 				var9 = 1;
 				var10 = 0;
 			}
-
+			// Spout end
 			float var11 = 0.0F;
 			float var12 = 0.3F;
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -431,7 +431,7 @@ public class ItemRenderer {
 			}
 
 			GL11.glPopMatrix();
-		} else if (!var3.func_82150_aj()) {
+		} else if (!var3.getHasActivePotion()) {
 			GL11.glPushMatrix();
 			var7 = 0.8F;
 			var20 = var3.getSwingProgress(par1);

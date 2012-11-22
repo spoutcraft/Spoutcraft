@@ -3,7 +3,7 @@ package net.minecraft.client;
 import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.Minecraft; // Spout
 import net.minecraft.src.CanvasMinecraftApplet;
 import net.minecraft.src.MinecraftAppletImpl;
 import net.minecraft.src.Session;
@@ -57,8 +57,6 @@ public class MinecraftApplet extends Applet {
 		if (this.getParameter("server") != null && this.getParameter("port") != null) {
 			this.mc.setServer(this.getParameter("server"), Integer.parseInt(this.getParameter("port")));
 		}
-
-		this.mc.setDemo("true".equals(this.getParameter("demo")));
 		this.mc.hideQuitButton = !"true".equals(this.getParameter("stand-alone"));
 
 		this.setLayout(new BorderLayout());
@@ -93,6 +91,9 @@ public class MinecraftApplet extends Applet {
 		this.shutdown();
 	}
 
+	/**
+	 * Called when the applet window is closed.
+	 */
 	public void shutdown() {
 		if (this.mcThread != null) {
 			this.mc.shutdown();
@@ -109,20 +110,6 @@ public class MinecraftApplet extends Applet {
 
 			this.mcThread = null;
 		}
-	}
-
-	public void clearApplet() {
-		this.mcCanvas = null;
-		this.mc = null;
-		this.mcThread = null;
-
-		try {
-			this.removeAll();
-			this.validate();
-		} catch (Exception var2) {
-			;
-		}
-
 	}
 	
 	// Spout Start

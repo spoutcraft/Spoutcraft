@@ -83,7 +83,7 @@ public abstract class Container {
 				this.inventoryItemStacks.set(var1, var3);
 
 				for (int var4 = 0; var4 < this.crafters.size(); ++var4) {
-					((ICrafting)this.crafters.get(var4)).updateCraftingInventorySlot(this, var1, var3);
+					((ICrafting) this.crafters.get(var4)).sendSlotContents(this, var1, var3);
 				}
 			}
 		}
@@ -198,7 +198,7 @@ public abstract class Container {
 								var7.putStack((ItemStack)null);
 							}
 
-							vvar7.onPickupFromSlot(par4EntityPlayer, var6.getItemStack());
+							var7.onPickupFromSlot(par4EntityPlayer, var6.getItemStack());
 						} else if (var7.isItemValid(var13)) {
 							if (var8.itemID == var13.itemID && (!var8.getHasSubtypes() || var8.getItemDamage() == var13.getItemDamage()) && ItemStack.areItemStackTagsEqual(var8, var13)) {
 								var10 = par2 == 0 ? var13.stackSize : 1;
@@ -222,7 +222,7 @@ public abstract class Container {
 								var7.putStack(var13);
 								var6.setItemStack(var8);
 							}
-						} else if (var8.itemID == var13.itemID && var13.getMaxStackSize() > 1 && (!var8.getHasSubtypes() || var8.getItemDamage() == var13.getItemDamage()) && ItemStack.func_77970_a(var8, var13)) {
+						} else if (var8.itemID == var13.itemID && var13.getMaxStackSize() > 1 && (!var8.getHasSubtypes() || var8.getItemDamage() == var13.getItemDamage()) && ItemStack.areItemStackTagsEqual(var8, var13)) {
 							var10 = var8.stackSize;
 
 							if (var10 > 0 && var10 + var13.stackSize <= var13.getMaxStackSize()) {

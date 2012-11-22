@@ -162,7 +162,7 @@ public class RenderPlayer extends RenderLiving {
 	 * Used to render a player's name above their head
 	 */
 	protected void renderName(EntityPlayer par1EntityPlayer, double par2, double par4, double par6) {
-		if (Minecraft.isGuiEnabled() && par1EntityPlayer != this.renderManager.livingPlayer && !par1EntityPlayer.func_82150_aj()) {
+		if (Minecraft.isGuiEnabled() && par1EntityPlayer != this.renderManager.livingPlayer && !par1EntityPlayer.getHasActivePotion()) {
 			float var8 = 1.6F;
 			float var9 = 0.016666668F * var8;
 			double var10 = par1EntityPlayer.getDistanceSqToEntity(this.renderManager.livingPlayer);
@@ -295,7 +295,7 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glTranslatef(0.0F, -0.375F, 0.0F);
 				GL11.glRotatef(-var7, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
-				float var8 = 1.3333334F;
+				var8 = 1.3333334F;
 				GL11.glScalef(var8, var8, var8);
 				this.modelBipedMain.renderEars(0.0625F);
 				GL11.glPopMatrix();
@@ -304,7 +304,7 @@ public class RenderPlayer extends RenderLiving {
 
 		float var11;
 
-		if (this.loadDownloadableImageTexture(par1EntityPlayer.playerCloakUrl, (String)null) && !par1EntityPlayer.func_82150_aj() && !par1EntityPlayer.func_82238_cc()) {
+		if (this.loadDownloadableImageTexture(par1EntityPlayer.playerCloakUrl, (String) null) && !par1EntityPlayer.getHasActivePotion() && !par1EntityPlayer.getHideCape()) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 0.0F, 0.125F);
 			double var22 = par1EntityPlayer.field_71091_bM + (par1EntityPlayer.field_71094_bP - par1EntityPlayer.field_71091_bM) * (double)par2 - (par1EntityPlayer.prevPosX + (par1EntityPlayer.posX - par1EntityPlayer.prevPosX) * (double)par2);

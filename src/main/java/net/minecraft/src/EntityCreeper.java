@@ -14,7 +14,7 @@ public class EntityCreeper extends EntityMob {
 	 * The amount of time since the creeper was close enough to the player to ignite
 	 */
 	private int timeSinceIgnited;
-	private int field_82225_f = 30;
+	private int fuseTime = 30;
 
 	/** Explosion radius for this creeper. */
 	private int explosionRadius = 3;
@@ -54,8 +54,8 @@ public class EntityCreeper extends EntityMob {
 		super.fall(par1);
 		this.timeSinceIgnited = (int)((float)this.timeSinceIgnited + par1 * 1.5F);
 
-		if (this.timeSinceIgnited > this.field_82225_f - 5) {
-			this.timeSinceIgnited = this.field_82225_f - 5;
+		if (this.timeSinceIgnited > this.fuseTime - 5) {
+			this.timeSinceIgnited = this.fuseTime - 5;
 		}
 	}
 
@@ -79,7 +79,7 @@ public class EntityCreeper extends EntityMob {
 			par1NBTTagCompound.setBoolean("powered", true);
 		}
 
-		par1NBTTagCompound.setShort("Fuse", (short)this.field_82225_f);
+		par1NBTTagCompound.setShort("Fuse", (short) this.fuseTime);
 		par1NBTTagCompound.setByte("ExplosionRadius", (byte)this.explosionRadius);
 	}
 
@@ -91,7 +91,7 @@ public class EntityCreeper extends EntityMob {
 		this.dataWatcher.updateObject(17, Byte.valueOf((byte)(par1NBTTagCompound.getBoolean("powered") ? 1 : 0)));
 
 		if (par1NBTTagCompound.hasKey("Fuse")) {
-			this.field_82225_f = par1NBTTagCompound.getShort("Fuse");
+			this.fuseTime = par1NBTTagCompound.getShort("Fuse");
 		}
 
 		if (par1NBTTagCompound.hasKey("ExplosionRadius")) {
@@ -117,8 +117,8 @@ public class EntityCreeper extends EntityMob {
 				this.timeSinceIgnited = 0;
 			}
 
-			if (this.timeSinceIgnited >= this.field_82225_f) {
-				this.timeSinceIgnited = this.field_82225_f;
+			if (this.timeSinceIgnited >= this.fuseTime) {
+				this.timeSinceIgnited = this.fuseTime;
 
 				if (!this.worldObj.isRemote) {
 					boolean var2 = this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
@@ -175,10 +175,10 @@ public class EntityCreeper extends EntityMob {
 	}
 
 	/**
-	 * Connects the the creeper flashes to the creeper's color multiplier
+	 * Params: (Float)Render tick. Returns the intensity of the creeper's flash when it is ignited.
 	 */
-	public float setCreeperFlashTime(float par1) {
-		return ((float)this.lastActiveTime + (float)(this.timeSinceIgnited - this.lastActiveTime) * par1) / (float)(this.field_82225_f - 2);
+	public float getCreeperFlashIntensity(float par1) {
+		return ((float) this.lastActiveTime + (float) (this.timeSinceIgnited - this.lastActiveTime) * par1) / (float) (this.fuseTime - 2);
 	}
 
 	/**

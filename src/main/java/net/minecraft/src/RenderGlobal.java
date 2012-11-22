@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.mod.Colorizer; // Spout HD
-import com.pclewis.mcpatcher.mod.Shaders;
+import com.pclewis.mcpatcher.mod.Shaders; // Spout HD
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -250,7 +250,7 @@ public class RenderGlobal implements IWorldAccess {
 		Tessellator var2 = Tessellator.instance;
 		var2.startDrawingQuads();
 
-		for (int var3 = 0; var3 < SpoutClient.getInstance().getSkyManager().getStarFrequency(); ++var3) {
+		for (int var3 = 0; var3 < SpoutClient.getInstance().getSkyManager().getStarFrequency(); ++var3) { // Spout
 			double var4 = (double)(var1.nextFloat() * 2.0F - 1.0F);
 			double var6 = (double)(var1.nextFloat() * 2.0F - 1.0F);
 			double var8 = (double)(var1.nextFloat() * 2.0F - 1.0F);
@@ -1643,14 +1643,14 @@ public class RenderGlobal implements IWorldAccess {
 	 * Will mark the block and neighbors that their renderers need an update (could be all the same renderer potentially)
 	 * Args: x, y, z
 	 */
-	public void markBlockNeedsUpdate(int par1, int par2, int par3) {
+	public void markBlockForUpdate(int par1, int par2, int par3) {
 		this.markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par1 + 1, par2 + 1, par3 + 1);
 	}
 
 	/**
 	 * As of mc 1.2.3 this method has exactly the same signature and does exactly the same as markBlockNeedsUpdate
 	 */
-	public void markBlockNeedsUpdate2(int par1, int par2, int par3) {
+	public void markBlockForRenderUpdate(int par1, int par2, int par3) {
 		this.markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par1 + 1, par2 + 1, par3 + 1);
 	}
 
@@ -1658,7 +1658,7 @@ public class RenderGlobal implements IWorldAccess {
 	 * Called across all registered IWorldAccess instances when a block range is invalidated. Args: minX, minY, minZ, maxX,
 	 * maxY, maxZ
 	 */
-	public void markBlockRangeNeedsUpdate(int par1, int par2, int par3, int par4, int par5, int par6) {
+	public void markBlockRangeForRenderUpdate(int par1, int par2, int par3, int par4, int par5, int par6) {
 		this.markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par4 + 1, par5 + 1, par6 + 1);
 	}
 
@@ -1790,7 +1790,6 @@ public class RenderGlobal implements IWorldAccess {
 						((EntitySpellParticleFX)var21).func_70589_b(144);
 						float var24 = this.theWorld.rand.nextFloat() * 0.5F + 0.35F;
 						((EntityFX)var21).setRBGColorF(1.0F * var24, 0.0F * var24, 1.0F * var24);
-						((EntitySpellParticleFX)var21).func_70589_b(144);
 					} else if (par1Str.equals("note")) {
 						var21 = new EntityNoteFX(this.theWorld, par2, par4, par6, par8, par10, par12);
 					} else if (par1Str.equals("portal")) {
