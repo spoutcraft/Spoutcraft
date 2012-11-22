@@ -59,7 +59,7 @@ public class GuiMultiplayer extends GuiScreen {
 	private ThreadLanServerFind localServerFindThread;
 	private int field_74039_z;
 	private boolean field_74024_A;
-	private List field_74026_B = Collections.emptyList();
+	private List listofLanServers = Collections.emptyList();
 
 	public GuiMultiplayer(GuiScreen par1GuiScreen) {
 		this.parentScreen = par1GuiScreen;
@@ -118,9 +118,9 @@ public class GuiMultiplayer extends GuiScreen {
 		super.updateScreen();
 		++this.field_74039_z;
 
-		if (this.localNetworkServerList.func_77553_a()) {
-			this.field_74026_B = this.localNetworkServerList.func_77554_c();
-			this.localNetworkServerList.func_77552_b();
+		if (this.localNetworkServerList.getWasUpdated()) {
+			this.listofLanServers = this.localNetworkServerList.getLanServers();
+			this.localNetworkServerList.setWasNotUpdated();
 		}
 	}
 
@@ -166,7 +166,7 @@ public class GuiMultiplayer extends GuiScreen {
 				this.editClicked = true;
 				ServerData var9 = this.internetServerList.getServerData(this.selectedServer);
 				this.theServerData = new ServerData(var9.serverName, var9.serverIP);
-				this.theServerData.func_82819_b(var9.func_82820_d());
+				this.theServerData.setHideAddress(var9.isHidingAddress());
 				this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.theServerData));
 			} else if (par1GuiButton.id == 0) {
 				this.mc.displayGuiScreen(this.parentScreen);
@@ -193,7 +193,7 @@ public class GuiMultiplayer extends GuiScreen {
 			this.directClicked = false;
 
 			if (par1) {
-				this.func_74002_a(this.theServerData);
+				this.connectToServer(this.theServerData);
 			} else {
 				this.mc.displayGuiScreen(this);
 			}
@@ -214,7 +214,7 @@ public class GuiMultiplayer extends GuiScreen {
 				ServerData var3 = this.internetServerList.getServerData(this.selectedServer);
 				var3.serverName = this.theServerData.serverName;
 				var3.serverIP = this.theServerData.serverIP;
-				var3.func_82819_b(this.theServerData.func_82820_d());
+				var3.setHideAddress(this.theServerData.isHidingAddress());
 				this.internetServerList.saveServerList();
 			}
 
@@ -251,7 +251,9 @@ public class GuiMultiplayer extends GuiScreen {
 					}
 				}
 			} else if (par1 == 13) {
-				this.actionPerformed((GuiButton)this.controlList.get(2));
+				this.actionPerformed((GuiButton) this.controlList.get(2));
+			} else {
+				super.keyTyped(par1, par2);
 			}
 		}
 	}
@@ -277,18 +279,18 @@ public class GuiMultiplayer extends GuiScreen {
 	 */
 	private void joinServer(int par1) {
 		if (par1 < this.internetServerList.countServers()) {
-			this.func_74002_a(this.internetServerList.getServerData(par1));
+			this.connectToServer(this.internetServerList.getServerData(par1));
 		} else {
 			par1 -= this.internetServerList.countServers();
 
-			if (par1 < this.field_74026_B.size()) {
-				LanServer var2 = (LanServer)this.field_74026_B.get(par1);
-				this.func_74002_a(new ServerData(var2.func_77487_a(), var2.func_77488_b()));
+			if (par1 < this.listofLanServers.size()) {
+				LanServer var2 = (LanServer) this.listofLanServers.get(par1);
+				this.connectToServer(new ServerData(var2.getServerMotd(), var2.getServerIpPort()));
 			}
 		}
 	}
 
-	private void func_74002_a(ServerData par1ServerData) {
+	private void connectToServer(ServerData par1ServerData) {
 		this.mc.displayGuiScreen(new GuiConnecting(this.mc, par1ServerData));
 	}
 
@@ -333,7 +335,7 @@ public class GuiMultiplayer extends GuiScreen {
 				if (MathHelper.func_82715_a(var26[0], 0) == 1) {
 					par1ServerData.serverMOTD = var26[3];
 					par1ServerData.field_82821_f = MathHelper.func_82715_a(var26[1], par1ServerData.field_82821_f);
-					par1ServerData.field_82822_g = var26[2];
+					par1ServerData.gameVersion = var26[2];
 					var8 = MathHelper.func_82715_a(var26[4], 0);
 					var9 = MathHelper.func_82715_a(var26[5], 0);
 
@@ -343,9 +345,9 @@ public class GuiMultiplayer extends GuiScreen {
 						par1ServerData.populationInfo = "\u00a78???";
 					}
 				} else {
-					par1ServerData.field_82822_g = "???";
+					par1ServerData.gameVersion = "???";
 					par1ServerData.serverMOTD = "\u00a78???";
-					par1ServerData.field_82821_f = 48;
+					par1ServerData.field_82821_f = 50;
 					par1ServerData.populationInfo = "\u00a78???";
 				}
 			} else {
@@ -369,8 +371,8 @@ public class GuiMultiplayer extends GuiScreen {
 					par1ServerData.populationInfo = "\u00a78???";
 				}
 
-				par1ServerData.field_82822_g = "1.3";
-				par1ServerData.field_82821_f = 46;
+				par1ServerData.gameVersion = "1.3";
+				par1ServerData.field_82821_f = 48;
 			}
 		} finally {
 			try {
@@ -409,19 +411,19 @@ public class GuiMultiplayer extends GuiScreen {
 		}
 	}
 
-	static ServerList func_74006_a(GuiMultiplayer par0GuiMultiplayer) {
+	static ServerList getInternetServerList(GuiMultiplayer par0GuiMultiplayer) {
 		return par0GuiMultiplayer.internetServerList;
 	}
 
-	static List func_74003_b(GuiMultiplayer par0GuiMultiplayer) {
-		return par0GuiMultiplayer.field_74026_B;
+	static List getListOfLanServers(GuiMultiplayer par0GuiMultiplayer) {
+		return par0GuiMultiplayer.listofLanServers;
 	}
 
-	static int func_74020_c(GuiMultiplayer par0GuiMultiplayer) {
+	static int getSelectedServer(GuiMultiplayer par0GuiMultiplayer) {
 		return par0GuiMultiplayer.selectedServer;
 	}
 
-	static int func_74015_a(GuiMultiplayer par0GuiMultiplayer, int par1) {
+	static int getAndSetSelectedServer(GuiMultiplayer par0GuiMultiplayer, int par1) {
 		return par0GuiMultiplayer.selectedServer = par1;
 	}
 

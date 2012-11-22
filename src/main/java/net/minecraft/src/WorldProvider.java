@@ -63,7 +63,7 @@ public abstract class WorldProvider {
 	 */
 	protected void registerWorldChunkManager() {
 		if (this.worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT) {
-			FlatGeneratorInfo var1 = FlatGeneratorInfo.func_82651_a(this.worldObj.getWorldInfo().func_82571_y());
+			FlatGeneratorInfo var1 = FlatGeneratorInfo.createFlatGeneratorFromString(this.worldObj.getWorldInfo().func_82571_y());
 			this.worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.biomeList[var1.getBiome()], 0.5F, 0.5F);
 		} else {
 			this.worldChunkMgr = new WorldChunkManager(this.worldObj);
@@ -71,10 +71,10 @@ public abstract class WorldProvider {
 	}
 
 	/**
-	 * Returns the chunk provider back for the world provider
+	 * Returns a new chunk provider which generates chunks for this world
 	 */
-	public IChunkProvider getChunkProvider() {
-		return (IChunkProvider)(this.terrainType == WorldType.FLAT ? new ChunkProviderFlat(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled(), this.field_82913_c) : new ChunkProviderGenerate(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()));
+	public IChunkProvider createChunkGenerator() {
+		return (IChunkProvider) (this.terrainType == WorldType.FLAT ? new ChunkProviderFlat(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled(), this.field_82913_c) : new ChunkProviderGenerate(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()));
 	}
 
 	/**

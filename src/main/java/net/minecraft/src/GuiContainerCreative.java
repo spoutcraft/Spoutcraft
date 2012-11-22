@@ -37,7 +37,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 
 	public GuiContainerCreative(EntityPlayer par1EntityPlayer) {
 		super(new ContainerCreative(par1EntityPlayer));
-		par1EntityPlayer.craftingInventory = this.inventorySlots;
+		par1EntityPlayer.openContainer = this.inventorySlots;
 		this.allowUserInput = true;
 		par1EntityPlayer.addStat(AchievementList.openInventory, 1);
 		this.ySize = 136;
@@ -61,15 +61,15 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 
 		if (par1Slot != null) {
 			if (par1Slot == this.field_74235_v && var5) {
-				for (int var10 = 0; var10 < this.mc.thePlayer.inventorySlots.getInventory().size(); ++var10) {
-					this.mc.playerController.sendSlotPacket((ItemStack)null, var10);
+				for (int var10 = 0; var10 < this.mc.thePlayer.inventoryContainer.getInventory().size(); ++var10) {
+					this.mc.playerController.sendSlotPacket((ItemStack) null, var10);
 				}
 			} else if (selectedTabIndex == CreativeTabs.tabInventory.getTabIndex()) {
 				if (par1Slot == this.field_74235_v) {
 					this.mc.thePlayer.inventory.setItemStack((ItemStack)null);
 				} else {
-					this.mc.thePlayer.inventorySlots.slotClick(SlotCreativeInventory.func_75240_a((SlotCreativeInventory)par1Slot).slotNumber, par3, par4, this.mc.thePlayer);
-					this.mc.thePlayer.inventorySlots.updateCraftingResults();
+					this.mc.thePlayer.inventoryContainer.slotClick(SlotCreativeInventory.func_75240_a((SlotCreativeInventory) par1Slot).slotNumber, par3, par4, this.mc.thePlayer);
+					this.mc.thePlayer.inventoryContainer.updateCraftingResults();
 				}
 			} else if (par1Slot.inventory == inventory) {
 				var6 = this.mc.thePlayer.inventory;
@@ -82,7 +82,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 						var9 = var8.copy();
 						var9.stackSize = var9.getMaxStackSize();
 						this.mc.thePlayer.inventory.setInventorySlotContents(par3, var9);
-						this.mc.thePlayer.inventorySlots.updateCraftingResults();
+						this.mc.thePlayer.inventoryContainer.updateCraftingResults();
 					}
 
 					return;
@@ -165,7 +165,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 			selectedTabIndex = -1;
 			this.func_74227_b(CreativeTabs.creativeTabArray[var1]);
 			this.field_82324_x = new CreativeCrafting(this.mc);
-			this.mc.thePlayer.inventorySlots.addCraftingToCrafters(this.field_82324_x);
+			this.mc.thePlayer.inventoryContainer.addCraftingToCrafters(this.field_82324_x);
 		} else {
 			this.mc.displayGuiScreen(new GuiInventory(this.mc.thePlayer));
 		}
@@ -175,11 +175,10 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 	 * Called when the screen is unloaded. Used to disable keyboard repeat events
 	 */
 	public void onGuiClosed() {
-		Keyboard.enableRepeatEvents(false);
-		NetClientHandler var1 = this.mc.getSendQueue();
+		super.onGuiClosed();
 
-		if (var1 != null) {
-			var1.addToSendQueue(new Packet130UpdateSign(this.entitySign.xCoord, this.entitySign.yCoord, this.entitySign.zCoord, this.entitySign.signText));
+		if (this.mc.thePlayer != null && this.mc.thePlayer.inventory != null) {
+			this.mc.thePlayer.inventoryContainer.removeCraftingFromCrafters(this.field_82324_x);
 		}
 
 		Keyboard.enableRepeatEvents(false);
@@ -305,7 +304,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		par1CreativeTabs.displayAllReleventItems(var3.itemList);
 
 		if (par1CreativeTabs == CreativeTabs.tabInventory) {
-			Container var4 = this.mc.thePlayer.inventorySlots;
+			Container var4 = this.mc.thePlayer.inventoryContainer;
 
 			if (this.field_74236_u == null) {
 				this.field_74236_u = var3.inventorySlots;

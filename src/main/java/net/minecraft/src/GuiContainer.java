@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.ArrayList; // Spout
+import java.util.Collections; // Spout
+import java.util.Iterator; // Spout
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -9,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+// Spout start
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -18,6 +20,7 @@ import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.client.MCItemStackComparator;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.inventory.InventoryUtil;
+//Spout end
 
 public abstract class GuiContainer extends GuiScreen {
 
@@ -68,7 +71,7 @@ public abstract class GuiContainer extends GuiScreen {
 	 */
 	public void initGui() {
 		super.initGui();
-		this.mc.thePlayer.craftingInventory = this.inventorySlots;
+		this.mc.thePlayer.openContainer = this.inventorySlots;
 		this.guiLeft = (this.width - this.xSize) / 2;
 		this.guiTop = (this.height - this.ySize) / 2;
 		// Spout Start	

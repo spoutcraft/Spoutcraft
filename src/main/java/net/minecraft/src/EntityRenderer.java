@@ -21,6 +21,8 @@ import org.spoutcraft.client.spoutworth.SpoutWorth;
 
 public class EntityRenderer {
 	public static boolean anaglyphEnable = false;
+
+	/** Anaglyph field (0=R, 1=GB) */
 	public static int anaglyphField;
 	private Minecraft mc;
 	private float farPlaneDistance = 0.0F;
@@ -62,6 +64,8 @@ public class EntityRenderer {
 	private long prevFrameTime = Minecraft.getSystemTime();
 	private long renderEndNanoTime = 0L;
 	private boolean lightmapUpdateNeeded = false;
+
+	/** Torch flicker X */
 	public float torchFlickerX = 0.0F; // Spout private -> public
 	float torchFlickerDX = 0.0F;
 	float torchFlickerY = 0.0F;
@@ -313,7 +317,7 @@ public class EntityRenderer {
 					var21 *= 0.1F;
 					var22 *= 0.1F;
 					var23 *= 0.1F;
-					MovingObjectPosition var24 = this.mc.theWorld.rayTraceBlocks(this.mc.theWorld.getWorldVec3Pool().getVecFromPool(var4 + (double)var21, var6 + (double)var22, var8 + (double)var23), this.mc.theWorld.func_82732_R().getVecFromPool(var4 - var14 + (double)var21 + (double)var23, var6 - var18 + (double)var22, var8 - var16 + (double)var23));
+					MovingObjectPosition var24 = this.mc.theWorld.rayTraceBlocks(this.mc.theWorld.getWorldVec3Pool().getVecFromPool(var4 + (double) var21, var6 + (double) var22, var8 + (double) var23), this.mc.theWorld.getWorldVec3Pool().getVecFromPool(var4 - var14 + (double) var21 + (double) var23, var6 - var18 + (double) var22, var8 - var16 + (double) var23));
 					if (var24 != null) {
 						double var25 = var24.hitVec.distanceTo(this.mc.theWorld.getWorldVec3Pool().getVecFromPool(var4, var6, var8));
 						if (var25 < var27) {

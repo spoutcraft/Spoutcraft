@@ -120,7 +120,7 @@ public class Potion {
 				par1EntityLiving.attackEntityFrom(DamageSource.magic, 1);
 			}
 		} else if (this.id == wither.id) {
-			par1EntityLiving.attackEntityFrom(DamageSource.field_82727_n, 1);
+			par1EntityLiving.attackEntityFrom(DamageSource.wither, 1);
 		} else if (this.id == hunger.id && par1EntityLiving instanceof EntityPlayer) {
 			((EntityPlayer)par1EntityLiving).addExhaustion(0.025F * (float)(par2 + 1));
 		} else if ((this.id != heal.id || par1EntityLiving.isEntityUndead()) && (this.id != harm.id || !par1EntityLiving.isEntityUndead())) {

@@ -254,7 +254,7 @@ public class EffectRenderer {
 			if (par4 == 5) {
 				var8 = (double)par1 + var6.getBlockBoundsMaxX() + (double)var7;
 			}
-		}
+
 			// Spout Start
 			boolean custom = false;
 			GenericBlockDesign design = null;

@@ -5,6 +5,8 @@ import org.spoutcraft.api.Spoutcraft; // Spout
 import net.minecraft.client.Minecraft;
 
 public class PlayerControllerMP {
+
+	/** The Minecraft instance. */
 	private final Minecraft mc;
 	private final NetClientHandler netClientHandler;
 
@@ -50,12 +52,18 @@ public class PlayerControllerMP {
 		this.netClientHandler = par2NetClientHandler;
 	}
 
+	/**
+	 * Block dig operation in creative mode (instantly digs the block).
+	 */
 	public static void clickBlockCreative(Minecraft par0Minecraft, PlayerControllerMP par1PlayerControllerMP, int par2, int par3, int par4, int par5) {
 		if (!par0Minecraft.theWorld.extinguishFire(par0Minecraft.thePlayer, par2, par3, par4, par5)) {
 			par1PlayerControllerMP.onPlayerDestroyBlock(par2, par3, par4, par5);
 		}
 	}
 
+	/**
+	 * Sets player capabilities depending on current gametype. params: player
+	 */
 	public void setPlayerCapabilities(EntityPlayer par1EntityPlayer) {
 		this.currentGameType.configurePlayerCapabilities(par1EntityPlayer.capabilities);
 	}
@@ -70,7 +78,6 @@ public class PlayerControllerMP {
 	public void setGameType(EnumGameType par1EnumGameType) {
 		this.currentGameType = par1EnumGameType;
 		this.currentGameType.configurePlayerCapabilities(this.mc.thePlayer.capabilities);
-		GuiIngame.dirtySurvival();
 	}
 
 	/**
@@ -145,7 +152,7 @@ public class PlayerControllerMP {
 					Block.blocksList[var5].onBlockClicked(this.mc.theWorld, par1, par2, par3, this.mc.thePlayer);
 				}
 
-				if (var5 > 0 && Block.blocksList[var5].getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, par1, par2, par3) >= 1.0F) {
+				if (var5 > 0 && Block.blocksList[var5].getPlayerRelativeBlockHardness(this.mc.thePlayer) >= 1.0F) { // Spout
 					this.onPlayerDestroyBlock(par1, par2, par3, par4);
 				} else {
 					this.isHittingBlock = true;
@@ -334,8 +341,8 @@ public class PlayerControllerMP {
 	}
 
 	public ItemStack windowClick(int par1, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
-		short var6 = par5EntityPlayer.craftingInventory.getNextTransactionID(par5EntityPlayer.inventory);
-		ItemStack var7 = par5EntityPlayer.craftingInventory.slotClick(par2, par3, par4, par5EntityPlayer);
+		short var6 = par5EntityPlayer.openContainer.getNextTransactionID(par5EntityPlayer.inventory);
+		ItemStack var7 = par5EntityPlayer.openContainer.slotClick(par2, par3, par4, par5EntityPlayer);
 		this.netClientHandler.addToSendQueue(new Packet102WindowClick(par1, par2, par3, par4, var7, var6));
 		return var7;
 	}

@@ -10,8 +10,8 @@ import java.util.Random;
 
 // Spout Start
 import org.spoutcraft.client.block.SpoutcraftChunk;
-// Spout End
 import org.spoutcraft.client.config.Configuration;
+// Spout End
 
 public class Chunk {
 
@@ -119,7 +119,7 @@ public class Chunk {
 		}
 
 		Arrays.fill(this.precipitationHeightMap, -999);
-		Arrays.fill(this.blockBiomeArray, (byte) - 1);
+		Arrays.fill(this.blockBiomeArray, (byte) -1);
 
 		// Spout Start
 		spoutChunk = new SpoutcraftChunk(this);
@@ -259,7 +259,7 @@ public class Chunk {
 
 								if (var6 != null) {
 									var6.setExtSkylightValue(var2, var5 & 15, var3, var4);
-									this.worldObj.markBlockNeedsUpdateForAll((this.xPosition << 4) + var2, var5, (this.zPosition << 4) + var3);
+									this.worldObj.markBlockForRenderUpdate((this.xPosition << 4) + var2, var5, (this.zPosition << 4) + var3);
 								}
 							}
 
@@ -391,7 +391,7 @@ public class Chunk {
 
 						if (var9 != null) {
 							var9.setExtSkylightValue(par1, var8 & 15, par3, 15);
-							this.worldObj.markBlockNeedsUpdateForAll((this.xPosition << 4) + par1, var8, (this.zPosition << 4) + par3);
+							this.worldObj.markBlockForRenderUpdate((this.xPosition << 4) + par1, var8, (this.zPosition << 4) + par3);
 						}
 					}
 				} else {
@@ -400,7 +400,7 @@ public class Chunk {
 
 						if (var9 != null) {
 							var9.setExtSkylightValue(par1, var8 & 15, par3, 0);
-							this.worldObj.markBlockNeedsUpdateForAll((this.xPosition << 4) + par1, var8, (this.zPosition << 4) + par3);
+							this.worldObj.markBlockForRenderUpdate((this.xPosition << 4) + par1, var8, (this.zPosition << 4) + par3);
 						}
 					}
 				}
@@ -873,7 +873,6 @@ public class Chunk {
 
 		for (int var6 = var4; var6 <= var5; ++var6) {
 			List var7 = this.entityLists[var6];
-			Iterator var8 = var7.iterator();
 
 			for (int var8 = 0; var8 < var7.size(); ++var8) {
 				Entity var9 = (Entity)var7.get(var8);

@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
+import java.net.InetSocketAddress; // Spout
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.net.UnknownHostException;
+import java.net.UnknownHostException; // Spout
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -552,7 +552,7 @@ public class NetClientHandler extends NetHandler {
 
 		if (var2 != null) {
 			var2.fillChunk(par1Packet51MapChunk.func_73593_d(), par1Packet51MapChunk.yChMin, par1Packet51MapChunk.yChMax, par1Packet51MapChunk.includeInitialize);
-			this.worldClient.markBlocksDirty(par1Packet51MapChunk.xCh << 4, 0, par1Packet51MapChunk.zCh << 4, (par1Packet51MapChunk.xCh << 4) + 15, 256, (par1Packet51MapChunk.zCh << 4) + 15);
+			this.worldClient.markBlockRangeForRenderUpdate(par1Packet51MapChunk.xCh << 4, 0, par1Packet51MapChunk.zCh << 4, (par1Packet51MapChunk.xCh << 4) + 15, 256, (par1Packet51MapChunk.zCh << 4) + 15);
 
 			if (!par1Packet51MapChunk.includeInitialize || !(this.worldClient.provider instanceof WorldProviderSurface)) {
 				// Spout Start
@@ -843,47 +843,47 @@ public class NetClientHandler extends NetHandler {
 		switch (par1Packet100OpenWindow.inventoryType) {
 			case 0:
 				var2.displayGUIChest(new InventoryBasic(par1Packet100OpenWindow.windowTitle, par1Packet100OpenWindow.slotsCount));
-				var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
 				break;
 
 			case 1:
 				var2.displayGUIWorkbench(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
-				var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
 				break;
 
 			case 2:
 				var2.displayGUIFurnace(new TileEntityFurnace());
-				var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
 				break;
 
 			case 3:
 				var2.displayGUIDispenser(new TileEntityDispenser());
-				var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
 				break;
 
 			case 4:
 				var2.displayGUIEnchantment(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
-				var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
 				break;
 
 			case 5:
 				var2.displayGUIBrewingStand(new TileEntityBrewingStand());
-				var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
 				break;
 
 			case 6:
 				var2.displayGUIMerchant(new NpcMerchant(var2));
-				var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
 				break;
 
 			case 7:
 				var2.displayGUIBeacon(new TileEntityBeacon());
-				var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
 				break;
 
 			case 8:
 				var2.displayGUIAnvil(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
-				var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
 		}
 	}
 
@@ -901,15 +901,15 @@ public class NetClientHandler extends NetHandler {
 			}
 
 			if (par1Packet103SetSlot.windowId == 0 && par1Packet103SetSlot.itemSlot >= 36 && par1Packet103SetSlot.itemSlot < 45) {
-				ItemStack var5 = var2.inventorySlots.getSlot(par1Packet103SetSlot.itemSlot).getStack();
+				ItemStack var5 = var2.inventoryContainer.getSlot(par1Packet103SetSlot.itemSlot).getStack();
 
 				if (par1Packet103SetSlot.myItemStack != null && (var5 == null || var5.stackSize < par1Packet103SetSlot.myItemStack.stackSize)) {
 					par1Packet103SetSlot.myItemStack.animationsToGo = 5;
 				}
 
-				var2.inventorySlots.putStackInSlot(par1Packet103SetSlot.itemSlot, par1Packet103SetSlot.myItemStack);
-			} else if (par1Packet103SetSlot.windowId == var2.craftingInventory.windowId && (par1Packet103SetSlot.windowId != 0 || !var3)) {
-				var2.craftingInventory.putStackInSlot(par1Packet103SetSlot.itemSlot, par1Packet103SetSlot.myItemStack);
+				var2.inventoryContainer.putStackInSlot(par1Packet103SetSlot.itemSlot, par1Packet103SetSlot.myItemStack);
+			} else if (par1Packet103SetSlot.windowId == var2.openContainer.windowId && (par1Packet103SetSlot.windowId != 0 || !var3)) {
+				var2.openContainer.putStackInSlot(par1Packet103SetSlot.itemSlot, par1Packet103SetSlot.myItemStack);
 			}
 		}
 	}
@@ -919,9 +919,9 @@ public class NetClientHandler extends NetHandler {
 		EntityClientPlayerMP var3 = this.mc.thePlayer;
 
 		if (par1Packet106Transaction.windowId == 0) {
-			var2 = var3.inventorySlots;
-		} else if (par1Packet106Transaction.windowId == var3.craftingInventory.windowId) {
-			var2 = var3.craftingInventory;
+			var2 = var3.inventoryContainer;
+		} else if (par1Packet106Transaction.windowId == var3.openContainer.windowId) {
+			var2 = var3.openContainer;
 		}
 
 		if (var2 != null && !par1Packet106Transaction.accepted) {
@@ -933,9 +933,9 @@ public class NetClientHandler extends NetHandler {
 		EntityClientPlayerMP var2 = this.mc.thePlayer;
 
 		if (par1Packet104WindowItems.windowId == 0) {
-			var2.inventorySlots.putStacksInSlots(par1Packet104WindowItems.itemStack);
-		} else if (par1Packet104WindowItems.windowId == var2.craftingInventory.windowId) {
-			var2.craftingInventory.putStacksInSlots(par1Packet104WindowItems.itemStack);
+			var2.inventoryContainer.putStacksInSlots(par1Packet104WindowItems.itemStack);
+		} else if (par1Packet104WindowItems.windowId == var2.openContainer.windowId) {
+			var2.openContainer.putStacksInSlots(par1Packet104WindowItems.itemStack);
 		}
 	}
 
@@ -990,8 +990,8 @@ public class NetClientHandler extends NetHandler {
 		EntityClientPlayerMP var2 = this.mc.thePlayer;
 		this.unexpectedPacket(par1Packet105UpdateProgressbar);
 
-		if (var2.craftingInventory != null && var2.craftingInventory.windowId == par1Packet105UpdateProgressbar.windowId) {
-			var2.craftingInventory.updateProgressBar(par1Packet105UpdateProgressbar.progressBar, par1Packet105UpdateProgressbar.progressBarValue);
+		if (var2.openContainer != null && var2.openContainer.windowId == par1Packet105UpdateProgressbar.windowId) {
+			var2.openContainer.updateProgressBar(par1Packet105UpdateProgressbar.progressBar, par1Packet105UpdateProgressbar.progressBarValue);
 		}
 	}
 
@@ -1030,7 +1030,7 @@ public class NetClientHandler extends NetHandler {
 
 			if (var5 != null) {
 				var5.fillChunk(par1Packet56MapChunks.func_73583_c(var2), par1Packet56MapChunks.field_73590_a[var2], par1Packet56MapChunks.field_73588_b[var2], true);
-				this.worldClient.markBlocksDirty(var3 << 4, 0, var4 << 4, (var3 << 4) + 15, 256, (var4 << 4) + 15);
+				this.worldClient.markBlockRangeForRenderUpdate(var3 << 4, 0, var4 << 4, (var3 << 4) + 15, 256, (var4 << 4) + 15);
 
 				if (!(this.worldClient.provider instanceof WorldProviderSurface)) {
 					var5.resetRelightChecks();
@@ -1067,6 +1067,16 @@ public class NetClientHandler extends NetHandler {
 			this.mc.displayGuiScreen(new GuiWinGame());
 		} else if (var3 == 5) {
 			GameSettings var5 = this.mc.gameSettings;
+
+			if (var4 == 0) {
+				this.mc.displayGuiScreen(new GuiScreenDemo());
+			} else if (var4 == 101) {
+				this.mc.ingameGUI.getChatGUI().addTranslatedMessage("demo.help.movement", new Object[] { Keyboard.getKeyName(var5.keyBindForward.keyCode), Keyboard.getKeyName(var5.keyBindLeft.keyCode), Keyboard.getKeyName(var5.keyBindBack.keyCode), Keyboard.getKeyName(var5.keyBindRight.keyCode) });
+			} else if (var4 == 102) {
+				this.mc.ingameGUI.getChatGUI().addTranslatedMessage("demo.help.jump", new Object[] { Keyboard.getKeyName(var5.keyBindJump.keyCode) });
+			} else if (var4 == 103) {
+				this.mc.ingameGUI.getChatGUI().addTranslatedMessage("demo.help.inventory", new Object[] { Keyboard.getKeyName(var5.keyBindInventory.keyCode) });
+			}
 		}
 	}
 
@@ -1090,7 +1100,7 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	/**
-	 * runs registerPacket on the given Packet200Statistic
+	 * Increment player statistics
 	 */
 	public void handleStatistic(Packet200Statistic par1Packet200Statistic) {
 		this.mc.thePlayer.incrementStat(StatList.getOneShotStat(par1Packet200Statistic.statisticId), par1Packet200Statistic.amount);
@@ -1199,8 +1209,8 @@ public class NetClientHandler extends NetHandler {
 				int var9 = var8.readInt();
 				GuiScreen var4 = this.mc.currentScreen;
 
-				if (var4 != null && var4 instanceof GuiMerchant && var9 == this.mc.thePlayer.craftingInventory.windowId) {
-					IMerchant var5 = ((GuiMerchant)var4).getIMerchant();
+				if (var4 != null && var4 instanceof GuiMerchant && var9 == this.mc.thePlayer.openContainer.windowId) {
+					IMerchant var5 = ((GuiMerchant) var4).getIMerchant();
 					MerchantRecipeList var6 = MerchantRecipeList.readRecipiesFromStream(var8);
 					var5.setRecipes(var6);
 				}

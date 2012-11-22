@@ -97,7 +97,7 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 				this.motionZ *= 0.6D;
 			}
 
-			int var5 = EnchantmentHelper.getFireAspectModifier(this, (EntityLiving)par1Entity);
+			int var5 = EnchantmentHelper.func_90036_a(this);
 
 			if (var5 > 0) {
 				par1Entity.setFire(var5 * 4);

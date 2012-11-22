@@ -180,8 +180,8 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	 * sets current screen to null (used on escape buttons of GUIs)
 	 */
 	public void closeScreen() {
-		this.sendQueue.addToSendQueue(new Packet101CloseWindow(this.craftingInventory.windowId));
-		this.inventory.setItemStack((ItemStack)null);
+		this.sendQueue.addToSendQueue(new Packet101CloseWindow(this.openContainer.windowId));
+		this.inventory.setItemStack((ItemStack) null);
 		super.closeScreen();
 	}
 

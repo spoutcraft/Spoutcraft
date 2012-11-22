@@ -126,7 +126,7 @@ public class WorldClient extends World {
 		}
 
 		if (!par3) {
-			this.markBlocksDirty(par1 * 16, 0, par2 * 16, par1 * 16 + 15, 256, par2 * 16 + 15);
+			this.markBlockRangeForRenderUpdate(par1 * 16, 0, par2 * 16, par1 * 16 + 15, 256, par2 * 16 + 15);
 		}
 	}
 

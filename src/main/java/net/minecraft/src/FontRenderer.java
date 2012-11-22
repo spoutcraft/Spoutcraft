@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.Bidi;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import java.util.regex.Pattern;
 import org.lwjgl.opengl.GL11;
 
@@ -17,7 +19,9 @@ import org.lwjgl.opengl.GL11;
 public class FontRenderer {
 	private int[] charWidth = new int[256];
 	public int fontTextureName = 0;
-	public int FONT_HEIGHT = 8;
+
+	/** the height in pixels of default text */
+	public int FONT_HEIGHT = 8; // Spout smaller text
 	public Random fontRandom = new Random();
 	private byte[] glyphWidth = new byte[65536];
 	private int[] glyphTextureName = new int[256];
@@ -620,7 +624,10 @@ public class FontRenderer {
 		this.boldOffset = par1?0.5F:1F;
 	}
 
-	public boolean func_82883_a() {
+	/**
+	 * Get unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png font.
+	 */
+	public boolean getUnicodeFlag() {
 		return this.unicodeFlag;
 	}
 

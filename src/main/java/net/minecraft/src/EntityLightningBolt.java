@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
+import java.util.Iterator; // Spout
 import java.util.List;
 
-import org.spoutcraft.client.entity.CraftLightningStrike;
+import org.spoutcraft.client.entity.CraftLightningStrike; // Spout
 
 public class EntityLightningBolt extends EntityWeatherEffect {
 
@@ -80,7 +80,7 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 				this.lightningState = 1;
 				this.boltVertex = this.rand.nextLong();
 				// Spout Start
-				if (!par1World.isRemote && !effect && this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10)) {
+				if (!this.worldObj.isRemote && !effect && this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10)) {
 				// Spout End
 					int var1 = MathHelper.floor_double(this.posX);
 					int var2 = MathHelper.floor_double(this.posY);
@@ -94,7 +94,7 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 		}
 
 		// Spout Start
-		if(!par1World.isRemote && !effect && this.lightningState >= 0) {
+		if(!this.worldObj.isRemote && !effect && this.lightningState >= 0) {
 		// Spout End
 			double var6 = 3.0D;
 			List var7 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(this.posX - var6, this.posY - var6, this.posZ - var6, this.posX + var6, this.posY + 6.0D + var6, this.posZ + var6));

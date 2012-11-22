@@ -593,7 +593,7 @@ public class ItemStack { // Spout final -> gone
 		return this.stackTagCompound != null && this.stackTagCompound.hasKey("ench");
 	}
 
-	public void func_77983_a(String par1Str, NBTBase par2NBTBase) {
+	public void setTagInfo(String par1Str, NBTBase par2NBTBase) {
 		if (this.stackTagCompound == null) {
 			this.setTagCompound(new NBTTagCompound());
 		}

@@ -134,7 +134,6 @@ public class EntityBoat extends Entity {
 		this.boatZ = par5;
 		this.boatYaw = (double)par7;
 		this.boatPitch = (double)par8;
-		this.boatPosRotationIncrements = par9 + 4;
 		this.motionX = this.velocityX;
 		this.motionY = this.velocityY;
 		this.motionZ = this.velocityZ;
@@ -174,6 +173,7 @@ public class EntityBoat extends Entity {
 		double var24 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		double var6;
 		double var8;
+
 		if(var24 > 0.26249999999999996D) {
 			var6 = Math.cos((double)this.rotationYaw * Math.PI / 180.0D);
 			var8 = Math.sin((double)this.rotationYaw * Math.PI / 180.0D);
@@ -197,6 +197,7 @@ public class EntityBoat extends Entity {
 
 		double var12;
 		double var26;
+
 		if(this.worldObj.isRemote && this.field_70279_a) {
 			if(this.boatPosRotationIncrements > 0) {
 				var6 = this.posX + (this.boatX - this.posX) / (double)this.boatPosRotationIncrements;
@@ -341,7 +342,7 @@ public class EntityBoat extends Entity {
 					}
 				}
 
-				for (int var27 = 0; var27 < 4; ++var27) {
+				for (var27 = 0; var27 < 4; ++var27) {
 					int var28 = MathHelper.floor_double(this.posX + ((double)(var27 % 2) - 0.5D) * 0.8D);
 					int var19 = MathHelper.floor_double(this.posZ + ((double)(var27 / 2) - 0.5D) * 0.8D);
 

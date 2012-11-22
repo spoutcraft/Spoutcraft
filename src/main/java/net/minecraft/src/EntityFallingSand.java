@@ -7,22 +7,22 @@ import org.spoutcraft.client.entity.CraftFallingSand; // Spout
 
 public class EntityFallingSand extends Entity {
 	public int blockID;
-	public int field_70285_b;
+	public int metadata;
 
 	/** How long the block has been falling for. */
 	public int fallTime;
-	public boolean field_70284_d;
-	private boolean field_82157_e;
-	private boolean field_82155_f;
+	public boolean shouldDropItem;
+	private boolean isBreakingAnvil;
+	private boolean isAnvil;
 	private int field_82156_g;
 	private float field_82158_h;
 
 	public EntityFallingSand(World par1World) {
 		super(par1World);
 		this.fallTime = 0;
-		this.field_70284_d = true;
-		this.field_82157_e = false;
-		this.field_82155_f = false;
+		this.shouldDropItem = true;
+		this.isBreakingAnvil = false;
+		this.isAnvil = false;
 		this.field_82156_g = 20;
 		this.field_82158_h = 2.0F;
 	}
@@ -34,13 +34,13 @@ public class EntityFallingSand extends Entity {
 	public EntityFallingSand(World par1World, double par2, double par4, double par6, int par8, int par9) {
 		super(par1World);
 		this.fallTime = 0;
-		this.field_70284_d = true;
-		this.field_82157_e = false;
-		this.field_82155_f = false;
+		this.shouldDropItem = true;
+		this.isBreakingAnvil = false;
+		this.isAnvil = false;
 		this.field_82156_g = 20;
 		this.field_82158_h = 2.0F;
 		this.blockID = par8;
-		this.field_70285_b = par9;
+		this.metadata = par9;
 		this.preventEntitySpawning = true;
 		this.setSize(0.98F, 0.98F);
 		this.yOffset = this.height / 2.0F;
@@ -111,17 +111,17 @@ public class EntityFallingSand extends Entity {
 					if (this.worldObj.getBlockId(var1, var2, var3) != Block.pistonMoving.blockID) {
 						this.setDead();
 
-						if (!this.field_82157_e && this.worldObj.canPlaceEntityOnSide(this.blockID, var1, var2, var3, true, 1, (Entity)null) && !BlockSand.canFallBelow(this.worldObj, var1, var2 - 1, var3) && this.worldObj.setBlockAndMetadataWithNotify(var1, var2, var3, this.blockID, this.field_70285_b)) {
+						if (!this.isBreakingAnvil && this.worldObj.canPlaceEntityOnSide(this.blockID, var1, var2, var3, true, 1, (Entity) null) && !BlockSand.canFallBelow(this.worldObj, var1, var2 - 1, var3) && this.worldObj.setBlockAndMetadataWithNotify(var1, var2, var3, this.blockID, this.metadata)) {
 							if (Block.blocksList[this.blockID] instanceof BlockSand) {
-								((BlockSand)Block.blocksList[this.blockID]).onFinishFalling(this.worldObj, var1, var2, var3, this.field_70285_b);
+								((BlockSand) Block.blocksList[this.blockID]).onFinishFalling(this.worldObj, var1, var2, var3, this.metadata);
 							}
-						} else if (this.field_70284_d && !this.field_82157_e) {
-							this.entityDropItem(new ItemStack(this.blockID, 1, Block.blocksList[this.blockID].damageDropped(this.field_70285_b)), 0.0F);
+						} else if (this.shouldDropItem && !this.isBreakingAnvil) {
+							this.entityDropItem(new ItemStack(this.blockID, 1, Block.blocksList[this.blockID].damageDropped(this.metadata)), 0.0F);
 						}
 					}
 				} else if (this.fallTime > 100 && !this.worldObj.isRemote && (var2 < 1 || var2 > 256) || this.fallTime > 600) {
-					if (this.field_70284_d) {
-						this.entityDropItem(new ItemStack(this.blockID, 1, Block.blocksList[this.blockID].damageDropped(this.field_70285_b)), 0.0F);
+					if (this.shouldDropItem) {
+						this.entityDropItem(new ItemStack(this.blockID, 1, Block.blocksList[this.blockID].damageDropped(this.metadata)), 0.0F);
 					}
 
 					this.setDead();
@@ -134,7 +134,7 @@ public class EntityFallingSand extends Entity {
 	 * Called when the mob is falling. Calculates and applies fall damage.
 	 */
 	protected void fall(float par1) {
-		if (this.field_82155_f) {
+		if (this.isAnvil) {
 			int var2 = MathHelper.ceiling_float_int(par1 - 1.0F);
 
 			if (var2 > 0) {
@@ -148,14 +148,14 @@ public class EntityFallingSand extends Entity {
 				}
 
 				if (this.blockID == Block.anvil.blockID && (double)this.rand.nextFloat() < 0.05000000074505806D + (double)var2 * 0.05D) {
-					int var7 = this.field_70285_b >> 2;
-					int var8 = this.field_70285_b & 3;
+					int var7 = this.metadata >> 2;
+					int var8 = this.metadata & 3;
 					++var7;
 
 					if (var7 > 2) {
-						this.field_82157_e = true;
+						this.isBreakingAnvil = true;
 					} else {
-						this.field_70285_b = var8 | var7 << 2;
+						this.metadata = var8 | var7 << 2;
 					}
 				}
 			}
@@ -166,11 +166,11 @@ public class EntityFallingSand extends Entity {
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		par1NBTTagCompound.setByte("Tile", (byte)this.blockID);
-		par1NBTTagCompound.setByte("Data", (byte)this.field_70285_b);
-		par1NBTTagCompound.setByte("Time", (byte)this.fallTime);
-		par1NBTTagCompound.setBoolean("DropItem", this.field_70284_d);
-		par1NBTTagCompound.setBoolean("HurtEntities", this.field_82155_f);
+		par1NBTTagCompound.setByte("Tile", (byte) this.blockID);
+		par1NBTTagCompound.setByte("Data", (byte) this.metadata);
+		par1NBTTagCompound.setByte("Time", (byte) this.fallTime);
+		par1NBTTagCompound.setBoolean("DropItem", this.shouldDropItem);
+		par1NBTTagCompound.setBoolean("HurtEntities", this.isAnvil);
 		par1NBTTagCompound.setFloat("FallHurtAmount", this.field_82158_h);
 		par1NBTTagCompound.setInteger("FallHurtMax", this.field_82156_g);
 	}
@@ -180,19 +180,19 @@ public class EntityFallingSand extends Entity {
 	 */
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		this.blockID = par1NBTTagCompound.getByte("Tile") & 255;
-		this.field_70285_b = par1NBTTagCompound.getByte("Data") & 255;
+		this.metadata = par1NBTTagCompound.getByte("Data") & 255;
 		this.fallTime = par1NBTTagCompound.getByte("Time") & 255;
 
 		if (par1NBTTagCompound.hasKey("HurtEntities")) {
-			this.field_82155_f = par1NBTTagCompound.getBoolean("HurtEntities");
+			this.isAnvil = par1NBTTagCompound.getBoolean("HurtEntities");
 			this.field_82158_h = par1NBTTagCompound.getFloat("FallHurtAmount");
 			this.field_82156_g = par1NBTTagCompound.getInteger("FallHurtMax");
-		} else if (this.blockID == Block.field_82510_ck.blockID) {
-			this.field_82155_f = true;
+		} else if (this.blockID == Block.anvil.blockID) {
+			this.isAnvil = true;
 		}
 
 		if (par1NBTTagCompound.hasKey("DropItem")) {
-			this.field_70284_d = par1NBTTagCompound.getBoolean("DropItem");
+			this.shouldDropItem = par1NBTTagCompound.getBoolean("DropItem");
 		}
 
 		if (this.blockID == 0) {
@@ -208,8 +208,8 @@ public class EntityFallingSand extends Entity {
 		return this.worldObj;
 	}
 
-	public void func_82154_e(boolean par1) {
-		this.field_82155_f = par1;
+	public void setIsAnvil(boolean par1) {
+		this.isAnvil = par1;
 	}
 
 	public boolean func_90999_ad() {

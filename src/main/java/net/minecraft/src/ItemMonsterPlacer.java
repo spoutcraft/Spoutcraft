@@ -24,7 +24,7 @@ public class ItemMonsterPlacer extends Item {
 	}
 
 	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
-		EntityEggInfo var3 = (EntityEggInfo)EntityList.entityEggs.get(par1ItemStack.getItemDamage());
+		EntityEggInfo var3 = (EntityEggInfo) EntityList.entityEggs.get(Integer.valueOf(par1ItemStack.getItemDamage()));
 		return var3 != null ? (par2 == 0 ? var3.primaryColor : var3.secondaryColor) : 16777215;
 	}
 
@@ -57,7 +57,7 @@ public class ItemMonsterPlacer extends Item {
 				var12 = 0.5D;
 			}
 
-			if (spawnCreature(par3World, par1ItemStack.getItemDamage(), (double)par4 + 0.5D, (double)par5 + var12, (double)par6 + 0.5D) && !par2EntityPlayer.capabilities.isCreativeMode) {
+			if (spawnCreature(par3World, par1ItemStack.getItemDamage(), (double) par4 + 0.5D, (double) par5 + var12, (double) par6 + 0.5D) != null && !par2EntityPlayer.capabilities.isCreativeMode) {
 				--par1ItemStack.stackSize;
 			}
 
@@ -69,9 +69,9 @@ public class ItemMonsterPlacer extends Item {
 	 * Spawns the creature specified by the egg's type in the location specified by the last three parameters. Parameters:
 	 * world, entityID, x, y, z.
 	 */
-	public static boolean spawnCreature(World par0World, int par1, double par2, double par4, double par6) {
+	public static Entity spawnCreature(World par0World, int par1, double par2, double par4, double par6) {
 		if (!EntityList.entityEggs.containsKey(Integer.valueOf(par1))) {
-			return false;
+			return null;
 		} else {
 			Entity var8 = null;
 
@@ -86,7 +86,7 @@ public class ItemMonsterPlacer extends Item {
 				}
 			}
 
-			return var8 != null;
+			return var8;
 		}
 	}
 

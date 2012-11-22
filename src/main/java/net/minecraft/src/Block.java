@@ -1,17 +1,19 @@
 package net.minecraft.src;
 
-import gnu.trove.map.hash.TIntFloatHashMap;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+// Spout start
+import gnu.trove.map.hash.TIntFloatHashMap;
+
+import java.util.ArrayList;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.api.entity.ActivePlayer;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.util.FastLocation;
 import org.spoutcraft.api.util.FixedLocation;
+// Spout end
 
 public class Block {
 
@@ -208,7 +210,7 @@ public class Block {
 	public static final Block cobblestoneWall = (new BlockWall(139, cobblestone)).setBlockName("cobbleWall");
 	public static final Block flowerPot = (new BlockFlowerPot(140)).setHardness(0.0F).setStepSound(soundPowderFootstep).setBlockName("flowerPot");
 	public static final Block carrot = (new BlockCarrot(141)).setBlockName("carrots");
-	public static final Block potatoe = (new BlockPotato(142)).setBlockName("potatoes");
+	public static final Block potato = (new BlockPotato(142)).setBlockName("potatoes");
 	public static final Block woodenButton = (new BlockButton(143, planks.blockIndexInTexture, true)).setHardness(0.5F).setStepSound(soundWoodFootstep).setBlockName("button").setRequiresSelfNotify();
 	public static final Block skull = (new BlockSkull(144)).setHardness(1.0F).setStepSound(soundStoneFootstep).setBlockName("skull").setRequiresSelfNotify();
 	public static final Block anvil = (new BlockAnvil(145)).setHardness(5.0F).setStepSound(soundAnvilFootstep).setResistance(2000.0F).setBlockName("anvil").setRequiresSelfNotify();
@@ -437,6 +439,9 @@ public class Block {
 		this.maxZ = (double)par6;
 	}
 
+	/**
+	 * How bright to render this block based on the light its receiving. Args: iBlockAccess, x, y, z
+	 */
 	public float getBlockBrightness(IBlockAccess par1IBlockAccess, int x, int y, int z) {
 		// Spout Start
 		int light = lightValue[par1IBlockAccess.getBlockId(x, y, z)];
@@ -699,10 +704,11 @@ public class Block {
 	public int damageDropped(int par1) {
 		return 0;
 	}
-	
-	public float getHardness() { // Spout removed random params
+	// Spout start
+	public float getHardness() { // Spout removed random params, see getBlockHardness
  		return this.blockHardness;
  	}
+	// Spout end
 
 	/**
 	 * Returns how much this block can resist explosions from the passed in entity.
@@ -854,7 +860,7 @@ public class Block {
 	 */
 	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
 		int var5 = par1World.getBlockId(par2, par3, par4);
-		return var5 == 0 || blocksList[var5].blockMaterial.isGroundCover();
+		return var5 == 0 || blocksList[var5].blockMaterial.isReplaceable();
 	}
 
 	/**
@@ -957,9 +963,10 @@ public class Block {
 	}
 
 	/**
-	 * Is this block powering the block on the specified side
+	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube returns true, standard redstone propagation rules will apply instead and this will
+	 * not be called. Args: World, X, Y, Z, side
 	 */
-	public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+	public boolean isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return false;
 	}
 
@@ -976,9 +983,9 @@ public class Block {
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {}
 
 	/**
-	 * Is this block indirectly powering the block on the specified side
+	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z, side
 	 */
-	public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+	public boolean isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return false;
 	}
 

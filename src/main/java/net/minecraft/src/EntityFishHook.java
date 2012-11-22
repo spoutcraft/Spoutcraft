@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
+import java.util.Iterator; // Spout
 import java.util.List;
 
-import org.spoutcraft.client.entity.CraftFish;
+import org.spoutcraft.client.entity.CraftFish; // Spout
 
 public class EntityFishHook extends Entity {
 
@@ -319,8 +319,8 @@ public class EntityFishHook extends Entity {
 						if (this.rand.nextInt(var28) == 0) {
 							this.ticksCatchable = this.rand.nextInt(30) + 10;
 							this.motionY -= 0.20000000298023224D;
-							this.worldObj.func_85030_a("random.splash", 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
-							float var30 = (float)MathHelper.floor_double(this.boundingBox.minY);
+							this.func_85030_a("random.splash", 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+							float var30 = (float) MathHelper.floor_double(this.boundingBox.minY);
 							int var15;
 							float var17;
 							float var31;
@@ -416,6 +416,7 @@ public class EntityFishHook extends Entity {
 				var13.motionZ = var7 * var11;
 				this.worldObj.spawnEntityInWorld(var13);
 				this.angler.addStat(StatList.fishCaughtStat, 1);
+				this.angler.worldObj.spawnEntityInWorld(new EntityXPOrb(this.angler.worldObj, this.angler.posX, this.angler.posY + 0.5D, this.angler.posZ + 0.5D, this.rand.nextInt(3) + 1));
 				var1 = 1;
 			}
 
