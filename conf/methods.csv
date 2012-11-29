@@ -3220,7 +3220,7 @@ func_77538_c,getTexturePackFileName,0,"Get the file name of the texture pack, or
 func_77539_g,loadThumbnailImage,0,Load and initialize thumbnailImage from the the /pack.png file.
 func_77540_a,loadDescription,0,Load texture pack description from /pack.txt file in the texture pack
 func_77541_b,trimStringToGUIWidth,0,Truncate strings to at most 34 characters. Truncates description lines
-func_77549_g,openTexturePackFile,0,Open the texture pack's file and initialize texturePackZipFile
+func_77549_g,openTexturePack,0,Open the texture pack's file and initialize texturePackZipFile
 func_77552_b,setWasNotUpdated,0,
 func_77553_a,getWasUpdated,0,
 func_77554_c,getLanServers,0,
