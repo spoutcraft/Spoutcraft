@@ -22,7 +22,11 @@ public class ItemBlock extends Item {
 		return this.blockID;
 	}
 
-	public boolean tryPlaceIntoWorld(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
+	/**
+	 * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
+	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
+	 */
+	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
 		int var11 = par3World.getBlockId(par4, par5, par6);
 
 		if (var11 == Block.snow.blockID) {
@@ -55,20 +59,22 @@ public class ItemBlock extends Item {
 
 		if (par1ItemStack.stackSize == 0) {
 			return false;
-		} else if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6)) {
+		} else if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack)) {
 			return false;
 		} else if (par5 == 255 && Block.blocksList[this.blockID].blockMaterial.isSolid()) {
 			return false;
 		} else if (par3World.canPlaceEntityOnSide(this.blockID, par4, par5, par6, false, par7, par2EntityPlayer)) {
 			Block var12 = Block.blocksList[this.blockID];
+			int var13 = this.getMetadata(par1ItemStack.getItemDamage());
+			int var14 = Block.blocksList[this.blockID].func_85104_a(par3World, par4, par5, par6, par7, par8, par9, par10, var13);
 
-			if (par3World.setBlockAndMetadataWithNotify(par4, par5, par6, this.blockID, this.getMetadata(par1ItemStack.getItemDamage()))) {
+			if (par3World.setBlockAndMetadataWithNotify(par4, par5, par6, this.blockID, var14)) {
 				if (par3World.getBlockId(par4, par5, par6) == this.blockID) {
-					Block.blocksList[this.blockID].updateBlockMetadata(par3World, par4, par5, par6, par7, par8, par9, par10);
 					Block.blocksList[this.blockID].onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer);
+					Block.blocksList[this.blockID].func_85105_g(par3World, par4, par5, par6, var14);
 				}
 
-				par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), var12.stepSound.getStepSound(), (var12.stepSound.getVolume() + 1.0F) / 2.0F, var12.stepSound.getPitch() * 0.8F);
+				par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), var12.stepSound.getPlaceSound(), (var12.stepSound.getVolume() + 1.0F) / 2.0F, var12.stepSound.getPitch() * 0.8F);
 				--par1ItemStack.stackSize;
 			}
 
@@ -136,7 +142,7 @@ public class ItemBlock extends Item {
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
 		Block.blocksList[this.blockID].getSubBlocks(par1, par2CreativeTabs, par3List);
 	}
-	
+
 // Spout Start
 	//fix metadata for double slabs
 	public int getMetadata(int damage) {
@@ -146,9 +152,4 @@ public class ItemBlock extends Item {
 		return super.getMetadata(damage);
 	}
 // Spout End
- // Spout HD Start
-	public int getColorFromDamage(int var1, int var2) {
-		return Colorizer.getItemColorFromDamage(super.getColorFromDamage(var1, var2), this.blockID, var1);
-	}
- // Spout HD End
 }

@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Shaders;
-import com.pclewis.mcpatcher.mod.SuperTessellator;
+import com.pclewis.mcpatcher.mod.Shaders; // Spout
+import com.pclewis.mcpatcher.mod.SuperTessellator; // Spout
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GLContext;
 public class Tessellator {
 
 	/**
-	 * Boolean used to check whether quads should be drawn as four triangles. Initialized to true and never changed.
+	 * Boolean used to check whether quads should be drawn as two triangles. Initialized to false and never changed.
 	 */
 	private static boolean convertQuadsToTriangles = false;
 
@@ -80,7 +80,7 @@ public class Tessellator {
 	public int addedVertices = 0; // Spout HD private -> public
 
 	/** Disables all color information for the following draw call. */
-	private boolean isColorDisabled = false; 
+	private boolean isColorDisabled = false;
 
 	/** The draw mode currently being used by the tessellator. */
 	public int drawMode; // Spout HD private -> public
@@ -278,7 +278,7 @@ public class Tessellator {
 		this.rawBufferIndex = 0;
 		this.addedVertices = 0;
 	}
-	
+
 	// Spout Start
 	public void setEntity(int var1) {
 		if (Shaders.entityAttrib >= 0) {

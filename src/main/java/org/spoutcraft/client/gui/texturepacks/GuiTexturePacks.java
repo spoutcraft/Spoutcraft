@@ -27,8 +27,8 @@ import org.lwjgl.Sys;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.ITexturePack;
 import net.minecraft.src.StringTranslate;
-import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackCustom;
 
 import org.bukkit.ChatColor;
@@ -188,13 +188,13 @@ public class GuiTexturePacks extends GuiScreen {
 	public void deleteCurrentTexturepack() {
 		for (int tries = 0; tries < 3; tries++) {
 			try {
-				TexturePackBase pack = model.getItem(view.getSelectedRow()).getPack();
+				ITexturePack pack = model.getItem(view.getSelectedRow()).getPack();
 				if (pack instanceof TexturePackCustom) {
 					TexturePackCustom custom = (TexturePackCustom) pack;
 					custom.closeTexturePackFile();
-					File d = new File(SpoutClient.getInstance().getTexturePackFolder(), custom.func_77538_c());
+					File d = new File(SpoutClient.getInstance().getTexturePackFolder(), custom.texturePackFileName);
 					if (!d.exists()) {
-						d = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), custom.func_77538_c());
+						d = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), custom.texturePackFileName);
 					}
 					d.setWritable(true);
 					FileUtils.forceDelete(d);

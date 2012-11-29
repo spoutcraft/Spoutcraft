@@ -36,37 +36,37 @@ public class ContainerDispenser extends Container {
 	}
 
 	/**
-	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
 	 */
-	public ItemStack transferStackInSlot(int par1) {
-		ItemStack var2 = null;
-		Slot var3 = (Slot)this.inventorySlots.get(par1);
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+		ItemStack var3 = null;
+		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
-		if (var3 != null && var3.getHasStack()) {
-			ItemStack var4 = var3.getStack();
-			var2 = var4.copy();
+		if (var4 != null && var4.getHasStack()) {
+			ItemStack var5 = var4.getStack();
+			var3 = var5.copy();
 
-			if (par1 < 9) {
-				if (!this.mergeItemStack(var4, 9, 45, true)) {
+			if (par2 < 9) {
+				if (!this.mergeItemStack(var5, 9, 45, true)) {
 					return null;
 				}
-			} else if (!this.mergeItemStack(var4, 0, 9, false)) {
+			} else if (!this.mergeItemStack(var5, 0, 9, false)) {
 				return null;
 			}
 
-			if (var4.stackSize == 0) {
-				var3.putStack((ItemStack)null);
+			if (var5.stackSize == 0) {
+				var4.putStack((ItemStack)null);
 			} else {
-				var3.onSlotChanged();
+				var4.onSlotChanged();
 			}
 
-			if (var4.stackSize == var2.stackSize) {
+			if (var5.stackSize == var3.stackSize) {
 				return null;
 			}
 
-			var3.onPickupFromSlot(var4);
+			var4.onPickupFromSlot(par1EntityPlayer, var5);
 		}
 
-		return var2;
+		return var3;
 	}
 }

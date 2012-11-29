@@ -46,6 +46,7 @@ public class TextureWaterFlowFX extends TextureFX {
 				this.field_76883_h[var1 + var2 * TileSize.int_size] = var3 / 3.2F + this.field_76884_i[var1 + var2 * TileSize.int_size] * 0.8F; // Spout HD 
 			}
 		}
+
 		// Spout HD 
 		for (var1 = 0; var1 < TileSize.int_size; ++var1) {
 			for (var2 = 0; var2 < TileSize.int_size; ++var2) {

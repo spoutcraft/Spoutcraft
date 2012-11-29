@@ -1,10 +1,13 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.CTMUtils;
-import com.pclewis.mcpatcher.mod.Shaders;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import org.lwjgl.opengl.GL11;
+
+// Spout Start
+import com.pclewis.mcpatcher.mod.CTMUtils;
+import com.pclewis.mcpatcher.mod.Shaders;
 
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -18,8 +21,6 @@ import net.minecraft.src.Tessellator;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityRenderer;
 import net.minecraft.src.World;
-import org.lwjgl.opengl.GL11;
-// Spout Start
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -31,8 +32,9 @@ import org.spoutcraft.api.material.MaterialData;
 
 import net.minecraft.client.Minecraft;
 // Spout End
-
 public class WorldRenderer {
+
+	/** Reference to the World object. */
 	public World worldObj;
 	private int glRenderList = -1;
 	private static Tessellator tessellator = Tessellator.instance;
@@ -40,27 +42,66 @@ public class WorldRenderer {
 	public int posX;
 	public int posY;
 	public int posZ;
+
+	/** Pos X minus */
 	public int posXMinus;
+
+	/** Pos Y minus */
 	public int posYMinus;
+
+	/** Pos Z minus */
 	public int posZMinus;
+
+	/** Pos X clipped */
 	public int posXClip;
+
+	/** Pos Y clipped */
 	public int posYClip;
+
+	/** Pos Z clipped */
 	public int posZClip;
 	public boolean isInFrustum = false;
+
+	/** Should this renderer skip this render pass */
 	public boolean[] skipRenderPass = new boolean[3]; // Spout
+
+	/** Pos X plus */
 	public int posXPlus;
+
+	/** Pos Y plus */
 	public int posYPlus;
+
+	/** Pos Z plus */
 	public int posZPlus;
+
+	/** Boolean for whether this renderer needs to be updated or not */
 	public boolean needsUpdate;
+
+	/** Axis aligned bounding box */
 	public AxisAlignedBB rendererBoundingBox;
+
+	/** Chunk index */
 	public int chunkIndex;
+
+	/** Is this renderer visible according to the occlusion query */
 	public boolean isVisible = true;
+
+	/** Is this renderer waiting on the result of the occlusion query */
 	public boolean isWaitingOnOcclusionQuery;
+
+	/** OpenGL occlusion query */
 	public int glOcclusionQuery;
+
+	/** Is the chunk lit */
 	public boolean isChunkLit;
 	private boolean isInitialized = false;
+
+	/** All the tile entities that have special rendering code for this chunk */
 	public List tileEntityRenderers = new ArrayList();
 	private List tileEntities;
+
+	/** Bytes sent to the GPU */
+	private int bytesDrawn;
 
 	public WorldRenderer(World par1World, List par2List, int par3, int par4, int par5, int par6) {
 		this.worldObj = par1World;
@@ -71,6 +112,9 @@ public class WorldRenderer {
 		this.needsUpdate = false;
 	}
 
+	/**
+	 * Sets a new position for the renderer and setting it up so it can be reloaded with the new data for that position
+	 */
 	public void setPosition(int par1, int par2, int par3) {
 		if (par1 != this.posX || par2 != this.posY || par3 != this.posZ) {
 			this.setDontDraw();
@@ -99,6 +143,9 @@ public class WorldRenderer {
 		GL11.glTranslatef((float)this.posXClip, (float)this.posYClip, (float)this.posZClip);
 	}
 
+	/**
+	 * Will update this chunk renderer
+	 */
 	public void updateRenderer() {
 		// Spout Start
 		CTMUtils.start();
@@ -316,13 +363,20 @@ public class WorldRenderer {
 		}
 	}
 
-	public float distanceToEntitySquared(Entity var1) {
-		float var2 = (float)(var1.posX - (double)this.posXPlus);
-		float var3 = (float)(var1.posY - (double)this.posYPlus);
-		float var4 = (float)(var1.posZ - (double)this.posZPlus);
+	/**
+	 * Returns the distance of this chunk renderer to the entity without performing the final normalizing square root, for
+	 * performance reasons.
+	 */
+	public float distanceToEntitySquared(Entity par1Entity) {
+		float var2 = (float)(par1Entity.posX - (double)this.posXPlus);
+		float var3 = (float)(par1Entity.posY - (double)this.posYPlus);
+		float var4 = (float)(par1Entity.posZ - (double)this.posZPlus);
 		return var2 * var2 + var3 * var3 + var4 * var4;
 	}
 
+	/**
+	 * When called this renderer won't draw anymore until its gets initialized again
+	 */
 	public void setDontDraw() {
 		for(int var1 = 0; var1 < skipRenderPass.length; ++var1) { // Spout
 			this.skipRenderPass[var1] = true;
@@ -336,9 +390,11 @@ public class WorldRenderer {
 		this.setDontDraw();
 		this.worldObj = null;
 	}
-	// Spout Start
 
-	 public int getGLCallListForPass(int par1) {
+	/**
+	 * Takes in the pass the call list is being requested for. Args: renderPass
+	 */
+	public int getGLCallListForPass(int par1) {
 		return !this.isInFrustum ? -1 : (!this.skipRenderPass[par1] ? this.glRenderList + par1 : -1);
 	}
 
@@ -346,10 +402,17 @@ public class WorldRenderer {
 		this.isInFrustum = par1ICamera.isBoundingBoxInFrustum(this.rendererBoundingBox);
 	}
 
+	/**
+	 * Renders the occlusion query GL List
+	 */
 	public void callOcclusionQueryList() {
 		GL11.glCallList(this.glRenderList + 2);
 	}
 
+	// Spout Start
+	/**
+	 * Checks if all render passes are to be skipped. Returns false if the renderer is not initialized
+	 */
 	public boolean skipAllRenderPasses() {
 		if (this.isInitialized) {
 			for (int pass = 0; pass < skipRenderPass.length; pass++) {
@@ -363,6 +426,9 @@ public class WorldRenderer {
 	}
 	// Spout End
 
+	/**
+	 * Marks the current renderer data as dirty and needing to be updated.
+	 */
 	public void markDirty() {
 		this.needsUpdate = true;
 	}

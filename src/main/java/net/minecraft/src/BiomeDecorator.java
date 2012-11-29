@@ -177,6 +177,7 @@ public class BiomeDecorator {
 		} else {
 		*/
 		{
+		// Spout End
 			this.currentWorld = par1World;
 			this.randomGenerator = par2Random;
 			this.chunk_X = par3;
@@ -186,7 +187,6 @@ public class BiomeDecorator {
 			this.randomGenerator = null;
 		}
 	}
-	// Spout End
 
 	/**
 	 * The method that does the work of actually decorating chunks

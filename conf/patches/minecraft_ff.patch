@@ -1,7 +1,7 @@
 diff -r -U 3 minecraft\net\minecraft\client\Minecraft.java minecraft_patched\net\minecraft\client\Minecraft.java
---- minecraft\net\minecraft\client\Minecraft.java	Tue Aug 14 20:15:26 2012
-+++ minecraft_patched\net\minecraft\client\Minecraft.java	Tue Aug 14 20:18:48 2012
-@@ -539,9 +539,8 @@
+--- minecraft\net\minecraft\client\Minecraft.java	Fri Nov 16 21:42:28 2012
++++ minecraft_patched\net\minecraft\client\Minecraft.java	Fri Nov 16 21:44:38 2012
+@@ -546,9 +546,8 @@
           return;
        }
  
@@ -12,7 +12,7 @@ diff -r -U 3 minecraft\net\minecraft\client\Minecraft.java minecraft_patched\net
                 if(this.field_71434_R && this.field_71433_S != null) {
                    this.func_71377_b(this.field_71433_S);
                    return;
-@@ -559,7 +558,6 @@
+@@ -566,7 +565,6 @@
                    this.func_71373_a(new GuiMemoryErrorScreen());
                    System.gc();
                 }
@@ -20,7 +20,7 @@ diff -r -U 3 minecraft\net\minecraft\client\Minecraft.java minecraft_patched\net
              }
           } catch (MinecraftError var12) {
              ;
-@@ -577,8 +575,6 @@
+@@ -584,8 +582,6 @@
              this.func_71405_e();
           }
  
@@ -29,9 +29,30 @@ diff -r -U 3 minecraft\net\minecraft\client\Minecraft.java minecraft_patched\net
     }
  
     private void func_71411_J() {
+diff -r -U 3 minecraft\net\minecraft\src\CallableSuspiciousClasses.java minecraft_patched\net\minecraft\src\CallableSuspiciousClasses.java
+--- minecraft\net\minecraft\src\CallableSuspiciousClasses.java	Fri Nov 16 21:42:29 2012
++++ minecraft_patched\net\minecraft\src\CallableSuspiciousClasses.java	Fri Nov 16 21:44:38 2012
+@@ -21,9 +21,14 @@
+ 
+    public String func_85085_a() {
+       StringBuilder var1 = new StringBuilder();
+-      Field var2 = ClassLoader.class.getDeclaredField("classes");
+-      var2.setAccessible(true);
+-      ArrayList var3 = new ArrayList((Vector)var2.get(CrashReport.class.getClassLoader()));
++      ArrayList var3;
++      try {
++	     Field var2 = ClassLoader.class.getDeclaredField("classes");
++	     var2.setAccessible(true);
++	     var3 = new ArrayList((Vector)var2.get(CrashReport.class.getClassLoader()));
++      } catch(Exception ex) {
++    	 return "";
++      }
+       boolean var4 = true;
+       boolean var5 = !CrashReport.class.getCanonicalName().equals("net.minecraft.CrashReport");
+       HashMap var6 = new HashMap();
 diff -r -U 3 minecraft\net\minecraft\src\CodecMus.java minecraft_patched\net\minecraft\src\CodecMus.java
---- minecraft\net\minecraft\src\CodecMus.java	Tue Aug 14 20:15:26 2012
-+++ minecraft_patched\net\minecraft\src\CodecMus.java	Tue Aug 14 20:18:48 2012
+--- minecraft\net\minecraft\src\CodecMus.java	Fri Nov 16 21:42:29 2012
++++ minecraft_patched\net\minecraft\src\CodecMus.java	Fri Nov 16 21:44:38 2012
 @@ -1,5 +1,6 @@
  package net.minecraft.src;
  
@@ -43,16 +64,17 @@ diff -r -U 3 minecraft\net\minecraft\src\CodecMus.java minecraft_patched\net\min
  public class CodecMus extends CodecJOrbis {
  
     protected InputStream openInputStream() {
+-      return new MusInputStream(this, this.url, this.urlConnection.getInputStream());
 +      try {
-       return new MusInputStream(this, this.url, this.urlConnection.getInputStream());
-+      } catch(IOException ex) {
++         return new MusInputStream(this, this.url, this.urlConnection.getInputStream());
++      } catch (IOException e) {
 +         return null;
 +      }
     }
  }
 diff -r -U 3 minecraft\net\minecraft\src\ComponentStrongholdRightTurn.java minecraft_patched\net\minecraft\src\ComponentStrongholdRightTurn.java
---- minecraft\net\minecraft\src\ComponentStrongholdRightTurn.java	Tue Aug 14 20:15:26 2012
-+++ minecraft_patched\net\minecraft\src\ComponentStrongholdRightTurn.java	Tue Aug 14 20:18:48 2012
+--- minecraft\net\minecraft\src\ComponentStrongholdRightTurn.java	Fri Nov 16 21:42:29 2012
++++ minecraft_patched\net\minecraft\src\ComponentStrongholdRightTurn.java	Fri Nov 16 21:44:38 2012
 @@ -11,6 +11,10 @@
  
  public class ComponentStrongholdRightTurn extends ComponentStrongholdLeftTurn {
@@ -65,18 +87,9 @@ diff -r -U 3 minecraft\net\minecraft\src\ComponentStrongholdRightTurn.java minec
        if(this.field_74885_f != 2 && this.field_74885_f != 3) {
           this.func_74989_b((ComponentStrongholdStairs2)p_74861_1_, p_74861_2_, p_74861_3_, 1, 1);
 diff -r -U 3 minecraft\net\minecraft\src\DedicatedServer.java minecraft_patched\net\minecraft\src\DedicatedServer.java
---- minecraft\net\minecraft\src\DedicatedServer.java	Tue Aug 14 20:15:26 2012
-+++ minecraft_patched\net\minecraft\src\DedicatedServer.java	Tue Aug 14 20:25:02 2012
-@@ -183,7 +183,7 @@
- 
-    }
- 
--   protected CrashReport func_71230_b(CrashReport p_71230_1_) {
-+   public CrashReport func_71230_b(CrashReport p_71230_1_) {
-       p_71230_1_ = super.func_71230_b(p_71230_1_);
-       p_71230_1_.func_71500_a("Type", new CallableType(this));
-       return p_71230_1_;
-@@ -193,7 +193,7 @@
+--- minecraft\net\minecraft\src\DedicatedServer.java	Fri Nov 16 21:42:29 2012
++++ minecraft_patched\net\minecraft\src\DedicatedServer.java	Fri Nov 16 21:44:38 2012
+@@ -202,7 +202,7 @@
        System.exit(0);
     }
  
@@ -85,30 +98,48 @@ diff -r -U 3 minecraft\net\minecraft\src\DedicatedServer.java minecraft_patched\
        super.func_71190_q();
        this.func_71333_ah();
     }
+diff -r -U 3 minecraft\net\minecraft\src\EntityMooshroom.java minecraft_patched\net\minecraft\src\EntityMooshroom.java
+--- minecraft\net\minecraft\src\EntityMooshroom.java	Fri Nov 16 21:42:30 2012
++++ minecraft_patched\net\minecraft\src\EntityMooshroom.java	Fri Nov 16 21:44:38 2012
+@@ -56,10 +56,10 @@
+       return new EntityMooshroom(this.field_70170_p);
+    }
+ 
+-   // $FF: synthetic method
+-   public EntityCow func_70879_a(EntityAgeable p_70879_1_) {
+-      return this.func_70879_a(p_70879_1_);
+-   }
++//   // $FF: synthetic method
++//   public EntityCow func_70879_a(EntityAgeable p_70879_1_) {
++//      return this.func_70879_a(p_70879_1_);
++//   }
+ 
+    // $FF: synthetic method
+    public EntityAgeable func_90011_a(EntityAgeable p_90011_1_) {
 diff -r -U 3 minecraft\net\minecraft\src\FontRenderer.java minecraft_patched\net\minecraft\src\FontRenderer.java
---- minecraft\net\minecraft\src\FontRenderer.java	Tue Aug 14 20:15:26 2012
-+++ minecraft_patched\net\minecraft\src\FontRenderer.java	Tue Aug 14 20:18:48 2012
-@@ -711,8 +711,6 @@
-       for(boolean var7 = false; var5 < var3; ++var5) {
-          char var8 = p_78259_1_.charAt(var5);
-          switch(var8) {
+--- minecraft\net\minecraft\src\FontRenderer.java	Fri Nov 16 21:42:30 2012
++++ minecraft_patched\net\minecraft\src\FontRenderer.java	Fri Nov 16 21:47:09 2012
+@@ -611,8 +611,6 @@
+          case 10:
+             --var5;
+             break;
 -         case 32:
 -            var6 = var5;
           case 167:
              if(var5 < var3 - 1) {
                 ++var5;
-@@ -726,6 +724,8 @@
+@@ -626,6 +624,8 @@
                 }
              }
              break;
 +         case 32:
-+            var6 = var5;
++             var6 = var5;
           default:
              var4 += this.func_78263_a(var8);
              if(var7) {
 diff -r -U 3 minecraft\net\minecraft\src\IntegratedServer.java minecraft_patched\net\minecraft\src\IntegratedServer.java
---- minecraft\net\minecraft\src\IntegratedServer.java	Tue Aug 14 20:15:26 2012
-+++ minecraft_patched\net\minecraft\src\IntegratedServer.java	Tue Aug 14 20:24:49 2012
+--- minecraft\net\minecraft\src\IntegratedServer.java	Fri Nov 16 21:42:30 2012
++++ minecraft_patched\net\minecraft\src\IntegratedServer.java	Fri Nov 16 21:44:38 2012
 @@ -98,7 +98,7 @@
        return true;
     }
@@ -118,38 +149,10 @@ diff -r -U 3 minecraft\net\minecraft\src\IntegratedServer.java minecraft_patched
        boolean var1 = this.field_71348_o;
        this.field_71348_o = this.field_71347_n.func_71752_f();
        if(!var1 && this.field_71348_o) {
-@@ -145,7 +145,7 @@
-       this.field_71349_l.func_71404_a(p_71228_1_);
-    }
- 
--   protected CrashReport func_71230_b(CrashReport p_71230_1_) {
-+   public CrashReport func_71230_b(CrashReport p_71230_1_) {
-       p_71230_1_ = super.func_71230_b(p_71230_1_);
-       p_71230_1_.func_71500_a("Type", new CallableType3(this));
-       p_71230_1_.func_71500_a("Is Modded", new CallableIsModded(this));
-diff -r -U 3 minecraft\net\minecraft\src\ItemMap.java minecraft_patched\net\minecraft\src\ItemMap.java
---- minecraft\net\minecraft\src\ItemMap.java	Tue Aug 14 20:15:26 2012
-+++ minecraft_patched\net\minecraft\src\ItemMap.java	Tue Aug 14 20:18:48 2012
-@@ -24,7 +24,6 @@
-    }
- 
-    public static MapData func_77874_a(short p_77874_0_, World p_77874_1_) {
--      "map_" + p_77874_0_;
-       MapData var3 = (MapData)p_77874_1_.func_72943_a(MapData.class, "map_" + p_77874_0_);
-       if(var3 == null) {
-          int var4 = p_77874_1_.func_72841_b("map");
-@@ -37,7 +36,6 @@
-    }
- 
-    public MapData func_77873_a(ItemStack p_77873_1_, World p_77873_2_) {
--      "map_" + p_77873_1_.func_77960_j();
-       MapData var4 = (MapData)p_77873_2_.func_72943_a(MapData.class, "map_" + p_77873_1_.func_77960_j());
-       if(var4 == null) {
-          p_77873_1_.func_77964_b(p_77873_2_.func_72841_b("map"));
 diff -r -U 3 minecraft\net\minecraft\src\RenderGlobal.java minecraft_patched\net\minecraft\src\RenderGlobal.java
---- minecraft\net\minecraft\src\RenderGlobal.java	Tue Aug 14 20:15:27 2012
-+++ minecraft_patched\net\minecraft\src\RenderGlobal.java	Tue Aug 14 20:18:48 2012
-@@ -1431,7 +1431,7 @@
+--- minecraft\net\minecraft\src\RenderGlobal.java	Fri Nov 16 21:42:31 2012
++++ minecraft_patched\net\minecraft\src\RenderGlobal.java	Fri Nov 16 21:44:38 2012
+@@ -1446,7 +1446,7 @@
           double var15 = this.field_72777_q.field_71451_h.field_70165_t - p_72726_2_;
           double var17 = this.field_72777_q.field_71451_h.field_70163_u - p_72726_4_;
           double var19 = this.field_72777_q.field_71451_h.field_70161_v - p_72726_6_;
@@ -159,8 +162,8 @@ diff -r -U 3 minecraft\net\minecraft\src\RenderGlobal.java minecraft_patched\net
              this.field_72777_q.field_71452_i.func_78873_a(var21 = new EntityHugeExplodeFX(this.field_72769_h, p_72726_2_, p_72726_4_, p_72726_6_, p_72726_8_, p_72726_10_, p_72726_12_));
           } else if(p_72726_1_.equals("largeexplode")) {
 diff -r -U 3 minecraft\net\minecraft\src\TcpMasterThread.java minecraft_patched\net\minecraft\src\TcpMasterThread.java
---- minecraft\net\minecraft\src\TcpMasterThread.java	Tue Aug 14 20:15:27 2012
-+++ minecraft_patched\net\minecraft\src\TcpMasterThread.java	Tue Aug 14 20:18:48 2012
+--- minecraft\net\minecraft\src\TcpMasterThread.java	Fri Nov 16 21:42:32 2012
++++ minecraft_patched\net\minecraft\src\TcpMasterThread.java	Fri Nov 16 21:44:38 2012
 @@ -11,6 +11,7 @@
        this.field_74504_a = p_i3285_1_;
     }
@@ -170,15 +173,15 @@ diff -r -U 3 minecraft\net\minecraft\src\TcpMasterThread.java minecraft_patched\
        try {
           Thread.sleep(5000L);
 diff -r -U 3 minecraft\net\minecraft\src\ThreadedFileIOBase.java minecraft_patched\net\minecraft\src\ThreadedFileIOBase.java
---- minecraft\net\minecraft\src\ThreadedFileIOBase.java	Tue Aug 14 20:15:27 2012
-+++ minecraft_patched\net\minecraft\src\ThreadedFileIOBase.java	Tue Aug 14 20:18:48 2012
-@@ -20,7 +20,9 @@
+--- minecraft\net\minecraft\src\ThreadedFileIOBase.java	Fri Nov 16 21:42:32 2012
++++ minecraft_patched\net\minecraft\src\ThreadedFileIOBase.java	Fri Nov 16 21:44:38 2012
+@@ -20,7 +20,8 @@
     }
  
     public void run() {
-+      while(true) {
-       this.func_75736_b();
-+      }
+-      this.func_75736_b();
++      while(true)
++         this.func_75736_b();
     }
  
     private void func_75736_b() {

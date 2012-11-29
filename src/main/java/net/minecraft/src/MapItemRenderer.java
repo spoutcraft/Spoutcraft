@@ -77,24 +77,24 @@ public class MapItemRenderer {
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glDisable(GL11.GL_BLEND);
 		par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/misc/mapicons.png"));
-		Iterator var19 = par3MapData.playersVisibleOnMap.iterator();
+		int var19 = 0;
 
-		while (var19.hasNext()) {
-			MapCoord var20 = (MapCoord)var19.next();
+		for (Iterator var20 = par3MapData.playersVisibleOnMap.values().iterator(); var20.hasNext(); ++var19) {
+			MapCoord var21 = (MapCoord)var20.next();
 			GL11.glPushMatrix();
-			GL11.glTranslatef((float)var15 + (float)var20.centerX / 2.0F + 64.0F, (float)var16 + (float)var20.centerZ / 2.0F + 64.0F, -0.02F);
-			GL11.glRotatef((float)(var20.iconRotation * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
+			GL11.glTranslatef((float)var15 + (float)var21.centerX / 2.0F + 64.0F, (float)var16 + (float)var21.centerZ / 2.0F + 64.0F, -0.02F);
+			GL11.glRotatef((float)(var21.iconRotation * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glScalef(4.0F, 4.0F, 3.0F);
 			GL11.glTranslatef(-0.125F, 0.125F, 0.0F);
-			float var21 = (float)(var20.iconSize % 4 + 0) / 4.0F;
-			float var23 = (float)(var20.iconSize / 4 + 0) / 4.0F;
-			float var22 = (float)(var20.iconSize % 4 + 1) / 4.0F;
-			float var24 = (float)(var20.iconSize / 4 + 1) / 4.0F;
+			float var23 = (float)(var21.iconSize % 4 + 0) / 4.0F;
+			float var22 = (float)(var21.iconSize / 4 + 0) / 4.0F;
+			float var24 = (float)(var21.iconSize % 4 + 1) / 4.0F;
+			float var25 = (float)(var21.iconSize / 4 + 1) / 4.0F;
 			var17.startDrawingQuads();
-			var17.addVertexWithUV(-1.0D, 1.0D, 0.0D, (double)var21, (double)var23);
-			var17.addVertexWithUV(1.0D, 1.0D, 0.0D, (double)var22, (double)var23);
-			var17.addVertexWithUV(1.0D, -1.0D, 0.0D, (double)var22, (double)var24);
-			var17.addVertexWithUV(-1.0D, -1.0D, 0.0D, (double)var21, (double)var24);
+			var17.addVertexWithUV(-1.0D, 1.0D, (double)((float)var19 * 0.001F), (double)var23, (double)var22);
+			var17.addVertexWithUV(1.0D, 1.0D, (double)((float)var19 * 0.001F), (double)var24, (double)var22);
+			var17.addVertexWithUV(1.0D, -1.0D, (double)((float)var19 * 0.001F), (double)var24, (double)var25);
+			var17.addVertexWithUV(-1.0D, -1.0D, (double)((float)var19 * 0.001F), (double)var23, (double)var25);
 			var17.draw();
 			GL11.glPopMatrix();
 		}
@@ -103,7 +103,8 @@ public class MapItemRenderer {
 		GL11.glTranslatef(0.0F, 0.0F, -0.04F);
 		GL11.glScalef(1.0F, 1.0F, 1.0F);
 		// Spout Start
-		ItemStack inHand = par1EntityPlayer.inventory.getCurrentItem();
+		// TODO Removed in 1.4 so temp removed via comment
+		/*ItemStack inHand = par1EntityPlayer.inventory.getCurrentItem();
 		String customName = null;
 		if (inHand != null) {
 			org.spoutcraft.api.material.Item item = MaterialData.getItem(inHand.itemID, (short) inHand.getItemDamage());
@@ -115,8 +116,8 @@ public class MapItemRenderer {
 			this.fontRenderer.drawString(customName, var15, var16, -16777216);
 		}
 		else {
-			this.fontRenderer.drawString(par3MapData.mapName, var15, var16, -16777216);
-		}
+			this.fontRenderer.drawString(par3MapData.mapName, var15, var16, -16777216); // removed line in 1.4
+		}*/
 		// Spout End
 		GL11.glPopMatrix();
 	}

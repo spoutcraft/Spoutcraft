@@ -39,7 +39,7 @@ public class Packet56MapChunks extends Packet {
 
 		for (int var4 = 0; var4 < var2; ++var4) {
 			Chunk var5 = (Chunk)par1List.get(var4);
-			Packet51MapChunkData var6 = Packet51MapChunk.func_73594_a(var5, true, 65535);
+			Packet51MapChunkData var6 = Packet51MapChunk.getMapChunkData(var5, true, 65535);
 
 			if (field_73591_h.length < var3 + var6.field_74582_a.length) {
 				byte[] var7 = new byte[var3 + var6.field_74582_a.length];
@@ -88,7 +88,7 @@ public class Packet56MapChunks extends Packet {
 
 		par1DataInputStream.readFully(field_73591_h, 0, this.field_73585_g);
 		
-		// Spout
+		// Spout Start
 		byte[] inflateBuffer = inflateBufferCache.get();
 		int requiredLength = 196864 * var2;
 		if (inflateBuffer == null || inflateBuffer.length < requiredLength) {

@@ -115,16 +115,16 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer {
 	}
 
 	public void sendMessage(String msg) {
-		SpoutClient.getHandle().ingameGUI.addChatMessage(msg);
+		SpoutClient.getHandle().ingameGUI.getChatGUI().printChatMessage(msg);
 	}
 
 	public void setCompassTarget(Location loc) {
-		SpoutClient.getHandle().thePlayer.setSpawnChunk(new ChunkCoordinates(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+		SpoutClient.getHandle().thePlayer.setSpawnChunk(new ChunkCoordinates(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), true);
 		SpoutClient.getHandle().theWorld.getWorldInfo().setSpawnPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
 	public Location getCompassTarget() {
-		ChunkCoordinates coords = SpoutClient.getHandle().thePlayer.getSpawnChunk();
+		ChunkCoordinates coords = SpoutClient.getHandle().thePlayer.getBedLocation();
 		return new MutableLocation(SpoutClient.getInstance().getWorld(), coords.posX, coords.posY, coords.posZ);
 	}
 
@@ -138,7 +138,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer {
 	}
 
 	public void chat(String msg) {
-		SpoutClient.getInstance().getChatManager().sendChat(msg);
+		
 	}
 
 	public boolean performCommand(String command) {

@@ -5,26 +5,35 @@ import org.spoutcraft.client.SpoutClient;
 import com.pclewis.mcpatcher.mod.Colorizer;
 import org.spoutcraft.api.gui.Color;
 // Spout End
-
 public class WorldProviderHell extends WorldProvider {
+
+	/**
+	 * creates a new world chunk manager for WorldProvider
+	 */
 	public void registerWorldChunkManager() {
 		this.worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.hell, 1.0F, 0.0F);
 		this.isHellWorld = true;
 		this.hasNoSky = true;
-		this.worldType = -1;
+		this.dimensionId = -1;
 	}
 
+	/**
+	 * Return Vec3D with biome specific fog color
+	 */
 	public Vec3 getFogColor(float par1, float par2) {
 		// Spout Start
 		Color fogColor = SpoutClient.getInstance().getSkyManager().getFogColor();
 		if (fogColor != null) {
-			return Vec3.getVec3Pool().getVecFromPool(fogColor.getRedF(), fogColor.getGreenF(), fogColor.getBlueF());
+			return Vec3.createVectorHelper(fogColor.getRedF(), fogColor.getGreenF(), fogColor.getBlueF());
 		} else {
-			return Vec3.getVec3Pool().getVecFromPool((double)Colorizer.netherFogColor[0], (double)Colorizer.netherFogColor[1], (double)Colorizer.netherFogColor[2]);
+			return Vec3.createVectorHelper((double)Colorizer.netherFogColor[0], (double)Colorizer.netherFogColor[1], (double)Colorizer.netherFogColor[2]);
 		}
 		// Spout End
 	}
 
+	/**
+	 * Creates the light to brightness table
+	 */
 	protected void generateLightBrightnessTable() {
 		float var1 = 0.1F;
 
@@ -34,22 +43,37 @@ public class WorldProviderHell extends WorldProvider {
 		}
 	}
 
-	public IChunkProvider getChunkProvider() {
+	/**
+	 * Returns a new chunk provider which generates chunks for this world
+	 */
+	public IChunkProvider createChunkGenerator() {
 		return new ChunkProviderHell(this.worldObj, this.worldObj.getSeed());
 	}
 
+	/**
+	 * Returns 'true' if in the "main surface world", but 'false' if in the Nether or End dimensions.
+	 */
 	public boolean isSurfaceWorld() {
 		return false;
 	}
 
+	/**
+	 * Will check if the x, z position specified is alright to be set as the map spawn point
+	 */
 	public boolean canCoordinateBeSpawn(int par1, int par2) {
 		return false;
 	}
 
+	/**
+	 * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
+	 */
 	public float calculateCelestialAngle(long par1, float par3) {
 		return 0.5F;
 	}
 
+	/**
+	 * True if the player can respawn in this dimension (true = overworld, false = nether).
+	 */
 	public boolean canRespawnHere() {
 		return false;
 	}
@@ -60,8 +84,11 @@ public class WorldProviderHell extends WorldProvider {
 	public boolean doesXZShowFog(int par1, int par2) {
 		return true;
 	}
-	
-	public String func_80007_l() {
+
+	/**
+	 * Returns the dimension's name, e.g. "The End", "Nether", or "Overworld".
+	 */
+	public String getDimensionName() {
 		return "Nether";
 	}
 }

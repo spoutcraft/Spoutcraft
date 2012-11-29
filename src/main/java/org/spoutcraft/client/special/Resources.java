@@ -95,7 +95,7 @@ public enum Resources implements YAMLResource {
 					Map<String, Object> values = (Map<String, Object>) config.getProperty(key);
 					key = key.toLowerCase();
 					String title = (String) values.get("title");
-					title = SpoutClient.getInstance().getChatManager().formatChatColors(title);
+					title = formatChatColors(title);
 					String cape = (String) values.get("cape");
 					String armor = (String) values.get("armor");
 					float scale = 1f;
@@ -114,4 +114,12 @@ public enum Resources implements YAMLResource {
 
 		return vips.get(username.toLowerCase());
 	}
+	
+	public static String formatChatColors(String message) {
+		message = message.replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
+		message = message.replaceAll("(&([k-oK-O0-9]))", "\u00A7$2");
+		message = message.replaceAll("(&([r|R]))", "\u00A7$2");
+		return message;
+	}
+
 }

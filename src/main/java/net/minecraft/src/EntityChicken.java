@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftChicken;
+import org.spoutcraft.client.entity.CraftChicken; // Spout
 
 public class EntityChicken extends EntityAnimal {
 	public boolean field_70885_d = false;
@@ -22,7 +22,7 @@ public class EntityChicken extends EntityAnimal {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
 		this.tasks.addTask(2, new EntityAIMate(this, var2));
-		this.tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.shiftedIndex, false));
+		this.tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.seeds.shiftedIndex, false));
 		this.tasks.addTask(4, new EntityAIFollowParent(this, 0.28F));
 		this.tasks.addTask(5, new EntityAIWander(this, var2));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
@@ -75,7 +75,7 @@ public class EntityChicken extends EntityAnimal {
 		this.field_70886_e += this.field_70889_i * 2.0F;
 
 		if (!this.isChild() && !this.worldObj.isRemote && --this.timeUntilNextEgg <= 0) {
-			this.worldObj.playSoundAtEntity(this, "mob.chickenplop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+			this.func_85030_a("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			this.dropItem(Item.egg.shiftedIndex, 1);
 			this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
 		}
@@ -90,21 +90,28 @@ public class EntityChicken extends EntityAnimal {
 	 * Returns the sound this mob makes while it's alive.
 	 */
 	protected String getLivingSound() {
-		return "mob.chicken";
+		return "mob.chicken.say";
 	}
 
 	/**
 	 * Returns the sound this mob makes when it is hurt.
 	 */
 	protected String getHurtSound() {
-		return "mob.chickenhurt";
+		return "mob.chicken.hurt";
 	}
 
 	/**
 	 * Returns the sound this mob makes on death.
 	 */
 	protected String getDeathSound() {
-		return "mob.chickenhurt";
+		return "mob.chicken.hurt";
+	}
+
+	/**
+	 * Plays step sound at given x, y, z for the entity
+	 */
+	protected void playStepSound(int par1, int par2, int par3, int par4) {
+		this.func_85030_a("mob.chicken.step", 0.15F, 1.0F);
 	}
 
 	/**
@@ -134,7 +141,19 @@ public class EntityChicken extends EntityAnimal {
 	/**
 	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
 	 */
-	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
+	public EntityChicken spawnBabyAnimal(EntityAgeable par1EntityAgeable) {
 		return new EntityChicken(this.worldObj);
+	}
+
+	/**
+	 * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
+	 * the animal type)
+	 */
+	public boolean isBreedingItem(ItemStack par1ItemStack) {
+		return par1ItemStack != null && par1ItemStack.getItem() instanceof ItemSeeds;
+	}
+
+	public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable) {
+		return this.spawnBabyAnimal(par1EntityAgeable);
 	}
 }

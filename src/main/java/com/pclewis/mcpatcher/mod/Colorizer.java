@@ -230,7 +230,7 @@ public class Colorizer {
 
 	public static boolean computeLightmap(EntityRenderer var0, World var1) {
 		if (var1 != null && useLightmaps) {
-			int var2 = var1.provider.worldType;
+			int var2 = var1.provider.dimensionId;
 			String var3 = String.format("/environment/lightmap%d.png", new Object[] {Integer.valueOf(var2)});
 			BufferedImage var4;
 
@@ -403,7 +403,7 @@ public class Colorizer {
 	}
 
 	public static boolean computeFogColor(World var0, float var1) {
-		if (var0.provider.worldType == 0 && computeFogColor(7)) {
+		if (var0.provider.dimensionId == 0 && computeFogColor(7)) {
 			computeLightningFlash(var0, var1);
 			return true;
 		} else {
@@ -412,7 +412,7 @@ public class Colorizer {
 	}
 
 	public static boolean computeSkyColor(World var0, float var1) {
-		if (var0.provider.worldType == 0 && computeFogColor(8)) {
+		if (var0.provider.dimensionId == 0 && computeFogColor(8)) {
 			computeLightningFlash(var0, var1);
 			return true;
 		} else {

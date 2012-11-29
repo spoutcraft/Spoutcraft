@@ -30,13 +30,13 @@ public class Potion {
 	public static final Potion waterBreathing = (new Potion(13, false, 3035801)).setPotionName("potion.waterBreathing").setIconIndex(0, 2);
 
 	/** The invisibility Potion object. */
-	public static final Potion invisibility = (new Potion(14, false, 8356754)).setPotionName("potion.invisibility").setIconIndex(0, 1).setPotionUnusable();
+	public static final Potion invisibility = (new Potion(14, false, 8356754)).setPotionName("potion.invisibility").setIconIndex(0, 1);
 
 	/** The blindness Potion object. */
 	public static final Potion blindness = (new Potion(15, true, 2039587)).setPotionName("potion.blindness").setIconIndex(5, 1).setEffectiveness(0.25D);
 
 	/** The night vision Potion object. */
-	public static final Potion nightVision = (new Potion(16, false, 2039713)).setPotionName("potion.nightVision").setIconIndex(4, 1).setPotionUnusable();
+	public static final Potion nightVision = (new Potion(16, false, 2039713)).setPotionName("potion.nightVision").setIconIndex(4, 1);
 
 	/** The hunger Potion object. */
 	public static final Potion hunger = (new Potion(17, true, 5797459)).setPotionName("potion.hunger").setIconIndex(1, 1);
@@ -46,7 +46,9 @@ public class Potion {
 
 	/** The poison Potion object. */
 	public static final Potion poison = (new Potion(19, true, 5149489)).setPotionName("potion.poison").setIconIndex(6, 0).setEffectiveness(0.25D);
-	public static final Potion field_76435_v = null;
+
+	/** The wither Potion object. */
+	public static final Potion wither = (new Potion(20, true, 3484199)).setPotionName("potion.wither").setIconIndex(1, 2).setEffectiveness(0.25D);
 	public static final Potion field_76434_w = null;
 	public static final Potion field_76444_x = null;
 	public static final Potion field_76443_y = null;
@@ -117,6 +119,8 @@ public class Potion {
 			if (par1EntityLiving.getHealth() > 1) {
 				par1EntityLiving.attackEntityFrom(DamageSource.magic, 1);
 			}
+		} else if (this.id == wither.id) {
+			par1EntityLiving.attackEntityFrom(DamageSource.wither, 1);
 		} else if (this.id == hunger.id && par1EntityLiving instanceof EntityPlayer) {
 			((EntityPlayer)par1EntityLiving).addExhaustion(0.025F * (float)(par2 + 1));
 		} else if ((this.id != heal.id || par1EntityLiving.isEntityUndead()) && (this.id != harm.id || !par1EntityLiving.isEntityUndead())) {
@@ -161,10 +165,17 @@ public class Potion {
 	 * checks if Potion effect is ready to be applied this tick.
 	 */
 	public boolean isReady(int par1, int par2) {
+		int var3;
+
 		if (this.id != regeneration.id && this.id != poison.id) {
-			return this.id == hunger.id;
+			if (this.id == wither.id) {
+				var3 = 40 >> par2;
+				return var3 > 0 ? par1 % var3 == 0 : true;
+			} else {
+				return this.id == hunger.id;
+			}
 		} else {
-			int var3 = 25 >> par2;
+			var3 = 25 >> par2;
 			return var3 > 0 ? par1 % var3 == 0 : true;
 		}
 	}
@@ -218,11 +229,6 @@ public class Potion {
 
 	public double getEffectiveness() {
 		return this.effectiveness;
-	}
-
-	public Potion setPotionUnusable() {
-		this.usable = true;
-		return this;
 	}
 
 	public boolean isUsable() {

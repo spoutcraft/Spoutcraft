@@ -3,26 +3,31 @@ package net.minecraft.src;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
-// Spout Start
 import org.lwjgl.opengl.GL12;
+
+// Spout Start
 import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.api.block.design.BlockDesign;
 import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.io.CustomTextureManager;
 // Spout End
 
 public class RenderItem extends Render {
-
 	private RenderBlocks renderBlocks = new RenderBlocks();
+
+	/** The RNG used in RenderItem (for bobbing itemstacks on the ground) */
 	private Random random = new Random();
 	public boolean field_77024_a = true;
+
+	/** Defines the zLevel of rendering of item on GUI. */
 	public float zLevel = 0.0F;
+	public static boolean field_82407_g = false;
 
 	public RenderItem() {
 		this.shadowSize = 0.15F;
 		this.shadowOpaque = 0.75F;
 	}
-	
+
 	// Spout Start
 	@Override
 	protected void loadTexture(String texture) {
@@ -35,175 +40,201 @@ public class RenderItem extends Render {
 	}
 	// Spout End
 
-	public void doRenderItem(EntityItem itemEntity, double x, double yOffset, double z, float var8, float deltaTime) {
+	/**
+	 * Renders the item
+	 */
+	public void doRenderItem(EntityItem par1EntityItem, double par2, double par4, double par6, float par8, float par9) {
 		// Spout Start
 		// Sanity Checks
-		if (itemEntity == null || itemEntity.item == null) {
+		if (par1EntityItem == null || par1EntityItem.item == null) {
 			return;
 		}
 		// Spout End
 		this.random.setSeed(187L);
-		ItemStack itemStack = itemEntity.item;
-		float bounceAmmount = MathHelper.sin(((float) itemEntity.age + deltaTime) / 10.0F + itemEntity.hoverStart) * 0.1F + 0.1F;
-		float rotation = (((float) itemEntity.age + deltaTime) / 20.0F + itemEntity.hoverStart) * 57.295776F;
-		byte itemsOnGround = 1;
-		if (itemEntity.item.stackSize > 1) {
-			itemsOnGround = 2;
-		}
+		ItemStack var10 = par1EntityItem.item;
 
-		if (itemEntity.item.stackSize > 5) {
-			itemsOnGround = 3;
-		}
+		if (var10.getItem() != null) {
+			// GL11.glPushMatrix(); // Spout delate to later, if no custom design given
+			float var11 = MathHelper.sin(((float)par1EntityItem.age + par9) / 10.0F + par1EntityItem.hoverStart) * 0.1F + 0.1F;
+			float var12 = (((float)par1EntityItem.age + par9) / 20.0F + par1EntityItem.hoverStart) * (180F / (float)Math.PI);
+			byte var13 = 1;
 
-		if (itemEntity.item.stackSize > 20) {
-			itemsOnGround = 4;
-		}
-
-		float red;
-		int fullColor;
-		float blue;
-		float green;
-		int renderType;
-		
-		// Spout Start
-		boolean custom = false;
-		BlockDesign design = null;
-		if (itemStack.itemID == 318) {
-			org.spoutcraft.api.material.CustomItem item = MaterialData.getCustomItem(itemStack.getItemDamage());
-			if (item != null) {
-				String textureURI = item.getTexture();
-				if (textureURI == null) {
-					org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(itemStack.getItemDamage());
-					design = block != null ? block.getBlockDesign() : null;
-					textureURI = design != null ? design.getTexureURL() : null;
-				}
-				if (textureURI != null) {
-					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
-					if (texture != null) {
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
-						custom = true;
-					}
-				}
+			if (par1EntityItem.item.stackSize > 1) {
+				var13 = 2;
 			}
-			
-			/*org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
-			design = block != null ? block.getBlockDesign() : null;
-			if (design != null && design.getTextureAddon() != null && design.getTexureURL() != null) {
-				Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
-				if (texture != null) {
-					this.renderManager.renderEngine.bindTexture(texture.getTextureID());
-					custom = true;
-				}
-			}*/
-		}
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		
-		if (design != null && custom) {
-			//GL11.glScalef(0.25F, 0.25F, 0.25F);
-			design.renderItemstack((org.spoutcraft.api.entity.Item)itemEntity.spoutEntity, (float)x, (float)(yOffset + bounceAmmount), (float)z, rotation, 0.25F, random);
-		}
-		else{	
-			GL11.glPushMatrix();
-			if(!custom)
-			{	
-				if (itemStack.itemID < 256) {
-					this.loadTexture("/terrain.png");
-				}
-				else {
-					this.loadTexture("/gui/items.png");
-				}
+
+			if (par1EntityItem.item.stackSize > 5) {
+				var13 = 3;
 			}
-			// Spout End
-			
-			GL11.glTranslatef((float) x, (float) yOffset + bounceAmmount, (float) z);
-			
+
+			if (par1EntityItem.item.stackSize > 20) {
+				var13 = 4;
+			}
 			// Spout Start
-			Block block = Block.blocksList[itemStack.itemID];
-			if (itemStack.itemID < 256 && block == null) {
-				//Invalid item
-			}
-			else if(itemStack.itemID < 256 && RenderBlocks.renderItemIn3d(block.getRenderType())) {
-			// Spout End
-				GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
-				float renderScale = 0.25F;
-				renderType = Block.blocksList[itemStack.itemID].getRenderType();
-				if(renderType == 1 || renderType == 19 || renderType == 12 || renderType == 2) {
-					renderScale = 0.5F;
-				}
-	
-				GL11.glScalef(renderScale, renderScale, renderScale);
-	
-				for(fullColor = 0; fullColor < itemsOnGround; ++fullColor) {
-					GL11.glPushMatrix();
-					if(fullColor > 0) {
-						red = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / renderScale;
-						green = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / renderScale;
-						blue = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / renderScale;
-						GL11.glTranslatef(red, green, blue);
+			boolean custom = false;
+			BlockDesign design = null;
+			if (var10.itemID == 318) {
+				org.spoutcraft.api.material.CustomItem item = MaterialData.getCustomItem(var10.getItemDamage());
+				if (item != null) {
+					String textureURI = item.getTexture();
+					if (textureURI == null) {
+						org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
+						design = block != null ? block.getBlockDesign() : null;
+						textureURI = design != null ? design.getTexureURL() : null;
 					}
-	
-					red = 1.0F;
-					
-					this.renderBlocks.renderBlockAsItem(Block.blocksList[itemStack.itemID], itemStack.getItemDamage(), red);
-					
+					if (textureURI != null) {
+						Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
+						if (texture != null) {
+							GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+							custom = true;
+						}
+					}
+				}
+
+				/*
+				 * org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage()); design = block != null ? block.getBlockDesign() : null; if (design != null &&
+				 * design.getTextureAddon() != null && design.getTexureURL() != null) { Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL()); if
+				 * (texture != null) { this.renderManager.renderEngine.bindTexture(texture.getTextureID()); custom = true; } }
+				 */
+			}
+			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+
+			if (design != null && custom) {
+				//GL11.glScalef(0.25F, 0.25F, 0.25F);
+				design.renderItemstack((org.spoutcraft.api.entity.Item)par1EntityItem.spoutEntity, (float)par2, (float)(par4 + var11), (float)par6, var12, 0.25F, random);
+			} else {
+				GL11.glPushMatrix(); // the push from above
+				if (!custom) {
+					if (var10.itemID < 256) {
+						this.loadTexture("/terrain.png");
+					} else {
+						this.loadTexture("/gui/items.png");
+					}
+				}
+				// Spout End
+			GL11.glTranslatef((float)par2, (float)par4 + var11, (float)par6);
+			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+			Block var14 = Block.blocksList[var10.itemID];
+			int var16;
+			float var19;
+			float var20;
+			float var24;
+
+			if (var14 != null && RenderBlocks.renderItemIn3d(var14.getRenderType())) {
+				GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
+
+				if (field_82407_g) {
+					GL11.glScalef(1.25F, 1.25F, 1.25F);
+					GL11.glTranslatef(0.0F, 0.05F, 0.0F);
+					GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+				}
+
+				this.loadTexture("/terrain.png");
+				float var22 = 0.25F;
+				var16 = var14.getRenderType();
+
+				if (var16 == 1 || var16 == 19 || var16 == 12 || var16 == 2) {
+					var22 = 0.5F;
+				}
+
+				GL11.glScalef(var22, var22, var22);
+
+				for (int var23 = 0; var23 < var13; ++var23) {
+					GL11.glPushMatrix();
+
+					if (var23 > 0) {
+						var24 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var22;
+						var19 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var22;
+						var20 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var22;
+						GL11.glTranslatef(var24, var19, var20);
+					}
+
+					var24 = 1.0F;
+					this.renderBlocks.renderBlockAsItem(var14, var10.getItemDamage(), var24);
 					GL11.glPopMatrix();
 				}
-			} else if(itemStack.getItem().requiresMultipleRenderPasses()) {
-				GL11.glScalef(0.5F, 0.5F, 0.5F);
-				for (int var14 = 0; var14 <= 1; ++var14) {
-					int var15 = itemStack.getItem().getIconFromDamageForRenderPass(itemStack.getItemDamage(), var14);
-					float colorScale = 1.0F;
-					if(this.field_77024_a) {
-						fullColor = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage(), var14);
-						red = (fullColor >> 16 & 255) / 255.0F;
-						green = (fullColor >> 8 & 255) / 255.0F;
-						blue = (fullColor & 255) / 255.0F;
-						GL11.glColor4f(red * colorScale, green * colorScale, blue * colorScale, 1.0F);
+			} else {
+				int var15;
+				float var17;
+
+				if (var10.getItem().requiresMultipleRenderPasses()) {
+					if (field_82407_g) {
+						GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
+						GL11.glTranslatef(0.0F, -0.05F, 0.0F);
+						GL11.glDisable(GL11.GL_LIGHTING);
+					} else {
+						GL11.glScalef(0.5F, 0.5F, 0.5F);
 					}
 
-					this.func_40267_a(var15, itemsOnGround);
-				}
+					this.loadTexture("/gui/items.png");
 
-			} else {
-				GL11.glScalef(0.5F, 0.5F, 0.5F);
-				int iconIndex = itemStack.getIconIndex();
-	
-				if(this.field_77024_a) {
-					//The names here are wrong due to de-obfuscation renames;
-					renderType = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage(), 0);
-					float var23 = (float)(renderType >> 16 & 255) / 255.0F;
-					red = (float)(renderType >> 8 & 255) / 255.0F;
-					green = (float)(renderType & 255) / 255.0F;
-					blue = 1.0F;
-					GL11.glColor4f(var23 * blue, red * blue, green * blue, 1.0F);
+					for (var15 = 0; var15 <= 1; ++var15) {
+						var16 = var10.getItem().getIconFromDamageForRenderPass(var10.getItemDamage(), var15);
+						var17 = 1.0F;
+
+						if (this.field_77024_a) {
+							int var18 = Item.itemsList[var10.itemID].getColorFromItemStack(var10, var15);
+							var19 = (float)(var18 >> 16 & 255) / 255.0F;
+							var20 = (float)(var18 >> 8 & 255) / 255.0F;
+							float var21 = (float)(var18 & 255) / 255.0F;
+							GL11.glColor4f(var19 * var17, var20 * var17, var21 * var17, 1.0F);
+						}
+
+						this.func_77020_a(var16, var13);
+					}
+				} else {
+					if (field_82407_g) {
+						GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
+						GL11.glTranslatef(0.0F, -0.05F, 0.0F);
+						GL11.glDisable(GL11.GL_LIGHTING);
+					} else {
+						GL11.glScalef(0.5F, 0.5F, 0.5F);
+					}
+
+					var15 = var10.getIconIndex();
+
+					if (var14 != null) {
+						this.loadTexture("/terrain.png");
+					} else {
+						this.loadTexture("/gui/items.png");
+					}
+
+					if (this.field_77024_a) {
+						var16 = Item.itemsList[var10.itemID].getColorFromItemStack(var10, 0);
+						var17 = (float)(var16 >> 16 & 255) / 255.0F;
+						var24 = (float)(var16 >> 8 & 255) / 255.0F;
+						var19 = (float)(var16 & 255) / 255.0F;
+						var20 = 1.0F;
+						GL11.glColor4f(var17 * var20, var24 * var20, var19 * var20, 1.0F);
+					}
+					
+					// Spout Start
+					this.renderItemBillboard(var15, var13, custom);
+					// Spout End
 				}
-	
-				// Spout Start
-				this.renderItemBillboard(iconIndex, itemsOnGround, custom);
-				// Spout End
 			}
-	
+
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			GL11.glPopMatrix();
+			} // Spout
 		}
 	}
-	
+
 	// Spout Start
-	private void func_40267_a(int var1, int var2) {
+	private void func_77020_a(int var1, int var2) {
 		renderItemBillboard(var1, var2, false);
 	}
-	// Spout End
 
-	private void renderItemBillboard(int var1, int var2, boolean customTexture) {
+	private void renderItemBillboard(int par1, int par2, boolean customTexture) {
+		// Spout End
 		Tessellator var3 = Tessellator.instance;
-		float var4 = (float)(var1 % 16 * 16 + 0) / 256.0F;
-		float var5 = (float)(var1 % 16 * 16 + 16) / 256.0F;
-		float var6 = (float)(var1 / 16 * 16 + 0) / 256.0F;
-		float var7 = (float)(var1 / 16 * 16 + 16) / 256.0F;
+		float var4 = (float)(par1 % 16 * 16 + 0) / 256.0F;
+		float var5 = (float)(par1 % 16 * 16 + 16) / 256.0F;
+		float var6 = (float)(par1 / 16 * 16 + 0) / 256.0F;
+		float var7 = (float)(par1 / 16 * 16 + 16) / 256.0F;
 		float var8 = 1.0F;
 		float var9 = 0.5F;
 		float var10 = 0.25F;
-		
 		// Spout Start
 		if (customTexture) {
 			var4 = 0F;
@@ -213,9 +244,10 @@ public class RenderItem extends Render {
 		}
 		// Spout End
 
-		for(int var11 = 0; var11 < var2; ++var11) {
+		for (int var11 = 0; var11 < par2; ++var11) {
 			GL11.glPushMatrix();
-			if(var11 > 0) {
+
+			if (var11 > 0) {
 				float var12 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
 				float var13 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
 				float var14 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
@@ -234,17 +266,27 @@ public class RenderItem extends Render {
 		}
 	}
 
-	public void drawItemIntoGui(FontRenderer var1, RenderEngine var2, int var3, int var4, int var5, int var6, int var7) {
+	/**
+	 * Renders the item's icon or block into the UI at the specified position.
+	 */
+	public void renderItemIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
+		int var6 = par3ItemStack.itemID;
+		int var7 = par3ItemStack.getItemDamage();
+		int var8 = par3ItemStack.getIconIndex();
+		int var10;
+		float var12;
+		float var13;
+		float var16;
+
 		// Spout Start
 		boolean custom = false;
 		BlockDesign design = null;
-		if (var3 == 318) {
-			
-			org.spoutcraft.api.material.CustomItem item = MaterialData.getCustomItem(var4);
+		if (var6 == 318) {
+			org.spoutcraft.api.material.CustomItem item = MaterialData.getCustomItem(var7);
 			if (item != null) {
 				String textureURI = item.getTexture();
 				if (textureURI == null) {
-					org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var4);
+					org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var7);
 					design = block != null ? block.getBlockDesign() : null;
 					textureURI = design != null ? design.getTexureURL() : null;
 				}
@@ -258,84 +300,92 @@ public class RenderItem extends Render {
 			}
 		}
 		if (!custom) {
-			if (var3 < 256) {
-				var2.bindTexture(var2.getTexture("/terrain.png"));
-			}
-			else {
-				var2.bindTexture(var2.getTexture("/gui/items.png"));
+			if (var6 < 256) {
+				loadTexture("/terrain.png");
+			} else {
+				loadTexture("/gui/items.png");
 			}
 		}
-		
-		float var11;
-		float var12;
-		
+
 		if (design != null && custom) {
 			design.renderItemOnHUD((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.zLevel);
-		}
-		else if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
-		// Spout End
-			Block var16 = Block.blocksList[var3];
+		} else if (var6 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
+			// Spout End
+			Block var15 = Block.blocksList[var6];
 			GL11.glPushMatrix();
-			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.zLevel);
+			GL11.glTranslatef((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
 			GL11.glScalef(10.0F, 10.0F, 10.0F);
 			GL11.glTranslatef(1.0F, 0.5F, 1.0F);
 			GL11.glScalef(1.0F, 1.0F, -1.0F);
 			GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			int var17 = Item.itemsList[var3].getColorFromDamage(var4, 0);
-			var11 = (float)(var17 >> 16 & 255) / 255.0F;
-			var12 = (float)(var17 >> 8 & 255) / 255.0F;
-			float var13 = (float)(var17 & 255) / 255.0F;
+			var10 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);
+			var16 = (float)(var10 >> 16 & 255) / 255.0F;
+			var12 = (float)(var10 >> 8 & 255) / 255.0F;
+			var13 = (float)(var10 & 255) / 255.0F;
+
 			if (this.field_77024_a) {
-				GL11.glColor4f(var11, var12, var13, 1.0F);
+				GL11.glColor4f(var16, var12, var13, 1.0F);
 			}
 
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 			this.renderBlocks.useInventoryTint = this.field_77024_a;
-			this.renderBlocks.renderBlockAsItem(var16, var4, 1.0F);
+			this.renderBlocks.renderBlockAsItem(var15, var7, 1.0F);
 			this.renderBlocks.useInventoryTint = true;
 			GL11.glPopMatrix();
 		} else {
-			float var10;
-			if (Item.itemsList[var3].requiresMultipleRenderPasses()) {
-				GL11.glDisable(2896 /* GL_LIGHTING */);
-				for (int var8 = 0; var8 <= 1; ++var8) {
-					int var13 = Item.itemsList[var3].getIconFromDamageForRenderPass(var4, var8);
-					int var9 = Item.itemsList[var3].getColorFromDamage(var4, var8);
-					var10 = (var9 >> 16 & 255) / 255.0F;
-					var11 = (var9 >> 8 & 255) / 255.0F;
-					var12 = (var9 & 255) / 255.0F;
-					if (field_77024_a) {
-						GL11.glColor4f(var10, var11, var12, 1.0F);
+			int var9;
+
+			if (Item.itemsList[var6].requiresMultipleRenderPasses()) {
+				GL11.glDisable(GL11.GL_LIGHTING);
+				par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
+
+				for (var9 = 0; var9 <= 1; ++var9) {
+					var10 = Item.itemsList[var6].getIconFromDamageForRenderPass(var7, var9);
+					int var11 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, var9);
+					var12 = (float)(var11 >> 16 & 255) / 255.0F;
+					var13 = (float)(var11 >> 8 & 255) / 255.0F;
+					float var14 = (float)(var11 & 255) / 255.0F;
+
+					if (this.field_77024_a) {
+						GL11.glColor4f(var12, var13, var14, 1.0F);
 					}
 
-					renderTexturedQuad(var6, var7, var13 % 16 * 16, var13 / 16 * 16, 16, 16);
+					this.renderTexturedQuad(par4, par5, var10 % 16 * 16, var10 / 16 * 16, 16, 16);
 				}
 
-				GL11.glEnable(2896 /*GL_LIGHTING*/);
-			} else if (var5 >= 0) {
-				GL11.glDisable(2896 /*GL_LIGHTING*/);
+				GL11.glEnable(GL11.GL_LIGHTING);
+			} else if (var8 >= 0) {
+				GL11.glDisable(GL11.GL_LIGHTING);
 
-				int var14 = Item.itemsList[var3].getColorFromDamage(var4, 0);
-				float var15 = (float)(var14 >> 16 & 255) / 255.0F;
-				var10 = (float)(var14 >> 8 & 255) / 255.0F;
-				var11 = (float)(var14 & 255) / 255.0F;
-				if(this.field_77024_a) {
-					GL11.glColor4f(var15, var10, var11, 1.0F);
+				if (var6 < 256) {
+					par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/terrain.png"));
+				} else {
+					par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
+				}
+
+				var9 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);
+				float var17 = (float)(var9 >> 16 & 255) / 255.0F;
+				var16 = (float)(var9 >> 8 & 255) / 255.0F;
+				var12 = (float)(var9 & 255) / 255.0F;
+
+				if (this.field_77024_a) {
+					GL11.glColor4f(var17, var16, var12, 1.0F);
 				}
 
 				// Spout Start
 				if (custom) {
 					Tessellator tes = Tessellator.instance;
 					tes.startDrawingQuads();
-					tes.addVertexWithUV((double) (var6 + 0), (double) (var7 + 16), (double) 0, 0, 0);
-					tes.addVertexWithUV((double) (var6 + 16), (double) (var7 + 16), (double) 0, 1, 0);
-					tes.addVertexWithUV((double) (var6 + 16), (double) (var7 + 0), (double) 0, 1, 1);
-					tes.addVertexWithUV((double) (var6 + 0), (double) (var7 + 0), (double) 0, 0, 1);
+					tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 16), (double)0, 0, 0);
+					tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 16), (double)0, 1, 0);
+					tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 0), (double)0, 1, 1);
+					tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 0), (double)0, 0, 1);
 					tes.draw();
 				} else
-					this.renderTexturedQuad(var6, var7, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
+					this.renderTexturedQuad(par4, par5, var8 % 16 * 16, var8 / 16 * 16, 16, 16);
 				// Spout End
+
 				GL11.glEnable(GL11.GL_LIGHTING);
 			}
 		}
@@ -343,9 +393,13 @@ public class RenderItem extends Render {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 	}
 
-	public void renderItemIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
+	/**
+	 * Render the item's icon or block into the GUI, including the glint effect.
+	 */
+	public void renderItemAndEffectIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
 		if (par3ItemStack != null) {
-			this.drawItemIntoGui(par1FontRenderer, par2RenderEngine, par3ItemStack.itemID, par3ItemStack.getItemDamage(), par3ItemStack.getIconIndex(), par4, par5);
+			this.renderItemIntoGUI(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5);
+
 			if (par3ItemStack != null && par3ItemStack.hasEffect()) {
 				GL11.glDepthFunc(GL11.GL_GREATER);
 				GL11.glDisable(GL11.GL_LIGHTING);
@@ -381,6 +435,7 @@ public class RenderItem extends Render {
 			float var10 = 0.0F;
 			Tessellator var11 = Tessellator.instance;
 			float var12 = 4.0F;
+
 			if (var6 == 1) {
 				var12 = -1.0F;
 			}
@@ -394,30 +449,36 @@ public class RenderItem extends Render {
 		}
 	}
 
+	/**
+	 * Renders the item's overlay information. Examples being stack count or damage on top of the item's image at the
+	 * specified position.
+	 */
 	public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
 		if (par3ItemStack != null) {
 			if (par3ItemStack.stackSize > 1) {
 				String var6 = "" + par3ItemStack.stackSize;
-				GL11.glDisable(2896);
-				GL11.glDisable(2929);
+				GL11.glDisable(GL11.GL_LIGHTING);
+				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				par1FontRenderer.drawStringWithShadow(var6, par4 + 19 - 2 - par1FontRenderer.getStringWidth(var6), par5 + 6 + 3, 16777215);
-				GL11.glEnable(2896);
-				GL11.glEnable(2929);
+				GL11.glEnable(GL11.GL_LIGHTING);
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
 			}
-			
+
 			// Spout Start
 			NBTTagList list = par3ItemStack.getAllEnchantmentTagList();
 			short max = -1;
 			short amnt = -1;
-			if(list != null) {
-				for(int i = 0; i < list.tagCount(); i++) {
+			if (list != null) {
+				for (int i = 0; i < list.tagCount(); i++) {
 					NBTBase tag = list.tagAt(i);
-					if(tag instanceof NBTTagCompound) {
-						NBTTagCompound ench = (NBTTagCompound) tag;
+					if (tag instanceof NBTTagCompound) {
+						NBTTagCompound ench = (NBTTagCompound)tag;
 						short id = ench.getShort("id");
 						short lvl = ench.getShort("lvl");
-						if(id == 254) amnt = lvl; //Enchantment DURABILITY = new SpoutEnchantment(254);
-						if(id == 255) max = lvl;  //Enchantment MAX_DURABILITY = new SpoutEnchantment(255);
+						if (id == 254)
+							amnt = lvl; //Enchantment DURABILITY = new SpoutEnchantment(254);
+						if (id == 255)
+							max = lvl; //Enchantment MAX_DURABILITY = new SpoutEnchantment(255);
 					}
 				}
 			}
@@ -443,6 +504,10 @@ public class RenderItem extends Render {
 		}
 	}
 
+	/**
+	 * Adds a quad to the tesselator at the specified position with the set width and height and color.  Args: tessellator,
+	 * x, y, width, height, color
+	 */
 	private void renderQuad(Tessellator par1Tessellator, int par2, int par3, int par4, int par5, int par6) {
 		par1Tessellator.startDrawingQuads();
 		par1Tessellator.setColorOpaque_I(par6);
@@ -453,6 +518,10 @@ public class RenderItem extends Render {
 		par1Tessellator.draw();
 	}
 
+	/**
+	 * Adds a textured quad to the tesselator at the specified position with the specified texture coords, width and
+	 * height.  Args: x, y, u, v, width, height
+	 */
 	public void renderTexturedQuad(int par1, int par2, int par3, int par4, int par5, int par6) {
 		float var7 = 0.00390625F;
 		float var8 = 0.00390625F;
@@ -465,6 +534,12 @@ public class RenderItem extends Render {
 		var9.draw();
 	}
 
+	/**
+	 * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
+	 * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
+	 * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
+	 * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
+	 */
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		this.doRenderItem((EntityItem)par1Entity, par2, par4, par6, par8, par9);
 	}

@@ -753,7 +753,8 @@ public class Shaders {
 
 		//Try Eclipse Path
 		try {
-			File file = new File(FileUtil.getConfigDir().getAbsolutePath() + "/../../../" + fileName);
+			File file = new File(FileUtil.getConfigDir().getAbsolutePath() + "/../src/main/resources" + fileName.substring(4));
+			file = file.getCanonicalFile();
 			reader = new BufferedReader(new FileReader(file));
 			return reader;
 		}

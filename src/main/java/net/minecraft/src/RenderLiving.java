@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -30,7 +31,12 @@ public class RenderLiving extends Render {
 		this.renderPassModel = par1ModelBase;
 	}
 
-	private float func_77034_a(float par1, float par2, float par3) {
+	/**
+	 * Returns a rotation angle that is inbetween two other rotation angles. par1 and par2 are the angles between which to
+	 * interpolate, par3 is probably a float between 0.0 and 1.0 that tells us where "between" the two angles we are.
+	 * Example: par1 = 30, par2 = 50, par3 = 0.5, then return = 40
+	 */
+	private float interpolateRotation(float par1, float par2, float par3) {
 		float var4;
 
 		for (var4 = par2 - par1; var4 < -180.0F; var4 += 360.0F) {
@@ -66,8 +72,8 @@ public class RenderLiving extends Render {
 		}
 
 		try {
-			float var10 = this.func_77034_a(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
-			float var11 = this.func_77034_a(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
+			float var10 = this.interpolateRotation(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
+			float var11 = this.interpolateRotation(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
 			float var12 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par9;
 			this.renderLivingAt(par1EntityLiving, par2, par4, par6);
 			float var13 = this.handleRotationFloat(par1EntityLiving, par9);
@@ -78,7 +84,7 @@ public class RenderLiving extends Render {
 			this.preRenderCallback(par1EntityLiving, par9);
 			GL11.glTranslatef(0.0F, -24.0F * var14 - 0.0078125F, 0.0F);
 			float var15 = par1EntityLiving.prevLegYaw + (par1EntityLiving.legYaw - par1EntityLiving.prevLegYaw) * par9;
-			float var16 = par1EntityLiving.field_70754_ba - par1EntityLiving.legYaw * (1.0F - par9);
+			float var16 = par1EntityLiving.legSwing - par1EntityLiving.legYaw * (1.0F - par9);
 
 			if (par1EntityLiving.isChild()) {
 				var16 *= 3.0F;
@@ -103,7 +109,12 @@ public class RenderLiving extends Render {
 					this.renderPassModel.setLivingAnimations(par1EntityLiving, var16, var15, par9);
 					this.renderPassModel.render(par1EntityLiving, var16, var15, var13, var11 - var10, var12, var14);
 
-					if (var18 == 15) {
+					if ((var18 & 240) == 16) {
+						this.func_82408_c(par1EntityLiving, var17, par9);
+						this.renderPassModel.render(par1EntityLiving, var16, var15, var13, var11 - var10, var12, var14);
+					}
+
+					if ((var18 & 15) == 15) {
 						var19 = (float)par1EntityLiving.ticksExisted + par9;
 						this.loadTexture("%blur%/misc/glint.png");
 						GL11.glEnable(GL11.GL_BLEND);
@@ -143,6 +154,7 @@ public class RenderLiving extends Render {
 				}
 			}
 
+			GL11.glDepthMask(true);
 			this.renderEquippedItems(par1EntityLiving, par9);
 			float var26 = par1EntityLiving.getBrightness(par9);
 			var18 = this.getColorMultiplier(par1EntityLiving, var26, par9);
@@ -208,8 +220,12 @@ public class RenderLiving extends Render {
 	 * Renders the model in RenderLiving
 	 */
 	protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7) {
-		this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
-		this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+		if (!par1EntityLiving.getHasActivePotion()) {
+			this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
+			this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+		} else {
+			this.mainModel.setRotationAngles(par2, par3, par4, par5, par6, par7, par1EntityLiving);
+		}
 	}
 
 	/**
@@ -247,6 +263,47 @@ public class RenderLiving extends Render {
 
 	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {}
 
+	protected void func_85093_e(EntityLiving par1EntityLiving, float par2) {
+		int var3 = par1EntityLiving.func_85035_bI();
+
+		if (var3 > 0) {
+			EntityArrow var4 = new EntityArrow(par1EntityLiving.worldObj, par1EntityLiving.posX, par1EntityLiving.posY, par1EntityLiving.posZ);
+			Random var5 = new Random((long)par1EntityLiving.entityId);
+			RenderHelper.disableStandardItemLighting();
+
+			for (int var6 = 0; var6 < var3; ++var6) {
+				GL11.glPushMatrix();
+				ModelRenderer var7 = this.mainModel.func_85181_a(var5);
+				ModelBox var8 = (ModelBox)var7.cubeList.get(var5.nextInt(var7.cubeList.size()));
+				var7.postRender(0.0625F);
+				float var9 = var5.nextFloat();
+				float var10 = var5.nextFloat();
+				float var11 = var5.nextFloat();
+				float var12 = (var8.posX1 + (var8.posX2 - var8.posX1) * var9) / 16.0F;
+				float var13 = (var8.posY1 + (var8.posY2 - var8.posY1) * var10) / 16.0F;
+				float var14 = (var8.posZ1 + (var8.posZ2 - var8.posZ1) * var11) / 16.0F;
+				GL11.glTranslatef(var12, var13, var14);
+				var9 = var9 * 2.0F - 1.0F;
+				var10 = var10 * 2.0F - 1.0F;
+				var11 = var11 * 2.0F - 1.0F;
+				var9 *= -1.0F;
+				var10 *= -1.0F;
+				var11 *= -1.0F;
+				float var15 = MathHelper.sqrt_float(var9 * var9 + var11 * var11);
+				var4.prevRotationYaw = var4.rotationYaw = (float)(Math.atan2((double)var9, (double)var11) * 180.0D / Math.PI);
+				var4.prevRotationPitch = var4.rotationPitch = (float)(Math.atan2((double)var10, (double)var15) * 180.0D / Math.PI);
+				double var16 = 0.0D;
+				double var18 = 0.0D;
+				double var20 = 0.0D;
+				float var22 = 0.0F;
+				this.renderManager.renderEntityWithPosYaw(var4, var16, var18, var20, var22, par2);
+				GL11.glPopMatrix();
+			}
+
+			RenderHelper.enableStandardItemLighting();
+		}
+	}
+
 	protected int inheritRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
 		return this.shouldRenderPass(par1EntityLiving, par2, par3);
 	}
@@ -257,6 +314,8 @@ public class RenderLiving extends Render {
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
 		return -1;
 	}
+
+	protected void func_82408_c(EntityLiving par1EntityLiving, int par2, float par3) {}
 
 	protected float getDeathMaxRotation(EntityLiving par1EntityLiving) {
 		return 90.0F;
@@ -314,7 +373,6 @@ public class RenderLiving extends Render {
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDepthMask(false);
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			GL11.glDisable(GL11.GL_ALPHA_TEST); // Spout - ?
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			Tessellator var15 = Tessellator.instance;
@@ -335,7 +393,6 @@ public class RenderLiving extends Render {
 			var15.draw();
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, 553648127);
-			GL11.glEnable(GL11.GL_ALPHA_TEST); // Spout - ?
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			GL11.glDepthMask(true);
 			var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, -1);

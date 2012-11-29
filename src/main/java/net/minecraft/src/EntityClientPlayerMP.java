@@ -103,12 +103,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		boolean var14 = var9 != 0.0D || var11 != 0.0D;
 
 		if (this.ridingEntity != null) {
-			if (var14) {
-				this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.motionX, -999.0D, -999.0D, this.motionZ, this.onGround));
-			} else {
-				this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
-			}
-
+			this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
 			var13 = false;
 		} else if (var13 && var14) {
 			this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
@@ -116,7 +111,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.onGround));
 		} else if (var14) {
 			this.sendQueue.addToSendQueue(new Packet12PlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
-		} else if (this.wasOnGround != this.onGround) {
+		} else {
 			this.sendQueue.addToSendQueue(new Packet10Flying(this.onGround));
 		}
 
@@ -174,7 +169,9 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	 * with the reduced value. Args: damageAmount
 	 */
 	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout - public
-		this.setEntityHealth(this.getHealth() - par2);
+		if (!this.func_85032_ar()) {
+			this.setEntityHealth(this.getHealth() - par2);
+		}
 		GuiChat.interruptChat(); // Spout
 	}
 
@@ -182,7 +179,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	 * sets current screen to null (used on escape buttons of GUIs)
 	 */
 	public void closeScreen() {
-		this.sendQueue.addToSendQueue(new Packet101CloseWindow(this.craftingInventory.windowId));
+		this.sendQueue.addToSendQueue(new Packet101CloseWindow(this.openContainer.windowId));
 		this.inventory.setItemStack((ItemStack)null);
 		super.closeScreen();
 	}

@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.Minecraft; // Spout
 
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.config.Configuration; // Spout
@@ -67,6 +67,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 
 		for (int var14 = 0; var14 < par1TileEntitySign.signText.length; ++var14) {
 			String var15 = par1TileEntitySign.signText[var14];
+
 			if (var14 == par1TileEntitySign.lineBeingEdited) {
 				// Spout Start
 				int endColumnStart = Math.min(par1TileEntitySign.columnBeingEdited,  var15.length());

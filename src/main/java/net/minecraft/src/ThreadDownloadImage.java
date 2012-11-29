@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImage; // Spout
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.imageio.ImageIO;
@@ -11,15 +11,15 @@ class ThreadDownloadImage extends Thread {
 	final String location;
 
 	/** The image buffer to use. */
-	final ImageBuffer buffer;
+	final IImageBuffer buffer;
 
 	/** The image data. */
 	final ThreadDownloadImageData imageData;
 
-	ThreadDownloadImage(ThreadDownloadImageData par1ThreadDownloadImageData, String par2Str, ImageBuffer par3ImageBuffer) {
-		this.imageData = par1ThreadDownloadImageData;
+	ThreadDownloadImage(ThreadDownloadImageData par1, String par2Str, IImageBuffer par3IImageBuffer) {
+		this.imageData = par1;
 		this.location = par2Str;
-		this.buffer = par3ImageBuffer;
+		this.buffer = par3IImageBuffer;
 	}
 
 	public void run() {

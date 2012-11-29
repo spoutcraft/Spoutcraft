@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftCaveSpider;
+import org.spoutcraft.client.entity.CraftCaveSpider; // Spout
 
 public class EntityCaveSpider extends EntitySpider {
 	public EntityCaveSpider(World par1World) {
@@ -46,4 +46,9 @@ public class EntityCaveSpider extends EntitySpider {
 			return false;
 		}
 	}
+
+	/**
+	 * Initialize this creature.
+	 */
+	public void initCreature() {}
 }

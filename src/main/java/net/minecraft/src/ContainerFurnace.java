@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
-
 public class ContainerFurnace extends Container {
 	private TileEntityFurnace furnace;
 	private int lastCookTime = 0;
@@ -34,9 +32,9 @@ public class ContainerFurnace extends Container {
 
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
-		par1ICrafting.updateCraftingInventoryInfo(this, 0, this.furnace.furnaceCookTime);
-		par1ICrafting.updateCraftingInventoryInfo(this, 1, this.furnace.furnaceBurnTime);
-		par1ICrafting.updateCraftingInventoryInfo(this, 2, this.furnace.currentItemBurnTime);
+		par1ICrafting.sendProgressBarUpdate(this, 0, this.furnace.furnaceCookTime);
+		par1ICrafting.sendProgressBarUpdate(this, 1, this.furnace.furnaceBurnTime);
+		par1ICrafting.sendProgressBarUpdate(this, 2, this.furnace.currentItemBurnTime);
 	}
 
 	/**
@@ -44,21 +42,20 @@ public class ContainerFurnace extends Container {
 	 */
 	public void updateCraftingResults() {
 		super.updateCraftingResults();
-		Iterator var1 = this.crafters.iterator();
 
-		while (var1.hasNext()) {
-			ICrafting var2 = (ICrafting)var1.next();
+		for (int var1 = 0; var1 < this.crafters.size(); ++var1) {
+			ICrafting var2 = (ICrafting)this.crafters.get(var1);
 
 			if (this.lastCookTime != this.furnace.furnaceCookTime) {
-				var2.updateCraftingInventoryInfo(this, 0, this.furnace.furnaceCookTime);
+				var2.sendProgressBarUpdate(this, 0, this.furnace.furnaceCookTime);
 			}
 
 			if (this.lastBurnTime != this.furnace.furnaceBurnTime) {
-				var2.updateCraftingInventoryInfo(this, 1, this.furnace.furnaceBurnTime);
+				var2.sendProgressBarUpdate(this, 1, this.furnace.furnaceBurnTime);
 			}
 
 			if (this.lastItemBurnTime != this.furnace.currentItemBurnTime) {
-				var2.updateCraftingInventoryInfo(this, 2, this.furnace.currentItemBurnTime);
+				var2.sendProgressBarUpdate(this, 2, this.furnace.currentItemBurnTime);
 			}
 		}
 
@@ -86,55 +83,55 @@ public class ContainerFurnace extends Container {
 	}
 
 	/**
-	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
 	 */
-	public ItemStack transferStackInSlot(int par1) {
-		ItemStack var2 = null;
-		Slot var3 = (Slot)this.inventorySlots.get(par1);
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+		ItemStack var3 = null;
+		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
-		if (var3 != null && var3.getHasStack()) {
-			ItemStack var4 = var3.getStack();
-			var2 = var4.copy();
+		if (var4 != null && var4.getHasStack()) {
+			ItemStack var5 = var4.getStack();
+			var3 = var5.copy();
 
-			if (par1 == 2) {
-				if (!this.mergeItemStack(var4, 3, 39, true)) {
+			if (par2 == 2) {
+				if (!this.mergeItemStack(var5, 3, 39, true)) {
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
-			} else if (par1 != 1 && par1 != 0) {
-				if (FurnaceRecipes.smelting().getSmeltingResult(var4.getItem().shiftedIndex) != null) {
-					if (!this.mergeItemStack(var4, 0, 1, false)) {
+				var4.onSlotChange(var5, var3);
+			} else if (par2 != 1 && par2 != 0) {
+				if (FurnaceRecipes.smelting().getSmeltingResult(var5.getItem().shiftedIndex) != null) {
+					if (!this.mergeItemStack(var5, 0, 1, false)) {
 						return null;
 					}
-				} else if (TileEntityFurnace.isItemFuel(var4)) {
-					if (!this.mergeItemStack(var4, 1, 2, false)) {
+				} else if (TileEntityFurnace.isItemFuel(var5)) {
+					if (!this.mergeItemStack(var5, 1, 2, false)) {
 						return null;
 					}
-				} else if (par1 >= 3 && par1 < 30) {
-					if (!this.mergeItemStack(var4, 30, 39, false)) {
+				} else if (par2 >= 3 && par2 < 30) {
+					if (!this.mergeItemStack(var5, 30, 39, false)) {
 						return null;
 					}
-				} else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false)) {
+				} else if (par2 >= 30 && par2 < 39 && !this.mergeItemStack(var5, 3, 30, false)) {
 					return null;
 				}
-			} else if (!this.mergeItemStack(var4, 3, 39, false)) {
+			} else if (!this.mergeItemStack(var5, 3, 39, false)) {
 				return null;
 			}
 
-			if (var4.stackSize == 0) {
-				var3.putStack((ItemStack)null);
+			if (var5.stackSize == 0) {
+				var4.putStack((ItemStack)null);
 			} else {
-				var3.onSlotChanged();
+				var4.onSlotChanged();
 			}
 
-			if (var4.stackSize == var2.stackSize) {
+			if (var5.stackSize == var3.stackSize) {
 				return null;
 			}
 
-			var3.onPickupFromSlot(var4);
+			var4.onPickupFromSlot(par1EntityPlayer, var5);
 		}
 
-		return var2;
+		return var3;
 	}
 }

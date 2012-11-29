@@ -1,10 +1,10 @@
 package net.minecraft.src;
 
-import org.spoutcraft.api.Spoutcraft; // Spout
-
 import net.minecraft.client.Minecraft;
 
 public class PlayerControllerMP {
+
+	/** The Minecraft instance. */
 	private final Minecraft mc;
 	private final NetClientHandler netClientHandler;
 
@@ -16,6 +16,7 @@ public class PlayerControllerMP {
 
 	/** PosZ of the current block being destroyed */
 	private int currentblockZ = -1;
+	private ItemStack field_85183_f = null;
 
 	/** Current block damage (MP) */
 	private float curBlockDamageMP = 0.0F;
@@ -49,13 +50,19 @@ public class PlayerControllerMP {
 		this.netClientHandler = par2NetClientHandler;
 	}
 
-	public static void func_78744_a(Minecraft par0Minecraft, PlayerControllerMP par1PlayerControllerMP, int par2, int par3, int par4, int par5) {
+	/**
+	 * Block dig operation in creative mode (instantly digs the block).
+	 */
+	public static void clickBlockCreative(Minecraft par0Minecraft, PlayerControllerMP par1PlayerControllerMP, int par2, int par3, int par4, int par5) {
 		if (!par0Minecraft.theWorld.extinguishFire(par0Minecraft.thePlayer, par2, par3, par4, par5)) {
 			par1PlayerControllerMP.onPlayerDestroyBlock(par2, par3, par4, par5);
 		}
 	}
 
-	public void func_78748_a(EntityPlayer par1EntityPlayer) {
+	/**
+	 * Sets player capabilities depending on current gametype. params: player
+	 */
+	public void setPlayerCapabilities(EntityPlayer par1EntityPlayer) {
 		this.currentGameType.configurePlayerCapabilities(par1EntityPlayer.capabilities);
 	}
 
@@ -69,7 +76,6 @@ public class PlayerControllerMP {
 	public void setGameType(EnumGameType par1EnumGameType) {
 		this.currentGameType = par1EnumGameType;
 		this.currentGameType.configurePlayerCapabilities(this.mc.thePlayer.capabilities);
-		GuiIngame.dirtySurvival();
 	}
 
 	/**
@@ -80,14 +86,14 @@ public class PlayerControllerMP {
 	}
 
 	public boolean shouldDrawHUD() {
-		return this.currentGameType.func_77144_e();
+		return this.currentGameType.isSurvivalOrAdventure();
 	}
 
 	/**
 	 * Called when a player completes the destruction of a block
 	 */
 	public boolean onPlayerDestroyBlock(int par1, int par2, int par3, int par4) {
-		if (this.currentGameType.isAdventure()) {
+		if (this.currentGameType.isAdventure() && !this.mc.thePlayer.canCurrentToolHarvestBlock(par1, par2, par3)) {
 			return false;
 		} else {
 			WorldClient var5 = this.mc.theWorld;
@@ -104,11 +110,13 @@ public class PlayerControllerMP {
 					var6.onBlockDestroyedByPlayer(var5, par1, par2, par3, var7);
 				}
 
+				this.currentBlockY = -1;
+
 				if (!this.currentGameType.isCreative()) {
 					ItemStack var9 = this.mc.thePlayer.getCurrentEquippedItem();
 
 					if (var9 != null) {
-						var9.func_77941_a(var5, var6.blockID, par1, par2, par3, this.mc.thePlayer);
+						var9.onBlockDestroyed(var5, var6.blockID, par1, par2, par3, this.mc.thePlayer);
 
 						if (var9.stackSize == 0) {
 							this.mc.thePlayer.destroyCurrentEquippedItem();
@@ -125,12 +133,16 @@ public class PlayerControllerMP {
 	 * Called by Minecraft class when the player is hitting a block with an item. Args: x, y, z, side
 	 */
 	public void clickBlock(int par1, int par2, int par3, int par4) {
-		if (!this.currentGameType.isAdventure()) {
+		if (!this.currentGameType.isAdventure() || this.mc.thePlayer.canCurrentToolHarvestBlock(par1, par2, par3)) {
 			if (this.currentGameType.isCreative()) {
 				this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, par1, par2, par3, par4));
-				func_78744_a(this.mc, this, par1, par2, par3, par4);
+				clickBlockCreative(this.mc, this, par1, par2, par3, par4);
 				this.blockHitDelay = 5;
-			} else if (!this.isHittingBlock || par1 != this.currentBlockX || par2 != this.currentBlockY || par3 != this.currentblockZ) {
+			} else if (!this.isHittingBlock || !this.func_85182_a(par1, par2, par3)) {
+				if (this.isHittingBlock) {
+					this.netClientHandler.addToSendQueue(new Packet14BlockDig(1, this.currentBlockX, this.currentBlockY, this.currentblockZ, par4));
+				}
+
 				this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, par1, par2, par3, par4));
 				int var5 = this.mc.theWorld.getBlockId(par1, par2, par3);
 
@@ -145,6 +157,7 @@ public class PlayerControllerMP {
 					this.currentBlockX = par1;
 					this.currentBlockY = par2;
 					this.currentblockZ = par3;
+					this.field_85183_f = this.mc.thePlayer.getHeldItem();
 					this.curBlockDamageMP = 0.0F;
 					this.prevBlockDamageMP = 0.0F;
 					this.stepSoundTickCounter = 0.0F;
@@ -178,9 +191,9 @@ public class PlayerControllerMP {
 		} else if (this.currentGameType.isCreative()) {
 			this.blockHitDelay = 5;
 			this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, par1, par2, par3, par4));
-			func_78744_a(this.mc, this, par1, par2, par3, par4);
+			clickBlockCreative(this.mc, this, par1, par2, par3, par4);
 		} else {
-			if (par1 == this.currentBlockX && par2 == this.currentBlockY && par3 == this.currentblockZ) {
+			if (this.func_85182_a(par1, par2, par3)) {
 				int var5 = this.mc.theWorld.getBlockId(par1, par2, par3);
 
 				if (var5 == 0) {
@@ -225,6 +238,10 @@ public class PlayerControllerMP {
 		this.syncCurrentPlayItem();
 		this.prevBlockDamageMP = this.curBlockDamageMP;
 		this.mc.sndManager.playRandomMusicIfReady();
+	}
+
+	private boolean func_85182_a(int par1, int par2, int par3) {
+		return par1 == this.currentBlockX && par2 == this.currentBlockY && par3 == this.currentblockZ && this.field_85183_f == this.mc.thePlayer.getHeldItem();
 	}
 
 	/**
@@ -321,9 +338,9 @@ public class PlayerControllerMP {
 		return par1EntityPlayer.interactWith(par2Entity);
 	}
 
-	public ItemStack windowClick(int par1, int par2, int par3, boolean par4, EntityPlayer par5EntityPlayer) {
-		short var6 = par5EntityPlayer.craftingInventory.getNextTransactionID(par5EntityPlayer.inventory);
-		ItemStack var7 = par5EntityPlayer.craftingInventory.slotClick(par2, par3, par4, par5EntityPlayer);
+	public ItemStack windowClick(int par1, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
+		short var6 = par5EntityPlayer.openContainer.getNextTransactionID(par5EntityPlayer.inventory);
+		ItemStack var7 = par5EntityPlayer.openContainer.slotClick(par2, par3, par4, par5EntityPlayer);
 		this.netClientHandler.addToSendQueue(new Packet102WindowClick(par1, par2, par3, par4, var7, var6));
 		return var7;
 	}

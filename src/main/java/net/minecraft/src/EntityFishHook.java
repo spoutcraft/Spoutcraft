@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
+import java.util.Iterator; // Spout
 import java.util.List;
 
-import org.spoutcraft.client.entity.CraftFish;
+import org.spoutcraft.client.entity.CraftFish; // Spout
 
 public class EntityFishHook extends Entity {
 
@@ -216,24 +216,23 @@ public class EntityFishHook extends Entity {
 				++this.ticksInAir;
 			}
 
-			Vec3 var20 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-			Vec3 var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			Vec3 var20 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			Vec3 var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var20, var2);
-			var20 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-			var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			var20 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 			if (var3 != null) {
-				var2 = Vec3.getVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+				var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 			}
 
 			Entity var4 = null;
 			List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 			double var6 = 0.0D;
-			Iterator var8 = var5.iterator();
 			double var13;
 
-			while (var8.hasNext()) {
-				Entity var9 = (Entity)var8.next();
+			for (int var8 = 0; var8 < var5.size(); ++var8) {
+				Entity var9 = (Entity)var5.get(var8);
 
 				if (var9.canBeCollidedWith() && (var9 != this.angler || this.ticksInAir >= 5)) {
 					float var10 = 0.3F;
@@ -320,7 +319,7 @@ public class EntityFishHook extends Entity {
 						if (this.rand.nextInt(var28) == 0) {
 							this.ticksCatchable = this.rand.nextInt(30) + 10;
 							this.motionY -= 0.20000000298023224D;
-							this.worldObj.playSoundAtEntity(this, "random.splash", 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+							this.func_85030_a("random.splash", 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
 							float var30 = (float)MathHelper.floor_double(this.boundingBox.minY);
 							int var15;
 							float var17;
@@ -417,6 +416,7 @@ public class EntityFishHook extends Entity {
 				var13.motionZ = var7 * var11;
 				this.worldObj.spawnEntityInWorld(var13);
 				this.angler.addStat(StatList.fishCaughtStat, 1);
+				this.angler.worldObj.spawnEntityInWorld(new EntityXPOrb(this.angler.worldObj, this.angler.posX, this.angler.posY + 0.5D, this.angler.posZ + 0.5D, this.rand.nextInt(3) + 1));
 				var1 = 1;
 			}
 

@@ -4,13 +4,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+// Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.material.MaterialData;
+// Spout End
 
 public abstract class Packet {
 
@@ -28,10 +31,10 @@ public abstract class Packet {
 
 	/** the system time in milliseconds when this packet was created. */
 	public final long creationTimeMillis = System.currentTimeMillis();
-	public static long recievedID;
-	public static long recievedSize;
+	public static long receivedID;
+	public static long receivedSize;
 
-	/** assumed to be sequential by the profiler */
+	/** Assumed to be sequential by the profiler. */
 	public static long sentID;
 	public static long sentSize;
 
@@ -110,40 +113,46 @@ public abstract class Packet {
 	/**
 	 * Read a packet, prefixed by its ID, from the data stream.
 	 */
-	public static Packet readPacket(DataInputStream par0DataInputStream, boolean par1) throws IOException {
-		boolean var2 = false;
-		Packet var3 = null;
-		int var6;
+	public static Packet readPacket(DataInputStream par0DataInputStream, boolean par1, Socket par2Socket) throws IOException {
+		boolean var3 = false;
+		Packet var4 = null;
+		int var5 = par2Socket.getSoTimeout();
+		int var8;
 
 		try {
-			var6 = par0DataInputStream.read();
+			var8 = par0DataInputStream.read();
 
-			if (var6 == -1) {
+			if (var8 == -1) {
 				return null;
 			}
 
-			if (par1 && !serverPacketIdList.contains(Integer.valueOf(var6)) || !par1 && !clientPacketIdList.contains(Integer.valueOf(var6))) {
-				throw new IOException("Bad packet id " + var6);
+			if (par1 && !serverPacketIdList.contains(Integer.valueOf(var8)) || !par1 && !clientPacketIdList.contains(Integer.valueOf(var8))) {
+				throw new IOException("Bad packet id " + var8);
 			}
 
-			var3 = getNewPacket(var6);
+			var4 = getNewPacket(var8);
 
-			if (var3 == null) {
-				throw new IOException("Bad packet id " + var6);
+			if (var4 == null) {
+				throw new IOException("Bad packet id " + var8);
 			}
 
-			var3.readPacketData(par0DataInputStream);
-			++recievedID;
-			recievedSize += (long)var3.getPacketSize();
-		} catch (EOFException var5) {
+			if (var4 instanceof Packet254ServerPing) {
+				par2Socket.setSoTimeout(1500);
+			}
+
+			var4.readPacketData(par0DataInputStream);
+			++receivedID;
+			receivedSize += (long)var4.getPacketSize();
+		} catch (EOFException var7) {
 			System.out.println("Reached end of stream");
 			return null;
 		}
 
-		PacketCount.countPacket(var6, (long)var3.getPacketSize());
-		++recievedID;
-		recievedSize += (long)var3.getPacketSize();
-		return var3;
+		PacketCount.countPacket(var8, (long)var4.getPacketSize());
+		++receivedID;
+		receivedSize += (long)var4.getPacketSize();
+		par2Socket.setSoTimeout(var5);
+		return var4;
 	}
 
 	/**

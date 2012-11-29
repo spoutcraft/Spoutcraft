@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.Minecraft; // Spout
 
 public class ChunkCache implements IBlockAccess {
 	private int chunkX;
@@ -226,6 +226,13 @@ public class ChunkCache implements IBlockAccess {
 	}
 
 	/**
+	 * Return the Vec3Pool object for this world.
+	 */
+	public Vec3Pool getWorldVec3Pool() {
+		return this.worldObj.getWorldVec3Pool();
+	}
+
+	/**
 	 * Returns true if the block at the specified coordinates is empty
 	 */
 	public boolean isAirBlock(int par1, int par2, int par3) {
@@ -310,6 +317,14 @@ public class ChunkCache implements IBlockAccess {
 	 */
 	public int getHeight() {
 		return 256;
+	}
+
+	/**
+	 * Is this block powering in the specified direction Args: x, y, z, direction
+	 */
+	public boolean isBlockProvidingPowerTo(int par1, int par2, int par3, int par4) {
+		int var5 = this.getBlockId(par1, par2, par3);
+		return var5 == 0 ? false : Block.blocksList[var5].isProvidingStrongPower(this, par1, par2, par3, par4);
 	}
 
 // Spout Start

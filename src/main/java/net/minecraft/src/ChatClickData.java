@@ -14,7 +14,9 @@ public class ChatClickData {
 	private final int field_78312_d;
 	private final int field_78313_e;
 	private final String field_78310_f;
-	private final String field_78311_g;
+
+	/** The URL which was clicked on. */
+	private final String clickedUrl;
 
 	public ChatClickData(FontRenderer par1FontRenderer, ChatLine par2ChatLine, int par3, int par4) {
 		this.fontR = par1FontRenderer;
@@ -22,18 +24,21 @@ public class ChatClickData {
 		this.field_78312_d = par3;
 		this.field_78313_e = par4;
 		this.field_78310_f = par1FontRenderer.trimStringToWidth(par2ChatLine.getChatLineString(), par3);
-		this.field_78311_g = this.func_78307_h();
+		this.clickedUrl = this.findClickedUrl();
 	}
 
-	public String func_78309_f() {
-		return this.field_78311_g;
+	/**
+	 * Gets the URL which was clicked on.
+	 */
+	public String getClickedUrl() {
+		return this.clickedUrl;
 	}
 
 	/**
 	 * computes the URI from the clicked chat data object
 	 */
 	public URI getURI() {
-		String var1 = this.func_78309_f();
+		String var1 = this.getClickedUrl();
 
 		if (var1 == null) {
 			return null;
@@ -58,7 +63,7 @@ public class ChatClickData {
 		}
 	}
 
-	private String func_78307_h() {
+	private String findClickedUrl() {
 		int var1 = this.field_78310_f.lastIndexOf(" ", this.field_78310_f.length()) + 1;
 
 		if (var1 < 0) {

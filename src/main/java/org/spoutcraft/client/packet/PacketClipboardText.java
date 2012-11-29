@@ -23,7 +23,6 @@ import java.io.IOException;
 
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
-import org.spoutcraft.client.player.ChatManager;
 
 public class PacketClipboardText implements SpoutPacket {
 	protected String text;
@@ -46,7 +45,6 @@ public class PacketClipboardText implements SpoutPacket {
 	}
 
 	public void run(int playerId) {
-		ChatManager.copy(text);
 	}
 
 	public PacketType getPacketType() {

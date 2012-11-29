@@ -148,23 +148,23 @@ public class GuiChatSettings extends GuiSpoutScreen {
 			mc.displayGuiScreen(parent);
 			return;
 		}
-		Runnable save = new Runnable() {
+		/*Runnable save = new Runnable() {
 			public void run() {
 				SpoutClient.getInstance().getChatManager().save();
 				if (chat != null) {
 					chat.reparse();
 				}
 			}
-		};
+		};*/
 		boolean regex = Configuration.isChatUsesRegex();
 		if (btn == buttonAdvancedMentions) {
-			GuiListEdit editor = new GuiListEdit(save, "Highlight List", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().wordHighlight);
-			mc.displayGuiScreen(editor);
+			//GuiListEdit editor = new GuiListEdit(save, "Highlight List", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().wordHighlight);
+			//mc.displayGuiScreen(editor);
 			return;
 		}
 		if (btn == buttonConfigureIgnores) {
-			GuiListEdit editor = new GuiListEdit(save, "Ignore List", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().ignorePeople);
-			mc.displayGuiScreen(editor);
+			//GuiListEdit editor = new GuiListEdit(save, "Ignore List", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().ignorePeople);
+			//mc.displayGuiScreen(editor);
 			return;
 		}
 		if (btn == checkShowMentions) {

@@ -49,9 +49,9 @@ public class ContainerEnchantment extends Container {
 	
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
-		par1ICrafting.updateCraftingInventoryInfo(this, 0, this.enchantLevels[0]);
-		par1ICrafting.updateCraftingInventoryInfo(this, 1, this.enchantLevels[1]);
-		par1ICrafting.updateCraftingInventoryInfo(this, 2, this.enchantLevels[2]);
+		par1ICrafting.sendProgressBarUpdate(this, 0, this.enchantLevels[0]);
+		par1ICrafting.sendProgressBarUpdate(this, 1, this.enchantLevels[1]);
+		par1ICrafting.sendProgressBarUpdate(this, 2, this.enchantLevels[2]);
 	}
 
 	/**
@@ -59,13 +59,12 @@ public class ContainerEnchantment extends Container {
 	 */
 	public void updateCraftingResults() {
 		super.updateCraftingResults();
-		Iterator var1 = this.crafters.iterator();
 
-		while (var1.hasNext()) {
-			ICrafting var2 = (ICrafting)var1.next();
-			var2.updateCraftingInventoryInfo(this, 0, this.enchantLevels[0]);
-			var2.updateCraftingInventoryInfo(this, 1, this.enchantLevels[1]);
-			var2.updateCraftingInventoryInfo(this, 2, this.enchantLevels[2]);
+		for (int var1 = 0; var1 < this.crafters.size(); ++var1) {
+			ICrafting var2 = (ICrafting)this.crafters.get(var1);
+			var2.sendProgressBarUpdate(this, 0, this.enchantLevels[0]);
+			var2.sendProgressBarUpdate(this, 1, this.enchantLevels[1]);
+			var2.sendProgressBarUpdate(this, 2, this.enchantLevels[2]);
 		}
 	}
 
@@ -149,7 +148,7 @@ public class ContainerEnchantment extends Container {
 				List var4 = EnchantmentHelper.buildEnchantmentList(this.rand, var3, this.enchantLevels[par2]);
 
 				if (var4 != null) {
-					par1EntityPlayer.removeExperience(this.enchantLevels[par2]);
+					par1EntityPlayer.addExperienceLevel(-this.enchantLevels[par2]);
 					Iterator var5 = var4.iterator();
 
 					while (var5.hasNext()) {
@@ -187,47 +186,47 @@ public class ContainerEnchantment extends Container {
 	}
 
 	/**
-	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
 	 */
-	public ItemStack transferStackInSlot(int par1) {
-		ItemStack var2 = null;
-		Slot var3 = (Slot)this.inventorySlots.get(par1);
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+		ItemStack var3 = null;
+		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
-		if (var3 != null && var3.getHasStack()) {
-			ItemStack var4 = var3.getStack();
-			var2 = var4.copy();
+		if (var4 != null && var4.getHasStack()) {
+			ItemStack var5 = var4.getStack();
+			var3 = var5.copy();
 
-			if (par1 == 0) {
-				if (!this.mergeItemStack(var4, 1, 37, true)) {
+			if (par2 == 0) {
+				if (!this.mergeItemStack(var5, 1, 37, true)) {
 					return null;
 				}
 			} else {
-				if (((Slot)this.inventorySlots.get(0)).getHasStack() || !((Slot)this.inventorySlots.get(0)).isItemValid(var4)) {
+				if (((Slot)this.inventorySlots.get(0)).getHasStack() || !((Slot)this.inventorySlots.get(0)).isItemValid(var5)) {
 					return null;
 				}
 
-				if (var4.hasTagCompound() && var4.stackSize == 1) {
-					((Slot)this.inventorySlots.get(0)).putStack(var4.copy());
-					var4.stackSize = 0;
-				} else if (var4.stackSize >= 1) {
-					((Slot)this.inventorySlots.get(0)).putStack(new ItemStack(var4.itemID, 1, var4.getItemDamage()));
-					--var4.stackSize;
+				if (var5.hasTagCompound() && var5.stackSize == 1) {
+					((Slot)this.inventorySlots.get(0)).putStack(var5.copy());
+					var5.stackSize = 0;
+				} else if (var5.stackSize >= 1) {
+					((Slot)this.inventorySlots.get(0)).putStack(new ItemStack(var5.itemID, 1, var5.getItemDamage()));
+					--var5.stackSize;
 				}
 			}
 
-			if (var4.stackSize == 0) {
-				var3.putStack((ItemStack)null);
+			if (var5.stackSize == 0) {
+				var4.putStack((ItemStack)null);
 			} else {
-				var3.onSlotChanged();
+				var4.onSlotChanged();
 			}
 
-			if (var4.stackSize == var2.stackSize) {
+			if (var5.stackSize == var3.stackSize) {
 				return null;
 			}
 
-			var3.onPickupFromSlot(var4);
+			var4.onPickupFromSlot(par1EntityPlayer, var5);
 		}
 
-		return var2;
+		return var3;
 	}
 }
