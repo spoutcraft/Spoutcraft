@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 
-import org.spoutcraft.client.entity.CraftPigZombie;
+import org.spoutcraft.client.entity.CraftPigZombie; // Spout
 
 public class EntityPigZombie extends EntityZombie {
 
@@ -183,7 +183,7 @@ public class EntityPigZombie extends EntityZombie {
 	 */
 	public void initCreature() {
 		super.initCreature();
-		this.setVillager(false);
+		this.setIsVillager(false);
 	}
 
 	/**

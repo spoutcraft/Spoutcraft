@@ -9,6 +9,8 @@ public class KeyBinding {
 	public static IntHashMap hash = new IntHashMap();
 	public String keyDescription;
 	public int keyCode;
+
+	/** because _303 wanted me to call it that(Caironater) */
 	public boolean pressed;
 	public int pressTime = 0;
 

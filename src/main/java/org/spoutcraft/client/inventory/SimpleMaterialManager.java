@@ -262,7 +262,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		Item rawItem = Item.itemsList[itemstack.itemID];
 		List<String> list;
 		if (rawItem != null) {
-			list = itemstack.func_82840_a(Minecraft.theMinecraft.thePlayer, Minecraft.theMinecraft.gameSettings.field_82882_x);
+			list = itemstack.getTooltip(Minecraft.theMinecraft.thePlayer, Minecraft.theMinecraft.gameSettings.advancedItemTooltips);
 		} else {
 			list = new ArrayList<String>();
 		}

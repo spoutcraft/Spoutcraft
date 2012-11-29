@@ -437,8 +437,13 @@ public class EntityWolf extends EntityTameable {
 	 */
 	public EntityWolf spawnBabyAnimal(EntityAgeable par1EntityAgeable) {
 		EntityWolf var2 = new EntityWolf(this.worldObj);
-		var2.setOwner(this.getOwnerName());
-		var2.setTamed(true);
+		String var3 = this.getOwnerName();
+
+		if (var3 != null && var3.trim().length() > 0) {
+			var2.setOwner(var3);
+			var2.setTamed(true);
+		}
+
 		return var2;
 	}
 

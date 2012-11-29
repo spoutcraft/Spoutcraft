@@ -71,6 +71,14 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.otherPlayerMPPosRotationIncrements = par9;
 	}
 
+	// Spout Start
+	public void updateCloak() {
+		if (this.cloakUrl == null || this.playerCloakUrl == null) {
+			super.updateCloak();
+		}
+	}
+	// Spout End
+
 	/**
 	 * Called to update the entity's position/logic.
 	 */
@@ -183,12 +191,4 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	public ChunkCoordinates getPlayerCoordinates() {
 		return new ChunkCoordinates(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
 	}
-
-	// Spout Start
-	public void updateCloak() {
-		if (this.cloakUrl == null || this.playerCloakUrl == null) {
-			super.updateCloak();
-		}
-	}
-	// Spout End
 }

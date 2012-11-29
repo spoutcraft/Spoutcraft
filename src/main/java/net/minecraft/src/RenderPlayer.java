@@ -2,12 +2,15 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
+
+// Spout Start
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.player.accessories.AccessoryHandler;
 import org.spoutcraft.client.player.accessories.AccessoryType;
 import org.spoutcraft.client.special.ModelNarrowtux;
 import org.spoutcraft.client.special.VIP;
+// Spout End
 
 public class RenderPlayer extends RenderLiving {
 	public ModelBiped modelBipedMain; // Spout: private to public
@@ -37,8 +40,8 @@ public class RenderPlayer extends RenderLiving {
 
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
-				// Spout Start
 				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png");
+				// Spout Start
 				VIP vip = par1EntityPlayer.vip;
 				int armorId = (par2 == 2 ? 2 : 1);
 				if (vip != null && vip.getArmor(armorId) != null) {
@@ -48,7 +51,7 @@ public class RenderPlayer extends RenderLiving {
 					}
 				}
 				// Spout End
-				ModelBiped var7 = par2 == 2?this.modelArmor:this.modelArmorChestplate;
+				ModelBiped var7 = par2 == 2 ? this.modelArmor : this.modelArmorChestplate;
 				var7.bipedHead.showModel = par2 == 0;
 				var7.bipedHeadwear.showModel = par2 == 0;
 				var7.bipedBody.showModel = par2 == 1 || par2 == 2;
@@ -162,12 +165,13 @@ public class RenderPlayer extends RenderLiving {
 	 * Used to render a player's name above their head
 	 */
 	protected void renderName(EntityPlayer par1EntityPlayer, double par2, double par4, double par6) {
-		if (Minecraft.isGuiEnabled() && par1EntityPlayer != this.renderManager.livingPlayer && !par1EntityPlayer.func_82150_aj()) {
+		if (Minecraft.isGuiEnabled() && par1EntityPlayer != this.renderManager.livingPlayer && !par1EntityPlayer.getHasActivePotion()) {
 			float var8 = 1.6F;
 			float var9 = 0.016666668F * var8;
 			double var10 = par1EntityPlayer.getDistanceSqToEntity(this.renderManager.livingPlayer);
 			float var12 = par1EntityPlayer.isSneaking() ? 32.0F : 64.0F;
-			if(var10 <  (double)(var12 * var12)) {
+
+			if (var10 < (double)(var12 * var12)) {
 				// Spout Start
 				String title = par1EntityPlayer.displayName;
 				//int color = EasterEggs.getEasterEggTitleColor();
@@ -295,7 +299,7 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glTranslatef(0.0F, -0.375F, 0.0F);
 				GL11.glRotatef(-var7, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
-				float var8 = 1.3333334F;
+				var8 = 1.3333334F;
 				GL11.glScalef(var8, var8, var8);
 				this.modelBipedMain.renderEars(0.0625F);
 				GL11.glPopMatrix();
@@ -304,7 +308,7 @@ public class RenderPlayer extends RenderLiving {
 
 		float var11;
 
-		if (this.loadDownloadableImageTexture(par1EntityPlayer.playerCloakUrl, (String)null) && !par1EntityPlayer.func_82150_aj() && !par1EntityPlayer.func_82238_cc()) {
+		if (this.loadDownloadableImageTexture(par1EntityPlayer.playerCloakUrl, (String)null) && !par1EntityPlayer.getHasActivePotion() && !par1EntityPlayer.getHideCape()) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 0.0F, 0.125F);
 			double var22 = par1EntityPlayer.field_71091_bM + (par1EntityPlayer.field_71094_bP - par1EntityPlayer.field_71091_bM) * (double)par2 - (par1EntityPlayer.prevPosX + (par1EntityPlayer.posX - par1EntityPlayer.prevPosX) * (double)par2);

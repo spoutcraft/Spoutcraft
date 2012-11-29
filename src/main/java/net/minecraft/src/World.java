@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import gnu.trove.map.hash.TIntObjectHashMap;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -12,6 +10,7 @@ import java.util.Random;
 import java.util.Set;
 
 // Spout Start
+import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutcraftWorld;
@@ -333,7 +332,6 @@ public abstract class World implements IBlockAccess {
 		return Block.blocksList[var4] != null ? Block.blocksList[var4].getRenderType() : -1;
 	}
 
-
 	/**
 	 * Returns whether a block exists at world coordinates x, y, z
 	 */
@@ -418,7 +416,7 @@ public abstract class World implements IBlockAccess {
 				this.theProfiler.endSection();
 
 				if (par6 && var8 && (this.isRemote || var7.deferRender)) {
-					this.markBlockNeedsUpdate(par1, par2, par3);
+					this.markBlockForUpdate(par1, par2, par3);
 				}
 
 				return var8;
@@ -445,7 +443,7 @@ public abstract class World implements IBlockAccess {
 				this.theProfiler.endSection();
 
 				if (var6 && (this.isRemote || var5.deferRender)) {
-					this.markBlockNeedsUpdate(par1, par2, par3);
+					this.markBlockForUpdate(par1, par2, par3);
 				}
 
 				return var6;
@@ -508,7 +506,7 @@ public abstract class World implements IBlockAccess {
 				boolean var8 = var5.setBlockMetadata(var6, par2, var7, par4);
 
 				if (var8 && (this.isRemote || var5.deferRender && Block.requiresSelfNotify[var5.getBlockID(var6, par2, var7) & 4095])) {
-					this.markBlockNeedsUpdate(par1, par2, par3);
+					this.markBlockForUpdate(par1, par2, par3);
 				}
 
 				return var8;
@@ -543,11 +541,12 @@ public abstract class World implements IBlockAccess {
 	}
 
 	/**
-	 * Marks the block as needing an update with the renderer. Args: x, y, z
+	 * On the client, re-renders the block. On the server, sends the block to the client (which will re-render it),
+	 * including the tile entity description packet if applicable. Args: x, y, z
 	 */
-	public void markBlockNeedsUpdate(int par1, int par2, int par3) {
+	public void markBlockForUpdate(int par1, int par2, int par3) {
 		for (int var4 = 0; var4 < this.worldAccesses.size(); ++var4) {
-			((IWorldAccess)this.worldAccesses.get(var4)).markBlockNeedsUpdate(par1, par2, par3);
+			((IWorldAccess)this.worldAccesses.get(var4)).markBlockForUpdate(par1, par2, par3);
 		}
 	}
 
@@ -576,21 +575,25 @@ public abstract class World implements IBlockAccess {
 			}
 		}
 
-		this.markBlocksDirty(par1, par3, par2, par1, par4, par2);
+		this.markBlockRangeForRenderUpdate(par1, par3, par2, par1, par4, par2);
 	}
 
 	/**
-	 * calls the 'MarkBlockAsNeedsUpdate' in all block accesses in this world
+	 * On the client, re-renders this block. On the server, does nothing. Appears to be redundant.
 	 */
-	public void markBlockAsNeedsUpdate(int par1, int par2, int par3) {
+	public void markBlockForRenderUpdate2(int par1, int par2, int par3) {
 		for (int var4 = 0; var4 < this.worldAccesses.size(); ++var4) {
-			((IWorldAccess)this.worldAccesses.get(var4)).markBlockRangeNeedsUpdate(par1, par2, par3, par1, par2, par3);
+			((IWorldAccess)this.worldAccesses.get(var4)).markBlockRangeForRenderUpdate(par1, par2, par3, par1, par2, par3);
 		}
 	}
 
-	public void markBlocksDirty(int par1, int par2, int par3, int par4, int par5, int par6) {
+	/**
+	 * On the client, re-renders all blocks in this range, inclusive. On the server, does nothing. Args: min x, min y, min
+	 * z, max x, max y, max z
+	 */
+	public void markBlockRangeForRenderUpdate(int par1, int par2, int par3, int par4, int par5, int par6) {
 		for (int var7 = 0; var7 < this.worldAccesses.size(); ++var7) {
-			((IWorldAccess)this.worldAccesses.get(var7)).markBlockRangeNeedsUpdate(par1, par2, par3, par4, par5, par6);
+			((IWorldAccess)this.worldAccesses.get(var7)).markBlockRangeForRenderUpdate(par1, par2, par3, par4, par5, par6);
 		}
 	}
 
@@ -843,7 +846,7 @@ public abstract class World implements IBlockAccess {
 						var6.setLightValue(par1EnumSkyBlock, par2 & 15, par3, par4 & 15, par5);
 
 						for (int var7 = 0; var7 < this.worldAccesses.size(); ++var7) {
-							((IWorldAccess)this.worldAccesses.get(var7)).markBlockNeedsUpdate2(par2, par3, par4);
+							((IWorldAccess)this.worldAccesses.get(var7)).markBlockForRenderUpdate(par2, par3, par4);
 						}
 					}
 				}
@@ -852,11 +855,11 @@ public abstract class World implements IBlockAccess {
 	}
 
 	/**
-	 * all WorldAcceses mark this block as dirty
+	 * On the client, re-renders this block. On the server, does nothing. Used for lighting updates.
 	 */
-	public void markBlockNeedsUpdateForAll(int par1, int par2, int par3) {
+	public void markBlockForRenderUpdate(int par1, int par2, int par3) {
 		for (int var4 = 0; var4 < this.worldAccesses.size(); ++var4) {
-			((IWorldAccess)this.worldAccesses.get(var4)).markBlockNeedsUpdate2(par1, par2, par3);
+			((IWorldAccess)this.worldAccesses.get(var4)).markBlockForRenderUpdate(par1, par2, par3);
 		}
 	}
 
@@ -1088,6 +1091,7 @@ public abstract class World implements IBlockAccess {
 			for (int var5 = 0; var5 < this.worldAccesses.size(); ++var5) {
 				((IWorldAccess)this.worldAccesses.get(var5)).func_85102_a(par1EntityPlayer, par2Str, par1EntityPlayer.posX, par1EntityPlayer.posY - (double)par1EntityPlayer.yOffset, par1EntityPlayer.posZ, par3, par4);
 			}
+		}
 	}
 
 	/**
@@ -1559,8 +1563,8 @@ public abstract class World implements IBlockAccess {
 
 			try {
 				var2.onUpdate();
-			} catch (Throwable var6) {
-				var4 = CrashReport.func_85055_a(var6, "Ticking entity");
+			} catch (Throwable var8) {
+				var4 = CrashReport.func_85055_a(var8, "Ticking entity");
 				var5 = var4.func_85058_a("Entity being ticked");
 
 				if (var2 == null) {
@@ -1616,8 +1620,8 @@ public abstract class World implements IBlockAccess {
 			if (!var2.isDead) {
 				try {
 					this.updateEntity(var2);
-				} catch (Throwable var7) {
-					var4 = CrashReport.func_85055_a(var7, "Ticking entity");
+				} catch (Throwable var6) {
+					var4 = CrashReport.func_85055_a(var6, "Ticking entity");
 					var5 = var4.func_85058_a("Entity being ticked");
 
 					if (var2 == null) {
@@ -1658,8 +1662,8 @@ public abstract class World implements IBlockAccess {
 			if (!var9.isInvalid() && var9.func_70309_m() && this.blockExists(var9.xCoord, var9.yCoord, var9.zCoord)) {
 				try {
 					var9.updateEntity();
-				} catch (Throwable var8) {
-					var4 = CrashReport.func_85055_a(var8, "Ticking tile entity");
+				} catch (Throwable var7) {
+					var4 = CrashReport.func_85055_a(var7, "Ticking tile entity");
 					var5 = var4.func_85058_a("Tile entity being ticked");
 
 					if (var9 == null) {
@@ -1688,6 +1692,13 @@ public abstract class World implements IBlockAccess {
 		this.scanningTileEntities = false;
 
 		if (!this.entityRemoval.isEmpty()) {
+			this.loadedTileEntityList.removeAll(this.entityRemoval);
+			this.entityRemoval.clear();
+		}
+
+		this.theProfiler.endStartSection("pendingTileEntities");
+
+		if (!this.addedTileEntityList.isEmpty()) {
 			for (int var10 = 0; var10 < this.addedTileEntityList.size(); ++var10) {
 				TileEntity var12 = (TileEntity)this.addedTileEntityList.get(var10);
 
@@ -1704,7 +1715,7 @@ public abstract class World implements IBlockAccess {
 						}
 					}
 
-					this.markBlockNeedsUpdate(var12.xCoord, var12.yCoord, var12.zCoord);
+					this.markBlockForUpdate(var12.xCoord, var12.yCoord, var12.zCoord);
 				}
 			}
 
@@ -2990,7 +3001,7 @@ public abstract class World implements IBlockAccess {
 		if (var11 != null && !this.checkIfAABBIsClearExcludingEntity(var11, par7Entity)) {
 			return false;
 		} else {
-			if (var9 != null && (var9 == Block.waterMoving || var9 == Block.waterStill || var9 == Block.lavaMoving || var9 == Block.lavaStill || var9 == Block.fire || var9.blockMaterial.isGroundCover())) {
+			if (var9 != null && (var9 == Block.waterMoving || var9 == Block.waterStill || var9 == Block.lavaMoving || var9 == Block.lavaStill || var9 == Block.fire || var9.blockMaterial.isReplaceable())) {
 				var9 = null;
 			}
 
@@ -3039,7 +3050,7 @@ public abstract class World implements IBlockAccess {
 	 */
 	public boolean isBlockProvidingPowerTo(int par1, int par2, int par3, int par4) {
 		int var5 = this.getBlockId(par1, par2, par3);
-		return var5 == 0 ? false : Block.blocksList[var5].isIndirectlyPoweringTo(this, par1, par2, par3, par4);
+		return var5 == 0 ? false : Block.blocksList[var5].isProvidingStrongPower(this, par1, par2, par3, par4);
 	}
 
 	/**
@@ -3058,7 +3069,7 @@ public abstract class World implements IBlockAccess {
 			return this.isBlockGettingPowered(par1, par2, par3);
 		} else {
 			int var5 = this.getBlockId(par1, par2, par3);
-			return var5 == 0 ? false : Block.blocksList[var5].isPoweringTo(this, par1, par2, par3, par4);
+			return var5 == 0 ? false : Block.blocksList[var5].isProvidingWeakPower(this, par1, par2, par3, par4);
 		}
 	}
 
@@ -3124,7 +3135,7 @@ public abstract class World implements IBlockAccess {
 					var16 = par7 * 0.800000011920929D;
 				}
 
-				if (var13.func_82150_aj()) {
+				if (var13.getHasActivePotion()) {
 					float var18 = var13.func_82243_bO();
 
 					if (var18 < 0.1F) {
@@ -3454,6 +3465,9 @@ public abstract class World implements IBlockAccess {
 		}
 	}
 
+	/**
+	 * Return the Vec3Pool object for this world.
+	 */
 	public Vec3Pool getWorldVec3Pool() {
 		return this.vecPool;
 	}

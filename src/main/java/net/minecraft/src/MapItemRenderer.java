@@ -103,7 +103,7 @@ public class MapItemRenderer {
 		GL11.glTranslatef(0.0F, 0.0F, -0.04F);
 		GL11.glScalef(1.0F, 1.0F, 1.0F);
 		// Spout Start
-		// Removed in 1.4 so temp removed via comment
+		// TODO Removed in 1.4 so temp removed via comment
 		/*ItemStack inHand = par1EntityPlayer.inventory.getCurrentItem();
 		String customName = null;
 		if (inHand != null) {

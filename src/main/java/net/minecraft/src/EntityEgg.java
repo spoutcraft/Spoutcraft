@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftEgg;
+import org.spoutcraft.client.entity.CraftEgg; // Spout
 
 public class EntityEgg extends EntityThrowable {
 	public EntityEgg(World par1World) {

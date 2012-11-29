@@ -59,7 +59,7 @@ public class ItemBlock extends Item {
 
 		if (par1ItemStack.stackSize == 0) {
 			return false;
-		} else if (!par2EntityPlayer.func_82247_a(par4, par5, par6, par7, par1ItemStack)) {
+		} else if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack)) {
 			return false;
 		} else if (par5 == 255 && Block.blocksList[this.blockID].blockMaterial.isSolid()) {
 			return false;

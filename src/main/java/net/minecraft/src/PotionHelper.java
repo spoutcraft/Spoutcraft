@@ -57,6 +57,7 @@ public class PotionHelper {
 	 */
 	public static int calcPotionLiquidColor(Collection par0Collection) {
 		int var1 = Colorizer.getWaterBottleColor(); // Spout HD
+
 		if (par0Collection != null && !par0Collection.isEmpty()) {
 			float var2 = 0.0F;
 			float var3 = 0.0F;

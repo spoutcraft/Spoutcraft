@@ -14,6 +14,8 @@ public class ChatClickData {
 	private final int field_78312_d;
 	private final int field_78313_e;
 	private final String field_78310_f;
+
+	/** The URL which was clicked on. */
 	private final String clickedUrl;
 
 	public ChatClickData(FontRenderer par1FontRenderer, ChatLine par2ChatLine, int par3, int par4) {
@@ -25,6 +27,9 @@ public class ChatClickData {
 		this.clickedUrl = this.findClickedUrl();
 	}
 
+	/**
+	 * Gets the URL which was clicked on.
+	 */
 	public String getClickedUrl() {
 		return this.clickedUrl;
 	}
@@ -33,7 +38,7 @@ public class ChatClickData {
 	 * computes the URI from the clicked chat data object
 	 */
 	public URI getURI() {
-		String var1 = this.findClickedUrl();
+		String var1 = this.getClickedUrl();
 
 		if (var1 == null) {
 			return null;

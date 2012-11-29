@@ -27,7 +27,7 @@ public class Profiler {
 	private final Map profilingMap = new HashMap();
 
 	/**
-	 * Clear profiling
+	 * Clear profiling.
 	 */
 	public void clearProfiling() {
 		this.profilingMap.clear();

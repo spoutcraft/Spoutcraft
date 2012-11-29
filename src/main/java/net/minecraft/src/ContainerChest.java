@@ -72,6 +72,7 @@ public class ContainerChest extends Container {
 
 		return var3;
 	}
+
 	/**
 	 * Callback for when the crafting gui is closed.
 	 */

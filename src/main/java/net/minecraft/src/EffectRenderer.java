@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Iterator; // Spout
 import java.util.List;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
@@ -23,7 +23,6 @@ public class EffectRenderer {
 	/** Reference to the World object. */
 	protected World worldObj;
 	private List[] fxLayers = new List[4];
-	private List field_90038_c = new ArrayList();
 	private RenderEngine renderer;
 
 	/** RNG. */
@@ -42,10 +41,6 @@ public class EffectRenderer {
 	}
 
 	public void addEffect(EntityFX par1EntityFX) {
-		this.field_90038_c.add(par1EntityFX);
-	}
-
-	private void func_90037_b(EntityFX par1EntityFX) {
 		int var2 = par1EntityFX.getFXLayer();
 
 		if (this.fxLayers[var2].size() >= 4000) {
@@ -76,14 +71,6 @@ public class EffectRenderer {
 				throw new ReportedException(var4);
 			}
 		}
-
-		Iterator var8 = this.field_90038_c.iterator();
-
-		while (var8.hasNext()) {
-			this.func_90037_b((EntityFX)var8.next());
-		}
-
-		this.field_90038_c.clear();
 	}
 
 	/**
@@ -254,7 +241,7 @@ public class EffectRenderer {
 			if (par4 == 5) {
 				var8 = (double)par1 + var6.getBlockBoundsMaxX() + (double)var7;
 			}
-		}
+
 			// Spout Start
 			boolean custom = false;
 			GenericBlockDesign design = null;

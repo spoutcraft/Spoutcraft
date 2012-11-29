@@ -4,8 +4,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+// Spout Start
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.mod.TileSize;
+// Spout End
 
 import net.minecraft.client.Minecraft;
 

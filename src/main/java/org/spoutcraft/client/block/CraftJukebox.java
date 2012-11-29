@@ -20,6 +20,7 @@
 package org.spoutcraft.client.block;
 
 import net.minecraft.src.BlockJukeBox;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntityRecordPlayer;
 
 import org.spoutcraft.api.Effect;
@@ -41,7 +42,7 @@ public class CraftJukebox extends CraftBlockState implements Jukebox {
 	}
 
 	public Item getPlaying() {
-		return MaterialData.getItem(jukebox.record);
+		return MaterialData.getItem(jukebox.record.itemID);
 	}
 
 	public void setPlaying(Item record) {
@@ -49,7 +50,7 @@ public class CraftJukebox extends CraftBlockState implements Jukebox {
 		if (record != null) {
 			id = record.getRawId();
 		}
-		jukebox.record = id;
+		jukebox.record = new ItemStack(id, 1, 0);
 		jukebox.updateEntity();
 		if (0 == id) {
 			getBlock().setData((byte) 0);

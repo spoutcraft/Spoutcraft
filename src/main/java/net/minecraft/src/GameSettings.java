@@ -11,6 +11,7 @@ import org.lwjgl.opengl.Display;
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
 // Spout End
+
 public class GameSettings {
 	private static final String[] RENDER_DISTANCES = new String[] {"options.renderDistance.far", "options.renderDistance.normal", "options.renderDistance.short", "options.renderDistance.tiny"};
 	private static final String[] DIFFICULTIES = new String[] {"options.difficulty.peaceful", "options.difficulty.easy", "options.difficulty.normal", "options.difficulty.hard"};
@@ -401,6 +402,10 @@ public class GameSettings {
 		}
 	}
 
+	/**
+	 * Returns the translation of the given index in the given String array. If the index is smaller than 0 or greater
+	 * than/equal to the length of the String array, it is changed to 0.
+	 */
 	private static String getTranslation(String[] par0ArrayOfStr, int par1) {
 		if (par1 < 0 || par1 >= par0ArrayOfStr.length) {
 			par1 = 0;
@@ -681,7 +686,6 @@ public class GameSettings {
 	 * Send a client info packet with settings information to the server
 	 */
 	public void sendSettingsToServer() {
-
 		if (this.mc.thePlayer != null) {
 			this.mc.thePlayer.sendQueue.addToSendQueue(new Packet204ClientInfo(this.language, this.renderDistance, this.chatVisibility, this.chatColours, this.difficulty, this.showCape));
 		}

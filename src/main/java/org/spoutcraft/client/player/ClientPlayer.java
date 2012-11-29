@@ -124,7 +124,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer {
 	}
 
 	public Location getCompassTarget() {
-		ChunkCoordinates coords = SpoutClient.getHandle().thePlayer.getSpawnChunk();
+		ChunkCoordinates coords = SpoutClient.getHandle().thePlayer.getBedLocation();
 		return new MutableLocation(SpoutClient.getInstance().getWorld(), coords.posX, coords.posY, coords.posZ);
 	}
 
