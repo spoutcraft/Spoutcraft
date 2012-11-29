@@ -170,7 +170,7 @@
 									</runIf>
 									<targetPath>${project.basedir}</targetPath>
 									<!--<file>http://mcp.ocean-labs.de/files/mcp${mcpVersion}.zip</file>-->
-									<file>http://get.spout.org/content/tool/mcp${mcpVersion}.zip</file>
+									<file>http://mcp.ocean-labs.de/files/mcp723.zip</file>
 									<unpack>true</unpack>
 									<useTrueZipForUnpack>false</useTrueZipForUnpack>
 									<preservePath>true</preservePath>
