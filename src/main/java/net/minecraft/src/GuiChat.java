@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.Minecraft; // Spout
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.spoutcraft.client.config.Configuration;
+import org.spoutcraft.client.config.Configuration; // Spout
 
 public class GuiChat extends GuiScreen {
 	private String field_73898_b = "";
@@ -50,6 +50,7 @@ public class GuiChat extends GuiScreen {
 		
 	}
 	//Spout end
+
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
@@ -151,6 +152,7 @@ public class GuiChat extends GuiScreen {
 
 			if (var4 != null) {
 				URI var5 = var4.getURI();
+
 				if (var5 != null) {
 					if (this.mc.gameSettings.chatLinksPrompt) {
 						this.clickedURI = var5;

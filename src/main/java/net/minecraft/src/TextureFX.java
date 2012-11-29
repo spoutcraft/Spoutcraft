@@ -3,8 +3,8 @@ package net.minecraft.src;
 // Spout HD Start
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.mod.TileSize;
-// Spout HD End
 import net.minecraft.src.RenderEngine;
+// Spout HD End
 import org.lwjgl.opengl.GL11;
 
 public class TextureFX {
@@ -12,6 +12,8 @@ public class TextureFX {
 	public byte[] imageData;
 	public int iconIndex;
 	public boolean anaglyphEnabled;
+
+	/** Texture ID */
 	public int textureId;
 	public int tileSize;
 	public int tileImage;

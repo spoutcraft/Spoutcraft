@@ -119,7 +119,7 @@ public class StringTranslate {
 			} catch (Exception var8) { // Spout IOException -> Exception
 				;
 			}
-			
+
 			this.isUnicode = false;
 
 			if (!"en_US".equals(par1Str)) {

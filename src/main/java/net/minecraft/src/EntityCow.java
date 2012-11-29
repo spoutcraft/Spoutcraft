@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftCow;
+import org.spoutcraft.client.entity.CraftCow; // Spout
 
 public class EntityCow extends EntityAnimal {
 	public EntityCow(World par1World) {

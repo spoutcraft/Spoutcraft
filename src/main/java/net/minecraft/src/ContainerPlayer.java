@@ -41,12 +41,12 @@ public class ContainerPlayer extends Container {
 
 		this.onCraftMatrixChanged(this.craftMatrix);
 	}
-	
+
 	// Spout Start
 	public IInventory getIInventory() {
 		return Minecraft.theMinecraft.thePlayer.inventory;
 	}
-	
+
 	@Override
 	public boolean isSortableInventory() {
 		return true;

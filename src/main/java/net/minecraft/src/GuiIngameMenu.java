@@ -47,16 +47,14 @@ public class GuiIngameMenu extends GuiScreen {
 				break;
 
 			case 1:
-		// Spout Start
-			HeightMapAgent.save();
-			// Spout End
-			par1GuiButton.enabled = false;			
-			mc.statFileWriter.readStat(StatList.leaveGameStat, 1);
-			mc.theWorld.sendQuittingDisconnectingPacket();
-			mc.loadWorld(null);
-			// Spout Start
-			this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); // Spout
-			// Spout End
+				// Spout Start
+				HeightMapAgent.save();
+				// Spout End
+				par1GuiButton.enabled = false;
+				this.mc.statFileWriter.readStat(StatList.leaveGameStat, 1);
+				this.mc.theWorld.sendQuittingDisconnectingPacket();
+				this.mc.loadWorld((WorldClient)null);
+				this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); // Spout
 			case 2:
 			case 3:
 			default:

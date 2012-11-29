@@ -21,7 +21,7 @@ public class EntityMinecart extends Entity implements IInventory {
 	public double pushZ;
 	private final IUpdatePlayerListBox field_82344_g;
 	private boolean field_82345_h;
-	private static final int[][][] field_70500_g = new int[][][]{{{0, 0, -1}, {0, 0, 1}}, {{-1, 0, 0}, {1, 0, 0}}, {{-1, -1, 0}, {1, 0, 0}}, {{-1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, {-1, 0, 0}}, {{0, 0, -1}, {-1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
+	private static final int[][][] field_70500_g = new int[][][] {{{0, 0, -1}, {0, 0, 1}}, {{ -1, 0, 0}, {1, 0, 0}}, {{ -1, -1, 0}, {1, 0, 0}}, {{ -1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, { -1, 0, 0}}, {{0, 0, -1}, { -1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
 
 	/** appears to be the progress of the turn */
 	private int turnProgress;
@@ -260,7 +260,6 @@ public class EntityMinecart extends Entity implements IInventory {
 		this.field_82345_h = false;
 		super.travelToDimension(par1);
 	}
-
 
 	/**
 	 * Called to update the entity's position/logic.

@@ -1,9 +1,6 @@
 package net.minecraft.src;
 
 import java.util.Random;
-// Spout Start
-import org.spoutcraft.client.config.Configuration;
-// Spout End
 
 public abstract class BlockFluid extends Block {
 	protected BlockFluid(int par1, Material par2Material) {
@@ -32,7 +29,7 @@ public abstract class BlockFluid extends Block {
 			return 0xffffff;
 		}
 		int color = par1IBlockAccess.getWaterColorCache(par2, par3, par4);
-		if (color == -1 || Configuration.isFancyBiomeColors()) {
+		if (color == -1 || org.spoutcraft.client.config.Configuration.isFancyBiomeColors()) {
 		
 			int var5 = 0;
 			int var6 = 0;

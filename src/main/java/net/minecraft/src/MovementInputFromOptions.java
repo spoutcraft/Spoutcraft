@@ -10,6 +10,7 @@ public class MovementInputFromOptions extends MovementInput {
 	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) { // Spout - kept parameter
 		this.moveStrafe = 0.0F;
 		this.moveForward = 0.0F;
+
 		if (this.gameSettings.keyBindForward.pressed || par1EntityPlayer.autoforwardToggle) { // Spout
 			++this.moveForward;
 		}
@@ -25,7 +26,6 @@ public class MovementInputFromOptions extends MovementInput {
 		if (this.gameSettings.keyBindRight.pressed) {
 			--this.moveStrafe;
 		}
-		
 		// Spout Start
 		this.flyingDown = this.gameSettings.keyFlyDown.pressed;
 		this.flyingUp = this.gameSettings.keyFlyUp.pressed;
@@ -52,6 +52,7 @@ public class MovementInputFromOptions extends MovementInput {
 
 		this.jump = this.gameSettings.keyBindJump.pressed;
 		this.sneak = this.gameSettings.keyBindSneak.pressed || par1EntityPlayer.sneakToggle; // Spout
+
 		if (this.sneak) {
 			this.moveStrafe = (float)((double)this.moveStrafe * 0.3D);
 			this.moveForward = (float)((double)this.moveForward * 0.3D);

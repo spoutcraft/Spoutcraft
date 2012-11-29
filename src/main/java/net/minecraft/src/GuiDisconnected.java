@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.util.Iterator;
 import java.util.List;
 
-import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient; // Spout
 
 public class GuiDisconnected extends GuiScreen {
 
@@ -44,7 +44,6 @@ public class GuiDisconnected extends GuiScreen {
 		} else {
 			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(var1.translateKey(this.errorDetail), this.width - 50);
 		}
-
 	}
 
 	/**
@@ -64,9 +63,11 @@ public class GuiDisconnected extends GuiScreen {
 		this.drawCenteredString(this.fontRenderer, this.errorMessage, this.width / 2, this.height / 2 - 50, 11184810);
 		int var4 = this.height / 2 - 30;
 
-		for (Iterator var5 = this.field_74245_d.iterator(); var5.hasNext(); var4 += this.fontRenderer.FONT_HEIGHT) {
-			String var6 = (String)var5.next();
-			this.drawCenteredString(this.fontRenderer, var6, this.width / 2, var4, 16777215);
+		if (this.field_74245_d != null) {
+			for (Iterator var5 = this.field_74245_d.iterator(); var5.hasNext(); var4 += this.fontRenderer.FONT_HEIGHT) {
+				String var6 = (String)var5.next();
+				this.drawCenteredString(this.fontRenderer, var6, this.width / 2, var4, 16777215);
+			}
 		}
 
 		super.drawScreen(par1, par2, par3);

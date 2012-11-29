@@ -22,8 +22,8 @@ public class EntityFX extends Entity {
 	 * The blue amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0.
 	 */
 	public float particleBlue;
-	protected float field_82339_as = 1.0F;
 	// Spout End
+	protected float field_82339_as = 1.0F;
 	public static double interpPosX;
 	public static double interpPosY;
 	public static double interpPosZ;
@@ -33,6 +33,9 @@ public class EntityFX extends Entity {
 		this.setSize(0.2F, 0.2F);
 		this.yOffset = this.height / 2.0F;
 		this.setPosition(par2, par4, par6);
+		this.lastTickPosX = par2;
+		this.lastTickPosY = par4;
+		this.lastTickPosZ = par6;
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
 		this.motionX = par8 + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.4F);
 		this.motionY = par10 + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.4F);
@@ -165,5 +168,9 @@ public class EntityFX extends Entity {
 	 */
 	public boolean canAttackWithItem() {
 		return false;
+	}
+
+	public String toString() {
+		return this.getClass().getSimpleName() + ", Pos (" + this.posX + "," + this.posY + "," + this.posZ + "), RGBA (" + this.particleRed + "," + this.particleGreen + "," + this.particleBlue + "," + this.field_82339_as + "), Age " + this.particleAge;
 	}
 }

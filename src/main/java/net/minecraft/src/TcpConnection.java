@@ -157,7 +157,6 @@ public class TcpConnection implements INetworkManager {
 
 			synchronized (this.sendQueueLock) {
 				this.sendQueueByteLength += par1Packet.getPacketSize() + 1;
-				
 				this.dataPackets.add(par1Packet);
 			}
 		}

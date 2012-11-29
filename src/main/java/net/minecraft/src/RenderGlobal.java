@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.mod.Colorizer; // Spout HD
-import com.pclewis.mcpatcher.mod.Shaders;
+import com.pclewis.mcpatcher.mod.Shaders; // Spout HD
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -163,11 +163,11 @@ public class RenderGlobal implements IWorldAccess {
 	 * The offset used to determine if a renderer is one of the sixteenth that are being updated this frame
 	 */
 	int frustumCheckOffset = 0;
+
 	// Spout Start
 	private long lastMovedTime = System.currentTimeMillis();
 	private long frameCount = 0;
 	public static int renderersToUpdateLastTick = 0;
-
 	// Spout End
 
 	public RenderGlobal(Minecraft par1Minecraft, RenderEngine par2RenderEngine) {
@@ -202,7 +202,7 @@ public class RenderGlobal implements IWorldAccess {
 		GL11.glPopMatrix();
 		Tessellator var5 = Tessellator.instance;
 		this.glSkyList = this.starGLCallList + 1;
-		GL11.glNewList(this.glSkyList, 4864 /* GL_COMPILE */); // Spout
+		GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
 		byte var7 = 64;
 		int var8 = 256 / var7 + 2;
 		float var6 = 16.0F;
@@ -222,7 +222,7 @@ public class RenderGlobal implements IWorldAccess {
 
 		GL11.glEndList();
 		this.glSkyList2 = this.starGLCallList + 2;
-		GL11.glNewList(this.glSkyList2, 4864 /* GL_COMPILE */); // Spout
+		GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
 		var6 = -16.0F;
 		var5.startDrawingQuads();
 
@@ -238,7 +238,6 @@ public class RenderGlobal implements IWorldAccess {
 		var5.draw();
 		GL11.glEndList();
 	}
-	// Spout End
 
 	private void renderStars() {
 		// Spout Start
@@ -250,7 +249,7 @@ public class RenderGlobal implements IWorldAccess {
 		Tessellator var2 = Tessellator.instance;
 		var2.startDrawingQuads();
 
-		for (int var3 = 0; var3 < SpoutClient.getInstance().getSkyManager().getStarFrequency(); ++var3) {
+		for (int var3 = 0; var3 < SpoutClient.getInstance().getSkyManager().getStarFrequency(); ++var3) { // Spout
 			double var4 = (double)(var1.nextFloat() * 2.0F - 1.0F);
 			double var6 = (double)(var1.nextFloat() * 2.0F - 1.0F);
 			double var8 = (double)(var1.nextFloat() * 2.0F - 1.0F);
@@ -330,6 +329,7 @@ public class RenderGlobal implements IWorldAccess {
 			}
 
 			var1 = 64 << 3 - this.renderDistance;
+
 			// Spout Start
 			if (Configuration.isFarView()) {
 				var1 = 512;
@@ -803,7 +803,6 @@ public class RenderGlobal implements IWorldAccess {
 		for (int var4 = 0; var4 < this.allRenderLists.length; ++var4) {
 			this.allRenderLists[var4].func_78419_a();
 		}
-
 
 		this.mc.entityRenderer.disableLightmap(par2);
 	}
@@ -1483,7 +1482,7 @@ public class RenderGlobal implements IWorldAccess {
 		Shaders.glDisableWrapper(GL11.GL_ALPHA_TEST); // Spout
 	}
 
-	public void func_72717_a(Tessellator par1Tessellator, EntityPlayer par2EntityPlayer, float par3) {
+	public void drawBlockDamageTexture(Tessellator par1Tessellator, EntityPlayer par2EntityPlayer, float par3) {
 		double var4 = par2EntityPlayer.lastTickPosX + (par2EntityPlayer.posX - par2EntityPlayer.lastTickPosX) * (double)par3;
 		double var6 = par2EntityPlayer.lastTickPosY + (par2EntityPlayer.posY - par2EntityPlayer.lastTickPosY) * (double)par3;
 		double var8 = par2EntityPlayer.lastTickPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.lastTickPosZ) * (double)par3;
@@ -1640,25 +1639,25 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	/**
-	 * Will mark the block and neighbors that their renderers need an update (could be all the same renderer potentially)
-	 * Args: x, y, z
+	 * On the client, re-renders the block. On the server, sends the block to the client (which will re-render it),
+	 * including the tile entity description packet if applicable. Args: x, y, z
 	 */
-	public void markBlockNeedsUpdate(int par1, int par2, int par3) {
+	public void markBlockForUpdate(int par1, int par2, int par3) {
 		this.markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par1 + 1, par2 + 1, par3 + 1);
 	}
 
 	/**
-	 * As of mc 1.2.3 this method has exactly the same signature and does exactly the same as markBlockNeedsUpdate
+	 * On the client, re-renders this block. On the server, does nothing. Used for lighting updates.
 	 */
-	public void markBlockNeedsUpdate2(int par1, int par2, int par3) {
+	public void markBlockForRenderUpdate(int par1, int par2, int par3) {
 		this.markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par1 + 1, par2 + 1, par3 + 1);
 	}
 
 	/**
-	 * Called across all registered IWorldAccess instances when a block range is invalidated. Args: minX, minY, minZ, maxX,
-	 * maxY, maxZ
+	 * On the client, re-renders all blocks in this range, inclusive. On the server, does nothing. Args: min x, min y, min
+	 * z, max x, max y, max z
 	 */
-	public void markBlockRangeNeedsUpdate(int par1, int par2, int par3, int par4, int par5, int par6) {
+	public void markBlockRangeForRenderUpdate(int par1, int par2, int par3, int par4, int par5, int par6) {
 		this.markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par4 + 1, par5 + 1, par6 + 1);
 	}
 
@@ -1715,10 +1714,12 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	public EntityFX func_72726_b(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {
+		// Spout Start
 		return func_40193_b(par1Str, par2, par4, par6, par8, par10, par12, 16.0);
 	}
 
-	public EntityFX func_40193_b(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12, double var22) { // Spout
+	public EntityFX func_40193_b(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12, double var22) { 
+		// Spout End
 		if (this.mc != null && this.mc.renderViewEntity != null && this.mc.effectRenderer != null) {
 			int var14 = this.mc.gameSettings.particleSetting;
 
@@ -1747,6 +1748,7 @@ public class RenderGlobal implements IWorldAccess {
 				return (EntityFX)var21;
 			} else {
 				// Spout Start
+				//double var22 = 16.0D; // promoted to parameter
 				if (!org.spoutcraft.client.config.Configuration.isFancyParticles()) {
 					var22 = 6D;
 				}
@@ -1790,7 +1792,6 @@ public class RenderGlobal implements IWorldAccess {
 						((EntitySpellParticleFX)var21).func_70589_b(144);
 						float var24 = this.theWorld.rand.nextFloat() * 0.5F + 0.35F;
 						((EntityFX)var21).setRBGColorF(1.0F * var24, 0.0F * var24, 1.0F * var24);
-						((EntitySpellParticleFX)var21).func_70589_b(144);
 					} else if (par1Str.equals("note")) {
 						var21 = new EntityNoteFX(this.theWorld, par2, par4, par6, par8, par10, par12);
 					} else if (par1Str.equals("portal")) {
@@ -1941,28 +1942,28 @@ public class RenderGlobal implements IWorldAccess {
 
 		switch (par2) {
 			case 1000:
-				this.theWorld.playSound((double) par3, (double) par4, (double) par5, "random.click", 1.0F, 1.0F);
+				this.theWorld.playSound((double)par3, (double)par4, (double)par5, "random.click", 1.0F, 1.0F);
 				break;
 
 			case 1001:
-				this.theWorld.playSound((double) par3, (double) par4, (double) par5, "random.click", 1.0F, 1.2F);
+				this.theWorld.playSound((double)par3, (double)par4, (double)par5, "random.click", 1.0F, 1.2F);
 				break;
 
 			case 1002:
-				this.theWorld.playSound((double) par3, (double) par4, (double) par5, "random.bow", 1.0F, 1.2F);
+				this.theWorld.playSound((double)par3, (double)par4, (double)par5, "random.bow", 1.0F, 1.2F);
 				break;
 
 			case 1003:
 				if (Math.random() < 0.5D) {
-					this.theWorld.playSound((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "random.door_open", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
+					this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_open", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
 				} else {
-					this.theWorld.playSound((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "random.door_close", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
+					this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_close", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
 				}
 
 				break;
 
 			case 1004:
-				this.theWorld.playSound((double) ((float) par3 + 0.5F), (double) ((float) par4 + 0.5F), (double) ((float) par5 + 0.5F), "random.fizz", 0.5F, 2.6F + (var7.nextFloat() - var7.nextFloat()) * 0.8F);
+				this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.fizz", 0.5F, 2.6F + (var7.nextFloat() - var7.nextFloat()) * 0.8F);
 				break;
 
 			case 1005:
@@ -1975,11 +1976,11 @@ public class RenderGlobal implements IWorldAccess {
 				break;
 
 			case 1007:
-				this.theWorld.playSound((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "mob.ghast.charge", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.charge", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
 				break;
 
 			case 1008:
-				this.theWorld.playSound((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "mob.ghast.fireball", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
 				break;
 
 			case 1009:
@@ -1987,15 +1988,15 @@ public class RenderGlobal implements IWorldAccess {
 				break;
 
 			case 1010:
-				this.theWorld.playSound((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "mob.zombie.wood", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.wood", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
 				break;
 
 			case 1011:
-				this.theWorld.playSound((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "mob.zombie.metal", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.metal", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
 				break;
 
 			case 1012:
-				this.theWorld.playSound((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
 				break;
 
 			case 1014:
@@ -2092,7 +2093,7 @@ public class RenderGlobal implements IWorldAccess {
 					}
 				}
 
-				this.theWorld.playSound((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "random.glass", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.glass", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
 				break;
 
 			case 2003:

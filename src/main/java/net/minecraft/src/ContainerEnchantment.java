@@ -49,9 +49,9 @@ public class ContainerEnchantment extends Container {
 	
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
-		par1ICrafting.updateCraftingInventoryInfo(this, 0, this.enchantLevels[0]);
-		par1ICrafting.updateCraftingInventoryInfo(this, 1, this.enchantLevels[1]);
-		par1ICrafting.updateCraftingInventoryInfo(this, 2, this.enchantLevels[2]);
+		par1ICrafting.sendProgressBarUpdate(this, 0, this.enchantLevels[0]);
+		par1ICrafting.sendProgressBarUpdate(this, 1, this.enchantLevels[1]);
+		par1ICrafting.sendProgressBarUpdate(this, 2, this.enchantLevels[2]);
 	}
 
 	/**
@@ -62,9 +62,9 @@ public class ContainerEnchantment extends Container {
 
 		for (int var1 = 0; var1 < this.crafters.size(); ++var1) {
 			ICrafting var2 = (ICrafting)this.crafters.get(var1);
-			var2.updateCraftingInventoryInfo(this, 0, this.enchantLevels[0]);
-			var2.updateCraftingInventoryInfo(this, 1, this.enchantLevels[1]);
-			var2.updateCraftingInventoryInfo(this, 2, this.enchantLevels[2]);
+			var2.sendProgressBarUpdate(this, 0, this.enchantLevels[0]);
+			var2.sendProgressBarUpdate(this, 1, this.enchantLevels[1]);
+			var2.sendProgressBarUpdate(this, 2, this.enchantLevels[2]);
 		}
 	}
 
