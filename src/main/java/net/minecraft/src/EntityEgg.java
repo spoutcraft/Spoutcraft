@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftEgg;
+import org.spoutcraft.client.entity.CraftEgg; // Spout
 
 public class EntityEgg extends EntityThrowable {
 	public EntityEgg(World par1World) {
@@ -29,7 +29,7 @@ public class EntityEgg extends EntityThrowable {
 	 */
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
 		if (par1MovingObjectPosition.entityHit != null) {
-			par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), 0);
+			par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_85052_h()), 0);
 		}
 
 		if (!this.worldObj.isRemote && this.rand.nextInt(8) == 0) {

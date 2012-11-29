@@ -11,7 +11,7 @@ public class Packet1Login extends Packet {
 	/** The player's entity ID */
 	public int clientEntityId = 0;
 	public WorldType terrainType;
-	public boolean field_73560_c;
+	public boolean hardcoreMode;
 	public EnumGameType gameType;
 
 	/** -1: The Nether, 0: The Overworld, 1: The End */
@@ -36,7 +36,7 @@ public class Packet1Login extends Packet {
 		this.gameType = par3EnumGameType;
 		this.worldHeight = (byte)par7;
 		this.maxPlayers = (byte)par8;
-		this.field_73560_c = par4;
+		this.hardcoreMode = par4;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class Packet1Login extends Packet {
 		}
 
 		byte var3 = par1DataInputStream.readByte();
-		this.field_73560_c = (var3 & 8) == 8;
+		this.hardcoreMode = (var3 & 8) == 8;
 		int var4 = var3 & -9;
 		this.gameType = EnumGameType.getByID(var4);
 		this.dimension = par1DataInputStream.readByte();
@@ -69,7 +69,7 @@ public class Packet1Login extends Packet {
 		writeString(this.terrainType == null ? "" : this.terrainType.getWorldTypeName(), par1DataOutputStream);
 		int var2 = this.gameType.getID();
 
-		if (this.field_73560_c) {
+		if (this.hardcoreMode) {
 			var2 |= 8;
 		}
 

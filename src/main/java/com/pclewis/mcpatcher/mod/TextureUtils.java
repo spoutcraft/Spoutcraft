@@ -212,7 +212,7 @@ public class TextureUtils {
 			if (!(var26 instanceof TexturePackDefault)) {
 				if (var26 instanceof TexturePackCustom) {
 					TexturePackCustom var5 = (TexturePackCustom)var26;
-					Iterator var6 = Collections.list(var5.field_77550_e.entries()).iterator();
+					Iterator var6 = Collections.list(var5.texturePackZipFile.entries()).iterator();
 
 					while (var6.hasNext()) {
 						ZipEntry var7 = (ZipEntry)var6.next();
@@ -222,7 +222,7 @@ public class TextureUtils {
 							InputStream var9 = null;
 
 							try {
-								var9 = var5.field_77550_e.getInputStream(var7);
+								var9 = var5.texturePackZipFile.getInputStream(var7);
 								Properties var10 = new Properties();
 								var10.load(var9);
 								CustomAnimation.addStrip(var10);
@@ -306,7 +306,7 @@ public class TextureUtils {
 	}
 
 	public static String getTexturePackName(TexturePackImplementation var0) {
-		return var0 == null ? "Default" : var0.field_77545_e;
+		return var0 == null ? "Default" : var0.texturePackFileName;
 	}
 
 	public static ByteBuffer getByteBuffer(ByteBuffer var0, byte[] var1) {
@@ -539,17 +539,17 @@ public class TextureUtils {
 	}
 
 	public static void openTexturePackFile(TexturePackCustom var0) {
-		if (autoRefreshTextures && var0.field_77550_e != null) {
+		if (autoRefreshTextures && var0.texturePackFileName != null) {
 			FileInputStream var1 = null;
 			FileOutputStream var2 = null;
 			ZipFile var3 = null;
 
 			try {
-				var0.lastModified = var0.field_77548_a.lastModified();
+				var0.lastModified = var0.texturePackFile.lastModified();
 				var0.tmpFile = File.createTempFile("tmpmc", ".zip");
 				var0.tmpFile.deleteOnExit();
-				MCPatcherUtils.close(var0.field_77550_e);
-				var1 = new FileInputStream(var0.field_77548_a);
+				MCPatcherUtils.close(var0.texturePackZipFile);
+				var1 = new FileInputStream(var0.texturePackFileName);
 				var2 = new FileOutputStream(var0.tmpFile);
 				byte[] var4 = new byte[65536];
 
@@ -560,8 +560,8 @@ public class TextureUtils {
 						MCPatcherUtils.close((Closeable)var1);
 						MCPatcherUtils.close((Closeable)var2);
 						var3 = new ZipFile(var0.tmpFile);
-						var0.origZip = var0.field_77550_e;
-						var0.field_77550_e = var3;
+						var0.origZip = var0.texturePackZipFile;
+						var0.texturePackZipFile = var3;
 						var3 = null;
 						break;
 					}
@@ -580,8 +580,8 @@ public class TextureUtils {
 
 	public static void closeTexturePackFile(TexturePackCustom var0) {
 		if (var0.origZip != null) {
-			MCPatcherUtils.close(var0.field_77550_e);
-			var0.field_77550_e = var0.origZip;
+			MCPatcherUtils.close(var0.texturePackZipFile);
+			var0.texturePackZipFile = var0.origZip;
 			var0.origZip = null;
 			var0.tmpFile.delete();
 			var0.tmpFile = null;
@@ -595,13 +595,13 @@ public class TextureUtils {
 
 			if (var1.getSelectedTexturePack() instanceof TexturePackCustom) {
 				TexturePackCustom var2 = (TexturePackCustom)var1.getSelectedTexturePack();
-				long var3 = var2.field_77548_a.lastModified();
+				long var3 = var2.texturePackFile.lastModified();
 
 				if (var3 != var2.lastModified && var3 != 0L && var2.lastModified != 0L) {
 					ZipFile var5 = null;
 					label90: {
 						try {
-							var5 = new ZipFile(var2.field_77548_a);
+							var5 = new ZipFile(var2.texturePackFile);
 							break label90;
 						} catch (IOException var11) {
 							;
@@ -612,7 +612,7 @@ public class TextureUtils {
 						return;
 					}
 					var2.closeTexturePackFile();
-					var1.func_77307_h();
+					var1.createTexturePackDirs();
 					Iterator var6 = var1.availableTexturePacks().iterator();
 
 					while (var6.hasNext()) {
@@ -621,15 +621,15 @@ public class TextureUtils {
 						if (var7 instanceof TexturePackCustom) {
 							TexturePackCustom var8 = (TexturePackCustom)var7;
 
-							if (var8.field_77548_a.equals(var2.field_77548_a)) {
+							if (var8.texturePackFileName.equals(var2.texturePackFileName)) {
 								var1.a(var8);
 								var0.renderEngine.setTileSize(var0);
 								return;
 							}
 						}
 					}
-
-					var1.a((TexturePackImplementation) TexturePackList.field_77314_a);
+					var1.setTexturePack(var1.getDefaultTexturePack());
+					//var1.a((TexturePackImplementation) TexturePackList.);
 					var0.renderEngine.setTileSize(var0);
 				}
 			}

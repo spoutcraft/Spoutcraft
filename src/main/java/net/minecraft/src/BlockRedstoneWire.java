@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -80,10 +79,9 @@ public class BlockRedstoneWire extends Block {
 		this.calculateCurrentChanges(par1World, par2, par3, par4, par2, par3, par4);
 		ArrayList var5 = new ArrayList(this.blocksNeedingUpdate);
 		this.blocksNeedingUpdate.clear();
-		Iterator var6 = var5.iterator();
 
-		while (var6.hasNext()) {
-			ChunkPosition var7 = (ChunkPosition)var6.next();
+		for (int var6 = 0; var6 < var5.size(); ++var6) {
+			ChunkPosition var7 = (ChunkPosition)var5.get(var6);
 			par1World.notifyBlocksOfNeighborChange(var7.x, var7.y, var7.z, this.blockID);
 		}
 	}
@@ -144,7 +142,7 @@ public class BlockRedstoneWire extends Block {
 		if (var8 != var9) {
 			par1World.editingBlocks = true;
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
-			par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
+			par1World.markBlockRangeForRenderUpdate(par2, par3, par4, par2, par3, par4);
 			par1World.editingBlocks = false;
 
 			for (var11 = 0; var11 < 4; ++var11) {
@@ -351,16 +349,18 @@ public class BlockRedstoneWire extends Block {
 	}
 
 	/**
-	 * Is this block indirectly powering the block on the specified side
+	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z, side
 	 */
-	public boolean isIndirectlyPoweringTo(World par1World, int par2, int par3, int par4, int par5) {
-		return !this.wiresProvidePower ? false : this.isPoweringTo(par1World, par2, par3, par4, par5);
+	public boolean isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+		return !this.wiresProvidePower ? false : this.isProvidingWeakPower(par1IBlockAccess, par2, par3, par4, par5);
 	}
 
 	/**
-	 * Is this block powering the block on the specified side
+	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
+	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X, Y,
+	 * Z, side
 	 */
-	public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+	public boolean isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		if (!this.wiresProvidePower) {
 			return false;
 		} else if (par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 0) {

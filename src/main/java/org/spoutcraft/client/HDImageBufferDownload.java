@@ -22,9 +22,9 @@ package org.spoutcraft.client;
 import java.awt.Graphics;
 import java.awt.image.*;
 
-import net.minecraft.src.ImageBuffer;
+import net.minecraft.src.IImageBuffer;
 
-public class HDImageBufferDownload implements ImageBuffer {
+public class HDImageBufferDownload implements IImageBuffer {
 	private int imageData[];
 	private int imageWidth;
 	private int imageHeight;

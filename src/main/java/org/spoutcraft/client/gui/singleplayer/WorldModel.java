@@ -70,7 +70,7 @@ public class WorldModel extends FilterModel {
 
 	public void playWorld(int i) {
 		Minecraft mc = SpoutClient.getHandle();
-		EnumGameType gameType = worlds.get(i).func_75790_f();
+		EnumGameType gameType = worlds.get(i).getEnumGameType();
 		String s = worlds.get(i).getFileName();
 		if (s == null) {
 			s = (new StringBuilder()).append("World").append(i).toString();

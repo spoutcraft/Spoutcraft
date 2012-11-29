@@ -35,6 +35,11 @@ import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 
+import org.lwjgl.Sys;
+import com.pclewis.mcpatcher.mod.Shaders;
+import com.pclewis.mcpatcher.mod.TextureUtils;
+import com.pclewis.mcpatcher.mod.TileSize;
+
 import org.bukkit.ChatColor;
 
 import org.spoutcraft.api.Spoutcraft;
@@ -123,11 +128,19 @@ public class GuiUnexpectedError extends GuiScreen {
 			builder.append("-----------------------------------").append("\n");
 			builder.append("Stack Trace:").append("\n");
 			builder.append("    Exception: ").append(caused.getClass().getSimpleName()).append("\n");
+			builder.append("    Message: ").append(caused.getMessage()).append("\n");
 			builder.append("    Trace:").append("\n");
 			for (StackTraceElement ele : caused.getStackTrace()) {
 				builder.append("        ").append(ele.toString()).append("\n");
 			}
 			builder.append("-----------------------------------").append("\n");
+
+			builder.append("Minecraft Information:\n");
+			builder.append("    Texture Pack: ").append(TextureUtils.getTexturePackName(TextureUtils.getSelectedTexturePack())).append("\n");
+			builder.append("    Texture Pack Res: ").append(TileSize.int_size + "x").append("\n");
+			builder.append("    Shaders: ").append(Boolean.toString(Shaders.isEnabled())).append("\n");
+			builder.append("    LWJGL Version: ").append(Sys.getVersion()).append("\n");
+
 			builder.append("System Information:\n");
 			builder.append("    Operating System: ").append(System.getProperty("os.name")).append("\n");
 			builder.append("    Operating System Version: ").append(System.getProperty("os.version")).append("\n");

@@ -384,7 +384,7 @@ public class SpoutcraftWorld implements World {
 	}
 
 	public boolean createExplosion(double x, double y, double z, float power, boolean setFire) {
-		return handle.newExplosion(null, x, y, z, power, setFire) != null;
+		return handle.newExplosion(null, x, y, z, power, setFire, true) != null;
 	}
 
 	public boolean createExplosion(FixedLocation loc, float power) {

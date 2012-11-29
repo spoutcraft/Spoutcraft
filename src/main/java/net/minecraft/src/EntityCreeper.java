@@ -1,19 +1,23 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftCreeper;
+import org.spoutcraft.client.entity.CraftCreeper; // Spout
 
 public class EntityCreeper extends EntityMob {
-
-	/**
-	 * The amount of time since the creeper was close enough to the player to ignite
-	 */
-	int timeSinceIgnited;
 
 	/**
 	 * Time when this creeper was last in an active state (Messed up code here, probably causes creeper animation to go
 	 * weird)
 	 */
-	int lastActiveTime;
+	private int lastActiveTime;
+
+	/**
+	 * The amount of time since the creeper was close enough to the player to ignite
+	 */
+	private int timeSinceIgnited;
+	private int fuseTime = 30;
+
+	/** Explosion radius for this creeper. */
+	private int explosionRadius = 3;
 
 	public EntityCreeper(World par1World) {
 		super(par1World);
@@ -39,6 +43,22 @@ public class EntityCreeper extends EntityMob {
 		return true;
 	}
 
+	public int func_82143_as() {
+		return this.getAttackTarget() == null ? 3 : 3 + (this.health - 1);
+	}
+
+	/**
+	 * Called when the mob is falling. Calculates and applies fall damage.
+	 */
+	protected void fall(float par1) {
+		super.fall(par1);
+		this.timeSinceIgnited = (int)((float)this.timeSinceIgnited + par1 * 1.5F);
+
+		if (this.timeSinceIgnited > this.fuseTime - 5) {
+			this.timeSinceIgnited = this.fuseTime - 5;
+		}
+	}
+
 	public int getMaxHealth() {
 		return 20;
 	}
@@ -58,6 +78,9 @@ public class EntityCreeper extends EntityMob {
 		if (this.dataWatcher.getWatchableObjectByte(17) == 1) {
 			par1NBTTagCompound.setBoolean("powered", true);
 		}
+
+		par1NBTTagCompound.setShort("Fuse", (short)this.fuseTime);
+		par1NBTTagCompound.setByte("ExplosionRadius", (byte)this.explosionRadius);
 	}
 
 	/**
@@ -66,6 +89,14 @@ public class EntityCreeper extends EntityMob {
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		super.readEntityFromNBT(par1NBTTagCompound);
 		this.dataWatcher.updateObject(17, Byte.valueOf((byte)(par1NBTTagCompound.getBoolean("powered") ? 1 : 0)));
+
+		if (par1NBTTagCompound.hasKey("Fuse")) {
+			this.fuseTime = par1NBTTagCompound.getShort("Fuse");
+		}
+
+		if (par1NBTTagCompound.hasKey("ExplosionRadius")) {
+			this.explosionRadius = par1NBTTagCompound.getByte("ExplosionRadius");
+		}
 	}
 
 	/**
@@ -77,7 +108,7 @@ public class EntityCreeper extends EntityMob {
 			int var1 = this.getCreeperState();
 
 			if (var1 > 0 && this.timeSinceIgnited == 0) {
-				this.worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
+				this.func_85030_a("random.fuse", 1.0F, 0.5F);
 			}
 
 			this.timeSinceIgnited += var1;
@@ -86,14 +117,16 @@ public class EntityCreeper extends EntityMob {
 				this.timeSinceIgnited = 0;
 			}
 
-			if (this.timeSinceIgnited >= 30) {
-				this.timeSinceIgnited = 30;
+			if (this.timeSinceIgnited >= this.fuseTime) {
+				this.timeSinceIgnited = this.fuseTime;
 
 				if (!this.worldObj.isRemote) {
+					boolean var2 = this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
+
 					if (this.getPowered()) {
-						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F);
+						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (float)(this.explosionRadius * 2), var2);
 					} else {
-						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0F);
+						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (float)this.explosionRadius, var2);
 					}
 
 					this.setDead();
@@ -108,14 +141,14 @@ public class EntityCreeper extends EntityMob {
 	 * Returns the sound this mob makes when it is hurt.
 	 */
 	protected String getHurtSound() {
-		return "mob.creeper";
+		return "mob.creeper.say";
 	}
 
 	/**
 	 * Returns the sound this mob makes on death.
 	 */
 	protected String getDeathSound() {
-		return "mob.creeperdeath";
+		return "mob.creeper.death";
 	}
 
 	/**
@@ -125,7 +158,8 @@ public class EntityCreeper extends EntityMob {
 		super.onDeath(par1DamageSource);
 
 		if (par1DamageSource.getEntity() instanceof EntitySkeleton) {
-			this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(10), 1);
+			int var2 = Item.record13.shiftedIndex + this.rand.nextInt(Item.field_85180_cf.shiftedIndex - Item.record13.shiftedIndex + 1);
+			this.dropItem(var2, 1);
 		}
 	}
 
@@ -140,17 +174,11 @@ public class EntityCreeper extends EntityMob {
 		return this.dataWatcher.getWatchableObjectByte(17) == 1;
 	}
 
-	// Spout Start
-	public void setPowered(boolean power) {
-		this.dataWatcher.updateObject(17, power ? 1 : 0);
-	}
-	// Spout End
-
 	/**
-	 * Connects the the creeper flashes to the creeper's color multiplier
+	 * Params: (Float)Render tick. Returns the intensity of the creeper's flash when it is ignited.
 	 */
-	public float setCreeperFlashTime(float par1) {
-		return ((float)this.lastActiveTime + (float)(this.timeSinceIgnited - this.lastActiveTime) * par1) / 28.0F;
+	public float getCreeperFlashIntensity(float par1) {
+		return ((float)this.lastActiveTime + (float)(this.timeSinceIgnited - this.lastActiveTime) * par1) / (float)(this.fuseTime - 2);
 	}
 
 	/**

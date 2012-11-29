@@ -1,9 +1,8 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.spoutcraft.client.entity.CraftPigZombie;
+import org.spoutcraft.client.entity.CraftPigZombie; // Spout
 
 public class EntityPigZombie extends EntityZombie {
 
@@ -13,14 +12,10 @@ public class EntityPigZombie extends EntityZombie {
 	/** A random delay until this PigZombie next makes a sound. */
 	private int randomSoundDelay = 0;
 
-	/** The ItemStack that any PigZombie holds (a gold sword, in fact). */
-	private static final ItemStack defaultHeldItem = new ItemStack(Item.swordGold, 1);
-
 	public EntityPigZombie(World par1World) {
 		super(par1World);
 		this.texture = "/mob/pigzombie.png";
 		this.moveSpeed = 0.5F;
-		this.attackStrength = 5;
 		this.isImmuneToFire = true;
 		// Spout Start
 		this.spoutEntity = new CraftPigZombie(this);
@@ -41,10 +36,17 @@ public class EntityPigZombie extends EntityZombie {
 		this.moveSpeed = this.entityToAttack != null ? 0.95F : 0.5F;
 
 		if (this.randomSoundDelay > 0 && --this.randomSoundDelay == 0) {
-			this.worldObj.playSoundAtEntity(this, "mob.zombiepig.zpigangry", this.getSoundVolume() * 2.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
+			this.func_85030_a("mob.zombiepig.zpigangry", this.getSoundVolume() * 2.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
 		}
 
 		super.onUpdate();
+	}
+
+	/**
+	 * Returns the texture's file path as a String.
+	 */
+	public String getTexture() {
+		return "/mob/pigzombie.png";
 	}
 
 	/**
@@ -82,25 +84,28 @@ public class EntityPigZombie extends EntityZombie {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		Entity var3 = par1DamageSource.getEntity();
+		if (this.func_85032_ar()) {
+			return false;
+		} else {
+			Entity var3 = par1DamageSource.getEntity();
 
-		if (var3 instanceof EntityPlayer) {
-			List var4 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(32.0D, 32.0D, 32.0D));
-			Iterator var5 = var4.iterator();
+			if (var3 instanceof EntityPlayer) {
+				List var4 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(32.0D, 32.0D, 32.0D));
 
-			while (var5.hasNext()) {
-				Entity var6 = (Entity)var5.next();
+				for (int var5 = 0; var5 < var4.size(); ++var5) {
+					Entity var6 = (Entity)var4.get(var5);
 
-				if (var6 instanceof EntityPigZombie) {
-					EntityPigZombie var7 = (EntityPigZombie)var6;
-					var7.becomeAngryAt(var3);
+					if (var6 instanceof EntityPigZombie) {
+						EntityPigZombie var7 = (EntityPigZombie)var6;
+						var7.becomeAngryAt(var3);
+					}
 				}
+
+				this.becomeAngryAt(var3);
 			}
 
-			this.becomeAngryAt(var3);
+			return super.attackEntityFrom(par1DamageSource, par2);
 		}
-
-		return super.attackEntityFrom(par1DamageSource, par2);
 	}
 
 	/**
@@ -151,22 +156,15 @@ public class EntityPigZombie extends EntityZombie {
 		}
 	}
 
-	protected void dropRareDrop(int par1) {
-		if (par1 > 0) {
-			ItemStack var2 = new ItemStack(Item.swordGold);
-			EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
-			this.entityDropItem(var2, 0.0F);
-		} else {
-			int var3 = this.rand.nextInt(3);
+	/**
+	 * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
+	 */
+	public boolean interact(EntityPlayer par1EntityPlayer) {
+		return false;
+	}
 
-			if (var3 == 0) {
-				this.dropItem(Item.ingotGold.shiftedIndex, 1);
-			} else if (var3 == 1) {
-				this.dropItem(Item.swordGold.shiftedIndex, 1);
-			} else if (var3 == 2) {
-				this.dropItem(Item.helmetGold.shiftedIndex, 1);
-			}
-		}
+	protected void dropRareDrop(int par1) {
+		this.dropItem(Item.ingotGold.shiftedIndex, 1);
 	}
 
 	/**
@@ -176,10 +174,29 @@ public class EntityPigZombie extends EntityZombie {
 		return Item.rottenFlesh.shiftedIndex;
 	}
 
+	protected void func_82164_bB() {
+		this.setCurrentItemOrArmor(0, new ItemStack(Item.swordGold));
+	}
+
 	/**
-	 * Returns the item that this EntityLiving is holding, if any.
+	 * Initialize this creature.
 	 */
-	public ItemStack getHeldItem() {
-		return defaultHeldItem;
+	public void initCreature() {
+		super.initCreature();
+		this.setIsVillager(false);
+	}
+
+	/**
+	 * Returns the amount of damage a mob should deal.
+	 */
+	public int getAttackStrength(Entity par1Entity) {
+		ItemStack var2 = this.getHeldItem();
+		int var3 = 5;
+
+		if (var2 != null) {
+			var3 += var2.getDamageVsEntity(this);
+		}
+
+		return var3;
 	}
 }

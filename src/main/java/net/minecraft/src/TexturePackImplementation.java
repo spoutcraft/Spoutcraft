@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.MCPatcherUtils; // Spout HD
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,29 +9,58 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 
-public abstract class TexturePackImplementation implements TexturePackBase {
-	public final String field_77545_e; // Spout HD private -> public
-	private final String field_77542_f;
-	public File field_77548_a; // Spout HD protected final -> public
-	protected String field_77546_b;
-	protected String field_77547_c;
-	protected BufferedImage field_77544_d;
-	private int field_77543_g;
+import com.pclewis.mcpatcher.MCPatcherUtils; // Spout HD
+
+public abstract class TexturePackImplementation implements ITexturePack {
+
+	/**
+	 * Texture pack ID as returnd by generateTexturePackID(). Used only internally and not visible to the user.
+	 */
+	private final String texturePackID;
+
+	/**
+	 * The name of the texture pack's zip file/directory or "Default" for the builtin texture pack. Shown in the GUI.
+	 */
+	public final String texturePackFileName; // Spout HD private -> public
+
+	/**
+	 * File object for the texture pack's zip file in TexturePackCustom or the directory in TexturePackFolder.
+	 */
+	public File texturePackFile;  // Spout HD protected final -> public
+
+	/**
+	 * First line of texture pack description (from /pack.txt) displayed in the GUI
+	 */
+	protected String firstDescriptionLine;
+
+	/**
+	 * Second line of texture pack description (from /pack.txt) displayed in the GUI
+	 */
+	protected String secondDescriptionLine;
+
+	/** The texture pack's thumbnail image loaded from the /pack.png file. */
+	protected BufferedImage thumbnailImage;
+
+	/** The texture id for this pcak's thumbnail image. */
+	private int thumbnailTextureName;
 
 	protected TexturePackImplementation(String par1Str, String par2Str) {
 		this(par1Str, (File)null, par2Str);
 	}
 
 	protected TexturePackImplementation(String par1Str, File par2File, String par3Str) {
-		this.field_77543_g = -1;
-		this.field_77545_e = par1Str;
-		this.field_77542_f = par3Str;
-		this.field_77548_a = par2File;
-		this.func_77539_g();
-		this.func_77540_a();
+		this.thumbnailTextureName = -1;
+		this.texturePackID = par1Str;
+		this.texturePackFileName = par3Str;
+		this.texturePackFile = par2File;
+		this.loadThumbnailImage();
+		this.loadDescription();
 	}
 
-	private static String func_77541_b(String par0Str) {
+	/**
+	 * Truncate strings to at most 34 characters. Truncates description lines
+	 */
+	private static String trimStringToGUIWidth(String par0Str) {
 		if (par0Str != null && par0Str.length() > 34) {
 			par0Str = par0Str.substring(0, 34);
 		}
@@ -40,12 +68,15 @@ public abstract class TexturePackImplementation implements TexturePackBase {
 		return par0Str;
 	}
 
-	private void func_77539_g() {
+	/**
+	 * Load and initialize thumbnailImage from the the /pack.png file.
+	 */
+	private void loadThumbnailImage() {
 		InputStream var1 = null;
 
 		try {
 			var1 = this.getResourceAsStream("/pack.png");
-			this.field_77544_d = ImageIO.read(var1);
+			this.thumbnailImage = ImageIO.read(var1);
 		} catch (IOException var11) {
 			;
 		} finally {
@@ -57,15 +88,18 @@ public abstract class TexturePackImplementation implements TexturePackBase {
 		}
 	}
 
-	protected void func_77540_a() {
+	/**
+	 * Load texture pack description from /pack.txt file in the texture pack
+	 */
+	protected void loadDescription() {
 		InputStream var1 = null;
 		BufferedReader var2 = null;
 
 		try {
 			var1 = this.getResourceAsStream("/pack.txt");
 			var2 = new BufferedReader(new InputStreamReader(var1));
-			this.field_77546_b = func_77541_b(var2.readLine());
-			this.field_77547_c = func_77541_b(var2.readLine());
+			this.firstDescriptionLine = trimStringToGUIWidth(var2.readLine());
+			this.secondDescriptionLine = trimStringToGUIWidth(var2.readLine());
 		} catch (IOException var12) {
 			;
 		} finally {
@@ -78,19 +112,25 @@ public abstract class TexturePackImplementation implements TexturePackBase {
 		}
 	}
 
-	public void func_77533_a(RenderEngine par1RenderEngine) {
-		if (this.field_77544_d != null && this.field_77543_g != -1) {
-			par1RenderEngine.deleteTexture(this.field_77543_g);
+	/**
+	 * Delete the OpenGL texture id of the pack's thumbnail image, and close the zip file in case of TexturePackCustom.
+	 */
+	public void deleteTexturePack(RenderEngine par1RenderEngine) {
+		if (this.thumbnailImage != null && this.thumbnailTextureName != -1) {
+			par1RenderEngine.deleteTexture(this.thumbnailTextureName);
 		}
 	}
 
-	public void func_77535_b(RenderEngine par1RenderEngine) {
-		if (this.field_77544_d != null) {
-			if (this.field_77543_g == -1) {
-				this.field_77543_g = par1RenderEngine.allocateAndSetupTexture(this.field_77544_d);
+	/**
+	 * Bind the texture id of the pack's thumbnail image, loading it if necessary.
+	 */
+	public void bindThumbnailTexture(RenderEngine par1RenderEngine) {
+		if (this.thumbnailImage != null) {
+			if (this.thumbnailTextureName == -1) {
+				this.thumbnailTextureName = par1RenderEngine.allocateAndSetupTexture(this.thumbnailImage);
 			}
 
-			par1RenderEngine.bindTexture(this.field_77543_g);
+			par1RenderEngine.bindTexture(this.thumbnailTextureName);
 		} else {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1RenderEngine.getTexture("/gui/unknown_pack.png"));
 		}
@@ -100,35 +140,52 @@ public abstract class TexturePackImplementation implements TexturePackBase {
 	 * Gives a texture resource as InputStream.
 	 */
 	public InputStream getResourceAsStream(String par1Str) {
-		return TexturePackBase.class.getResourceAsStream(par1Str);
+		return ITexturePack.class.getResourceAsStream(par1Str);
 	}
 
-	public String func_77536_b() {
-		return this.field_77545_e;
+	/**
+	 * Get the texture pack ID
+	 */
+	public String getTexturePackID() {
+		return this.texturePackID;
 	}
 
-	public String func_77538_c() {
-		return this.field_77542_f;
+	/**
+	 * Get the file name of the texture pack, or Default if not from a custom texture pack
+	 */
+	public String getTexturePackFileName() {
+		return this.texturePackFileName;
 	}
 
-	public String func_77531_d() {
-		return this.field_77546_b;
+	/**
+	 * Get the first line of the texture pack description (read from the pack.txt file)
+	 */
+	public String getFirstDescriptionLine() {
+		return this.firstDescriptionLine;
 	}
 
-	public String func_77537_e() {
-		return this.field_77547_c;
+	/**
+	 * Get the second line of the texture pack description (read from the pack.txt file)
+	 */
+	public String getSecondDescriptionLine() {
+		return this.secondDescriptionLine;
 	}
 
-	public int func_77534_f() {
+	/**
+	 * Return the texture pack's resolution (16 by default). Used only by PlayerUsageSnooper. Presumably meant to be
+	 * overriden by HD texture mods.
+	 */
+	public int getTexturePackResolution() {
 		return 16;
 	}
+
 	// Spout HD Start
 	public void openTexturePackFile() {
-		this.func_77535_b(MCPatcherUtils.getMinecraft().renderEngine);
+		this.bindThumbnailTexture(MCPatcherUtils.getMinecraft().renderEngine);
 	}
 
 	public void closeTexturePackFile() {
-		this.func_77533_a(MCPatcherUtils.getMinecraft().renderEngine);
+		this.deleteTexturePack(MCPatcherUtils.getMinecraft().renderEngine);
 	}
 	// Spout HD End
 }

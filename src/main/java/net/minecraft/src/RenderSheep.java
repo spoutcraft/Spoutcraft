@@ -1,18 +1,8 @@
 package net.minecraft.src;
 
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntitySheep;
-import net.minecraft.src.ModelBase;
-import net.minecraft.src.RenderLiving;
 import org.lwjgl.opengl.GL11;
 
-// Spout Start
-import org.spoutcraft.api.entity.EntitySkinType;
-// Spout End
-
 public class RenderSheep extends RenderLiving {
-
 	public RenderSheep(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3) {
 		super(par1ModelBase, par3);
 		this.setRenderPassModel(par2ModelBase);
@@ -21,7 +11,7 @@ public class RenderSheep extends RenderLiving {
 	protected int setWoolColorAndRender(EntitySheep par1EntitySheep, int par2, float par3) {
 		if (par2 == 0 && !par1EntitySheep.getSheared()) {
 			// Spout Start
-			loadTexture(par1EntitySheep.getCustomTexture(EntitySkinType.SHEEP_FUR, "/mob/sheep_fur.png"));
+			loadTexture(par1EntitySheep.getCustomTexture(org.spoutcraft.api.entity.EntitySkinType.SHEEP_FUR, "/mob/sheep_fur.png"));
 			// Spout End
 			this.loadTexture("/mob/sheep_fur.png");
 			float var4 = 1.0F;
@@ -33,19 +23,10 @@ public class RenderSheep extends RenderLiving {
 		}
 	}
 
-	public void doRenderSheep(EntitySheep par1EntitySheep, double par2, double par4, double par6, float par8, float par9) {
-		super.doRenderLiving(par1EntitySheep, par2, par4, par6, par8, par9);
-	}
-
+	/**
+	 * Queries whether should render the specified pass or not.
+	 */
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
 		return this.setWoolColorAndRender((EntitySheep)par1EntityLiving, par2, par3);
-	}
-
-	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
-		this.doRenderSheep((EntitySheep)par1EntityLiving, par2, par4, par6, par8, par9);
-	}
-
-	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-		this.doRenderSheep((EntitySheep)par1Entity, par2, par4, par6, par8, par9);
 	}
 }

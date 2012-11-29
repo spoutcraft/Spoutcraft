@@ -15,7 +15,6 @@ public class EntityBlaze extends EntityMob {
 		super(par1World);
 		this.texture = "/mob/fire.png";
 		this.isImmuneToFire = true;
-		this.attackStrength = 6;
 		this.experienceValue = 10;
 		// Spout Start
 		this.spoutEntity = new CraftBlaze(this);
@@ -196,5 +195,12 @@ public class EntityBlaze extends EntityMob {
 	 */
 	protected boolean isValidLightLevel() {
 		return true;
+	}
+
+	/**
+	 * Returns the amount of damage a mob should deal.
+	 */
+	public int getAttackStrength(Entity par1Entity) {
+		return 6;
 	}
 }

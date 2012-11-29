@@ -69,14 +69,14 @@ class ContainerCreative extends Container {
 	protected void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer) {}
 
 	/**
-	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
 	 */
-	public ItemStack transferStackInSlot(int par1) {
-		if (par1 >= this.inventorySlots.size() - 9 && par1 < this.inventorySlots.size()) {
-			Slot var2 = (Slot)this.inventorySlots.get(par1);
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+		if (par2 >= this.inventorySlots.size() - 9 && par2 < this.inventorySlots.size()) {
+			Slot var3 = (Slot)this.inventorySlots.get(par2);
 
-			if (var2 != null && var2.getHasStack()) {
-				var2.putStack((ItemStack)null);
+			if (var3 != null && var3.getHasStack()) {
+				var3.putStack((ItemStack)null);
 			}
 		}
 

@@ -25,6 +25,7 @@ import java.util.List;
 import gnu.trove.map.hash.TIntByteHashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.Item;
 
 import org.spoutcraft.api.util.map.TIntPairFloatHashMap;
@@ -261,7 +262,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		Item rawItem = Item.itemsList[itemstack.itemID];
 		List<String> list;
 		if (rawItem != null) {
-			list = itemstack.getItemNameandInformation();
+			list = itemstack.getTooltip(Minecraft.theMinecraft.thePlayer, Minecraft.theMinecraft.gameSettings.advancedItemTooltips);
 		} else {
 			list = new ArrayList<String>();
 		}

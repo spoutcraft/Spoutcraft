@@ -125,12 +125,8 @@ public abstract class Render {
 			EntityLiving var13 = (EntityLiving)par1Entity;
 			var12 *= var13.getRenderSizeModifier();
 
-			if (var13 instanceof EntityAnimal) {
-				EntityAnimal var14 = (EntityAnimal)var13;
-
-				if (var14.isChild()) {
-					var12 *= 0.5F;
-				}
+			if (var13.isChild()) {
+				var12 *= 0.5F;
 			}
 		}
 
@@ -191,11 +187,11 @@ public abstract class Render {
 				}
 
 				var19.setColorRGBA_F(1.0F, 1.0F, 1.0F, (float)var20);
-				double var22 = (double)par8 + par1Block.minX + par13;
-				double var24 = (double)par8 + par1Block.maxX + par13;
-				double var26 = (double)par9 + par1Block.minY + par15 + 0.015625D;
-				double var28 = (double)par10 + par1Block.minZ + par17;
-				double var30 = (double)par10 + par1Block.maxZ + par17;
+				double var22 = (double)par8 + par1Block.getBlockBoundsMinX() + par13;
+				double var24 = (double)par8 + par1Block.getBlockBoundsMaxX() + par13;
+				double var26 = (double)par9 + par1Block.getBlockBoundsMinY() + par15 + 0.015625D;
+				double var28 = (double)par10 + par1Block.getBlockBoundsMinZ() + par17;
+				double var30 = (double)par10 + par1Block.getBlockBoundsMaxZ() + par17;
 				float var32 = (float)((par2 - var22) / 2.0D / (double)par12 + 0.5D);
 				float var33 = (float)((par2 - var24) / 2.0D / (double)par12 + 0.5D);
 				float var34 = (float)((par6 - var28) / 2.0D / (double)par12 + 0.5D);
@@ -296,7 +292,7 @@ public abstract class Render {
 	 * Renders the entity's shadow and fire (if its on fire). Args: entity, x, y, z, yaw, partialTickTime
 	 */
 	public void doRenderShadowAndFire(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-		if (this.renderManager.options.fancyGraphics && this.shadowSize > 0.0F) {
+		if (this.renderManager.options.fancyGraphics && this.shadowSize > 0.0F && !par1Entity.getHasActivePotion()) {
 			double var10 = this.renderManager.getDistanceToCamera(par1Entity.posX, par1Entity.posY, par1Entity.posZ);
 			float var12 = (float)((1.0D - var10 / 256.0D) * (double)this.shadowOpaque);
 
@@ -305,7 +301,7 @@ public abstract class Render {
 			}
 		}
 
-		if (par1Entity.isBurning()) {
+		if (par1Entity.func_90999_ad()) {
 			this.renderEntityOnFire(par1Entity, par2, par4, par6, par9);
 		}
 	}

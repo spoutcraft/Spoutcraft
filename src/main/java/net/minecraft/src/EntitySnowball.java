@@ -35,7 +35,7 @@ public class EntitySnowball extends EntityThrowable {
 				var2 = 3;
 			}
 
-			par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), var2);
+			par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_85052_h()), var2);
 		}
 
 		for (int var3 = 0; var3 < 8; ++var3) {

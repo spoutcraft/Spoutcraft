@@ -71,7 +71,7 @@ public class EntityItem extends Entity {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 		this.motionY -= 0.03999999910593033D;
-		this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
+		this.noClip = this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		boolean var1 = (int)this.prevPosX != (int)this.posX || (int)this.prevPosY != (int)this.posY || (int)this.prevPosZ != (int)this.posZ;
 
@@ -80,27 +80,22 @@ public class EntityItem extends Entity {
 				this.motionY = 0.20000000298023224D;
 				this.motionX = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
 				this.motionZ = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-				this.worldObj.playSoundAtEntity(this, "random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
+				this.func_85030_a("random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
 			}
 
 			if (!this.worldObj.isRemote) {
-				Iterator var2 = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
-
-				while (var2.hasNext()) {
-					EntityItem var3 = (EntityItem)var2.next();
-					this.func_70289_a(var3);
-				}
+				this.func_85054_d();
 			}
 		}
 
-		float var4 = 0.98F;
+		float var2 = 0.98F;
 
 		if (this.onGround) {
-			var4 = 0.58800006F;
-			int var5 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+			var2 = 0.58800006F;
+			int var3 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 
-			if (var5 > 0) {
-				var4 = Block.blocksList[var5].slipperiness * 0.98F;
+			if (var3 > 0) {
+				var2 = Block.blocksList[var3].slipperiness * 0.98F;
 				// Spout Start
 				if (!worldObj.isRemote) {
 					int x = MathHelper.floor_double(this.posX);
@@ -110,7 +105,7 @@ public class EntityItem extends Entity {
 					if (customId > 0) {
 						CustomBlock block = MaterialData.getCustomBlock(customId);
 						if (block != null) {
-							var4 = block.getFriction() * 0.98F;
+							var2 = block.getFriction() * 0.98F;
 						}
 					}
 				}
@@ -118,9 +113,9 @@ public class EntityItem extends Entity {
 			}
 		}
 
-		this.motionX *= (double)var4;
+		this.motionX *= (double)var2;
 		this.motionY *= 0.9800000190734863D;
-		this.motionZ *= (double)var4;
+		this.motionZ *= (double)var2;
 
 		if (this.onGround) {
 			this.motionY *= -0.5D;
@@ -128,8 +123,17 @@ public class EntityItem extends Entity {
 
 		++this.age;
 
-		if (this.age >= 6000) {
+		if (!this.worldObj.isRemote && this.age >= 6000) {
 			this.setDead();
+		}
+	}
+
+	private void func_85054_d() {
+		Iterator var1 = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
+
+		while (var1.hasNext()) {
+			EntityItem var2 = (EntityItem)var1.next();
+			this.func_70289_a(var2);
 		}
 	}
 
@@ -138,6 +142,10 @@ public class EntityItem extends Entity {
 			return false;
 		} else if (par1EntityItem.isEntityAlive() && this.isEntityAlive()) {
 			if (par1EntityItem.item.getItem() != this.item.getItem()) {
+				return false;
+			} else if (par1EntityItem.item.hasTagCompound() ^ this.item.hasTagCompound()) {
+				return false;
+			} else if (par1EntityItem.item.hasTagCompound() && !par1EntityItem.item.getTagCompound().equals(this.item.getTagCompound())) {
 				return false;
 			} else if (par1EntityItem.item.getItem().getHasSubtypes() && par1EntityItem.item.getItemDamage() != this.item.getItemDamage()) {
 				return false;
@@ -179,14 +187,18 @@ public class EntityItem extends Entity {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		this.setBeenAttacked();
-		this.health -= par2;
+		if (this.func_85032_ar()) {
+			return false;
+		} else {
+			this.setBeenAttacked();
+			this.health -= par2;
 
-		if (this.health <= 0) {
-			this.setDead();
+			if (this.health <= 0) {
+				this.setDead();
+			}
+
+			return false;
 		}
-
-		return false;
 	}
 
 	/**
@@ -239,7 +251,7 @@ public class EntityItem extends Entity {
 					par1EntityPlayer.triggerAchievement(AchievementList.blazeRod);
 				}
 
-				this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+				this.func_85030_a("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				par1EntityPlayer.onItemPickup(this, var2);
 
 				if (this.item.stackSize <= 0) {
@@ -253,7 +265,7 @@ public class EntityItem extends Entity {
 	 * Gets the username of the entity.
 	 */
 	public String getEntityName() {
-		return StatCollector.translateToLocal("item." + this.item.func_77977_a());
+		return StatCollector.translateToLocal("item." + this.item.getItemName());
 	}
 
 	/**
@@ -261,5 +273,16 @@ public class EntityItem extends Entity {
 	 */
 	public boolean canAttackWithItem() {
 		return false;
+	}
+
+	/**
+	 * Teleports the entity to another dimension. Params: Dimension number to teleport to
+	 */
+	public void travelToDimension(int par1) {
+		super.travelToDimension(par1);
+
+		if (!this.worldObj.isRemote) {
+			this.func_85054_d();
+		}
 	}
 }

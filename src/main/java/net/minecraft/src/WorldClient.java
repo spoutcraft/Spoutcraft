@@ -5,10 +5,11 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 import net.minecraft.client.Minecraft;
+//Spout start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
-
+//Spout end
 public class WorldClient extends World {
 
 	/** The packets that need to be sent to the server. */
@@ -46,6 +47,7 @@ public class WorldClient extends World {
 	 */
 	public void tick() {
 		super.tick();
+		this.func_82738_a(this.getTotalWorldTime() + 1L);
 		this.setWorldTime(this.getWorldTime() + 1L);
 		this.theProfiler.startSection("reEntryProcessing");
 
@@ -118,13 +120,13 @@ public class WorldClient extends World {
 	public void doPreChunk(int par1, int par2, boolean par3) {
 		if (par3) {
 			this.clientChunkProvider.loadChunk(par1, par2);
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(par1, par2));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(par1, par2)); //Spout
 		} else {
 			this.clientChunkProvider.unloadChunk(par1, par2);
 		}
 
 		if (!par3) {
-			this.markBlocksDirty(par1 * 16, 0, par2 * 16, par1 * 16 + 15, 256, par2 * 16 + 15);
+			this.markBlockRangeForRenderUpdate(par1 * 16, 0, par2 * 16, par1 * 16 + 15, 256, par2 * 16 + 15);
 		}
 	}
 
@@ -198,10 +200,10 @@ public class WorldClient extends World {
 	}
 
 	/**
-	 * Lookup and return an Entity based on its ID
+	 * Returns the Entity with the given ID, or null if it doesn't exist in this World.
 	 */
 	public Entity getEntityByID(int par1) {
-		return (Entity)this.entityHashSet.lookup(par1);
+		return (Entity)(par1 == this.mc.thePlayer.entityId ? this.mc.thePlayer : (Entity)this.entityHashSet.lookup(par1));
 	}
 
 	public Entity removeEntityFromWorld(int par1) {
@@ -225,6 +227,10 @@ public class WorldClient extends World {
 	 */
 	public void sendQuittingDisconnectingPacket() {
 		this.sendQueue.quitWithPacket(new Packet255KickDisconnect("Quitting"));
+	}
+
+	public IUpdatePlayerListBox func_82735_a(EntityMinecart par1EntityMinecart) {
+		return new SoundUpdaterMinecart(this.mc.sndManager, par1EntityMinecart, this.mc.thePlayer);
 	}
 
 	/**
@@ -346,11 +352,11 @@ public class WorldClient extends World {
 	/**
 	 * Adds some basic stats of the world to the given crash report.
 	 */
-	public CrashReport addWorldInfoToCrashReport(CrashReport par1CrashReport) {
-		par1CrashReport = super.addWorldInfoToCrashReport(par1CrashReport);
-		par1CrashReport.addCrashSectionCallable("Forced Entities", new CallableMPL1(this));
-		par1CrashReport.addCrashSectionCallable("Retry Entities", new CallableMPL2(this));
-		return par1CrashReport;
+	public CrashReportCategory addWorldInfoToCrashReport(CrashReport par1CrashReport) {
+		CrashReportCategory var2 = super.addWorldInfoToCrashReport(par1CrashReport);
+		var2.addCrashSectionCallable("Forced entities", new CallableMPL1(this));
+		var2.addCrashSectionCallable("Retry entities", new CallableMPL2(this));
+		return var2;
 	}
 
 	/**

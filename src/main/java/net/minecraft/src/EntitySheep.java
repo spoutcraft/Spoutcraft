@@ -5,11 +5,12 @@ import java.util.Random;
 import org.spoutcraft.client.entity.CraftSheep; // Spout
 
 public class EntitySheep extends EntityAnimal {
+	private final InventoryCrafting field_90016_e = new InventoryCrafting(new ContainerSheep(this), 2, 1);
 
 	/**
 	 * Holds the RGB table of the sheep colors - in OpenGL glColor3f values - used to render the sheep colored fleece.
 	 */
-	public static float[][] fleeceColorTable = new float[][] {{1.0F, 1.0F, 1.0F}, {0.95F, 0.7F, 0.2F}, {0.9F, 0.5F, 0.85F}, {0.6F, 0.7F, 0.95F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.7F, 0.8F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.6F, 0.7F}, {0.7F, 0.4F, 0.9F}, {0.2F, 0.4F, 0.8F}, {0.5F, 0.4F, 0.3F}, {0.4F, 0.5F, 0.2F}, {0.8F, 0.3F, 0.3F}, {0.1F, 0.1F, 0.1F}}; // Spout removed final
+	public static float[][] fleeceColorTable = new float[][] { { 1.0F, 1.0F, 1.0F }, { 0.85F, 0.5F, 0.2F }, { 0.7F, 0.3F, 0.85F }, { 0.4F, 0.6F, 0.85F }, { 0.9F, 0.9F, 0.2F }, { 0.5F, 0.8F, 0.1F }, { 0.95F, 0.5F, 0.65F }, { 0.3F, 0.3F, 0.3F }, { 0.6F, 0.6F, 0.6F }, { 0.3F, 0.5F, 0.6F }, { 0.5F, 0.25F, 0.7F }, { 0.2F, 0.3F, 0.7F }, { 0.4F, 0.3F, 0.2F }, { 0.4F, 0.5F, 0.2F }, { 0.6F, 0.2F, 0.2F }, { 0.1F, 0.1F, 0.1F } }; // Spout removed final
 
 	/**
 	 * Used to control movement as well as wool regrowth. Set to 40 on handleHealthUpdate and counts down with each tick.
@@ -35,6 +36,8 @@ public class EntitySheep extends EntityAnimal {
 		this.tasks.addTask(6, new EntityAIWander(this, var2));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
+		this.field_90016_e.setInventorySlotContents(0, new ItemStack(Item.dyePowder, 1, 0));
+		this.field_90016_e.setInventorySlotContents(1, new ItemStack(Item.dyePowder, 1, 0));
 		// Spout Start
 		this.spoutEntity = new CraftSheep(this);
 		// Spout End
@@ -130,6 +133,7 @@ public class EntitySheep extends EntityAnimal {
 			}
 
 			var2.damageItem(1, par1EntityPlayer);
+			this.func_85030_a("mob.sheep.shear", 1.0F, 1.0F);
 		}
 
 		return super.interact(par1EntityPlayer);
@@ -157,21 +161,28 @@ public class EntitySheep extends EntityAnimal {
 	 * Returns the sound this mob makes while it's alive.
 	 */
 	protected String getLivingSound() {
-		return "mob.sheep";
+		return "mob.sheep.say";
 	}
 
 	/**
 	 * Returns the sound this mob makes when it is hurt.
 	 */
 	protected String getHurtSound() {
-		return "mob.sheep";
+		return "mob.sheep.say";
 	}
 
 	/**
 	 * Returns the sound this mob makes on death.
 	 */
 	protected String getDeathSound() {
-		return "mob.sheep";
+		return "mob.sheep.say";
+	}
+
+	/**
+	 * Plays step sound at given x, y, z for the entity
+	 */
+	protected void playStepSound(int par1, int par2, int par3, int par4) {
+		this.func_85030_a("mob.sheep.step", 0.15F, 1.0F);
 	}
 
 	public int getFleeceColor() {
@@ -211,19 +222,11 @@ public class EntitySheep extends EntityAnimal {
 		return var1 < 5 ? 15 : (var1 < 10 ? 7 : (var1 < 15 ? 8 : (var1 < 18 ? 12 : (par0Random.nextInt(500) == 0 ? 6 : 0))));
 	}
 
-	/**
-	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
-	 */
-	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
-		EntitySheep var2 = (EntitySheep)par1EntityAnimal;
+	public EntitySheep func_90015_b(EntityAgeable par1EntityAgeable) {
+		EntitySheep var2 = (EntitySheep)par1EntityAgeable;
 		EntitySheep var3 = new EntitySheep(this.worldObj);
-
-		if (this.rand.nextBoolean()) {
-			var3.setFleeceColor(this.getFleeceColor());
-		} else {
-			var3.setFleeceColor(var2.getFleeceColor());
-		}
-
+		int var4 = this.func_90014_a(this, var2);
+		var3.setFleeceColor(15 - var4);
 		return var3;
 	}
 
@@ -243,5 +246,37 @@ public class EntitySheep extends EntityAnimal {
 
 			this.setGrowingAge(var1);
 		}
+	}
+
+	/**
+	 * Initialize this creature.
+	 */
+	public void initCreature() {
+		this.setFleeceColor(getRandomFleeceColor(this.worldObj.rand));
+	}
+
+	private int func_90014_a(EntityAnimal par1EntityAnimal, EntityAnimal par2EntityAnimal) {
+		int var3 = this.func_90013_b(par1EntityAnimal);
+		int var4 = this.func_90013_b(par2EntityAnimal);
+		this.field_90016_e.getStackInSlot(0).setItemDamage(var3);
+		this.field_90016_e.getStackInSlot(1).setItemDamage(var4);
+		ItemStack var5 = CraftingManager.getInstance().findMatchingRecipe(this.field_90016_e, ((EntitySheep)par1EntityAnimal).worldObj);
+		int var6;
+
+		if (var5 != null && var5.getItem().shiftedIndex == Item.dyePowder.shiftedIndex) {
+			var6 = var5.getItemDamage();
+		} else {
+			var6 = this.worldObj.rand.nextBoolean() ? var3 : var4;
+		}
+
+		return var6;
+	}
+
+	private int func_90013_b(EntityAnimal par1EntityAnimal) {
+		return 15 - ((EntitySheep)par1EntityAnimal).getFleeceColor();
+	}
+
+	public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable) {
+		return this.func_90015_b(par1EntityAgeable);
 	}
 }

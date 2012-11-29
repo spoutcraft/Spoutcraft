@@ -22,7 +22,6 @@ package org.spoutcraft.client.packet;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.client.SpoutClient;
@@ -78,17 +77,7 @@ public class PacketPreCacheFile implements SpoutPacket {
 		final String fileName = FileUtil.getFileName(file);
 		final File expected = new File(directory, fileName);
 		this.cached = expected.exists();
-		
-		//System.out.println("Received Precache for [" + fileName + "]. File " + (expected.exists() ? ("exists" + (cached ? " and is valid" : "and is invalid")) : "does not exist"));
-		
-		//invalidate File types if CRC doesn't match
-		if (!url && cached) {
-			long crc = FileUtil.getCRC(expected, new byte[(int) expected.length()]);
-			if (crc != expectedCRC) {
-				cached = false;
-			}
-		}
-		
+		System.out.println("Received Precache for [" + fileName + "]. File " + (expected.exists() ? ("exists" + (cached ? " and is valid" : "and is invalid")) : "does not exist"));
 		if (!cached) {
 			final long finalCRC = expectedCRC;
 			CRCManager.setCRC(fileName, finalCRC);

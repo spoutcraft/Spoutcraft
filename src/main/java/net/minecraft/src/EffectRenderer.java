@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
+import java.util.Iterator; // Spout
 import java.util.List;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
@@ -51,13 +52,23 @@ public class EffectRenderer {
 
 	public void updateEffects() {
 		for (int var1 = 0; var1 < 4; ++var1) {
-			for (int var2 = 0; var2 < this.fxLayers[var1].size(); ++var2) {
-				EntityFX var3 = (EntityFX)this.fxLayers[var1].get(var2);
-				var3.onUpdate();
+			EntityFX var2 = null;
 
-				if (var3.isDead) {
-					this.fxLayers[var1].remove(var2--);
+			try {
+				for (int var3 = 0; var3 < this.fxLayers[var1].size(); ++var3) {
+					var2 = (EntityFX)this.fxLayers[var1].get(var3);
+					var2.onUpdate();
+
+					if (var2.isDead) {
+						this.fxLayers[var1].remove(var3--);
+					}
 				}
+			} catch (Throwable var7) {
+				CrashReport var4 = CrashReport.func_85055_a(var7, "Uncaught exception while ticking particles");
+				CrashReportCategory var5 = var4.func_85058_a("Particle engine details");
+				var5.addCrashSectionCallable("Last ticked particle", new CallableLastTickedParticle(this, var2));
+				var5.addCrashSection("Texture index", Integer.valueOf(var1));
+				throw new ReportedException(var4);
 			}
 		}
 	}
@@ -97,6 +108,8 @@ public class EffectRenderer {
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, var9);
 				Tessellator var10 = Tessellator.instance;
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				GL11.glEnable(GL11.GL_BLEND);
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				var10.startDrawingQuads();
 
 				for (int var11 = 0; var11 < this.fxLayers[var8].size(); ++var11) {
@@ -112,6 +125,7 @@ public class EffectRenderer {
 				}
 
 				var10.draw();
+				GL11.glDisable(GL11.GL_BLEND);
 			}
 		}
 		// Spout Start
@@ -121,7 +135,7 @@ public class EffectRenderer {
 		// Spout End
 	}
 
-	public void func_78872_b(Entity par1Entity, float par2) {
+	public void renderLitParticles(Entity par1Entity, float par2) {
 		float var4 = MathHelper.cos(par1Entity.rotationYaw * 0.017453292F);
 		float var5 = MathHelper.sin(par1Entity.rotationYaw * 0.017453292F);
 		float var6 = -var5 * MathHelper.sin(par1Entity.rotationPitch * 0.017453292F);
@@ -200,32 +214,32 @@ public class EffectRenderer {
 		if (var5 != 0) {
 			Block var6 = Block.blocksList[var5];
 			float var7 = 0.1F;
-			double var8 = (double)par1 + this.rand.nextDouble() * (var6.maxX - var6.minX - (double)(var7 * 2.0F)) + (double)var7 + var6.minX;
-			double var10 = (double)par2 + this.rand.nextDouble() * (var6.maxY - var6.minY - (double)(var7 * 2.0F)) + (double)var7 + var6.minY;
-			double var12 = (double)par3 + this.rand.nextDouble() * (var6.maxZ - var6.minZ - (double)(var7 * 2.0F)) + (double)var7 + var6.minZ;
+			double var8 = (double)par1 + this.rand.nextDouble() * (var6.getBlockBoundsMaxX() - var6.getBlockBoundsMinX() - (double)(var7 * 2.0F)) + (double)var7 + var6.getBlockBoundsMinX();
+			double var10 = (double)par2 + this.rand.nextDouble() * (var6.getBlockBoundsMaxY() - var6.getBlockBoundsMinY() - (double)(var7 * 2.0F)) + (double)var7 + var6.getBlockBoundsMinY();
+			double var12 = (double)par3 + this.rand.nextDouble() * (var6.getBlockBoundsMaxZ() - var6.getBlockBoundsMinZ() - (double)(var7 * 2.0F)) + (double)var7 + var6.getBlockBoundsMinZ();
 
 			if (par4 == 0) {
-				var10 = (double)par2 + var6.minY - (double)var7;
+				var10 = (double)par2 + var6.getBlockBoundsMinY() - (double)var7;
 			}
 
 			if (par4 == 1) {
-				var10 = (double)par2 + var6.maxY + (double)var7;
+				var10 = (double)par2 + var6.getBlockBoundsMaxY() + (double)var7;
 			}
 
 			if (par4 == 2) {
-				var12 = (double)par3 + var6.minZ - (double)var7;
+				var12 = (double)par3 + var6.getBlockBoundsMinZ() - (double)var7;
 			}
 
 			if (par4 == 3) {
-				var12 = (double)par3 + var6.maxZ + (double)var7;
+				var12 = (double)par3 + var6.getBlockBoundsMaxZ() + (double)var7;
 			}
 
 			if (par4 == 4) {
-				var8 = (double)par1 + var6.minX - (double)var7;
+				var8 = (double)par1 + var6.getBlockBoundsMinX() - (double)var7;
 			}
 
 			if (par4 == 5) {
-				var8 = (double)par1 + var6.maxX + (double)var7;
+				var8 = (double)par1 + var6.getBlockBoundsMaxX() + (double)var7;
 			}
 
 			// Spout Start

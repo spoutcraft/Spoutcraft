@@ -1,13 +1,17 @@
 package net.minecraft.src;
 
 public class ContainerMerchant extends Container {
-	private IMerchant field_75178_e;
+
+	/** Instance of Merchant. */
+	private IMerchant theMerchant;
 	private InventoryMerchant merchantInventory;
-	private final World field_75177_g;
+
+	/** Instance of World. */
+	private final World theWorld;
 
 	public ContainerMerchant(InventoryPlayer par1InventoryPlayer, IMerchant par2IMerchant, World par3World) {
-		this.field_75178_e = par2IMerchant;
-		this.field_75177_g = par3World;
+		this.theMerchant = par2IMerchant;
+		this.theWorld = par3World;
 		this.merchantInventory = new InventoryMerchant(par1InventoryPlayer.player, par2IMerchant);
 		this.addSlotToContainer(new Slot(this.merchantInventory, 0, 36, 53));
 		this.addSlotToContainer(new Slot(this.merchantInventory, 1, 62, 53));
@@ -38,7 +42,7 @@ public class ContainerMerchant extends Container {
 		return merchantInventory;
 	}
 	// Spout End
-	
+
 	/**
 	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
 	 */
@@ -61,52 +65,52 @@ public class ContainerMerchant extends Container {
 	public void updateProgressBar(int par1, int par2) {}
 
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-		return this.field_75178_e.getCustomer() == par1EntityPlayer;
+		return this.theMerchant.getCustomer() == par1EntityPlayer;
 	}
 
 	/**
-	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
 	 */
-	public ItemStack transferStackInSlot(int par1) {
-		ItemStack var2 = null;
-		Slot var3 = (Slot)this.inventorySlots.get(par1);
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+		ItemStack var3 = null;
+		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
-		if (var3 != null && var3.getHasStack()) {
-			ItemStack var4 = var3.getStack();
-			var2 = var4.copy();
+		if (var4 != null && var4.getHasStack()) {
+			ItemStack var5 = var4.getStack();
+			var3 = var5.copy();
 
-			if (par1 == 2) {
-				if (!this.mergeItemStack(var4, 3, 39, true)) {
+			if (par2 == 2) {
+				if (!this.mergeItemStack(var5, 3, 39, true)) {
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
-			} else if (par1 != 0 && par1 != 1) {
-				if (par1 >= 3 && par1 < 30) {
-					if (!this.mergeItemStack(var4, 30, 39, false)) {
+				var4.onSlotChange(var5, var3);
+			} else if (par2 != 0 && par2 != 1) {
+				if (par2 >= 3 && par2 < 30) {
+					if (!this.mergeItemStack(var5, 30, 39, false)) {
 						return null;
 					}
-				} else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false)) {
+				} else if (par2 >= 30 && par2 < 39 && !this.mergeItemStack(var5, 3, 30, false)) {
 					return null;
 				}
-			} else if (!this.mergeItemStack(var4, 3, 39, false)) {
+			} else if (!this.mergeItemStack(var5, 3, 39, false)) {
 				return null;
 			}
 
-			if (var4.stackSize == 0) {
-				var3.putStack((ItemStack)null);
+			if (var5.stackSize == 0) {
+				var4.putStack((ItemStack)null);
 			} else {
-				var3.onSlotChanged();
+				var4.onSlotChanged();
 			}
 
-			if (var4.stackSize == var2.stackSize) {
+			if (var5.stackSize == var3.stackSize) {
 				return null;
 			}
 
-			var3.onPickupFromSlot(var4);
+			var4.onPickupFromSlot(par1EntityPlayer, var5);
 		}
 
-		return var2;
+		return var3;
 	}
 
 	/**
@@ -114,10 +118,10 @@ public class ContainerMerchant extends Container {
 	 */
 	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
 		super.onCraftGuiClosed(par1EntityPlayer);
-		this.field_75178_e.setCustomer((EntityPlayer)null);
+		this.theMerchant.setCustomer((EntityPlayer)null);
 		super.onCraftGuiClosed(par1EntityPlayer);
 
-		if (!this.field_75177_g.isRemote) {
+		if (!this.theWorld.isRemote) {
 			ItemStack var2 = this.merchantInventory.getStackInSlotOnClosing(0);
 
 			if (var2 != null) {

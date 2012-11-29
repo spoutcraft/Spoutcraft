@@ -8,29 +8,34 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.Minecraft; // Spout
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.EXTFramebufferObject;
+import org.lwjgl.input.Mouse; // Spout
+import org.lwjgl.opengl.EXTFramebufferObject; // Spout
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.config.Configuration;
+import org.lwjgl.opengl.GL12;
+
+import org.spoutcraft.client.config.Configuration; // Spout
 
 public class ScreenShotHelper {
-
-	private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
+	private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
 	// Spout Start -- moved to be local variables
-	/*private static ByteBuffer buffer;
-	private static byte[] pixelData;
-	private static int[] imageData;*/
+	/*private static IntBuffer field_74293_b;
+	private static int[] field_74294_c;*/
 	// Spout End
 
+	/**
+	 * Takes a screenshot and saves it to the screenshots directory. Returns the filename of the screenshot.
+	 */
 	public static String saveScreenshot(File par0File, int par1, int par2) {
+		// Spout Start
 		if(Configuration.isResizeScreenshots()) return saveResizedScreenshot(par0File, Configuration.getResizedScreenshotWidth(), Configuration.getResizedScreenshotHeight());
 		else return saveScreenshot(par0File, (String)null, par1, par2);
+		// Spout End
 	}
 
-	// Spout Start - method renamed from func_35879_a to saveScreenshot
+	// Spout Start - method renamed from func_74292_a to saveScreenshot
 	public static String saveScreenshot(File file, String imageFileName, int screenWidth, int screenHeight) {
 		ByteBuffer buffer = BufferUtils.createByteBuffer(screenWidth * screenHeight * 3);
 		byte[] pixelData = new byte[screenWidth * screenHeight * 3];

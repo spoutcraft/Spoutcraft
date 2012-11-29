@@ -19,28 +19,16 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
-import net.java.games.util.plugins.Plugin;
 
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.precache.GuiPrecache;
-import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.precache.PrecacheManager;
 import org.spoutcraft.client.precache.PrecacheTuple;
 
 public class PacketValidatePrecache implements SpoutPacket {
-	
 	int count;
 	PrecacheTuple[] plugins;
-	
-	public PacketValidatePrecache() {
-	}
 	
 	@Override
 	public void readData(SpoutInputStream input) throws IOException {
@@ -68,7 +56,6 @@ public class PacketValidatePrecache implements SpoutPacket {
 
 	@Override
 	public void run(int playerId) {
-		
 		PrecacheManager.showPreloadGui();
 		
 		PrecacheManager.reset();
@@ -99,5 +86,4 @@ public class PacketValidatePrecache implements SpoutPacket {
 	public int getVersion() {
 		return 0;
 	}
-
 }

@@ -6,7 +6,7 @@ public class BlockTorch extends Block {
 	protected BlockTorch(int par1, int par2) {
 		super(par1, par2, Material.circuits);
 		this.setTickRandomly(true);
-		this.setCreativeTab(CreativeTabs.tabDeco);
+		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class BlockTorch extends Block {
 			return true;
 		} else {
 			int var5 = par1World.getBlockId(par2, par3, par4);
-			return var5 == Block.fence.blockID || var5 == Block.netherFence.blockID || var5 == Block.glass.blockID;
+			return var5 == Block.fence.blockID || var5 == Block.netherFence.blockID || var5 == Block.glass.blockID || var5 == Block.cobblestoneWall.blockID;
 		}
 	}
 
@@ -58,33 +58,30 @@ public class BlockTorch extends Block {
 		return par1World.isBlockNormalCubeDefault(par2 - 1, par3, par4, true) ? true : (par1World.isBlockNormalCubeDefault(par2 + 1, par3, par4, true) ? true : (par1World.isBlockNormalCubeDefault(par2, par3, par4 - 1, true) ? true : (par1World.isBlockNormalCubeDefault(par2, par3, par4 + 1, true) ? true : this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))));
 	}
 
-	/**
-	 * called before onBlockPlacedBy by ItemBlock and ItemReed
-	 */
-	public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8) {
-		int var9 = par1World.getBlockMetadata(par2, par3, par4);
+	public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
+		int var10 = par9;
 
 		if (par5 == 1 && this.canPlaceTorchOn(par1World, par2, par3 - 1, par4)) {
-			var9 = 5;
+			var10 = 5;
 		}
 
 		if (par5 == 2 && par1World.isBlockNormalCubeDefault(par2, par3, par4 + 1, true)) {
-			var9 = 4;
+			var10 = 4;
 		}
 
 		if (par5 == 3 && par1World.isBlockNormalCubeDefault(par2, par3, par4 - 1, true)) {
-			var9 = 3;
+			var10 = 3;
 		}
 
 		if (par5 == 4 && par1World.isBlockNormalCubeDefault(par2 + 1, par3, par4, true)) {
-			var9 = 2;
+			var10 = 2;
 		}
 
 		if (par5 == 5 && par1World.isBlockNormalCubeDefault(par2 - 1, par3, par4, true)) {
-			var9 = 1;
+			var10 = 1;
 		}
 
-		par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
+		return var10;
 	}
 
 	/**
@@ -102,16 +99,18 @@ public class BlockTorch extends Block {
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
-		if (par1World.isBlockNormalCubeDefault(par2 - 1, par3, par4, true)) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1);
-		} else if (par1World.isBlockNormalCubeDefault(par2 + 1, par3, par4, true)) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2);
-		} else if (par1World.isBlockNormalCubeDefault(par2, par3, par4 - 1, true)) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
-		} else if (par1World.isBlockNormalCubeDefault(par2, par3, par4 + 1, true)) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4);
-		} else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4)) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 5);
+		if (par1World.getBlockMetadata(par2, par3, par4) == 0) {
+			if (par1World.isBlockNormalCubeDefault(par2 - 1, par3, par4, true)) {
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, 1);
+			} else if (par1World.isBlockNormalCubeDefault(par2 + 1, par3, par4, true)) {
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, 2);
+			} else if (par1World.isBlockNormalCubeDefault(par2, par3, par4 - 1, true)) {
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
+			} else if (par1World.isBlockNormalCubeDefault(par2, par3, par4 + 1, true)) {
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, 4);
+			} else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4)) {
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, 5);
+			}
 		}
 
 		this.dropTorchIfCantStay(par1World, par2, par3, par4);

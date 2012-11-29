@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.Minecraft; // Spout
 
 class ThreadConnectToServer extends Thread {
 
@@ -24,18 +24,17 @@ class ThreadConnectToServer extends Thread {
 
 	public void run() {
 		try {
-			GuiConnecting.setNetClientHandler(this.connectingGui, new NetClientHandler(GuiConnecting.func_74254_c(this.connectingGui), this.ip, this.port));
+			GuiConnecting.setNetClientHandler(this.connectingGui, new NetClientHandler(GuiConnecting.func_74256_a(this.connectingGui), this.ip, this.port));
 
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
-
 			// Spout - start
 			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet250CustomPayload("REGISTER", "AutoProto:HShake".getBytes()));
 			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet250CustomPayload("REGISTER", "ChkCache:setHash".getBytes()));
 			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet250CustomPayload("AutoProto:HShake", "VanillaProtocol".getBytes()));
 			// Spout - end
-			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2ClientProtocol(39, GuiConnecting.func_74254_c(this.connectingGui).session.username, this.ip, this.port));
+			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2ClientProtocol(49, GuiConnecting.func_74254_c(this.connectingGui).session.username, this.ip, this.port));
 		} catch (UnknownHostException var2) {
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
