@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 
-import com.pclewis.mcpatcher.MCPatcherUtils;
+import com.pclewis.mcpatcher.MCPatcherUtils; // Spout HD
 
 public abstract class TexturePackImplementation implements ITexturePack {
 
@@ -178,6 +178,7 @@ public abstract class TexturePackImplementation implements ITexturePack {
 	public int getTexturePackResolution() {
 		return 16;
 	}
+
 	// Spout HD Start
 	public void openTexturePackFile() {
 		this.bindThumbnailTexture(MCPatcherUtils.getMinecraft().renderEngine);

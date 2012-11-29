@@ -60,8 +60,6 @@ public class GuiAchievement extends Gui {
 		this.haveAchiement = true;
 	}
 	
-	
-	
 	// Spout Start
 	public void queueNotification(String title, String message, int toRender) {
 		queueNotification(title, message, toRender, (short) -1, -1);

@@ -6,7 +6,7 @@
 	<name>Spoutcraft</name>
 	<groupId>org.spoutcraft</groupId>
 	<artifactId>spoutcraft</artifactId>
-	<version>1.4.4-SNAPSHOT</version>
+	<version>1.4.5-SNAPSHOT</version>
 	<url>http://www.spout.org</url>
 	<inceptionYear>2011</inceptionYear>
 	<description>Spoutcraft is a modified version of the Minecraft client, which you can access through the the Spoutcraft Launcher, 
@@ -17,9 +17,9 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<currentYear>2012</currentYear>
-		<minecraftVersion>1.4.4</minecraftVersion>
+		<minecraftVersion>1.4.5</minecraftVersion>
 		<lwjglVersion>2.4</lwjglVersion>
-		<mcpVersion>721pre2</mcpVersion>
+		<mcpVersion>723</mcpVersion>
 		<buildNumber>0</buildNumber>
 	</properties>
 
@@ -196,7 +196,7 @@
 									<targetPath>${project.basedir}/jars/bin</targetPath>
 									<destFileName>minecraft.jar</destFileName>
 									<!--<file>http://s3.amazonaws.com/MinecraftDownload/minecraft.jar</file>-->
-									<file>http://assets.minecraft.net/1_4_4/minecraft.jar</file>
+									<file>http://assets.minecraft.net/1_4_5/minecraft.jar</file>
 									<!-- TODO: Implement byte patching to downgrade jar to required version if needed -->
 								</resource>
 								<!-- Download remaining dependencies -->

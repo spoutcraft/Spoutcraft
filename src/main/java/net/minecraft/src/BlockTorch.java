@@ -99,16 +99,18 @@ public class BlockTorch extends Block {
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
-		if (par1World.isBlockNormalCubeDefault(par2 - 1, par3, par4, true)) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1);
-		} else if (par1World.isBlockNormalCubeDefault(par2 + 1, par3, par4, true)) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2);
-		} else if (par1World.isBlockNormalCubeDefault(par2, par3, par4 - 1, true)) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
-		} else if (par1World.isBlockNormalCubeDefault(par2, par3, par4 + 1, true)) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4);
-		} else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4)) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 5);
+		if (par1World.getBlockMetadata(par2, par3, par4) == 0) {
+			if (par1World.isBlockNormalCubeDefault(par2 - 1, par3, par4, true)) {
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, 1);
+			} else if (par1World.isBlockNormalCubeDefault(par2 + 1, par3, par4, true)) {
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, 2);
+			} else if (par1World.isBlockNormalCubeDefault(par2, par3, par4 - 1, true)) {
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
+			} else if (par1World.isBlockNormalCubeDefault(par2, par3, par4 + 1, true)) {
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, 4);
+			} else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4)) {
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, 5);
+			}
 		}
 
 		this.dropTorchIfCantStay(par1World, par2, par3, par4);

@@ -4,6 +4,8 @@ public class ItemInWorldManager {
 
 	/** The world object that this object is connected to. */
 	public World theWorld;
+
+	/** The EntityPlayerMP object that this object is connected to. */
 	public EntityPlayerMP thisPlayerMP;
 	private EnumGameType gameType;
 
@@ -39,6 +41,9 @@ public class ItemInWorldManager {
 		return this.gameType;
 	}
 
+	/**
+	 * Get if we are in creative game mode.
+	 */
 	public boolean isCreative() {
 		return this.gameType.isCreative();
 	}
@@ -252,7 +257,7 @@ public class ItemInWorldManager {
 			}
 
 			if (!par1EntityPlayer.isUsingItem()) {
-				((EntityPlayerMP)par1EntityPlayer).sendContainerToPlayer(par1EntityPlayer.inventorySlots);
+				((EntityPlayerMP)par1EntityPlayer).sendContainerToPlayer(par1EntityPlayer.inventoryContainer);
 			}
 
 			return true;

@@ -20,5 +20,5 @@ public class MovementInput {
 	public boolean flyingDown = false;
 	// Spout End
 
-	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) {} // Spout - kept parameter
+	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) {} // Spout - kept parameter. TODO add a reason why
 }

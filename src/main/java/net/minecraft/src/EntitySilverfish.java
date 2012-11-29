@@ -75,6 +75,7 @@ public class EntitySilverfish extends EntityMob {
 			return super.attackEntityFrom(par1DamageSource, par2);
 		}
 	}
+
 	/**
 	 * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
 	 */

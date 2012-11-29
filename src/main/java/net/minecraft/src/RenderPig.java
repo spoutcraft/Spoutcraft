@@ -1,10 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPig;
-import net.minecraft.src.ModelBase;
-import net.minecraft.src.RenderLiving;
 // Spout Start
 import org.spoutcraft.api.entity.EntitySkinType;
 // Spout End

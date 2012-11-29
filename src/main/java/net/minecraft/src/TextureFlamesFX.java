@@ -4,9 +4,7 @@ package net.minecraft.src;
 import com.pclewis.mcpatcher.mod.TileSize;
 // Spout HD End
 
-
 public class TextureFlamesFX extends TextureFX {
-
 	// Spout HD Start
 	protected float[] field_76869_g;
 	protected float[] field_76870_h;

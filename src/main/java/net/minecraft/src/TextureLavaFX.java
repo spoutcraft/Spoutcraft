@@ -42,6 +42,7 @@ public class TextureLavaFX extends TextureFX {
 						// Spout HD End
 					}
 				}
+
 				// Spout HD 
 				this.field_76878_h[var1 + var2 * TileSize.int_size] = var3 / 10.0F + (this.field_76879_i[(var1 + 0 & TileSize.int_sizeMinus1) + (var2 + 0 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_76879_i[(var1 + 1 & TileSize.int_sizeMinus1) + (var2 + 0 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_76879_i[(var1 + 1 & TileSize.int_sizeMinus1) + (var2 + 1 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_76879_i[(var1 + 0 & TileSize.int_sizeMinus1) + (var2 + 1 & TileSize.int_sizeMinus1) * TileSize.int_size]) / 4.0F * 0.8F;
 				this.field_76879_i[var1 + var2 * TileSize.int_size] += this.field_76877_j[var1 + var2 * TileSize.int_size] * 0.01F;
@@ -49,8 +50,10 @@ public class TextureLavaFX extends TextureFX {
 				if (this.field_76879_i[var1 + var2 * TileSize.int_size] < 0.0F) {
 					this.field_76879_i[var1 + var2 * TileSize.int_size] = 0.0F;
 				}
+
 				this.field_76877_j[var1 + var2 * TileSize.int_size] -= 0.06F;
 				// Spout HD End
+
 				if (Math.random() < 0.005D) {
 					this.field_76877_j[var1 + var2 * TileSize.int_size] = 1.5F; // Spout HD 
 				}

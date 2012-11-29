@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftEnderman;
+import org.spoutcraft.client.entity.CraftEnderman; // Spout
 
 public class EntityEnderman extends EntityMob {
 	private static boolean[] carriableBlocks = new boolean[256];
@@ -268,7 +268,7 @@ public class EntityEnderman extends EntityMob {
 			}
 
 			this.worldObj.playSoundEffect(var7, var9, var11, "mob.endermen.portal", 1.0F, 1.0F);
-			this.worldObj.func_85030_a("mob.endermen.portal", 1.0F, 1.0F);
+			this.func_85030_a("mob.endermen.portal", 1.0F, 1.0F);
 			return true;
 		}
 	}

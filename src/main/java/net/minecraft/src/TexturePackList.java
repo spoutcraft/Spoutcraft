@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.MCPatcherUtils; // Spout HD
-import com.pclewis.mcpatcher.TexturePackAPI;
+import com.pclewis.mcpatcher.TexturePackAPI; // Spout HD
 import com.pclewis.mcpatcher.mod.TextureUtils; // Spout HD
 import java.io.File;
 import java.util.ArrayList;
@@ -108,7 +108,7 @@ public class TexturePackList {
 		HashMap var3 = new HashMap();
 		GuiProgress var4 = new GuiProgress();
 		var3.put("X-Minecraft-Username", this.mc.session.username);
-		var3.put("X-Minecraft-Version", "1.4.4");
+		var3.put("X-Minecraft-Version", "1.4.5");
 		var3.put("X-Minecraft-Supported-Resolutions", "16");
 		this.isDownloading = true;
 		this.mc.displayGuiScreen(var4);

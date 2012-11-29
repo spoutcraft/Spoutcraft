@@ -10,8 +10,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+// Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.material.MaterialData;
+// Spout End
 
 public abstract class Packet {
 
@@ -32,7 +34,7 @@ public abstract class Packet {
 	public static long receivedID;
 	public static long receivedSize;
 
-	/** assumed to be sequential by the profiler */
+	/** Assumed to be sequential by the profiler. */
 	public static long sentID;
 	public static long sentSize;
 

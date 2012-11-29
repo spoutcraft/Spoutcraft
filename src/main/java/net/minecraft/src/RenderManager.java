@@ -160,6 +160,12 @@ public class RenderManager {
 	 * Will render the specified entity at the specified partial tick time. Args: entity, partialTickTime
 	 */
 	public void renderEntity(Entity par1Entity, float par2) {
+		if (par1Entity.ticksExisted == 0) {
+			par1Entity.lastTickPosX = par1Entity.posX;
+			par1Entity.lastTickPosY = par1Entity.posY;
+			par1Entity.lastTickPosZ = par1Entity.posZ;
+		}
+
 		double var3 = par1Entity.lastTickPosX + (par1Entity.posX - par1Entity.lastTickPosX) * (double)par2;
 		double var5 = par1Entity.lastTickPosY + (par1Entity.posY - par1Entity.lastTickPosY) * (double)par2;
 		double var7 = par1Entity.lastTickPosZ + (par1Entity.posZ - par1Entity.lastTickPosZ) * (double)par2;
@@ -182,21 +188,49 @@ public class RenderManager {
 	 * partialTickTime
 	 */
 	public void renderEntityWithPosYaw(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-		Render var10 = this.getEntityRenderObject(par1Entity);
+		Render var10 = null;
 
-		if (var10 != null) {
-			if (field_85095_o) {
-				this.func_85094_b(par1Entity, par2, par4, par6, par8, par9);
+		try {
+			var10 = this.getEntityRenderObject(par1Entity);
+
+			if (var10 != null && this.renderEngine != null) {
+				if (field_85095_o) {
+					try {
+						this.func_85094_b(par1Entity, par2, par4, par6, par8, par9);
+					} catch (Throwable var17) {
+						throw new ReportedException(CrashReport.func_85055_a(var17, "Rendering entity hitbox in world"));
+					}
+				}
+
+				// Spout start
+				var10.setRenderManager(this);
+				// Spout end
+
+				try {
+					var10.doRender(par1Entity, par2, par4, par6, par8, par9);
+				} catch(NullPointerException ignore) { // Spout Ignore NullPointerExceptions, the old way
+				} catch (Throwable var16) {
+					throw new ReportedException(CrashReport.func_85055_a(var16, "Rendering entity in world"));
+				}
+
+				try {
+					var10.doRenderShadowAndFire(par1Entity, par2, par4, par6, par8, par9);
+				} catch(NullPointerException ignore) { // Spout Ignore NullPointerExceptions, the old way
+				} catch (Throwable var15) {
+					throw new ReportedException(CrashReport.func_85055_a(var15, "Post-rendering entity in world"));
+				}
 			}
-			// Spout start
-			var10.setRenderManager(this);
-			try {
-			// Spout end
-			var10.doRender(par1Entity, par2, par4, par6, par8, par9);
-			var10.doRenderShadowAndFire(par1Entity, par2, par4, par6, par8, par9);
-			// Spout start
-			} catch(NullPointerException ignore) { }
-			// Spout end
+		} catch(NullPointerException ignore) { // Spout Ignore NullPointerExceptions, the old way
+		} catch (Throwable var18) {
+			CrashReport var12 = CrashReport.func_85055_a(var18, "Rendering entity in world");
+			CrashReportCategory var13 = var12.func_85058_a("Entity being rendered");
+			par1Entity.func_85029_a(var13);
+			CrashReportCategory var14 = var12.func_85058_a("Renderer details");
+			var14.addCrashSection("Assigned renderer", var10);
+			var14.addCrashSection("Location", CrashReportCategory.func_85074_a(par2, par4, par6));
+			var14.addCrashSection("Rotation", Float.valueOf(par8));
+			var14.addCrashSection("Delta", Float.valueOf(par9));
+			throw new ReportedException(var12);
 		}
 	}
 

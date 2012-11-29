@@ -2,9 +2,9 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 // Spout Start
 import java.util.Random;
-import org.lwjgl.opengl.GL12;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.api.block.design.BlockDesign;
@@ -12,16 +12,25 @@ import org.spoutcraft.api.material.MaterialData;
 
 import com.pclewis.mcpatcher.mod.TileSize;
 import com.pclewis.mcpatcher.mod.Colorizer;
-
 // Spout End
 
 public class ItemRenderer {
+
+	/** A reference to the Minecraft object. */
 	private Minecraft mc;
 	private ItemStack itemToRender = null;
+
+	/**
+	 * How far the current item has been equipped (0 disequipped and 1 fully up)
+	 */
 	private float equippedProgress = 0.0F;
 	private float prevEquippedProgress = 0.0F;
+
+	/** Instance of RenderBlocks. */
 	private RenderBlocks renderBlocksInstance = new RenderBlocks();
 	public final MapItemRenderer mapItemRenderer;
+
+	/** The index of the currently held item (0-8, or -1 if not yet updated) */
 	private int equippedItemSlot = -1;
 	// Spout Start
 	private Random rand = new Random();
@@ -32,8 +41,12 @@ public class ItemRenderer {
 		this.mapItemRenderer = new MapItemRenderer(par1Minecraft.fontRenderer, par1Minecraft.gameSettings, par1Minecraft.renderEngine);
 	}
 
+	/**
+	 * Renders the item stack for being in an entity's hand Args: itemStack
+	 */
 	public void renderItem(EntityLiving par1EntityLiving, ItemStack par2ItemStack, int par3) {
 		GL11.glPushMatrix();
+
 		// Spout Start
 		Block var4block = Block.blocksList[par2ItemStack.itemID];
 		boolean custom = false;
@@ -59,7 +72,7 @@ public class ItemRenderer {
 		
 		if (!custom) {
 			if (par2ItemStack.itemID < 256) {
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
 			}
 			else {
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/items.png"));
@@ -84,7 +97,7 @@ public class ItemRenderer {
 				var9 = 1;
 				var10 = 0;
 			}
-
+			// Spout end
 			float var11 = 0.0F;
 			float var12 = 0.3F;
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -132,6 +145,9 @@ public class ItemRenderer {
 		GL11.glPopMatrix();
 	}
 
+	/**
+	 * Renders an item held in hand as a 2D texture with thickness
+	 */
 	private void renderItemIn2D(Tessellator par1Tessellator, float par2, float par3, float par4, float par5) {
 		float var6 = 1.0F;
 		float var7 = 0.0625F;
@@ -151,7 +167,6 @@ public class ItemRenderer {
 		par1Tessellator.draw();
 		par1Tessellator.startDrawingQuads();
 		par1Tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-
 		int var8;
 		float var9;
 		float var10;
@@ -219,6 +234,9 @@ public class ItemRenderer {
 		par1Tessellator.draw();
 	}
 
+	/**
+	 * Renders the active item in the player's hand when in first person mode. Args: partialTickTime
+	 */
 	public void renderItemInFirstPerson(float par1) {
 		float var2 = this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * par1;
 		EntityClientPlayerMP var3 = this.mc.thePlayer;
@@ -331,9 +349,11 @@ public class ItemRenderer {
 			var28.addVertexWithUV((double)(0 - var27), (double)(0 - var27), 0.0D, 0.0D, 0.0D);
 			var28.draw();
 			MapData var16 = Item.map.getMapData(var17, this.mc.theWorld);
+
 			if (var16 != null) {
 				this.mapItemRenderer.renderMap(this.mc.thePlayer, this.mc.renderEngine, var16);
 			}
+
 			GL11.glPopMatrix();
 		} else if (var17 != null) {
 			GL11.glPushMatrix();
@@ -431,7 +451,7 @@ public class ItemRenderer {
 			}
 
 			GL11.glPopMatrix();
-		} else if (!var3.func_82150_aj()) {
+		} else if (!var3.getHasActivePotion()) {
 			GL11.glPushMatrix();
 			var7 = 0.8F;
 			var20 = var3.getSwingProgress(par1);
@@ -465,9 +485,13 @@ public class ItemRenderer {
 		RenderHelper.disableStandardItemLighting();
 	}
 
+	/**
+	 * Renders all the overlays that are in first person mode. Args: partialTickTime
+	 */
 	public void renderOverlays(float par1) {
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		int var2;
+
 		if (this.mc.thePlayer.isBurning()) {
 			var2 = this.mc.renderEngine.getTexture("/terrain.png");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var2);
@@ -481,6 +505,7 @@ public class ItemRenderer {
 			int var5 = this.mc.renderEngine.getTexture("/terrain.png");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var5);
 			int var6 = this.mc.theWorld.getBlockId(var2, var3, var4);
+
 			if (this.mc.theWorld.isBlockNormalCube(var2, var3, var4)) {
 				this.renderInsideOfBlock(par1, Block.blocksList[var6].getBlockTextureFromSide(2));
 			} else {
@@ -491,6 +516,7 @@ public class ItemRenderer {
 					int var11 = MathHelper.floor_float((float)var2 + var8);
 					int var12 = MathHelper.floor_float((float)var3 + var9);
 					int var13 = MathHelper.floor_float((float)var4 + var10);
+
 					if (this.mc.theWorld.isBlockNormalCube(var11, var12, var13)) {
 						var6 = this.mc.theWorld.getBlockId(var11, var12, var13);
 					}
@@ -511,6 +537,9 @@ public class ItemRenderer {
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 	}
 
+	/**
+	 * Renders the texture of the block the player is inside as an overlay. Args: partialTickTime, blockTextureIndex
+	 */
 	private void renderInsideOfBlock(float par1, int par2) {
 		Tessellator var3 = Tessellator.instance;
 		this.mc.thePlayer.getBrightness(par1);
@@ -537,6 +566,10 @@ public class ItemRenderer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
+	/**
+	 * Renders a texture that warps around based on the direction the player is looking. Texture needs to be bound before
+	 * being called. Used for the water overlay. Args: parialTickTime
+	 */
 	private void renderWarpedTextureOverlay(float par1) {
 		Tessellator var2 = Tessellator.instance;
 		float var3 = this.mc.thePlayer.getBrightness(par1);
@@ -563,6 +596,9 @@ public class ItemRenderer {
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
+	/**
+	 * Renders the fire on the screen for first person mode. Arg: partialTickTime
+	 */
 	private void renderFireInFirstPerson(float par1) {
 		Tessellator var2 = Tessellator.instance;
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.9F);

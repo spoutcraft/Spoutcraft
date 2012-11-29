@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Set;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
-//import paulscode.sound.codecs.CodecJOrbis;
+//import paulscode.sound.codecs.CodecJOrbis; // Spout - not used
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
@@ -209,20 +209,21 @@ public class SoundManager {
 	public void setListener(EntityLiving par1EntityLiving, float par2) {
 		if (loaded && this.options.soundVolume != 0.0F) {
 			if (par1EntityLiving != null) {
-				float var3 = par1EntityLiving.prevRotationYaw + (par1EntityLiving.rotationYaw - par1EntityLiving.prevRotationYaw) * par2;
-				double var4 = par1EntityLiving.prevPosX + (par1EntityLiving.posX - par1EntityLiving.prevPosX) * (double)par2;
-				double var6 = par1EntityLiving.prevPosY + (par1EntityLiving.posY - par1EntityLiving.prevPosY) * (double)par2;
-				double var8 = par1EntityLiving.prevPosZ + (par1EntityLiving.posZ - par1EntityLiving.prevPosZ) * (double)par2;
-				float var10 = MathHelper.cos(-var3 * 0.017453292F - (float)Math.PI);
-				float var11 = MathHelper.sin(-var3 * 0.017453292F - (float)Math.PI);
-				float var12 = -var11;
-				float var13 = 0.0F;
-				float var14 = -var10;
-				float var15 = 0.0F;
-				float var16 = 1.0F;
-				float var17 = 0.0F;
-				sndSystem.setListenerPosition((float)var4, (float)var6, (float)var8);
-				sndSystem.setListenerOrientation(var12, var13, var14, var15, var16, var17);
+				float var3 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par2;
+				float var4 = par1EntityLiving.prevRotationYaw + (par1EntityLiving.rotationYaw - par1EntityLiving.prevRotationYaw) * par2;
+				double var5 = par1EntityLiving.prevPosX + (par1EntityLiving.posX - par1EntityLiving.prevPosX) * (double)par2;
+				double var7 = par1EntityLiving.prevPosY + (par1EntityLiving.posY - par1EntityLiving.prevPosY) * (double)par2;
+				double var9 = par1EntityLiving.prevPosZ + (par1EntityLiving.posZ - par1EntityLiving.prevPosZ) * (double)par2;
+				float var11 = MathHelper.cos(-var4 * 0.017453292F - (float)Math.PI);
+				float var12 = MathHelper.sin(-var4 * 0.017453292F - (float)Math.PI);
+				float var13 = -var12;
+				float var14 = -MathHelper.sin(-var3 * 0.017453292F - (float)Math.PI);
+				float var15 = -var11;
+				float var16 = 0.0F;
+				float var17 = 1.0F;
+				float var18 = 0.0F;
+				sndSystem.setListenerPosition((float)var5, (float)var7, (float)var9);
+				sndSystem.setListenerOrientation(var13, var14, var15, var16, var17, var18);
 			}
 		}
 	}
@@ -294,11 +295,11 @@ public class SoundManager {
 	 * Returns true if a sound is currently associated with the given entity, or false otherwise.
 	 */
 	public boolean isEntitySoundPlaying(Entity par1Entity) {
-		if (par1Entity == null) {
-			return false;
-		} else {
+		if (par1Entity != null && loaded) {
 			String var2 = "entity_" + par1Entity.entityId;
 			return sndSystem.playing(var2);
+		} else {
+			return false;
 		}
 	}
 
@@ -306,7 +307,7 @@ public class SoundManager {
 	 * Stops playing the sound associated with the given entity
 	 */
 	public void stopEntitySound(Entity par1Entity) {
-		if (par1Entity != null) {
+		if (par1Entity != null && loaded) {
 			String var2 = "entity_" + par1Entity.entityId;
 
 			if (this.playingSounds.contains(var2)) {
@@ -324,7 +325,7 @@ public class SoundManager {
 	 * sound volume. Args: the entity, the volume (from 0 to 1)
 	 */
 	public void setEntitySoundVolume(Entity par1Entity, float par2) {
-		if (par1Entity != null) {
+		if (par1Entity != null && loaded) {
 			if (loaded && this.options.soundVolume != 0.0F) {
 				String var3 = "entity_" + par1Entity.entityId;
 
@@ -339,7 +340,7 @@ public class SoundManager {
 	 * Sets the pitch of the sound associated with the given entity, if one is playing. Args: the entity, the pitch
 	 */
 	public void setEntitySoundPitch(Entity par1Entity, float par2) {
-		if (par1Entity != null) {
+		if (par1Entity != null && loaded) {
 			if (loaded && this.options.soundVolume != 0.0F) {
 				String var3 = "entity_" + par1Entity.entityId;
 
@@ -441,7 +442,11 @@ public class SoundManager {
 			sndSystem.play(s1);
 		}
 	}
-	
+
+	/**
+	 * Plays a sound effect with the volume and pitch of the parameters passed. The sound isn't affected by position of the
+	 * player (full volume and center balanced)
+	 */
 	public void playSoundFX(String s, float f, float f1) {
 		playSoundFX(s, f, f1, -1, 1.0F);
 	}
@@ -599,5 +604,4 @@ public class SoundManager {
 			sndSystem.play(var2);
 		}
 	}
-
 }

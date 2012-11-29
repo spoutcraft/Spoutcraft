@@ -23,8 +23,10 @@ public class EntityXPOrb extends Entity {
 
 	/** This is how much XP this orb has. */
 	public int xpValue; // Spout private -> public
-	private EntityPlayer field_80001_f;
-	private int closestPlayer;
+
+	/** The closest EntityPlayer to this orb. */
+	private EntityPlayer closestPlayer;
+	private int field_80002_g;
 
 	public EntityXPOrb(World par1World, double par2, double par4, double par6, int par8) {
 		super(par1World);
@@ -102,18 +104,18 @@ public class EntityXPOrb extends Entity {
 		this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
 		double var1 = 8.0D;
 
-		if (this.closestPlayer < this.xpColor - 20 + this.entityId % 100) {
-			if (this.field_80001_f == null || this.field_80001_f.getDistanceSqToEntity(this) > var1 * var1) {
-				this.field_80001_f = this.worldObj.getClosestPlayerToEntity(this, var1);
+		if (this.field_80002_g < this.xpColor - 20 + this.entityId % 100) {
+			if (this.closestPlayer == null || this.closestPlayer.getDistanceSqToEntity(this) > var1 * var1) {
+				this.closestPlayer = this.worldObj.getClosestPlayerToEntity(this, var1);
 			}
 
-			this.closestPlayer = this.xpColor;
+			this.field_80002_g = this.xpColor;
 		}
 
-		if (this.field_80001_f != null) {
-			double var3 = (this.field_80001_f.posX - this.posX) / var1;
-			double var5 = (this.field_80001_f.posY + (double)this.field_80001_f.getEyeHeight() - this.posY) / var1;
-			double var7 = (this.field_80001_f.posZ - this.posZ) / var1;
+		if (this.closestPlayer != null) {
+			double var3 = (this.closestPlayer.posX - this.posX) / var1;
+			double var5 = (this.closestPlayer.posY + (double)this.closestPlayer.getEyeHeight() - this.posY) / var1;
+			double var7 = (this.closestPlayer.posZ - this.posZ) / var1;
 			double var9 = Math.sqrt(var3 * var3 + var5 * var5 + var7 * var7);
 			double var11 = 1.0D - var9;
 
