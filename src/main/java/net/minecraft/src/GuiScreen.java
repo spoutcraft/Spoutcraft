@@ -30,8 +30,9 @@ import org.spoutcraft.api.gui.Slot;
 
 // Spout End
 
-public class GuiScreen extends Gui
-{
+public class GuiScreen extends Gui {
+	public static final boolean field_90017_e = Minecraft.getOs() == EnumOS.MACOS;
+
 	/** Reference to the Minecraft object. */
 	protected Minecraft mc;
 
@@ -51,6 +52,8 @@ public class GuiScreen extends Gui
 
 	/** The button that was just pressed. */
 	private GuiButton selectedButton;
+	private int field_85042_b = 0;
+	private long field_85043_c = 0L;
 
 	// Spout Start
 	public GenericGradient bg;
@@ -129,10 +132,8 @@ public class GuiScreen extends Gui
 	/**
 	 * Draws the screen and all the components in it.
 	 */
-	public void drawScreen(int par1, int par2, float par3)
-	{
-		for (int i = 0; i < controlList.size(); i++)
-		{
+	public void drawScreen(int par1, int par2, float par3) {
+		for (int i = 0; i < controlList.size(); i++) {
 			GuiButton guibutton = (GuiButton)controlList.get(i);
 			guibutton.drawButton(mc, par1, par2);
 		}
@@ -576,6 +577,8 @@ public class GuiScreen extends Gui
 		}
 	}
 
+	protected void func_85041_a(int par1, int par2, int par3, long par4) {}
+
 	/**
 	 * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
 	 */
@@ -645,6 +648,25 @@ public class GuiScreen extends Gui
 	 * Handles mouse input.
 	 */
 	// Spout Start rewritten
+
+
+	/*public void handleMouseInput() {
+		int var1 = Mouse.getEventX() * this.width / this.mc.displayWidth;
+		int var2 = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+
+		if (Mouse.getEventButtonState()) {
+			this.field_85042_b = Mouse.getEventButton();
+			this.field_85043_c = Minecraft.getSystemTime();
+			this.mouseClicked(var1, var2, this.field_85042_b);
+		} else if (Mouse.getEventButton() != -1) {
+			this.field_85042_b = -1;
+			this.mouseMovedOrUp(var1, var2, Mouse.getEventButton());
+		} else if (this.mc.gameSettings.field_85185_A && this.field_85042_b != -1 && this.field_85043_c > 0L) {
+			long var3 = Minecraft.getSystemTime() - this.field_85043_c;
+			this.func_85041_a(var1, var2, this.field_85042_b, var3);
+		}
+	}*/
+	
 	public void handleMouseInput() {
 		int x;
 		int y;
@@ -1077,7 +1099,8 @@ public class GuiScreen extends Gui
 	}
 
 	public static boolean isCtrlKeyDown() {
-		return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
+		boolean var0 = Keyboard.isKeyDown(28) && Keyboard.getEventCharacter() == 0;
+		return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157) || field_90017_e && (var0 || Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220));
 	}
 
 	public static boolean isShiftKeyDown() {

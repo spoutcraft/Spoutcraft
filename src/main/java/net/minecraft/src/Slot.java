@@ -50,10 +50,7 @@ public class Slot {
 	 */
 	protected void onCrafting(ItemStack par1ItemStack) {}
 
-	/**
-	 * Called when the player picks up an item from an inventory slot
-	 */
-	public void onPickupFromSlot(ItemStack par1ItemStack) {
+	public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
 		this.onSlotChanged();
 	}
 
@@ -120,5 +117,12 @@ public class Slot {
 	 */
 	public boolean isSlotInInventory(IInventory par1IInventory, int par2) {
 		return par1IInventory == this.inventory && par2 == this.slotIndex;
+	}
+
+	/**
+	 * Return whether this slot's stack can be taken from this slot.
+	 */
+	public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
+		return true;
 	}
 }

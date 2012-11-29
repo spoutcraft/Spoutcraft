@@ -1,10 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntitySpider;
-import net.minecraft.src.ModelSpider;
-import net.minecraft.src.OpenGlHelper;
-import net.minecraft.src.RenderLiving;
 import org.lwjgl.opengl.GL11;
 
 // Spout Start
@@ -12,7 +7,6 @@ import org.spoutcraft.api.entity.EntitySkinType;
 // Spout End
 
 public class RenderSpider extends RenderLiving {
-
 	public RenderSpider() {
 		super(new ModelSpider(), 1.0F);
 		this.setRenderPassModel(new ModelSpider());
@@ -22,6 +16,9 @@ public class RenderSpider extends RenderLiving {
 		return 180.0F;
 	}
 
+	/**
+	 * Sets the spider's glowing eyes
+	 */
 	protected int setSpiderEyeBrightness(EntitySpider par1EntitySpider, int par2, float par3) {
 		if (par2 != 0) {
 			return -1;
@@ -33,6 +30,13 @@ public class RenderSpider extends RenderLiving {
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glDisable(GL11.GL_ALPHA_TEST);
 			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+
+			if (par1EntitySpider.func_82150_aj()) {
+				GL11.glDepthMask(false);
+			} else {
+				GL11.glDepthMask(true);
+			}
+
 			char var5 = 61680;
 			int var6 = var5 % 65536;
 			int var7 = var5 / 65536;
@@ -48,6 +52,10 @@ public class RenderSpider extends RenderLiving {
 		GL11.glScalef(var3, var3, var3);
 	}
 
+	/**
+	 * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args: entityLiving,
+	 * partialTickTime
+	 */
 	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2) {
 		this.scaleSpider((EntitySpider)par1EntityLiving, par2);
 	}
@@ -56,6 +64,9 @@ public class RenderSpider extends RenderLiving {
 		return this.setSpiderDeathMaxRotation((EntitySpider)par1EntityLiving);
 	}
 
+	/**
+	 * Queries whether should render the specified pass or not.
+	 */
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
 		return this.setSpiderEyeBrightness((EntitySpider)par1EntityLiving, par2, par3);
 	}

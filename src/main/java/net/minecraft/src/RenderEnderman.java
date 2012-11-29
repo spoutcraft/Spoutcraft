@@ -39,7 +39,7 @@ public class RenderEnderman extends RenderLiving {
 			var3 *= 1.0F;
 			GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			GL11.glScalef(var3, -var3, var3);
+			GL11.glScalef(-var3, -var3, var3);
 			int var4 = par1EntityEnderman.getBrightnessForRender(par2);
 			int var5 = var4 % 65536;
 			int var6 = var4 / 65536;
@@ -65,6 +65,13 @@ public class RenderEnderman extends RenderLiving {
 			GL11.glDisable(GL11.GL_ALPHA_TEST);
 			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 			GL11.glDisable(GL11.GL_LIGHTING);
+
+			if (par1EntityEnderman.func_82150_aj()) {
+				GL11.glDepthMask(false);
+			} else {
+				GL11.glDepthMask(true);
+			}
+
 			char var5 = 61680;
 			int var6 = var5 % 65536;
 			int var7 = var5 / 65536;

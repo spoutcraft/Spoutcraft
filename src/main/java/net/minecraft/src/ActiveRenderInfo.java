@@ -92,7 +92,7 @@ public class ActiveRenderInfo {
 		double var9 = var3 + (double)(objectX * 1.0F);
 		double var11 = var5 + (double)(objectY * 1.0F);
 		double var13 = var7 + (double)(objectZ * 1.0F);
-		return Vec3.getVec3Pool().getVecFromPool(var9, var11, var13);
+		return par0EntityLiving.worldObj.getWorldVec3Pool().getVecFromPool(var9, var11, var13);
 	}
 
 	/**

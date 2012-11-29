@@ -41,4 +41,24 @@ public abstract class EntityWaterMob extends EntityCreature implements IAnimals 
 	protected int getExperiencePoints(EntityPlayer par1EntityPlayer) {
 		return 1 + this.worldObj.rand.nextInt(3);
 	}
+
+	/**
+	 * Gets called every tick from main Entity class
+	 */
+	public void onEntityUpdate() {
+		int var1 = this.getAir();
+		super.onEntityUpdate();
+
+		if (this.isEntityAlive() && !this.isInsideOfMaterial(Material.water)) {
+			--var1;
+			this.setAir(var1);
+
+			if (this.getAir() == -20) {
+				this.setAir(0);
+				this.attackEntityFrom(DamageSource.drown, 2);
+			}
+		} else {
+			this.setAir(300);
+		}
+	}
 }

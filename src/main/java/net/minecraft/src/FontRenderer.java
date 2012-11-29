@@ -114,8 +114,7 @@ public class FontRenderer {
 	// end Spout AlphaText
 
 	// begin Spout AlphaText
-	private float renderDefaultChar(int k, boolean italic, boolean bold)
-	{
+	private float renderDefaultChar(int k, boolean italic, boolean bold) {
 		float Xk = (float)(k % 16) / 16F;
 		float Yk = (float)(k / 16) / 16F;
 		float Xi = italic ? 1.0F : 0.0F;
@@ -151,8 +150,7 @@ public class FontRenderer {
 	}
 
 	//begin Spout AlphaText
-	private float renderUnicodeChar(char c, boolean italic)
-	{
+	private float renderUnicodeChar(char c, boolean italic) {
 		if (this.glyphWidth[c] == 0) {
 			return 0F;
 		}
@@ -620,6 +618,10 @@ public class FontRenderer {
 	public void setUnicodeFlag(boolean par1) {
 		this.unicodeFlag = par1;
 		this.boldOffset = par1?0.5F:1F;
+	}
+
+	public boolean func_82883_a() {
+		return this.unicodeFlag;
 	}
 
 	public void setBidiFlag(boolean par1) {
