@@ -84,8 +84,11 @@ public enum PacketType {
 	PacketSlotClick(59, PacketSlotClick.class),
 	PacketWaypoint(60, PacketWaypoint.class),
 	PacketParticle(61, PacketParticle.class),
-	PacketAccessory(62, org.spoutcraft.client.player.accessories.PacketAccessory.class);
-
+	PacketAccessory(62, org.spoutcraft.client.player.accessories.PacketAccessory.class),
+	PacketValidatePrecache(63, PacketValidatePrecache.class),
+	PacketRequestPrecache(64, PacketRequestPrecache.class),
+	PacketSendPrecache(65, PacketSendPrecache.class);
+	
 	private final int id;
 	private final Class<? extends SpoutPacket> packetClass;
 	private static final HashMap<Integer, PacketType> lookupId = new HashMap<Integer, PacketType>();

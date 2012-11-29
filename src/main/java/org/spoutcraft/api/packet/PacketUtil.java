@@ -19,6 +19,7 @@
  */
 package org.spoutcraft.api.packet;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -36,8 +37,28 @@ public abstract class PacketUtil {
 		}
 		return newArray;
 	}
-
+	
+	public static int[] readIntArray(DataInputStream input) throws IOException {
+		int length = input.readInt();
+		if (length > 256) {
+			throw new IllegalArgumentException("Int array exceeded max length (" + length + ")");
+		}
+		int[] newArray = new int[length];
+		for (int i = 0; i < length; i++) {
+			newArray[i] = input.readInt();
+		}
+		return newArray;
+	}
+	
 	public static float[] readQuadFloat(SpoutInputStream input) throws IOException {
+		float[] newArray = new float[4];
+		for (int i = 0; i < 4; i++) {
+			newArray[i] = input.readFloat();
+		}
+		return newArray;
+	}
+	
+	public static float[] readQuadFloat(DataInputStream input) throws IOException {
 		float[] newArray = new float[4];
 		for (int i = 0; i < 4; i++) {
 			newArray[i] = input.readFloat();
@@ -60,6 +81,18 @@ public abstract class PacketUtil {
 		}
 		return newDoubleArray;
 	}
+	
+	public static float[][] readDoubleArray(DataInputStream input) throws IOException {
+		int length = input.readShort();
+		if (length > 256) {
+			throw new IllegalArgumentException("Double array exceeded max length (" + length + ")");
+		}
+		float[][] newDoubleArray = new float[length][];
+		for (int i = 0; i < length; i++) {
+			newDoubleArray[i] = readQuadFloat(input);
+		}
+		return newDoubleArray;
+	}
 
 	public static void writeIntArray(DataOutputStream output, int[] ints) throws IOException {
 		if (ints.length > 256) {
@@ -69,5 +102,20 @@ public abstract class PacketUtil {
 		for (int i = 0; i < ints.length; i++) {
 			output.writeInt(ints[i]);
 		}
+	}
+	
+	public static void writeString(DataOutputStream output, String string) throws IOException {
+		byte[] data = string.getBytes("UTF-8");
+		output.writeInt(data.length);
+		output.write(data);
+	}
+	
+	public static String readString(DataInputStream input) throws IOException {
+		int length= input.readInt();
+		byte[] data=new byte[length];
+		input.readFully(data);
+		String string = new String(data,"UTF-8");
+		
+		return string;
 	}
 }

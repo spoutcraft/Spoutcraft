@@ -19,21 +19,31 @@
  */
 package org.spoutcraft.client.io;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.GuiYesNo;
+import net.minecraft.src.RenderManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-
-import net.minecraft.client.Minecraft;
-
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.CustomScreen;
+import org.spoutcraft.client.gui.precache.GuiPrecache;
 
 public class FileUtil {
 	private static final String[] validExtensions = {"txt", "yml", "xml", "png", "jpg", "ogg", "midi", "wav", "zip"};

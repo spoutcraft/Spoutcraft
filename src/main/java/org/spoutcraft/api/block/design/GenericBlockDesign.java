@@ -19,11 +19,11 @@
  */
 package org.spoutcraft.api.block.design;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
-
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.World;
 import org.spoutcraft.api.addon.Addon;
@@ -183,6 +183,33 @@ public class GenericBlockDesign implements BlockDesign {
 		}
 		reset = false;
 		textureAddon = input.readString();
+		xPos = PacketUtil.readDoubleArray(input);
+		yPos = PacketUtil.readDoubleArray(input);
+		zPos = PacketUtil.readDoubleArray(input);
+		textXPos = PacketUtil.readDoubleArray(input);
+		textYPos = PacketUtil.readDoubleArray(input);
+		lowXBound = input.readFloat();
+		lowYBound = input.readFloat();
+		lowZBound = input.readFloat();
+		highXBound = input.readFloat();
+		highYBound = input.readFloat();
+		highZBound = input.readFloat();
+		maxBrightness = input.readFloat();
+		minBrightness = input.readFloat();
+		renderPass = input.readInt();
+		lightSourceXOffset = PacketUtil.readIntArray(input);
+		lightSourceYOffset = PacketUtil.readIntArray(input);
+		lightSourceZOffset = PacketUtil.readIntArray(input);
+	}
+	
+	public void read(DataInputStream input) throws IOException {
+		textureURL = PacketUtil.readString(input);
+		if (textureURL.equals(resetString)) {
+			reset = true;
+			return;
+		}
+		reset = false;
+		textureAddon = PacketUtil.readString(input);
 		xPos = PacketUtil.readDoubleArray(input);
 		yPos = PacketUtil.readDoubleArray(input);
 		zPos = PacketUtil.readDoubleArray(input);
