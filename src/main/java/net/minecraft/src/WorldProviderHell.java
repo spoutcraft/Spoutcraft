@@ -44,9 +44,9 @@ public class WorldProviderHell extends WorldProvider {
 	}
 
 	/**
-	 * Returns the chunk provider back for the world provider
+	 * Returns a new chunk provider which generates chunks for this world
 	 */
-	public IChunkProvider getChunkProvider() {
+	public IChunkProvider createChunkGenerator() {
 		return new ChunkProviderHell(this.worldObj, this.worldObj.getSeed());
 	}
 

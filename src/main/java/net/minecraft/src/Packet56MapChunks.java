@@ -88,7 +88,7 @@ public class Packet56MapChunks extends Packet {
 
 		par1DataInputStream.readFully(field_73591_h, 0, this.field_73585_g);
 		
-		// Spout
+		// Spout Start
 		byte[] inflateBuffer = inflateBufferCache.get();
 		int requiredLength = 196864 * var2;
 		if (inflateBuffer == null || inflateBuffer.length < requiredLength) {

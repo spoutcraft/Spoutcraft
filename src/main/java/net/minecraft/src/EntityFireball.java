@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 
-import org.spoutcraft.client.entity.CraftFireball;
+import org.spoutcraft.client.entity.CraftFireball; // Spout
 
 public abstract class EntityFireball extends Entity {
 	private int xTile = -1;
@@ -147,9 +147,9 @@ public abstract class EntityFireball extends Entity {
 			this.posY += this.motionY;
 			this.posZ += this.motionZ;
 			float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-			this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
+			this.rotationYaw = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) + 90.0F;
 
-			for (this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var16) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
+			for (this.rotationPitch = (float)(Math.atan2((double)var16, this.motionY) * 180.0D / Math.PI) - 90.0F; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
 				;
 			}
 

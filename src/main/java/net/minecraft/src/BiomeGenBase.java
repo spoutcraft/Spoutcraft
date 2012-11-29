@@ -83,12 +83,12 @@ public abstract class BiomeGenBase {
 	 * Holds the classes of any creature that can be spawned in the biome as friendly creature.
 	 */
 	protected List spawnableCreatureList;
-	protected List field_82914_M;
 
 	/**
 	 * Holds the classes of any aquatic creature that can be spawned in the water of the biome.
 	 */
 	protected List spawnableWaterCreatureList;
+	protected List field_82914_M;
 
 	/** Set to true if snow is enabled for this biome. */
 	private boolean enableSnow;
@@ -100,11 +100,17 @@ public abstract class BiomeGenBase {
 
 	/** The id number to this biome, and its index in the biomeList array. */
 	public final int biomeID;
+
+	/** The tree generator. */
 	protected WorldGenTrees worldGeneratorTrees;
 
 	/** The big tree generator. */
 	protected WorldGenBigTree worldGeneratorBigTree;
+
+	/** The forest generator. */
 	protected WorldGenForest worldGeneratorForest;
+
+	/** The swamp tree generator. */
 	protected WorldGenSwamp worldGeneratorSwamp;
 
 	protected BiomeGenBase(int par1) {
@@ -186,16 +192,25 @@ public abstract class BiomeGenBase {
 		return (WorldGenerator)(par1Random.nextInt(10) == 0 ? this.worldGeneratorBigTree : this.worldGeneratorTrees);
 	}
 
+	/**
+	 * Gets a WorldGen appropriate for this biome.
+	 */
+	public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
+		return new WorldGenTallGrass(Block.tallGrass.blockID, 1);
+	}
+
+	/**
+	 * sets enableSnow to true during biome initialization. returns BiomeGenBase.
+	 */
 	protected BiomeGenBase setEnableSnow() {
 		this.enableSnow = true;
 		return this;
 	}
 
-
+	// Spout Start
 	/**
 	 * sets enableSnow to true during biome initialization. returns BiomeGenBase.
 	 */
-	// Spout Start
 	protected BiomeGenBase setEnableSnow(boolean bool) {
 		enableSnow = bool;
 		return this;
@@ -210,14 +225,6 @@ public abstract class BiomeGenBase {
 		return biomeName;
 	}
 	// Spout End
-
-	/**
-	 * Gets a WorldGen appropriate for this biome.
-	 */
-	public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
-		return new WorldGenTallGrass(Block.tallGrass.blockID, 1);
-	}
-
 	protected BiomeGenBase setBiomeName(String par1Str) {
 		this.biomeName = par1Str;
 		return this;
@@ -254,7 +261,7 @@ public abstract class BiomeGenBase {
 	 * Returns the correspondent list of the EnumCreatureType informed.
 	 */
 	public List getSpawnableList(EnumCreatureType par1EnumCreatureType) {
-				return par1EnumCreatureType == EnumCreatureType.monster ? this.spawnableMonsterList : (par1EnumCreatureType == EnumCreatureType.creature ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.waterCreature ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.ambient ? this.field_82914_M : null)));
+		return par1EnumCreatureType == EnumCreatureType.monster ? this.spawnableMonsterList : (par1EnumCreatureType == EnumCreatureType.creature ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.waterCreature ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.ambient ? this.field_82914_M : null)));
 	}
 
 	/**

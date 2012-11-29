@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
 public class GuiMemoryErrorScreen extends GuiScreen {
-	public void updateScreen() {}
 
+	/**
+	 * Adds the buttons (and other controls) to the screen in question.
+	 */
 	public void initGui() {
 		StringTranslate var1 = StringTranslate.getInstance();
 		this.controlList.clear();
@@ -10,6 +12,9 @@ public class GuiMemoryErrorScreen extends GuiScreen {
 		this.controlList.add(new GuiSmallButton(1, this.width / 2 - 155 + 160, this.height / 4 + 120 + 12, var1.translateKey("menu.quit")));
 	}
 
+	/**
+	 * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
+	 */
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.id == 0) {
 			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); // Spout
@@ -18,8 +23,14 @@ public class GuiMemoryErrorScreen extends GuiScreen {
 		}
 	}
 
+	/**
+	 * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
+	 */
 	protected void keyTyped(char par1, int par2) {}
 
+	/**
+	 * Draws the screen and all the components in it.
+	 */
 	public void drawScreen(int par1, int par2, float par3) {
 		this.drawDefaultBackground();
 		this.drawCenteredString(this.fontRenderer, "Out of memory!", this.width / 2, this.height / 4 - 60 + 20, 16777215);

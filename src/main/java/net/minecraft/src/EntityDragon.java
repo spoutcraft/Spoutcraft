@@ -519,7 +519,6 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 		int var4;
 		int var5;
 
-		
 		if (!this.worldObj.isRemote) {
 			if (this.deathTicks > 150 && this.deathTicks % 5 == 0) {
 				var4 = 1000;

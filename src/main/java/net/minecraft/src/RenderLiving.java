@@ -220,7 +220,7 @@ public class RenderLiving extends Render {
 	 * Renders the model in RenderLiving
 	 */
 	protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7) {
-		if (!par1EntityLiving.func_82150_aj()) {
+		if (!par1EntityLiving.getHasActivePotion()) {
 			this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
 			this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
 		} else {
@@ -260,6 +260,8 @@ public class RenderLiving extends Render {
 	protected float handleRotationFloat(EntityLiving par1EntityLiving, float par2) {
 		return (float)par1EntityLiving.ticksExisted + par2;
 	}
+
+	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {}
 
 	protected void func_85093_e(EntityLiving par1EntityLiving, float par2) {
 		int var3 = par1EntityLiving.func_85035_bI();

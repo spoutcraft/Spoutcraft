@@ -34,7 +34,7 @@ public class ContainerBrewingStand extends Container {
 
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
-		par1ICrafting.updateCraftingInventoryInfo(this, 0, this.tileBrewingStand.getBrewTime());
+		par1ICrafting.sendProgressBarUpdate(this, 0, this.tileBrewingStand.getBrewTime());
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class ContainerBrewingStand extends Container {
 			ICrafting var2 = (ICrafting)this.crafters.get(var1);
 
 			if (this.brewTime != this.tileBrewingStand.getBrewTime()) {
-				var2.updateCraftingInventoryInfo(this, 0, this.tileBrewingStand.getBrewTime());
+				var2.sendProgressBarUpdate(this, 0, this.tileBrewingStand.getBrewTime());
 			}
 		}
 

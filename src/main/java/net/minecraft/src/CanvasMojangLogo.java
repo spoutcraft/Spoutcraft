@@ -15,6 +15,7 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 
 class CanvasMojangLogo extends Canvas {
 
+	/** BufferedImage object containing the Majong logo. */
 	private BufferedImage logo;
 
 	public CanvasMojangLogo() {

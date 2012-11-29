@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Shaders;
-import com.pclewis.mcpatcher.mod.SuperTessellator;
+import com.pclewis.mcpatcher.mod.Shaders; // Spout
+import com.pclewis.mcpatcher.mod.SuperTessellator; // Spout
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

@@ -4,10 +4,13 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+// Spout Start
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.api.block.design.BlockDesign;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.io.CustomTextureManager;
+// Spout End
 
 public class RenderItem extends Render {
 	private RenderBlocks renderBlocks = new RenderBlocks();
@@ -24,6 +27,7 @@ public class RenderItem extends Render {
 		this.shadowSize = 0.15F;
 		this.shadowOpaque = 0.75F;
 	}
+
 	// Spout Start
 	@Override
 	protected void loadTexture(String texture) {
@@ -48,8 +52,9 @@ public class RenderItem extends Render {
 		// Spout End
 		this.random.setSeed(187L);
 		ItemStack var10 = par1EntityItem.item;
+
 		if (var10.getItem() != null) {
-			GL11.glPushMatrix();
+			// GL11.glPushMatrix(); // Spout delate to later, if no custom design given
 			float var11 = MathHelper.sin(((float)par1EntityItem.age + par9) / 10.0F + par1EntityItem.hoverStart) * 0.1F + 0.1F;
 			float var12 = (((float)par1EntityItem.age + par9) / 20.0F + par1EntityItem.hoverStart) * (180F / (float)Math.PI);
 			byte var13 = 1;
@@ -85,35 +90,28 @@ public class RenderItem extends Render {
 						}
 					}
 				}
-				
-				/*org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
-				design = block != null ? block.getBlockDesign() : null;
-				if (design != null && design.getTextureAddon() != null && design.getTexureURL() != null) {
-					Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
-					if (texture != null) {
-						this.renderManager.renderEngine.bindTexture(texture.getTextureID());
-						custom = true;
-					}
-				}*/
+
+				/*
+				 * org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage()); design = block != null ? block.getBlockDesign() : null; if (design != null &&
+				 * design.getTextureAddon() != null && design.getTexureURL() != null) { Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL()); if
+				 * (texture != null) { this.renderManager.renderEngine.bindTexture(texture.getTextureID()); custom = true; } }
+				 */
 			}
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-			
+
 			if (design != null && custom) {
 				//GL11.glScalef(0.25F, 0.25F, 0.25F);
 				design.renderItemstack((org.spoutcraft.api.entity.Item)par1EntityItem.spoutEntity, (float)par2, (float)(par4 + var11), (float)par6, var12, 0.25F, random);
-			}
-			else{
-				GL11.glPushMatrix();
-				if(!custom)	{	
+			} else {
+				GL11.glPushMatrix(); // the push from above
+				if (!custom) {
 					if (var10.itemID < 256) {
 						this.loadTexture("/terrain.png");
-					}
-					else {
+					} else {
 						this.loadTexture("/gui/items.png");
 					}
 				}
 				// Spout End
-
 			GL11.glTranslatef((float)par2, (float)par4 + var11, (float)par6);
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			Block var14 = Block.blocksList[var10.itemID];
@@ -195,6 +193,12 @@ public class RenderItem extends Render {
 
 					var15 = var10.getIconIndex();
 
+					if (var14 != null) {
+						this.loadTexture("/terrain.png");
+					} else {
+						this.loadTexture("/gui/items.png");
+					}
+
 					if (this.field_77024_a) {
 						var16 = Item.itemsList[var10.itemID].getColorFromItemStack(var10, 0);
 						var17 = (float)(var16 >> 16 & 255) / 255.0F;
@@ -203,24 +207,26 @@ public class RenderItem extends Render {
 						var20 = 1.0F;
 						GL11.glColor4f(var17 * var20, var24 * var20, var19 * var20, 1.0F);
 					}
+					
 					// Spout Start
 					this.renderItemBillboard(var15, var13, custom);
 					// Spout End
 				}
 			}
-			}
 
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			GL11.glPopMatrix();
+			} // Spout
 		}
 	}
+
 	// Spout Start
 	private void func_77020_a(int var1, int var2) {
 		renderItemBillboard(var1, var2, false);
 	}
 
 	private void renderItemBillboard(int par1, int par2, boolean customTexture) {
-	// Spout End
+		// Spout End
 		Tessellator var3 = Tessellator.instance;
 		float var4 = (float)(par1 % 16 * 16 + 0) / 256.0F;
 		float var5 = (float)(par1 % 16 * 16 + 16) / 256.0F;
@@ -296,17 +302,15 @@ public class RenderItem extends Render {
 		if (!custom) {
 			if (var6 < 256) {
 				loadTexture("/terrain.png");
-			}
-			else {
+			} else {
 				loadTexture("/gui/items.png");
 			}
 		}
 
 		if (design != null && custom) {
 			design.renderItemOnHUD((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.zLevel);
-		}
-		else if(var6 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
-		// Spout End
+		} else if (var6 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
+			// Spout End
 			Block var15 = Block.blocksList[var6];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
@@ -369,20 +373,19 @@ public class RenderItem extends Render {
 					GL11.glColor4f(var17, var16, var12, 1.0F);
 				}
 
-
 				// Spout Start
 				if (custom) {
 					Tessellator tes = Tessellator.instance;
 					tes.startDrawingQuads();
-					tes.addVertexWithUV((double) (par4 + 0), (double) (par5 + 16), (double) 0, 0, 0);
-					tes.addVertexWithUV((double) (par4 + 16), (double) (par5 + 16), (double) 0, 1, 0);
-					tes.addVertexWithUV((double) (par4 + 16), (double) (par5 + 0), (double) 0, 1, 1);
-					tes.addVertexWithUV((double) (par4 + 0), (double) (par5 + 0), (double) 0, 0, 1);
+					tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 16), (double)0, 0, 0);
+					tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 16), (double)0, 1, 0);
+					tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 0), (double)0, 1, 1);
+					tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 0), (double)0, 0, 1);
 					tes.draw();
 				} else
 					this.renderTexturedQuad(par4, par5, var8 % 16 * 16, var8 / 16 * 16, 16, 16);
 				// Spout End
-				
+
 				GL11.glEnable(GL11.GL_LIGHTING);
 			}
 		}
@@ -465,15 +468,17 @@ public class RenderItem extends Render {
 			NBTTagList list = par3ItemStack.getAllEnchantmentTagList();
 			short max = -1;
 			short amnt = -1;
-			if(list != null) {
-				for(int i = 0; i < list.tagCount(); i++) {
+			if (list != null) {
+				for (int i = 0; i < list.tagCount(); i++) {
 					NBTBase tag = list.tagAt(i);
-					if(tag instanceof NBTTagCompound) {
-						NBTTagCompound ench = (NBTTagCompound) tag;
+					if (tag instanceof NBTTagCompound) {
+						NBTTagCompound ench = (NBTTagCompound)tag;
 						short id = ench.getShort("id");
 						short lvl = ench.getShort("lvl");
-						if(id == 254) amnt = lvl; //Enchantment DURABILITY = new SpoutEnchantment(254);
-						if(id == 255) max = lvl;  //Enchantment MAX_DURABILITY = new SpoutEnchantment(255);
+						if (id == 254)
+							amnt = lvl; //Enchantment DURABILITY = new SpoutEnchantment(254);
+						if (id == 255)
+							max = lvl; //Enchantment MAX_DURABILITY = new SpoutEnchantment(255);
 					}
 				}
 			}

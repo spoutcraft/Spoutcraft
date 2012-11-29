@@ -1,14 +1,14 @@
 package net.minecraft.src;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.ArrayList; // Spout
+import java.util.Collections; // Spout
+import java.util.Iterator; // Spout
 import java.util.List;
-
 import net.minecraft.client.Minecraft;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+// Spout start
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -18,6 +18,7 @@ import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.client.MCItemStackComparator;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.inventory.InventoryUtil;
+//Spout end
 
 public abstract class GuiContainer extends GuiScreen {
 
@@ -68,7 +69,7 @@ public abstract class GuiContainer extends GuiScreen {
 	 */
 	public void initGui() {
 		super.initGui();
-		this.mc.thePlayer.craftingInventory = this.inventorySlots;
+		this.mc.thePlayer.openContainer = this.inventorySlots;
 		this.guiLeft = (this.width - this.xSize) / 2;
 		this.guiTop = (this.height - this.ySize) / 2;
 		// Spout Start	
@@ -399,19 +400,19 @@ public abstract class GuiContainer extends GuiScreen {
 
 		if (!var4.isEmpty()) {
 			int var5 = 0;
-			Iterator var6 = var4.iterator();
+			int var6;
+			int var7;
 
-			while (var6.hasNext()) {
-				String var7 = (String)var6.next();
-				int var8 = this.fontRenderer.getStringWidth(var7);
+			for (var6 = 0; var6 < var4.size(); ++var6) {
+				var7 = this.fontRenderer.getStringWidth((String)var4.get(var6));
 
-				if (var8 > var5) {
-					var5 = var8;
+				if (var7 > var5) {
+					var5 = var7;
 				}
 			}
 
-			int var15 = par2 + 12;
-			int var16 = par3 - 12;
+			var6 = par2 + 12;
+			var7 = par3 - 12;
 			int var9 = 8;
 
 			if (var4.size() > 1) {
@@ -421,17 +422,17 @@ public abstract class GuiContainer extends GuiScreen {
 			this.zLevel = 300.0F;
 			itemRenderer.zLevel = 300.0F;
 			int var10 = -267386864;
-			this.drawGradientRect(var15 - 3, var16 - 4, var15 + var5 + 3, var16 - 3, var10, var10);
-			this.drawGradientRect(var15 - 3, var16 + var9 + 3, var15 + var5 + 3, var16 + var9 + 4, var10, var10);
-			this.drawGradientRect(var15 - 3, var16 - 3, var15 + var5 + 3, var16 + var9 + 3, var10, var10);
-			this.drawGradientRect(var15 - 4, var16 - 3, var15 - 3, var16 + var9 + 3, var10, var10);
-			this.drawGradientRect(var15 + var5 + 3, var16 - 3, var15 + var5 + 4, var16 + var9 + 3, var10, var10);
+			this.drawGradientRect(var6 - 3, var7 - 4, var6 + var5 + 3, var7 - 3, var10, var10);
+			this.drawGradientRect(var6 - 3, var7 + var9 + 3, var6 + var5 + 3, var7 + var9 + 4, var10, var10);
+			this.drawGradientRect(var6 - 3, var7 - 3, var6 + var5 + 3, var7 + var9 + 3, var10, var10);
+			this.drawGradientRect(var6 - 4, var7 - 3, var6 - 3, var7 + var9 + 3, var10, var10);
+			this.drawGradientRect(var6 + var5 + 3, var7 - 3, var6 + var5 + 4, var7 + var9 + 3, var10, var10);
 			int var11 = 1347420415;
 			int var12 = (var11 & 16711422) >> 1 | var11 & -16777216;
-			this.drawGradientRect(var15 - 3, var16 - 3 + 1, var15 - 3 + 1, var16 + var9 + 3 - 1, var11, var12);
-			this.drawGradientRect(var15 + var5 + 2, var16 - 3 + 1, var15 + var5 + 3, var16 + var9 + 3 - 1, var11, var12);
-			this.drawGradientRect(var15 - 3, var16 - 3, var15 + var5 + 3, var16 - 3 + 1, var11, var11);
-			this.drawGradientRect(var15 - 3, var16 + var9 + 2, var15 + var5 + 3, var16 + var9 + 3, var12, var12);
+			this.drawGradientRect(var6 - 3, var7 - 3 + 1, var6 - 3 + 1, var7 + var9 + 3 - 1, var11, var12);
+			this.drawGradientRect(var6 + var5 + 2, var7 - 3 + 1, var6 + var5 + 3, var7 + var9 + 3 - 1, var11, var12);
+			this.drawGradientRect(var6 - 3, var7 - 3, var6 + var5 + 3, var7 - 3 + 1, var11, var11);
+			this.drawGradientRect(var6 - 3, var7 + var9 + 2, var6 + var5 + 3, var7 + var9 + 3, var12, var12);
 
 			for (int var13 = 0; var13 < var4.size(); ++var13) {
 				String var14 = (String)var4.get(var13);
@@ -442,13 +443,13 @@ public abstract class GuiContainer extends GuiScreen {
 					var14 = "\u00a77" + var14;
 				}
 
-				this.fontRenderer.drawStringWithShadow(var14, var15, var16, -1);
+				this.fontRenderer.drawStringWithShadow(var14, var6, var7, -1);
 
 				if (var13 == 0) {
-					var16 += 2;
+					var7 += 2;
 				}
 
-				var16 += 10;
+				var7 += 10;
 			}
 
 			this.zLevel = 0.0F;
@@ -765,6 +766,7 @@ public abstract class GuiContainer extends GuiScreen {
 	}
 }
 
+// Spout start
 class PositionedItemStack extends ItemStack {
 	final int position;
 	public PositionedItemStack(ItemStack item, int position) {
@@ -773,3 +775,4 @@ class PositionedItemStack extends ItemStack {
 	}
 	
 }
+// Spout end

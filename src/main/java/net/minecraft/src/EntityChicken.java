@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftChicken;
+import org.spoutcraft.client.entity.CraftChicken; // Spout
 
 public class EntityChicken extends EntityAnimal {
 	public boolean field_70885_d = false;
