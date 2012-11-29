@@ -43,5 +43,4 @@ public class PacketRequestPrecache implements SpoutPacket {
 	public int getVersion() {
 		return 0;
 	}
-
 }
