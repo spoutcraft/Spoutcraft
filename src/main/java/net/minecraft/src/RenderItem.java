@@ -311,6 +311,7 @@ public class RenderItem extends Render {
 			design.renderItemOnHUD((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.zLevel);
 		} else if (var6 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
 			// Spout End
+			par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/terrain.png"));
 			Block var15 = Block.blocksList[var6];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
