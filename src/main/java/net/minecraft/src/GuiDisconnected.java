@@ -51,7 +51,7 @@ public class GuiDisconnected extends GuiScreen {
 	 */
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.id == 0) {
-			this.mc.displayGuiScreen(new GuiMainMenu());
+			this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); // Spout
 		}
 	}
 
