@@ -54,7 +54,7 @@
 	<!-- Issue tracker -->
 	<issueManagement>
 		<system>jira</system>
-		<url>http://issues.spout.org/browse/Spoutcraft</url>
+		<url>http://issues.spout.org/browse/SPOUTCRAFT</url>
 	</issueManagement>
 
 	<!-- Dependency repositories -->
@@ -91,12 +91,13 @@
 		</snapshotRepository>
 	</distributionManagement>
 
-	<!-- Build settings -->
+	<!-- Build configuration -->
 	<build>
 		<defaultGoal>clean install</defaultGoal>
 
-		<!-- Static resources -->
+		<!-- Resources to include -->
 		<resources>
+			<!-- Static resources -->
 			<resource>
 				<filtering>false</filtering>
 				<targetPath>.</targetPath>
@@ -169,8 +170,7 @@
 										}}
 									</runIf>
 									<targetPath>${project.basedir}</targetPath>
-									<!--<file>http://mcp.ocean-labs.de/files/mcp${mcpVersion}.zip</file>-->
-									<file>http://mcp.ocean-labs.de/files/mcp723.zip</file>
+									<file>http://mcp.ocean-labs.de/files/mcp${mcpVersion}.zip</file>
 									<unpack>true</unpack>
 									<useTrueZipForUnpack>false</useTrueZipForUnpack>
 									<preservePath>true</preservePath>
@@ -195,20 +195,12 @@
 									</runIf>
 									<targetPath>${project.basedir}/jars/bin</targetPath>
 									<destFileName>minecraft.jar</destFileName>
-									<!--<file>http://s3.amazonaws.com/MinecraftDownload/minecraft.jar</file>-->
-									<file>http://assets.minecraft.net/1_4_5/minecraft.jar</file>
-									<!-- TODO: Implement byte patching to downgrade jar to required version if needed -->
+									<file>http://s3.amazonaws.com/MinecraftDownload/minecraft.jar</file>
 								</resource>
 								<!-- Download remaining dependencies -->
 								<resource>
 									<targetPath>${project.basedir}/lib</targetPath>
 									<dependencies>
-										<dependency>
-											<groupId>net.minecraft</groupId>
-											<artifactId>lwjgl</artifactId>
-											<version>${lwjglVersion}</version>
-											<stripVersion>true</stripVersion>
-										</dependency>
 										<dependency>
 											<groupId>de.cuina.fireandfuel</groupId>
 											<artifactId>codecjlayermp3</artifactId>
@@ -252,6 +244,12 @@
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
+											<groupId>net.minecraft</groupId>
+											<artifactId>lwjgl</artifactId>
+											<version>${lwjglVersion}</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
 											<groupId>slick</groupId>
 											<artifactId>slick</artifactId>
 											<version>274</version>
@@ -277,6 +275,12 @@
 									<dependencies>
 										<dependency>
 											<groupId>net.minecraft</groupId>
+											<artifactId>jinput</artifactId>
+											<version>1.0.0-b01</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl</artifactId>
 											<version>${lwjglVersion}</version>
 											<stripVersion>true</stripVersion>
@@ -285,12 +289,6 @@
 											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl_util</artifactId>
 											<version>${lwjglVersion}</version>
-											<stripVersion>true</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>net.minecraft</groupId>
-											<artifactId>jinput</artifactId>
-											<version>1.0.0-b01</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 									</dependencies>
@@ -534,7 +532,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Version strip plugin -->
+			<!-- Release version plugin -->
 			<plugin>
 				<groupId>com.sourcesense.maven</groupId>
 				<artifactId>maven-nosnapshot-plugin</artifactId>
@@ -578,6 +576,32 @@
 							<pluginExecutions>
 								<pluginExecution>
 									<pluginExecutionFilter>
+										<groupId>com.github.goldin</groupId>
+										<artifactId>copy-maven-plugin</artifactId>
+										<versionRange>[0.2.5,)</versionRange>
+										<goals>
+											<goal>strip</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute/>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>exec-maven-plugin</artifactId>
+										<versionRange>[1.2.5,)</versionRange>
+										<goals>
+											<goal>strip</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute/>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
 										<groupId>com.sourcesense.maven</groupId>
 										<artifactId>maven-nosnapshot-plugin</artifactId>
 										<versionRange>[0.0.7,)</versionRange>
@@ -586,7 +610,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<execute/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
