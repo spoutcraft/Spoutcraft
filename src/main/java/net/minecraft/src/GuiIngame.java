@@ -368,62 +368,64 @@ public class GuiIngame extends Gui {
 			this.mc.mcProfiler.endSection();
 		}
 
-		if (Configuration.getFastDebug() != 2) {
+		if (this.mc.gameSettings.showDebugInfo) {		
 			this.mc.mcProfiler.startSection("debug");
 			GL11.glPushMatrix();
-			var8.drawStringWithShadow("Minecraft 1.4.5 (" + this.mc.debug + ")", 2, 2, 16777215);
-			var8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
-			var8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
-			var8.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
-			var8.drawStringWithShadow(this.mc.getWorldProviderName(), 2, 42, 16777215);
-			long var41 = Runtime.getRuntime().maxMemory();
-			long var34 = Runtime.getRuntime().totalMemory();
-			long var42 = Runtime.getRuntime().freeMemory();
-			long var43 = var34 - var42;
-			String var45 = "Used memory: " + var43 * 100L / var41 + "% (" + var43 / 1024L / 1024L + "MB) of " + var41 / 1024L / 1024L + "MB";
-			this.drawString(var8, var45, var6 - var8.getStringWidth(var45) - 2, 2, 14737632);
-			var45 = "Allocated memory: " + var34 * 100L / var41 + "% (" + var34 / 1024L / 1024L + "MB)";
-			this.drawString(var8, var45, var6 - var8.getStringWidth(var45) - 2, 12, 14737632);
-			if(SpoutClient.getInstance().isCoordsCheat()) {
-				this.drawString(var8, String.format("x: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posX)}), 2, 64, 14737632);
+			if (Configuration.getFastDebug() != 2) {			
+				var8.drawStringWithShadow("Minecraft 1.4.5 (" + this.mc.debug + ")", 2, 2, 16777215);
+				var8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
+				var8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
+				var8.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
+				var8.drawStringWithShadow(this.mc.getWorldProviderName(), 2, 42, 16777215);
+				long var41 = Runtime.getRuntime().maxMemory();
+				long var34 = Runtime.getRuntime().totalMemory();
+				long var42 = Runtime.getRuntime().freeMemory();
+				long var43 = var34 - var42;
+				String var45 = "Used memory: " + var43 * 100L / var41 + "% (" + var43 / 1024L / 1024L + "MB) of " + var41 / 1024L / 1024L + "MB";
+				this.drawString(var8, var45, var6 - var8.getStringWidth(var45) - 2, 2, 14737632);
+				var45 = "Allocated memory: " + var34 * 100L / var41 + "% (" + var34 / 1024L / 1024L + "MB)";
+				this.drawString(var8, var45, var6 - var8.getStringWidth(var45) - 2, 12, 14737632);
+				if(SpoutClient.getInstance().isCoordsCheat()) {
+					this.drawString(var8, String.format("x: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posX)}), 2, 64, 14737632);
+					this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
+					this.drawString(var8, String.format("z: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posZ)}), 2, 80, 14737632);
+					this.drawString(var8, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
+				}
+				var47 = MathHelper.floor_double(this.mc.thePlayer.posX);
+				var22 = MathHelper.floor_double(this.mc.thePlayer.posY);
+				var23 = MathHelper.floor_double(this.mc.thePlayer.posZ);
+				this.drawString(var8, String.format("x: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posX), Integer.valueOf(var47), Integer.valueOf(var47 >> 4), Integer.valueOf(var47 & 15)}), 2, 64, 14737632);
 				this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
-				this.drawString(var8, String.format("z: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posZ)}), 2, 80, 14737632);
-				this.drawString(var8, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
-			}
-			var47 = MathHelper.floor_double(this.mc.thePlayer.posX);
-			var22 = MathHelper.floor_double(this.mc.thePlayer.posY);
-			var23 = MathHelper.floor_double(this.mc.thePlayer.posZ);
-			this.drawString(var8, String.format("x: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posX), Integer.valueOf(var47), Integer.valueOf(var47 >> 4), Integer.valueOf(var47 & 15)}), 2, 64, 14737632);
-			this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
-			this.drawString(var8, String.format("z: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posZ), Integer.valueOf(var23), Integer.valueOf(var23 >> 4), Integer.valueOf(var23 & 15)}), 2, 80, 14737632);
-			var24 = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-			this.drawString(var8, "f: " + var24 + " (" + Direction.directions[var24] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
+				this.drawString(var8, String.format("z: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posZ), Integer.valueOf(var23), Integer.valueOf(var23 >> 4), Integer.valueOf(var23 & 15)}), 2, 80, 14737632);
+				var24 = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+				this.drawString(var8, "f: " + var24 + " (" + Direction.directions[var24] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
 
-			if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var47, var22, var23)) {
-				Chunk var53 = this.mc.theWorld.getChunkFromBlockCoords(var47, var23);
-				this.drawString(var8, "lc: " + (var53.getTopFilledSegment() + 15) + " b: " + var53.getBiomeGenForWorldCoords(var47 & 15, var23 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var53.getSavedLightValue(EnumSkyBlock.Block, var47 & 15, var22, var23 & 15) + " sl: " + var53.getSavedLightValue(EnumSkyBlock.Sky, var47 & 15, var22, var23 & 15) + " rl: " + var53.getBlockLightValue(var47 & 15, var22, var23 & 15, 0), 2, 96, 14737632);
-			}
+				if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var47, var22, var23)) {
+					Chunk var53 = this.mc.theWorld.getChunkFromBlockCoords(var47, var23);
+					this.drawString(var8, "lc: " + (var53.getTopFilledSegment() + 15) + " b: " + var53.getBiomeGenForWorldCoords(var47 & 15, var23 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var53.getSavedLightValue(EnumSkyBlock.Block, var47 & 15, var22, var23 & 15) + " sl: " + var53.getSavedLightValue(EnumSkyBlock.Sky, var47 & 15, var22, var23 & 15) + " rl: " + var53.getBlockLightValue(var47 & 15, var22, var23 & 15, 0), 2, 96, 14737632);
+				}
 
-			this.drawString(var8, String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround), Integer.valueOf(this.mc.theWorld.getHeightValue(var47, var23))}), 2, 104, 14737632);
-			// Spout Start
-			boolean cacheInUse = ChunkNetCache.cacheInUse.get();
-			int y = 115;
-			var8.drawStringWithShadow("Network Info", 2, y += 11, 0xFFFFFF);
-			if (!cacheInUse) {
-				var8.drawStringWithShadow("Chunk Network Cache: Inactive", 22, y += 11, 0xE0E0E0);
-			} else {
-				var8.drawStringWithShadow("Chunk Network Cache: Active", 22, y += 11, 0xE0E0E0);
-				var8.drawStringWithShadow("Cache hit: " + ChunkNetCache.hitPercentage.get() + "%", 22, y += 10, 0xE0E0E0);
+				this.drawString(var8, String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround), Integer.valueOf(this.mc.theWorld.getHeightValue(var47, var23))}), 2, 104, 14737632);
+				// Spout Start
+				boolean cacheInUse = ChunkNetCache.cacheInUse.get();
+				int y = 115;
+				var8.drawStringWithShadow("Network Info", 2, y += 11, 0xFFFFFF);
+				if (!cacheInUse) {
+					var8.drawStringWithShadow("Chunk Network Cache: Inactive", 22, y += 11, 0xE0E0E0);
+				} else {
+					var8.drawStringWithShadow("Chunk Network Cache: Active", 22, y += 11, 0xE0E0E0);
+					var8.drawStringWithShadow("Cache hit: " + ChunkNetCache.hitPercentage.get() + "%", 22, y += 10, 0xE0E0E0);
+				}
+				var8.drawStringWithShadow("Average Cube Size: " + ChunkNetCache.averageChunkSize.get() / 10.0 + " bytes", 22, y += 10, 0xE0E0E0);
+				long logTime = System.currentTimeMillis() - ChunkNetCache.loggingStart.get();
+				long kbpsUp = (80000L * ChunkNetCache.totalPacketUp.get()) / 1024 / logTime;
+				long kbpsDown = (80000L * ChunkNetCache.totalPacketDown.get()) / 1024 / logTime;
+				var8.drawStringWithShadow("Upstream: " + (kbpsUp / 10.0) + "kbps (" + (ChunkNetCache.totalPacketUp.get() / 1024) + "kB)", 22, y += 11, 0xE0E0E0);
+				var8.drawStringWithShadow("Downstream: " + (kbpsDown / 10.0) + "kbps (" + (ChunkNetCache.totalPacketDown.get() / 1024) + "kB)", 22, y += 11, 0xE0E0E0);
+				// Spout End
+				GL11.glPopMatrix();
+				this.mc.mcProfiler.endSection();
 			}
-			var8.drawStringWithShadow("Average Cube Size: " + ChunkNetCache.averageChunkSize.get() / 10.0 + " bytes", 22, y += 10, 0xE0E0E0);
-			long logTime = System.currentTimeMillis() - ChunkNetCache.loggingStart.get();
-			long kbpsUp = (80000L * ChunkNetCache.totalPacketUp.get()) / 1024 / logTime;
-			long kbpsDown = (80000L * ChunkNetCache.totalPacketDown.get()) / 1024 / logTime;
-			var8.drawStringWithShadow("Upstream: " + (kbpsUp / 10.0) + "kbps (" + (ChunkNetCache.totalPacketUp.get() / 1024) + "kB)", 22, y += 11, 0xE0E0E0);
-			var8.drawStringWithShadow("Downstream: " + (kbpsDown / 10.0) + "kbps (" + (ChunkNetCache.totalPacketDown.get() / 1024) + "kB)", 22, y += 11, 0xE0E0E0);
-			// Spout End
-			GL11.glPopMatrix();
-			this.mc.mcProfiler.endSection();
 		}
 
 		if (this.recordPlayingUpFor > 0) {
