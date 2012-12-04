@@ -280,7 +280,7 @@ public class SimpleMaterialManager implements MaterialManager {
 			int lines = 0;
 			for (int i = 0; i < list.size(); i++) {
 				String s = (String)list.get(i);
-				if (i == 0) {
+				if (i == 0 && rawItem!=null) {
 					s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().rarityColor)).append(s).toString();
 				} else {
 					s = (new StringBuilder()).append("\2477").append(s).toString();
