@@ -269,7 +269,11 @@ public class SimpleMaterialManager implements MaterialManager {
 		Material item = MaterialData.getMaterial(is.getTypeId(), is.getDurability());
 		String custom = item != null ? String.format(item.getName(), String.valueOf(is.getDurability())) : null;
 		if (custom != null && is.getTypeId() != Item.potion.shiftedIndex) {
-			list.set(0, custom);
+			if (list.size() > 0) {
+				list.set(0, custom);
+			} else {
+				list.add(custom);
+			}
 		}
 		if (list.size() > 0) {
 			String tooltip = "";
