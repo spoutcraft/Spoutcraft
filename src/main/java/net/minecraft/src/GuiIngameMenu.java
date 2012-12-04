@@ -43,7 +43,7 @@ public class GuiIngameMenu extends GuiScreen {
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		switch (par1GuiButton.id) {
 			case 0:
-				this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
+				this.mc.displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(this)); // Spout		
 				break;
 
 			case 1:

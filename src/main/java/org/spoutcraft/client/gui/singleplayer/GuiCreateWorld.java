@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.src.EnumGameType;
+import net.minecraft.src.FlatGeneratorInfo;
+import net.minecraft.src.GuiCreateFlatWorld;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.WorldSettings;
@@ -42,11 +44,14 @@ import org.spoutcraft.api.gui.GenericTextField;
 import org.spoutcraft.api.gui.Orientation;
 import org.spoutcraft.api.gui.ScrollBarPolicy;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.ButtonUpdater;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.gui.UpdatingComboBox;
 
-public class GuiCreateWorld extends GuiSpoutScreen {
-	private GenericButton buttonDone, buttonCancel, buttonNewSeed;
-	private GenericComboBox comboGameType, comboWorldType;
+public class GuiCreateWorld extends GuiSpoutScreen implements ButtonUpdater {
+	private GenericButton buttonDone, buttonCancel, buttonNewSeed, buttonFlatWorldSettings;
+	private GenericComboBox comboGameType;
+	private UpdatingComboBox comboWorldType;
 	private GenericCheckBox checkHardcore;
 	private GenericCheckBox checkGenerateStructures;
 	private GenericCheckBox allowCheats;
@@ -62,6 +67,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 
 	Random seed = new Random();
 	private boolean createClicked;
+	private GuiCreateFlatWorld flatWorldGui;
 
 	public GuiCreateWorld(GuiScreen parent) {
 		this.parent = parent;
@@ -78,13 +84,14 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 
 		labelGameType = new GenericLabel("Game Type");
 
-		comboWorldType = new GenericComboBox();
+		comboWorldType = new UpdatingComboBox();
+		comboWorldType.setUpdater(this);
 		comboWorldType.setItems(listWorldTypes);
 
 		labelWorldType = new GenericLabel("World Type");
 
 		checkHardcore = new GenericCheckBox("Hardcore Mode");
-		checkHardcore.setTooltip("You only live once!");
+		checkHardcore.setTooltip("World will be deleted when you die.");
 		checkHardcore.setChecked(false);
 
 		checkGenerateStructures = new GenericCheckBox("Generate Structures");
@@ -119,13 +126,16 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		updateSavePreview();
 
 		labelSeed = new GenericLabel("Seed");
+		
+		buttonFlatWorldSettings = new GenericButton("Flat World Settings");
+		buttonFlatWorldSettings.setEnabled(false);
 
 		scrollArea = new GenericScrollArea();
 		scrollArea.setScrollBarPolicy(Orientation.HORIZONTAL, ScrollBarPolicy.SHOW_NEVER);
 
 		Addon spoutcraft = SpoutClient.getInstance().getAddonManager().getAddon("Spoutcraft");
 		getScreen().attachWidgets(spoutcraft, labelTitle, scrollArea, buttonDone, buttonCancel);
-		scrollArea.attachWidgets(spoutcraft, allowCheats, bonusChest, comboGameType, comboWorldType, checkHardcore, checkGenerateStructures, textName, textSeed, labelName, labelSeed, labelGameType, labelWorldType, labelFilePreview, buttonNewSeed);
+		scrollArea.attachWidgets(spoutcraft, allowCheats, bonusChest, comboGameType, comboWorldType, checkHardcore, checkGenerateStructures, textName, textSeed, labelName, labelSeed, labelGameType, labelWorldType, labelFilePreview, buttonNewSeed, buttonFlatWorldSettings);
 	}
 
 	@Override
@@ -175,6 +185,10 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		checkGenerateStructures.setX(fright - 50).setY(ftop).setWidth(200).setHeight(20);
 
 		bonusChest.setX(fright + 150).setY(ftop).setWidth(200).setHeight(20);
+		
+		ftop += 25;
+		
+		buttonFlatWorldSettings.setGeometry(fleft, ftop, 200, 20);
 
 		scrollArea.updateInnerSize();
 
@@ -225,7 +239,12 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 
 			boolean hardcore = checkHardcore.isChecked();
 
-			WorldSettings ws = new WorldSettings(seed, var9, checkGenerateStructures.isChecked(), hardcore, WorldType.worldTypes[comboWorldType.getSelectedRow()]);
+			WorldType worldType = WorldType.worldTypes[comboWorldType.getSelectedRow()];
+			WorldSettings ws = new WorldSettings(seed, var9, checkGenerateStructures.isChecked(), hardcore, worldType);
+			
+			if (worldType == WorldType.FLAT && flatWorldGui != null) {
+				ws.func_82750_a(flatWorldGui.getFlatGeneratorInfo());
+			}
 			if (bonusChest.isChecked()) {
 				ws.enableBonusChest();
 			}
@@ -237,6 +256,10 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		}
 		if (btn == buttonNewSeed) {
 			updateSeed();
+		}
+		if (btn == buttonFlatWorldSettings) {
+			flatWorldGui = new GuiCreateFlatWorld(this, FlatGeneratorInfo.getDefaultFlatGenerator().toString());
+			this.mc.displayGuiScreen(flatWorldGui);
 		}
 	}
 
@@ -274,5 +297,11 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		}
 
 		return save;
+	}
+
+	@Override
+	public void updateButtons() {
+		WorldType worldType = WorldType.worldTypes[comboWorldType.getSelectedRow()];
+		buttonFlatWorldSettings.setEnabled(worldType == WorldType.FLAT);
 	}
 }
