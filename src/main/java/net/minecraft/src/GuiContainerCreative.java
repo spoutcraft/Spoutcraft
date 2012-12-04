@@ -284,6 +284,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 					return;
 				}
 			}
+			handleSpoutMouse(par1, par2, true); //Spout
 		}
 
 		super.mouseClicked(par1, par2, par3);

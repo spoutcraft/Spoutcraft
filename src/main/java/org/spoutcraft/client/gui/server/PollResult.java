@@ -43,6 +43,8 @@ public class PollResult {
 	protected int players;
 	protected int maxPlayers;
 	protected String motd = "";
+	protected int protocolVersion;
+	protected String version;
 	protected String ip;
 	protected int port;
 
@@ -136,7 +138,23 @@ public class PollResult {
 		}
 		return result;
 	}
+	
+	public String getVersion() {
+		return version;
+	}
+	
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
+	public int getProtocolVersion() {
+		return protocolVersion;
+	}
+	
+	public void setProtocolVersion(int protocolVersion) {
+		this.protocolVersion = protocolVersion;
+	}
+	
 	public String getMotd() {
 		return motd;
 	}
@@ -196,6 +214,8 @@ public class PollResult {
 
 				// Packet ID is 254
 				output.write(254);
+				// Writes 1 for getting extended server information since 1.4
+				output.writeByte(1);
 
 				// Server will return a packet 255 with the data as string
 				if (input.read() != 255) {
@@ -208,17 +228,30 @@ public class PollResult {
 				for (int i = 0; i < size; i++) {
 					builder.append(input.readChar());
 				}
-				String sPacket = builder.toString();
-
+				
 				long end = System.currentTimeMillis();
+				String sPacket = builder.toString();
 				ping = (int) (end - start);
-				String split[] = sPacket.split("\u00a7");
-				synchronized (motd) {
-					motd = split[0];
+				
+				// Check if we have new format here (1.4), and fall back to old format if not
+				if (sPacket.startsWith("\u00a71")) {
+					String split[] = sPacket.split("\u0000");
+					protocolVersion = Integer.valueOf(split[1]);
+					version = split[2];
+					synchronized (motd) {
+						motd = split[3];
+					}
+					players = Integer.valueOf(split[4]);
+					maxPlayers = Integer.valueOf(split[5]);
 				}
-				players = Integer.valueOf(split[1]);
-				maxPlayers = Integer.valueOf(split[2]);
-
+				else {
+					String split[] = sPacket.split("\u00a7");
+					synchronized (motd) {
+						motd = split[0];
+					}
+					players = Integer.valueOf(split[1]);
+					maxPlayers = Integer.valueOf(split[2]);
+				}
 			} catch(java.net.UnknownHostException e) {
 				ping = PING_UNKNOWN;
 			} catch(IOException e) {

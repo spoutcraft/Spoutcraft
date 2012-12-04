@@ -269,14 +269,18 @@ public class SimpleMaterialManager implements MaterialManager {
 		Material item = MaterialData.getMaterial(is.getTypeId(), is.getDurability());
 		String custom = item != null ? String.format(item.getName(), String.valueOf(is.getDurability())) : null;
 		if (custom != null && is.getTypeId() != Item.potion.shiftedIndex) {
-			list.set(0, custom);
+			if (list.size() > 0) {
+				list.set(0, custom);
+			} else {
+				list.add(custom);
+			}
 		}
 		if (list.size() > 0) {
 			String tooltip = "";
 			int lines = 0;
 			for (int i = 0; i < list.size(); i++) {
 				String s = (String)list.get(i);
-				if (i == 0) {
+				if (i == 0 && rawItem!=null) {
 					s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().rarityColor)).append(s).toString();
 				} else {
 					s = (new StringBuilder()).append("\2477").append(s).toString();
