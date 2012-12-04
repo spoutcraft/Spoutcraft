@@ -72,7 +72,7 @@ public class ServerItem implements ListWidgetItem {
 
 	protected PollResult pollResult;
 
-	private static final String latestMC = "1.0";
+	private static final String latestMC = "1.4.5";
 	protected String mcversion = latestMC;
 	private boolean showPing = false;
 
@@ -274,14 +274,14 @@ public class ServerItem implements ListWidgetItem {
 			iconMargin += 5 + 7;
 		}
 
-		// TODO Outdated version alert
-		/*if (!mcversion.equals(latestMC)) {
+		// if (!latestMC.equals(pollResult.getVersion()) { // TODO use this when bukkit returns the correct version number again
+		if (pollResult.getProtocolVersion() != 49 && pollResult.getProtocolVersion() != 0) {
 			GL11.glPushMatrix();
-			GL11.glTranslatef(x+width/5, y-0.5F, 0);
+			GL11.glTranslatef(x+width/5, y+20F, 0);
 			GL11.glRotatef(-37.5F, 0F, 0F, 1F);
 			font.drawStringWithShadow("Outdated!", 0, 0, 0xFF0000);
 			GL11.glPopMatrix();
-		}*/
+		}
 	}
 
 	public void onClick(int x, int y, boolean doubleClick) {
