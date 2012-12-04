@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.ArrayList; // Spout
+import java.util.Arrays; // Spout
 import java.util.Collections; // Spout
 import java.util.Iterator; // Spout
 import java.util.List;
@@ -18,6 +19,7 @@ import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.client.MCItemStackComparator;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.inventory.InventoryUtil;
+import org.spoutcraft.client.inventory.CraftItemStack;
 //Spout end
 
 public abstract class GuiContainer extends GuiScreen {
@@ -396,7 +398,7 @@ public abstract class GuiContainer extends GuiScreen {
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		List var4 = par1ItemStack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+		List var4 = Arrays.asList(Spoutcraft.getMaterialManager().getToolTip(new CraftItemStack(par1ItemStack))); //Spoutcraft - changed call to overriden one
 
 		if (!var4.isEmpty()) {
 			int var5 = 0;
