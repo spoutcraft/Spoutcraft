@@ -164,7 +164,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		labelWorldType.setX(fleft).setY(ftop + 6).setWidth(200).setHeight(20);
 		comboWorldType.setX(fright).setY(ftop).setWidth(200).setHeight(20);
 
-		ftop += 25;
+		ftop += 58;
 
 		checkHardcore.setX(fright - 50).setY(ftop).setWidth(200).setHeight(20);
 
