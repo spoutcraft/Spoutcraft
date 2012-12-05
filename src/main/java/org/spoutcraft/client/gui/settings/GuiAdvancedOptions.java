@@ -49,7 +49,6 @@ import org.spoutcraft.client.gui.settings.controls.FancyGraphicsButton;
 import org.spoutcraft.client.gui.settings.controls.FancyGrassButton;
 import org.spoutcraft.client.gui.settings.controls.FancyLightingButton;
 import org.spoutcraft.client.gui.settings.controls.FancyParticlesButton;
-import org.spoutcraft.client.gui.settings.controls.FancyShadersButton;
 import org.spoutcraft.client.gui.settings.controls.FancyTreesButton;
 import org.spoutcraft.client.gui.settings.controls.FancyWaterButton;
 import org.spoutcraft.client.gui.settings.controls.FancyWeatherButton;
@@ -272,11 +271,6 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 		UUID fancyGraphics = control.getId();
 		top+=20;
-
-		control = new FancyShadersButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
-		//graphicCheckboxes.add((CheckBox) control);
 
 		control = new FancyCloudsButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
