@@ -55,7 +55,6 @@ import org.spoutcraft.api.gui.WidgetAnchor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
 import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
 import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -67,7 +66,7 @@ public class MainMenu extends GuiScreen {
 	public static String mcVersion = "Unknown Version";
 	final static List<String> splashes = new ArrayList<String>(1000);
 	public static boolean hasLoaded = false;
-	Button singleplayer, multiplayer, textures, addons, about, options, quit, language;
+	Button singleplayer, multiplayer, textures, about, options, quit, language;
 	Texture background, logo;
 	Label splashText, buildNumber, animate, debugText;
 	static String timeOfDay = "";
@@ -206,16 +205,13 @@ public class MainMenu extends GuiScreen {
 		StringTranslate translate = StringTranslate.getInstance();
 
 		singleplayer = new GenericButton(translate.translateKey("menu.singleplayer"));
-		singleplayer.setGeometry(width - 110, height - 180, 100, 20);
+		singleplayer.setGeometry(width - 110, height - 155, 100, 20);
 
 		multiplayer = new GenericButton(translate.translateKey("menu.multiplayer"));
-		multiplayer.setGeometry(width - 110, height - 155, 100, 20);
+		multiplayer.setGeometry(width - 110, height - 130, 100, 20);
 
 		textures = new GenericButton(translate.translateKey("menu.mods"));
-		textures.setGeometry(width - 110, height - 130, 100, 20);
-
-		addons = new GenericButton(translate.translateKey("spout.menu.addons","Addons"));
-		addons.setGeometry(width - 110, height - 105, 100, 20);
+		textures.setGeometry(width - 110, height - 105, 100, 20);
 
 		buildNumber = new GenericLabel(SpoutClient.getClientVersion());
 		textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(buildNumber.getText());
@@ -271,7 +267,7 @@ public class MainMenu extends GuiScreen {
 		debugText.setGeometry(1, 1, 12, 100);
 		debugText.setVisible(false);
 
-		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, addons, buildNumber, about, options, background, logo, splashText, quit, animate, debugText);
+		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, buildNumber, about, options, background, logo, splashText, quit, animate, debugText);
 	}
 
 	@Override
@@ -285,10 +281,7 @@ public class MainMenu extends GuiScreen {
 		}
 		if (textures == btn) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
-		}
-		if (addons == btn) {
-			this.mc.displayGuiScreen(new GuiAddonsLocal());
-		}
+		}		
 		if (about == btn) {
 			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiNewAbout(this));
 		}
@@ -307,9 +300,7 @@ public class MainMenu extends GuiScreen {
 		if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			mc.displayGuiScreen(new org.spoutcraft.client.gui.singleplayer.GuiWorldSelection(this));
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			mc.displayGuiScreen(new GuiAddonsLocal());
+			mc.displayGuiScreen(new org.spoutcraft.client.gui.singleplayer.GuiWorldSelection(this));	
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
