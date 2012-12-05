@@ -53,7 +53,6 @@ public class Configuration {
 	private static boolean farView = false;
 	private static boolean fancyLight = false;
 	private static boolean fancyParticles = false;
-	private static int shaderType = 0;
 	private static int fastDebug = 0;
 	private static int guiScale = 0;
 	private static int performance = 0;
@@ -160,7 +159,6 @@ public class Configuration {
 		}
 	}
 
-
 	private static void updateMCConfig() {
 		Minecraft.theMinecraft.gameSettings.anaglyph = Configuration.isAnaglyph3D();
 		Minecraft.theMinecraft.gameSettings.renderDistance = Configuration.getRenderDistance();
@@ -175,11 +173,8 @@ public class Configuration {
 			vsync = Configuration.getPerformance() == 3;
 			org.lwjgl.opengl.Display.setVSyncEnabled(vsync);
 		}
-
-		if (!isShadersSupported()) {
-			Configuration.shaderType = 0;
-		}
-		Shaders.setMode(getShaderType());
+		
+		Shaders.setMode(0); // Force Shader to 0 to fix hundreds of client crashes per day!
 
 		if (Configuration.getSignDistance() < 8) {
 			signDistance = 8;
@@ -196,19 +191,6 @@ public class Configuration {
 			return 2;
 		}
 		return 3;
-	}
-
-	public static boolean isShadersSupported() {
-		if (Shaders.isOSX()) {
-			if (!Shaders.isOpenGL(2)) {
-				return false;
-			}
-		} else {
-			if (!Shaders.isOpenGL(3)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	public static synchronized void restoreDefaults() {
@@ -389,16 +371,7 @@ public class Configuration {
 	public static synchronized void setFancyLight(boolean fancyLight) {
 		Configuration.fancyLight = fancyLight;
 		onPropertyChange();
-	}
-
-	public static synchronized int getShaderType() {
-		return shaderType;
-	}
-
-	public static synchronized void setShaderType(int shaderType) {
-		Configuration.shaderType = shaderType;
-		onPropertyChange();
-	}
+	}	
 
 	public static synchronized int getFastDebug() {
 		return fastDebug;
