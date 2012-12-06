@@ -42,9 +42,6 @@ import net.minecraft.src.StatFileWriter;
 import org.spoutcraft.api.gui.*;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.GuiAmbigousInput;
-import org.spoutcraft.client.gui.chat.GuiChatSettings;
-import org.spoutcraft.client.gui.chat.GuiListEdit;
-import org.spoutcraft.client.gui.chat.GuiURLConfirm;
 import org.spoutcraft.client.gui.controls.GuiControls;
 import org.spoutcraft.client.gui.controls.GuiEditShortcut;
 import org.spoutcraft.client.gui.minimap.GuiAddWaypoint;
@@ -94,10 +91,7 @@ public class ScreenUtil {
 				break;
 			case MINIMAP_SETTINGS:
 				toOpen = new GuiMinimapMenu(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
-				break;
-			case CHAT_SETTINGS:
-				toOpen = new GuiChatSettings(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
-				break;
+				break;			
 			case MOVE_MINIMAP:
 				toOpen = new GuiMoveMinimap(new GuiMinimapMenu(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu())));
 				break;
@@ -157,13 +151,9 @@ public class ScreenUtil {
 		} else if (gui instanceof GuiMinimapMenu) {
 			screen = ScreenType.MINIMAP_SETTINGS;
 		} else if (gui instanceof GuiAmbigousInput) {
-			screen = ScreenType.AMBIGUOUS_SHORTCUT;
-		} else if (gui instanceof GuiChatSettings) {
-			screen = ScreenType.CHAT_SETTINGS;
+			screen = ScreenType.AMBIGUOUS_SHORTCUT;		
 		} else if (gui instanceof GuiControls) {
-			screen = ScreenType.CONTROLS_MENU;
-		} else if (gui instanceof GuiListEdit) {
-			screen = ScreenType.LIST_EDIT;
+			screen = ScreenType.CONTROLS_MENU;		
 		} else if (gui instanceof GuiMoveMinimap) {
 			screen = ScreenType.MOVE_MINIMAP;
 		} else if (gui instanceof GuiOverviewMap) {
@@ -171,9 +161,7 @@ public class ScreenUtil {
 		} else if (gui instanceof GuiStats) {
 			screen = ScreenType.STATISTICS_SCREEN;
 		} else if (gui instanceof GuiWinGame) {
-			screen = ScreenType.WIN_GAME;
-		} else if (gui instanceof GuiURLConfirm) {
-			screen = ScreenType.CONFIRM_URL;
+			screen = ScreenType.WIN_GAME;		
 		}
 
 		return screen;
