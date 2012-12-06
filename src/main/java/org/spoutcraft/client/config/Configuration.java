@@ -70,17 +70,9 @@ public class Configuration {
 	private static boolean delayedTooltips = true;
 	private static float mipmapsPercent = 0F;
 	private static boolean automatePerformance = true;
-	private static int automateMode = 0;
-	private static boolean showChatColors = false; //To be Removed
-	private static boolean showJoinMessages = false; //To be Removed
-	private static boolean showDamageAlerts = false; //To be Removed
-	private static boolean highlightMentions = false; //To be Removed
-	private static boolean chatGrabsMouse = false; //To be Removed
-	private static boolean ignorePeople = false; //To be Removed
-	private static boolean chatUsesRegex; //To be Removed
+	private static int automateMode = 0;		
 	private static boolean clientLight = false;
-	private static float flightSpeedFactor = 1.0F;
-	private static boolean askBeforeOpeningUrl = true; //To be Removed
+	private static float flightSpeedFactor = 1.0F;	 
 	private static boolean replaceTools = false;
 	private static boolean replaceBlocks = false;
 	private static boolean hotbarQuickKeysEnabled = true;
@@ -534,70 +526,7 @@ public class Configuration {
 		Configuration.automateMode = automateMode;
 		onPropertyChange();
 	}
-
-	public static synchronized boolean isShowChatColors() {
-		return showChatColors;
-	}
-
-	public static synchronized void setShowChatColors(boolean showChatColors) {
-		Configuration.showChatColors = showChatColors;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isShowJoinMessages() {
-		return showJoinMessages;
-	}
-
-	public static synchronized void setShowJoinMessages(boolean showJoinMessages) {
-		Configuration.showJoinMessages = showJoinMessages;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isShowDamageAlerts() {
-		return showDamageAlerts;
-	}
-
-	public static synchronized void setShowDamageAlerts(boolean showDamageAlerts) {
-		Configuration.showDamageAlerts = showDamageAlerts;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isHighlightMentions() {
-		return highlightMentions;
-	}
-
-	public static synchronized void setHighlightMentions(boolean highlightMentions) {
-		Configuration.highlightMentions = highlightMentions;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isChatGrabsMouse() {
-		return chatGrabsMouse;
-	}
-
-	public static synchronized void setChatGrabsMouse(boolean chatGrabsMouse) {
-		Configuration.chatGrabsMouse = chatGrabsMouse;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isIgnorePeople() {
-		return ignorePeople;
-	}
-
-	public static synchronized void setIgnorePeople(boolean ignorePeople) {
-		Configuration.ignorePeople = ignorePeople;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isChatUsesRegex() {
-		return chatUsesRegex;
-	}
-
-	public static synchronized void setChatUsesRegex(boolean chatUsesRegex) {
-		Configuration.chatUsesRegex = chatUsesRegex;
-		onPropertyChange();
-	}
-
+	
 	public static synchronized boolean isClientLight() {
 		return clientLight;
 	}
@@ -613,15 +542,6 @@ public class Configuration {
 
 	public static synchronized void setFlightSpeedFactor(float flightSpeedFactor) {
 		Configuration.flightSpeedFactor = flightSpeedFactor;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isAskBeforeOpeningUrl() {
-		return askBeforeOpeningUrl;
-	}
-
-	public static synchronized void setAskBeforeOpeningUrl(boolean askBeforeOpeningUrl) {
-		Configuration.askBeforeOpeningUrl = askBeforeOpeningUrl;
 		onPropertyChange();
 	}
 

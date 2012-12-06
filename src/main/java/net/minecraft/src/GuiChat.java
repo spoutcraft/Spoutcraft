@@ -35,21 +35,11 @@ public class GuiChat extends GuiScreen {
 	 */
 	private String defaultInputFieldText = "";
 
-	//Spout start
-	private static String lastChat = "";
+	public GuiChat() {}
 
-	public GuiChat() {
-		this("");
+	public GuiChat(String par1Str) {
+		this.defaultInputFieldText = par1Str;
 	}
-
-	public GuiChat(String message) {
-		if (message == null || message.length() == 0) {
-			message = lastChat;	
-		}
-		this.defaultInputFieldText = message;
-		
-	}
-	//Spout end
 
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
@@ -309,17 +299,5 @@ public class GuiChat extends GuiScreen {
 	 */
 	public boolean doesGuiPauseGame() {
 		return false;
-	}
-
-	// Spout Start
-	public static void interruptChat() {
-		if (Minecraft.theMinecraft.currentScreen instanceof GuiChat) {
-			if (Configuration.isShowDamageAlerts()) {
-				GuiChat chat = (GuiChat) Minecraft.theMinecraft.currentScreen;
-				GuiChat.lastChat = chat.inputField.getText();
-				Minecraft.theMinecraft.displayGuiScreen(null);
-			}
-		}
-	}
-	// Spout End
+	}	
 }
