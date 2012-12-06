@@ -271,20 +271,13 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 		UUID fancyGraphics = control.getId();
 		top+=20;
-
-		control = new FancyCloudsButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
-		graphicCheckboxes.add((CheckBox) control);
-
-		top += 22;
-
+	
 		control = new FancyGrassButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		graphicCheckboxes.add((CheckBox) control);
-
-		control = new FancyFogButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
+		
+		control = new FancyCloudsButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		graphicCheckboxes.add((CheckBox) control);
@@ -296,7 +289,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 		graphicCheckboxes.add((CheckBox) control);
 
-		control = new FancyTreesButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
+		control = new FancyFogButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		graphicCheckboxes.add((CheckBox) control);
@@ -308,7 +301,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 		graphicCheckboxes.add((CheckBox) control);
 
-		control = new FancyWeatherButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
+		control = new FancyTreesButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		graphicCheckboxes.add((CheckBox) control);
@@ -320,6 +313,17 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 		graphicCheckboxes.add((CheckBox) control);
 
+		control = new FancyWeatherButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		graphicCheckboxes.add((CheckBox) control);
+
+		top += 22;
+
+		control = new SmoothFPSButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+
 		control = new FancyParticlesButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -329,7 +333,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		top += 22;
 
-		control = new SmoothFPSButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control = new ConnectedTexturesButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
 
@@ -490,10 +494,6 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		
-		control = new ConnectedTexturesButton().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
-
 		top += 22;
 
 		top += 5;

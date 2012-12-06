@@ -67,20 +67,20 @@ public class Configuration {
 	private static boolean viewBobbing = false;
 	private static boolean voidFog = true;
 	private static boolean weather = true;
-	private static boolean delayedTooltips = false;
+	private static boolean delayedTooltips = true;
 	private static float mipmapsPercent = 0F;
 	private static boolean automatePerformance = true;
 	private static int automateMode = 0;
-	private static boolean showChatColors = true;
-	private static boolean showJoinMessages = true;
-	private static boolean showDamageAlerts = true;
-	private static boolean highlightMentions = true;
-	private static boolean chatGrabsMouse = true;
-	private static boolean ignorePeople = false;
-	private static boolean chatUsesRegex;
+	private static boolean showChatColors = false; //To be Removed
+	private static boolean showJoinMessages = false; //To be Removed
+	private static boolean showDamageAlerts = false; //To be Removed
+	private static boolean highlightMentions = false; //To be Removed
+	private static boolean chatGrabsMouse = false; //To be Removed
+	private static boolean ignorePeople = false; //To be Removed
+	private static boolean chatUsesRegex; //To be Removed
 	private static boolean clientLight = false;
 	private static float flightSpeedFactor = 1.0F;
-	private static boolean askBeforeOpeningUrl = true;
+	private static boolean askBeforeOpeningUrl = true; //To be Removed
 	private static boolean replaceTools = false;
 	private static boolean replaceBlocks = false;
 	private static boolean hotbarQuickKeysEnabled = true;
@@ -89,7 +89,7 @@ public class Configuration {
 	private static int resizedScreenshotHeight = 3200;
 	private static float chatOpacity = 0.5f;
 	private static int mainMenuState = defaultMenuState();
-	private static boolean connectedTextures = true;
+	private static boolean connectedTextures = false;
 	private static boolean advancedOptions = false;
 	
 	//Config-specific
