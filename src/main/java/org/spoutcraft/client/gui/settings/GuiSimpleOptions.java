@@ -85,6 +85,7 @@ public class GuiSimpleOptions extends GuiScreen {
 
 		int left = (int)(width / 2  - 155);
 		int right = (int)(width / 2 + 5);
+		int center = (int)(width / 2 - 80);
 
 		control = new ResetButton(parent).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
@@ -148,7 +149,7 @@ public class GuiSimpleOptions extends GuiScreen {
 		top += 22;
 
 		control = new MinimapButton(this).setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		control.setWidth(150).setHeight(20).setX(center).setY(top);
 		screen.attachWidget(spoutcraft, control);
 
 		top += 22;
