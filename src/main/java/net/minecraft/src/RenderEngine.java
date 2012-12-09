@@ -451,6 +451,7 @@ public class RenderEngine {
 			var3.onTick();
 			var1 = this.func_82772_a(var3, var1);
 		}
+		CustomAnimation.updateAll();  // Spout HD
 	}
 
 	public int func_82772_a(TextureFX par1TextureFX, int par2) {
