@@ -738,7 +738,7 @@ public class FontRenderer {
 			case 32:
 				lenSp = ii;
 				case 167:
-				if (ii != lenStr) {
+					if (ii < lenStr - 1) {
 						++ii;
 						char chSel = par1Str.charAt(ii);
 						if (chSel != 108 && chSel != 76) {
@@ -751,8 +751,8 @@ public class FontRenderer {
 					}
 					break;
 				default:
-				widthCh += this.getCharWidthFloat(ch);
-				if (bold && ch!=' ') {
+					widthCh += this.getCharWidthFloat(ch);
+					if (bold && ch != ' ') {
 						widthCh+=boldOffset;
 					}
 			}
