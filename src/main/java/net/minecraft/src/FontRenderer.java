@@ -124,75 +124,31 @@ public class FontRenderer {
 			var5 = TextureUtils.getResourceAsBufferedImage((Object)RenderEngine.class, par2Str); // Spout HD
 			InputStream var6 = RenderEngine.class.getResourceAsStream("/font/glyph_sizes.bin");
 			var6.read(this.glyphWidth);
-		} catch (IOException var18) {
-			throw new RuntimeException(var18);
+		} catch (IOException var17) {
+			throw new RuntimeException(var17);
 		}
 
-		int var19 = var5.getWidth();
+		int var18 = var5.getWidth();
 		int var7 = var5.getHeight();
-		int[] var8 = new int[var19 * var7];
-		var5.getRGB(0, 0, var19, var7, var8, 0, var19);
-		this.charWidthf = FontUtils.computeCharWidths(par2Str, var5, var8, this.charWidth); // Spout
-		int var9 = 0;
-		int var10;
-		int var11;
-		int var12;
-		int var13;
-		int var15;
-		int var16;
-
-		while (var9 < 256) {
-			var10 = var9 % 16;
-			var11 = var9 / 16;
-			var12 = 7;
-
-			while (true) {
-				if (var12 >= 0) {
-					var13 = var10 * 8 + var12;
-					boolean var14 = true;
-
-					for (var15 = 0; var15 < 8 && var14; ++var15) {
-						var16 = (var11 * 8 + var15) * var19;
-						int var17 = var8[var13 + var16] & 255;
-
-						if (var17 > 0) {
-							var14 = false;
-						}
-					}
-
-					if (var14) {
-						--var12;
-						continue;
-					}
-				}
-
-				if (var9 == 32) {
-					var12 = 2;
-				}
-
-				this.charWidth[var9] = var12 + 2;
-				++var9;
-				break;
-			}
-		}
-
+		int[] var8 = new int[var18 * var7];
+		var5.getRGB(0, 0, var18, var7, var8, 0, var18);
+		this.charWidthf = FontUtils.computeCharWidths(par2Str, var5, var8, this.charWidth);
 		this.fontTextureName = par3RenderEngine.allocateAndSetupTexture(var5);
 
-		for (var9 = 0; var9 < 32; ++var9) {
-			var10 = (var9 >> 3 & 1) * 85;
-			var11 = (var9 >> 2 & 1) * 170 + var10;
-			var12 = (var9 >> 1 & 1) * 170 + var10;
-			var13 = (var9 >> 0 & 1) * 170 + var10;
-
+		for (int var9 = 0; var9 < 32; ++var9) {
+			int var10 = (var9 >> 3 & 1) * 85;
+			int var11 = (var9 >> 2 & 1) * 170 + var10;
+			int var12 = (var9 >> 1 & 1) * 170 + var10;
+			int var13 = (var9 >> 0 & 1) * 170 + var10;
 			if (var9 == 6) {
 				var11 += 85;
 			}
 
 			if (par1GameSettings.anaglyph) {
-				int var20 = (var11 * 30 + var12 * 59 + var13 * 11) / 100;
-				var15 = (var11 * 30 + var12 * 70) / 100;
-				var16 = (var11 * 30 + var13 * 70) / 100;
-				var11 = var20;
+				int var14 = (var11 * 30 + var12 * 59 + var13 * 11) / 100;
+				int var15 = (var11 * 30 + var12 * 70) / 100;
+				int var16 = (var11 * 30 + var13 * 70) / 100;
+				var11 = var14;
 				var12 = var15;
 				var13 = var16;
 			}
@@ -769,27 +725,22 @@ public class FontRenderer {
 	 * Determines how many characters from the string will fit into the specified width.
 	 */
 	// Spout AlphaText - describes how many characters of a given input string will fit within the specified screen width.
-	private int sizeStringToWidth(String par1Str, int par2) {
-		float widthSz = (float)par2;
-		int lenStr = par1Str.length();
+	private int sizeStringToWidth(String par1Str, int width2) {
+		float widthSz = (float)width2;
 		float widthCh = 0F;
+		int lenStr = par1Str.length();
+		int lenSp = -1;
 		boolean bold = false;
 		int ii = 0;
-		int lenSp = -1;
-
 		for (; ii < lenStr; ++ii) {
 			char ch = par1Str.charAt(ii);
-
-			switch (ch) {
-				case 10:
-					--ii;
-					break;
-
+			switch(ch) {
+			case 32:
+				lenSp = ii;
 				case 167:
 					if (ii < lenStr - 1) {
 						++ii;
 						char chSel = par1Str.charAt(ii);
-
 						if (chSel != 108 && chSel != 76) {
 							if (chSel == 114 || chSel == 82 || isFormatColor(chSel)) {
 								bold = false;
@@ -798,16 +749,10 @@ public class FontRenderer {
 							bold = true;
 						}
 					}
-
 					break;
-
-				case 32:
-					lenSp = ii;
-
 				default:
-					widthCh += this.getCharWidth(ch);
-
-					if (bold) {
+					widthCh += this.getCharWidthFloat(ch);
+					if (bold && ch != ' ') {
 						widthCh+=boldOffset;
 					}
 			}
@@ -1022,7 +967,6 @@ public class FontRenderer {
 		} else {
 			String var4 = par1Str.substring(0, var3);
 			String var5 = getFormatFromString(var4) + par1Str.substring(var3 + (par1Str.charAt(var3) == 32 ? 1 : 0));
-			System.out.println("Orig: " + par1Str + " Line 1: " + var4 + " Line 2: " + var5 + " Length: " + var3);
 			return var4 + "\n" + this.wrapFormattedStringToWidth(var5, par2);
 		}
 	}
