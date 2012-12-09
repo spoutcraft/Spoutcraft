@@ -171,8 +171,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout - public
 		if (!this.func_85032_ar()) {
 			this.setEntityHealth(this.getHealth() - par2);
-		}
-		GuiChat.interruptChat(); // Spout
+		}		
 	}
 
 	/**

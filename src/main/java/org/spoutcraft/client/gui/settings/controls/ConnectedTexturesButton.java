@@ -27,7 +27,7 @@ import org.spoutcraft.client.config.Configuration;
 
 import com.pclewis.mcpatcher.TexturePackAPI;
 
-public class ConnectedTexturesButton extends GenericCheckBox {
+public class ConnectedTexturesButton extends AutomatedCheckBox {
 	public ConnectedTexturesButton() {
 		super("Connected Textures");
 		setChecked(Configuration.isConnectedTextures());

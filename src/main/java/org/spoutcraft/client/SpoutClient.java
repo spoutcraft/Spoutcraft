@@ -179,7 +179,6 @@ public class SpoutClient extends PropertyObject implements Client {
 		Keyboard.setKeyManager(new SimpleKeyManager());
 		CraftEntity.registerTypes();
 		FileUtil.migrateOldFiles();
-		new File(Minecraft.getMinecraftDir(), "shaders").mkdir();
 	}
 
 	public static SpoutClient getInstance() {

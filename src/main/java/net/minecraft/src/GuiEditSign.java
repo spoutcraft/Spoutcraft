@@ -196,36 +196,7 @@ public class GuiEditSign extends GuiScreen {
 	 */
 	public void drawScreen(int par1, int par2, float par3) {
 		this.drawDefaultBackground();
-		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 40, 16777215);
-
-		// Spout Start
-		if (org.spoutcraft.client.config.Configuration.isShowChatColors()) {
-			for (int c = 0; c < 16; c++) {
-				ChatColor value = ChatColor.getByCode(c);
-				String name = value.name().toLowerCase();
-				boolean lastUnderscore = true;
-				String parsedName = "";
-				for (int chr = 0; chr < name.length(); chr++) {
-					char ch = name.charAt(chr);
-					if (lastUnderscore) {
-						ch = Character.toUpperCase(ch);
-					}
-					if (ch == '_') {
-						lastUnderscore = true;
-						ch = ' ';
-					} else {
-						lastUnderscore = false;
-					}
-					parsedName += ch;
-				}
-				char code = (char) ('0' + c);
-				if (c >= 10) {
-					code = (char) ('a' + c - 10);
-				}
-				fontRenderer.drawStringWithShadow("&" + code + " - " + value + parsedName, width - 90, 70 + c * 10, 0xffffffff);
-			}
-		}
-		// Spout End
+		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 40, 16777215);		
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)(this.width / 2), 0.0F, 50.0F);
 		float var4 = 93.75F;

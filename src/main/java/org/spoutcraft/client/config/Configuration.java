@@ -53,7 +53,6 @@ public class Configuration {
 	private static boolean farView = false;
 	private static boolean fancyLight = false;
 	private static boolean fancyParticles = false;
-	private static int shaderType = 0;
 	private static int fastDebug = 0;
 	private static int guiScale = 0;
 	private static int performance = 0;
@@ -68,20 +67,12 @@ public class Configuration {
 	private static boolean viewBobbing = false;
 	private static boolean voidFog = true;
 	private static boolean weather = true;
-	private static boolean delayedTooltips = false;
+	private static boolean delayedTooltips = true;
 	private static float mipmapsPercent = 0F;
 	private static boolean automatePerformance = true;
-	private static int automateMode = 0;
-	private static boolean showChatColors = true;
-	private static boolean showJoinMessages = true;
-	private static boolean showDamageAlerts = true;
-	private static boolean highlightMentions = true;
-	private static boolean chatGrabsMouse = true;
-	private static boolean ignorePeople = false;
-	private static boolean chatUsesRegex;
+	private static int automateMode = 0;		
 	private static boolean clientLight = false;
-	private static float flightSpeedFactor = 1.0F;
-	private static boolean askBeforeOpeningUrl = true;
+	private static float flightSpeedFactor = 1.0F;	 
 	private static boolean replaceTools = false;
 	private static boolean replaceBlocks = false;
 	private static boolean hotbarQuickKeysEnabled = true;
@@ -90,7 +81,7 @@ public class Configuration {
 	private static int resizedScreenshotHeight = 3200;
 	private static float chatOpacity = 0.5f;
 	private static int mainMenuState = defaultMenuState();
-	private static boolean connectedTextures = true;
+	private static boolean connectedTextures = false;
 	private static boolean advancedOptions = false;
 	
 	//Config-specific
@@ -160,7 +151,6 @@ public class Configuration {
 		}
 	}
 
-
 	private static void updateMCConfig() {
 		Minecraft.theMinecraft.gameSettings.anaglyph = Configuration.isAnaglyph3D();
 		Minecraft.theMinecraft.gameSettings.renderDistance = Configuration.getRenderDistance();
@@ -175,11 +165,8 @@ public class Configuration {
 			vsync = Configuration.getPerformance() == 3;
 			org.lwjgl.opengl.Display.setVSyncEnabled(vsync);
 		}
-
-		if (!isShadersSupported()) {
-			Configuration.shaderType = 0;
-		}
-		Shaders.setMode(getShaderType());
+		
+		Shaders.setMode(0); // Force Shader to 0 to fix hundreds of client crashes per day!
 
 		if (Configuration.getSignDistance() < 8) {
 			signDistance = 8;
@@ -196,19 +183,6 @@ public class Configuration {
 			return 2;
 		}
 		return 3;
-	}
-
-	public static boolean isShadersSupported() {
-		if (Shaders.isOSX()) {
-			if (!Shaders.isOpenGL(2)) {
-				return false;
-			}
-		} else {
-			if (!Shaders.isOpenGL(3)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	public static synchronized void restoreDefaults() {
@@ -389,16 +363,7 @@ public class Configuration {
 	public static synchronized void setFancyLight(boolean fancyLight) {
 		Configuration.fancyLight = fancyLight;
 		onPropertyChange();
-	}
-
-	public static synchronized int getShaderType() {
-		return shaderType;
-	}
-
-	public static synchronized void setShaderType(int shaderType) {
-		Configuration.shaderType = shaderType;
-		onPropertyChange();
-	}
+	}	
 
 	public static synchronized int getFastDebug() {
 		return fastDebug;
@@ -561,70 +526,7 @@ public class Configuration {
 		Configuration.automateMode = automateMode;
 		onPropertyChange();
 	}
-
-	public static synchronized boolean isShowChatColors() {
-		return showChatColors;
-	}
-
-	public static synchronized void setShowChatColors(boolean showChatColors) {
-		Configuration.showChatColors = showChatColors;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isShowJoinMessages() {
-		return showJoinMessages;
-	}
-
-	public static synchronized void setShowJoinMessages(boolean showJoinMessages) {
-		Configuration.showJoinMessages = showJoinMessages;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isShowDamageAlerts() {
-		return showDamageAlerts;
-	}
-
-	public static synchronized void setShowDamageAlerts(boolean showDamageAlerts) {
-		Configuration.showDamageAlerts = showDamageAlerts;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isHighlightMentions() {
-		return highlightMentions;
-	}
-
-	public static synchronized void setHighlightMentions(boolean highlightMentions) {
-		Configuration.highlightMentions = highlightMentions;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isChatGrabsMouse() {
-		return chatGrabsMouse;
-	}
-
-	public static synchronized void setChatGrabsMouse(boolean chatGrabsMouse) {
-		Configuration.chatGrabsMouse = chatGrabsMouse;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isIgnorePeople() {
-		return ignorePeople;
-	}
-
-	public static synchronized void setIgnorePeople(boolean ignorePeople) {
-		Configuration.ignorePeople = ignorePeople;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isChatUsesRegex() {
-		return chatUsesRegex;
-	}
-
-	public static synchronized void setChatUsesRegex(boolean chatUsesRegex) {
-		Configuration.chatUsesRegex = chatUsesRegex;
-		onPropertyChange();
-	}
-
+	
 	public static synchronized boolean isClientLight() {
 		return clientLight;
 	}
@@ -640,15 +542,6 @@ public class Configuration {
 
 	public static synchronized void setFlightSpeedFactor(float flightSpeedFactor) {
 		Configuration.flightSpeedFactor = flightSpeedFactor;
-		onPropertyChange();
-	}
-
-	public static synchronized boolean isAskBeforeOpeningUrl() {
-		return askBeforeOpeningUrl;
-	}
-
-	public static synchronized void setAskBeforeOpeningUrl(boolean askBeforeOpeningUrl) {
-		Configuration.askBeforeOpeningUrl = askBeforeOpeningUrl;
 		onPropertyChange();
 	}
 

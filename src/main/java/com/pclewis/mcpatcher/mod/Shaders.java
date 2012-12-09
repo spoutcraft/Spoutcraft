@@ -295,7 +295,7 @@ public class Shaders {
 		if (!isShadowPass) {
 			mc = var0;
 			if (!isInitialized) {
-				init(Configuration.getShaderType());
+				init(0);
 			}
 
 			if (mc.displayWidth != renderWidth || mc.displayHeight != renderHeight) {

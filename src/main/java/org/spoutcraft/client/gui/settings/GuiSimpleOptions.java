@@ -39,7 +39,6 @@ import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.WidgetAnchor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
-import org.spoutcraft.client.gui.settings.controls.ChatButton;
 import org.spoutcraft.client.gui.settings.controls.ControlsButton;
 import org.spoutcraft.client.gui.settings.controls.DifficultyButton;
 import org.spoutcraft.client.gui.settings.controls.FavorAppearanceButton;
@@ -86,6 +85,7 @@ public class GuiSimpleOptions extends GuiScreen {
 
 		int left = (int)(width / 2  - 155);
 		int right = (int)(width / 2 + 5);
+		int center = (int)(width / 2 - 80);
 
 		control = new ResetButton(parent).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
@@ -148,12 +148,8 @@ public class GuiSimpleOptions extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
 
-		control = new ChatButton(this).setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
-
 		control = new MinimapButton(this).setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		control.setWidth(150).setHeight(20).setX(center).setY(top);
 		screen.attachWidget(spoutcraft, control);
 
 		top += 22;
