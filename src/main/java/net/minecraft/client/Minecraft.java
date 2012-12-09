@@ -379,15 +379,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		this.checkGLError("Startup");
 		this.sndManager.loadSoundSettings(this.gameSettings);
-		this.renderEngine.registerTextureFX(this.textureLavaFX);
-		this.renderEngine.registerTextureFX(this.textureWaterFX);
-		this.renderEngine.registerTextureFX(new TexturePortalFX());
-		this.renderEngine.registerTextureFX(new TextureCompassFX(this));
-		this.renderEngine.registerTextureFX(new TextureWatchFX(this));
-		this.renderEngine.registerTextureFX(new TextureWaterFlowFX());
-		this.renderEngine.registerTextureFX(new TextureLavaFlowFX());
-		this.renderEngine.registerTextureFX(new TextureFlamesFX(0));
-		this.renderEngine.registerTextureFX(new TextureFlamesFX(1));
 		this.renderGlobal = new RenderGlobal(this, this.renderEngine);
 		GL11.glViewport(0, 0, this.displayWidth, this.displayHeight);
 		this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
