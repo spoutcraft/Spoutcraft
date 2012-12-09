@@ -1022,6 +1022,7 @@ public class FontRenderer {
 		} else {
 			String var4 = par1Str.substring(0, var3);
 			String var5 = getFormatFromString(var4) + par1Str.substring(var3 + (par1Str.charAt(var3) == 32 ? 1 : 0));
+			System.out.println("Orig: " + par1Str + " Line 1: " + var4 + " Line 2: " + var5 + " Length: " + var3);
 			return var4 + "\n" + this.wrapFormattedStringToWidth(var5, par2);
 		}
 	}
