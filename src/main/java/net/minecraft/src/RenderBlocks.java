@@ -4530,7 +4530,7 @@ public class RenderBlocks {
 				}
 			}
 			// Spout End
-			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 3));
+			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
 
 			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= par5;
