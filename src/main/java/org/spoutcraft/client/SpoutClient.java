@@ -415,6 +415,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		SpoutcraftChunk.loadedChunks.clear();
 		PacketDecompressionThread.startThread();
 		MipMapUtils.initializeMipMaps();
+		MipMapUtils.update();
 		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
 		inWorldTicks = 0L;
 		MinimapConfig.getInstance().getServerWaypoints().clear();
