@@ -1187,8 +1187,8 @@ public class NetClientHandler extends NetHandler {
 		String[] var2 = par1Packet203AutoComplete.getText().split("\u0000");
 
 		if (this.mc.currentScreen instanceof GuiChat) {
-			//GuiChat var3 = (GuiChat)this.mc.currentScreen; // Spout
-			//var3.func_73894_a(var2);
+			GuiChat var3 = (GuiChat)this.mc.currentScreen; // Spout
+			var3.func_73894_a(var2);
 		}
 	}
 
