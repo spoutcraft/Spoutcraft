@@ -150,7 +150,7 @@ public class PrecacheManager {
 			return;
 		}
 		
-		setPreloadGuiText(ChatColor.BLUE + "SpoutCraft Custom Content!!! " + "\n"+" "+ "\n"+ ChatColor.WHITE + "Currently Downloading & Applying:  " + ChatColor.ITALIC + next.getPlugin() + " " + next.getVersion());
+		setPreloadGuiText(ChatColor.BLUE + "Spoutcraft" + "\n"+" "+ "\n"+ ChatColor.WHITE + "Downloading Custom Content for:  " + ChatColor.ITALIC + next.getPlugin() + " " + next.getVersion());
 		
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRequestPrecache(next.getPlugin()));
 		
