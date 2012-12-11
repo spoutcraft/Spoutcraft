@@ -30,6 +30,7 @@ import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.util.NetworkUtils;
+import org.spoutcraft.client.gui.precache.GuiPrecache;
 import org.spoutcraft.api.entity.LivingEntity;
 // Spout End
 
@@ -182,7 +183,8 @@ public class NetClientHandler extends NetHandler {
 		this.worldClient.isRemote = true;
 		this.mc.loadWorld(this.worldClient);
 		this.mc.thePlayer.dimension = par1Packet1Login.dimension;
-		this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
+		//this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
+		this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache()); // Spout
 		this.mc.thePlayer.entityId = par1Packet1Login.clientEntityId;
 		this.currentServerMaxPlayers = par1Packet1Login.maxPlayers;
 		this.mc.playerController.setGameType(par1Packet1Login.gameType);
