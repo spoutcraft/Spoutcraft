@@ -283,7 +283,7 @@ public class GuiChat extends GuiScreen {
 				String var5 = var2[var4];
 
 				if (var5.length() > 0) {
-					this.field_73904_o.add(var5);
+					this.field_73904_o.add(var5+" ");
 				}
 			}
 

@@ -398,7 +398,12 @@ public abstract class GuiContainer extends GuiScreen {
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		List var4 = Arrays.asList(Spoutcraft.getMaterialManager().getToolTip(new CraftItemStack(par1ItemStack))); //Spoutcraft - changed call to overriden one
+		List var4 = null;		
+		if (par1ItemStack.itemID == 318) { //Spout start
+			var4 = Arrays.asList(Spoutcraft.getMaterialManager().getToolTip(new CraftItemStack(par1ItemStack))); //Not a proper fix... 
+		} else {
+			var4 = par1ItemStack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+		}  //Spout end
 
 		if (!var4.isEmpty()) {
 			int var5 = 0;
