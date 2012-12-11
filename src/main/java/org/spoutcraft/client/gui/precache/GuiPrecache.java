@@ -20,6 +20,7 @@
 package org.spoutcraft.client.gui.precache;
 
 import net.minecraft.src.GuiScreen;
+import org.bukkit.ChatColor;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
@@ -31,15 +32,12 @@ public class GuiPrecache extends GuiScreen {
 	public GenericLabel statusText;
 	
 	@Override
-	public void initGui() {
-		
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		
+	public void initGui() {		
+		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");		
 		statusText = new GenericLabel();
 		statusText.setAnchor(WidgetAnchor.CENTER_CENTER);
 		statusText.setAlign(WidgetAnchor.CENTER_CENTER);
-		statusText.setText("Checking Plugin Caches...");
-		
+		statusText.setText(ChatColor.BLUE + "SpoutCraft!!!" + "\n"+" "+ "\n"+ ChatColor.WHITE + "Verifying Client / Server Resources" + "\n"+" "+ "\n"+ ChatColor.GOLD + "Please Wait...");		
 		getScreen().attachWidget(spoutcraft, statusText);
 	}
 	
