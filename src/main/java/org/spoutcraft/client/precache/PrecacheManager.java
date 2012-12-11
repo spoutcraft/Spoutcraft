@@ -35,6 +35,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import net.minecraft.client.Minecraft;
+import org.bukkit.ChatColor;
 
 import org.spoutcraft.api.block.design.GenericBlockDesign;
 import org.spoutcraft.api.material.CustomBlock;
@@ -149,7 +150,7 @@ public class PrecacheManager {
 			return;
 		}
 		
-		setPreloadGuiText("Downloading " + next.getPlugin() + " " + next.getVersion());
+		setPreloadGuiText(ChatColor.BLUE + "SpoutCraft Custom Content!!! " + "\n"+" "+ "\n"+ ChatColor.WHITE + "Currently Downloading & Applying:  " + ChatColor.ITALIC + next.getPlugin() + " " + next.getVersion());
 		
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRequestPrecache(next.getPlugin()));
 		
@@ -163,9 +164,7 @@ public class PrecacheManager {
 		return new File(FileUtil.getCacheDir(), plugin+"_"+version+".zip");
 	}
 	
-	public static void loadPrecache(boolean reloadRenderer) {
-		
-		setPreloadGuiText("Loading Textures...");
+	public static void loadPrecache(boolean reloadRenderer) {		
 		
 		//unzip
 		File cacheRoot = FileUtil.getCacheDir();
