@@ -152,14 +152,12 @@ public class FileUtil {
 	}
 
 	private static File matchFile(File directory, String fileName) {
-		if (directory.isDirectory() && directory.exists()) {
-			Collection<File> files = FileUtils.listFiles(directory, null, true);
-			for (File file : files) {
-				String name = getFileName(file.getPath());
-				if (name != null && name.equals(fileName)) {
-					return file;
-				}
-			}
+		if (!directory.exists() || fileName == null || fileName.isEmpty()) {
+			return null;
+		}
+		final File toFind = new File(directory, fileName);
+		if (toFind.exists()) {
+			return toFind;
 		}
 		return null;
 	}
