@@ -152,12 +152,19 @@ public class FileUtil {
 	}
 
 	private static File matchFile(File directory, String fileName) {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
 		if (!directory.exists() || fileName == null || fileName.isEmpty()) {
 			return null;
 		}
 		final File toFind = new File(directory, fileName);
 		if (toFind.exists()) {
 			return toFind;
+		}
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
 		}
 		return null;
 	}
