@@ -3,8 +3,6 @@ package net.minecraft.src;
 import java.util.Iterator; // Spout
 import java.util.List;
 
-import org.spoutcraft.client.entity.CraftLightningStrike; // Spout
-
 public class EntityLightningBolt extends EntityWeatherEffect {
 
 	/**

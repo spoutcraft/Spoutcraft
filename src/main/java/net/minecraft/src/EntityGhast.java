@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 // Spout Start
-import org.spoutcraft.client.entity.CraftGhast;
 import org.spoutcraft.api.entity.EntitySkinType;
 // Spout End
 

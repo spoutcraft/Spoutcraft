@@ -3,8 +3,6 @@ package net.minecraft.src;
 import java.util.Iterator; // Spout
 import java.util.List;
 
-import org.spoutcraft.client.entity.CraftFish; // Spout
-
 public class EntityFishHook extends Entity {
 
 	/** The tile this entity is on, X position */
