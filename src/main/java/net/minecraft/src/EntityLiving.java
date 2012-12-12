@@ -1,19 +1,11 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.MobRandomizer;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
-// Spout Start
-import org.spoutcraft.client.entity.CraftLivingEntity;
-import org.spoutcraft.client.entity.EntityData;
-import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.api.entity.EntitySkinType;
-import org.spoutcraft.api.material.CustomBlock;
-import org.spoutcraft.api.material.MaterialData;
-// Spout End
 
 public abstract class EntityLiving extends Entity {
 
@@ -22,9 +14,15 @@ public abstract class EntityLiving extends Entity {
 	 * difficulty.
 	 */
 	private static final float[] enchantmentProbability = new float[] {0.0F, 0.0F, 0.005F, 0.01F};
-	private static final float[] field_82178_c = new float[] {0.0F, 0.0F, 0.05F, 0.1F};
-	private static final float[] field_82176_d = new float[] {0.0F, 0.0F, 0.005F, 0.02F};
-	public static final float[] field_82181_as = new float[] {0.0F, 0.01F, 0.07F, 0.2F};
+
+	/** Probability to get enchanted armor */
+	private static final float[] armorEnchantmentProbability = new float[] {0.0F, 0.0F, 0.05F, 0.1F};
+
+	/** Probability to get armor */
+	private static final float[] armorProbability = new float[] {0.0F, 0.0F, 0.005F, 0.02F};
+
+	/** Probability to pick up loot */
+	public static final float[] pickUpLootProability = new float[] {0.0F, 0.01F, 0.07F, 0.2F};
 	public int maxHurtResistantTime = 20;
 	public float field_70769_ao;
 	public float field_70770_ap;
@@ -69,7 +67,7 @@ public abstract class EntityLiving extends Entity {
 	public float jumpMovementFactor = 0.02F;
 	public float prevSwingProgress;
 	public float swingProgress;
-	public int health = this.getMaxHealth(); // Spout - protected to public!
+	protected int health = this.getMaxHealth();
 	public int prevHealth;
 
 	/**
@@ -194,7 +192,7 @@ public abstract class EntityLiving extends Entity {
 	float field_70706_bo = 0.0F;
 
 	/** Amount of damage taken in last hit, in half-hearts */
-	public int lastDamage = 0; // Spout - protected to public!
+	protected int lastDamage = 0;
 
 	/** Holds the living entity age, used to control the despawn. */
 	protected int entityAge = 0;
@@ -215,12 +213,6 @@ public abstract class EntityLiving extends Entity {
 
 	/** How long to keep a specific target entity */
 	protected int numTicksToChaseTarget = 0;
-	
-	// Spout Start
-	private EntityData entityData = new EntityData();
-	public String displayName = null;
-	public int maxAir = 300;
-	// Spout End
 
 	public EntityLiving(World par1World) {
 		super(par1World);
@@ -434,14 +426,7 @@ public abstract class EntityLiving extends Entity {
 	 * Returns the texture's file path as a String.
 	 */
 	public String getTexture() {
-		// Spout Start
-		String custom = getCustomTextureUrl(getTextureToRender());
-		if(custom == null || CustomTextureManager.getTexturePathFromUrl(custom) == null){
-			return texture;
-		} else {
-			return CustomTextureManager.getTexturePathFromUrl(custom);
-		}
-		// Spout End
+		return this.texture;
 	}
 
 	/**
@@ -519,7 +504,7 @@ public abstract class EntityLiving extends Entity {
 
 			this.extinguish();
 		} else {
-			this.setAir(maxAir); // Spout - 300 to maxAir
+			this.setAir(300);
 		}
 
 		this.prevCameraPitch = this.cameraPitch;
@@ -676,7 +661,7 @@ public abstract class EntityLiving extends Entity {
 				}
 			}
 
-			var1 = this.func_85035_bI();
+			var1 = this.getArrowCountInEntity();
 
 			if (var1 > 0) {
 				if (this.arrowHitTimer <= 0) {
@@ -686,7 +671,7 @@ public abstract class EntityLiving extends Entity {
 				--this.arrowHitTimer;
 
 				if (this.arrowHitTimer <= 0) {
-					this.func_85034_r(var1 - 1);
+					this.setArrowCountInEntity(var1 - 1);
 				}
 			}
 		}
@@ -980,7 +965,7 @@ public abstract class EntityLiving extends Entity {
 	 * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health second
 	 * with the reduced value. Args: damageAmount
 	 */
-	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout - protected to public!
+	protected void damageEntity(DamageSource par1DamageSource, int par2) {
 		if (!this.func_85032_ar()) {
 			par2 = this.applyArmorCalculations(par1DamageSource, par2);
 			par2 = this.applyPotionDamageCalculations(par1DamageSource, par2);
@@ -1108,9 +1093,6 @@ public abstract class EntityLiving extends Entity {
 	 */
 	protected void fall(float par1) {
 		super.fall(par1);
-		
-		par1 *= getData().getGravityMod(); // Spout - added gravity mod.
-		
 		int var2 = MathHelper.ceiling_float_int(par1 - 3.0F);
 
 		if (var2 > 0) {
@@ -1138,19 +1120,19 @@ public abstract class EntityLiving extends Entity {
 
 		if (this.isInWater() && (!(this instanceof EntityPlayer) || !((EntityPlayer)this).capabilities.isFlying)) {
 			var9 = this.posY;
-			this.moveFlying(par1, par2, ((float) ((this.isAIEnabled() ? 0.04F : 0.02F) * getData().getSwimmingMod()))); // Spout - added swimming mod
+			this.moveFlying(par1, par2, this.isAIEnabled() ? 0.04F : 0.02F);
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.800000011920929D;
 			this.motionY *= 0.800000011920929D;
 			this.motionZ *= 0.800000011920929D;
-			this.motionY -= 0.02D * getData().getGravityMod(); // Spout - added gravity modifier!
+			this.motionY -= 0.02D;
 
 			if (this.isCollidedHorizontally && this.isOffsetPositionInLiquid(this.motionX, this.motionY + 0.6000000238418579D - this.posY + var9, this.motionZ)) {
 				this.motionY = 0.30000001192092896D;
 			}
 		} else if (this.handleLavaMovement() && (!(this instanceof EntityPlayer) || !((EntityPlayer)this).capabilities.isFlying)) {
 			var9 = this.posY;
-			this.moveFlying(par1, par2, (float)(0.02F * getData().getSwimmingMod())); // Spout - added swimming modifier!
+			this.moveFlying(par1, par2, 0.02F);
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.5D;
 			this.motionY *= 0.5D;
@@ -1169,20 +1151,6 @@ public abstract class EntityLiving extends Entity {
 
 				if (var4 > 0) {
 					var3 = Block.blocksList[var4].slipperiness * 0.91F;
-					// Spout Start
-					int x = MathHelper.floor_double(this.posX);
-					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
-					int z = MathHelper.floor_double(this.posZ);
-					org.spoutcraft.api.World world = this.worldObj.world;
-					org.spoutcraft.api.block.Chunk chunk = world.getChunkAt(x, y, z);
-					short customId = chunk.getCustomBlockId(x, y, z);
-					if (customId > 0) {
-						CustomBlock block = MaterialData.getCustomBlock(customId);
-						if (block != null) {
-							var3 = block.getFriction() * 0.98F;
-						}
-					}
-					// Spout End
 				}
 			}
 
@@ -1191,14 +1159,14 @@ public abstract class EntityLiving extends Entity {
 
 			if (this.onGround) {
 				if (this.isAIEnabled()) {
-					var5 = (float) (this.getAIMoveSpeed() * getData().getWalkingMod()); // Spout
+					var5 = this.getAIMoveSpeed();
 				} else {
-					var5 = (float) (this.landMovementFactor * getData().getWalkingMod()); // Spout
+					var5 = this.landMovementFactor;
 				}
 
 				var5 *= var8;
 			} else {
-				var5 = (float) (this.jumpMovementFactor * getData().getAirspeedMod()); // Spout - added AirSpeed modifier!
+				var5 = this.jumpMovementFactor;
 			}
 
 			this.moveFlying(par1, par2, var5);
@@ -1210,18 +1178,6 @@ public abstract class EntityLiving extends Entity {
 
 				if (var6 > 0) {
 					var3 = Block.blocksList[var6].slipperiness * 0.91F;
-					// Spout Start
-					int x = MathHelper.floor_double(this.posX);
-					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
-					int z = MathHelper.floor_double(this.posZ);
-					short customId = worldObj.world.getChunkAt(x, y, z).getCustomBlockId(x, y, z);
-					if (customId > 0) {
-						CustomBlock block = MaterialData.getCustomBlock(customId);
-						if (block != null) {
-							var3 = block.getFriction() * 0.98F;
-						}
-					}
-					// Spout End
 				}
 			}
 
@@ -1270,7 +1226,7 @@ public abstract class EntityLiving extends Entity {
 					this.motionY = 0.0D;
 				}
 			} else {
-				this.motionY -= 0.08D * getData().getGravityMod(); // Spout - added gravity multipler!
+				this.motionY -= 0.08D;
 			}
 
 			this.motionY *= 0.9800000190734863D;
@@ -1306,6 +1262,8 @@ public abstract class EntityLiving extends Entity {
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+		MobRandomizer.ExtraInfo.writeToNBT(this, par1NBTTagCompound);
+
 		if (this.health < -32768) {
 			this.health = -32768;
 		}
@@ -1356,6 +1314,7 @@ public abstract class EntityLiving extends Entity {
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+		MobRandomizer.ExtraInfo.readFromNBT(this, par1NBTTagCompound);
 		this.health = par1NBTTagCompound.getShort("Health");
 
 		if (!par1NBTTagCompound.hasKey("Health")) {
@@ -1617,7 +1576,7 @@ public abstract class EntityLiving extends Entity {
 	 * Causes this entity to do an upwards motion (jumping).
 	 */
 	protected void jump() {
-		this.motionY = 0.41999998688697815D * getData().getJumpingMod(); // Spout - added jumping modifier!
+		this.motionY = 0.41999998688697815D;
 
 		if (this.isPotionActive(Potion.jump)) {
 			this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
@@ -2227,7 +2186,7 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	protected void func_82164_bB() {
-		if (this.rand.nextFloat() < field_82176_d[this.worldObj.difficultySetting]) {
+		if (this.rand.nextFloat() < armorProbability[this.worldObj.difficultySetting]) {
 			int var1 = this.rand.nextInt(2);
 			float var2 = this.worldObj.difficultySetting == 3 ? 0.1F : 0.25F;
 
@@ -2376,7 +2335,7 @@ public abstract class EntityLiving extends Entity {
 		for (int var1 = 0; var1 < 4; ++var1) {
 			ItemStack var2 = this.getCurrentArmor(var1);
 
-			if (var2 != null && this.rand.nextFloat() < field_82178_c[this.worldObj.difficultySetting]) {
+			if (var2 != null && this.rand.nextFloat() < armorEnchantmentProbability[this.worldObj.difficultySetting]) {
 				EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
 			}
 		}
@@ -2417,62 +2376,17 @@ public abstract class EntityLiving extends Entity {
 		return false;
 	}
 
-	public final int func_85035_bI() {
+	/**
+	 * counts the amount of arrows stuck in the entity. getting hit by arrows increases this, used in rendering
+	 */
+	public final int getArrowCountInEntity() {
 		return this.dataWatcher.getWatchableObjectByte(10);
 	}
 
-	public final void func_85034_r(int par1) {
+	/**
+	 * sets the amount of arrows stuck in the entity. used for rendering those
+	 */
+	public final void setArrowCountInEntity(int par1) {
 		this.dataWatcher.updateObject(10, Byte.valueOf((byte)par1));
 	}
-	
-	// Spout Start
-
-	public EntityData getData() {
-		return entityData;
-	}
-
-	public void setData(EntityData e) {
-		this.entityData = e;
-	}
-
-	public String getCustomTextureUrl(byte id){
-		if (getData().getCustomTextures() == null) {
-			return null;
-		}
-		return getData().getCustomTextures().get(id);
-	}
-
-	public String getCustomTexture(byte id){
-		if(getCustomTextureUrl(id) != null ) {
-			return CustomTextureManager.getTexturePathFromUrl(getCustomTextureUrl(id));
-		}
-		return null;
-	}
-
-	public String getCustomTexture(EntitySkinType type, String def) {
-		String tex = getCustomTexture(type.getId());
-		if (tex == null) {
-			tex = def;
-		}
-		return tex;
-	}
-
-	public void setCustomTexture(String url, byte id){
-		if (url != null) {
-			CustomTextureManager.downloadTexture(url);
-		}
-		if (getData().getCustomTextures() != null) {
-			getData().getCustomTextures().put(id, url);
-		}
-	}
-
-	public void setTextureToRender(byte textureToRender) {
-		getData().setTextureToRender(textureToRender);
-	}
-
-	public byte getTextureToRender() {
-		return getData().getTextureToRender();
-	}
-	// Spout End
-	
 }

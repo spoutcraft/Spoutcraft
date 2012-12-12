@@ -1,17 +1,22 @@
 package com.pclewis.mcpatcher.mod;
 
+import com.pclewis.mcpatcher.MCLogger;
 import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.TexturePackAPI;
+import com.pclewis.mcpatcher.WeightedIndex;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Method;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 abstract class TileOverride {
+    private static final MCLogger logger = MCLogger.getLogger(MCPatcherUtils.CONNECTED_TEXTURES, "CTM");
+
     static final int BOTTOM_FACE = 0; // 0, -1, 0
     static final int TOP_FACE = 1; // 0, 1, 0
     static final int NORTH_FACE = 2; // 0, 0, -1
@@ -107,6 +112,12 @@ abstract class TileOverride {
         },
     };
 
+    private static final int CONNECT_BY_BLOCK = 0;
+    private static final int CONNECT_BY_TILE = 1;
+    private static final int CONNECT_BY_MATERIAL = 2;
+
+    private static final Method forceMipmapType;
+
     final String filePrefix;
     final String textureName;
     final int texture;
@@ -115,13 +126,25 @@ abstract class TileOverride {
     final int[] tileIDs;
     final int faces;
     final int metadata;
-    final boolean connectByTile;
+    final int connectType;
     final int[] tileMap;
 
     boolean disabled;
     int[] reorient;
     int metamask;
     int rotateUV;
+    boolean rotateTop;
+
+    static {
+        Method method = null;
+        try {
+            Class<?> cl = Class.forName(MCPatcherUtils.MIPMAP_HELPER_CLASS);
+            method = cl.getDeclaredMethod("forceMipmapType", String.class, Integer.TYPE);
+        } catch (ClassNotFoundException e) {
+        } catch (NoSuchMethodException e) {
+        }
+        forceMipmapType = method;
+    }
 
     static TileOverride create(String filePrefix, Properties properties) {
         if (filePrefix == null) {
@@ -152,6 +175,7 @@ abstract class TileOverride {
         } else if (method.equals("repeat") || method.equals("pattern")) {
             override = new Repeat(filePrefix, properties);
         } else {
+            logger.severe("%s.properties: unknown method \"%s\"", filePrefix, method);
         }
 
         if (override == null || override.disabled) {
@@ -181,13 +205,28 @@ abstract class TileOverride {
         tileIDs = new int[]{tileID};
         faces = -1;
         metadata = -1;
-        connectByTile = true;
+        connectType = CONNECT_BY_MATERIAL;
         tileMap = null;
     }
 
     private TileOverride(String filePrefix, Properties properties) {
         this.filePrefix = filePrefix;
         textureName = properties.getProperty("source", filePrefix + ".png");
+
+        int pass = 0;
+        try {
+            pass = Integer.parseInt(properties.getProperty("renderPass", "-1"));
+        } catch (NumberFormatException e) {
+        }
+        renderPass = pass;
+        if (forceMipmapType != null) {
+            try {
+                forceMipmapType.invoke(null, textureName, renderPass > 2 ? 2 : 1);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+
         texture = CTMUtils.getTexture(textureName);
         if (texture < 0) {
             if (properties.contains("source")) {
@@ -196,13 +235,6 @@ abstract class TileOverride {
                 disabled = true;
             }
         }
-
-        int pass = 0;
-        try {
-            pass = Integer.parseInt(properties.getProperty("renderPass", "-1"));
-        } catch (NumberFormatException e) {
-        }
-        renderPass = pass;
 
         blockIDs = getIDList(properties, "blockIDs", "block", Block.blocksList.length - 1);
         tileIDs = getIDList(properties, "tileIDs", "terrain", CTMUtils.NUM_TILES - 1);
@@ -238,11 +270,18 @@ abstract class TileOverride {
         }
         metadata = meta;
 
-        String connectType = properties.getProperty("connect", "").trim().toLowerCase();
-        if ("".equals(connectType)) {
-            connectByTile = tileIDs.length > 0;
+        String connectType1 = properties.getProperty("connect", "").trim().toLowerCase();
+        if (connectType1.equals("")) {
+            connectType = tileIDs.length > 0 ? CONNECT_BY_TILE : CONNECT_BY_BLOCK;
+        } else if (connectType1.equals("block")) {
+            connectType = CONNECT_BY_BLOCK;
+        } else if (connectType1.equals("tile")) {
+            connectType = CONNECT_BY_TILE;
+        } else if (connectType1.equals("material")) {
+            connectType = CONNECT_BY_MATERIAL;
         } else {
-            connectByTile = connectType.equals("tile");
+            error("invalid connect type %s", connectType1);
+            connectType = CONNECT_BY_BLOCK;
         }
 
         String tileList = properties.getProperty("tiles", "");
@@ -298,10 +337,14 @@ abstract class TileOverride {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s[%s]", getMethod(), textureName);
+    }
+
     final void error(String format, Object... params) {
-        if (filePrefix == null || filePrefix.equals("/ctm")) {
-            //MCPatcherUtils.error(format, params);
-        } else {
+        if (filePrefix != null && !filePrefix.equals("/ctm")) {
+            logger.severe(filePrefix + ".properties: " + format, params);
         }
         disabled = true;
     }
@@ -317,10 +360,19 @@ abstract class TileOverride {
             return false;
         } else if (metamask != -1 && (blockAccess.getBlockMetadata(i, j, k) & ~metamask) != (meta & ~metamask)) {
             return false;
-        } else if (connectByTile) {
-            return neighbor.getBlockTexture(blockAccess, i, j, k, face) == tileNum;
-        } else {
-            return neighborID == block.blockID;
+        }
+        switch (connectType) {
+            case CONNECT_BY_BLOCK:
+                return neighborID == block.blockID;
+
+            case CONNECT_BY_TILE:
+                return neighbor.getBlockTexture(blockAccess, i, j, k, face) == tileNum;
+
+            case CONNECT_BY_MATERIAL:
+                return block.blockMaterial == neighbor.blockMaterial;
+
+            default:
+                return false;
         }
     }
 
@@ -358,12 +410,14 @@ abstract class TileOverride {
         reorient = null;
         metamask = -1;
         rotateUV = 0;
+        rotateTop = false;
         if (block.blockID == CTMUtils.BLOCK_ID_LOG) {
             metamask = ~0xc;
             int orientation = blockAccess.getBlockMetadata(i, j, k) & 0xc;
             if (orientation == 4) { // east/west cut
                 reorient = ROTATE_UV_MAP[0];
                 rotateUV = ROTATE_UV_MAP[0][face + 6];
+                rotateTop = true;
             } else if (orientation == 8) { // north/south cut
                 reorient = ROTATE_UV_MAP[1];
                 rotateUV = ROTATE_UV_MAP[1][face + 6];
@@ -638,8 +692,7 @@ abstract class TileOverride {
         private static final long ADDEND = 0xbL;
 
         private final int symmetry;
-        private final int[] weight;
-        private final int sum;
+        private final WeightedIndex chooser;
 
         private Random1(String filePrefix, Properties properties) {
             super(filePrefix, properties);
@@ -653,29 +706,9 @@ abstract class TileOverride {
                 symmetry = 1;
             }
 
-            boolean useWeight = false;
-            int sum1 = 0;
-            int[] wt = null;
-            if (tileMap != null) {
-                wt = new int[tileMap.length];
-                String[] list = properties.getProperty("weights", "").split("\\s+");
-                for (int i = 0; i < tileMap.length; i++) {
-                    if (i < list.length && list[i].matches("^\\d+$")) {
-                        wt[i] = Math.max(Integer.parseInt(list[i]), 0);
-                    } else {
-                        wt[i] = 1;
-                    }
-                    if (i > 0 && wt[i] != wt[0]) {
-                        useWeight = true;
-                    }
-                    sum1 += wt[i];
-                }
-            }
-            sum = sum1;
-            if (useWeight && sum > 0) {
-                weight = wt;
-            } else {
-                weight = null;
+            chooser = WeightedIndex.create(tileMap.length, properties.getProperty("weights", ""));
+            if (chooser == null) {
+                error("invalid weights");
             }
         }
 
@@ -695,16 +728,7 @@ abstract class TileOverride {
             face = reorient(face) / symmetry;
             long n = P1 * i * (i + ADDEND) + P2 * j * (j + ADDEND) + P3 * k * (k + ADDEND) + P4 * face * (face + ADDEND);
             n = MULTIPLIER * (n + i + j + k + face) + ADDEND;
-            int index = (int) ((n >> 32) ^ n) & 0x7fffffff;
-
-            if (weight == null) {
-                index %= tileMap.length;
-            } else {
-                int m = index % sum;
-                for (index = 0; index < weight.length - 1 && m >= weight[index]; index++) {
-                    m -= weight[index];
-                }
-            }
+            int index = chooser.choose(n);
             return tileMap[index];
         }
     }
@@ -757,14 +781,19 @@ abstract class TileOverride {
             if (face < 0) {
                 face = 0;
             }
-            face = reorient(face) & symmetry;
+            face &= symmetry;
             int x;
             int y;
             switch (face) {
                 case TOP_FACE:
                 case BOTTOM_FACE:
-                    x = i;
-                    y = k;
+                    if (rotateTop) {
+                        x = k;
+                        y = i;
+                    } else {
+                        x = i;
+                        y = k;
+                    }
                     break;
 
                 case NORTH_FACE:

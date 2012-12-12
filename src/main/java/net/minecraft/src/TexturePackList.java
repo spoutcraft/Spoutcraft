@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.MCPatcherUtils; // Spout HD
-import com.pclewis.mcpatcher.TexturePackAPI; // Spout HD
-import com.pclewis.mcpatcher.mod.TextureUtils; // Spout HD
+import com.pclewis.mcpatcher.TexturePackAPI;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +37,7 @@ public class TexturePackList {
 	private Map texturePackCache = new HashMap();
 
 	/** The TexturePack that will be used. */
-	public ITexturePack selectedTexturePack; // Spout private -> public 
+	private ITexturePack selectedTexturePack;
 
 	/** True if a texture pack is downloading in the background. */
 	private boolean isDownloading;
@@ -55,7 +53,7 @@ public class TexturePackList {
 	/**
 	 * Create the "texturepacks" and "texturepacks-mp-cache" directories if they don't already exist.
 	 */
-	public void createTexturePackDirs() { // Spout private -> public
+	private void createTexturePackDirs() {
 		if (!this.texturePackDir.isDirectory()) {
 			this.texturePackDir.delete();
 			this.texturePackDir.mkdirs();
@@ -78,12 +76,7 @@ public class TexturePackList {
 			this.selectedTexturePack = par1ITexturePack;
 			this.mc.gameSettings.skin = par1ITexturePack.getTexturePackFileName();
 			this.mc.gameSettings.saveOptions();
-			// Spout HD
-			TextureUtils.setTileSize();
-			Minecraft var10000 = MCPatcherUtils.getMinecraft();
-			var10000.renderEngine.setTileSize(var10000);
-			TextureUtils.setFontRenderer();
-			// Spout HD
+			TexturePackAPI.ChangeHandler.checkForTexturePackChange();
 			return true;
 		}
 	}
@@ -170,6 +163,7 @@ public class TexturePackList {
 		}
 
 		this.availableTexturePacks = var1;
+		TexturePackAPI.ChangeHandler.checkForTexturePackChange();
 	}
 
 	/**
@@ -192,10 +186,6 @@ public class TexturePackList {
 	 */
 	public List availableTexturePacks() {
 		return Collections.unmodifiableList(this.availableTexturePacks);
-	}
-
-	public ITexturePack getSelectedTexturePack() {
-		return this.selectedTexturePack;
 	}
 
 	public boolean func_77300_f() {
@@ -238,17 +228,12 @@ public class TexturePackList {
 	static Minecraft getMinecraft(TexturePackList par0TexturePackList) {
 		return par0TexturePackList.mc;
 	}
-	// Spout HD Start
-	public TexturePackImplementation getSelectedTexturePackImplementation() {
-		return (TexturePackImplementation)this.selectedTexturePack;
-	}
-
-	public boolean a(TexturePackImplementation var1) {
-		return this.setTexturePack(var1);
-	}
 
 	public TexturePackImplementation getDefaultTexturePack() {
 		return (TexturePackImplementation)defaultTexturePack;
 	}
-	// Spout HD End
+
+	public TexturePackImplementation getSelectedTexturePack() {
+		return (TexturePackImplementation)this.selectedTexturePack;
+	}
 }

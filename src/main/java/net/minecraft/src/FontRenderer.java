@@ -1,8 +1,8 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.TexturePackAPI;
 import com.pclewis.mcpatcher.mod.Colorizer;
 import com.pclewis.mcpatcher.mod.FontUtils;
-import com.pclewis.mcpatcher.mod.TextureUtils;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,11 +11,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import javax.imageio.ImageIO;
-import java.util.regex.Pattern;
 import org.lwjgl.opengl.GL11;
 
-// Spout rewritten - not even going to try to figure out where the changes are...
 public class FontRenderer {
 
 	/** Array of width of all the characters in default.png */
@@ -23,7 +20,7 @@ public class FontRenderer {
 	public int fontTextureName = 0;
 
 	/** the height in pixels of default text */
-	public int FONT_HEIGHT = 8; // Spout smaller text
+	public int FONT_HEIGHT = 9;
 	public Random fontRandom = new Random();
 
 	/**
@@ -34,7 +31,7 @@ public class FontRenderer {
 	/**
 	 * Array of GL texture ids for loaded glyph_XX.png images. Indexed by Unicode block (group of 256 chars).
 	 */
-	private int[] glyphTextureName = new int[256]; // Spout removed final
+	private int[] glyphTextureName = new int[256]; //TODO Spout - Removed final
 
 	/**
 	 * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of the same colors for drop
@@ -48,7 +45,7 @@ public class FontRenderer {
 	private int boundTextureName;
 
 	/** The RenderEngine used to load and setup glyph textures. */
-	private RenderEngine renderEngine; // Spout final removed
+	private RenderEngine renderEngine; //TODO Spout - Removed final
 
 	/** Current X coordinate at which to draw the next character. */
 	private float posX;
@@ -59,13 +56,12 @@ public class FontRenderer {
 	/**
 	 * If true, strings should be rendered with Unicode fonts instead of the default.png font
 	 */
-	public boolean unicodeFlag; // Spout private -> public
+	public boolean unicodeFlag;
 
 	/**
 	 * If true, the Unicode Bidirectional Algorithm should be run before rendering any string.
 	 */
 	private boolean bidiFlag;
-	public float[] charWidthf; // Spout
 
 	/** Used to specify new red value for the current color. */
 	private float red;
@@ -100,14 +96,7 @@ public class FontRenderer {
 	 * Set if the "m" style (strikethrough) is active in currently rendering string
 	 */
 	private boolean strikethroughStyle = false;
-
-	//begin Spout AlphaText
-	private float boldOffset;	//Meow, the stroke width/offset used for rendering bold text.
-	private int defaultColor;	//default/base RGB for string
-	private int defaultAlpha;	//default/base alpha for string
-	private int currentColor;	//current RGB for string
-	private int currentAlpha;	//current alpha for string
-	//end spout AlphaText
+	public float[] charWidthf;
 
 	FontRenderer() {
 		this.renderEngine = null;
@@ -116,12 +105,10 @@ public class FontRenderer {
 	public FontRenderer(GameSettings par1GameSettings, String par2Str, RenderEngine par3RenderEngine, boolean par4) {
 		this.renderEngine = par3RenderEngine;
 		this.unicodeFlag = par4;
-		this.boldOffset = par4?0.5F:1F; // Spout
-
 		BufferedImage var5;
 
 		try {
-			var5 = TextureUtils.getResourceAsBufferedImage((Object)RenderEngine.class, par2Str); // Spout HD
+			var5 = TexturePackAPI.getImage(RenderEngine.class, par2Str);
 			InputStream var6 = RenderEngine.class.getResourceAsStream("/font/glyph_sizes.bin");
 			var6.read(this.glyphWidth);
 		} catch (IOException var17) {
@@ -132,7 +119,7 @@ public class FontRenderer {
 		int var7 = var5.getHeight();
 		int[] var8 = new int[var18 * var7];
 		var5.getRGB(0, 0, var18, var7, var8, 0, var18);
-		this.charWidthf = FontUtils.computeCharWidths(par2Str, var5, var8, this.charWidth);
+		this.charWidthf = FontUtils.computeCharWidths(this, par2Str, var5, var8, this.charWidth);
 		this.fontTextureName = par3RenderEngine.allocateAndSetupTexture(var5);
 
 		for (int var9 = 0; var9 < 32; ++var9) {
@@ -140,6 +127,7 @@ public class FontRenderer {
 			int var11 = (var9 >> 2 & 1) * 170 + var10;
 			int var12 = (var9 >> 1 & 1) * 170 + var10;
 			int var13 = (var9 >> 0 & 1) * 170 + var10;
+
 			if (var9 == 6) {
 				var11 += 85;
 			}
@@ -166,51 +154,35 @@ public class FontRenderer {
 	/**
 	 * Pick how to render a single character and return the width used.
 	 */
-	// begin Spout AlphaText
-	private float renderCharAtPos(int ki, char ch, boolean italic, boolean bold) {
-		if (ch==' ') {
-			return this.charWidthf[32];
-		} else if (ki > 0 && !this.unicodeFlag) {
-			if(bold) {
-				this.posX+=boldOffset;
-				this.renderDefaultChar(ki + 32, italic, false);
-				this.posX-=boldOffset;
-			}
-			return (this.renderDefaultChar(ki + 32, italic, bold) + (bold?boldOffset:0F));
-		}
-		if (bold) {
-			this.posX+=boldOffset;
-			this.renderUnicodeChar(ch, italic);
-			this.posX-=boldOffset;
-		}
-		return (this.renderUnicodeChar(ch, italic) + (bold?boldOffset:0F));
+	private float renderCharAtPos(int par1, char par2, boolean par3) {
+		return par2 == 32 ? this.charWidthf[32] : (par1 > 0 && !this.unicodeFlag ? this.renderDefaultChar(par1 + 32, par3) : this.renderUnicodeChar(par2, par3));
 	}
-	// end Spout AlphaText
 
 	/**
 	 * Render a single character with the default.png font at current (posX,posY) location...
 	 */
-	// begin Spout AlphaText
-	private float renderDefaultChar(int k, boolean italic, boolean bold) {
-		float Xk = (float)(k % 16) / 16F;
-		float Yk = (float)(k / 16) / 16F;
-		float Xi = italic ? 1.0F : 0.0F;
-		float Xb = bold ? 0.5F : 0.0F;
+	private float renderDefaultChar(int par1, boolean par2) {
+		float var3 = (float)(par1 % 16 * 8);
+		float var4 = (float)(par1 / 16 * 8);
+		float var5 = par2 ? 1.0F : 0.0F;
+
 		if (this.boundTextureName != this.fontTextureName) {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.fontTextureName);
 			this.boundTextureName = this.fontTextureName;
 		}
 
-		float Xw = this.charWidthf[k] + 0.01F; //offset inverse of previous value, unknown cause.
-		Tessellator tessellator = Tessellator.instance; //tessellator allocates buffers for GL11, etc.
-		tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
-		tessellator.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);
-		tessellator.addVertexWithUV(this.posX           + Xi,   this.posY,         0.0D, Xk,               Yk               );
-		tessellator.addVertexWithUV(this.posX           - Xi,   this.posY + 8.00F, 0.0D, Xk,               Yk + 0.062421873F); //(7.99F / 128F)
-		tessellator.addVertexWithUV(this.posX + Xw + Xb + Xi,   this.posY,         0.0D, Xk + (Xw / 128F), Yk               );
-		tessellator.addVertexWithUV((this.posX + Xw + Xb) - Xi, this.posY + 8.00F, 0.0D, Xk + (Xw / 128F), Yk + 0.062421873F);
-		tessellator.draw();
-		return this.charWidthf[k];
+		float var6 = (float)this.charWidth[par1] - 0.01F;
+		GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
+		GL11.glTexCoord2f(var3 / 128.0F, var4 / 128.0F);
+		GL11.glVertex3f(this.posX + var5, this.posY, 0.0F);
+		GL11.glTexCoord2f(var3 / 128.0F, (var4 + 7.99F) / 128.0F);
+		GL11.glVertex3f(this.posX - var5, this.posY + 7.99F, 0.0F);
+		GL11.glTexCoord2f((var3 + var6) / 128.0F, var4 / 128.0F);
+		GL11.glVertex3f(this.posX + var6 + var5, this.posY, 0.0F);
+		GL11.glTexCoord2f((var3 + var6) / 128.0F, (var4 + 7.99F) / 128.0F);
+		GL11.glVertex3f(this.posX + var6 - var5, this.posY + 7.99F, 0.0F);
+		GL11.glEnd();
+		return this.charWidthf[par1] * (float)this.FONT_HEIGHT / 8.0F;
 	}
 
 	/**
@@ -221,8 +193,8 @@ public class FontRenderer {
 		BufferedImage var2;
 
 		try {
-			var2 = TextureUtils.getResourceAsBufferedImage((Object)RenderEngine.class, var3);
-		} catch (IOException var5) {
+			var2 = TexturePackAPI.getImage(RenderEngine.class, var3);
+		} catch (Exception var5) {
 			throw new RuntimeException(var5);
 		}
 
@@ -230,53 +202,64 @@ public class FontRenderer {
 		this.boundTextureName = this.glyphTextureName[par1];
 	}
 
-	//begin Spout AlphaText
-	private float renderUnicodeChar(char c, boolean italic) {
-		if (this.glyphWidth[c] == 0) {
-			return 0F;
+	/**
+	 * Render a single Unicode character at current (posX,posY) location using one of the /font/glyph_XX.png files...
+	 */
+	private float renderUnicodeChar(char par1, boolean par2) {
+		if (this.glyphWidth[par1] == 0) {
+			return 0.0F;
+		} else {
+			int var3 = par1 / 256;
+
+			if (this.glyphTextureName[var3] == 0) {
+				this.loadGlyphTexture(var3);
+			}
+
+			if (this.boundTextureName != this.glyphTextureName[var3]) {
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.glyphTextureName[var3]);
+				this.boundTextureName = this.glyphTextureName[var3];
+			}
+
+			int var4 = this.glyphWidth[par1] >>> 4;
+			int var5 = this.glyphWidth[par1] & 15;
+			float var6 = (float)var4;
+			float var7 = (float)(var5 + 1);
+			float var8 = (float)(par1 % 16 * 16) + var6;
+			float var9 = (float)((par1 & 255) / 16 * 16);
+			float var10 = var7 - var6 - 0.02F;
+			float var11 = par2 ? 1.0F : 0.0F;
+			GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
+			GL11.glTexCoord2f(var8 / 256.0F, var9 / 256.0F);
+			GL11.glVertex3f(this.posX + var11, this.posY, 0.0F);
+			GL11.glTexCoord2f(var8 / 256.0F, (var9 + 15.98F) / 256.0F);
+			GL11.glVertex3f(this.posX - var11, this.posY + 7.99F, 0.0F);
+			GL11.glTexCoord2f((var8 + var10) / 256.0F, var9 / 256.0F);
+			GL11.glVertex3f(this.posX + var10 / 2.0F + var11, this.posY, 0.0F);
+			GL11.glTexCoord2f((var8 + var10) / 256.0F, (var9 + 15.98F) / 256.0F);
+			GL11.glVertex3f(this.posX + var10 / 2.0F - var11, this.posY + 7.99F, 0.0F);
+			GL11.glEnd();
+			return (var7 - var6) / 2.0F + 1.0F;
 		}
-		int page = c / 256;
-		if (this.glyphTextureName[page] == 0) {
-			this.loadGlyphTexture(page);
-		}
-		if (this.boundTextureName != this.glyphTextureName[page]) {
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.glyphTextureName[page]);
-			this.boundTextureName = this.glyphTextureName[page];
-		}
-		int j = this.glyphWidth[c] >>> 4;
-		int k = this.glyphWidth[c] & 0xf;
-		float X1 = (float)((k + 1) - j) / 2F;
-		float Xc = ((float)((c % 16) * 16) + j) / 256F;
-		float Yc = (float)((c & 0xff) / 16) / 16F;
-		float Xw = X1 + 0.01F; //inverse of previous value, unknown cause for this to flip.
-		float Xi = italic ? 1F : 0F;
-		Tessellator tessellator = Tessellator.instance; //tessellator allocates buffers for GL11, etc.
-		tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
-		tessellator.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);
-		tessellator.addVertexWithUV(this.posX      + Xi, this.posY,         0D, Xc,               Yc);
-		tessellator.addVertexWithUV(this.posX      - Xi, this.posY + 7.99F, 0D, Xc,               Yc + 0.062421873F);
-		tessellator.addVertexWithUV(this.posX + Xw + Xi, this.posY,         0D, Xc + (Xw / 128F), Yc);
-		tessellator.addVertexWithUV(this.posX + Xw - Xi, this.posY + 7.99F, 0D, Xc + (Xw / 128F), Yc + 0.062421873F);
-		tessellator.draw();
-		return X1 + 1F;
 	}
-	// end Spout AlphaText
 
 	/**
 	 * Draws the specified string with a shadow.
 	 */
 	public int drawStringWithShadow(String par1Str, int par2, int par3, int par4) {
-		return this.func_85187_a(par1Str, par2, par3, par4, true);
+		return this.drawString(par1Str, par2, par3, par4, true);
 	}
 
 	/**
 	 * Draws the specified string.
 	 */
 	public int drawString(String par1Str, int par2, int par3, int par4) {
-		return this.func_85187_a(par1Str, par2, par3, par4, false);
+		return this.drawString(par1Str, par2, par3, par4, false);
 	}
 
-	public int func_85187_a(String par1Str, int par2, int par3, int par4, boolean par5) {
+	/**
+	 * Draws the specified string. Args: string, x, y, color, dropShadow
+	 */
+	public int drawString(String par1Str, int par2, int par3, int par4, boolean par5) {
 		this.resetStyles();
 
 		if (this.bidiFlag) {
@@ -396,10 +379,11 @@ public class FontRenderer {
 
 					if (par2) {
 						var5 += 16;
-						currentAlpha = defaultAlpha * 10 / 7; // Spout AlphaText - transparent shadows improve readability for black text.
 					}
 
-					currentColor = Colorizer.colorizeText(this.colorCode[var5], var5); // Spout AlphaText - sets current Colour (but will discard alpha) from Colorizer
+					var6 = Colorizer.colorizeText(this.colorCode[var5], var5);
+					this.textColor = var6;
+					GL11.glColor4f((float)(var6 >> 16) / 255.0F, (float)(var6 >> 8 & 255) / 255.0F, (float)(var6 & 255) / 255.0F, this.alpha);
 				} else if (var5 == 16) {
 					this.randomStyle = true;
 				} else if (var5 == 17) {
@@ -416,9 +400,7 @@ public class FontRenderer {
 					this.strikethroughStyle = false;
 					this.underlineStyle = false;
 					this.italicStyle = false;
-					//GL11.glColor4f(this.red, this.blue, this.green, this.alpha); // Spout
-					currentColor=defaultColor; // Spout AlphaText - returns to default RGBA values
-					currentAlpha=defaultAlpha;
+					GL11.glColor4f(this.red, this.blue, this.green, this.alpha);
 				}
 
 				++var3;
@@ -433,16 +415,14 @@ public class FontRenderer {
 					var5 = var6;
 				}
 
-				// Spout AlphaText
-				float var9 = this.renderCharAtPos(var5, var4, this.italicStyle, this.boldStyle); 
+				float var9 = this.renderCharAtPos(var5, var4, this.italicStyle);
 
-				/*if (this.boldStyle) {
+				if (this.boldStyle) {
 					++this.posX;
 					this.renderCharAtPos(var5, var4, this.italicStyle);
 					--this.posX;
 					++var9;
-				}*/
-				//Spout end
+				}
 
 				Tessellator var7;
 
@@ -450,7 +430,6 @@ public class FontRenderer {
 					var7 = Tessellator.instance;
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					var7.startDrawingQuads();
-					var7.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);  // Spout AlphaText - uses tessellator to set colour now.
 					var7.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
 					var7.addVertex((double)(this.posX + var9), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
 					var7.addVertex((double)(this.posX + var9), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
@@ -463,8 +442,7 @@ public class FontRenderer {
 					var7 = Tessellator.instance;
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					var7.startDrawingQuads();
-					var7.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha); // Spout AlphaText - uses tessellator to set colour now.
-					int var8 = 0; // this.underlineStyle ? -1 : 0; // Spout AlphaText - I do not see this as necessary, underlineStyle should always be true at this point.
+					int var8 = this.underlineStyle ? -1 : 0;
 					var7.addVertex((double)(this.posX + (float)var8), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
 					var7.addVertex((double)(this.posX + var9), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
 					var7.addVertex((double)(this.posX + var9), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D);
@@ -499,6 +477,7 @@ public class FontRenderer {
 			return 0;
 		} else {
 			this.boundTextureName = 0;
+			par4 = Colorizer.colorizeText(par4);
 
 			if ((par4 & -67108864) == 0) {
 				par4 |= -16777216;
@@ -507,91 +486,55 @@ public class FontRenderer {
 			if (par5) {
 				par4 = (par4 & 16579836) >> 2 | par4 & -16777216;
 			}
-			//begin Spout AlphaText
-			defaultColor = par4;	// Spout AlphaText - Stores default RGBA values for this string
-			defaultAlpha = (par4 >> 24 & 0xff);
-			currentColor = par4;	// Spout AlphaText - Stores current RGBA for this string.
-			currentAlpha = defaultAlpha;
-			//end Spout AlphaText
+
+			this.red = (float)(par4 >> 16 & 255) / 255.0F;
+			this.blue = (float)(par4 >> 8 & 255) / 255.0F;
+			this.green = (float)(par4 & 255) / 255.0F;
+			this.alpha = (float)(par4 >> 24 & 255) / 255.0F;
+			GL11.glColor4f(this.red, this.blue, this.green, this.alpha);
 			this.posX = (float)par2;
 			this.posY = (float)par3;
 			this.renderStringAtPos(par1Str, par5);
-			GL11.glColor4f((float)(currentColor>>16 & 0xff)/255.0F, (float)(currentColor>>8 & 0xff)/255.0F, (float)(currentColor & 0xff)/255.0F, (float)currentAlpha/255.0F);		// Spout AlphaText - some mods rely on fontRenderer to make this specific call to set the drawing colour to that last used in a string.
 			return (int)this.posX;
 		}
 	}
-
-	// begin Spout AlphaText
-	final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)\u00A7[0-F]");
 
 	/**
 	 * Returns the width of this string. Equivalent of FontMetrics.stringWidth(String s).
 	 */
 	public int getStringWidth(String par1Str) {
-		if (par1Str == null) {
-			return 0;
-		}
-		par1Str = par1Str.replaceAll("(?i)\u00A7[0-F]", ""); //strip ordinary colors
-		float widthStr = 0F;
-		boolean bold = false;
-		for (int i = 0; i < par1Str.length(); i++) {
-			char ch = par1Str.charAt(i);
-			float widthCh = getCharWidthFloat(ch);
-			if (widthCh < 0F && i < par1Str.length() - 1) {
-				char chSel = par1Str.charAt(++i);
-				if (chSel == 'l' || chSel == 'L') {
-					bold = true;
-				}
-				else if (chSel == 'r' || chSel == 'R' || isFormatColor(chSel)) {
-					bold = false;
-				}
-				widthCh = getCharWidthFloat(chSel);
-			}
-			widthStr += widthCh;
-			if (bold && ch!=' ') {
-				widthStr+=boldOffset;
-			}
-		}
-		return Math.round(widthStr);
+		return (int)FontUtils.getStringWidthf(this, par1Str);
 	}
-	// end Spout AlphaText
 
 	/**
 	 * Returns the width of this character as rendered.
 	 */
-	// begin Spout AlphaText.
 	public int getCharWidth(char par1) {
 		if (par1 == 167) {
 			return -1;
-		}
-		return (int)getCharWidthFloat(par1);
-	}
-	// end Spout Text Alpha
-
-	// begin Spout AlphaText - This is the true calculation for char widths.
-	public float getCharWidthFloat(char ch){
-		if (ch < 30) {
-			return 0F;
-		}
-		if (ch == 167) {
-			return -1F;
-		} else if (ch == 32) {  // Spout AlphaText - returns the width of spaces AS RENDERED.
-			return charWidthf[32];
+		} else if (par1 == 32) {
+			return 4;
 		} else {
-			int chCh = ChatAllowedCharacters.allowedCharacters.indexOf(ch);
-			if (chCh >= 0 && !this.unicodeFlag) {
-				return this.charWidthf[chCh + 32];
-			} else if (this.glyphWidth[ch] != 0) {
-				int j = this.glyphWidth[ch] >>> 4;
-				int k = this.glyphWidth[ch] & 0xf;
-				float X1 = (float)((k + 1) - j) / 2F;
-				return X1 + 1F; // Spout AlphaText - Prevents precision error from appearing
+			int var2 = ChatAllowedCharacters.allowedCharacters.indexOf(par1);
+
+			if (var2 >= 0 && !this.unicodeFlag) {
+				return this.charWidth[var2 + 32];
+			} else if (this.glyphWidth[par1] != 0) {
+				int var3 = this.glyphWidth[par1] >>> 4;
+				int var4 = this.glyphWidth[par1] & 15;
+
+				if (var4 > 7) {
+					var4 = 15;
+					var3 = 0;
+				}
+
+				++var4;
+				return (var4 - var3) / 2 + 1;
 			} else {
-				return 0F;
+				return 0;
 			}
 		}
 	}
-	// end Spout Text Alpha
 
 	/**
 	 * Trims a string to fit a specified Width.
@@ -603,53 +546,51 @@ public class FontRenderer {
 	/**
 	 * Trims a string to a specified width, and will reverse it if par3 is set.
 	 */
-	// begin Spout AlphaText - TrimStringToWidth, returns a trimmed string to the specified length. Also handles RTL conversion.
-	public String trimStringToWidth(String par1Str, int width2, boolean RTL) {
-		StringBuilder str0 = new StringBuilder();
-		float widthWrp = (float)width2;
-		float widthStr = 0;
-		int frm = RTL ? par1Str.length() - 1:0;
-		int stp = RTL ? -1 : 1;
-		boolean sel = false;
-		boolean bold = false;
+	public String trimStringToWidth(String par1Str, int par2, boolean par3) {
+		StringBuilder var4 = new StringBuilder();
+		int var5 = 0;
+		int var6 = par3 ? par1Str.length() - 1 : 0;
+		int var7 = par3 ? -1 : 1;
+		boolean var8 = false;
+		boolean var9 = false;
 
-		for (int ii = frm; ii >= 0 && ii < par1Str.length() && widthStr < widthWrp; ii += stp) {
-			char ch = par1Str.charAt(ii);
-			float widthCh = this.getCharWidthFloat(ch);
+		for (int var10 = var6; var10 >= 0 && var10 < par1Str.length() && var5 < par2; var10 += var7) {
+			char var11 = par1Str.charAt(var10);
+			int var12 = this.getCharWidth(var11);
 
-			if (sel) {
-				sel = false;
+			if (var8) {
+				var8 = false;
 
-				if (ch != 108 && ch != 76) {
-					if (ch == 114 || ch == 82 || isFormatColor(ch)) {
-						bold = false;
+				if (var11 != 108 && var11 != 76) {
+					if (var11 == 114 || var11 == 82) {
+						var9 = false;
 					}
 				} else {
-					bold = true;
+					var9 = true;
 				}
-			} else if (widthCh < 0) {
-				sel = true;
+			} else if (var12 < 0) {
+				var8 = true;
 			} else {
-				widthStr += widthCh;
+				var5 += var12;
 
-				if (bold && ch!=' ') {
-					widthStr+=boldOffset;
+				if (var9) {
+					++var5;
 				}
 			}
 
-			if (widthStr > widthWrp) {
+			if (var5 > par2) {
 				break;
 			}
 
-			if (RTL) {
-				str0.insert(0, ch);
+			if (par3) {
+				var4.insert(0, var11);
 			} else {
-				str0.append(ch);
+				var4.append(var11);
 			}
 		}
-		return str0.toString();
+
+		return var4.toString();
 	}
-	//end Spout AlphaText
 
 	/**
 	 * Remove all newline characters from the end of the string
@@ -712,71 +653,93 @@ public class FontRenderer {
 		this.bidiFlag = par1;
 	}
 
-	public List func_50108_c(String par1Str, int par2) {
-		return Arrays.asList(this.func_50113_d(par1Str, par2).split("\n"));
+	/**
+	 * Breaks a string into a list of pieces that will fit a specified width.
+	 */
+	public List listFormattedStringToWidth(String par1Str, int par2) {
+		return Arrays.asList(this.wrapFormattedStringToWidth(par1Str, par2).split("\n"));
 	}
 
+	/**
+	 * Inserts newline and formatting into a string to wrap it within the specified width.
+	 */
+	String wrapFormattedStringToWidth(String par1Str, int par2) {
+		int var3 = this.sizeStringToWidth(par1Str, par2);
 
-	String func_50113_d(String par1Str, int par2) {
-		return this.wrapStringToWidth(par1Str,par2); // Spout AlphaText
+		if (par1Str.length() <= var3) {
+			return par1Str;
+		} else {
+			String var4 = par1Str.substring(0, var3);
+			char var5 = par1Str.charAt(var3);
+			boolean var6 = var5 == 32 || var5 == 10;
+			String var7 = getFormatFromString(var4) + par1Str.substring(var3 + (var6 ? 1 : 0));
+			return var4 + "\n" + this.wrapFormattedStringToWidth(var7, par2);
+		}
 	}
 
 	/**
 	 * Determines how many characters from the string will fit into the specified width.
 	 */
-	// Spout AlphaText - describes how many characters of a given input string will fit within the specified screen width.
-	private int sizeStringToWidth(String par1Str, int width2) {
-		float widthSz = (float)width2;
-		float widthCh = 0F;
-		int lenStr = par1Str.length();
-		int lenSp = -1;
-		boolean bold = false;
-		int ii = 0;
-		for (; ii < lenStr; ++ii) {
-			char ch = par1Str.charAt(ii);
-			switch(ch) {
-			case 32:
-				lenSp = ii;
+	private int sizeStringToWidth(String par1Str, int par2) {
+		int var3 = par1Str.length();
+		int var4 = 0;
+		int var5 = 0;
+		int var6 = -1;
+
+		for (boolean var7 = false; var5 < var3; ++var5) {
+			char var8 = par1Str.charAt(var5);
+
+			switch (var8) {
+				case 10:
+					--var5;
+					break;
+
 				case 167:
-					if (ii < lenStr - 1) {
-						++ii;
-						char chSel = par1Str.charAt(ii);
-						if (chSel != 108 && chSel != 76) {
-							if (chSel == 114 || chSel == 82 || isFormatColor(chSel)) {
-								bold = false;
+					if (var5 < var3 - 1) {
+						++var5;
+						char var9 = par1Str.charAt(var5);
+
+						if (var9 != 108 && var9 != 76) {
+							if (var9 == 114 || var9 == 82) {
+								var7 = false;
 							}
 						} else {
-							bold = true;
+							var7 = true;
 						}
 					}
+
 					break;
+
+				case 32:
+					var6 = var5;
+
 				default:
-					widthCh += this.getCharWidthFloat(ch);
-					if (bold && ch != ' ') {
-						widthCh+=boldOffset;
+					var4 += this.getCharWidth(var8);
+
+					if (var7) {
+						++var4;
 					}
 			}
 
-			if (ch == 10) {
-				++ii;
-				lenSp = ii;
+			if (var8 == 10) {
+				++var5;
+				var6 = var5;
 				break;
 			}
 
-			if (widthCh > widthSz) {
+			if (var4 > par2) {
 				break;
 			}
 		}
 
-		return ii != lenStr && lenSp != -1 && lenSp < ii?lenSp:ii;
+		return var5 != var3 && var6 != -1 && var6 < var5 ? var6 : var5;
 	}
-	//end Spout AlphaText
 
 	/**
 	 * Checks if the char code is a hexadecimal character, used to set colour.
 	 */
 	private static boolean isFormatColor(char par0) {
-		return par0 >= '0' && /*par0 <= '9' || par0 >= 'A' &&*/ par0 <= 'F' || par0 >= 'a' && par0 <= 'f'; // Spout AlphaText - Close enough
+		return par0 >= 48 && par0 <= 57 || par0 >= 97 && par0 <= 102 || par0 >= 65 && par0 <= 70;
 	}
 
 	/**
@@ -809,86 +772,13 @@ public class FontRenderer {
 		return var1;
 	}
 
-	//begin Spout AlphaText /** Meow, uses \n to split lines. */
-	public String wrapStringToWidth(String par1str, int width2) {
-		float maxWidth = width2;
-		float subWidth = 0;
-		int spaceIndex = -1;
-		StringBuilder selectRandom = new StringBuilder("");
-		char selectColor = 0;
-		char c;
-		boolean bold = false;
-		StringBuilder ArrStr = new StringBuilder("");
-		for (int i = 0; i < par1str.length(); i++) {
-			c = par1str.charAt(i);
-			if (c == '\247' && i + 1 < par1str.length()) {
-				i++;
-				c = Character.toUpperCase(par1str.charAt(i));
-				if ((c >= '0' && /*c <= '9') || (c >= 'A' &&*/ c <= 'F')){	//close enough.
-					selectColor = c;
-					selectRandom.setLength(0);
-					bold = false;
-				} else if (c == 'r'){
-					selectRandom.setLength(0);
-					selectColor = 0;
-					bold = false;
-				} else {
-					selectRandom.append("\u00a7" + c);
-					if (c == 'l') {
-						bold = true;
-					}
-				}
-				continue;
-			}
-			if (c == ' ') {
-				spaceIndex = i;
-			}
-			if (c =='\n') {
-				ArrStr.append(par1str.substring(0,i)+'\n');
-				par1str=par1str.substring(i+1);
-				if (par1str.length() > 0){
-					if (selectRandom.length()!=0){
-						par1str=selectRandom.toString() + par1str;
-					}
-					if (selectColor!=0){
-						par1str="\247" + selectColor + par1str;
-					}
-				}
-				i=0;
-				subWidth = 0;
-				spaceIndex = -1;
-				continue;
-			}
-			subWidth += getCharWidthFloat(c);
-			if (subWidth >= maxWidth) {
-				if (spaceIndex > 4 && c!=' ') {
-					i=spaceIndex;
-				} else if (bold) {
-					subWidth += boldOffset;
-				}
-				ArrStr.append(par1str.substring(0,i)+'\n');
-				par1str=par1str.substring(i+1);
-				if (par1str.length() > 0){
-					if (selectRandom.length()!=0){
-						par1str=selectRandom.toString() + par1str;
-					}
-					if (selectColor!=0){
-						par1str="\247" + selectColor + par1str;
-					}
-				}
-				i=0;
-				subWidth = 0;
-				spaceIndex = -1;
-			}
-		}
-		if (par1str.length()>0) {
-			ArrStr.append(par1str);
-		}
-		return ArrStr.toString();
+	/**
+	 * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should be run before rendering any string
+	 */
+	public boolean getBidiFlag() {
+		return this.bidiFlag;
 	}
-	//end Spout AlphaText
 
-	// Spout HD
 	public void initialize(GameSettings var1, String var2, RenderEngine var3) {
 		boolean var4 = false;
 		this.charWidth = new int[256];
@@ -898,17 +788,17 @@ public class FontRenderer {
 		this.glyphWidth = new byte[65536];
 		this.glyphTextureName = new int[256];
 		this.colorCode = new int[32];
-	/*	this.field_78303_s = false; Unknown merges due to AlphaText's mass renaming
-		this.field_78302_t = false;
-		this.field_78301_u = false;
-		this.field_78300_v = false;
-		this.field_78299_w = false;*/
+		this.randomStyle = false;
+		this.boldStyle = false;
+		this.italicStyle = false;
+		this.underlineStyle = false;
+		this.strikethroughStyle = false;
 		this.renderEngine = var3;
 		this.unicodeFlag = var4;
 		BufferedImage var5;
 
 		try {
-			var5 = TextureUtils.getResourceAsBufferedImage((Object)RenderEngine.class, var2);
+			var5 = TexturePackAPI.getImage(RenderEngine.class, var2);
 			InputStream var6 = RenderEngine.class.getResourceAsStream("/font/glyph_sizes.bin");
 			var6.read(this.glyphWidth);
 		} catch (IOException var17) {
@@ -919,7 +809,7 @@ public class FontRenderer {
 		int var7 = var5.getHeight();
 		int[] var8 = new int[var18 * var7];
 		var5.getRGB(0, 0, var18, var7, var8, 0, var18);
-		this.charWidthf = FontUtils.computeCharWidths(var2, var5, var8, this.charWidth);
+		this.charWidthf = FontUtils.computeCharWidths(this, var2, var5, var8, this.charWidth);
 		this.fontTextureName = var3.allocateAndSetupTexture(var5);
 
 		for (int var9 = 0; var9 < 32; ++var9) {
@@ -949,29 +839,5 @@ public class FontRenderer {
 
 			this.colorCode[var9] = (var11 & 255) << 16 | (var12 & 255) << 8 | var13 & 255;
 		}
-	}
-
-	/**
-	 * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should be run before rendering any string
-	 */
-	public boolean getBidiFlag() {
-		return this.bidiFlag;
-	}
-	// Spout HD
-	
-	String wrapFormattedStringToWidth(String par1Str, int par2) {
-		int var3 = this.sizeStringToWidth(par1Str, par2);
-		
-		if (par1Str.length() <= var3) {
-			return par1Str;
-		} else {
-			String var4 = par1Str.substring(0, var3);
-			String var5 = getFormatFromString(var4) + par1Str.substring(var3 + (par1Str.charAt(var3) == 32 ? 1 : 0));
-			return var4 + "\n" + this.wrapFormattedStringToWidth(var5, par2);
-		}
-	}
-	
-	public List listFormattedStringToWidth(String par1Str, int par2) {
-		return Arrays.asList(this.wrapFormattedStringToWidth(par1Str, par2).split("\n"));
 	}
 }

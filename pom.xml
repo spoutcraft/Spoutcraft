@@ -9,9 +9,9 @@
 	<version>1.4.5-SNAPSHOT</version>
 	<url>http://www.spout.org</url>
 	<inceptionYear>2011</inceptionYear>
-	<description>Spoutcraft is a modified version of the Minecraft client, which you can access through the the Spoutcraft Launcher, 
-	and when connecting to a server with SpoutPlugin, it allows you to unlock most of the features of SpoutPlugin, such as custom blocks, 
-	items, texture packs, etc. It also gives several speed improvements, a minimap, an overview map, custom shaders, etc.</description>
+	<description>Spoutcraft is a modified Minecraft client, which is accessible via the Spoutcraft Launcher, that boosts increased FPS, HD textures/fonts,
+	minimap, and an overview map. When connecting to a server with SpoutPlugin, custom blocks and items, custom guis, custom sounds, etc are
+	all available for use. Spoutcraft is a legacy project and will be replaced by the Spout client when finished.</description>
 
 	<!-- Build properties -->
 	<properties>

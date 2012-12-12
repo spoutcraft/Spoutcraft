@@ -1,5 +1,6 @@
 package com.pclewis.mcpatcher.mod;
 
+import com.pclewis.mcpatcher.MCLogger;
 import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.TexturePackAPI;
 import net.minecraft.src.Block;
@@ -7,7 +8,6 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.config.Configuration;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,15 +15,16 @@ import java.util.Arrays;
 import java.util.Properties;
 
 public class CTMUtils {
-	/*
-    private static final boolean enableGlass = true;
-    private static final boolean enableGlassPane = true;
-    private static final boolean enableBookshelf = true;
-    private static final boolean enableSandstone = true;
-    private static final boolean enableStandard = true;
-    private static final boolean enableNonStandard = true;
-    private static final boolean enableOutline = false;
-	*/
+    private static final MCLogger logger = MCLogger.getLogger(MCPatcherUtils.CONNECTED_TEXTURES, "CTM");
+
+    private static final boolean enableGlass = MCPatcherUtils.getBoolean(MCPatcherUtils.CONNECTED_TEXTURES, "glass", true);
+    private static final boolean enableGlassPane = MCPatcherUtils.getBoolean(MCPatcherUtils.CONNECTED_TEXTURES, "glassPane", true);
+    private static final boolean enableBookshelf = MCPatcherUtils.getBoolean(MCPatcherUtils.CONNECTED_TEXTURES, "bookshelf", true);
+    private static final boolean enableSandstone = MCPatcherUtils.getBoolean(MCPatcherUtils.CONNECTED_TEXTURES, "sandstone", true);
+    private static final boolean enableStandard = MCPatcherUtils.getBoolean(MCPatcherUtils.CONNECTED_TEXTURES, "standard", true);
+    private static final boolean enableNonStandard = MCPatcherUtils.getBoolean(MCPatcherUtils.CONNECTED_TEXTURES, "nonStandard", true);
+    private static final boolean enableOutline = MCPatcherUtils.getBoolean(MCPatcherUtils.CONNECTED_TEXTURES, "outline", false);
+
     static final int BLOCK_ID_LOG = 17;
     static final int BLOCK_ID_GLASS = 20;
     static final int BLOCK_ID_BED = 26;
@@ -63,7 +64,7 @@ public class CTMUtils {
                 Arrays.fill(blockOverrides, null);
                 Arrays.fill(tileOverrides, null);
 
-                if (Configuration.isConnectedTextures()) {
+                if (enableStandard || enableNonStandard) {
                     for (String s : TexturePackAPI.listResources("/ctm", ".properties")) {
                         registerOverride(TileOverride.create(s.replace(".properties", ""), null));
                     }
@@ -71,31 +72,41 @@ public class CTMUtils {
 
                 Properties properties = new Properties();
 
-                if (Configuration.isConnectedTextures()) {
+                if (enableGlass) {
                     properties.clear();
                     properties.setProperty("method", "glass");
                     properties.setProperty("connect", "block");
                     properties.setProperty("blockIDs", "" + BLOCK_ID_GLASS);
                     registerOverride(TileOverride.create("/ctm", properties));
+                }
 
+                if (enableGlassPane) {
                     properties.clear();
                     properties.setProperty("method", "glass");
                     properties.setProperty("connect", "block");
                     properties.setProperty("blockIDs", "" + BLOCK_ID_GLASS_PANE);
                     registerOverride(TileOverride.create("/ctm", properties));
-                    
+                }
+
+                if (enableBookshelf) {
                     properties.clear();
                     properties.setProperty("method", "bookshelf");
                     properties.setProperty("connect", "block");
                     properties.setProperty("blockIDs", "" + BLOCK_ID_BOOKSHELF);
                     registerOverride(TileOverride.create("/ctm", properties));
-                    
+                }
+
+                if (enableSandstone) {
                     properties.clear();
                     properties.setProperty("method", "sandstone");
                     properties.setProperty("connect", "tile");
                     properties.setProperty("tileIDs", "" + TILE_NUM_SANDSTONE_SIDE);
                     properties.setProperty("metadata", "0");
                     registerOverride(TileOverride.create("/ctm", properties));
+                }
+
+                if (enableOutline) {
+                    setupOutline();
                 }
 
                 RenderPassAPI.instance.clear();
@@ -131,7 +142,7 @@ public class CTMUtils {
 
     public static boolean setup(RenderBlocks renderBlocks, Block block, int i, int j, int k, int face, int origTexture) {
         IBlockAccess blockAccess = renderBlocks.blockAccess;
-        if (!check(blockAccess, block.blockID) || face < 0 || face > 5) {
+        if (!enableStandard || !check(blockAccess, block.blockID) || face < 0 || face > 5) {
             return false;
         } else if (getConnectedTexture(renderBlocks, blockAccess, block, origTexture, i, j, k, face)) {
             return true;
@@ -143,7 +154,7 @@ public class CTMUtils {
 
     public static boolean setup(RenderBlocks renderBlocks, Block block, int i, int j, int k, int origTexture) {
         IBlockAccess blockAccess = renderBlocks.blockAccess;
-        if (!check(blockAccess, block.blockID)) {
+        if (!enableNonStandard || !check(blockAccess, block.blockID)) {
             return false;
         } else if (getConnectedTexture(renderBlocks, blockAccess, block, origTexture, i, j, k, -1)) {
             return true;
@@ -203,12 +214,12 @@ public class CTMUtils {
 
     private static void registerOverride(TileOverride override) {
         if (override != null) {
-            registerOverride(override, override.blockIDs, blockOverrides);
-            registerOverride(override, override.tileIDs, tileOverrides);
+            registerOverride(override, override.blockIDs, blockOverrides, "block");
+            registerOverride(override, override.tileIDs, tileOverrides, "tile");
         }
     }
 
-    private static void registerOverride(TileOverride override, int[] ids, TileOverride[][] allOverrides) {
+    private static void registerOverride(TileOverride override, int[] ids, TileOverride[][] allOverrides, String type) {
         if (override == null || ids == null || allOverrides == null) {
             return;
         }
@@ -222,11 +233,11 @@ public class CTMUtils {
                 newList[oldList.length] = override;
                 allOverrides[index] = newList;
             }
+            logger.fine("using %s for %s %d", override.toString(), type, index);
         }
     }
 
-    @SuppressWarnings("unused")
-	private static void setupOutline() {
+    private static void setupOutline() {
         BufferedImage terrain = TexturePackAPI.getImage("/terrain.png");
         if (terrain == null) {
             return;

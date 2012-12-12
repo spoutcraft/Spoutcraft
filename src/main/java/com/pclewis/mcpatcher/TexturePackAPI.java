@@ -12,11 +12,14 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class TexturePackAPI {
+    private static final MCLogger logger = MCLogger.getLogger("Texture Pack");
+
     public static TexturePackAPI instance = new TexturePackAPI();
+    public static boolean loadFontFromTexturePack;
 
     private static final ArrayList<Field> textureMapFields = new ArrayList<Field>();
 
-    private static ITexturePack texturePack;
+    private static TexturePackImplementation texturePack;
 
     static {
         try {
@@ -31,11 +34,11 @@ public class TexturePackAPI {
         }
     }
 
-    public static ITexturePack getTexturePack() {
+    public static TexturePackImplementation getTexturePack() {
         return texturePack;
     }
 
-    static ITexturePack getCurrentTexturePack() {
+    static TexturePackImplementation getCurrentTexturePack() {
         Minecraft minecraft = MCPatcherUtils.getMinecraft();
         if (minecraft == null) {
             return null;
@@ -49,6 +52,21 @@ public class TexturePackAPI {
 
     public static boolean isDefaultTexturePack() {
         return getTexturePack() instanceof TexturePackDefault;
+    }
+
+    public static String[] parseTextureName(String s) {
+        String[] result = new String[]{null, s};
+        if (s.startsWith("##")) {
+            result[0] = "##";
+            result[1] = s.substring(2);
+        } else if (s.startsWith("%")) {
+            int index = s.indexOf('%', 1);
+            if (index > 0) {
+                result[0] = s.substring(0, index + 1);
+                result[1] = s.substring(index + 1);
+            }
+        }
+        return result;
     }
 
     public static InputStream getInputStream(String s) {
@@ -72,7 +90,7 @@ public class TexturePackAPI {
     }
 
     public static BufferedImage getImage(Object o, String s) {
-        return instance.getImageImpl(s);
+        return getImage(s);
     }
 
     public static Properties getProperties(String s) {
@@ -154,6 +172,7 @@ public class TexturePackAPI {
     public static int unloadTexture(String s) {
         int texture = getTextureIfLoaded(s);
         if (texture >= 0) {
+            logger.finest("unloading texture %s", s);
             RenderEngine renderEngine = MCPatcherUtils.getMinecraft().renderEngine;
             renderEngine.deleteTexture(texture);
             for (Field field : textureMapFields) {
@@ -169,9 +188,33 @@ public class TexturePackAPI {
         return texture;
     }
 
+    public static String getTextureName(int texture) {
+        if (texture >= 0) {
+            RenderEngine renderEngine = MCPatcherUtils.getMinecraft().renderEngine;
+            for (Field field : textureMapFields) {
+                try {
+                    HashMap map = (HashMap) field.get(renderEngine);
+                    for (Object o : map.entrySet()) {
+                        Map.Entry entry = (Map.Entry) o;
+                        Object value = entry.getValue();
+                        Object key = entry.getKey();
+                        if (value instanceof Integer && key instanceof String && (Integer) value == texture) {
+                            return (String) key;
+                        }
+                    }
+                } catch (IllegalAccessException e) {
+                }
+            }
+        }
+        return null;
+    }
+
     protected InputStream getInputStreamImpl(String s) {
-        if (texturePack == null) {
-        	ITexturePack currentTexturePack = getCurrentTexturePack();
+        s = parseTextureName(s)[1];
+        if (!loadFontFromTexturePack && s.startsWith("/font/")) {
+            return TexturePackAPI.class.getResourceAsStream(s);
+        } else if (texturePack == null) {
+            TexturePackImplementation currentTexturePack = getCurrentTexturePack();
             if (currentTexturePack == null) {
                 return TexturePackAPI.class.getResourceAsStream(s);
             } else {
@@ -189,6 +232,7 @@ public class TexturePackAPI {
             try {
                 image = ImageIO.read(input);
             } catch (IOException e) {
+                logger.severe("could not read %s", s);
                 e.printStackTrace();
             } finally {
                 MCPatcherUtils.close(input);
@@ -206,6 +250,7 @@ public class TexturePackAPI {
                     return true;
                 }
             } catch (IOException e) {
+                logger.severe("could not read %s");
                 e.printStackTrace();
             } finally {
                 MCPatcherUtils.close(input);
@@ -218,7 +263,7 @@ public class TexturePackAPI {
         private static final ArrayList<ChangeHandler> handlers = new ArrayList<ChangeHandler>();
         private static boolean changing;
 
-        private static final boolean autoRefreshTextures = false;
+        private static final boolean autoRefreshTextures = MCPatcherUtils.getBoolean("autoRefreshTextures", false);
         private static long lastCheckTime;
 
         protected final String name;
@@ -235,12 +280,15 @@ public class TexturePackAPI {
             if (handler != null) {
                 if (texturePack != null) {
                     try {
+                        logger.info("initializing %s...", handler.name);
                         handler.onChange();
                     } catch (Throwable e) {
                         e.printStackTrace();
+                        logger.severe("%s initialization failed", handler.name);
                     }
                 }
                 handlers.add(handler);
+                logger.fine("registered texture pack handler %s, priority %d", handler.name, handler.order);
                 Collections.sort(handlers, new Comparator<ChangeHandler>() {
                     public int compare(ChangeHandler o1, ChangeHandler o2) {
                         return o1.order - o2.order;
@@ -258,7 +306,7 @@ public class TexturePackAPI {
             if (texturePackList == null) {
                 return;
             }
-            ITexturePack currentTexturePack = texturePackList.getSelectedTexturePack();
+            TexturePackImplementation currentTexturePack = texturePackList.getSelectedTexturePack();
             if (currentTexturePack != texturePack) {
                 changeTexturePack(currentTexturePack);
             } else if (currentTexturePack instanceof TexturePackCustom) {
@@ -266,30 +314,37 @@ public class TexturePackAPI {
             }
         }
 
-        private static void changeTexturePack(ITexturePack newPack) {
+        private static void changeTexturePack(TexturePackImplementation newPack) {
             if (newPack != null && !changing) {
                 changing = true;
                 long timeDiff = -System.currentTimeMillis();
                 Runtime runtime = Runtime.getRuntime();
                 long memDiff = -(runtime.totalMemory() - runtime.freeMemory());
 
+                if (texturePack == null) {
+                    logger.info("\nsetting texture pack to %s", newPack.getTexturePackFileName());
+                } else if (texturePack == newPack) {
+                    logger.info("\nreloading texture pack %s", newPack.getTexturePackFileName());
+                } else {
+                    logger.info("\nchanging texture pack from %s to %s", texturePack.getTexturePackFileName(), newPack.getTexturePackFileName());
+                }
+
                 texturePack = newPack;
-                change();
+                for (ChangeHandler handler : handlers) {
+                    try {
+                        logger.info("refreshing %s...", handler.name);
+                        handler.onChange();
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        logger.severe("%s refresh failed", handler.name);
+                    }
+                }
 
                 System.gc();
                 timeDiff += System.currentTimeMillis();
                 memDiff += runtime.totalMemory() - runtime.freeMemory();
+                logger.info("done (%.3fs elapsed, mem usage %+.1fMB)\n", timeDiff / 1000.0, memDiff / 1048576.0);
                 changing = false;
-            }
-        }
-        
-        public static void change() {
-        	for (ChangeHandler handler : handlers) {
-                try {
-                    handler.onChange();
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
             }
         }
 
@@ -297,7 +352,7 @@ public class TexturePackAPI {
             if (pack.texturePackZipFile == null) {
                 return false;
             }
-            if (pack.origZip != null) {
+            if (pack.texturePackFile.exists()) {
                 return true;
             }
             InputStream input = null;
