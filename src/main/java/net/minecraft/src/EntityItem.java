@@ -36,9 +36,6 @@ public class EntityItem extends Entity {
 		this.motionX = (double)((float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D));
 		this.motionY = 0.20000000298023224D;
 		this.motionZ = (double)((float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D));
-		// Spout Start
-		this.spoutEntity = new CraftItem(this);
-		// Spout End
 	}
 
 	/**

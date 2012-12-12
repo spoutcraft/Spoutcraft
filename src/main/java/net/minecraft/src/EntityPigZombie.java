@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.List;
 
-import org.spoutcraft.client.entity.CraftPigZombie; // Spout
 
 public class EntityPigZombie extends EntityZombie {
 
@@ -17,9 +16,6 @@ public class EntityPigZombie extends EntityZombie {
 		this.texture = "/mob/pigzombie.png";
 		this.moveSpeed = 0.5F;
 		this.isImmuneToFire = true;
-		// Spout Start
-		this.spoutEntity = new CraftPigZombie(this);
-		// Spout End
 	}
 
 	/**

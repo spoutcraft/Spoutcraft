@@ -17,9 +17,6 @@ public class EntityTNTPrimed extends Entity {
 		this.preventEntitySpawning = true;
 		this.setSize(0.98F, 0.98F);
 		this.yOffset = this.height / 2.0F;
-		// Spout Start
-		this.spoutEntity = new CraftTNTPrimed(this);
-		// Spout End
 	}
 
 	public EntityTNTPrimed(World par1World, double par2, double par4, double par6) {

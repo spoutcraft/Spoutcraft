@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.Random;
 
-import org.spoutcraft.client.entity.CraftSheep; // Spout
 
 public class EntitySheep extends EntityAnimal {
 	private final InventoryCrafting field_90016_e = new InventoryCrafting(new ContainerSheep(this), 2, 1);
@@ -38,9 +37,6 @@ public class EntitySheep extends EntityAnimal {
 		this.tasks.addTask(8, new EntityAILookIdle(this));
 		this.field_90016_e.setInventorySlotContents(0, new ItemStack(Item.dyePowder, 1, 0));
 		this.field_90016_e.setInventorySlotContents(1, new ItemStack(Item.dyePowder, 1, 0));
-		// Spout Start
-		this.spoutEntity = new CraftSheep(this);
-		// Spout End
 	}
 
 	/**

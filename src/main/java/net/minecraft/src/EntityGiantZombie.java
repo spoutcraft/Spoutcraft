@@ -9,9 +9,6 @@ public class EntityGiantZombie extends EntityMob {
 		this.moveSpeed = 0.5F;
 		this.yOffset *= 6.0F;
 		this.setSize(this.width * 6.0F, this.height * 6.0F);
-		// Spout Start
-		this.spoutEntity = new CraftGiant(this);
-		// Spout End
 	}
 
 	public int getMaxHealth() {

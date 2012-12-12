@@ -244,10 +244,6 @@ public abstract class EntityLiving extends Entity {
 		}
 
 		this.stepHeight = 0.5F;
-		
-		// Spout Start
-		this.spoutEntity = new CraftLivingEntity(this);
-		// Spout End
 	}
 
 	public EntityLookHelper getLookHelper() {

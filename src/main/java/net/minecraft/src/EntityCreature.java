@@ -18,9 +18,6 @@ public abstract class EntityCreature extends EntityLiving {
 
 	public EntityCreature(World par1World) {
 		super(par1World);
-		// Spout Start
-		this.spoutEntity = new CraftCreature(this);
-		// Spout End
 	}
 
 	/**

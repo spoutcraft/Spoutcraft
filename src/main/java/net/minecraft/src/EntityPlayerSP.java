@@ -62,9 +62,8 @@ public class EntityPlayerSP extends EntityPlayer {
 
 		this.username = par3Session.username;
 		// Spout Start
-		spoutEntity = ClientPlayer.getInstance();
-		((ClientPlayer) spoutEntity).setPlayer(this);
-		SpoutClient.getInstance().player = (ClientPlayer) spoutEntity;
+		((ClientPlayer) spoutEnty).setPlayer(this);
+		SpoutClient.getInstance().player = (ClientPlayer) spoutEnty;
 		this.worldObj.releaseEntitySkin(this);
 		this.worldObj.obtainEntitySkin(this);
 		// Spout End

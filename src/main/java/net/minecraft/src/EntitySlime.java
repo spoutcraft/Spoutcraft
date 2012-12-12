@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftSlime; // Spout
-
 public class EntitySlime extends EntityLiving implements IMob {
 	public float field_70813_a;
 	public float field_70811_b;
@@ -17,9 +15,6 @@ public class EntitySlime extends EntityLiving implements IMob {
 		this.yOffset = 0.0F;
 		this.slimeJumpDelay = this.rand.nextInt(20) + 10;
 		this.setSlimeSize(var2);
-		// Spout Start
-		this.spoutEntity = new CraftSlime(this);
-		// Spout End
 	}
 
 	protected void entityInit() {

@@ -303,7 +303,7 @@ public class SpoutcraftWorld implements World {
 		ArrayList<Entity> ret = new ArrayList<Entity>();
 		for (Object mcentity:handle.loadedEntityList) {
 			if (mcentity instanceof net.minecraft.src.Entity) {
-				ret.add(((net.minecraft.src.Entity)mcentity).spoutEntity);
+				ret.add(((net.minecraft.src.Entity)mcentity).spoutEnty);
 			}
 		}
 		return ret;
@@ -313,7 +313,7 @@ public class SpoutcraftWorld implements World {
 		ArrayList<LivingEntity> ret = new ArrayList<LivingEntity>();
 		for (Object mcentity:handle.loadedEntityList) {
 			if (mcentity instanceof net.minecraft.src.EntityLiving) {
-				ret.add((LivingEntity) ((net.minecraft.src.EntityLiving)mcentity).spoutEntity);
+				ret.add((LivingEntity) ((net.minecraft.src.EntityLiving)mcentity).spoutEnty);
 			}
 		}
 		return ret;
@@ -323,7 +323,7 @@ public class SpoutcraftWorld implements World {
 		ArrayList<Player> ret = new ArrayList<Player>();
 		for (Object mcentity:handle.loadedEntityList) {
 			if (mcentity instanceof net.minecraft.src.EntityPlayer) {
-				ret.add((Player) ((net.minecraft.src.EntityPlayer)mcentity).spoutEntity);
+				ret.add((Player) ((net.minecraft.src.EntityPlayer)mcentity).spoutEnty);
 			}
 		}
 		return ret;
@@ -476,7 +476,7 @@ public class SpoutcraftWorld implements World {
 	public Entity getEntityFromId(int id) {
 		net.minecraft.src.Entity e = SpoutClient.getInstance().getEntityFromId(id);
 		if (e != null) {
-			return e.spoutEntity;
+			return e.spoutEnty;
 		}
 		return null;
 	}

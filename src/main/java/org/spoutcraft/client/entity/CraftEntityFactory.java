@@ -19,26 +19,32 @@
  */
 package org.spoutcraft.client.entity;
 
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityEgg;
+import net.minecraft.src.*;
+import org.spoutcraft.api.entity.Entity;
+import org.spoutcraft.client.player.ClientPlayer;
 
-import org.spoutcraft.api.entity.Egg;
-import org.spoutcraft.api.entity.LivingEntity;
+public class CraftEntityFactory {
 
-public class CraftEgg extends AbstractProjectile implements Egg {
-	public CraftEgg(Entity entity) {
-		super(entity);
+	public static Entity getCraftEntity(net.minecraft.src.Entity aThis) {
+		if(aThis instanceof EntitySquid) {
+			return new CraftSquid((EntitySquid) aThis);
+		}
+		if(aThis instanceof EntitySkeleton) {
+			return new CraftSkeleton((EntitySkeleton) aThis);
+		}
+		if(aThis instanceof EntityItem) {
+			return new CraftItem((EntityItem) aThis);
+		}
+		if(aThis instanceof EntityPlayerSP) {
+			return ClientPlayer.getInstance();
+		}
+		if(aThis instanceof EntityLiving) {
+			return new CraftLivingEntity((EntityLiving)aThis);
+		}
+		if(aThis instanceof EntityFallingSand) {
+			return new CraftFallingSand((EntityFallingSand)aThis);
+		}
+		return null; //Should not break, got most of the important stuff
 	}
-
-	public EntityEgg getEgg() {
-		return (EntityEgg)handle;
-	}
-
-	public LivingEntity getShooter() {
-		return (LivingEntity) getEgg().thrower.spoutEnty;
-	}
-
-	public void setShooter(LivingEntity shooter) {
-		getEgg().thrower = ((CraftLivingEntity)shooter).getEntityLiving();
-	}
+	
 }

@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftEnderman; // Spout
 
 public class EntityEnderman extends EntityMob {
 	private static boolean[] carriableBlocks = new boolean[256];
@@ -17,9 +16,6 @@ public class EntityEnderman extends EntityMob {
 		this.moveSpeed = 0.2F;
 		this.setSize(0.6F, 2.9F);
 		this.stepHeight = 1.0F;
-		// Spout Start
-		this.spoutEntity = new CraftEnderman(this);
-		// Spout End
 	}
 
 	public int getMaxHealth() {

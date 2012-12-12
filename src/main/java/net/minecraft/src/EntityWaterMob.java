@@ -1,13 +1,8 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftWaterMob; // Spout
-
 public abstract class EntityWaterMob extends EntityCreature implements IAnimals {
 	public EntityWaterMob(World par1World) {
 		super(par1World);
-		// Spout Start
-		this.spoutEntity = new CraftWaterMob(this);
-		// Spout End
 	}
 
 	public boolean canBreatheUnderwater() {

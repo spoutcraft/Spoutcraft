@@ -1,16 +1,11 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftMagmaCube; // Spout
-
 public class EntityMagmaCube extends EntitySlime {
 	public EntityMagmaCube(World par1World) {
 		super(par1World);
 		this.texture = "/mob/lava.png";
 		this.isImmuneToFire = true;
 		this.landMovementFactor = 0.2F;
-		// Spout Start
-		this.spoutEntity = new CraftMagmaCube(this);
-		// Spout End
 	}
 
 	/**

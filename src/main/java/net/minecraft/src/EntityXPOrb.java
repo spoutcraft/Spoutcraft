@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
 // Spout Start
-import org.spoutcraft.client.entity.CraftExperienceOrb;
-import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 // Spout End

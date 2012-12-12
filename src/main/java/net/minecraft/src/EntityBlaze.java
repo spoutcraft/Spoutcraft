@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftBlaze; // Spout
-
 public class EntityBlaze extends EntityMob {
 
 	/** Random offset used in floating behaviour */
@@ -16,9 +14,6 @@ public class EntityBlaze extends EntityMob {
 		this.texture = "/mob/fire.png";
 		this.isImmuneToFire = true;
 		this.experienceValue = 10;
-		// Spout Start
-		this.spoutEntity = new CraftBlaze(this);
-		// Spout End
 	}
 
 	public int getMaxHealth() {

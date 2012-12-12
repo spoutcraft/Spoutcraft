@@ -101,7 +101,7 @@ public class RenderItem extends Render {
 
 			if (design != null && custom) {
 				//GL11.glScalef(0.25F, 0.25F, 0.25F);
-				design.renderItemstack((org.spoutcraft.api.entity.Item)par1EntityItem.spoutEntity, (float)par2, (float)(par4 + var11), (float)par6, var12, 0.25F, random);
+				design.renderItemstack((org.spoutcraft.api.entity.Item)par1EntityItem.spoutEnty, (float)par2, (float)(par4 + var11), (float)par6, var12, 0.25F, random);
 			} else {
 				GL11.glPushMatrix(); // the push from above
 				if (!custom) {

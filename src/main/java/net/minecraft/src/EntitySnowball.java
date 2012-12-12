@@ -1,27 +1,16 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftSnowball;
-
 public class EntitySnowball extends EntityThrowable {
 	public EntitySnowball(World par1World) {
 		super(par1World);
-		// Spout Start
-		this.spoutEntity = new CraftSnowball(this);
-		// Spout End
 	}
 
 	public EntitySnowball(World par1World, EntityLiving par2EntityLiving) {
 		super(par1World, par2EntityLiving);
-		// Spout Start
-		this.spoutEntity = new CraftSnowball(this);
-		// Spout End
 	}
 
 	public EntitySnowball(World par1World, double par2, double par4, double par6) {
 		super(par1World, par2, par4, par6);
-		// Spout Start
-		this.spoutEntity = new CraftSnowball(this);
-		// Spout End
 	}
 
 	/**

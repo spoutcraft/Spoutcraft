@@ -37,7 +37,7 @@ public class CraftFish extends AbstractProjectile implements Fish {
 
 	public LivingEntity getShooter() {
 		if (((EntityFishHook) handle).angler != null) {
-			return (LivingEntity) ((EntityFishHook) handle).angler.spoutEntity;
+			return (LivingEntity) ((EntityFishHook) handle).angler.spoutEnty;
 		}
 		return null;
 	}

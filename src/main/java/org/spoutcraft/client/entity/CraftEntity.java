@@ -104,7 +104,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 		Set<Entity> entities = new HashSet<Entity>(notchEntityList.size());
 
 		for (net.minecraft.src.Entity e: notchEntityList) {
-			entities.add(e.spoutEntity);
+			entities.add(e.spoutEnty);
 		}
 		return entities;
 	}
@@ -134,7 +134,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public Entity getPassenger() {
-		return handle.riddenByEntity.spoutEntity;
+		return handle.riddenByEntity.spoutEnty;
 	}
 
 	public boolean setPassenger(Entity passenger) {

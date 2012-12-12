@@ -24,10 +24,6 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 		if (par1World != null && !par1World.isRemote) {
 			this.func_85036_m();
 		}
-
-		// Spout Start
-		this.spoutEntity = new CraftSkeleton(this);
-		// Spout End
 	}
 
 	protected void entityInit() {

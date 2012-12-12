@@ -1,12 +1,6 @@
 package net.minecraft.src;
 
 import java.util.List;
-// Spout Start
-import org.spoutcraft.client.entity.CraftCaveSpider;
-import org.spoutcraft.client.entity.CraftMinecart;
-import org.spoutcraft.client.entity.CraftPoweredMinecart;
-import org.spoutcraft.client.entity.CraftStorageMinecart;
-// Spout End
 
 public class EntityMinecart extends Entity implements IInventory {
 
@@ -107,16 +101,6 @@ public class EntityMinecart extends Entity implements IInventory {
 		this.prevPosY = par4;
 		this.prevPosZ = par6;
 		this.minecartType = par8;
-		
-		// Spout Start
-		if (minecartType == CraftMinecart.Type.Minecart.getId()) {
-			this.spoutEntity = new CraftMinecart(this);
-		} else if (minecartType == CraftMinecart.Type.PoweredMinecart.getId()) {
-			this.spoutEntity = new CraftPoweredMinecart(this);
-		} else {
-			this.spoutEntity = new CraftStorageMinecart(this);
-		}
-		// Spout End
 	}
 
 	/**

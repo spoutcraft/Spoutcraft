@@ -45,7 +45,7 @@ public class CraftCreature extends CraftLivingEntity implements Creature {
 		if (getEntityCreature().entityToAttack == null) {
 			return null;
 		}
-		return (CraftLivingEntity) getEntityCreature().entityToAttack.spoutEntity;
+		return (CraftLivingEntity) getEntityCreature().entityToAttack.spoutEnty;
 	}
 
 	public EntityCreature getEntityCreature() {

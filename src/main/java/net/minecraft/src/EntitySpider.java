@@ -1,16 +1,11 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftSpider;
-
 public class EntitySpider extends EntityMob {
 	public EntitySpider(World par1World) {
 		super(par1World);
 		this.texture = "/mob/spider.png";
 		this.setSize(1.4F, 0.9F);
 		this.moveSpeed = 0.8F;
-		// Spout Start
-		this.spoutEntity = new CraftSpider(this);
-		// Spout End
 	}
 
 	protected void entityInit() {

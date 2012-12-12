@@ -1,15 +1,10 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftCaveSpider; // Spout
-
 public class EntityCaveSpider extends EntitySpider {
 	public EntityCaveSpider(World par1World) {
 		super(par1World);
 		this.texture = "/mob/cavespider.png";
 		this.setSize(0.7F, 0.5F);
-		// Spout Start
-		this.spoutEntity = new CraftCaveSpider(this);
-		// Spout End
 	}
 
 	public int getMaxHealth() {

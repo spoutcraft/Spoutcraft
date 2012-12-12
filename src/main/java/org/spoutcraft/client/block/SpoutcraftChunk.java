@@ -121,7 +121,7 @@ public class SpoutcraftChunk implements Chunk {
 				if (!(obj instanceof net.minecraft.src.Entity)) {
 					continue;
 				}
-				entities[index++] = ((net.minecraft.src.Entity) obj).spoutEntity;
+				entities[index++] = ((net.minecraft.src.Entity) obj).spoutEnty;
 			}
 		}
 		return entities;

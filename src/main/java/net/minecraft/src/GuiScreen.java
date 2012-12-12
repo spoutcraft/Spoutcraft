@@ -72,7 +72,7 @@ public class GuiScreen extends Gui {
 
 	public Player getPlayer() {
 		if (this.mc.thePlayer != null) {
-			return (Player) this.mc.thePlayer.spoutEntity;
+			return (Player) this.mc.thePlayer.spoutEnty;
 		}
 		return null;
 	}

@@ -52,10 +52,6 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 				}
 			}
 		}
-		
-		// Spout Start
-		this.spoutEntity = new CraftLightningStrike(this);
-		// Spout End
 
 	}
 

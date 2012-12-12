@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftPig; // Spout
-
 public class EntityPig extends EntityAnimal {
 
 	/** AI task for player control. */
@@ -23,9 +21,6 @@ public class EntityPig extends EntityAnimal {
 		this.tasks.addTask(6, new EntityAIWander(this, var2));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
-		// Spout Start
-		this.spoutEntity = new CraftPig(this);
-		// Spout End
 	}
 
 	/**

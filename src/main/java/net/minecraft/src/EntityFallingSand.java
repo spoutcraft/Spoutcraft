@@ -51,9 +51,6 @@ public class EntityFallingSand extends Entity {
 		this.prevPosX = par2;
 		this.prevPosY = par4;
 		this.prevPosZ = par6;
-		// Spout Start
-		this.spoutEntity = new CraftFallingSand(this);
-		// Spout End
 	}
 
 	/**

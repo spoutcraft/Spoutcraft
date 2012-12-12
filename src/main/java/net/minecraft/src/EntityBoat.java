@@ -1,9 +1,6 @@
 package net.minecraft.src;
 
 import java.util.List;
-// Spout Start
-import org.spoutcraft.client.entity.CraftBoat;
-// Spout End
 
 public class EntityBoat extends Entity {
 	private boolean field_70279_a;
@@ -32,10 +29,6 @@ public class EntityBoat extends Entity {
 		this.preventEntitySpawning = true;
 		this.setSize(1.5F, 0.6F);
 		this.yOffset = this.height / 2.0F;
-
-		// Spout Start
-		this.spoutEntity = new CraftBoat(this);
-		// Spout End
 	}
 
 	/**

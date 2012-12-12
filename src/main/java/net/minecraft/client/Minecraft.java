@@ -567,19 +567,19 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			Screen widget = null;
 			if (this.currentScreen != null && screen == null) {
 				packet = new PacketScreenAction(ScreenAction.Close, ScreenUtil.getType(this.currentScreen));
-				event = ScreenCloseEvent.getInstance((Player) thePlayer.spoutEntity, currentScreen.getScreen(), display);
+				event = ScreenCloseEvent.getInstance((Player) thePlayer.spoutEnty, currentScreen.getScreen(), display);
 				widget = currentScreen.getScreen();
 			}
 			// Screen opened
 			if (screen != null && this.currentScreen == null) {
 				packet = new PacketScreenAction(ScreenAction.Open, display);
-				event = ScreenOpenEvent.getInstance((Player) thePlayer.spoutEntity, screen.getScreen(), display);
+				event = ScreenOpenEvent.getInstance((Player) thePlayer.spoutEnty, screen.getScreen(), display);
 				widget = screen.getScreen();
 			}
 			// Screen swapped
 			if (screen != null && this.currentScreen != null) { // Hopefully just a submenu
 				packet = new PacketScreenAction(ScreenAction.Open, display);
-				event = ScreenOpenEvent.getInstance((Player) thePlayer.spoutEntity, screen.getScreen(), display);
+				event = ScreenOpenEvent.getInstance((Player) thePlayer.spoutEnty, screen.getScreen(), display);
 				widget = screen.getScreen();
 			}
 			boolean cancel = false;

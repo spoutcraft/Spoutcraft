@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftCow; // Spout
-
 public class EntityCow extends EntityAnimal {
 	public EntityCow(World par1World) {
 		super(par1World);
@@ -16,9 +14,6 @@ public class EntityCow extends EntityAnimal {
 		this.tasks.addTask(5, new EntityAIWander(this, 0.2F));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
-		// Spout Start
-		this.spoutEntity = new CraftCow(this);
-		// Spout End
 	}
 
 	/**

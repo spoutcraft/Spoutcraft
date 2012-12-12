@@ -399,7 +399,7 @@ public class NetClientHandler extends NetHandler {
 		}
 		// Spout Start: set the entity's title
 		if(var10.worldObj.customTitles.containsKey(var10.entityId)) {
-			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEntity).setTitle(var10.worldObj.customTitles.get(var10.entityId));
+			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEnty).setTitle(var10.worldObj.customTitles.get(var10.entityId));
 		}
 		// Spout End
 	}
@@ -739,7 +739,7 @@ public class NetClientHandler extends NetHandler {
 		}
 		// Spout Start: set the entity's title
 		if(var10.worldObj.customTitles.containsKey(var10.entityId)) {
-			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEntity).setTitle(var10.worldObj.customTitles.get(var10.entityId));
+			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEnty).setTitle(var10.worldObj.customTitles.get(var10.entityId));
 		}
 		// Spout End
 	}

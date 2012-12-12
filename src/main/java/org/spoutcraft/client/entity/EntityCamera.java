@@ -28,7 +28,7 @@ public class EntityCamera extends EntityPlayerSP {
 	public EntityCamera(CraftCameraEntity spoutEntity) {
 		super(SpoutClient.getHandle(), SpoutClient.getHandle().theWorld, SpoutClient.getHandle().session, SpoutClient.getHandle().thePlayer.dimension);
 		yOffset = 1.62F;
-		this.spoutEntity = spoutEntity;
+		this.spoutEnty = spoutEntity;
 	}
 
 	@Override

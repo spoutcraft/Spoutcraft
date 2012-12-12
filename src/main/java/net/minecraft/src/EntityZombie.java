@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.Calendar;
 
-import org.spoutcraft.client.entity.CraftZombie; // Spout
 
 public class EntityZombie extends EntityMob {
 
@@ -28,9 +27,6 @@ public class EntityZombie extends EntityMob {
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 16.0F, 0, false));
-		// Spout Start
-		this.spoutEntity = new CraftZombie(this);
-		// Spout End
 	}
 
 	/**

@@ -53,9 +53,6 @@ public class EntityFishHook extends Entity {
 		this.bobber = null;
 		this.setSize(0.25F, 0.25F);
 		this.ignoreFrustumCheck = true;
-		// Spout Start
-		this.spoutEntity = new CraftFish(this); // TODO : Change to CraftFishHook
-		// Spout End
 	}
 
 	public EntityFishHook(World par1World, double par2, double par4, double par6, EntityPlayer par8EntityPlayer) {

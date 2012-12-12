@@ -1,11 +1,8 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
 // Spout Start
 import org.bukkit.ChatColor;
-import org.spoutcraft.client.player.SpoutPlayer;
 import org.spoutcraft.client.special.Resources;
-import org.spoutcraft.client.special.VIP;
 // Spout End
 public class EntityOtherPlayerMP extends EntityPlayer {
 	private boolean isItemInUse = false;
@@ -37,8 +34,6 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		} else {
 			displayName = username;
 		}
-		spoutEntity = new SpoutPlayer(this);
-		((SpoutPlayer) spoutEntity).setPlayer(this);
 		this.worldObj.releaseEntitySkin(this);
 		worldObj.obtainEntitySkin(this);
 		// Spout End

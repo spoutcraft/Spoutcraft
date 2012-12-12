@@ -2,9 +2,6 @@ package net.minecraft.src;
 
 import java.util.List;
 
-// Spout Start
-import org.spoutcraft.client.entity.CraftArrow;
-// Spout End
 public class EntityArrow extends Entity implements IProjectile {
 	private int xTile = -1;
 	private int yTile = -1;
@@ -38,9 +35,6 @@ public class EntityArrow extends Entity implements IProjectile {
 		this.setSize(0.5F, 0.5F);
 		this.setPosition(par2, par4, par6);
 		this.yOffset = 0.0F;
-		// Spout Start
-		this.spoutEntity = new CraftArrow(this);
-		// Spout End
 	}
 
 	public EntityArrow(World par1World, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving, float par4, float par5) {

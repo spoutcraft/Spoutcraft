@@ -55,7 +55,7 @@ public class PacketEntityTitle implements SpoutPacket {
 	public void run(int id) {
 		Entity e = SpoutClient.getInstance().getEntityFromId(entityId);
 		if (e != null && e instanceof EntityLiving) {
-			LivingEntity living = (LivingEntity)e.spoutEntity;
+			LivingEntity living = (LivingEntity)e.spoutEnty;
 			// Check to see if this title is our username, if so, use defaults
 			if (e instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer)e;

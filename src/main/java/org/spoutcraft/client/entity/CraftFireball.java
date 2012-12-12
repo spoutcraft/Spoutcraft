@@ -55,7 +55,7 @@ public class CraftFireball extends AbstractProjectile implements Fireball {
 
 	public LivingEntity getShooter() {
 		if (((EntityFireball) handle).shootingEntity != null) {
-			return (LivingEntity) ((EntityFireball) handle).shootingEntity.spoutEntity;
+			return (LivingEntity) ((EntityFireball) handle).shootingEntity.spoutEnty;
 		}
 		return null;
 	}

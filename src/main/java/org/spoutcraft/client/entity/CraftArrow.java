@@ -35,7 +35,7 @@ public class CraftArrow extends AbstractProjectile implements Arrow {
 	}
 
 	public LivingEntity getShooter() {
-		return (LivingEntity) getArrow().shootingEntity.spoutEntity;
+		return (LivingEntity) getArrow().shootingEntity.spoutEnty;
 	}
 
 	public void setShooter(LivingEntity shooter) {

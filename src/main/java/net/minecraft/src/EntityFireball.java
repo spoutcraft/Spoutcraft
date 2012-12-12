@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.List;
 
-import org.spoutcraft.client.entity.CraftFireball; // Spout
 
 public abstract class EntityFireball extends Entity {
 	private int xTile = -1;
@@ -24,9 +23,6 @@ public abstract class EntityFireball extends Entity {
 	public EntityFireball(World par1World) {
 		super(par1World);
 		this.setSize(1.0F, 1.0F);
-		// Spout Start
-		this.spoutEntity = new CraftFireball(this);
-		// Spout End
 	}
 
 	protected void entityInit() {}

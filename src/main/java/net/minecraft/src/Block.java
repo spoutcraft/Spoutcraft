@@ -622,7 +622,7 @@ public class Block {
 	// Spout Start
 	public final float getPlayerRelativeBlockHardness(EntityPlayer entityhuman) {
 		if (entityhuman instanceof EntityPlayerSP) {
-			ActivePlayer player = (ActivePlayer) ((EntityPlayerSP) entityhuman).spoutEntity;
+			ActivePlayer player = (ActivePlayer) entityhuman.spoutEnty;
 			FixedLocation target = player.getLastClickedLocation();
 			if (target != null) {
 

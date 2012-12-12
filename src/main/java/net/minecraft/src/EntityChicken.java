@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftChicken; // Spout
-
 public class EntityChicken extends EntityAnimal {
 	public boolean field_70885_d = false;
 	public float field_70886_e = 0.0F;
@@ -27,10 +25,6 @@ public class EntityChicken extends EntityAnimal {
 		this.tasks.addTask(5, new EntityAIWander(this, var2));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
-
-		// Spout Start
-		this.spoutEntity = new CraftChicken(this);
-		// Spout End
 	}
 
 	/**

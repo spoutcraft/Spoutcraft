@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
-import org.spoutcraft.client.entity.CraftHumanEntity;
 import org.spoutcraft.client.special.Holiday;
 import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.client.special.VIP;
@@ -133,9 +132,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		this.field_70741_aB = 180.0F;
 		this.fireResistance = 20;
 		this.texture = "/mob/char.png";
-		// Spout Start
-		this.spoutEntity = new CraftHumanEntity(this);
-		// Spout End
 	}
 
 	public int getMaxHealth() {

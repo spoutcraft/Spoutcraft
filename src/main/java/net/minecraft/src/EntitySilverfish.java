@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftSilverfish; // Spout
-
 public class EntitySilverfish extends EntityMob {
 
 	/**
@@ -14,9 +12,6 @@ public class EntitySilverfish extends EntityMob {
 		this.texture = "/mob/silverfish.png";
 		this.setSize(0.3F, 0.7F);
 		this.moveSpeed = 0.6F;
-		// Spout Start
-		this.spoutEntity = new CraftSilverfish(this);
-		// Spout End
 	}
 
 	public int getMaxHealth() {

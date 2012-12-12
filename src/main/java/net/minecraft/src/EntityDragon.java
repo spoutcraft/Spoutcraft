@@ -64,9 +64,6 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 		this.isImmuneToFire = true;
 		this.targetY = 100.0D;
 		this.ignoreFrustumCheck = true;
-		// Spout Start
-		this.spoutEntity = new CraftEnderDragon(this);
-		// Spout End
 	}
 
 	public int getMaxHealth() {

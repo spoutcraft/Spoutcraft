@@ -1,12 +1,16 @@
 package net.minecraft.src;
 
-import java.util.LinkedList; // Spout
+
 import java.util.List;
 import java.util.Random;
-import java.util.UUID; // Spout
 import net.minecraft.server.MinecraftServer;
 
-import org.spoutcraft.client.SpoutClient; // Spout
+//Spout start
+import java.util.LinkedList; 
+import java.util.UUID;
+import org.spoutcraft.client.SpoutClient; 
+import org.spoutcraft.client.entity.CraftEntityFactory;
+//Spout end
 
 public abstract class Entity {
 	private static int nextEntityID = 0;
@@ -199,7 +203,7 @@ public abstract class Entity {
 	private boolean field_83001_bt;
 	// Spout Start
 	public boolean partiallyInWater = false;
-	public org.spoutcraft.api.entity.Entity spoutEntity;
+	public org.spoutcraft.api.entity.Entity spoutEnty;
 	public UUID uniqueId = UUID.randomUUID();
 	public boolean wasOnGround;
 	public boolean clientonly = false;
@@ -251,6 +255,10 @@ public abstract class Entity {
 		this.dataWatcher.addObject(0, Byte.valueOf((byte)0));
 		this.dataWatcher.addObject(1, Short.valueOf((short)300));
 		this.entityInit();
+		
+		//Spout start
+		this.spoutEnty = CraftEntityFactory.getCraftEntity(this);
+		//Spout end
 	}
 
 	protected abstract void entityInit();
