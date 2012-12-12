@@ -79,6 +79,7 @@ import org.spoutcraft.client.gui.settings.controls.SignDistanceButton;
 import org.spoutcraft.client.gui.settings.controls.SkyToggleButton;
 import org.spoutcraft.client.gui.settings.controls.SmoothFPSButton;
 import org.spoutcraft.client.gui.settings.controls.SmoothLightingSlider;
+import org.spoutcraft.client.gui.settings.controls.SnooperButton;
 import org.spoutcraft.client.gui.settings.controls.SoundEffectsSlider;
 import org.spoutcraft.client.gui.settings.controls.StarsToggleButton;
 import org.spoutcraft.client.gui.settings.controls.TimeButton;
@@ -120,7 +121,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		int left = (int)(width / 2  - 155);
 		int right = (int)(width / 2 + 5);
-		int center = (int)(width / 2 - 80);
+		int center = (int)(width / 2 - 75);
 
 		control = new ResetButton(parent).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
@@ -499,7 +500,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		top += 5;
 
-		label = new GenericLabel("Screenshot Settings");
+		label = new GenericLabel("Miscellaneous Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
@@ -516,25 +517,34 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control = new ResizeScreenshotButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		top += 22;
 
-		label = new GenericLabel("Screenshot Width:");
-		label.setWidth(150).setHeight(20).setX(left).setY(top + 6);
+		label = new GenericLabel("Size:");
+		label.setWidth(150).setHeight(20).setX(right-7).setY(top + 6);
 		screen.attachWidget(spoutcraft, label);
 
 		control = new ResizeScreenshotWidthField();
-		control.setWidth(150).setHeight(15).setX(right).setY(top + 2);
+		control.setWidth(35).setHeight(15).setX(right+20).setY(top + 2);
 		screen.attachWidget(spoutcraft, control);
-		top += 22;
 
-		label = new GenericLabel("Screenshot Height:");
-		label.setWidth(150).setHeight(20).setX(left).setY(top + 6);
+		label = new GenericLabel("X");
+		label.setWidth(150).setHeight(20).setX(right+63).setY(top + 6);
 		screen.attachWidget(spoutcraft, label);
 
 		control = new ResizeScreenshotHeightField();
-		control.setWidth(150).setHeight(15).setX(right).setY(top + 2);
+		control.setWidth(35).setHeight(15).setX(right+75).setY(top + 2);
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
+		
+		control = new SnooperButton(this).setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(center).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		top += 22;
+
+		linebreak = new GenericGradient();
+		linebreak.setBottomColor(grey);
+		linebreak.setTopColor(grey);
+		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
+		screen.attachWidget(spoutcraft, linebreak);		
 	}
 
 	@Override
