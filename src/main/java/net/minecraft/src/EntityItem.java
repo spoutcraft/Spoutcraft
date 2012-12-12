@@ -3,8 +3,6 @@ package net.minecraft.src;
 import java.util.Iterator;
 
 // Spout Start
-import org.spoutcraft.client.entity.CraftItem;
-import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 // Spout End

@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftTNTPrimed;
-
 public class EntityTNTPrimed extends Entity {
 
 	/** How long the fuse is */

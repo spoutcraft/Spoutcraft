@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
-import org.spoutcraft.client.entity.CraftVillager; // Spout
-
 public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 	private int randomTickDivider;
 	private boolean isMating;

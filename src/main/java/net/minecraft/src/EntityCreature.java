@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftCreature; // Spout
-
 public abstract class EntityCreature extends EntityLiving {
 	public PathEntity pathToEntity; // Spout private -> public
 	

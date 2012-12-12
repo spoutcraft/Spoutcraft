@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.Calendar;
 
-import org.spoutcraft.client.entity.CraftSkeleton; // Spout
 
 public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 	private EntityAIArrowAttack field_85037_d = new EntityAIArrowAttack(this, 0.25F, 60, 10.0F);

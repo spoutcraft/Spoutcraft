@@ -199,7 +199,6 @@ public class CraftEntity extends PropertyObject implements Entity {
 	public static void registerTypes() {
 		interfacedClasses.put(TextEntity.class, CraftTextEntity.class);
 		interfacedClasses.put(Player.class, SpoutPlayer.class);
-		interfacedClasses.put(Arrow.class, CraftArrow.class);
 	}
 
 	public int getTicksLived() {

@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftSquid; // Spout
-
 public class EntitySquid extends EntityWaterMob {
 	public float field_70861_d = 0.0F;
 	public float field_70862_e = 0.0F;

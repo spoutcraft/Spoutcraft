@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
 // Spout Start
-import org.spoutcraft.client.entity.CraftPig;
-import org.spoutcraft.client.entity.CraftWolf;
 import org.spoutcraft.api.entity.EntitySkinType;
 // Spout End
 
