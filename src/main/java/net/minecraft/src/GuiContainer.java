@@ -400,7 +400,7 @@ public abstract class GuiContainer extends GuiScreen {
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		List var4 = null;		
 		if (par1ItemStack.itemID == 318) { //Spout start
-			var4 = Arrays.asList(Spoutcraft.getMaterialManager().getToolTip(new CraftItemStack(par1ItemStack))); //Not a proper fix... 
+			var4 = Arrays.asList(Spoutcraft.getMaterialManager().getToolTip(new CraftItemStack(par1ItemStack)).split("\n"));
 		} else {
 			var4 = par1ItemStack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
 		}  //Spout end

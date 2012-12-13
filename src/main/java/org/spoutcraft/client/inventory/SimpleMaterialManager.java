@@ -258,7 +258,14 @@ public class SimpleMaterialManager implements MaterialManager {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getToolTip(ItemStack is) {
-		net.minecraft.src.ItemStack itemstack = new net.minecraft.src.ItemStack(is.getTypeId(), is.getAmount(), is.getDurability());
+		net.minecraft.src.ItemStack itemstack = null;
+		if (is instanceof CraftItemStack) {
+			itemstack = ((CraftItemStack)is).item;
+		}
+		else {
+			itemstack = new net.minecraft.src.ItemStack(is.getTypeId(), is.getAmount(), is.getDurability());
+		}
+		
 		Item rawItem = Item.itemsList[itemstack.itemID];
 		List<String> list;
 		if (rawItem != null) {
