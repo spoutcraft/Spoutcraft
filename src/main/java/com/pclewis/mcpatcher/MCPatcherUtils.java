@@ -89,15 +89,15 @@ public class MCPatcherUtils {
             }
         }
     }
-
+ 
     static File getDefaultGameDir() {
         String os = System.getProperty("os.name").toLowerCase();
         String baseDir = null;
-        String subDir = ".minecraft";
+        String subDir = ".spoutcraft";
         if (os.contains("win")) {
             baseDir = System.getenv("APPDATA");
         } else if (os.contains("mac")) {
-            subDir = "Library/Application Support/minecraft";
+            subDir = "Library/Application Support/spoutcraft";
         }
         if (baseDir == null) {
             baseDir = System.getProperty("user.home");
