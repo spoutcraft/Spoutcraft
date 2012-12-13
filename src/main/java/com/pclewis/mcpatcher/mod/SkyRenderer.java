@@ -3,86 +3,123 @@ package com.pclewis.mcpatcher.mod;
 import com.pclewis.mcpatcher.MCLogger;
 import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.TexturePackAPI;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.Tessellator;
-import net.minecraft.src.World;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Properties;
 
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.src.RenderEngine;
+import net.minecraft.src.Tessellator;
+import net.minecraft.src.World;
+
 public class SkyRenderer {
-    private static RenderEngine renderEngine;
-    private static double worldTime;
-    private static float celestialAngle;
-    private static float rainStrength;
+	private static final MCLogger logger = MCLogger.getLogger("Better Skies");
+	private static RenderEngine renderEngine;
+	private static double worldTime;
+	private static float celestialAngle;
+	private static float rainStrength;
+	private static final HashMap worldSkies = new HashMap();
+	private static WorldEntry currentWorld;
+	public static boolean active;
 
-    private static final HashMap<Integer, WorldEntry> worldSkies = new HashMap<Integer, WorldEntry>();
-    private static WorldEntry currentWorld;
+	public static void setup(World var0, RenderEngine var1, float var2, float var3) {
+		if (TexturePackAPI.isDefaultTexturePack()) {
+			active = false;
+		} else {
+			int var4 = MCPatcherUtils.getMinecraft().getWorld().provider.dimensionId;
+			WorldEntry var5 = getWorldEntry(var4);
 
-    public static boolean active;
+			if (var5 != currentWorld && currentWorld != null) {
+				currentWorld.unloadTextures();
+			}
+
+			currentWorld = var5;
+			active = currentWorld.active();
+
+			if (active) {
+				renderEngine = var1;
+				worldTime = (double)((float)var0.getWorldTime() + var2);
+				rainStrength = 1.0F - var0.getRainStrength(var2);
+				celestialAngle = var3;
+			}
+		}
+	}
+
+	public static void renderAll() {
+		if (active) {
+			currentWorld.renderAll(Tessellator.instance);
+		}
+	}
+
+	public static String setupCelestialObject(String var0) {
+		if (active) {
+			Layer.clearBlendingMethod();
+			Layer var1 = currentWorld.getCelestialObject(var0);
+
+			if (var1 != null) {
+				var1.setBlendingMethod(rainStrength);
+				return Layer.access$200(var1);
+			}
+		}
+
+		return var0;
+	}
+
+	private static WorldEntry getWorldEntry(int var0) {
+		WorldEntry var1 = (WorldEntry)worldSkies.get(Integer.valueOf(var0));
+
+		if (var1 == null) {
+			var1 = new WorldEntry(var0);
+			worldSkies.put(Integer.valueOf(var0), var1);
+		}
+
+		return var1;
+	}
+
+	static HashMap access$000() {
+		return worldSkies;
+	}
+
+	static WorldEntry access$100(int var0) {
+		return getWorldEntry(var0);
+	}
+
+	static MCLogger access$300() {
+		return logger;
+	}
+
+	static float access$400() {
+		return rainStrength;
+	}
+
+	static double access$500() {
+		return worldTime;
+	}
+
+	static RenderEngine access$600() {
+		return renderEngine;
+	}
+
+	static float access$700() {
+		return celestialAngle;
+	}
 
     static {
         TexturePackAPI.ChangeHandler.register(new TexturePackAPI.ChangeHandler(MCPatcherUtils.BETTER_SKIES, 2) {
             @Override
             protected void onChange() {
-                worldSkies.clear();
-                World world = MCPatcherUtils.getMinecraft().getWorld();
-                if (world != null) {
-                    getWorldEntry(world.getWorldInfo().getDimension());
-                }
+        		SkyRenderer.access$000().clear();
+        		World var1 = MCPatcherUtils.getMinecraft().getWorld();
+
+        		if (var1 != null) {
+        			SkyRenderer.access$100(var1.provider.dimensionId);
+        		}
             }
         });
-    }
-
-    public static void setup(World world, RenderEngine renderEngine, float partialTick, float celestialAngle) {
-        if (TexturePackAPI.isDefaultTexturePack()) {
-            active = false;
-        } else {
-            int worldType = MCPatcherUtils.getMinecraft().getWorld().getWorldInfo().getDimension();
-            WorldEntry newEntry = getWorldEntry(worldType);
-            if (newEntry != currentWorld && currentWorld != null) {
-                currentWorld.unloadTextures();
-            }
-            currentWorld = newEntry;
-            active = currentWorld.active();
-            if (active) {
-                SkyRenderer.renderEngine = renderEngine;
-                worldTime = world.getWorldTime() + partialTick;
-                rainStrength = 1.0f - world.getRainStrength(partialTick);
-                SkyRenderer.celestialAngle = celestialAngle;
-            }
-        }
-    }
-
-    public static void renderAll() {
-        if (active) {
-            currentWorld.renderAll(Tessellator.instance);
-        }
-    }
-
-    public static String setupCelestialObject(String defaultTexture) {
-        if (active) {
-            Layer.clearBlendingMethod();
-            Layer layer = currentWorld.getCelestialObject(defaultTexture);
-            if (layer != null) {
-                layer.setBlendingMethod(rainStrength);
-                return layer.texture;
-            }
-        }
-        return defaultTexture;
-    }
-
-    private static WorldEntry getWorldEntry(int worldType) {
-        WorldEntry entry = worldSkies.get(worldType);
-        if (entry == null) {
-            entry = new WorldEntry(worldType);
-            worldSkies.put(worldType, entry);
-        }
-        return entry;
-    }
+    }   
 
     private static class WorldEntry {
         private final int worldType;
@@ -109,6 +146,7 @@ public class SkyRenderer {
                         break;
                     }
                 } else if (layer.valid) {
+                    logger.fine("loaded %s.properties", prefix);
                     skies.add(layer);
                     textures.add(layer.texture);
                 }
@@ -123,6 +161,7 @@ public class SkyRenderer {
                 properties.setProperty("rotate", "true");
                 Layer layer = new Layer(prefix, properties);
                 if (layer.valid) {
+                    logger.fine("using %s.properties (%s) for the %s", prefix, layer.texture, objName);
                     objects.put(textureName, layer);
                 }
             }
@@ -315,10 +354,17 @@ public class SkyRenderer {
             a = (Math.sin(e1) - Math.sin(s0)) / det;
             b = (Math.cos(s0) - Math.cos(e1)) / det;
             c = (Math.cos(e1) * Math.sin(s0) - Math.cos(s0) * Math.sin(e1)) / det;
+
+            logger.finer("%s.properties: y = %f cos x + %f sin x + %f", prefix, a, b, c);
+            logger.finer("  at %f: %f", s0, f(s0));
+            logger.finer("  at %f: %f", s1, f(s1));
+            logger.finer("  at %f: %f", e0, f(e0));
+            logger.finer("  at %f: %f", e1, f(e1));
             return true;
         }
 
         private boolean addError(String format, Object... params) {
+            logger.severe(prefix + ".properties: " + format, params);
             valid = false;
             return false;
         }
@@ -491,5 +537,9 @@ public class SkyRenderer {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
             GL11.glColor4f(1.0f, 1.0f, 1.0f, rainStrength);
         }
-    }
+        
+    	static String access$200(Layer var0) {
+    		return var0.texture;
+    	}        
+    }    
 }

@@ -31,7 +31,7 @@ public class FontRenderer {
 	/**
 	 * Array of GL texture ids for loaded glyph_XX.png images. Indexed by Unicode block (group of 256 chars).
 	 */
-	private int[] glyphTextureName = new int[256]; //TODO Spout - Removed final
+	private int[] glyphTextureName = new int[256]; //TODO Spout - Removed final modifier
 
 	/**
 	 * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of the same colors for drop
@@ -45,7 +45,7 @@ public class FontRenderer {
 	private int boundTextureName;
 
 	/** The RenderEngine used to load and setup glyph textures. */
-	private RenderEngine renderEngine; //TODO Spout - Removed final
+	private RenderEngine renderEngine; //TODO Spout - Removed final modifier
 
 	/** Current X coordinate at which to draw the next character. */
 	private float posX;

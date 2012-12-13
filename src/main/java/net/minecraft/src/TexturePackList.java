@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.TexturePackAPI;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -188,6 +189,10 @@ public class TexturePackList {
 		return Collections.unmodifiableList(this.availableTexturePacks);
 	}
 
+	public ITexturePack getSelectedTexturePack() {
+		return this.selectedTexturePack;
+	}
+
 	public boolean func_77300_f() {
 		if (!this.mc.gameSettings.serverTextures) {
 			return false;
@@ -227,13 +232,5 @@ public class TexturePackList {
 
 	static Minecraft getMinecraft(TexturePackList par0TexturePackList) {
 		return par0TexturePackList.mc;
-	}
-
-	public TexturePackImplementation getDefaultTexturePack() {
-		return (TexturePackImplementation)defaultTexturePack;
-	}
-
-	public TexturePackImplementation getSelectedTexturePack() {
-		return (TexturePackImplementation)this.selectedTexturePack;
 	}
 }

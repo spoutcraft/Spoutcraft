@@ -87,6 +87,13 @@ public class TextureUtils {
             @Override
             protected BufferedImage getImageImpl(String s) {
                 BufferedImage image;
+                if (useTextureCache && enableResizing) {
+                    image = imageCache.get(s);
+                    if (image != null) {
+                        return image;
+                    }
+                }
+
                 image = super.getImageImpl(s);
                 if (image == null) {
                     return null;
@@ -193,8 +200,9 @@ public class TextureUtils {
     }
 
     private static TextureFX refreshTextureFX(TextureFX textureFX) {
-        if (textureFX instanceof TextureLavaFX ||
+        if (textureFX instanceof TextureCompassFX ||
             textureFX instanceof TextureWatchFX ||
+            textureFX instanceof TextureLavaFX ||
             textureFX instanceof TextureLavaFlowFX ||
             textureFX instanceof TextureWaterFX ||
             textureFX instanceof TextureWaterFlowFX ||
@@ -202,6 +210,7 @@ public class TextureUtils {
             textureFX instanceof TexturePortalFX) {
             return null;
         }
+        logger.info("attempting to refresh unknown animation %s", textureFX.getClass().getName());
         Minecraft minecraft = MCPatcherUtils.getMinecraft();
         Class<? extends TextureFX> textureFXClass = textureFX.getClass();
         for (int i = 0; i < 3; i++) {

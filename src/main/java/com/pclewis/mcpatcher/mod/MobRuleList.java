@@ -1,193 +1,120 @@
 package com.pclewis.mcpatcher.mod;
 
 import com.pclewis.mcpatcher.MCLogger;
-import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.TexturePackAPI;
-import com.pclewis.mcpatcher.WeightedIndex;
-
-import java.util.*;
+import com.pclewis.mcpatcher.mod.MobRuleList$MobRuleEntry;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Properties;
 
 class MobRuleList {
-    private static final MCLogger logger = MCLogger.getLogger(MCPatcherUtils.RANDOM_MOBS);
+	private static final MCLogger logger = MCLogger.getLogger("Random Mobs");
+	public static final String ALTERNATIVES_REGEX = "_(eyes|overlay|tame|angry|collar|fur|invul)\\.properties$";
+	private static final HashMap allRules = new HashMap();
+	private final String baseSkin;
+	private final ArrayList allSkins;
+	private final int skinCount;
+	private final ArrayList entries;
 
-    public static final String ALTERNATIVES_REGEX = "_(eyes|overlay|tame|angry|collar|fur|invul)\\.properties$";
+	MobRuleList(String var1) {
+		this.baseSkin = var1;
+		this.allSkins = new ArrayList();
+		this.allSkins.add(var1);
+		int var2 = 2;
 
-    private static final HashMap<String, MobRuleList> allRules = new HashMap<String, MobRuleList>();
+		while (true) {
+			String var3 = var1.replace(".png", "" + var2 + ".png");
 
-    private final String baseSkin;
-    private final ArrayList<String> allSkins;
-    private final int skinCount;
-    private final ArrayList<MobRuleEntry> entries;
+			if (!TexturePackAPI.hasResource(var3)) {
+				this.skinCount = this.allSkins.size();
 
-    MobRuleList(String baseSkin) {
-        this.baseSkin = baseSkin;
-        allSkins = new ArrayList<String>();
-        allSkins.add(baseSkin);
-        for (int i = 2; ; i++) {
-            final String skin = baseSkin.replace(".png", "" + i + ".png");
-            if (!TexturePackAPI.hasResource(skin)) {
-                break;
-            }
-            allSkins.add(skin);
-        }
-        skinCount = allSkins.size();
-        if (skinCount <= 1) {
-            entries = null;
-            return;
-        }
-        logger.fine("found %d variations for %s", skinCount, baseSkin);
+				if (this.skinCount <= 1) {
+					this.entries = null;
+					return;
+				} else {
+					logger.fine("found %d variations for %s", new Object[] {Integer.valueOf(this.skinCount), var1});
+					String var8 = var1.replace(".png", ".properties");
+					var3 = var8.replaceFirst("_(eyes|overlay|tame|angry|collar|fur|invul)\\.properties$", ".properties");
+					Properties var4 = TexturePackAPI.getProperties(var8);
 
-        String filename = baseSkin.replace(".png", ".properties");
-        String altFilename = filename.replaceFirst(ALTERNATIVES_REGEX, ".properties");
-        Properties properties = TexturePackAPI.getProperties(filename);
-        if (properties == null && !filename.equals(altFilename)) {
-            properties = TexturePackAPI.getProperties(altFilename);
-            if (properties != null) {
-                logger.fine("using %s for %s", altFilename, baseSkin);
-            }
-        }
-        ArrayList<MobRuleEntry> tmpEntries = new ArrayList<MobRuleEntry>();
-        if (properties != null) {
-            for (int i = 0; ; i++) {
-                MobRuleEntry entry = MobRuleEntry.load(properties, i, skinCount);
-                if (entry == null) {
-                    if (i > 0) {
-                        break;
-                    }
-                } else {
-                    logger.fine("  %s", entry.toString());
-                    tmpEntries.add(entry);
-                }
-            }
-        }
-        entries = tmpEntries.isEmpty() ? null : tmpEntries;
-    }
+					if (var4 == null && !var8.equals(var3)) {
+						var4 = TexturePackAPI.getProperties(var3);
 
-    String getSkin(long key, int i, int j, int k, String biome) {
-        if (entries == null) {
-            int index = (int) (key % skinCount);
-            if (index < 0) {
-                index += skinCount;
-            }
-            return allSkins.get(index);
-        } else {
-            for (MobRuleEntry entry : entries) {
-                if (entry.match(i, j, k, biome)) {
-                    int index = entry.weightedIndex.choose(key);
-                    return allSkins.get(entry.skins[index]);
-                }
-            }
-        }
-        return baseSkin;
-    }
+						if (var4 != null) {
+							logger.fine("using %s for %s", new Object[] {var3, var1});
+						}
+					}
 
-    static MobRuleList get(String texture) {
-        MobRuleList list = allRules.get(texture);
-        if (list == null) {
-            list = new MobRuleList(texture);
-            allRules.put(texture, list);
-        }
-        return list;
-    }
+					ArrayList var5 = new ArrayList();
 
-    static void clear() {
-        allRules.clear();
-    }
+					if (var4 != null) {
+						int var6 = 0;
 
-    private static class MobRuleEntry {
-        final int[] skins;
-        final WeightedIndex weightedIndex;
-        private final HashSet<String> biomes;
-        private final int minHeight;
-        private final int maxHeight;
+						while (true) {
+							MobRuleList$MobRuleEntry var7 = MobRuleList$MobRuleEntry.load(var4, var6, this.skinCount);
 
-        static MobRuleEntry load(Properties properties, int index, int limit) {
-            String skinList = properties.getProperty("skins." + index, "").trim().toLowerCase();
-            int[] skins;
-            if (skinList.equals("*") || skinList.equals("all") || skinList.equals("any")) {
-                skins = new int[limit];
-                for (int i = 0; i < skins.length; i++) {
-                    skins[i] = i;
-                }
-            } else {
-                skins = MCPatcherUtils.parseIntegerList(skinList, 1, limit);
-                if (skins.length <= 0) {
-                    return null;
-                }
-                for (int i = 0; i < skins.length; i++) {
-                    skins[i]--;
-                }
-            }
+							if (var7 == null) {
+								if (var6 > 0) {
+									break;
+								}
+							} else {
+								logger.fine("  %s", new Object[] {var7.toString()});
+								var5.add(var7);
+							}
 
-            WeightedIndex chooser = WeightedIndex.create(skins.length, properties.getProperty("weights." + index, ""));
-            if (chooser == null) {
-                return null;
-            }
+							++var6;
+						}
+					}
 
-            HashSet<String> biomes = new HashSet<String>();
-            String biomeList = properties.getProperty("biomes." + index, "").trim().toLowerCase();
-            if (!biomeList.equals("")) {
-                Collections.addAll(biomes, biomeList.split("\\s+"));
-            }
-            if (biomes.isEmpty()) {
-                biomes = null;
-            }
+					this.entries = var5.isEmpty() ? null : var5;
+					return;
+				}
+			}
 
-            int maxHeight = -1;
-            int minHeight = -1;
-            try {
-                maxHeight = Integer.parseInt(properties.getProperty("maxHeight." + index, "-1").trim());
-                minHeight = Integer.parseInt(properties.getProperty("minHeight." + index, "-1").trim());
-                if (minHeight < 0 || minHeight > maxHeight) {
-                    minHeight = -1;
-                    maxHeight = -1;
-                }
-            } catch (NumberFormatException e) {
-            }
+			this.allSkins.add(var3);
+			++var2;
+		}
+	}
 
-            return new MobRuleEntry(skins, chooser, biomes, minHeight, maxHeight);
-        }
+	String getSkin(long var1, int var3, int var4, int var5, String var6) {
+		if (this.entries == null) {
+			int var10 = (int)(var1 % (long)this.skinCount);
 
-        MobRuleEntry(int[] skins, WeightedIndex weightedIndex, HashSet<String> biomes, int minHeight, int maxHeight) {
-            this.skins = skins;
-            this.weightedIndex = weightedIndex;
-            this.biomes = biomes;
-            this.minHeight = minHeight;
-            this.maxHeight = maxHeight;
-        }
+			if (var10 < 0) {
+				var10 += this.skinCount;
+			}
 
-        boolean match(int i, int j, int k, String biome) {
-            if (biomes != null) {
-                if (!biomes.contains(biome)) {
-                    return false;
-                }
-            }
-            if (minHeight >= 0) {
-                if (j < minHeight || j > maxHeight) {
-                    return false;
-                }
-            }
-            return true;
-        }
+			return (String)this.allSkins.get(var10);
+		} else {
+			Iterator var7 = this.entries.iterator();
+			MobRuleList$MobRuleEntry var8;
 
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("skins:");
-            for (int i : skins) {
-                sb.append(' ').append(i + 1);
-            }
-            if (biomes != null) {
-                sb.append(", biomes:");
-                for (String s : biomes) {
-                    sb.append(' ').append(s);
-                }
-            }
-            if (minHeight >= 0) {
-                sb.append(", height: ").append(minHeight).append('-').append(maxHeight);
-            }
-            sb.append(", weights: ").append(weightedIndex.toString());
-            return sb.toString();
-        }
-    }
+			do {
+				if (!var7.hasNext()) {
+					return this.baseSkin;
+				}
+
+				var8 = (MobRuleList$MobRuleEntry)var7.next();
+			} while (!var8.match(var3, var4, var5, var6));
+
+			int var9 = var8.weightedIndex.choose(var1);
+			return (String)this.allSkins.get(var8.skins[var9]);
+		}
+	}
+
+	static MobRuleList get(String var0) {
+		MobRuleList var1 = (MobRuleList)allRules.get(var0);
+
+		if (var1 == null) {
+			var1 = new MobRuleList(var0);
+			allRules.put(var0, var1);
+		}
+
+		return var1;
+	}
+
+	static void clear() {
+		allRules.clear();
+	}
 }

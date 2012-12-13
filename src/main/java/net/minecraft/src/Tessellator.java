@@ -143,10 +143,6 @@ public class Tessellator {
 		this.texture = -1;
 	}
 
-	public Tessellator() {
-		// TODO Auto-generated constructor stub
-	}
-
 	/**
 	 * Draws the data set up in this tessellator and resets the state to prepare for new drawing.
 	 */

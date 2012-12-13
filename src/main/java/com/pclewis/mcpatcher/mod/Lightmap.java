@@ -3,136 +3,151 @@ package com.pclewis.mcpatcher.mod;
 import com.pclewis.mcpatcher.MCLogger;
 import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.TexturePackAPI;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import net.minecraft.src.EntityRenderer;
 import net.minecraft.src.World;
 
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-
 public final class Lightmap {
-    private static final MCLogger logger = MCLogger.getLogger(MCPatcherUtils.CUSTOM_COLORS);
+	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
+	private static final String LIGHTMAP_FORMAT = "/environment/lightmap%d.png";
+	private static final int LIGHTMAP_SIZE = 16;
+	private static final int HEIGHT_WITHOUT_NIGHTVISION = 32;
+	private static final int HEIGHT_WITH_NIGHTVISION = 64;
+	private static final boolean useLightmaps = MCPatcherUtils.getBoolean("Custom Colors", "lightmaps", true);
+	private static final HashMap lightmaps = new HashMap();
+	private final int width;
+	private final boolean customNightvision;
+	private final int[] origMap;
+	private final boolean valid;
+	private final int[] newMap = new int[256];
+	private final float[] sunrgb = new float[48];
+	private final float[] torchrgb = new float[48];
+	private final float[] sunrgbnv = new float[48];
+	private final float[] torchrgbnv = new float[48];
+	private final float[] rgb = new float[3];
 
-    private static final String LIGHTMAP_FORMAT = "/environment/lightmap%d.png";
-    private static final int LIGHTMAP_SIZE = 16;
-    private static final int HEIGHT_WITHOUT_NIGHTVISION = 2 * LIGHTMAP_SIZE;
-    private static final int HEIGHT_WITH_NIGHTVISION = 4 * LIGHTMAP_SIZE;
+	static void clear() {
+		lightmaps.clear();
+	}
 
-    private static final boolean useLightmaps = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "lightmaps", true);
+	public static boolean computeLightmap(EntityRenderer var0, World var1, float var2) {
+		if (var1 != null && useLightmaps) {
+			Lightmap var3 = null;
+			int var4 = var1.provider.dimensionId;
 
-    private static final HashMap<Integer, Lightmap> lightmaps = new HashMap<Integer, Lightmap>();
+			if (lightmaps.containsKey(Integer.valueOf(var4))) {
+				var3 = (Lightmap)lightmaps.get(Integer.valueOf(var4));
+			} else {
+				String var5 = String.format("/environment/lightmap%d.png", new Object[] {Integer.valueOf(var4)});
+				BufferedImage var6 = TexturePackAPI.getImage(var5);
 
-    private final int width;
-    private final boolean customNightvision;
-    private final int[] origMap;
-    private final boolean valid;
+				if (var6 != null) {
+					var3 = new Lightmap(var5, var6);
 
-    private final int[] newMap = new int[LIGHTMAP_SIZE * LIGHTMAP_SIZE];
-    private final float[] sunrgb = new float[3 * LIGHTMAP_SIZE];
-    private final float[] torchrgb = new float[3 * LIGHTMAP_SIZE];
-    private final float[] sunrgbnv = new float[3 * LIGHTMAP_SIZE];
-    private final float[] torchrgbnv = new float[3 * LIGHTMAP_SIZE];
-    private final float[] rgb = new float[3];
+					if (!var3.valid) {
+						var3 = null;
+					}
+				}
 
-    static void clear() {
-        lightmaps.clear();
-    }
+				lightmaps.put(Integer.valueOf(var4), var3);
+			}
 
-    public static boolean computeLightmap(EntityRenderer renderer, World world, float partialTick) {
-        if (world == null || !useLightmaps) {
-            return false;
-        }
-        Lightmap lightmap = null;
-        int worldType = world.getWorldInfo().getDimension();
-        if (lightmaps.containsKey(worldType)) {
-            lightmap = lightmaps.get(worldType);
-        } else {
-            String name = String.format(LIGHTMAP_FORMAT, worldType);
-            BufferedImage image = TexturePackAPI.getImage(name);
-            if (image != null) {
-                lightmap = new Lightmap(name, image);
-                if (!lightmap.valid) {
-                    lightmap = null;
-                }
-            }
-            lightmaps.put(worldType, lightmap);
-        }
-        return lightmap != null && lightmap.compute(renderer, world, partialTick);
-    }
+			return var3 != null && var3.compute(var0, var1, var2);
+		} else {
+			return false;
+		}
+	}
 
-    private Lightmap(String name, BufferedImage image) {
-        width = image.getWidth();
-        int height = image.getHeight();
-        customNightvision = (height == HEIGHT_WITH_NIGHTVISION);
-        origMap = new int[width * height];
-        image.getRGB(0, 0, width, height, origMap, 0, width);
-        valid = (height == HEIGHT_WITHOUT_NIGHTVISION || height == HEIGHT_WITH_NIGHTVISION);
-        if (!valid) {
-            logger.severe("%s must be exactly %d or %d pixels high", name, HEIGHT_WITHOUT_NIGHTVISION, HEIGHT_WITH_NIGHTVISION);
-        }
-    }
+	private Lightmap(String var1, BufferedImage var2) {
+		this.width = var2.getWidth();
+		int var3 = var2.getHeight();
+		this.customNightvision = var3 == 64;
+		this.origMap = new int[this.width * var3];
+		var2.getRGB(0, 0, this.width, var3, this.origMap, 0, this.width);
+		this.valid = var3 == 32 || var3 == 64;
 
-    private boolean compute(EntityRenderer renderer, World world, float partialTick) {
-        float sun = Colorizer.clamp(world.lightningFlash > 0 ? 1.0f : 7.0f / 6.0f * (world.getCelestialAngle(1.0f) - 0.2f)) * (width - 1);
-        float torch = Colorizer.clamp(renderer.torchFlickerX + 0.5f) * (width - 1);
-        float nightVisionStrength = renderer.getNightVisionStrength(partialTick);
-        float gamma = Colorizer.clamp(MCPatcherUtils.getMinecraft().gameSettings.gammaSetting);
-        for (int i = 0; i < LIGHTMAP_SIZE; i++) {
-            interpolate(origMap, i * width, sun, sunrgb, 3 * i);
-            interpolate(origMap, (i + LIGHTMAP_SIZE) * width, torch, torchrgb, 3 * i);
-            if (customNightvision && nightVisionStrength > 0.0f) {
-                interpolate(origMap, (i + 2 * LIGHTMAP_SIZE) * width, sun, sunrgbnv, 3 * i);
-                interpolate(origMap, (i + 3 * LIGHTMAP_SIZE) * width, torch, torchrgbnv, 3 * i);
-            }
-        }
-        for (int s = 0; s < LIGHTMAP_SIZE; s++) {
-            for (int t = 0; t < LIGHTMAP_SIZE; t++) {
-                for (int k = 0; k < 3; k++) {
-                    rgb[k] = Colorizer.clamp(sunrgb[3 * s + k] + torchrgb[3 * t + k]);
-                }
-                if (nightVisionStrength > 0.0f) {
-                    if (customNightvision) {
-                        for (int k = 0; k < 3; k++) {
-                            rgb[k] = Colorizer.clamp((1.0f - nightVisionStrength) * rgb[k] + nightVisionStrength * (sunrgbnv[3 * s + k] + torchrgbnv[3 * t + k]));
-                        }
-                    } else {
-                        float nightVisionMultiplier = Math.max(Math.max(rgb[0], rgb[1]), rgb[2]);
-                        if (nightVisionMultiplier > 0.0f) {
-                            nightVisionMultiplier = (1.0f - nightVisionStrength) + nightVisionStrength / nightVisionMultiplier;
-                            for (int k = 0; k < 3; k++) {
-                                rgb[k] = Colorizer.clamp(rgb[k] * nightVisionMultiplier);
-                            }
-                        }
-                    }
-                }
-                if (gamma != 0.0f) {
-                    for (int k = 0; k < 3; k++) {
-                        float tmp = 1.0f - rgb[k];
-                        tmp = 1.0f - tmp * tmp * tmp * tmp;
-                        rgb[k] = gamma * tmp + (1.0f - gamma) * rgb[k];
-                    }
-                }
-                newMap[s * LIGHTMAP_SIZE + t] = 0xff000000 | Colorizer.float3ToInt(rgb);
-            }
-        }
-        MCPatcherUtils.getMinecraft().renderEngine.createTextureFromBytes(newMap, LIGHTMAP_SIZE, LIGHTMAP_SIZE, renderer.lightmapTexture);
-        return true;
-    }
+		if (!this.valid) {
+			logger.severe("%s must be exactly %d or %d pixels high", new Object[] {var1, Integer.valueOf(32), Integer.valueOf(64)});
+		}
+	}
 
-    private static void interpolate(int[] map, int offset1, float x, float[] rgb, int offset2) {
-        int x0 = (int) Math.floor(x);
-        int x1 = (int) Math.ceil(x);
-        if (x0 == x1) {
-            Colorizer.intToFloat3(map[offset1 + x0], rgb, offset2);
-        } else {
-            float xf = x - x0;
-            float xg = 1.0f - xf;
-            float[] rgb0 = new float[3];
-            float[] rgb1 = new float[3];
-            Colorizer.intToFloat3(map[offset1 + x0], rgb0);
-            Colorizer.intToFloat3(map[offset1 + x1], rgb1);
-            for (int i = 0; i < 3; i++) {
-                rgb[offset2 + i] = xg * rgb0[i] + xf * rgb1[i];
-            }
-        }
-    }
+	private boolean compute(EntityRenderer var1, World var2, float var3) {
+		float var4 = Colorizer.clamp(var2.lightningFlash > 0 ? 1.0F : 1.1666666F * (var2.func_72971_b(1.0F) - 0.2F)) * (float)(this.width - 1);
+		float var5 = Colorizer.clamp(var1.torchFlickerX + 0.5F) * (float)(this.width - 1);
+		float var6 = var1.getNightVisionStrength(var3);
+		float var7 = Colorizer.clamp(MCPatcherUtils.getMinecraft().gameSettings.gammaSetting);
+		int var8;
+
+		for (var8 = 0; var8 < 16; ++var8) {
+			interpolate(this.origMap, var8 * this.width, var4, this.sunrgb, 3 * var8);
+			interpolate(this.origMap, (var8 + 16) * this.width, var5, this.torchrgb, 3 * var8);
+
+			if (this.customNightvision && var6 > 0.0F) {
+				interpolate(this.origMap, (var8 + 32) * this.width, var4, this.sunrgbnv, 3 * var8);
+				interpolate(this.origMap, (var8 + 48) * this.width, var5, this.torchrgbnv, 3 * var8);
+			}
+		}
+
+		for (var8 = 0; var8 < 16; ++var8) {
+			for (int var9 = 0; var9 < 16; ++var9) {
+				int var10;
+
+				for (var10 = 0; var10 < 3; ++var10) {
+					this.rgb[var10] = Colorizer.clamp(this.sunrgb[3 * var8 + var10] + this.torchrgb[3 * var9 + var10]);
+				}
+
+				if (var6 > 0.0F) {
+					if (this.customNightvision) {
+						for (var10 = 0; var10 < 3; ++var10) {
+							this.rgb[var10] = Colorizer.clamp((1.0F - var6) * this.rgb[var10] + var6 * (this.sunrgbnv[3 * var8 + var10] + this.torchrgbnv[3 * var9 + var10]));
+						}
+					} else {
+						float var12 = Math.max(Math.max(this.rgb[0], this.rgb[1]), this.rgb[2]);
+
+						if (var12 > 0.0F) {
+							var12 = 1.0F - var6 + var6 / var12;
+
+							for (int var11 = 0; var11 < 3; ++var11) {
+								this.rgb[var11] = Colorizer.clamp(this.rgb[var11] * var12);
+							}
+						}
+					}
+				}
+
+				if (var7 != 0.0F) {
+					for (var10 = 0; var10 < 3; ++var10) {
+						float var13 = 1.0F - this.rgb[var10];
+						var13 = 1.0F - var13 * var13 * var13 * var13;
+						this.rgb[var10] = var7 * var13 + (1.0F - var7) * this.rgb[var10];
+					}
+				}
+
+				this.newMap[var8 * 16 + var9] = -16777216 | Colorizer.float3ToInt(this.rgb);
+			}
+		}
+
+		MCPatcherUtils.getMinecraft().renderEngine.createTextureFromBytes(this.newMap, 16, 16, var1.lightmapTexture);
+		return true;
+	}
+
+	private static void interpolate(int[] var0, int var1, float var2, float[] var3, int var4) {
+		int var5 = (int)Math.floor((double)var2);
+		int var6 = (int)Math.ceil((double)var2);
+
+		if (var5 == var6) {
+			Colorizer.intToFloat3(var0[var1 + var5], var3, var4);
+		} else {
+			float var7 = var2 - (float)var5;
+			float var8 = 1.0F - var7;
+			float[] var9 = new float[3];
+			float[] var10 = new float[3];
+			Colorizer.intToFloat3(var0[var1 + var5], var9);
+			Colorizer.intToFloat3(var0[var1 + var6], var10);
+
+			for (int var11 = 0; var11 < 3; ++var11) {
+				var3[var4 + var11] = var8 * var9[var11] + var7 * var10[var11];
+			}
+		}
+	}
 }

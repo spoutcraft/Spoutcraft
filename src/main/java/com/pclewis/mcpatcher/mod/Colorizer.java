@@ -416,7 +416,7 @@ public class Colorizer {
     }
 
     public static boolean computeFogColor(World world, float f) {
-        if (world.getWorldInfo().getDimension() == 0 && computeFogColor(COLOR_MAP_FOG0)) {
+        if (world.provider.dimensionId == 0 && computeFogColor(COLOR_MAP_FOG0)) {
             computeLightningFlash(world, f);
             return true;
         } else {
@@ -425,7 +425,7 @@ public class Colorizer {
     }
 
     public static boolean computeSkyColor(World world, float f) {
-        if (world.getWorldInfo().getDimension() == 0 && computeFogColor(COLOR_MAP_SKY0)) {
+        if (world.provider.dimensionId == 0 && computeFogColor(COLOR_MAP_SKY0)) {
             computeLightningFlash(world, f);
             return true;
         } else {
@@ -739,10 +739,11 @@ public class Colorizer {
     }
 
     private static void loadIntColor(String key, Potion potion) {
+        logger.config("%s=%06x", key, potion.liquidColor);
         String value = properties.getProperty(key, "");
         if (!value.equals("")) {
             try {
-                potion.origColor = Integer.parseInt(value, 16);
+                potion.liquidColor = Integer.parseInt(value, 16);
             } catch (NumberFormatException e) {
             }
         }

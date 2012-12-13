@@ -7,6 +7,8 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.WorldChunkManager;
 
 abstract class BiomeHelper {
+    private static final MCLogger logger = MCLogger.getLogger(MCPatcherUtils.CUSTOM_COLORS);
+
     static BiomeHelper instance;
 
     IBlockAccess blockAccess;
@@ -71,6 +73,10 @@ abstract class BiomeHelper {
 
         New(IBlockAccess blockAccess) {
             super(blockAccess);
+            if (!logged) {
+                logged = true;
+                logger.config("biomes v1.2 detected");
+            }
         }
 
         @Override

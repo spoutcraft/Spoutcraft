@@ -59,7 +59,7 @@ public class CTMUtils {
             @Override
             protected void onChange() {
                 terrainTexture = getTexture("/terrain.png");
-                SuperTessellator.instance.clearTessellators();
+                SuperTessellator.a.clearTessellators();
 
                 Arrays.fill(blockOverrides, null);
                 Arrays.fill(tileOverrides, null);
@@ -205,7 +205,7 @@ public class CTMUtils {
             lastOverride = override;
             newTextureIndex = override.getTile(renderBlocks, blockAccess, block, origTexture, i, j, k, face);
             if (newTextureIndex >= 0) {
-                newTessellator = SuperTessellator.instance.getTessellator(override.texture);
+                newTessellator = SuperTessellator.a.getTessellator(override.texture);
                 return true;
             }
         }

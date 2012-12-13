@@ -1,430 +1,529 @@
 package com.pclewis.mcpatcher;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.*;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import javax.imageio.ImageIO;
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.RenderEngine;
+import net.minecraft.src.TexturePackCustom;
+import net.minecraft.src.TexturePackDefault;
+import net.minecraft.src.TexturePackFolder;
+import net.minecraft.src.TexturePackImplementation;
+import net.minecraft.src.TexturePackList;
 
 public class TexturePackAPI {
-    private static final MCLogger logger = MCLogger.getLogger("Texture Pack");
+	private static final MCLogger logger = MCLogger.getLogger("Texture Pack");
+	public static TexturePackAPI instance = new TexturePackAPI();
+	public static boolean loadFontFromTexturePack;
+	private static final ArrayList textureMapFields = new ArrayList();
+	private static TexturePackImplementation texturePack;
 
-    public static TexturePackAPI instance = new TexturePackAPI();
-    public static boolean loadFontFromTexturePack;
+	public static TexturePackImplementation getTexturePack() {
+		return texturePack;
+	}
 
-    private static final ArrayList<Field> textureMapFields = new ArrayList<Field>();
+	static TexturePackImplementation getCurrentTexturePack() {
+		Minecraft var0 = MCPatcherUtils.getMinecraft();
 
-    private static TexturePackImplementation texturePack;
+		if (var0 == null) {
+			return null;
+		} else {
+			TexturePackList var1 = var0.texturePackList;
+			return (TexturePackImplementation) (var1 == null ? null : var1.getSelectedTexturePack());
+		}
+	}
 
-    static {
-        try {
-            for (Field field : RenderEngine.class.getDeclaredFields()) {
-                if (HashMap.class.isAssignableFrom(field.getType())) {
-                    field.setAccessible(true);
-                    textureMapFields.add(field);
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
+	public static boolean isDefaultTexturePack() {
+		return getTexturePack() instanceof TexturePackDefault;
+	}
 
-    public static TexturePackImplementation getTexturePack() {
-        return texturePack;
-    }
+	public static String[] parseTextureName(String var0) {
+		String[] var1 = new String[] {null, var0};
 
-    static TexturePackImplementation getCurrentTexturePack() {
-        Minecraft minecraft = MCPatcherUtils.getMinecraft();
-        if (minecraft == null) {
-            return null;
-        }
-        TexturePackList texturePackList = minecraft.texturePackList;
-        if (texturePackList == null) {
-            return null;
-        }
-        return texturePackList.getSelectedTexturePack();
-    }
+		if (var0.startsWith("##")) {
+			var1[0] = "##";
+			var1[1] = var0.substring(2);
+		} else if (var0.startsWith("%")) {
+			int var2 = var0.indexOf(37, 1);
 
-    public static boolean isDefaultTexturePack() {
-        return getTexturePack() instanceof TexturePackDefault;
-    }
+			if (var2 > 0) {
+				var1[0] = var0.substring(0, var2 + 1);
+				var1[1] = var0.substring(var2 + 1);
+			}
+		}
 
-    public static String[] parseTextureName(String s) {
-        String[] result = new String[]{null, s};
-        if (s.startsWith("##")) {
-            result[0] = "##";
-            result[1] = s.substring(2);
-        } else if (s.startsWith("%")) {
-            int index = s.indexOf('%', 1);
-            if (index > 0) {
-                result[0] = s.substring(0, index + 1);
-                result[1] = s.substring(index + 1);
-            }
-        }
-        return result;
-    }
+		return var1;
+	}
 
-    public static InputStream getInputStream(String s) {
-        return instance.getInputStreamImpl(s);
-    }
+	public static InputStream getInputStream(String var0) {
+		return instance.getInputStreamImpl(var0);
+	}
 
-    public static boolean hasResource(String s) {
-        if (s.endsWith(".png")) {
-            return getImage(s) != null;
-        } else if (s.endsWith(".properties")) {
-            return getProperties(s) != null;
-        } else {
-            InputStream is = getInputStream(s);
-            MCPatcherUtils.close(is);
-            return is != null;
-        }
-    }
+	public static boolean hasResource(String var0) {
+		if (var0.endsWith(".png")) {
+			return getImage(var0) != null;
+		} else if (var0.endsWith(".properties")) {
+			return getProperties(var0) != null;
+		} else {
+			InputStream var1 = getInputStream(var0);
+			MCPatcherUtils.close((Closeable)var1);
+			return var1 != null;
+		}
+	}
 
-    public static BufferedImage getImage(String s) {
-        return instance.getImageImpl(s);
-    }
+	public static BufferedImage getImage(String var0) {
+		return instance.getImageImpl(var0);
+	}
 
-    public static BufferedImage getImage(Object o, String s) {
-        return getImage(s);
-    }
+	public static BufferedImage getImage(Object var0, String var1) {
+		return getImage(var1);
+	}
 
-    public static Properties getProperties(String s) {
-        Properties properties = new Properties();
-        if (getProperties(s, properties)) {
-            return properties;
-        } else {
-            return null;
-        }
-    }
+	public static Properties getProperties(String var0) {
+		Properties var1 = new Properties();
+		return getProperties(var0, var1) ? var1 : null;
+	}
 
-    public static boolean getProperties(String s, Properties properties) {
-        return instance.getPropertiesImpl(s, properties);
-    }
+	public static boolean getProperties(String var0, Properties var1) {
+		return instance.getPropertiesImpl(var0, var1);
+	}
 
-    public static String[] listResources(String directory, String suffix) {
-        if (directory == null) {
-            directory = "";
-        }
-        if (directory.startsWith("/")) {
-            directory = directory.substring(1);
-        }
-        if (suffix == null) {
-            suffix = "";
-        }
+	public static String[] listResources(String var0, String var1) {
+		if (var0 == null) {
+			var0 = "";
+		}
 
-        ArrayList<String> resources = new ArrayList<String>();
-        if (texturePack instanceof TexturePackDefault) {
-            // nothing
-        } else if (texturePack instanceof TexturePackCustom) {
-            ZipFile zipFile = ((TexturePackCustom) texturePack).texturePackZipFile;
-            if (zipFile != null) {
-                for (ZipEntry entry : Collections.list(zipFile.entries())) {
-                    final String name = entry.getName();
-                    if (name.startsWith(directory) && name.endsWith(suffix)) {
-                        resources.add("/" + name);
-                    }
-                }
-            }
-        } else if (texturePack instanceof TexturePackFolder) {
-            File folder = ((TexturePackFolder) texturePack).getFolder();
-            if (folder != null && folder.isDirectory()) {
-                String[] list = new File(folder, directory).list();
-                if (list != null) {
-                    for (String s : list) {
-                        if (s.endsWith(suffix)) {
-                            resources.add("/" + new File(new File(directory), s).getPath().replace('\\', '/'));
-                        }
-                    }
-                }
-            }
-        }
+		if (var0.startsWith("/")) {
+			var0 = var0.substring(1);
+		}
 
-        Collections.sort(resources);
-        return resources.toArray(new String[resources.size()]);
-    }
+		if (var1 == null) {
+			var1 = "";
+		}
 
-    public static int getTextureIfLoaded(String s) {
-        RenderEngine renderEngine = MCPatcherUtils.getMinecraft().renderEngine;
-        for (Field field : textureMapFields) {
-            try {
-                HashMap map = (HashMap) field.get(renderEngine);
-                if (map != null) {
-                    Object value = map.get(s);
-                    if (value instanceof Integer) {
-                        return (Integer) value;
-                    }
-                }
-            } catch (IllegalAccessException e) {
-            }
-        }
-        return -1;
-    }
+		ArrayList var2 = new ArrayList();
 
-    public static boolean isTextureLoaded(String s) {
-        return getTextureIfLoaded(s) >= 0;
-    }
+		if (!(texturePack instanceof TexturePackDefault)) {
+			if (texturePack instanceof TexturePackCustom) {
+				ZipFile var3 = ((TexturePackCustom)texturePack).texturePackZipFile;
 
-    public static int unloadTexture(String s) {
-        int texture = getTextureIfLoaded(s);
-        if (texture >= 0) {
-            logger.finest("unloading texture %s", s);
-            RenderEngine renderEngine = MCPatcherUtils.getMinecraft().renderEngine;
-            renderEngine.deleteTexture(texture);
-            for (Field field : textureMapFields) {
-                try {
-                    HashMap map = (HashMap) field.get(renderEngine);
-                    if (map != null) {
-                        map.remove(s);
-                    }
-                } catch (IllegalAccessException e) {
-                }
-            }
-        }
-        return texture;
-    }
+				if (var3 != null) {
+					Iterator var4 = Collections.list(var3.entries()).iterator();
 
-    public static String getTextureName(int texture) {
-        if (texture >= 0) {
-            RenderEngine renderEngine = MCPatcherUtils.getMinecraft().renderEngine;
-            for (Field field : textureMapFields) {
-                try {
-                    HashMap map = (HashMap) field.get(renderEngine);
-                    for (Object o : map.entrySet()) {
-                        Map.Entry entry = (Map.Entry) o;
-                        Object value = entry.getValue();
-                        Object key = entry.getKey();
-                        if (value instanceof Integer && key instanceof String && (Integer) value == texture) {
-                            return (String) key;
-                        }
-                    }
-                } catch (IllegalAccessException e) {
-                }
-            }
-        }
-        return null;
-    }
+					while (var4.hasNext()) {
+						ZipEntry var5 = (ZipEntry)var4.next();
+						String var6 = var5.getName();
 
-    protected InputStream getInputStreamImpl(String s) {
-        s = parseTextureName(s)[1];
-        if (!loadFontFromTexturePack && s.startsWith("/font/")) {
-            return TexturePackAPI.class.getResourceAsStream(s);
-        } else if (texturePack == null) {
-            TexturePackImplementation currentTexturePack = getCurrentTexturePack();
-            if (currentTexturePack == null) {
-                return TexturePackAPI.class.getResourceAsStream(s);
-            } else {
-                return currentTexturePack.getResourceAsStream(s);
-            }
-        } else {
-            return texturePack.getResourceAsStream(s);
-        }
-    }
+						if (var6.startsWith(var0) && var6.endsWith(var1)) {
+							var2.add("/" + var6);
+						}
+					}
+				}
+			} else if (texturePack instanceof TexturePackFolder) {
+				File var9 = ((TexturePackFolder)texturePack).getFolder();
 
-    protected BufferedImage getImageImpl(String s) {
-        InputStream input = getInputStream(s);
-        BufferedImage image = null;
-        if (input != null) {
-            try {
-                image = ImageIO.read(input);
-            } catch (IOException e) {
-                logger.severe("could not read %s", s);
-                e.printStackTrace();
-            } finally {
-                MCPatcherUtils.close(input);
-            }
-        }
-        return image;
-    }
+				if (var9 != null && var9.isDirectory()) {
+					String[] var10 = (new File(var9, var0)).list();
 
-    protected boolean getPropertiesImpl(String s, Properties properties) {
-        if (properties != null) {
-            InputStream input = getInputStream(s);
-            try {
-                if (input != null) {
-                    properties.load(input);
-                    return true;
-                }
-            } catch (IOException e) {
-                logger.severe("could not read %s");
-                e.printStackTrace();
-            } finally {
-                MCPatcherUtils.close(input);
-            }
-        }
-        return false;
-    }
+					if (var10 != null) {
+						String[] var11 = var10;
+						int var12 = var10.length;
 
-    abstract public static class ChangeHandler {
-        private static final ArrayList<ChangeHandler> handlers = new ArrayList<ChangeHandler>();
-        private static boolean changing;
+						for (int var7 = 0; var7 < var12; ++var7) {
+							String var8 = var11[var7];
 
-        private static final boolean autoRefreshTextures = MCPatcherUtils.getBoolean("autoRefreshTextures", false);
-        private static long lastCheckTime;
+							if (var8.endsWith(var1)) {
+								var2.add("/" + (new File(new File(var0), var8)).getPath().replace('\\', '/'));
+							}
+						}
+					}
+				}
+			}
+		}
 
-        protected final String name;
-        protected final int order;
+		Collections.sort(var2);
+		return (String[])var2.toArray(new String[var2.size()]);
+	}
 
-        protected ChangeHandler(String name, int order) {
-            this.name = name;
-            this.order = order;
-        }
+	public static int getTextureIfLoaded(String var0) {
+		RenderEngine var1 = MCPatcherUtils.getMinecraft().renderEngine;
+		Iterator var2 = textureMapFields.iterator();
 
-        abstract protected void onChange();
+		while (var2.hasNext()) {
+			Field var3 = (Field)var2.next();
 
-        public static void register(ChangeHandler handler) {
-            if (handler != null) {
-                if (texturePack != null) {
-                    try {
-                        logger.info("initializing %s...", handler.name);
-                        handler.onChange();
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                        logger.severe("%s initialization failed", handler.name);
-                    }
-                }
-                handlers.add(handler);
-                logger.fine("registered texture pack handler %s, priority %d", handler.name, handler.order);
+			try {
+				HashMap var4 = (HashMap)var3.get(var1);
+
+				if (var4 != null) {
+					Object var5 = var4.get(var0);
+
+					if (var5 instanceof Integer) {
+						return ((Integer)var5).intValue();
+					}
+				}
+			} catch (IllegalAccessException var6) {
+				;
+			}
+		}
+
+		return -1;
+	}
+
+	public static boolean isTextureLoaded(String var0) {
+		return getTextureIfLoaded(var0) >= 0;
+	}
+
+	public static int unloadTexture(String var0) {
+		int var1 = getTextureIfLoaded(var0);
+
+		if (var1 >= 0) {
+			logger.finest("unloading texture %s", new Object[] {var0});
+			RenderEngine var2 = MCPatcherUtils.getMinecraft().renderEngine;
+			var2.deleteTexture(var1);
+			Iterator var3 = textureMapFields.iterator();
+
+			while (var3.hasNext()) {
+				Field var4 = (Field)var3.next();
+
+				try {
+					HashMap var5 = (HashMap)var4.get(var2);
+
+					if (var5 != null) {
+						var5.remove(var0);
+					}
+				} catch (IllegalAccessException var6) {
+					;
+				}
+			}
+		}
+
+		return var1;
+	}
+
+	public static String getTextureName(int var0) {
+		if (var0 >= 0) {
+			RenderEngine var1 = MCPatcherUtils.getMinecraft().renderEngine;
+			Iterator var2 = textureMapFields.iterator();
+
+			while (var2.hasNext()) {
+				Field var3 = (Field)var2.next();
+
+				try {
+					HashMap var4 = (HashMap)var3.get(var1);
+					Iterator var5 = var4.entrySet().iterator();
+
+					while (var5.hasNext()) {
+						Object var6 = var5.next();
+						Entry var7 = (Entry)var6;
+						Object var8 = var7.getValue();
+						Object var9 = var7.getKey();
+
+						if (var8 instanceof Integer && var9 instanceof String && ((Integer)var8).intValue() == var0) {
+							return (String)var9;
+						}
+					}
+				} catch (IllegalAccessException var10) {
+					;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	protected InputStream getInputStreamImpl(String var1) {
+		var1 = parseTextureName(var1)[1];
+
+		if (!loadFontFromTexturePack && var1.startsWith("/font/")) {
+			return TexturePackAPI.class.getResourceAsStream(var1);
+		} else if (texturePack == null) {
+			TexturePackImplementation var2 = getCurrentTexturePack();
+			return var2 == null ? TexturePackAPI.class.getResourceAsStream(var1) : var2.getResourceAsStream(var1);
+		} else {
+			return texturePack.getResourceAsStream(var1);
+		}
+	}
+
+	protected BufferedImage getImageImpl(String var1) {
+		InputStream var2 = getInputStream(var1);
+		BufferedImage var3 = null;
+
+		if (var2 != null) {
+			try {
+				var3 = ImageIO.read(var2);
+			} catch (IOException var8) {
+				logger.severe("could not read %s", new Object[] {var1});
+				var8.printStackTrace();
+			} finally {
+				MCPatcherUtils.close((Closeable)var2);
+			}
+		}
+
+		return var3;
+	}
+
+	protected boolean getPropertiesImpl(String var1, Properties var2) {
+		if (var2 != null) {
+			InputStream var3 = getInputStream(var1);
+			boolean var4;
+
+			try {
+				if (var3 == null) {
+					return false;
+				}
+
+				var2.load(var3);
+				var4 = true;
+			} catch (IOException var8) {
+				logger.severe("could not read %s", new Object[0]);
+				var8.printStackTrace();
+				return false;
+			} finally {
+				MCPatcherUtils.close((Closeable)var3);
+			}
+
+			return var4;
+		} else {
+			return false;
+		}
+	}
+
+	static TexturePackImplementation access$000() {
+		return texturePack;
+	}
+
+	static MCLogger access$100() {
+		return logger;
+	}
+
+	static TexturePackImplementation access$002(TexturePackImplementation var0) {
+		texturePack = var0;
+		return var0;
+	}
+
+	static {
+		try {
+			Field[] var0 = RenderEngine.class.getDeclaredFields();
+			int var1 = var0.length;
+
+			for (int var2 = 0; var2 < var1; ++var2) {
+				Field var3 = var0[var2];
+
+				if (HashMap.class.isAssignableFrom(var3.getType())) {
+					var3.setAccessible(true);
+					textureMapFields.add(var3);
+				}
+			}
+		} catch (Throwable var4) {
+			var4.printStackTrace();
+		}
+	}
+	public abstract static class ChangeHandler {
+		private static final ArrayList handlers = new ArrayList();
+		private static boolean changing;
+		private static final boolean autoRefreshTextures = MCPatcherUtils.getBoolean("autoRefreshTextures", false);
+		private static long lastCheckTime;
+		protected final String name;
+		protected final int order;
+
+		protected ChangeHandler(String var1, int var2) {
+			this.name = var1;
+			this.order = var2;
+		}
+
+		protected abstract void onChange();
+
+		public static void register(ChangeHandler var0) {
+			if (var0 != null) {
+				if (TexturePackAPI.access$000() != null) {
+					try {
+						TexturePackAPI.access$100().info("initializing %s...", new Object[] {var0.name});
+						var0.onChange();
+					} catch (Throwable var2) {
+						var2.printStackTrace();
+						TexturePackAPI.access$100().severe("%s initialization failed", new Object[] {var0.name});
+					}
+				}
+
+				handlers.add(var0);
+				TexturePackAPI.access$100().fine("registered texture pack handler %s, priority %d", new Object[] {var0.name, Integer.valueOf(var0.order)});
                 Collections.sort(handlers, new Comparator<ChangeHandler>() {
                     public int compare(ChangeHandler o1, ChangeHandler o2) {
                         return o1.order - o2.order;
                     }
                 });
-            }
-        }
+			}
+		}
 
-        public static void checkForTexturePackChange() {
-            Minecraft minecraft = MCPatcherUtils.getMinecraft();
-            if (minecraft == null) {
-                return;
-            }
-            TexturePackList texturePackList = minecraft.texturePackList;
-            if (texturePackList == null) {
-                return;
-            }
-            TexturePackImplementation currentTexturePack = texturePackList.getSelectedTexturePack();
-            if (currentTexturePack != texturePack) {
-                changeTexturePack(currentTexturePack);
-            } else if (currentTexturePack instanceof TexturePackCustom) {
-                checkFileChange(texturePackList, (TexturePackCustom) currentTexturePack);
-            }
-        }
+		public static void checkForTexturePackChange() {
+			Minecraft var0 = MCPatcherUtils.getMinecraft();
 
-        private static void changeTexturePack(TexturePackImplementation newPack) {
-            if (newPack != null && !changing) {
-                changing = true;
-                long timeDiff = -System.currentTimeMillis();
-                Runtime runtime = Runtime.getRuntime();
-                long memDiff = -(runtime.totalMemory() - runtime.freeMemory());
+			if (var0 != null) {
+				TexturePackList var1 = var0.texturePackList;
 
-                if (texturePack == null) {
-                    logger.info("\nsetting texture pack to %s", newPack.getTexturePackFileName());
-                } else if (texturePack == newPack) {
-                    logger.info("\nreloading texture pack %s", newPack.getTexturePackFileName());
-                } else {
-                    logger.info("\nchanging texture pack from %s to %s", texturePack.getTexturePackFileName(), newPack.getTexturePackFileName());
-                }
+				if (var1 != null) {
+					TexturePackImplementation var2 = (TexturePackImplementation) var1.getSelectedTexturePack();
 
-                texturePack = newPack;
-                for (ChangeHandler handler : handlers) {
-                    try {
-                        logger.info("refreshing %s...", handler.name);
-                        handler.onChange();
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                        logger.severe("%s refresh failed", handler.name);
-                    }
-                }
+					if (var2 != TexturePackAPI.access$000()) {
+						changeTexturePack(var2);
+					} else if (var2 instanceof TexturePackCustom) {
+						checkFileChange(var1, (TexturePackCustom)var2);
+					}
+				}
+			}
+		}
 
-                System.gc();
-                timeDiff += System.currentTimeMillis();
-                memDiff += runtime.totalMemory() - runtime.freeMemory();
-                logger.info("done (%.3fs elapsed, mem usage %+.1fMB)\n", timeDiff / 1000.0, memDiff / 1048576.0);
-                changing = false;
-            }
-        }
+		private static void changeTexturePack(TexturePackImplementation var0) {
+			if (var0 != null && !changing) {
+				changing = true;
+				long var1 = -System.currentTimeMillis();
+				Runtime var3 = Runtime.getRuntime();
+				long var4 = -(var3.totalMemory() - var3.freeMemory());
 
-        private static boolean openTexturePackFile(TexturePackCustom pack) {
-            if (pack.texturePackZipFile == null) {
-                return false;
-            }
-            if (pack.texturePackFile.exists()) {
-                return true;
-            }
-            InputStream input = null;
-            OutputStream output = null;
-            ZipFile newZipFile = null;
-            try {
-                pack.lastModified = pack.texturePackFile.lastModified();
-                pack.tmpFile = File.createTempFile("tmpmc", ".zip");
-                pack.tmpFile.deleteOnExit();
-                MCPatcherUtils.close(pack.texturePackZipFile);
-                input = new FileInputStream(pack.texturePackFile);
-                output = new FileOutputStream(pack.tmpFile);
-                byte[] buffer = new byte[65536];
-                while (true) {
-                    int nread = input.read(buffer);
-                    if (nread <= 0) {
-                        break;
-                    }
-                    output.write(buffer, 0, nread);
-                }
-                MCPatcherUtils.close(input);
-                MCPatcherUtils.close(output);
-                newZipFile = new ZipFile(pack.tmpFile);
-                pack.origZip = pack.texturePackZipFile;
-                pack.texturePackZipFile = newZipFile;
-                newZipFile = null;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            } finally {
-                MCPatcherUtils.close(input);
-                MCPatcherUtils.close(output);
-                MCPatcherUtils.close(newZipFile);
-            }
-            return true;
-        }
+				if (TexturePackAPI.access$000() == null) {
+					TexturePackAPI.access$100().info("\nsetting texture pack to %s", new Object[] {var0.texturePackID});
+				} else if (TexturePackAPI.access$000() == var0) {
+					TexturePackAPI.access$100().info("\nreloading texture pack %s", new Object[] {var0.texturePackID});
+				} else {
+					TexturePackAPI.access$100().info("\nchanging texture pack from %s to %s", new Object[] {TexturePackAPI.access$000().texturePackID, var0.texturePackID});
+				}
 
-        private static void closeTexturePackFile(TexturePackCustom pack) {
-            if (pack.origZip != null) {
-                MCPatcherUtils.close(pack.texturePackZipFile);
-                pack.texturePackZipFile = pack.origZip;
-                pack.origZip = null;
-                pack.tmpFile.delete();
-                pack.tmpFile = null;
-            }
-        }
+				TexturePackAPI.access$002(var0);
+				Iterator var6 = handlers.iterator();
 
-        private static boolean checkFileChange(TexturePackList list, TexturePackCustom pack) {
-            if (!autoRefreshTextures || !openTexturePackFile(pack)) {
-                return false;
-            }
-            long now = System.currentTimeMillis();
-            if (now - lastCheckTime < 1000L) {
-                return false;
-            }
-            lastCheckTime = now;
-            long lastModified = pack.texturePackFile.lastModified();
-            if (lastModified == pack.lastModified || lastModified == 0 || pack.lastModified == 0) {
-                return false;
-            }
-            ZipFile tmpZip = null;
-            try {
-                tmpZip = new ZipFile(pack.texturePackFile);
-            } catch (IOException e) {
-                // file is still being written
-                return false;
-            } finally {
-                MCPatcherUtils.close(tmpZip);
-            }
-            closeTexturePackFile(pack);
-            list.updateAvaliableTexturePacks();
-            return true;
-        }
-    }
+				while (var6.hasNext()) {
+					ChangeHandler var7 = (ChangeHandler)var6.next();
+
+					try {
+						TexturePackAPI.access$100().info("refreshing %s...", new Object[] {var7.name});
+						var7.onChange();
+					} catch (Throwable var9) {
+						var9.printStackTrace();
+						TexturePackAPI.access$100().severe("%s refresh failed", new Object[] {var7.name});
+					}
+				}
+
+				System.gc();
+				var1 += System.currentTimeMillis();
+				var4 += var3.totalMemory() - var3.freeMemory();
+				TexturePackAPI.access$100().info("done (%.3fs elapsed, mem usage %+.1fMB)\n", new Object[] {Double.valueOf((double)var1 / 1000.0D), Double.valueOf((double)var4 / 1048576.0D)});
+				changing = false;
+			}
+		}
+
+		private static boolean openTexturePackFile(TexturePackCustom var0) {
+			if (var0.texturePackZipFile == null) {
+				return false;
+			} else if (var0.origZip != null) {
+				return true;
+			} else {
+				FileInputStream var1 = null;
+				FileOutputStream var2 = null;
+				ZipFile var3 = null;
+				boolean var5;
+
+				try {
+					var0.lastModified = var0.texturePackFile.lastModified();
+					var0.tmpFile = File.createTempFile("tmpmc", ".zip");
+					var0.tmpFile.deleteOnExit();
+					MCPatcherUtils.close(var0.texturePackZipFile);
+					var1 = new FileInputStream(var0.texturePackFile);
+					var2 = new FileOutputStream(var0.tmpFile);
+					byte[] var4 = new byte[65536];
+
+					while (true) {
+						int var11 = var1.read(var4);
+
+						if (var11 <= 0) {
+							MCPatcherUtils.close((Closeable)var1);
+							MCPatcherUtils.close((Closeable)var2);
+							var3 = new ZipFile(var0.tmpFile);
+							var0.origZip = var0.texturePackZipFile;
+							var0.texturePackZipFile = var3;
+							var3 = null;
+							TexturePackAPI.access$100().fine("copied %s to %s, lastModified = %d", new Object[] {var0.texturePackFile.getPath(), var0.tmpFile.getPath(), Long.valueOf(var0.lastModified)});
+							return true;
+						}
+
+						var2.write(var4, 0, var11);
+					}
+				} catch (IOException var9) {
+					var9.printStackTrace();
+					var5 = false;
+				} finally {
+					MCPatcherUtils.close((Closeable)var1);
+					MCPatcherUtils.close((Closeable)var2);
+					MCPatcherUtils.close(var3);
+				}
+
+				return var5;
+			}
+		}
+
+		private static void closeTexturePackFile(TexturePackCustom var0) {
+			if (var0.origZip != null) {
+				MCPatcherUtils.close(var0.texturePackZipFile);
+				var0.texturePackZipFile = var0.origZip;
+				var0.origZip = null;
+				var0.tmpFile.delete();
+				TexturePackAPI.access$100().fine("deleted %s", new Object[] {var0.tmpFile.getPath()});
+				var0.tmpFile = null;
+			}
+		}
+
+		private static boolean checkFileChange(TexturePackList var0, TexturePackCustom var1) {
+			if (autoRefreshTextures && openTexturePackFile(var1)) {
+				long var2 = System.currentTimeMillis();
+
+				if (var2 - lastCheckTime < 1000L) {
+					return false;
+				} else {
+					lastCheckTime = var2;
+					long var4 = var1.texturePackFile.lastModified();
+
+					if (var4 != var1.lastModified && var4 != 0L && var1.lastModified != 0L) {
+						TexturePackAPI.access$100().finer("%s lastModified changed from %d to %d", new Object[] {var1.texturePackFile.getName(), Long.valueOf(var1.lastModified), Long.valueOf(var4)});
+						ZipFile var6 = null;
+						label66: {
+							boolean var8;
+
+							try {
+								var6 = new ZipFile(var1.texturePackFile);
+								break label66;
+							} catch (IOException var12) {
+								var8 = false;
+							} finally {
+								MCPatcherUtils.close(var6);
+							}
+
+							return var8;
+						}
+						closeTexturePackFile(var1);
+						var0.updateAvaliableTexturePacks();
+						return true;
+					} else {
+						return false;
+					}
+				}
+			} else {
+				return false;
+			}
+		}
+	}
 }

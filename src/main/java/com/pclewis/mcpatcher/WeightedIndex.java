@@ -1,6 +1,6 @@
 package com.pclewis.mcpatcher;
 
-abstract public class WeightedIndex {
+public abstract class WeightedIndex {
     final int size;
 
     public static WeightedIndex create(int size) {

@@ -3,23 +3,231 @@ package com.pclewis.mcpatcher.mod;
 import com.pclewis.mcpatcher.MCLogger;
 import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.TexturePackAPI;
+import java.awt.image.BufferedImage;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Map.Entry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 
-import java.awt.image.BufferedImage;
-import java.util.Map;
-import java.util.Properties;
-
 public class FontUtils {
-    private static final MCLogger logger = MCLogger.getLogger(MCPatcherUtils.HD_FONT);
+	private static final MCLogger logger = MCLogger.getLogger("HD Font");
+	private static final int ROWS = 16;
+	private static final int COLS = 16;
+	public static final char[] AVERAGE_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123467890".toCharArray();
+	public static final int[] SPACERS = new int[] {33721342, 41975936, 234881023};
+	private static final boolean showLines = false;
 
-    private static final int ROWS = 16;
-    private static final int COLS = 16;
+	private static void setFontRenderer(Minecraft var0, FontRenderer var1, String var2) {
+		if (var1 != null) {
+			boolean var3 = var1.unicodeFlag;
+			var1.initialize(var0.gameSettings, var2, var0.renderEngine);
+			var1.unicodeFlag = var3;
+		}
+	}
 
-    public static final char[] AVERAGE_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123467890".toCharArray();
-    public static final int[] SPACERS = new int[]{0x02028bfe, 0x02808080, 0x0dffffff};
+	public static float[] computeCharWidths(FontRenderer var0, String var1, BufferedImage var2, int[] var3, int[] var4) {
+		if (var0.FONT_HEIGHT == 0) {
+			var0.FONT_HEIGHT = 8;
+		}
 
-    private static final boolean showLines = false;
+		float[] var5 = new float[var4.length];
+		int var6 = var2.getWidth();
+		int var7 = var2.getHeight();
+		int var8 = var6 / 16;
+		int var9 = var7 / 16;
+		int var10 = 0;
+		int var11;
+
+		while (var10 < var4.length) {
+			var11 = var10 / 16;
+			int var12 = var10 % 16;
+			int var13 = var8 - 1;
+			label75:
+
+			while (true) {
+				if (var13 >= 0) {
+					int var14 = var12 * var8 + var13;
+					int var15 = 0;
+
+					while (true) {
+						if (var15 >= var9) {
+							--var13;
+							continue label75;
+						}
+
+						int var16 = var11 * var9 + var15;
+						int var17 = var3[var14 + var16 * var6];
+
+						if (isOpaque(var17)) {
+							if (printThis(var10)) {
+								logger.finer("\'%c\' pixel (%d, %d) = %08x, colIdx = %d", new Object[] {Character.valueOf((char)var10), Integer.valueOf(var14), Integer.valueOf(var16), Integer.valueOf(var17), Integer.valueOf(var13)});
+							}
+
+							var5[var10] = 128.0F * (float)(var13 + 1) / (float)var6 + 1.0F;
+							break;
+						}
+
+						++var15;
+					}
+				}
+
+				++var10;
+				break;
+			}
+		}
+
+		for (var10 = 0; var10 < var5.length; ++var10) {
+			if (var5[var10] <= 0.0F) {
+				var5[var10] = 2.0F;
+			} else if (var5[var10] >= 7.99F) {
+				var5[var10] = 7.99F;
+			}
+		}
+
+		boolean[] var19 = new boolean[var4.length];
+
+		try {
+			getCharWidthOverrides(var1, var5, var19);
+		} catch (Throwable var18) {
+			var18.printStackTrace();
+		}
+
+		if (!var19[32]) {
+			var5[32] = defaultSpaceWidth(var5);
+		}
+
+		for (var11 = 0; var11 < var4.length; ++var11) {
+			var4[var11] = Math.round(var5[var11]);
+
+			if (printThis(var11)) {
+				logger.finer("charWidth[\'%c\'] = %f", new Object[] {Character.valueOf((char)var11), Float.valueOf(var5[var11])});
+			}
+		}
+
+		return var5;
+	}
+
+	private static float getCharWidthf(FontRenderer var0, char var1) {
+		float var2 = (float)var0.getCharWidth(var1);
+		return var2 >= 0.0F && var1 < var0.charWidthf.length && var1 >= 0 ? var0.charWidthf[var1] : var2;
+	}
+
+	public static float getStringWidthf(FontRenderer var0, String var1) {
+		float var2 = 0.0F;
+
+		if (var1 != null) {
+			boolean var3 = false;
+
+			for (int var4 = 0; var4 < var1.length(); ++var4) {
+				char var5 = var1.charAt(var4);
+				float var6 = getCharWidthf(var0, var5);
+
+				if (var6 < 0.0F && var4 < var1.length() - 1) {
+					++var4;
+					var5 = var1.charAt(var4);
+
+					if (var5 != 108 && var5 != 76) {
+						if (var5 == 114 || var5 == 82 || var5 >= 48 && var5 <= 57 || var5 >= 97 && var5 <= 102 || var5 >= 65 && var5 <= 70) {
+							var3 = false;
+						}
+					} else {
+						var3 = true;
+					}
+
+					var6 = getCharWidthf(var0, var5);
+				}
+
+				var2 += var6;
+
+				if (var3) {
+					++var2;
+				}
+			}
+		}
+
+		return var2;
+	}
+
+	private static boolean isOpaque(int var0) {
+		int[] var1 = SPACERS;
+		int var2 = var1.length;
+
+		for (int var3 = 0; var3 < var2; ++var3) {
+			int var4 = var1[var3];
+
+			if (var0 == var4) {
+				return false;
+			}
+		}
+
+		return (var0 >> 24 & 240) > 0;
+	}
+
+	private static boolean printThis(int var0) {
+		return "ABCDEF abcdef".indexOf(var0) >= 0;
+	}
+
+	private static float defaultSpaceWidth(float[] var0) {
+		if (TexturePackAPI.isDefaultTexturePack()) {
+			return 4.0F;
+		} else {
+			float var1 = 0.0F;
+			int var2 = 0;
+			char[] var3 = AVERAGE_CHARS;
+			int var4 = var3.length;
+
+			for (int var5 = 0; var5 < var4; ++var5) {
+				char var6 = var3[var5];
+
+				if (var0[var6] > 0.0F) {
+					var1 += var0[var6];
+					++var2;
+				}
+			}
+
+			if (var2 > 0) {
+				return var1 / (float)var2 * 7.0F / 12.0F;
+			} else {
+				return 4.0F;
+			}
+		}
+	}
+
+	private static void getCharWidthOverrides(String var0, float[] var1, boolean[] var2) {
+		String var3 = var0.replace(".png", ".properties");
+		Properties var4 = TexturePackAPI.getProperties(var3);
+
+		if (var4 != null) {
+			logger.fine("reading character widths from %s", new Object[] {var3});
+			Iterator var5 = var4.entrySet().iterator();
+
+			while (var5.hasNext()) {
+				Entry var6 = (Entry)var5.next();
+				String var7 = var6.getKey().toString().trim();
+				String var8 = var6.getValue().toString().trim();
+
+				if (var7.matches("^width\\.\\d+$") && !var8.equals("")) {
+					try {
+						int var9 = Integer.parseInt(var7.substring(6));
+						float var10 = Float.parseFloat(var8);
+
+						if (var9 >= 0 && var9 < var1.length) {
+							logger.finer("setting charWidthf[%d] to %f", new Object[] {Integer.valueOf(var9), Float.valueOf(var10)});
+							var1[var9] = var10;
+							var2[var9] = true;
+						}
+					} catch (NumberFormatException var11) {
+						;
+					}
+				}
+			}
+		}
+	}
+
+	static void access$000(Minecraft var0, FontRenderer var1, String var2) {
+		setFontRenderer(var0, var1, var2);
+	}
 
     static {
         TexturePackAPI.loadFontFromTexturePack = true;
@@ -27,174 +235,13 @@ public class FontUtils {
         TexturePackAPI.ChangeHandler.register(new TexturePackAPI.ChangeHandler(MCPatcherUtils.HD_FONT, 2) {
             @Override
             protected void onChange() {
-                Minecraft minecraft = MCPatcherUtils.getMinecraft();
-                setFontRenderer(minecraft, minecraft.fontRenderer, "/font/default.png");
-                if (minecraft.standardGalacticFontRenderer != minecraft.fontRenderer) {
-                    setFontRenderer(minecraft, minecraft.standardGalacticFontRenderer, "/font/alternate.png");
-                }
+        		Minecraft var1 = MCPatcherUtils.getMinecraft();
+        		FontUtils.access$000(var1, var1.fontRenderer, "/font/default.png");
+
+        		if (var1.standardGalacticFontRenderer != var1.fontRenderer) {
+        			FontUtils.access$000(var1, var1.standardGalacticFontRenderer, "/font/alternate.png");
+        		}
             }
         });
-    }
-
-    private static void setFontRenderer(Minecraft minecraft, FontRenderer fontRenderer, String filename) {
-        if (fontRenderer != null) {
-            boolean saveUnicode = fontRenderer.unicodeFlag;
-            fontRenderer.initialize(minecraft.gameSettings, filename, minecraft.renderEngine);
-            fontRenderer.unicodeFlag = saveUnicode;
-        }
-    }
-
-    public static float[] computeCharWidths(FontRenderer fontRenderer, String filename, BufferedImage image, int[] rgb, int[] charWidth) {
-        if (fontRenderer.FONT_HEIGHT == 0) {
-            fontRenderer.FONT_HEIGHT = 8;
-        }
-        float[] charWidthf = new float[charWidth.length];
-        int width = image.getWidth();
-        int height = image.getHeight();
-        int colWidth = width / COLS;
-        int rowHeight = height / ROWS;
-        for (int ch = 0; ch < charWidth.length; ch++) {
-            int row = ch / COLS;
-            int col = ch % COLS;
-            outer:
-            for (int colIdx = colWidth - 1; colIdx >= 0; colIdx--) {
-                int x = col * colWidth + colIdx;
-                for (int rowIdx = 0; rowIdx < rowHeight; rowIdx++) {
-                    int y = row * rowHeight + rowIdx;
-                    int pixel = rgb[x + y * width];
-                    if (isOpaque(pixel)) {
-                        if (printThis(ch)) {
-                            logger.finer("'%c' pixel (%d, %d) = %08x, colIdx = %d", (char) ch, x, y, pixel, colIdx);
-                        }
-                        charWidthf[ch] = (128.0f * (float) (colIdx + 1)) / (float) width + 1.0f;
-                        if (showLines) {
-                            for (int i = 0; i < rowHeight; i++) {
-                                y = row * rowHeight + i;
-                                for (int j = 0; j < Math.max(colWidth / 16, 1); j++) {
-                                    image.setRGB(x + j, y, (i == rowIdx ? 0xff0000ff : 0xffff0000));
-                                    image.setRGB(col * colWidth + j, y, 0xff00ff00);
-                                }
-                            }
-                        }
-                        break outer;
-                    }
-                }
-            }
-        }
-        for (int ch = 0; ch < charWidthf.length; ch++) {
-            if (charWidthf[ch] <= 0.0f) {
-                charWidthf[ch] = 2.0f;
-            } else if (charWidthf[ch] >= 7.99f) {
-                charWidthf[ch] = 7.99f;
-            }
-        }
-        boolean[] isOverride = new boolean[charWidth.length];
-        try {
-            getCharWidthOverrides(filename, charWidthf, isOverride);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        if (!isOverride[32]) {
-            charWidthf[32] = defaultSpaceWidth(charWidthf);
-        }
-        for (int ch = 0; ch < charWidth.length; ch++) {
-            charWidth[ch] = Math.round(charWidthf[ch]);
-            if (printThis(ch)) {
-                logger.finer("charWidth['%c'] = %f", (char) ch, charWidthf[ch]);
-            }
-        }
-        return charWidthf;
-    }
-
-    private static float getCharWidthf(FontRenderer fontRenderer, char ch) {
-        float width = fontRenderer.getCharWidth(ch);
-        if (width < 0 || ch >= fontRenderer.charWidthf.length || ch < 0) {
-            return width;
-        } else {
-            return fontRenderer.charWidthf[ch];
-        }
-    }
-
-    public static float getStringWidthf(FontRenderer fontRenderer, String s) {
-        float totalWidth = 0.0f;
-        if (s != null) {
-            boolean isLink = false;
-            for (int i = 0; i < s.length(); i++) {
-                char c = s.charAt(i);
-                float cWidth = getCharWidthf(fontRenderer, c);
-                if (cWidth < 0.0f && i < s.length() - 1) {
-                    i++;
-                    c = s.charAt(i);
-                    if (c == 'l' || c == 'L') {
-                        isLink = true;
-                    } else if (c == 'r' || c == 'R' || (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F')) {
-                        isLink = false;
-                    }
-                    cWidth = getCharWidthf(fontRenderer, c);
-                }
-                totalWidth += cWidth;
-                if (isLink) {
-                    totalWidth++;
-                }
-            }
-        }
-        return totalWidth;
-    }
-
-    private static boolean isOpaque(int pixel) {
-        for (int i : SPACERS) {
-            if (pixel == i) {
-                return false;
-            }
-        }
-        return ((pixel >> 24) & 0xf0) > 0;
-    }
-
-    private static boolean printThis(int ch) {
-        return "ABCDEF abcdef".indexOf(ch) >= 0;
-    }
-
-    private static float defaultSpaceWidth(float[] charWidthf) {
-        if (TexturePackAPI.isDefaultTexturePack()) {
-            return 4.0f;
-        }
-        float sum = 0.0f;
-        int n = 0;
-        for (char ch : AVERAGE_CHARS) {
-            if (charWidthf[ch] > 0.0f) {
-                sum += charWidthf[ch];
-                n++;
-            }
-        }
-        if (n > 0) {
-            return sum / (float) n * 7.0f / 12.0f;
-        } else {
-            return 4.0f;
-        }
-    }
-
-    private static void getCharWidthOverrides(String font, float[] charWidthf, boolean[] isOverride) {
-        String textFile = font.replace(".png", ".properties");
-        Properties props = TexturePackAPI.getProperties(textFile);
-        if (props == null) {
-            return;
-        }
-        logger.fine("reading character widths from %s", textFile);
-        for (Map.Entry entry : props.entrySet()) {
-            String key = entry.getKey().toString().trim();
-            String value = entry.getValue().toString().trim();
-            if (key.matches("^width\\.\\d+$") && !value.equals("")) {
-                try {
-                    int ch = Integer.parseInt(key.substring(6));
-                    float width = Float.parseFloat(value);
-                    if (ch >= 0 && ch < charWidthf.length) {
-                        logger.finer("setting charWidthf[%d] to %f", ch, width);
-                        charWidthf[ch] = width;
-                        isOverride[ch] = true;
-                    }
-                } catch (NumberFormatException e) {
-                }
-            }
-        }
     }
 }
