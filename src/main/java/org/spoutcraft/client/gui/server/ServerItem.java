@@ -129,9 +129,9 @@ public class ServerItem implements ListWidgetItem {
 	public void render(int x, int y, int width, int height) {
 		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();		
 		if (databaseId != -1) {
-			String iconUrl = "http://cdn.spout.org/server/thumb/" + databaseId + ".png";			
-			Texture icon = CustomTextureManager.getTextureFromUrl("Spoutcraft", iconUrl);			
-			if (icon == null) {				
+			String iconUrl = "http://cdn.spout.org/server/thumb/" + databaseId + ".png";
+			Texture icon = CustomTextureManager.getTextureFromUrl(iconUrl);
+			if (icon == null) {
 				CustomTextureManager.downloadTexture(iconUrl, true);
 				icon = CustomTextureManager.getTextureFromJar("/res/icon/unknown_server.png");				
 			}
