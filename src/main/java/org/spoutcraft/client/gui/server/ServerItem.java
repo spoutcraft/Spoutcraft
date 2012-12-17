@@ -130,7 +130,7 @@ public class ServerItem implements ListWidgetItem {
 		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
 
 		if (databaseId != -1) {
-			String iconUrl = "http://static.spout.org/server/thumb/" + databaseId + ".png";
+			String iconUrl = "http://cdn.spout.org/server/thumb/" + databaseId + ".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl(iconUrl);
 			if (icon == null) {
 				CustomTextureManager.downloadTexture(iconUrl, true);
