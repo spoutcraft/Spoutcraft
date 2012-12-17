@@ -68,7 +68,7 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 		} else {			
 			this.field_73723_d = 0L;
 			this.field_73727_a = par1Str;
-			this.setLoadingProgress(1); //Spout, this shouldn't be needed...
+			this.setLoadingProgress(-1); //Spout, this shouldn't be needed...
 			this.field_73723_d = 0L;
 		}
 	}

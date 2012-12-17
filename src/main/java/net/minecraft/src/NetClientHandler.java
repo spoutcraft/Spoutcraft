@@ -126,10 +126,11 @@ public class NetClientHandler extends NetHandler {
 		}
 
 		// Spout Start
-		if (mc.currentScreen instanceof GuiDownloadTerrain) {
+		if (mc.currentScreen instanceof GuiDownloadTerrain || mc.currentScreen instanceof GuiPrecache) {
 			if (System.currentTimeMillis() > timeout) {
 				mc.displayGuiScreen(null, false);
-				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new org.spoutcraft.client.packet.PacketPreCacheCompleted());
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new org.spoutcraft.client.packet.PacketPreCacheCompleted());	
+				System.out.println("SpoutDebug: Sent PreCacheCompleted Packet within NetClientHandler");
 			}
 		}
 		// Spout End
@@ -183,8 +184,8 @@ public class NetClientHandler extends NetHandler {
 		this.worldClient.isRemote = true;
 		this.mc.loadWorld(this.worldClient);
 		this.mc.thePlayer.dimension = par1Packet1Login.dimension;
-		//this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
-		this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache()); // Spout
+		this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
+		//this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache()); // Spout  // Dont do this because of the dumb close screen call above it.
 		this.mc.thePlayer.entityId = par1Packet1Login.clientEntityId;
 		this.currentServerMaxPlayers = par1Packet1Login.maxPlayers;
 		this.mc.playerController.setGameType(par1Packet1Login.gameType);

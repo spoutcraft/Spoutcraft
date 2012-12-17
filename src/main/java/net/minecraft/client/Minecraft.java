@@ -823,16 +823,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		if (this.mcApplet != null && !this.mcApplet.isActive()) {
 			this.running = false;
 		} else {
-			this.checkGLError("First render check"); // Spout
-			// Spout Start
-			if (theWorld == null) {
-				try {
-					Thread.sleep(25);
-				} catch (InterruptedException e) {
-
-				}
-			}
-			// Spout End
+			this.checkGLError("First render check"); // Spout			
 			AxisAlignedBB.getAABBPool().cleanPool();
 
 			if (this.theWorld != null) {
