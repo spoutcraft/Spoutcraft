@@ -255,6 +255,7 @@ public class PrecacheManager {
 			SpoutClient.getHandle().displayGuiScreen(null, false);
 			// Prevent closing a plugin created menu from opening the downloading terrain
 			SpoutClient.getHandle().clearPreviousScreen();
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new org.spoutcraft.client.packet.PacketPreCacheCompleted());		
 		}
 	}
 	
