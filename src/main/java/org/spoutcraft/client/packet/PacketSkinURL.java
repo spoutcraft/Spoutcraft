@@ -96,6 +96,9 @@ public class PacketSkinURL implements SpoutPacket {
 				e.worldObj.releaseEntitySkin(e);
 			}
 			e.worldObj.obtainEntitySkin(e);
+			//TODO:
+			System.out.println("Finished PacketSkinURL.java");
+			
 		}
 	}
 

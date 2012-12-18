@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.Random;
 
 public abstract class BlockFluid extends Block {
@@ -24,31 +25,24 @@ public abstract class BlockFluid extends Block {
 	 * first determining what to render.
 	 */
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-		// Spout Start - Biome water
 		if (this.blockMaterial != Material.water) {
-			return 0xffffff;
-		}
-		int color = par1IBlockAccess.getWaterColorCache(par2, par3, par4);
-		if (color == -1 || org.spoutcraft.client.config.Configuration.isFancyBiomeColors()) {
-		
+			return 16777215;
+		} else {
 			int var5 = 0;
 			int var6 = 0;
 			int var7 = 0;
 
 			for (int var8 = -1; var8 <= 1; ++var8) {
 				for (int var9 = -1; var9 <= 1; ++var9) {
-					int var10 = par1IBlockAccess.getBiomeGenForCoords(par2 + var9, par4 + var8).waterColorMultiplier;
+					int var10 = Colorizer.colorizeWater(par1IBlockAccess, par2 + var9, par4 + var8);
 					var5 += (var10 & 16711680) >> 16;
 					var6 += (var10 & 65280) >> 8;
 					var7 += var10 & 255;
 				}
 			}
 
-			color = (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
-			par1IBlockAccess.setWaterColorCache(par2, par3, par4, color);
+			return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
 		}
-		return color;
-		// Spout End - Biome Water
 	}
 
 	/**

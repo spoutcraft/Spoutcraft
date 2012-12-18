@@ -123,8 +123,9 @@ public class GuiTexturePacks extends GuiScreen {
 
 		if (!instancesCreated) {
 			int selected;
-			selected = model.getTextures().indexOf(TextureUtils.getSelectedTexturePack());
-			view.setSelection(selected);
+			//TODO: Needs to be rebuilt.
+			//selected = model.getTextures().indexOf(TextureUtils.getSelectedTexturePack());
+			//view.setSelection(selected);
 		}
 
 		instancesCreated = true;
@@ -146,7 +147,9 @@ public class GuiTexturePacks extends GuiScreen {
 		}
 		if (btn.equals(buttonSelect) && view.getSelectedRow() != -1) {
 			TexturePackItem item = model.getItem(view.getSelectedRow());
-			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
+			// TODO: getSelectedTexturePack() needs to be rebuilt.
+			boolean current = false;
+			//boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
 			if (!current) {
 				item.select();
 				updateButtons();
@@ -173,7 +176,9 @@ public class GuiTexturePacks extends GuiScreen {
 		try {
 			StringTranslate t = StringTranslate.getInstance();
 			TexturePackItem item = model.getItem(view.getSelectedRow());
-			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
+			// TODO: getSelectedTexturePack() needs to be rebuilt.
+			boolean current = false;
+			//boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
 			buttonSelect.setEnabled(true);
 			if (current) {
 				buttonSelect.setText(t.translateKey("spout.texturepack.preview.button", "Preview"));

@@ -186,11 +186,12 @@ class TexturePackSizeThread extends Thread {
 
 	@Override
 	public void run() {
-		item.tileSize = TextureUtils.getTileSize(texturePack);
-		synchronized(TexturePackItem.texturePackSize) {
-			TexturePackItem.texturePackSize.put(getName(), item.tileSize);
-		}
+		//TODO: Needs Rewrite
+		//item.tileSize = TextureUtils.getTileSize(texturePack);
+		//synchronized(TexturePackItem.texturePackSize) {
+		//	TexturePackItem.texturePackSize.put(getName(), item.tileSize);
+		//}
 
-		TexturePackItem.activeThread = null;
+		//TexturePackItem.activeThread = null;
 	}
 }

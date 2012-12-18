@@ -55,21 +55,25 @@ public class PacketValidatePrecache implements SpoutPacket {
 	}
 
 	@Override
-	public void run(int playerId) {
-		PrecacheManager.showPreloadGui();
-		
+	public void run(int playerId) {		
+		PrecacheManager.showPreloadGui();		
 		PrecacheManager.reset();
-		
+		System.out.println("PreCacheManager: Starting fill of Plugins List.");
 		//fill precache list
 		for (PrecacheTuple plugin : plugins) {
 			PrecacheManager.addPlugin(plugin);
 		}
+		System.out.println("PreCacheManager: List fill of Plugins Completed.");
 		
-		if(PrecacheManager.hasNextCache()) {
-			PrecacheManager.doNextCache();
-		} else {
-			PrecacheManager.loadPrecache(false);
-		}
+		PrecacheManager.hasNextCache();
+		
+		//if(PrecacheManager.hasNextCache()) {
+		//	PrecacheManager.doNextCache();
+		//} else {
+		//	PrecacheManager.loadPrecache(false);
+		//}
+				
+		System.out.print("PreCacheManager:  Finished run@PacketValidatePrecache.java");		
 	}
 
 	@Override

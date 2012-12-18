@@ -30,8 +30,8 @@ public class ScreenShotHelper {
 	 */
 	public static String saveScreenshot(File par0File, int par1, int par2) {
 		// Spout Start
-		if(Configuration.isResizeScreenshots()) return saveResizedScreenshot(par0File, Configuration.getResizedScreenshotWidth(), Configuration.getResizedScreenshotHeight());
-		else return saveScreenshot(par0File, (String)null, par1, par2);
+		//if(Configuration.isResizeScreenshots()) return saveResizedScreenshot(par0File, Configuration.getResizedScreenshotWidth(), Configuration.getResizedScreenshotHeight());
+		return saveScreenshot(par0File, (String)null, par1, par2);
 		// Spout End
 	}
 
@@ -118,20 +118,21 @@ public class ScreenShotHelper {
 	}
 	// Spout End
 	
-	public static String saveResizedScreenshot(File base, int width, int height) {
+	//public static String saveResizedScreenshot(File base, int width, int height) {
+		/*
 		int texture = GL11.glGenTextures();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
 		GL11.glTexEnvf( GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE );
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0 , 3, width, height, 0 , GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
 		
 		int buffer = EXTFramebufferObject.glGenFramebuffersEXT();
-		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, buffer);
-		EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, texture, 0);
+		//EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, buffer);
+		//EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, texture, 0);
 		
 		int renderbuffer = EXTFramebufferObject.glGenRenderbuffersEXT();
-		EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, renderbuffer);
+		//EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, renderbuffer);
 		EXTFramebufferObject.glRenderbufferStorageEXT( EXTFramebufferObject.GL_RENDERBUFFER_EXT, GL11.GL_DEPTH_COMPONENT, width, height);
-		EXTFramebufferObject.glFramebufferRenderbufferEXT( EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT, EXTFramebufferObject.GL_RENDERBUFFER_EXT, renderbuffer);
+		//EXTFramebufferObject.glFramebufferRenderbufferEXT( EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT, EXTFramebufferObject.GL_RENDERBUFFER_EXT, renderbuffer);
 		
 		int oldwidth = Minecraft.theMinecraft.displayWidth;
 		int oldheight = Minecraft.theMinecraft.displayHeight;
@@ -172,10 +173,12 @@ public class ScreenShotHelper {
 			return (new StringBuilder()).append("Saved screenshot as ").append(file.getName()).toString();
 		} catch(Exception e) {
 			e.printStackTrace();
-			return (new StringBuilder()).append("Failed to save: ").append(e).toString();
-		}
+			*/
+		//	return (new StringBuilder()).append("Failed to save: ").append(e).toString();
+		//}
+		//return null;
 		//return saveScreenshot(par0File, (String)null, par1, par2);
-	}
+	//}
 
 	
 	public static BufferedImage getScreenshot(int texture, int screenWidth, int screenHeight) {

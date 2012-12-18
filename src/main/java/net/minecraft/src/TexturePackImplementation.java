@@ -16,7 +16,7 @@ public abstract class TexturePackImplementation implements ITexturePack {
 	/**
 	 * Texture pack ID as returnd by generateTexturePackID(). Used only internally and not visible to the user.
 	 */
-	private final String texturePackID;
+	public final String texturePackID;
 
 	/**
 	 * The name of the texture pack's zip file/directory or "Default" for the builtin texture pack. Shown in the GUI.
@@ -72,15 +72,14 @@ public abstract class TexturePackImplementation implements ITexturePack {
 	 * Load and initialize thumbnailImage from the the /pack.png file.
 	 */
 	private void loadThumbnailImage() {
-		InputStream var1 = null;
-
+		InputStream var1 = null;		
 		try {
 			var1 = this.getResourceAsStream("/pack.png");
 			this.thumbnailImage = ImageIO.read(var1);
 		} catch (IOException var11) {
 			;
 		} finally {
-			try {
+			try {				
 				var1.close();
 			} catch (IOException var10) {
 				;
@@ -177,15 +176,11 @@ public abstract class TexturePackImplementation implements ITexturePack {
 	 */
 	public int getTexturePackResolution() {
 		return 16;
-	}
-
-	// Spout HD Start
-	public void openTexturePackFile() {
-		this.bindThumbnailTexture(MCPatcherUtils.getMinecraft().renderEngine);
-	}
-
+	}	
+	
+	// Spout Start
 	public void closeTexturePackFile() {
 		this.deleteTexturePack(MCPatcherUtils.getMinecraft().renderEngine);
 	}
-	// Spout HD End
+	// Spout End
 }

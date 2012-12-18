@@ -36,7 +36,10 @@ import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
 import com.pclewis.mcpatcher.MCPatcherUtils;
+import com.pclewis.mcpatcher.TexturePackAPI;
+import com.pclewis.mcpatcher.mod.Colorizer;
 import com.pclewis.mcpatcher.mod.TextureUtils;
+import com.pclewis.mcpatcher.mod.FontUtils;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
@@ -230,7 +233,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	// Spout End
 
 	public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5) {
-		MCPatcherUtils.setVersions("1.3.1", "2.4.1_01"); // Spout HD
+		MCPatcherUtils.setMinecraft(this);
+		MCPatcherUtils.setVersions("1.4.5", "2.4.4");
 		StatList.func_75919_a();
 		this.tempDisplayHeight = par4;
 		this.fullscreen = par5;
@@ -341,12 +345,12 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		// Spout End
 		this.renderEngine = new RenderEngine(this.texturePackList, this.gameSettings);
 		// Spout Start
-		TextureUtils.setTileSize();
+		//TextureUtils.setTileSize();
 		this.renderEngine.setTileSize(this);
 		// Spout End
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine, false);
 		this.standardGalacticFontRenderer = new FontRenderer(this.gameSettings, "/font/alternate.png", this.renderEngine, false);
-		TextureUtils.setTileSize(); // Spout HD
+		//TextureUtils.setTileSize(); // Spout HD
 		this.renderEngine.setTileSize(this); // Spout HD
 		if (this.gameSettings.language != null) {
 			StringTranslate.getInstance().setLanguage(this.gameSettings.language);
@@ -378,7 +382,16 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		GL11.glLoadIdentity();
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		this.checkGLError("Startup");
-		this.sndManager.loadSoundSettings(this.gameSettings);
+		this.sndManager.loadSoundSettings(this.gameSettings);		
+		this.renderEngine.registerTextureFX(this.textureLavaFX);
+		this.renderEngine.registerTextureFX(this.textureWaterFX);
+		this.renderEngine.registerTextureFX(new TexturePortalFX());
+		this.renderEngine.registerTextureFX(new TextureCompassFX(this));
+		this.renderEngine.registerTextureFX(new TextureWatchFX(this));
+		this.renderEngine.registerTextureFX(new TextureWaterFlowFX());
+		this.renderEngine.registerTextureFX(new TextureLavaFlowFX());
+		this.renderEngine.registerTextureFX(new TextureFlamesFX(0));
+		this.renderEngine.registerTextureFX(new TextureFlamesFX(1));
 		this.renderGlobal = new RenderGlobal(this, this.renderEngine);
 		GL11.glViewport(0, 0, this.displayWidth, this.displayHeight);
 		this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
@@ -406,6 +419,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		}
 
 		// Spout Start
+		TexturePackAPI.ChangeHandler.checkForTexturePackChange();
 		SpoutClient.getInstance().loadAddons();
 		SpoutClient.getInstance().enableAddons(AddonLoadOrder.GAMESTART);
 		// Spout End
@@ -651,8 +665,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	 */
 	private void checkGLError(String par1Str) {
 		int var2 = GL11.glGetError();
-
-		if (var2 != 0) {
+		
+		if (var2 != 0) {						
 			if(!org.spoutcraft.client.gui.mainmenu.MainMenu.hasLoaded) {
 				return;
 			}
@@ -812,8 +826,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	 * Called repeatedly from run()
 	 */
 	private void runGameLoop() {
-		// Spout Start
-		// Colorizer.setupBlockAccess(this.theWorld, true); TODO MCPatcher Removed this
+		Colorizer.setupBlockAccess(this.getWorld(), true);
+		TexturePackAPI.ChangeHandler.checkForTexturePackChange();
 		mainThread = Thread.currentThread();
 		if (sndManager != null) {
 			sndManager.tick();
@@ -856,6 +870,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			this.mcProfiler.endStartSection("preRenderErrors");
 			long var7 = System.nanoTime() - var6;
 			this.checkGLError("Pre render");
+			//TODO: might not want this.
 			//RenderBlocks.fancyGrass = this.gameSettings.fancyGraphics; // Spout removed
 			this.mcProfiler.endStartSection("sound");
 			this.sndManager.setListener(this.thePlayer, this.timer.renderPartialTicks);
@@ -964,7 +979,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			this.mcProfiler.endSection();
 
 			if (this.func_90020_K() > 0) {
-				Display.sync(EntityRenderer.func_78465_a(this.func_90020_K()));
+				//Display.sync(EntityRenderer.func_78465_a(this.func_90020_K()));
+				Display.sync(EntityRenderer.performanceToFps(this.func_90020_K()));
+			//	performanceToFps
 			}
 			this.checkGLError("AFter sync"); // Spout
 		}
@@ -1362,8 +1379,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	/**
 	 * Runs the current tick.
 	 */
-	public void runTick() {
-		TextureUtils.checkTexturePackChange(this); // Spout HD
+	public void runTick() {		
+		//TexturePackAPI.ChangeHandler.checkForTexturePackChange();
 		if (this.rightClickDelayTimer > 0) {
 			--this.rightClickDelayTimer;
 		}
@@ -1384,7 +1401,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			this.playerController.updateController();
 		}
 
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture("/terrain.png"));
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture("/terrain.png"));		
 		this.mcProfiler.endStartSection("textures");
 
 		if (!this.isGamePaused) {
@@ -2367,6 +2384,10 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	//Spout start
 	public boolean isMultiplayerWorld() {
 		return theWorld != null && theWorld.isRemote;
+	}
+	
+	public World getWorld() {
+		return this.effectRenderer.worldObj;
 	}
 	//Spout end
 }

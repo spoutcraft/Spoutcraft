@@ -1,12 +1,11 @@
 package net.minecraft.src;
 
-import gnu.trove.map.hash.TIntFloatHashMap; // Spout
-
-import java.util.ArrayList; // Spout
+import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.List;
 import java.util.Random;
-
-// Spout start
+//Spout
+import gnu.trove.map.hash.TIntFloatHashMap;
+import java.util.ArrayList; 
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.api.entity.ActivePlayer;
 import org.spoutcraft.api.material.CustomBlock;
@@ -14,6 +13,7 @@ import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.util.FastLocation;
 import org.spoutcraft.api.util.FixedLocation;
 // Spout end
+
 
 public class Block {
 
@@ -441,8 +441,8 @@ public class Block {
 	/**
 	 * How bright to render this block based on the light its receiving. Args: iBlockAccess, x, y, z
 	 */
+	// Spout Start
 	public float getBlockBrightness(IBlockAccess par1IBlockAccess, int x, int y, int z) {
-		// Spout Start
 		int light = lightValue[par1IBlockAccess.getBlockId(x, y, z)];
 		if (customIds != null) {
 			int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 256);
@@ -461,8 +461,8 @@ public class Block {
 	/**
 	 * Goes straight to getLightBrightnessForSkyBlocks for Blocks, does some fancy computing for Fluids
 	 */
+	// Spout Start
 	public int getMixedBrightnessForBlock(IBlockAccess par1IBlockAccess, int x, int y, int z) {
-		// Spout Start
 		int light = lightValue[par1IBlockAccess.getBlockId(x, y, z)];
 		if (customIds != null) {
 			int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 256);
@@ -706,11 +706,11 @@ public class Block {
 	public int damageDropped(int par1) {
 		return 0;
 	}
-	
+
 	// Spout start
 	public float getHardness() { // getBlockHardness version with removed random params
- 		return this.blockHardness;
- 	}
+		return this.blockHardness;
+	}
 	// Spout end
 
 	/**
@@ -954,7 +954,7 @@ public class Block {
 	 * Returns the color this block should be rendered. Used by leaves.
 	 */
 	public int getRenderColor(int par1) {
-		return 16777215;
+		return Colorizer.colorizeBlock(this);
 	}
 
 	/**
@@ -962,7 +962,7 @@ public class Block {
 	 * first determining what to render.
 	 */
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-		return 16777215;
+		return Colorizer.colorizeBlock(this, par2, par3, par4, par1IBlockAccess.getBlockMetadata(par2, par3, par4));
 	}
 
 	/**
@@ -1180,7 +1180,10 @@ public class Block {
 		return true;
 	}
 
-	public boolean func_85103_a(Explosion par1Explosion) {
+	/**
+	 * Return whether this block can drop from an explosion.
+	 */
+	public boolean canDropFromExplosion(Explosion par1Explosion) {
 		return true;
 	}
 
@@ -1241,4 +1244,10 @@ public class Block {
 		canBlockGrass[0] = true;
 		StatList.initBreakableStats();
 	}
+	
+	// Spout New Start
+	public boolean func_85103_a(Explosion par1Explosion) {
+return true;
+}
+	// Spout New End
 }

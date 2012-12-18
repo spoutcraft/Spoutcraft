@@ -1,5 +1,6 @@
 package com.pclewis.mcpatcher.mod;
 
+import com.pclewis.mcpatcher.MCLogger;
 import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.TexturePackAPI;
 import java.awt.image.BufferedImage;
@@ -10,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 
 public class FontUtils {
+	private static final MCLogger logger = MCLogger.getLogger("HD Font");
 	private static final int ROWS = 16;
 	private static final int COLS = 16;
 	public static final char[] AVERAGE_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123467890".toCharArray();
@@ -58,6 +60,10 @@ public class FontUtils {
 						int var17 = var3[var14 + var16 * var6];
 
 						if (isOpaque(var17)) {
+							if (printThis(var10)) {
+								logger.finer("\'%c\' pixel (%d, %d) = %08x, colIdx = %d", new Object[] {Character.valueOf((char)var10), Integer.valueOf(var14), Integer.valueOf(var16), Integer.valueOf(var17), Integer.valueOf(var13)});
+							}
+
 							var5[var10] = 128.0F * (float)(var13 + 1) / (float)var6 + 1.0F;
 							break;
 						}
@@ -92,13 +98,17 @@ public class FontUtils {
 		}
 
 		for (var11 = 0; var11 < var4.length; ++var11) {
-			var4[var11] = Math.round(var5[var11]);			
+			var4[var11] = Math.round(var5[var11]);
+
+			if (printThis(var11)) {
+				logger.finer("charWidth[\'%c\'] = %f", new Object[] {Character.valueOf((char)var11), Float.valueOf(var5[var11])});
+			}
 		}
 
 		return var5;
 	}
 
-	public static float getCharWidthf(FontRenderer var0, char var1) {
+	private static float getCharWidthf(FontRenderer var0, char var1) {
 		float var2 = (float)var0.getCharWidth(var1);
 		return var2 >= 0.0F && var1 < var0.charWidthf.length && var1 >= 0 ? var0.charWidthf[var1] : var2;
 	}
@@ -188,8 +198,10 @@ public class FontUtils {
 		String var3 = var0.replace(".png", ".properties");
 		Properties var4 = TexturePackAPI.getProperties(var3);
 
-		if (var4 != null) {			
+		if (var4 != null) {
+			logger.fine("reading character widths from %s", new Object[] {var3});
 			Iterator var5 = var4.entrySet().iterator();
+
 			while (var5.hasNext()) {
 				Entry var6 = (Entry)var5.next();
 				String var7 = var6.getKey().toString().trim();
@@ -200,7 +212,8 @@ public class FontUtils {
 						int var9 = Integer.parseInt(var7.substring(6));
 						float var10 = Float.parseFloat(var8);
 
-						if (var9 >= 0 && var9 < var1.length) {						
+						if (var9 >= 0 && var9 < var1.length) {
+							logger.finer("setting charWidthf[%d] to %f", new Object[] {Integer.valueOf(var9), Float.valueOf(var10)});
 							var1[var9] = var10;
 							var2[var9] = true;
 						}
@@ -217,7 +230,8 @@ public class FontUtils {
 	}
 
     static {
-     
+        TexturePackAPI.loadFontFromTexturePack = true;
+
         TexturePackAPI.ChangeHandler.register(new TexturePackAPI.ChangeHandler(MCPatcherUtils.HD_FONT, 2) {
             @Override
             protected void onChange() {

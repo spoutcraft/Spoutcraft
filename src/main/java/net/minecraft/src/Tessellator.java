@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Shaders; // Spout
-import com.pclewis.mcpatcher.mod.SuperTessellator; // Spout
-
+import com.pclewis.mcpatcher.mod.SuperTessellator;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -42,7 +40,7 @@ public class Tessellator {
 	/**
 	 * The number of vertices to be drawn in the next draw call. Reset to 0 between draw calls.
 	 */
-	public int vertexCount = 0; // Spout HD private -> public
+	public int vertexCount = 0;
 
 	/** The first coordinate to be used for the texture. */
 	private double textureU;
@@ -71,19 +69,19 @@ public class Tessellator {
 	private boolean hasNormals = false;
 
 	/** The index into the raw buffer to be used for the next data. */
-	public int rawBufferIndex = 0; // Spout HD private -> public
+	public int rawBufferIndex = 0;
 
 	/**
 	 * The number of vertices manually added to the given draw call. This differs from vertexCount because it adds extra
 	 * vertices when converting quads to triangles.
 	 */
-	public int addedVertices = 0; // Spout HD private -> public
+	public int addedVertices = 0;
 
 	/** Disables all color information for the following draw call. */
 	private boolean isColorDisabled = false;
 
 	/** The draw mode currently being used by the tessellator. */
-	public int drawMode; // Spout HD private -> public
+	public int drawMode;
 
 	/**
 	 * An offset to be applied along the x-axis for all vertices in this draw call.
@@ -104,10 +102,10 @@ public class Tessellator {
 	private int normal;
 
 	/** The static instance of the Tessellator. */
-	public static final Tessellator instance = new SuperTessellator(2097152); // Spout HD Tessellator -> SuperTessellator
+	public static final Tessellator instance = new SuperTessellator(2097152);
 
 	/** Whether this tessellator is currently in draw mode. */
-	public boolean isDrawing = false;  // Spout HD private -> public
+	public boolean isDrawing = false;
 
 	/** Whether we are currently using VBO or not. */
 	private boolean useVBO = false;
@@ -125,15 +123,10 @@ public class Tessellator {
 	private int vboCount = 10;
 
 	/** The size of the buffers used (in integers). */
-	public int bufferSize; // Spout HD private -> public
-	// Spout Start
-	public int texture = -1;
-	private ByteBuffer shadersBuffer;
-	private ShortBuffer shadersShortBuffer;
-	private short[] shadersData;
-	// Spout End
+	public int bufferSize;
+	public int texture;
 
-	public Tessellator(int par1) { // Spout HD private -> public
+	public Tessellator(int par1) {
 		this.bufferSize = par1;
 		this.byteBuffer = GLAllocation.createDirectByteBuffer(par1 * 4);
 		this.intBuffer = this.byteBuffer.asIntBuffer();
@@ -146,11 +139,8 @@ public class Tessellator {
 			this.vertexBuffers = GLAllocation.createDirectIntBuffer(this.vboCount);
 			ARBVertexBufferObject.glGenBuffersARB(this.vertexBuffers);
 		}
-		// Spout shaders start
-		this.shadersData = new short[]{(short)-1, (short)0};
-		this.shadersBuffer = GLAllocation.createDirectByteBuffer(par1 / 8 * 4);
-		this.shadersShortBuffer = this.shadersBuffer.asShortBuffer();
-		// Spout End
+
+		this.texture = -1;
 	}
 
 	/**
@@ -163,11 +153,10 @@ public class Tessellator {
 			this.isDrawing = false;
 
 			if (this.vertexCount > 0) {
-				// Spout HD start
 				if (this.texture >= 0) {
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture);
 				}
-				// Spout HD End
+
 				this.intBuffer.clear();
 				this.intBuffer.put(this.rawBuffer, 0, this.rawBufferIndex);
 				this.byteBuffer.position(0);
@@ -236,9 +225,9 @@ public class Tessellator {
 				GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 
 				if (this.drawMode == 7 && convertQuadsToTriangles) {
-					Shaders.glDrawArraysWrapper(GL11.GL_TRIANGLES, 0, this.vertexCount, shadersShortBuffer); // Spout
+					GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, this.vertexCount);
 				} else {
-					Shaders.glDrawArraysWrapper(this.drawMode, 0, this.vertexCount, shadersShortBuffer); // Spout
+					GL11.glDrawArrays(this.drawMode, 0, this.vertexCount);
 				}
 
 				GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
@@ -271,21 +260,12 @@ public class Tessellator {
 	/**
 	 * Clears the tessellator state in preparation for new drawing.
 	 */
-	public void reset() { //Spout HD private -> public
-		this.shadersBuffer.clear(); // Spout
+	public void reset() {
 		this.vertexCount = 0;
 		this.byteBuffer.clear();
 		this.rawBufferIndex = 0;
 		this.addedVertices = 0;
 	}
-
-	// Spout Start
-	public void setEntity(int var1) {
-		if (Shaders.entityAttrib >= 0) {
-			this.shadersData[0] = (short)var1;
-		}
-	}
-	// Spout End
 
 	/**
 	 * Sets draw mode in the tessellator to draw quads.
@@ -406,18 +386,6 @@ public class Tessellator {
 	 * Adds a vertex with the specified x,y,z to the current draw call. It will trigger a draw() if the buffer gets full.
 	 */
 	public void addVertex(double par1, double par3, double par5) {
-		// Spout Start
-		if(Shaders.isEnabled()) {
-			if(this.drawMode == 7 && convertQuadsToTriangles && (addedVertices+1)%4==0&&hasNormals) {
-				this.rawBuffer[this.rawBufferIndex + 6] = this.rawBuffer[this.rawBufferIndex + -18];
-				this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
-				this.rawBuffer[this.rawBufferIndex + 14] = this.rawBuffer[this.rawBufferIndex + -2];
-
-			}
-			this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
-		}
-		// Spout End
-		
 		++this.addedVertices;
 
 		if (this.drawMode == 7 && convertQuadsToTriangles && this.addedVertices % 4 == 0) {
@@ -479,9 +447,9 @@ public class Tessellator {
 	 */
 	public void setColorOpaque_I(int par1) {
 		int var2 = par1 >> 16 & 255;
-		int var3 = par1 >> 8 & 255;
-		int var4 = par1 & 255;
-		this.setColorOpaque(var2, var3, var4);
+				int var3 = par1 >> 8 & 255;
+				int var4 = par1 & 255;
+				this.setColorOpaque(var2, var3, var4);
 	}
 
 	/**
@@ -489,9 +457,9 @@ public class Tessellator {
 	 */
 	public void setColorRGBA_I(int par1, int par2) {
 		int var3 = par1 >> 16 & 255;
-		int var4 = par1 >> 8 & 255;
-		int var5 = par1 & 255;
-		this.setColorRGBA(var3, var4, var5, par2);
+				int var4 = par1 >> 8 & 255;
+				int var5 = par1 & 255;
+				this.setColorRGBA(var3, var4, var5, par2);
 	}
 
 	/**

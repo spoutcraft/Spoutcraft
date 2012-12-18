@@ -1,14 +1,13 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.CTMUtils;
+import com.pclewis.mcpatcher.mod.RenderPass;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.lwjgl.opengl.GL11;
 
-// Spout Start
-import com.pclewis.mcpatcher.mod.CTMUtils;
-import com.pclewis.mcpatcher.mod.Shaders;
-
+//Spout Start
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.Chunk;
@@ -31,7 +30,8 @@ import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 
 import net.minecraft.client.Minecraft;
-// Spout End
+//Spout End
+
 public class WorldRenderer {
 
 	/** Reference to the World object. */
@@ -63,7 +63,7 @@ public class WorldRenderer {
 	public boolean isInFrustum = false;
 
 	/** Should this renderer skip this render pass */
-	public boolean[] skipRenderPass = new boolean[3]; // Spout
+	public boolean[] skipRenderPass = new boolean[4]; //Spout was 4
 
 	/** Pos X plus */
 	public int posXPlus;
@@ -132,7 +132,7 @@ public class WorldRenderer {
 			this.posZMinus = par3 - this.posZClip;
 			float var4 = 6.0F;
 			this.rendererBoundingBox = AxisAlignedBB.getBoundingBox((double)((float)par1 - var4), (double)((float)par2 - var4), (double)((float)par3 - var4), (double)((float)(par1 + 16) + var4), (double)((float)(par2 + 16) + var4), (double)((float)(par3 + 16) + var4));
-			GL11.glNewList(this.glRenderList + 2, GL11.GL_COMPILE);
+			GL11.glNewList(this.glRenderList + 4, GL11.GL_COMPILE);
 			RenderItem.renderAABB(AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)((float)this.posXClip - var4), (double)((float)this.posYClip - var4), (double)((float)this.posZClip - var4), (double)((float)(this.posXClip + 16) + var4), (double)((float)(this.posYClip + 16) + var4), (double)((float)(this.posZClip + 16) + var4)));
 			GL11.glEndList();
 			this.markDirty();
@@ -146,12 +146,122 @@ public class WorldRenderer {
 	/**
 	 * Will update this chunk renderer
 	 */
+
+	/*
+	public void updateRenderer() {
+		CTMUtils.start();
+
+		if (!this.needsUpdate) {
+			CTMUtils.finish();
+		} else {
+			this.needsUpdate = false;
+			int var1 = this.posX;
+			int var2 = this.posY;
+			int var3 = this.posZ;
+			int var4 = this.posX + 16;
+			int var5 = this.posY + 16;
+			int var6 = this.posZ + 16;
+
+			for (int var7 = 0; var7 < 4; ++var7) {
+				this.skipRenderPass[var7] = true;
+			}
+
+			Chunk.isLit = false;
+			HashSet var21 = new HashSet();
+			var21.addAll(this.tileEntityRenderers);
+			this.tileEntityRenderers.clear();
+			byte var8 = 1;
+			ChunkCache var9 = new ChunkCache(this.worldObj, var1 - var8, var2 - var8, var3 - var8, var4 + var8, var5 + var8, var6 + var8);
+
+			if (!var9.extendedLevelsInChunkCache()) {
+				++chunksUpdated;
+				RenderBlocks var10 = new RenderBlocks(var9);
+				this.bytesDrawn = 0;
+
+				for (int var11 = 0; var11 < 4; ++var11) {
+					boolean var12 = false;
+					boolean var13 = false;
+					boolean var14 = false;
+					RenderPass.start(var11);
+
+					for (int var15 = var2; var15 < var5; ++var15) {
+						for (int var16 = var3; var16 < var6; ++var16) {
+							for (int var17 = var1; var17 < var4; ++var17) {
+								int var18 = var9.getBlockId(var17, var15, var16);
+
+								if (var18 > 0) {
+									if (!var14) {
+										var14 = true;
+										GL11.glNewList(this.glRenderList + var11, GL11.GL_COMPILE);
+										GL11.glPushMatrix();
+										this.setupGLTranslation();
+										float var19 = 1.000001F;
+										GL11.glTranslatef(-8.0F, -8.0F, -8.0F);
+										GL11.glScalef(var19, var19, var19);
+										GL11.glTranslatef(8.0F, 8.0F, 8.0F);
+										tessellator.startDrawingQuads();
+										tessellator.setTranslation((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
+									}
+
+									Block var23 = Block.blocksList[var18];
+
+									if (var23 != null) {
+										if (var11 == 0 && var23.hasTileEntity()) {
+											TileEntity var20 = var9.getBlockTileEntity(var17, var15, var16);
+
+											if (TileEntityRenderer.instance.hasSpecialRenderer(var20)) {
+												this.tileEntityRenderers.add(var20);
+											}
+										}
+
+										int var24 = RenderPass.getBlockRenderPass(var23);
+
+										if (var24 != var11) {
+											var12 = true;
+										} else if (var24 == var11) {
+											var13 |= var10.renderBlockByRenderType(var23, var17, var15, var16);
+										}
+									}
+								}
+							}
+						}
+					}
+
+					if (var14) {
+						this.bytesDrawn += tessellator.draw();
+						GL11.glPopMatrix();
+						GL11.glEndList();
+						tessellator.setTranslation(0.0D, 0.0D, 0.0D);
+					} else {
+						var13 = false;
+					}
+
+					if (var13) {
+						this.skipRenderPass[var11] = false;
+					}
+				}
+			}
+
+			HashSet var22 = new HashSet();
+			var22.addAll(this.tileEntityRenderers);
+			var22.removeAll(var21);
+			this.tileEntities.addAll(var22);
+			var21.removeAll(this.tileEntityRenderers);
+			this.tileEntities.removeAll(var21);
+			this.isChunkLit = Chunk.isLit;
+			this.isInitialized = true;
+			CTMUtils.finish();
+		}		
+	}	 
+   */
+	
 	public void updateRenderer() {
 		// Spout Start
 		CTMUtils.start();
 
 		if (!this.needsUpdate) {
 			CTMUtils.finish();
+			System.out.println("Chunk Not Updated");
 		} else {
 			++chunksUpdated;
 			int x = this.posX;
@@ -171,31 +281,28 @@ public class WorldRenderer {
 			this.tileEntityRenderers.clear();
 			//ChunkCache chunkCache = new ChunkCache(this.worldObj, x - 1, y - 1, z - 1, sizeXOffset + 1, sizeYOffset + 1, sizeZOffset + 1);
 			RenderBlocks blockRenderer = new RenderBlocks(worldObj);
-			
 			List<String> hitTextures = new ArrayList<String>();
 			List<String> hitTexturesPlugins = new ArrayList<String>();
 			int currentTexture = 0;
 			Minecraft game = SpoutClient.getHandle();
-
 			hitTextures.add("/terrain.png");
 			hitTexturesPlugins.add("");
 			int defaultTexture = game.renderEngine.getTexture("/terrain.png");
 			game.renderEngine.bindTexture(defaultTexture);
-			
+
 			short[] customBlockIds = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockIds();
 			byte[] customBlockData = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockData();
 
 			blockRenderer.customIds = customBlockIds;
 
 			int limit = skipRenderPass.length;
-			if(!Shaders.isEnabled())
-				limit--;
-			for (int renderPass = 0; renderPass < limit; ++renderPass) {  // Spout - 3 passes for shaders, 2 without
-				
+			
+			for (int renderPass = 0; renderPass < limit; ++renderPass) { // Spout - 3 passes for shaders, 2 without
+
 				boolean skipRenderPass = false;
 				boolean rendered = false;
 				boolean drawBlock = false;
-				
+
 				if (!drawBlock) {
 					drawBlock = true;
 					GL11.glNewList(this.glRenderList + renderPass, GL11.GL_COMPILE);
@@ -207,7 +314,7 @@ public class WorldRenderer {
 					tessellator.startDrawingQuads();
 					tessellator.setTranslation((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
 				}
-				
+
 				game.renderEngine.bindTexture(defaultTexture);
 				for (currentTexture = 0; currentTexture < hitTextures.size(); currentTexture++) {	
 					int texture = defaultTexture;
@@ -232,16 +339,16 @@ public class WorldRenderer {
 						tessellator.texture = texture;
 						tessellator.startDrawingQuads();
 					}
-					
+
 					float[] oldBounds = new float[6];
-					
+
 					//The x,y,z order is important, don't change!
 					for (int dx = x; dx < sizeXOffset; ++dx) {
 						for (int dz = z; dz < sizeZOffset; ++dz) {
 							for (int dy = y; dy < sizeYOffset; ++dy) {
 								int id = worldObj.getBlockId(dx, dy, dz);
 								if (id > 0) {
-									String customTexture = null; 
+									String customTexture = null;
 									String customTextureAddon = null;
 									GenericBlockDesign design = null;
 
@@ -255,16 +362,16 @@ public class WorldRenderer {
 											}
 										}
 									}
-									
+
 									if (design != null) {
 										customTexture = design.getTexureURL();
 										customTextureAddon = design.getTextureAddon();
 									}
-									
-									
+
+
 									if(customTexture != null){
 										boolean found = false;
-										
+
 										//Search for the custom texture in our list
 										for(int i = 0; i < hitTextures.size(); i++){
 											if(hitTextures.get(i).equals(customTexture) && hitTexturesPlugins.get(i).equals(customTextureAddon)) {
@@ -277,17 +384,17 @@ public class WorldRenderer {
 											hitTextures.add(customTexture);
 											hitTexturesPlugins.add(customTextureAddon);
 										}
-										
+
 										//Do not render if we are using a different texture than the current one
 										if(!hitTextures.get(currentTexture).equals(customTexture) || !hitTexturesPlugins.get(currentTexture).equals(customTextureAddon)) {
 											continue;
 										}
 									}
 									//Do not render if we are not using the terrain.png and can't find a valid texture for this custom block
-									else if (currentTexture != 0) { 
+									else if (currentTexture != 0) {
 										continue;
 									}
-									
+
 									Block block = Block.blocksList[id];
 									if (renderPass == 0 && block.hasTileEntity()) {
 										TileEntity var20 = worldObj.getBlockTileEntity(dx, dy, dz);
@@ -301,12 +408,11 @@ public class WorldRenderer {
 									if (design != null) {
 										blockRenderPass = design.getRenderPass();
 									}
-									
+
 									if (blockRenderPass != renderPass) {
 										skipRenderPass = true;
 									}
-									else {
-										Tessellator.instance.setEntity(block.blockID); // Spout
+									else {										
 										if (design != null) {
 											oldBounds[0] = (float) block.minX;
 											oldBounds[1] = (float) block.minY;
@@ -347,13 +453,12 @@ public class WorldRenderer {
 					break;
 				}
 			}
-			
+
 			HashSet var24 = new HashSet();
 			var24.addAll(this.tileEntityRenderers);
 			var24.removeAll(tileRenderers);
 			this.tileEntities.addAll(var24);
-			tileRenderers.removeAll(this.tileEntityRenderers);
-			Tessellator.instance.setEntity(-1); // Spout shaders
+			tileRenderers.removeAll(this.tileEntityRenderers);			
 			// Spout End
 			this.tileEntities.removeAll(tileRenderers);
 			this.isChunkLit = Chunk.isLit;
@@ -362,6 +467,8 @@ public class WorldRenderer {
 			CTMUtils.finish();
 		}
 	}
+
+
 
 	/**
 	 * Returns the distance of this chunk renderer to the entity without performing the final normalizing square root, for
@@ -378,7 +485,7 @@ public class WorldRenderer {
 	 * When called this renderer won't draw anymore until its gets initialized again
 	 */
 	public void setDontDraw() {
-		for(int var1 = 0; var1 < skipRenderPass.length; ++var1) { // Spout
+		for (int var1 = 0; var1 < skipRenderPass.length; ++var1) { //Spout
 			this.skipRenderPass[var1] = true;
 		}
 
@@ -406,25 +513,15 @@ public class WorldRenderer {
 	 * Renders the occlusion query GL List
 	 */
 	public void callOcclusionQueryList() {
-		GL11.glCallList(this.glRenderList + 2);
+		GL11.glCallList(this.glRenderList + 4);
 	}
 
-	// Spout Start
 	/**
 	 * Checks if all render passes are to be skipped. Returns false if the renderer is not initialized
 	 */
 	public boolean skipAllRenderPasses() {
-		if (this.isInitialized) {
-			for (int pass = 0; pass < skipRenderPass.length; pass++) {
-				if (!skipRenderPass[pass]) {
-					return false;
-				}
-			}
-			return true;
-		}
-		return false;
+		return !this.isInitialized ? false : RenderPass.skipAllRenderPasses(this.skipRenderPass);
 	}
-	// Spout End
 
 	/**
 	 * Marks the current renderer data as dirty and needing to be updated.

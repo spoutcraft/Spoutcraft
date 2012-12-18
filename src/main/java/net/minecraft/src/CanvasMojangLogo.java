@@ -1,17 +1,13 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.TexturePackAPI;
+import com.pclewis.mcpatcher.mod.TextureUtils;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
-// Spout HD Start
-/*
-import javax.imageio.ImageIO;
-*/
-import com.pclewis.mcpatcher.mod.TextureUtils;
-// Spout HD End
 
 class CanvasMojangLogo extends Canvas {
 
@@ -20,10 +16,8 @@ class CanvasMojangLogo extends Canvas {
 
 	public CanvasMojangLogo() {
 		try {
-			// Spout HD Start
-			this.logo = TextureUtils.getResourceAsBufferedImage("/gui/crash_logo.png");
-			// Spout HD End
-		} catch (IOException var2) {
+			this.logo = TexturePackAPI.getImage(PanelCrashReport.class, "/gui/crash_logo.png");
+		} catch (Exception var2) {
 			;
 		}
 

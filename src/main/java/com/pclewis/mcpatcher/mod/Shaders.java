@@ -1,33 +1,40 @@
+// Original code written by daxnitro. Used with permission.
+// http://nitrous.daxnitro.com/repo/
+// daxnitro [at] gmail.com
+
 package com.pclewis.mcpatcher.mod;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.nio.ShortBuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.RenderGlobal;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.ARBFragmentShader;
-import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexProgram;
-import org.lwjgl.opengl.ARBVertexShader;
-import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.glu.GLU;
-import org.spoutcraft.client.config.Configuration;
-import org.spoutcraft.client.io.FileUtil;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
+
+import static org.lwjgl.opengl.ARBFragmentShader.GL_FRAGMENT_SHADER_ARB;
+import static org.lwjgl.opengl.ARBShaderObjects.*;
+import static org.lwjgl.opengl.ARBTextureFloat.GL_RGB32F_ARB;
+import static org.lwjgl.opengl.ARBVertexShader.GL_VERTEX_SHADER_ARB;
+import static org.lwjgl.opengl.ARBVertexShader.glBindAttribLocationARB;
+import static org.lwjgl.opengl.EXTFramebufferObject.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 public class Shaders {
+
 	private static boolean isInitialized = false;
 	private static int renderWidth = 0;
 	private static int renderHeight = 0;
@@ -49,8 +56,8 @@ public class Shaders {
 	private static int shadowPassInterval = 0;
 	private static int shadowMapWidth = 1024;
 	private static int shadowMapHeight = 1024;
-	private static float shadowMapFOV = 25.0F;
-	private static float shadowMapHalfPlane = 30.0F;
+	private static float shadowMapFOV = 25.0f;
+	private static float shadowMapHalfPlane = 30.0f;
 	private static boolean shadowMapIsOrtho = true;
 	private static int shadowPassCounter = 0;
 	private static int preShadowPassThirdPersonView;
@@ -71,123 +78,130 @@ public class Shaders {
 	private static int dfb = 0;
 	private static int dfbDepthBuffer = 0;
 	public static int activeProgram = 0;
-	public static final int ProgramNone = 0;
-	public static final int ProgramBasic = 1;
-	public static final int ProgramTextured = 2;
-	public static final int ProgramTexturedLit = 3;
-	public static final int ProgramTerrain = 4;
-	public static final int ProgramWater = 5;
-	public static final int ProgramHand = 6;
-	public static final int ProgramWeather = 7;
-	public static final int ProgramComposite = 8;
-	public static final int ProgramFinal = 9;
-	public static final int ProgramCount = 10;
-	private static String[] programNames = new String[]{"", "gbuffers_basic", "gbuffers_textured", "gbuffers_textured_lit", "gbuffers_terrain", "gbuffers_water", "gbuffers_hand", "gbuffers_weather", "composite", "final"};
-	private static int[] programBackups = new int[]{0, 0, 1, 2, 3, 4, 3, 3, 0, 0};
-	private static int[] programs = new int[10];
-	private static boolean enabled= true;
+	public final static int ProgramNone = 0;
+	public final static int ProgramBasic = 1;
+	public final static int ProgramTextured = 2;
+	public final static int ProgramTexturedLit = 3;
+	public final static int ProgramTerrain = 4;
+	public final static int ProgramWater = 5;
+	public final static int ProgramHand = 6;
+	public final static int ProgramWeather = 7;
+	public final static int ProgramComposite = 8;
+	public final static int ProgramFinal = 9;
+	public final static int ProgramCount = 10;
+	private static boolean enabled= false;
+	
+	private static String[] programNames = new String[]{
+		"",
+		"gbuffers_basic",
+		"gbuffers_textured",
+		"gbuffers_textured_lit",
+		"gbuffers_terrain",
+		"gbuffers_water",
+		"gbuffers_hand",
+		"gbuffers_weather",
+		"composite",
+		"final",
+	};
+	private static int[] programBackups = new int[]{
+		ProgramNone, // none
+		ProgramNone, // basic
+		ProgramBasic, // textured
+		ProgramTextured, // textured/lit
+		ProgramTexturedLit, // terrain
+		ProgramTerrain, // water
+		ProgramTexturedLit, // hand
+		ProgramTexturedLit, // weather
+		ProgramNone, // composite
+		ProgramNone, // final
+	};
 
-	public static void setup(int type) {
-		//System.out.println("OpenGL Version: " + GL11.glGetString(GL11.GL_VERSION));
-		//System.out.println("OpenGL Platform: " + GL11.glGetString(GL11.GL_VENDOR));
+	private static int[] programs = new int[ProgramCount]; 
 
-		if(!(enabled)) return;
-		mc = Minecraft.theMinecraft;
-		int var0 = GL11.glGetInteger(GL20.GL_MAX_DRAW_BUFFERS);
-		System.out.println("GL_MAX_DRAW_BUFFERS = " + var0);
+	public static boolean isEnabled() {
+		return enabled;
+	}
+	
+	public static void init() {
+		System.out.println("Trying to access shaders");
+	}
+	
+	
+	//TODO:  Call this to start Shaders.
+	public static void init1() {
+		
+		int maxDrawBuffers = glGetInteger(GL_MAX_DRAW_BUFFERS);
+
+		System.out.println("GL_MAX_DRAW_BUFFERS = " + maxDrawBuffers);
 
 		colorAttachments = 4;
 
-		String mode = "";
-		switch(type) {
-			case 1: mode = "low/"; break;
-			case 2: mode = "medium/"; break;
-			case 3: mode = "high/"; break;
-			case 4: mode = new File(Minecraft.getMinecraftDir(), "shaders").getAbsolutePath() + "/"; break;
-			default: mode = "low/";
-		}
-
-		int var1;
-		for (var1 = 0; var1 < 10; ++var1) {
-			if (programNames[var1].equals("")) {
-				programs[var1] = 0;
+		for (int i = 0; i < ProgramCount; ++i) {
+			if (programNames[i].equals("")) {
+				programs[i] = 0;
 			} else {
-				programs[var1] = setupProgram(mode + programNames[var1] + ".vsh", mode + programNames[var1] + ".fsh");
+				//TODO:  Currently not reading from the correct shaders location.
+				programs[i] = setupProgram("shaders/" + programNames[i] + ".vsh", "shaders/" + programNames[i] + ".fsh");
 			}
 		}
 
-		if (colorAttachments > var0) {
+		if (colorAttachments > maxDrawBuffers) {
 			System.out.println("Not enough draw buffers!");
 		}
 
-		for (var1 = 0; var1 < 10; ++var1) {
-			for (int var2 = var1; programs[var1] == 0 && var2 != programBackups[var2]; var2 = programBackups[var2]) {
-				programs[var1] = programs[programBackups[var2]];
+		for (int i = 0; i < ProgramCount; ++i) {
+			for (int n = i; programs[i] == 0; n = programBackups[n]) {
+				if (n == programBackups[n]) {
+					break;
+				}
+				programs[i] = programs[programBackups[n]];
 			}
 		}
 
 		dfbDrawBuffers = BufferUtils.createIntBuffer(colorAttachments);
-
-		for (var1 = 0; var1 < colorAttachments; ++var1) {
-			dfbDrawBuffers.put(var1, 36064 + var1);
+		for (int i = 0; i < colorAttachments; ++i) {
+			dfbDrawBuffers.put(i, GL_COLOR_ATTACHMENT0_EXT + i);
 		}
 
 		dfbTextures = BufferUtils.createIntBuffer(colorAttachments);
 		dfbRenderBuffers = BufferUtils.createIntBuffer(colorAttachments);
-	}
 
-	public static void init(int type) {
-		setup(type);
 		resize();
 		setupShadowMap();
 		isInitialized = true;
 	}
 
-	public static boolean isOpenGL(int v) {
-		try {
-			String version = GL11.glGetString(GL11.GL_VERSION);
-			return Integer.parseInt(String.valueOf(version.charAt(0))) >= v;
-		}
-		catch (Exception e) {
-			return false;
-		}
-	}
-
-	public static boolean isOSX() {
-		return System.getProperty("os.name").toLowerCase().contains("mac");
-	}
-
 	public static void destroy() {
 		if(!(enabled)) return;
-		for (int var0 = 0; var0 < 10; ++var0) {
-			if (programs[var0] != 0) {
-				ARBShaderObjects.glDeleteObjectARB(programs[var0]);
-				programs[var0] = 0;
+		for (int i = 0; i < ProgramCount; ++i) {
+			if (programs[i] != 0) {
+				glDeleteObjectARB(programs[i]);
+				programs[i] = 0;
 			}
 		}
 	}
 
-	public static void glEnableWrapper(int var0) {
-		GL11.glEnable(var0);
+	public static void glEnableWrapper(int cap) {
 		if(!(enabled)) return;
-		if (var0 == 3553) {
-			if (activeProgram == 1) {
-				useProgram(lightmapEnabled?3:2);
+		glEnable(cap);
+		if (cap == GL_TEXTURE_2D) {
+			if (activeProgram == ProgramBasic) {
+				useProgram(lightmapEnabled ? ProgramTexturedLit : ProgramTextured);
 			}
-		} else if (var0 == 2912) {
+		} else if (cap == GL_FOG) {
 			fogEnabled = true;
-			setProgramUniform1i("fogMode", GL11.glGetInteger(GL11.GL_FOG_MODE));
+			setProgramUniform1i("fogMode", glGetInteger(GL_FOG_MODE));
 		}
 	}
 
-	public static void glDisableWrapper(int var0) {
-		GL11.glDisable(var0);
+	public static void glDisableWrapper(int cap) {
 		if(!(enabled)) return;
-		if (var0 == 3553) {
-			if (activeProgram == 2 || activeProgram == 3) {
-				useProgram(1);
+		glDisable(cap);
+		if (cap == GL_TEXTURE_2D) {
+			if (activeProgram == ProgramTextured || activeProgram == ProgramTexturedLit) {
+				useProgram(ProgramBasic);
 			}
-		} else if (var0 == 2912) {
+		} else if (cap == GL_FOG) {
 			fogEnabled = false;
 			setProgramUniform1i("fogMode", 0);
 		}
@@ -196,298 +210,318 @@ public class Shaders {
 	public static void enableLightmap() {
 		if(!(enabled)) return;
 		lightmapEnabled = true;
-		if (activeProgram == 2) {
-			useProgram(3);
+		if (activeProgram == ProgramTextured) {
+			useProgram(ProgramTexturedLit);
 		}
 	}
 
 	public static void disableLightmap() {
 		if(!(enabled)) return;
 		lightmapEnabled = false;
-		if (activeProgram == 3) {
-			useProgram(2);
+		if (activeProgram == ProgramTexturedLit) {
+			useProgram(ProgramTextured);
 		}
 	}
 
-	public static void setClearColor(float var0, float var1, float var2) {
+	public static void setClearColor(float red, float green, float blue) {
 		if(!(enabled)) return;
-		clearColor[0] = var0;
-		clearColor[1] = var1;
-		clearColor[2] = var2;
+		clearColor[0] = red;
+		clearColor[1] = green;
+		clearColor[2] = blue;
+
 		if (isShadowPass) {
-			GL11.glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.0F);
-			GL11.glClear(16640);
-		} else {
-			GL20.glDrawBuffers(dfbDrawBuffers);
-			GL11.glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
-			GL11.glClear(16640);
-			GL20.glDrawBuffers(36064);
-			GL11.glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.0F);
-			GL11.glClear(16640);
-			GL20.glDrawBuffers(36065);
-			GL11.glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glClear(16640);
-			GL20.glDrawBuffers(dfbDrawBuffers);
+			glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			return;
 		}
+
+		glDrawBuffers(dfbDrawBuffers);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glDrawBuffers(GL_COLOR_ATTACHMENT0_EXT);
+		glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glDrawBuffers(GL_COLOR_ATTACHMENT1_EXT);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glDrawBuffers(dfbDrawBuffers);
 	}
 
-	public static void setCamera(float var0) {
+	public static void setCamera(float f) {
 		if(!(enabled)) return;
-		EntityLiving var1 = mc.renderViewEntity;
-		double var2 = var1.lastTickPosX + (var1.posX - var1.lastTickPosX) * (double)var0;
-		double var4 = var1.lastTickPosY + (var1.posY - var1.lastTickPosY) * (double)var0;
-		double var6 = var1.lastTickPosZ + (var1.posZ - var1.lastTickPosZ) * (double)var0;
+		EntityLiving viewEntity = mc.renderViewEntity;
+
+		double x = viewEntity.lastTickPosX + (viewEntity.posX - viewEntity.lastTickPosX) * f;
+		double y = viewEntity.lastTickPosY + (viewEntity.posY - viewEntity.lastTickPosY) * f;
+		double z = viewEntity.lastTickPosZ + (viewEntity.posZ - viewEntity.lastTickPosZ) * f;
+
 		if (isShadowPass) {
-			GL11.glViewport(0, 0, shadowMapWidth, shadowMapHeight);
-			GL11.glMatrixMode(GL11.GL_PROJECTION);
-			GL11.glLoadIdentity();
-			if (shadowMapIsOrtho) {
-				GL11.glOrtho((double)(-shadowMapHalfPlane), (double)shadowMapHalfPlane, (double)(-shadowMapHalfPlane), (double)shadowMapHalfPlane, 0.05D, 256.0D);
-			} else {
-				GLU.gluPerspective(shadowMapFOV, (float)shadowMapWidth / (float)shadowMapHeight, 0.05F, 256.0F);
-			}
+			glViewport(0, 0, shadowMapWidth, shadowMapHeight);
 
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			GL11.glLoadIdentity();
-			GL11.glTranslatef(0.0F, 0.0F, -100.0F);
-			GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-			float var8 = -mc.theWorld.getCelestialAngle(var0) * 360.0F;
-			if ((double)var8 < -90.0D && (double)var8 > -270.0D) {
-				GL11.glRotatef(var8 + 180.0F, 0.0F, 0.0F, 1.0F);
-			} else {
-				GL11.glRotatef(var8, 0.0F, 0.0F, 1.0F);
-			}
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
 
 			if (shadowMapIsOrtho) {
-				GL11.glTranslatef((float)var2 % 5.0F, (float)var4 % 5.0F, (float)var6 % 5.0F);
+				glOrtho(-shadowMapHalfPlane, shadowMapHalfPlane, -shadowMapHalfPlane, shadowMapHalfPlane, 0.05f, 256.0f);
+			} else {
+				// just backwards compatibility. it's only used when SHADOWFOV is set in the shaders.
+				gluPerspective(shadowMapFOV, (float) shadowMapWidth / (float) shadowMapHeight, 0.05f, 256.0f);
+			}
+
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glTranslatef(0.0f, 0.0f, -100.0f);
+			glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+			float angle = -mc.getWorld().getCelestialAngle(f) * 360.0f;
+			if (angle < -90.0 && angle > -270.0) {
+				// night time
+				glRotatef(angle + 180.0f, 0.0f, 0.0f, 1.0f);
+			} else {
+				// day time
+				glRotatef(angle, 0.0f, 0.0f, 1.0f);
+			}
+			if (shadowMapIsOrtho) {
+				// reduces jitter
+				glTranslatef((float) x % 5.0f, (float) y % 5.0f, (float) z % 5.0f);
 			}
 
 			shadowProjection = BufferUtils.createFloatBuffer(16);
-			GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, shadowProjection);
+			glGetFloat(GL_PROJECTION_MATRIX, shadowProjection);
 			shadowProjectionInverse = invertMat4x(shadowProjection);
+
 			shadowModelView = BufferUtils.createFloatBuffer(16);
-			GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, shadowModelView);
+			glGetFloat(GL_MODELVIEW_MATRIX, shadowModelView);
 			shadowModelViewInverse = invertMat4x(shadowModelView);
-		} else {
-			previousProjection = projection;
-			projection = BufferUtils.createFloatBuffer(16);
-			GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
-			projectionInverse = invertMat4x(projection);
-			previousModelView = modelView;
-			modelView = BufferUtils.createFloatBuffer(16);
-			GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelView);
-			modelViewInverse = invertMat4x(modelView);
-			previousCameraPosition[0] = cameraPosition[0];
-			previousCameraPosition[1] = cameraPosition[1];
-			previousCameraPosition[2] = cameraPosition[2];
-			cameraPosition[0] = var2;
-			cameraPosition[1] = var4;
-			cameraPosition[2] = var6;
+			return;
 		}
+
+		previousProjection = projection;
+		projection = BufferUtils.createFloatBuffer(16);
+		glGetFloat(GL_PROJECTION_MATRIX, projection);
+		projectionInverse = invertMat4x(projection);
+
+		previousModelView = modelView;
+		modelView = BufferUtils.createFloatBuffer(16);
+		glGetFloat(GL_MODELVIEW_MATRIX, modelView);
+		modelViewInverse = invertMat4x(modelView);
+
+		previousCameraPosition[0] = cameraPosition[0];
+		previousCameraPosition[1] = cameraPosition[1];
+		previousCameraPosition[2] = cameraPosition[2];
+
+		cameraPosition[0] = x;
+		cameraPosition[1] = y;
+		cameraPosition[2] = z;
 	}
 
-	public static boolean isShadowPass() {
-		return isShadowPass;
-	}
-
-	public static void beginRender(Minecraft var0, float var1, long var2) {
+	public static void beginRender(Minecraft minecraft, float f, long l) {
 		if(!(enabled)) return;
-		if (!isShadowPass) {
-			mc = var0;
-			if (!isInitialized) {
-				init(0);
-			}
-
-			if (mc.displayWidth != renderWidth || mc.displayHeight != renderHeight) {
-				resize();
-			}
-
-			//shadowPassInterval = 0;
-			if (shadowPassInterval > 0 && --shadowPassCounter <= 0) {
-				preShadowPassThirdPersonView = mc.gameSettings.thirdPersonView;
-				mc.gameSettings.thirdPersonView = 1;
-				isShadowPass = true;
-				shadowPassCounter = shadowPassInterval;
-				EXTFramebufferObject.glBindFramebufferEXT(36160, sfb);
-				useProgram(0);
-				mc.entityRenderer.renderWorld(var1, var2);
-				GL11.glFlush();
-				isShadowPass = false;
-				mc.gameSettings.thirdPersonView = preShadowPassThirdPersonView;
-			}
-
-			EXTFramebufferObject.glBindFramebufferEXT(36160, dfb);
-			useProgram(lightmapEnabled?3:2);
+		if (isShadowPass) {
+			return;
 		}
+
+		mc = minecraft;
+
+		if (!isInitialized) {
+			init();
+		}
+		if (mc.displayWidth != renderWidth || mc.displayHeight != renderHeight) {
+			resize();
+		}
+
+		if (shadowPassInterval > 0 && --shadowPassCounter <= 0) {
+			preShadowPassThirdPersonView = mc.gameSettings.thirdPersonView;
+			mc.gameSettings.thirdPersonView = 1;
+			isShadowPass = true;
+			shadowPassCounter = shadowPassInterval;
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, sfb);
+			useProgram(ProgramNone);
+			mc.entityRenderer.renderWorld(f, l);
+			glFlush();
+			isShadowPass = false;
+			mc.gameSettings.thirdPersonView = preShadowPassThirdPersonView;
+		}
+
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, dfb);
+		useProgram(lightmapEnabled ? ProgramTexturedLit : ProgramTextured);
 	}
 
 	public static void endRender() {
 		if(!(enabled)) return;
-		if (!isShadowPass) {
-			GL11.glPushMatrix();
-			GL11.glMatrixMode(GL11.GL_PROJECTION);
-			GL11.glLoadIdentity();
-			GL11.glOrtho(0.0D, 1.0D, 0.0D, 1.0D, 0.0D, 1.0D);
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			GL11.glLoadIdentity();
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL11.glDisable(GL11.GL_BLEND);
-			useProgram(8);
-			GL20.glDrawBuffers(dfbDrawBuffers);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(0));
-			GL13.glActiveTexture(GL13.GL_TEXTURE1);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(1));
-			GL13.glActiveTexture(GL13.GL_TEXTURE2);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(2));
-			GL13.glActiveTexture(GL13.GL_TEXTURE3);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(3));
-			if (colorAttachments >= 5) {
-				GL13.glActiveTexture(GL13.GL_TEXTURE4);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(4));
-				if (colorAttachments >= 6) {
-					GL13.glActiveTexture(GL13.GL_TEXTURE5);
-					GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(5));
-					if (colorAttachments >= 7) {
-						GL13.glActiveTexture(GL13.GL_TEXTURE6);
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(6));
-					}
-				}
-			}
-
-			if (shadowPassInterval > 0) {
-				GL13.glActiveTexture(GL13.GL_TEXTURE7);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, sfbDepthTexture);
-			}
-
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glBegin(GL11.GL_QUADS);
-			GL11.glTexCoord2f(0.0F, 0.0F);
-			GL11.glVertex3f(0.0F, 0.0F, 0.0F);
-			GL11.glTexCoord2f(1.0F, 0.0F);
-			GL11.glVertex3f(1.0F, 0.0F, 0.0F);
-			GL11.glTexCoord2f(1.0F, 1.0F);
-			GL11.glVertex3f(1.0F, 1.0F, 0.0F);
-			GL11.glTexCoord2f(0.0F, 1.0F);
-			GL11.glVertex3f(0.0F, 1.0F, 0.0F);
-			GL11.glEnd();
-			EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
-			useProgram(9);
-			GL11.glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.0F);
-			GL11.glClear(16640);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(0));
-			GL13.glActiveTexture(GL13.GL_TEXTURE1);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(1));
-			GL13.glActiveTexture(GL13.GL_TEXTURE2);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(2));
-			GL13.glActiveTexture(GL13.GL_TEXTURE3);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(3));
-			if (colorAttachments >= 5) {
-				GL13.glActiveTexture(GL13.GL_TEXTURE4);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(4));
-				if (colorAttachments >= 6) {
-					GL13.glActiveTexture(GL13.GL_TEXTURE5);
-					GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(5));
-					if (colorAttachments >= 7) {
-						GL13.glActiveTexture(GL13.GL_TEXTURE6);
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(6));
-					}
-				}
-			}
-
-			if (shadowPassInterval > 0) {
-				GL13.glActiveTexture(GL13.GL_TEXTURE7);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, sfbDepthTexture);
-			}
-
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glBegin(GL11.GL_QUADS);
-			GL11.glTexCoord2f(0.0F, 0.0F);
-			GL11.glVertex3f(0.0F, 0.0F, 0.0F);
-			GL11.glTexCoord2f(1.0F, 0.0F);
-			GL11.glVertex3f(1.0F, 0.0F, 0.0F);
-			GL11.glTexCoord2f(1.0F, 1.0F);
-			GL11.glVertex3f(1.0F, 1.0F, 0.0F);
-			GL11.glTexCoord2f(0.0F, 1.0F);
-			GL11.glVertex3f(0.0F, 1.0F, 0.0F);
-			GL11.glEnd();
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glPopMatrix();
-			useProgram(0);
+		if (isShadowPass) {
+			return;
 		}
+		glPushMatrix();
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
+		useProgram(ProgramComposite);
+		glDrawBuffers(dfbDrawBuffers);
+		glBindTexture(GL_TEXTURE_2D, dfbTextures.get(0));
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, dfbTextures.get(1));
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, dfbTextures.get(2));
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, dfbTextures.get(3));
+
+		if (colorAttachments >= 5) {
+			glActiveTexture(GL_TEXTURE4);
+			glBindTexture(GL_TEXTURE_2D, dfbTextures.get(4));
+			if (colorAttachments >= 6) {
+				glActiveTexture(GL_TEXTURE5);
+				glBindTexture(GL_TEXTURE_2D, dfbTextures.get(5));
+				if (colorAttachments >= 7) {
+					glActiveTexture(GL_TEXTURE6);
+					glBindTexture(GL_TEXTURE_2D, dfbTextures.get(6));
+				}
+			}
+		}
+
+		if (shadowPassInterval > 0) {
+			glActiveTexture(GL_TEXTURE7);
+			glBindTexture(GL_TEXTURE_2D, sfbDepthTexture);
+		}
+
+		glActiveTexture(GL_TEXTURE0);
+
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(1.0f, 0.0f, 0.0f);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(1.0f, 1.0f, 0.0f);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(0.0f, 1.0f, 0.0f);
+		glEnd();
+
+		// final
+
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+
+		useProgram(ProgramFinal);
+
+		glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glBindTexture(GL_TEXTURE_2D, dfbTextures.get(0));
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, dfbTextures.get(1));
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, dfbTextures.get(2));
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, dfbTextures.get(3));
+
+		if (colorAttachments >= 5) {
+			glActiveTexture(GL_TEXTURE4);
+			glBindTexture(GL_TEXTURE_2D, dfbTextures.get(4));
+			if (colorAttachments >= 6) {
+				glActiveTexture(GL_TEXTURE5);
+				glBindTexture(GL_TEXTURE_2D, dfbTextures.get(5));
+				if (colorAttachments >= 7) {
+					glActiveTexture(GL_TEXTURE6);
+					glBindTexture(GL_TEXTURE_2D, dfbTextures.get(6));
+				}
+			}
+		}
+
+		if (shadowPassInterval > 0) {
+			glActiveTexture(GL_TEXTURE7);
+			glBindTexture(GL_TEXTURE_2D, sfbDepthTexture);
+		}
+
+		glActiveTexture(GL_TEXTURE0);
+
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(1.0f, 0.0f, 0.0f);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(1.0f, 1.0f, 0.0f);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(0.0f, 1.0f, 0.0f);
+		glEnd();
+
+		glEnable(GL_BLEND);
+
+		glPopMatrix();
+
+		useProgram(ProgramNone);
 	}
 
 	public static void beginTerrain() {
 		if(!(enabled)) return;
-		useProgram(4);
-		GL13.glActiveTexture(GL13.GL_TEXTURE2);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain_nh.png"));
-		GL13.glActiveTexture(GL13.GL_TEXTURE3);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain_s.png"));
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		FloatBuffer var0 = BufferUtils.createFloatBuffer(16);
+		useProgram(Shaders.ProgramTerrain);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain_nh.png"));
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain_s.png"));
+		glActiveTexture(GL_TEXTURE0);
+		FloatBuffer projection = BufferUtils.createFloatBuffer(16);
 	}
 
 	public static void endTerrain() {
 		if(!(enabled)) return;
-		useProgram(lightmapEnabled?3:2);
+		useProgram(lightmapEnabled ? ProgramTexturedLit : ProgramTextured);
 	}
 
 	public static void beginWater() {
 		if(!(enabled)) return;
-		useProgram(5);
-		GL13.glActiveTexture(GL13.GL_TEXTURE2);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain_nh.png"));
-		GL13.glActiveTexture(GL13.GL_TEXTURE3);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain_s.png"));
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		useProgram(Shaders.ProgramWater);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain_nh.png"));
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain_s.png"));
+		glActiveTexture(GL_TEXTURE0);
 	}
 
 	public static void endWater() {
 		if(!(enabled)) return;
-		useProgram(lightmapEnabled?3:2);
+		useProgram(lightmapEnabled ? ProgramTexturedLit : ProgramTextured);
 	}
 
 	public static void beginHand() {
 		if(!(enabled)) return;
-		boolean blend = GL11.glGetBoolean(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_BLEND);
-		useProgram(6);
-		//restore the proper state
-		if (!blend) {
-			GL11.glDisable(GL11.GL_BLEND);
-		}
+		glEnable(GL_BLEND);
+		useProgram(Shaders.ProgramHand);
 	}
 
 	public static void endHand() {
 		if(!(enabled)) return;
-		boolean blend = GL11.glGetBoolean(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_BLEND);
-		useProgram(lightmapEnabled?3:2);
+		glDisable(GL_BLEND);
+		useProgram(lightmapEnabled ? ProgramTexturedLit : ProgramTextured);
+
 		if (isShadowPass) {
-			EXTFramebufferObject.glBindFramebufferEXT(36160, sfb);
-		}
-		//restore the proper state
-		if (blend) {
-			GL11.glEnable(GL11.GL_BLEND);
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, sfb); // was set to 0 in beginWeather()
 		}
 	}
 
 	public static void beginWeather() {
 		if(!(enabled)) return;
-		GL11.glEnable(GL11.GL_BLEND);
-		useProgram(7);
+		glEnable(GL_BLEND);
+		useProgram(Shaders.ProgramWeather);
+
 		if (isShadowPass) {
-			EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0); // will be set to sbf in endHand()
 		}
 	}
 
 	public static void endWeather() {
 		if(!(enabled)) return;
-		GL11.glDisable(GL11.GL_BLEND);
-		useProgram(lightmapEnabled?3:2);
+		glDisable(GL_BLEND);
+		useProgram(lightmapEnabled ? ProgramTexturedLit : ProgramTextured);
 	}
 
 	private static void resize() {
@@ -502,496 +536,474 @@ public class Shaders {
 		setupShadowFrameBuffer();
 	}
 
-	private static int setupProgram(String var0, String var1) {
+	private static int setupProgram(String vShaderPath, String fShaderPath) {
 		if(!(enabled)) return -1;
-		int var2 = ARBShaderObjects.glCreateProgramObjectARB();
-		int var3 = 0;
-		int var4 = 0;
-		if (var2 != 0) {
-			var3 = createVertShader(var0);
-			var4 = createFragShader(var1);
+		int program = glCreateProgramObjectARB();
+
+		int vShader = 0;
+		int fShader = 0;
+
+		if (program != 0) {
+			vShader = createVertShader(vShaderPath);
+			fShader = createFragShader(fShaderPath);
 		}
 
-		if (var3 == 0 && var4 == 0) {
-			if (var2 != 0) {
-				ARBShaderObjects.glDeleteObjectARB(var2);
-				var2 = 0;
+		if (vShader != 0 || fShader != 0) {
+			if (vShader != 0) {
+				glAttachObjectARB(program, vShader);
 			}
-		} else {
-			if (var3 != 0) {
-				ARBShaderObjects.glAttachObjectARB(var2, var3);
+			if (fShader != 0) {
+				glAttachObjectARB(program, fShader);
 			}
-
-			if (var4 != 0) {
-				ARBShaderObjects.glAttachObjectARB(var2, var4);
-			}
-
 			if (entityAttrib >= 0) {
-				ARBVertexShader.glBindAttribLocationARB(var2, entityAttrib, "mc_Entity");
+				glBindAttribLocationARB(program, entityAttrib, "mc_Entity");
 			}
-
-			ARBShaderObjects.glLinkProgramARB(var2);
-			ARBShaderObjects.glValidateProgramARB(var2);
-			printLogInfo(var2);
+			glLinkProgramARB(program);
+			glValidateProgramARB(program);
+			printLogInfo(program);
+		} else if (program != 0) {
+			glDeleteObjectARB(program);
+			program = 0;
 		}
 
-		return var2;
+		return program;
 	}
 
-	public static void useProgram(int var0) {
+	public static void useProgram(int program) {
 		if(!(enabled)) return;
-		if (activeProgram != var0) {
-			if (isShadowPass) {
-				activeProgram = 0;
-				ARBShaderObjects.glUseProgramObjectARB(programs[0]);
-			} else {
-				activeProgram = var0;
-				ARBShaderObjects.glUseProgramObjectARB(programs[var0]);
-				if (programs[var0] == 0) {
-					activeProgram = 0;
-				} else {
-					if (var0 == 2) {
-						setProgramUniform1i("texture", 0);
-					} else if (var0 != 3 && var0 != 6 && var0 != 7) {
-						if (var0 != 4 && var0 != 5) {
-							if (var0 == 8 || var0 == 9) {
-								setProgramUniform1i("gcolor", 0);
-								setProgramUniform1i("gdepth", 1);
-								setProgramUniform1i("gnormal", 2);
-								setProgramUniform1i("composite", 3);
-								setProgramUniform1i("gaux1", 4);
-								setProgramUniform1i("gaux2", 5);
-								setProgramUniform1i("gaux3", 6);
-								setProgramUniform1i("shadow", 7);
-								setProgramUniformMatrix4ARB("gbufferPreviousProjection", false, previousProjection);
-								setProgramUniformMatrix4ARB("gbufferProjection", false, projection);
-								setProgramUniformMatrix4ARB("gbufferProjectionInverse", false, projectionInverse);
-								setProgramUniformMatrix4ARB("gbufferPreviousModelView", false, previousModelView);
-								if (shadowPassInterval > 0) {
-									setProgramUniformMatrix4ARB("shadowProjection", false, shadowProjection);
-									setProgramUniformMatrix4ARB("shadowProjectionInverse", false, shadowProjectionInverse);
-									setProgramUniformMatrix4ARB("shadowModelView", false, shadowModelView);
-									setProgramUniformMatrix4ARB("shadowModelViewInverse", false, shadowModelViewInverse);
-								}
-							}
-						} else {
-							setProgramUniform1i("texture", 0);
-							setProgramUniform1i("lightmap", 1);
-							setProgramUniform1i("normals", 2);
-							setProgramUniform1i("specular", 3);
-						}
-					} else {
-						setProgramUniform1i("texture", 0);
-						setProgramUniform1i("lightmap", 1);
-					}
-
-					ItemStack var1 = mc.thePlayer.inventory.getCurrentItem();
-					setProgramUniform1i("heldItemId", var1 == null?-1:var1.itemID);
-					setProgramUniform1i("heldBlockLightValue", var1 != null && var1.itemID < 256?Block.lightValue[var1.itemID]:0);
-					setProgramUniform1i("fogMode", fogEnabled?GL11.glGetInteger(GL11.GL_FOG_MODE):0);
-					setProgramUniform1i("worldTime", (int)(mc.theWorld.getWorldTime() % 24000L));
-					setProgramUniform1f("aspectRatio", (float)renderWidth / (float)renderHeight);
-					setProgramUniform1f("viewWidth", (float)renderWidth);
-					setProgramUniform1f("viewHeight", (float)renderHeight);
-					setProgramUniform1f("near", 0.05F);
-					setProgramUniform1f("far", (float)(256 >> mc.gameSettings.renderDistance));
-					setProgramUniform3f("sunPosition", sunPosition[0], sunPosition[1], sunPosition[2]);
-					setProgramUniform3f("moonPosition", moonPosition[0], moonPosition[1], moonPosition[2]);
-					setProgramUniform3f("previousCameraPosition", (float)previousCameraPosition[0], (float)previousCameraPosition[1], (float)previousCameraPosition[2]);
-					setProgramUniform3f("cameraPosition", (float)cameraPosition[0], (float)cameraPosition[1], (float)cameraPosition[2]);
-					setProgramUniformMatrix4ARB("gbufferModelView", false, modelView);
-					setProgramUniformMatrix4ARB("gbufferModelViewInverse", false, modelViewInverse);
-				}
+		if (activeProgram == program) {
+			return;
+		} else if (isShadowPass) {
+			activeProgram = ProgramNone;
+			glUseProgramObjectARB(programs[ProgramNone]);
+			return;
+		}
+		activeProgram = program;
+		glUseProgramObjectARB(programs[program]);
+		if (programs[program] == 0) {
+			activeProgram = ProgramNone;
+			return;
+		} else if (program == ProgramTextured) {
+			setProgramUniform1i("texture", 0);
+		} else if (program == ProgramTexturedLit || program == ProgramHand || program == ProgramWeather) {
+			setProgramUniform1i("texture", 0);
+			setProgramUniform1i("lightmap", 1);
+		} else if (program == ProgramTerrain || program == ProgramWater) {
+			setProgramUniform1i("texture", 0);
+			setProgramUniform1i("lightmap", 1);
+			setProgramUniform1i("normals", 2);
+			setProgramUniform1i("specular", 3);
+		} else if (program == ProgramComposite || program == ProgramFinal) {
+			setProgramUniform1i("gcolor", 0);
+			setProgramUniform1i("gdepth", 1);
+			setProgramUniform1i("gnormal", 2);
+			setProgramUniform1i("composite", 3);
+			setProgramUniform1i("gaux1", 4);
+			setProgramUniform1i("gaux2", 5);
+			setProgramUniform1i("gaux3", 6);
+			setProgramUniform1i("shadow", 7);
+			setProgramUniformMatrix4ARB("gbufferPreviousProjection", false, previousProjection);
+			setProgramUniformMatrix4ARB("gbufferProjection", false, projection);
+			setProgramUniformMatrix4ARB("gbufferProjectionInverse", false, projectionInverse);
+			setProgramUniformMatrix4ARB("gbufferPreviousModelView", false, previousModelView);
+			if (shadowPassInterval > 0) {
+				setProgramUniformMatrix4ARB("shadowProjection", false, shadowProjection);
+				setProgramUniformMatrix4ARB("shadowProjectionInverse", false, shadowProjectionInverse);
+				setProgramUniformMatrix4ARB("shadowModelView", false, shadowModelView);
+				setProgramUniformMatrix4ARB("shadowModelViewInverse", false, shadowModelViewInverse);
 			}
 		}
+		ItemStack stack = mc.thePlayer.inventory.getCurrentItem();
+		setProgramUniform1i("heldItemId", (stack == null ? -1 : stack.itemID));
+		setProgramUniform1i("heldBlockLightValue", (stack == null || stack.itemID >= 256 ? 0 : Block.lightValue[stack.itemID]));
+		setProgramUniform1i("fogMode", (fogEnabled ? glGetInteger(GL_FOG_MODE) : 0));
+		setProgramUniform1i("worldTime", (int) (mc.getWorld().getWorldTime() % 24000L));
+		setProgramUniform1f("aspectRatio", (float) renderWidth / (float) renderHeight);
+		setProgramUniform1f("viewWidth", (float) renderWidth);
+		setProgramUniform1f("viewHeight", (float) renderHeight);
+		setProgramUniform1f("near", 0.05F);
+		setProgramUniform1f("far", 256 >> mc.gameSettings.renderDistance);
+		setProgramUniform3f("sunPosition", sunPosition[0], sunPosition[1], sunPosition[2]);
+		setProgramUniform3f("moonPosition", moonPosition[0], moonPosition[1], moonPosition[2]);
+		setProgramUniform3f("previousCameraPosition", (float) previousCameraPosition[0], (float) previousCameraPosition[1], (float) previousCameraPosition[2]);
+		setProgramUniform3f("cameraPosition", (float) cameraPosition[0], (float) cameraPosition[1], (float) cameraPosition[2]);
+		setProgramUniformMatrix4ARB("gbufferModelView", false, modelView);
+		setProgramUniformMatrix4ARB("gbufferModelViewInverse", false, modelViewInverse);
 	}
 
-	public static void setProgramUniform1i(String var0, int var1) {
+	public static void setProgramUniform1i(String name, int x) {
 		if(!(enabled)) return;
-		if (activeProgram != 0) {
-			int var2 = ARBShaderObjects.glGetUniformLocationARB(programs[activeProgram], var0);
-			ARBShaderObjects.glUniform1iARB(var2, var1);
+		if (activeProgram == ProgramNone) {
+			return;
 		}
+		int uniform = glGetUniformLocationARB(programs[activeProgram], name);
+		glUniform1iARB(uniform, x);
 	}
 
-	public static void setProgramUniform1f(String var0, float var1) {
+	public static void setProgramUniform1f(String name, float x) {
 		if(!(enabled)) return;
-		if (activeProgram != 0) {
-			int var2 = ARBShaderObjects.glGetUniformLocationARB(programs[activeProgram], var0);
-			ARBShaderObjects.glUniform1fARB(var2, var1);
+		if (activeProgram == ProgramNone) {
+			return;
 		}
+		int uniform = glGetUniformLocationARB(programs[activeProgram], name);
+		glUniform1fARB(uniform, x);
 	}
 
-	public static void setProgramUniform3f(String var0, float var1, float var2, float var3) {
+	public static void setProgramUniform3f(String name, float x, float y, float z) {
 		if(!(enabled)) return;
-		if (activeProgram != 0) {
-			int var4 = ARBShaderObjects.glGetUniformLocationARB(programs[activeProgram], var0);
-			ARBShaderObjects.glUniform3fARB(var4, var1, var2, var3);
+		if (activeProgram == ProgramNone) {
+			return;
 		}
+		int uniform = glGetUniformLocationARB(programs[activeProgram], name);
+		glUniform3fARB(uniform, x, y, z);
 	}
 
-	public static void setProgramUniformMatrix4ARB(String var0, boolean var1, FloatBuffer var2) {
+	public static void setProgramUniformMatrix4ARB(String name, boolean transpose, FloatBuffer matrix) {
 		if(!(enabled)) return;
-		if (activeProgram != 0 && var2 != null) {
-			int var3 = GL20.glGetUniformLocation(programs[activeProgram], var0);
-			ARBShaderObjects.glUniformMatrix4ARB(var3, var1, var2);
+		if (activeProgram == ProgramNone || matrix == null) {
+			return;
 		}
+		int uniform = glGetUniformLocation(programs[activeProgram], name);
+		glUniformMatrix4ARB(uniform, transpose, matrix);
 	}
 
 	public static void setCelestialPosition() {
 		if(!(enabled)) return;
-		FloatBuffer var0 = BufferUtils.createFloatBuffer(16);
-		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, var0);
-		float[] var1 = new float[16];
-		var0.get(var1, 0, 16);
-		float[] var2 = multiplyMat4xVec4(var1, new float[]{0.0F, 100.0F, 0.0F, 0.0F});
-		sunPosition = var2;
-		float[] var3 = multiplyMat4xVec4(var1, new float[]{0.0F, -100.0F, 0.0F, 0.0F});
-		moonPosition = var3;
+		// This is called when the current matrix is the modelview matrix based on the celestial angle.
+		// The sun is at (0, 100, 0), and the moon is at (0, -100, 0).
+		FloatBuffer modelView = BufferUtils.createFloatBuffer(16);
+		glGetFloat(GL_MODELVIEW_MATRIX, modelView);
+		float[] mv = new float[16];
+		modelView.get(mv, 0, 16);
+		float[] sunPos = multiplyMat4xVec4(mv, new float[]{0.0F, 100.0F, 0.0F, 0.0F});
+		sunPosition = sunPos;
+		float[] moonPos = multiplyMat4xVec4(mv, new float[]{0.0F, -100.0F, 0.0F, 0.0F});
+		moonPosition = moonPos;
 	}
 
-	public static void glDrawArraysWrapper(int var0, int var1, int var2, ShortBuffer var3) {
-		if(!(enabled)) {
-			GL11.glDrawArrays(var0, var1, var2);
-			return;
-		}
+	public static void glDrawArraysWrapper(int mode, int first, int count, ShortBuffer shortBuffer) {
+		if(!(enabled)) return;
 		if (entityAttrib >= 0) {
 			ARBVertexProgram.glEnableVertexAttribArrayARB(entityAttrib);
-			ARBVertexProgram.glVertexAttribPointerARB(entityAttrib, 2, false, false, 4, (ShortBuffer)var3.position(0));
+			ARBVertexProgram.glVertexAttribPointerARB(entityAttrib, 2, false, false, 4, (ShortBuffer) shortBuffer.position(0));
 		}
-			GL11.glDrawArrays(var0, var1, var2);
-
+		GL11.glDrawArrays(mode, first, count);
 		if (entityAttrib >= 0) {
 			ARBVertexProgram.glDisableVertexAttribArrayARB(entityAttrib);
 		}
 	}
 
-	public static int sortAndRenderWrapper(RenderGlobal var0, EntityLiving var1, int var2, double var3) {
+	public static int sortAndRenderWrapper(RenderGlobal renderGlobal, EntityLiving entityLiving, int i, double d) {
 		if(!(enabled)) {
-			return var0.sortAndRender(var1, var2, var3);
-		}
-		if (var2 == 0) {
+			return renderGlobal.sortAndRender(entityLiving, i, d);
+			}
+		if (i == 0) {
 			beginTerrain();
-		} else if (var2 == 1) {
-			//beginWater();
+		} else if (i == 1) {
+			beginWater();
 		}
-
-		int var5 = var0.sortAndRender(var1, var2, var3);
-		if (var2 == 0) {
+		int result = renderGlobal.sortAndRender(entityLiving, i, d);
+		if (i == 0) {
 			endTerrain();
-		} else if (var2 == 1) {
-			//endWater();
+		} else if (i == 1) {
+			endWater();
 		}
-
-		return var5;
+		return result;
 	}
 
-	private static float[] multiplyMat4xVec4(float[] var0, float[] var1) {
+	private static float[] multiplyMat4xVec4(float[] ta, float[] tb) {
 		if(!(enabled)) return null;
-		float[] var2 = new float[]{var0[0] * var1[0] + var0[4] * var1[1] + var0[8] * var1[2] + var0[12] * var1[3], var0[1] * var1[0] + var0[5] * var1[1] + var0[9] * var1[2] + var0[13] * var1[3], var0[2] * var1[0] + var0[6] * var1[1] + var0[10] * var1[2] + var0[14] * var1[3], var0[3] * var1[0] + var0[7] * var1[1] + var0[11] * var1[2] + var0[15] * var1[3]};
-		return var2;
+		float[] mout = new float[4];
+		mout[0] = ta[0] * tb[0] + ta[4] * tb[1] + ta[8] * tb[2] + ta[12] * tb[3];
+		mout[1] = ta[1] * tb[0] + ta[5] * tb[1] + ta[9] * tb[2] + ta[13] * tb[3];
+		mout[2] = ta[2] * tb[0] + ta[6] * tb[1] + ta[10] * tb[2] + ta[14] * tb[3];
+		mout[3] = ta[3] * tb[0] + ta[7] * tb[1] + ta[11] * tb[2] + ta[15] * tb[3];
+		return mout;
 	}
 
-	private static FloatBuffer invertMat4x(FloatBuffer var0) {
+	private static FloatBuffer invertMat4x(FloatBuffer matin) {
 		if(!(enabled)) return null;
-		float[] var1 = new float[16];
-		float[] var2 = new float[16];
+		float[] m = new float[16];
+		float[] inv = new float[16];
+		float det;
+		int i;
 
-		int var4;
-		for (var4 = 0; var4 < 16; ++var4) {
-			var1[var4] = var0.get(var4);
+		for (i = 0; i < 16; ++i) {
+			m[i] = matin.get(i);
 		}
 
-		var2[0] = var1[5] * var1[10] * var1[15] - var1[5] * var1[11] * var1[14] - var1[9] * var1[6] * var1[15] + var1[9] * var1[7] * var1[14] + var1[13] * var1[6] * var1[11] - var1[13] * var1[7] * var1[10];
-		var2[4] = -var1[4] * var1[10] * var1[15] + var1[4] * var1[11] * var1[14] + var1[8] * var1[6] * var1[15] - var1[8] * var1[7] * var1[14] - var1[12] * var1[6] * var1[11] + var1[12] * var1[7] * var1[10];
-		var2[8] = var1[4] * var1[9] * var1[15] - var1[4] * var1[11] * var1[13] - var1[8] * var1[5] * var1[15] + var1[8] * var1[7] * var1[13] + var1[12] * var1[5] * var1[11] - var1[12] * var1[7] * var1[9];
-		var2[12] = -var1[4] * var1[9] * var1[14] + var1[4] * var1[10] * var1[13] + var1[8] * var1[5] * var1[14] - var1[8] * var1[6] * var1[13] - var1[12] * var1[5] * var1[10] + var1[12] * var1[6] * var1[9];
-		var2[1] = -var1[1] * var1[10] * var1[15] + var1[1] * var1[11] * var1[14] + var1[9] * var1[2] * var1[15] - var1[9] * var1[3] * var1[14] - var1[13] * var1[2] * var1[11] + var1[13] * var1[3] * var1[10];
-		var2[5] = var1[0] * var1[10] * var1[15] - var1[0] * var1[11] * var1[14] - var1[8] * var1[2] * var1[15] + var1[8] * var1[3] * var1[14] + var1[12] * var1[2] * var1[11] - var1[12] * var1[3] * var1[10];
-		var2[9] = -var1[0] * var1[9] * var1[15] + var1[0] * var1[11] * var1[13] + var1[8] * var1[1] * var1[15] - var1[8] * var1[3] * var1[13] - var1[12] * var1[1] * var1[11] + var1[12] * var1[3] * var1[9];
-		var2[13] = var1[0] * var1[9] * var1[14] - var1[0] * var1[10] * var1[13] - var1[8] * var1[1] * var1[14] + var1[8] * var1[2] * var1[13] + var1[12] * var1[1] * var1[10] - var1[12] * var1[2] * var1[9];
-		var2[2] = var1[1] * var1[6] * var1[15] - var1[1] * var1[7] * var1[14] - var1[5] * var1[2] * var1[15] + var1[5] * var1[3] * var1[14] + var1[13] * var1[2] * var1[7] - var1[13] * var1[3] * var1[6];
-		var2[6] = -var1[0] * var1[6] * var1[15] + var1[0] * var1[7] * var1[14] + var1[4] * var1[2] * var1[15] - var1[4] * var1[3] * var1[14] - var1[12] * var1[2] * var1[7] + var1[12] * var1[3] * var1[6];
-		var2[10] = var1[0] * var1[5] * var1[15] - var1[0] * var1[7] * var1[13] - var1[4] * var1[1] * var1[15] + var1[4] * var1[3] * var1[13] + var1[12] * var1[1] * var1[7] - var1[12] * var1[3] * var1[5];
-		var2[14] = -var1[0] * var1[5] * var1[14] + var1[0] * var1[6] * var1[13] + var1[4] * var1[1] * var1[14] - var1[4] * var1[2] * var1[13] - var1[12] * var1[1] * var1[6] + var1[12] * var1[2] * var1[5];
-		var2[3] = -var1[1] * var1[6] * var1[11] + var1[1] * var1[7] * var1[10] + var1[5] * var1[2] * var1[11] - var1[5] * var1[3] * var1[10] - var1[9] * var1[2] * var1[7] + var1[9] * var1[3] * var1[6];
-		var2[7] = var1[0] * var1[6] * var1[11] - var1[0] * var1[7] * var1[10] - var1[4] * var1[2] * var1[11] + var1[4] * var1[3] * var1[10] + var1[8] * var1[2] * var1[7] - var1[8] * var1[3] * var1[6];
-		var2[11] = -var1[0] * var1[5] * var1[11] + var1[0] * var1[7] * var1[9] + var1[4] * var1[1] * var1[11] - var1[4] * var1[3] * var1[9] - var1[8] * var1[1] * var1[7] + var1[8] * var1[3] * var1[5];
-		var2[15] = var1[0] * var1[5] * var1[10] - var1[0] * var1[6] * var1[9] - var1[4] * var1[1] * var1[10] + var1[4] * var1[2] * var1[9] + var1[8] * var1[1] * var1[6] - var1[8] * var1[2] * var1[5];
-		float var3 = var1[0] * var2[0] + var1[1] * var2[4] + var1[2] * var2[8] + var1[3] * var2[12];
-		FloatBuffer var5 = BufferUtils.createFloatBuffer(16);
-		if ((double)var3 == 0.0D) {
-			return var5;
-		} else {
-			for (var4 = 0; var4 < 16; ++var4) {
-				var5.put(var4, var2[var4] / var3);
-			}
+		inv[0] = m[5] * m[10] * m[15] - m[5] * m[11] * m[14] - m[9] * m[6] * m[15] + m[9] * m[7] * m[14] + m[13] * m[6] * m[11] - m[13] * m[7] * m[10];
+		inv[4] = -m[4] * m[10] * m[15] + m[4] * m[11] * m[14] + m[8] * m[6] * m[15] - m[8] * m[7] * m[14] - m[12] * m[6] * m[11] + m[12] * m[7] * m[10];
+		inv[8] = m[4] * m[9] * m[15] - m[4] * m[11] * m[13] - m[8] * m[5] * m[15] + m[8] * m[7] * m[13] + m[12] * m[5] * m[11] - m[12] * m[7] * m[9];
+		inv[12] = -m[4] * m[9] * m[14] + m[4] * m[10] * m[13] + m[8] * m[5] * m[14] - m[8] * m[6] * m[13] - m[12] * m[5] * m[10] + m[12] * m[6] * m[9];
+		inv[1] = -m[1] * m[10] * m[15] + m[1] * m[11] * m[14] + m[9] * m[2] * m[15] - m[9] * m[3] * m[14] - m[13] * m[2] * m[11] + m[13] * m[3] * m[10];
+		inv[5] = m[0] * m[10] * m[15] - m[0] * m[11] * m[14] - m[8] * m[2] * m[15] + m[8] * m[3] * m[14] + m[12] * m[2] * m[11] - m[12] * m[3] * m[10];
+		inv[9] = -m[0] * m[9] * m[15] + m[0] * m[11] * m[13] + m[8] * m[1] * m[15] - m[8] * m[3] * m[13] - m[12] * m[1] * m[11] + m[12] * m[3] * m[9];
+		inv[13] = m[0] * m[9] * m[14] - m[0] * m[10] * m[13] - m[8] * m[1] * m[14] + m[8] * m[2] * m[13] + m[12] * m[1] * m[10] - m[12] * m[2] * m[9];
+		inv[2] = m[1] * m[6] * m[15] - m[1] * m[7] * m[14] - m[5] * m[2] * m[15] + m[5] * m[3] * m[14] + m[13] * m[2] * m[7] - m[13] * m[3] * m[6];
+		inv[6] = -m[0] * m[6] * m[15] + m[0] * m[7] * m[14] + m[4] * m[2] * m[15] - m[4] * m[3] * m[14] - m[12] * m[2] * m[7] + m[12] * m[3] * m[6];
+		inv[10] = m[0] * m[5] * m[15] - m[0] * m[7] * m[13] - m[4] * m[1] * m[15] + m[4] * m[3] * m[13] + m[12] * m[1] * m[7] - m[12] * m[3] * m[5];
+		inv[14] = -m[0] * m[5] * m[14] + m[0] * m[6] * m[13] + m[4] * m[1] * m[14] - m[4] * m[2] * m[13] - m[12] * m[1] * m[6] + m[12] * m[2] * m[5];
+		inv[3] = -m[1] * m[6] * m[11] + m[1] * m[7] * m[10] + m[5] * m[2] * m[11] - m[5] * m[3] * m[10] - m[9] * m[2] * m[7] + m[9] * m[3] * m[6];
+		inv[7] = m[0] * m[6] * m[11] - m[0] * m[7] * m[10] - m[4] * m[2] * m[11] + m[4] * m[3] * m[10] + m[8] * m[2] * m[7] - m[8] * m[3] * m[6];
+		inv[11] = -m[0] * m[5] * m[11] + m[0] * m[7] * m[9] + m[4] * m[1] * m[11] - m[4] * m[3] * m[9] - m[8] * m[1] * m[7] + m[8] * m[3] * m[5];
+		inv[15] = m[0] * m[5] * m[10] - m[0] * m[6] * m[9] - m[4] * m[1] * m[10] + m[4] * m[2] * m[9] + m[8] * m[1] * m[6] - m[8] * m[2] * m[5];
 
-			return var5;
+		det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+		FloatBuffer invout = BufferUtils.createFloatBuffer(16);
+
+		if (det == 0.0) {
+			// no inverse :(
+			return invout; // not actually the inverse
 		}
+
+
+		for (i = 0; i < 16; ++i) {
+			invout.put(i, inv[i] / det);
+		}
+
+		return invout;
 	}
 
-	private static BufferedReader getShaderFile(String fileName, int id) {
+	private static int createVertShader(String filename) {
+		if(!(enabled)) return -1;
+		int vertShader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+		if (vertShader == 0) {
+			return 0;
+		}
+		String vertexCode = "";
+		String line;
+
 		BufferedReader reader;
-		final String origFileName = fileName;
-		fileName = "/res/shader/" + fileName;
-
-		//Try inside jar
 		try {
-			reader = new BufferedReader(new InputStreamReader(Shaders.class.getResourceAsStream(fileName)));
-			return reader;
-		}
-		catch (Exception ignore) { }
-
-		//Try MCP path
-		try {
-			File file = new File(FileUtil.getConfigDir().getAbsolutePath() + "/../../" + fileName);
-			reader = new BufferedReader(new FileReader(file));
-			return reader;
-		}
-		catch (Exception ignore) { }
-
-		//Try Eclipse Path
-		try {
-			File file = new File(FileUtil.getConfigDir().getAbsolutePath() + "/../src/main/resources" + fileName.substring(4));
-			file = file.getCanonicalFile();
-			reader = new BufferedReader(new FileReader(file));
-			return reader;
-		}
-		catch (Exception ignore) { }
-
-		//Try External File Path
-		try {
-			File file = new File(origFileName);
-			reader = new BufferedReader(new FileReader(file));
-			return reader;
-		}
-		catch (Exception ignore) { }
-
-		//Failed
-		System.out.println("Couldn\'t find shader file " + fileName + "!");
-		ARBShaderObjects.glDeleteObjectARB(id);
-		return null;
-	}
-
-	private static int createVertShader(String var0) {
-		if(!(enabled)) return -1;
-		int var1 = ARBShaderObjects.glCreateShaderObjectARB(35633);
-		if (var1 == 0) {
-			return 0;
-		} else {
-			String var2 = "";
-
-			BufferedReader var4 = getShaderFile(var0, var1);
-			if (var4 == null) {
-				return 0;
-			}
-
-			String var3;
+			reader = new BufferedReader(new InputStreamReader((Shaders.class).getResourceAsStream(filename)));
+		} catch (Exception e) {
 			try {
-				while ((var3 = var4.readLine()) != null) {
-					var2 = var2 + var3 + "\n";
-					if (var3.matches("attribute [_a-zA-Z0-9]+ mc_Entity.*")) {
-						entityAttrib = 10;
-					}
-				}
-			} catch (Exception var9) {
-				System.out.println("Couldn\'t read " + var0 + "!");
-				ARBShaderObjects.glDeleteObjectARB(var1);
+				reader = new BufferedReader(new FileReader(new File(filename)));
+			} catch (Exception e2) {
+				System.out.println("Couldn't open " + filename + "!");
+				glDeleteObjectARB(vertShader);
 				return 0;
 			}
-
-			ARBShaderObjects.glShaderSourceARB(var1, var2);
-			ARBShaderObjects.glCompileShaderARB(var1);
-			printLogInfo(var1);
-			return var1;
 		}
-	}
 
-	private static int createFragShader(String var0) {
-		if(!(enabled)) return -1;
-		int var1 = ARBShaderObjects.glCreateShaderObjectARB(35632);
-		if (var1 == 0) {
+		try {
+			while ((line = reader.readLine()) != null) {
+				vertexCode += line + "\n";
+				if (line.matches("attribute [_a-zA-Z0-9]+ mc_Entity.*")) {
+					entityAttrib = 10;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Couldn't read " + filename + "!");
+			glDeleteObjectARB(vertShader);
 			return 0;
-		} else {
-			String var2 = "";
-
-			BufferedReader var4 = getShaderFile(var0, var1);
-			if (var4 == null) {
-				return 0;
-			}
-
-			String var3;
-			try {
-				while ((var3 = var4.readLine()) != null) {
-					var2 = var2 + var3 + "\n";
-					if (colorAttachments < 5 && var3.matches("uniform [ _a-zA-Z0-9]+ gaux1;.*")) {
-						colorAttachments = 5;
-					} else if (colorAttachments < 6 && var3.matches("uniform [ _a-zA-Z0-9]+ gaux2;.*")) {
-						colorAttachments = 6;
-					} else if (colorAttachments < 7 && var3.matches("uniform [ _a-zA-Z0-9]+ gaux3;.*")) {
-						colorAttachments = 7;
-					} else if (colorAttachments < 8 && var3.matches("uniform [ _a-zA-Z0-9]+ shadow;.*")) {
-						shadowPassInterval = 1;
-						colorAttachments = 8;
-					} else {
-						String[] var5;
-						if (var3.matches("/\\* SHADOWRES:[0-9]+ \\*/.*")) {
-							var5 = var3.split("(:| )", 4);
-							System.out.println("Shadow map resolution: " + var5[2]);
-							shadowMapWidth = shadowMapHeight = Integer.parseInt(var5[2]);
-						} else if (var3.matches("/\\* SHADOWFOV:[0-9\\.]+ \\*/.*")) {
-							var5 = var3.split("(:| )", 4);
-							System.out.println("Shadow map field of view: " + var5[2]);
-							shadowMapFOV = Float.parseFloat(var5[2]);
-							shadowMapIsOrtho = false;
-						} else if (var3.matches("/\\* SHADOWHPL:[0-9\\.]+ \\*/.*")) {
-							var5 = var3.split("(:| )", 4);
-							System.out.println("Shadow map half-plane: " + var5[2]);
-							shadowMapHalfPlane = Float.parseFloat(var5[2]);
-							shadowMapIsOrtho = true;
-						}
-					}
-				}
-			} catch (Exception var9) {
-				System.out.println("Couldn\'t read " + var0 + "!");
-				ARBShaderObjects.glDeleteObjectARB(var1);
-				return 0;
-			}
-
-			ARBShaderObjects.glShaderSourceARB(var1, var2);
-			ARBShaderObjects.glCompileShaderARB(var1);
-			printLogInfo(var1);
-			return var1;
 		}
+
+		glShaderSourceARB(vertShader, vertexCode);
+		glCompileShaderARB(vertShader);
+		printLogInfo(vertShader);
+		return vertShader;
 	}
 
-	private static boolean printLogInfo(int var0) {
+	private static int createFragShader(String filename) {
+		if(!(enabled)) return -1;
+		int fragShader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+		if (fragShader == 0) {
+			return 0;
+		}
+		String fragCode = "";
+		String line;
+
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new InputStreamReader((Shaders.class).getResourceAsStream(filename)));
+		} catch (Exception e) {
+			try {
+				reader = new BufferedReader(new FileReader(new File(filename)));
+			} catch (Exception e2) {
+				System.out.println("Couldn't open " + filename + "!");
+				glDeleteObjectARB(fragShader);
+				return 0;
+			}
+		}
+
+		try {
+			while ((line = reader.readLine()) != null) {
+				fragCode += line + "\n";
+				if (colorAttachments < 5 && line.matches("uniform [ _a-zA-Z0-9]+ gaux1;.*")) {
+					colorAttachments = 5;
+				} else if (colorAttachments < 6 && line.matches("uniform [ _a-zA-Z0-9]+ gaux2;.*")) {
+					colorAttachments = 6;
+				} else if (colorAttachments < 7 && line.matches("uniform [ _a-zA-Z0-9]+ gaux3;.*")) {
+					colorAttachments = 7;
+				} else if (colorAttachments < 8 && line.matches("uniform [ _a-zA-Z0-9]+ shadow;.*")) {
+					shadowPassInterval = 1;
+					colorAttachments = 8;
+				} else if (line.matches("/\\* SHADOWRES:[0-9]+ \\*/.*")) {
+					String[] parts = line.split("(:| )", 4);
+					System.out.println("Shadow map resolution: " + parts[2]);
+					shadowMapWidth = shadowMapHeight = Integer.parseInt(parts[2]);
+				} else if (line.matches("/\\* SHADOWFOV:[0-9\\.]+ \\*/.*")) {
+					String[] parts = line.split("(:| )", 4);
+					System.out.println("Shadow map field of view: " + parts[2]);
+					shadowMapFOV = Float.parseFloat(parts[2]);
+					shadowMapIsOrtho = false;
+				} else if (line.matches("/\\* SHADOWHPL:[0-9\\.]+ \\*/.*")) {
+					String[] parts = line.split("(:| )", 4);
+					System.out.println("Shadow map half-plane: " + parts[2]);
+					shadowMapHalfPlane = Float.parseFloat(parts[2]);
+					shadowMapIsOrtho = true;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Couldn't read " + filename + "!");
+			glDeleteObjectARB(fragShader);
+			return 0;
+		}
+
+		glShaderSourceARB(fragShader, fragCode);
+		glCompileShaderARB(fragShader);
+		printLogInfo(fragShader);
+		return fragShader;
+	}
+
+	private static boolean printLogInfo(int obj) {
 		if(!(enabled)) return false;
-		IntBuffer var1 = BufferUtils.createIntBuffer(1);
-		ARBShaderObjects.glGetObjectParameterARB(var0, 35716, var1);
-		int var2 = var1.get();
-		if (var2 > 1) {
-			ByteBuffer var3 = BufferUtils.createByteBuffer(var2);
-			var1.flip();
-			ARBShaderObjects.glGetInfoLogARB(var0, var1, var3);
-			byte[] var4 = new byte[var2];
-			var3.get(var4);
-			String var5 = new String(var4);
-			System.out.println("Info log:\n" + var5);
+		IntBuffer iVal = BufferUtils.createIntBuffer(1);
+		glGetObjectParameterARB(obj, GL_OBJECT_INFO_LOG_LENGTH_ARB, iVal);
+
+		int length = iVal.get();
+		if (length > 1) {
+			ByteBuffer infoLog = BufferUtils.createByteBuffer(length);
+			iVal.flip();
+			glGetInfoLogARB(obj, iVal, infoLog);
+			byte[] infoBytes = new byte[length];
+			infoLog.get(infoBytes);
+			String out = new String(infoBytes);
+			System.out.println("Info log:\n" + out);
 			return false;
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	private static void setupFrameBuffer() {
 		if(!(enabled)) return;
 		setupRenderTextures();
+
 		if (dfb != 0) {
-			EXTFramebufferObject.glDeleteFramebuffersEXT(dfb);
-			EXTFramebufferObject.glDeleteRenderbuffersEXT(dfbRenderBuffers);
+			glDeleteFramebuffersEXT(dfb);
+			glDeleteRenderbuffersEXT(dfbRenderBuffers);
 		}
 
-		dfb = EXTFramebufferObject.glGenFramebuffersEXT();
-		EXTFramebufferObject.glBindFramebufferEXT(36160, dfb);
-		EXTFramebufferObject.glGenRenderbuffersEXT(dfbRenderBuffers);
+		dfb = glGenFramebuffersEXT();
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, dfb);
 
-		int var0;
-		for (var0 = 0; var0 < colorAttachments; ++var0) {
-			EXTFramebufferObject.glBindRenderbufferEXT(36161, dfbRenderBuffers.get(var0));
-			if (var0 == 1) {
-				EXTFramebufferObject.glRenderbufferStorageEXT(36161, 34837, renderWidth, renderHeight);
+		glGenRenderbuffersEXT(dfbRenderBuffers);
+
+		for (int i = 0; i < colorAttachments; ++i) {
+			glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, dfbRenderBuffers.get(i));
+			if (i == 1) { // depth buffer
+				glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_RGB32F_ARB, renderWidth, renderHeight);
 			} else {
-				EXTFramebufferObject.glRenderbufferStorageEXT(36161, 6408, renderWidth, renderHeight);
+				glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_RGBA, renderWidth, renderHeight);
 			}
-
-			EXTFramebufferObject.glFramebufferRenderbufferEXT(36160, dfbDrawBuffers.get(var0), 36161, dfbRenderBuffers.get(var0));
-			EXTFramebufferObject.glFramebufferTexture2DEXT(36160, dfbDrawBuffers.get(var0), 3553, dfbTextures.get(var0), 0);
+			glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, dfbDrawBuffers.get(i), GL_RENDERBUFFER_EXT, dfbRenderBuffers.get(i));
+			glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, dfbDrawBuffers.get(i), GL_TEXTURE_2D, dfbTextures.get(i), 0);
 		}
 
-		EXTFramebufferObject.glDeleteRenderbuffersEXT(dfbDepthBuffer);
-		dfbDepthBuffer = EXTFramebufferObject.glGenRenderbuffersEXT();
-		EXTFramebufferObject.glBindRenderbufferEXT(36161, dfbDepthBuffer);
-		EXTFramebufferObject.glRenderbufferStorageEXT(36161, 6402, renderWidth, renderHeight);
-		EXTFramebufferObject.glFramebufferRenderbufferEXT(36160, 36096, 36161, dfbDepthBuffer);
-		var0 = EXTFramebufferObject.glCheckFramebufferStatusEXT(36160);
-		if (var0 != 36053) {
-			System.out.println("Failed creating framebuffer! (Status " + var0 + ")");
+		glDeleteRenderbuffersEXT(dfbDepthBuffer);
+		dfbDepthBuffer = glGenRenderbuffersEXT();
+		glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, dfbDepthBuffer);
+		glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, renderWidth, renderHeight);
+		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, dfbDepthBuffer);
+
+		int status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+		if (status != GL_FRAMEBUFFER_COMPLETE_EXT) {
+			System.out.println("Failed creating framebuffer! (Status " + status + ")");
 		}
 	}
 
 	private static void setupShadowFrameBuffer() {
 		if(!(enabled)) return;
-		if (shadowPassInterval > 0) {
-			setupShadowRenderTexture();
-			EXTFramebufferObject.glDeleteFramebuffersEXT(sfb);
-			sfb = EXTFramebufferObject.glGenFramebuffersEXT();
-			EXTFramebufferObject.glBindFramebufferEXT(36160, sfb);
-			GL11.glDrawBuffer(0);
-			GL11.glReadBuffer(0);
-			EXTFramebufferObject.glDeleteRenderbuffersEXT(sfbDepthBuffer);
-			sfbDepthBuffer = EXTFramebufferObject.glGenRenderbuffersEXT();
-			EXTFramebufferObject.glBindRenderbufferEXT(36161, sfbDepthBuffer);
-			EXTFramebufferObject.glRenderbufferStorageEXT(36161, 6402, shadowMapWidth, shadowMapHeight);
-			EXTFramebufferObject.glFramebufferRenderbufferEXT(36160, 36096, 36161, sfbDepthBuffer);
-			EXTFramebufferObject.glFramebufferTexture2DEXT(36160, 36096, 3553, sfbDepthTexture, 0);
-			int var0 = EXTFramebufferObject.glCheckFramebufferStatusEXT(36160);
-			if (var0 != 36053) {
-				System.out.println("Failed creating shadow framebuffer! (Status " + var0 + ")");
-			}
+		if (shadowPassInterval <= 0) {
+			return;
+		}
+
+		setupShadowRenderTexture();
+
+		glDeleteFramebuffersEXT(sfb);
+
+		sfb = glGenFramebuffersEXT();
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, sfb);
+
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+
+		glDeleteRenderbuffersEXT(sfbDepthBuffer);
+		sfbDepthBuffer = glGenRenderbuffersEXT();
+		glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, sfbDepthBuffer);
+		glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, shadowMapWidth, shadowMapHeight);
+		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, sfbDepthBuffer);
+		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_TEXTURE_2D, sfbDepthTexture, 0);
+
+		int status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+		if (status != GL_FRAMEBUFFER_COMPLETE_EXT) {
+			System.out.println("Failed creating shadow framebuffer! (Status " + status + ")");
 		}
 	}
 
 	private static void setupRenderTextures() {
 		if(!(enabled)) return;
-		GL11.glDeleteTextures(dfbTextures);
-		GL11.glGenTextures(dfbTextures);
+		glDeleteTextures(dfbTextures);
+		glGenTextures(dfbTextures);
 
-		for (int var0 = 0; var0 < colorAttachments; ++var0) {
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, dfbTextures.get(var0));
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			ByteBuffer var1;
-			if (var0 == 1) {
-				var1 = ByteBuffer.allocateDirect(renderWidth * renderHeight * 4 * 4);
-				GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, 34837, renderWidth, renderHeight, 0, GL11.GL_RGBA, GL11.GL_FLOAT, var1);
+		for (int i = 0; i < colorAttachments; ++i) {
+			glBindTexture(GL_TEXTURE_2D, dfbTextures.get(i));
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			if (i == 1) { // depth buffer
+				ByteBuffer buffer = ByteBuffer.allocateDirect(renderWidth * renderHeight * 4 * 4);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F_ARB, renderWidth, renderHeight, 0, GL_RGBA, GL11.GL_FLOAT, buffer);
 			} else {
-				var1 = ByteBuffer.allocateDirect(renderWidth * renderHeight * 4);
-				GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, renderWidth, renderHeight, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, var1);
+				ByteBuffer buffer = ByteBuffer.allocateDirect(renderWidth * renderHeight * 4);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, renderWidth, renderHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 			}
 		}
 	}
 
 	private static void setupShadowRenderTexture() {
 		if(!(enabled)) return;
-		if (shadowPassInterval > 0) {
-			GL11.glDeleteTextures(sfbDepthTexture);
-			sfbDepthTexture = GL11.glGenTextures();
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, sfbDepthTexture);
-			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, 10496.0F);
-			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, 10496.0F);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-			ByteBuffer var0 = ByteBuffer.allocateDirect(shadowMapWidth * shadowMapHeight * 4);
-			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_DEPTH_COMPONENT, shadowMapWidth, shadowMapHeight, 0, GL11.GL_DEPTH_COMPONENT, GL11.GL_FLOAT, var0);
+		if (shadowPassInterval <= 0) {
+			return;
 		}
-	}
 
-	public static void setMode(int shaderType) {
-		enabled = shaderType > 0;
-		destroy();
-		if (Minecraft.theMinecraft.theWorld == null) {
-			setup(shaderType);
-		}
-		else {
-			init(shaderType);
-		}
-	}
+		// depth
+		glDeleteTextures(sfbDepthTexture);
+		sfbDepthTexture = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, sfbDepthTexture);
 
-	public static boolean isEnabled() {
-		return enabled;
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		ByteBuffer buffer = ByteBuffer.allocateDirect(shadowMapWidth * shadowMapHeight * 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadowMapWidth, shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL11.GL_FLOAT, buffer);
 	}
+	
+	// Spout Start
+	public static boolean isOpenGL(int v) {
+    	try {
+    		String version = GL11.glGetString(GL11.GL_VERSION);
+    		return Integer.parseInt(String.valueOf(version.charAt(0))) >= v;
+    	}
+    	catch (Exception e) {
+    		return false;
+    	}
+    }
+	//Spout End
 }

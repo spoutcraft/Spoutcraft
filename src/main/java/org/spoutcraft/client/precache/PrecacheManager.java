@@ -64,18 +64,14 @@ public class PrecacheManager {
 		File target = getPluginPreCacheFile(plugin);
 		if (target.exists()) {
 			crc = FileUtil.getCRC(target, new byte[(int) target.length()]);
-			if (crc == plugin.getCrc()) {
-				isCached = true;
+			if (crc == plugin.getCrc()) { // Cached
+			
+			} else {
+				
 			}
 		}
 		
-		System.out.println("Plugin Precache: " +
-				plugin.getPlugin() + " " +
-				plugin.getVersion() + " || " +
-				"isCached= "+ String.valueOf(isCached)+
-				" || ServerCRC= " + String.valueOf(plugin.getCrc()) + " " +
-				"ClientCRC= " + String.valueOf(crc));
-		plugins.put(plugin, isCached);
+	
 	}
 	
 	/**
@@ -115,8 +111,11 @@ public class PrecacheManager {
 	 * @return true if a plugin needs to be cached, false is everything is already cached.
 	 */
 	public static boolean hasNextCache() {
-		for( boolean cached : plugins.values()) {
-			if (cached == false) return true;
+		System.out.println("PreCacheManager: Starting hasNextCache");
+		for( boolean cached : plugins.values()) {			
+			System.out.println("PreCacheManager: hasNextCache = " + cached);
+			showFiles();
+			//if (cached == false) return true;
 		}
 		return false;
 	}
@@ -126,12 +125,20 @@ public class PrecacheManager {
 	 * @return
 	 */
 	public static PrecacheTuple getNextToCache() {
+		System.out.println("PreCacheManager: Starting getNextToCache");
 		for( Entry entry : plugins.entrySet()) {
 			if ( ((Boolean)entry.getValue()).booleanValue() == false ) {
 				return (PrecacheTuple)entry.getKey();
 			}
 		}
 		return null;
+	}
+	
+	public static void showFiles() {
+		for( Entry entry : plugins.entrySet()) {
+		PrecacheTuple plugin = (PrecacheTuple)entry.getKey();
+		System.out.println("PreCacheManager: hasNextCache = " + plugin);
+		}
 	}
 	
 	/**
@@ -165,19 +172,19 @@ public class PrecacheManager {
 	}
 	
 	public static void loadPrecache(boolean reloadRenderer) {		
-		
+		System.out.println("PreCacheManager: Starting loadPrecache...");
 		//unzip
 		File cacheRoot = FileUtil.getCacheDir();
 		
 		for(Entry entry : plugins.entrySet()) {
 			try {
 				PrecacheTuple plugin = (PrecacheTuple)entry.getKey();
-				boolean isCached = (Boolean)entry.getValue();
-				
+				boolean isCached = (Boolean)entry.getValue();				
+				System.out.println("PreCacheManager: Current File is Plugin: " + plugin + "Cached: " + isCached);
 				if(isCached == true) {
 					ZipFile zip = new ZipFile(getPluginPreCacheFile(plugin));
 					Enumeration zipEntries = zip.entries();
-					
+					System.out.println("PreCacheManager: Loaded Plugin: " + plugin + "Cached: " + isCached);
 					while (zipEntries.hasMoreElements())
 					{
 						ZipEntry zipEntry = (ZipEntry) zipEntries.nextElement();

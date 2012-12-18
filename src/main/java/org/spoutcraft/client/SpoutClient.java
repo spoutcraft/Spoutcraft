@@ -339,34 +339,34 @@ public class SpoutClient extends PropertyObject implements Client {
 		tick++;
 		Configuration.onTick();
 		getHandle().mcProfiler.startSection("httpdownloads");
-		FileDownloadThread.getInstance().onTick();
+		FileDownloadThread.getInstance().onTick();		
 		getHandle().mcProfiler.endStartSection("packet_decompression");
 		PacketDecompressionThread.onTick();
-		getHandle().mcProfiler.endStartSection("widgets");
+		getHandle().mcProfiler.endStartSection("widgets");		
 		enableSandbox();
-		player.getMainScreen().onTick();
+		player.getMainScreen().onTick();		
 		disableSandbox();
-		getHandle().mcProfiler.endStartSection("mipmapping");
-		MipMapUtils.onTick();
+		getHandle().mcProfiler.endStartSection("mipmapping");		
+		MipMapUtils.onTick();		
 		getHandle().mcProfiler.endStartSection("special_effects");
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.theWorld.doColorfulStuff();
 			inWorldTicks++;
 		}
 		getHandle().mcProfiler.endStartSection("entity_info");
-		if (isSpoutEnabled()) {
+		if (isSpoutEnabled()) {				
 			LinkedList<org.spoutcraft.api.entity.Entity> processed = new LinkedList<org.spoutcraft.api.entity.Entity>();
-			Iterator<Entity> i = Entity.toProcess.iterator();
+			Iterator<Entity> i = Entity.toProcess.iterator();			
 			while (i.hasNext()) {
 				Entity next = i.next();
 				if (next.spoutEnty != null) {
-					processed.add(next.spoutEnty);
+					processed.add(next.spoutEnty);					
 				}
 			}
-			Entity.toProcess.clear();
+			Entity.toProcess.clear();			
 			if (processed.size() > 0) {
 				getPacketManager().sendSpoutPacket(new PacketEntityInformation(processed));
-			}
+			}			
 		}
 		getHandle().mcProfiler.endSection();
 	}
@@ -411,14 +411,14 @@ public class SpoutClient extends PropertyObject implements Client {
 		} else if (clipboardThread != null) {
 			clipboardThread.interrupt();
 			clipboardThread = null;
-		}
-		SpoutcraftChunk.loadedChunks.clear();
-		PacketDecompressionThread.startThread();
-		MipMapUtils.initializeMipMaps();
+		}		
+		SpoutcraftChunk.loadedChunks.clear();		
+		PacketDecompressionThread.startThread();		
+		MipMapUtils.initializeMipMaps();		
 		MipMapUtils.update();
 		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
 		inWorldTicks = 0L;
-		MinimapConfig.getInstance().getServerWaypoints().clear();
+		MinimapConfig.getInstance().getServerWaypoints().clear();		
 	}
 
 	public static Minecraft getHandle() {

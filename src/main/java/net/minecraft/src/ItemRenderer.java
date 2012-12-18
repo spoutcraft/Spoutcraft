@@ -109,6 +109,12 @@ public class ItemRenderer {
 			GL11.glTranslatef(-0.9375F, -0.0625F, 0.0F);
 			this.renderItemIn2D(var5, var8, var9, var7, var10);
 
+			if (par2ItemStack != null) {
+				Colorizer.colorizeWaterBlockGL(par2ItemStack.itemID);
+			}
+			
+			this.renderItemIn2D(var5, var8, var9, var7, var10);
+			
 			if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0) {
 				GL11.glDepthFunc(GL11.GL_EQUAL);
 				GL11.glDisable(GL11.GL_LIGHTING);

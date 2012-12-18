@@ -1,8 +1,11 @@
 package com.pclewis.mcpatcher.mod;
 
+import com.pclewis.mcpatcher.MCLogger;
 import com.pclewis.mcpatcher.MCPatcherUtils;
+import com.pclewis.mcpatcher.TexturePackAPI;
 
 final class ColorMap {
+	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
 	private static final int COLORMAP_SIZE = 256;
 	private static final float COLORMAP_SCALE = 255.0F;
 	private int[] map;
@@ -20,17 +23,21 @@ final class ColorMap {
 		return (float)var0 + (float)(var1 & 255) / 256.0F;
 	}
 
-	ColorMap(boolean var1, String var2, int var3) {
-		this.mapDefault = var3;
+	ColorMap(int var1) {
+		this.mapDefault = var1;
+	}
 
-		if (var1 && Colorizer.lastTexturePack != null) {
-			this.map = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(Colorizer.lastTexturePack.getResourceAsStream(var2)));
+	void loadColorMap(boolean var1, String var2) {
+		if (var1) {
+			this.map = MCPatcherUtils.getImageRGB(TexturePackAPI.getImage(var2));
 
 			if (this.map != null) {
 				if (this.map.length != 65536) {
+					logger.severe("%s must be %dx%d", new Object[] {var2, Integer.valueOf(256), Integer.valueOf(256)});
 					this.map = null;
 				} else {
 					this.mapDefault = this.colorize(16777215, 0.5D, 1.0D);
+					logger.fine("using %s, default color %06x", new Object[] {var2, Integer.valueOf(this.mapDefault)});
 				}
 			}
 		}
@@ -57,9 +64,6 @@ final class ColorMap {
 	}
 
 	int colorize(int var1, int var2, int var3, int var4) {
-		if (BiomeHelper.instance == null) {
-			return var1;
-		}
 		return this.colorize(var1, (double)BiomeHelper.instance.getTemperature(var2, var3, var4), (double)BiomeHelper.instance.getRainfall(var2, var3, var4));
 	}
 }

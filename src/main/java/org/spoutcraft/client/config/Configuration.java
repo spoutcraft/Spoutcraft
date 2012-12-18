@@ -166,7 +166,7 @@ public class Configuration {
 			org.lwjgl.opengl.Display.setVSyncEnabled(vsync);
 		}
 		
-		Shaders.setMode(0); // Force Shader to 0 to fix hundreds of client crashes per day!
+		//Shaders.setMode(0); // Force Shader to 0 to fix hundreds of client crashes per day!
 
 		if (Configuration.getSignDistance() < 8) {
 			signDistance = 8;

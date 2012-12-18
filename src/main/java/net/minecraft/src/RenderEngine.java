@@ -20,6 +20,7 @@ import net.minecraft.client.Minecraft;
 
 import com.pclewis.mcpatcher.mod.CustomAnimation;
 import com.pclewis.mcpatcher.mod.TextureUtils;
+import com.pclewis.mcpatcher.TexturePackAPI;
 import com.pclewis.mcpatcher.mod.TileSize;
 // Spout HD End
 
@@ -84,19 +85,19 @@ public class RenderEngine {
 
 				if (par1Str.startsWith("##")) {
 					// Spout HD Start
-					var7 = this.getImageContentsAndAllocate(this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(2))));
+					var7 = this.getImageContentsAndAllocate(this.unwrapImageByColumns(TextureUtils.getImage(this, var2, par1Str.substring(2))));
 					// Spout HD End
 				} else if (par1Str.startsWith("%clamp%")) {
 					this.clampTexture = true;
 					// Spout HD Start
-					var7 = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(7)));
+					var7 = this.getImageContentsAndAllocate(TextureUtils.getImage(this, var2, par1Str.substring(7)));
 					// Spout HD End
 					this.clampTexture = false;
 				} else if (par1Str.startsWith("%blur%")) {
 					this.blurTexture = true;
 					this.clampTexture = true;
 					// Spout HD Start
-					var7 = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(6)));
+					var7 = this.getImageContentsAndAllocate(TextureUtils.getImage(this, var2, par1Str.substring(6)));
 					// Spout HD Start
 					this.clampTexture = false;
 					this.blurTexture = false;
@@ -157,30 +158,30 @@ public class RenderEngine {
 
 				if (par1Str.startsWith("##")) {
 					// Spout HD Start
-					this.setupTexture(this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(2))), var3);
+					this.setupTexture(this.unwrapImageByColumns(TextureUtils.getImage(this, var6, par1Str.substring(2))), var3);
 					// Spout HD End
 				} else if (par1Str.startsWith("%clamp%")) {
 					this.clampTexture = true;
 					// Spout HD Start
-					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(7)), var3);
+					this.setupTexture(TextureUtils.getImage(this, var6, par1Str.substring(7)), var3);
 					// Spout HD End
 					this.clampTexture = false;
 				} else if (par1Str.startsWith("%blur%")) {
 					this.blurTexture = true;
 					// Spout HD Start
-					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(6)), var3);
+					this.setupTexture(TextureUtils.getImage(this, var6, par1Str.substring(6)), var3);
 					// Spout HD End
 					this.blurTexture = false;
 				} else if (par1Str.startsWith("%blurclamp%")) {
 					this.blurTexture = true;
 					this.clampTexture = true;
 					// Spout HD Start
-					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(11)), var3);
+					this.setupTexture(TextureUtils.getImage(this, var6, par1Str.substring(11)), var3);
 					// Spout HD End
 					this.blurTexture = false;
 					this.clampTexture = false;
 				} else {
-					this.setupTexture(TextureUtils.getResourceAsBufferedImage(par1Str), var3); // Spout HD
+					this.setupTexture(TexturePackAPI.getImage(par1Str), var3); // Spout HD
 				}
 
 				this.textureMap.put(par1Str, Integer.valueOf(var3));
@@ -502,19 +503,19 @@ public class RenderEngine {
 			try {
 				// Spout HD Start
 				if (var9.startsWith("##")) {
-					var4 = this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(2)));
+					var4 = this.unwrapImageByColumns(TextureUtils.getImage(this, var1, var9.substring(2)));
 				} else if (var9.startsWith("%clamp%")) {
 					this.clampTexture = true;
-					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(7));
+					var4 = TextureUtils.getImage(this, var1, var9.substring(7));
 				} else if (var9.startsWith("%blur%")) {
 					this.blurTexture = true;
-					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(6));
+					var4 = TextureUtils.getImage(this, var1, var9.substring(6));
 				} else if (var9.startsWith("%blurclamp%")) {
 					this.blurTexture = true;
 					this.clampTexture = true;
-					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(11));
+					var4 = TextureUtils.getImage(this, var1, var9.substring(11));
 				} else {
-					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9);
+					var4 = TextureUtils.getImage(this, var1, var9);
 				}
 				if (var4 == null) {
 					var2.remove();
@@ -543,15 +544,15 @@ public class RenderEngine {
 			try {
 				// Spout HD Start
 				if (var9.startsWith("##")) {
-					var4 = this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(2)));
+					var4 = this.unwrapImageByColumns(TextureUtils.getImage(this, var1, var9.substring(2)));
 				} else if (var9.startsWith("%clamp%")) {
 					this.clampTexture = true;
-					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(7));
+					var4 = TextureUtils.getImage(this, var1, var9.substring(7));
 				} else if (var9.startsWith("%blur%")) {
 					this.blurTexture = true;
-					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(6));
+					var4 = TextureUtils.getImage(this, var1, var9.substring(6));
 				} else {
-					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9);
+					var4 = TextureUtils.getImage(this, var1, var9);
 				}
 				if (var4 == null) {
 					var2.remove();
@@ -593,5 +594,12 @@ public class RenderEngine {
 		this.refreshTextures();
 		TextureUtils.refreshTextureFX(this.textureList);
 	}
+	
+	public void reloadTextures(Minecraft var1) {
+		this.imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
+		this.refreshTextures();
+		TextureUtils.refreshTextureFX(this.textureList);
+	}
+	
 	// Spout HD End
 }
