@@ -343,21 +343,16 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		// Spout Start
 		System.out.println("Launching Spoutcraft " + SpoutClient.getClientVersion());
 		// Spout End
-		this.renderEngine = new RenderEngine(this.texturePackList, this.gameSettings);
-		// Spout Start
-		//TextureUtils.setTileSize();
+		this.renderEngine = new RenderEngine(this.texturePackList, this.gameSettings);		
 		this.renderEngine.setTileSize(this);
-		// Spout End
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine, false);
-		this.standardGalacticFontRenderer = new FontRenderer(this.gameSettings, "/font/alternate.png", this.renderEngine, false);
-		//TextureUtils.setTileSize(); // Spout HD
+		this.standardGalacticFontRenderer = new FontRenderer(this.gameSettings, "/font/alternate.png", this.renderEngine, false);		
 		this.renderEngine.setTileSize(this); // Spout HD
 		if (this.gameSettings.language != null) {
 			StringTranslate.getInstance().setLanguage(this.gameSettings.language);
 			this.fontRenderer.setUnicodeFlag(StringTranslate.getInstance().isUnicode());
 			this.fontRenderer.setBidiFlag(StringTranslate.isBidirectional(this.gameSettings.language));
 		}
-
 		ColorizerWater.setWaterBiomeColorizer(this.renderEngine.getTextureContents("/misc/watercolor.png"));
 		ColorizerGrass.setGrassBiomeColorizer(this.renderEngine.getTextureContents("/misc/grasscolor.png"));
 		ColorizerFoliage.setFoliageBiomeColorizer(this.renderEngine.getTextureContents("/misc/foliagecolor.png"));
@@ -1380,7 +1375,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	 * Runs the current tick.
 	 */
 	public void runTick() {		
-		//TexturePackAPI.ChangeHandler.checkForTexturePackChange();
+		TexturePackAPI.ChangeHandler.checkForTexturePackChange(); //Spout
 		if (this.rightClickDelayTimer > 0) {
 			--this.rightClickDelayTimer;
 		}

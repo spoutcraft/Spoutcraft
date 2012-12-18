@@ -110,7 +110,7 @@ public class SkyRenderer {
     static {
         TexturePackAPI.ChangeHandler.register(new TexturePackAPI.ChangeHandler(MCPatcherUtils.BETTER_SKIES, 2) {
             @Override
-            protected void onChange() {
+            public void onChange() { //Spout Protected > Public
         		SkyRenderer.access$000().clear();
         		World var1 = MCPatcherUtils.getMinecraft().getWorld();
 

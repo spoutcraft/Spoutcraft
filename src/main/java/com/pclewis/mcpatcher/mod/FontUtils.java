@@ -108,7 +108,7 @@ public class FontUtils {
 		return var5;
 	}
 
-	private static float getCharWidthf(FontRenderer var0, char var1) {
+	public static float getCharWidthf(FontRenderer var0, char var1) { // Spout
 		float var2 = (float)var0.getCharWidth(var1);
 		return var2 >= 0.0F && var1 < var0.charWidthf.length && var1 >= 0 ? var0.charWidthf[var1] : var2;
 	}

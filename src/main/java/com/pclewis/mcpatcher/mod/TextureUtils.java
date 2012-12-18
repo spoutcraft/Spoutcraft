@@ -259,9 +259,9 @@ public class TextureUtils {
         CustomAnimation.clear();
 
         Minecraft minecraft = MCPatcherUtils.getMinecraft();
-      //  if (!fancyCompass || !FancyCompass.refresh()) {
-       //     textureList.add(new TextureCompassFX(minecraft));
-        //}
+        //if (!fancyCompass || !FancyCompass.refresh()) { //Spout Removed
+        //     textureList.add(new TextureCompassFX(minecraft)); //Spout Removed
+        //} //Spout Removed
         textureList.add(new TextureWatchFX(minecraft));
 
         boolean isDefault = TexturePackAPI.isDefaultTexturePack();

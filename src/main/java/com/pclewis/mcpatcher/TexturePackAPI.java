@@ -370,21 +370,20 @@ public class TexturePackAPI {
                 });
 			}
 		}
-
-		//TODO: Needs to be rebuilt
-		// Spout Start 
+	
+		//TODO:  Error: incompatible types
 		/*
 		public static void change() {
-	         for (ChangeHandler handler : handlers) {
-	                try {
-	                    handler.onChange();
-	                } catch (Throwable e) {
-	                    e.printStackTrace();
-	                }
-	            }
-	        }
-		// Spout End
+			for (ChangeHandler handler : handlers) {
+				try {
+					handler.onChange();
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		*/
+		
 		public static void checkForTexturePackChange() {
 			Minecraft var0 = MCPatcherUtils.getMinecraft();
 

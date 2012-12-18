@@ -56,7 +56,7 @@ public class MobRandomizer {
     static {
         TexturePackAPI.ChangeHandler.register(new TexturePackAPI.ChangeHandler(MCPatcherUtils.RANDOM_MOBS, 2) {
             @Override
-            protected void onChange() {
+            public void onChange() { //Spout Protected > Public
         		MobRandomizer.access$000().clear();
         		MobRuleList.clear();
         		MobOverlay.reset();

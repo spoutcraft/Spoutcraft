@@ -34,7 +34,7 @@ public class CustomAnimation {
 	private CustomAnimation$Delegate delegate;
 
 	public static void updateAll() {
-		//FancyCompass.update();
+		//FancyCompass.update();  // Spout Removed.
 		Iterator var0 = animations.iterator();
 
 		while (var0.hasNext()) {

@@ -61,20 +61,15 @@ public class CTMUtils {
     static {
         TexturePackAPI.ChangeHandler.register(new TexturePackAPI.ChangeHandler(MCPatcherUtils.CONNECTED_TEXTURES, 2) {
             @Override
-            protected void onChange() {
-            	// Spout Start
-            	if (!Configuration.isConnectedTextures()) {
-            		System.out.println("Spoutcraft:  Connected Textures Currently Disabled!");
-            		return;
-            	}
-            	// Spout End
+            protected void onChange() {          	
+            	
             	terrainTexture = getTexture("/terrain.png");
                 SuperTessellator.a.clearTessellators();
 
                 Arrays.fill(blockOverrides, null);
                 Arrays.fill(tileOverrides, null);
 
-                if (enableStandard || enableNonStandard) {
+                if (Configuration.isConnectedTextures()) {
                     for (String s : TexturePackAPI.listResources("/ctm", ".properties")) {
                         registerOverride(TileOverride.create(s.replace(".properties", ""), null));
                     }
@@ -82,7 +77,7 @@ public class CTMUtils {
 
                 Properties properties = new Properties();
 
-                if (enableGlass) {
+                if (Configuration.isConnectedTextures()) {
                     properties.clear();
                     properties.setProperty("method", "glass");
                     properties.setProperty("connect", "block");
