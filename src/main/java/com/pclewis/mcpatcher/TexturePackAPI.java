@@ -335,7 +335,7 @@ public class TexturePackAPI {
 		}
 	}
 	public abstract static class ChangeHandler {
-		private static final ArrayList handlers = new ArrayList();
+		private static final ArrayList<ChangeHandler> handlers = new ArrayList<ChangeHandler>();
 		private static boolean changing;
 		private static final boolean autoRefreshTextures = MCPatcherUtils.getBoolean("autoRefreshTextures", false);
 		private static long lastCheckTime;
@@ -372,7 +372,6 @@ public class TexturePackAPI {
 		}
 	
 		//TODO:  Error: incompatible types
-		/*
 		public static void change() {
 			for (ChangeHandler handler : handlers) {
 				try {
@@ -382,7 +381,6 @@ public class TexturePackAPI {
 				}
 			}
 		}
-		*/
 		
 		public static void checkForTexturePackChange() {
 			Minecraft var0 = MCPatcherUtils.getMinecraft();
