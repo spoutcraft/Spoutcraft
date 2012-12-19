@@ -159,7 +159,7 @@ public class PrecacheManager {
 	}
 	
 	public static File getPluginPreCacheFile(String plugin, String version) {
-		return new File(FileUtil.getCacheDir(), plugin+"_"+version+".zip");
+		return new File(FileUtil.getCacheDir(), plugin + "_" + version+".zip");
 	}
 	
 	public static void loadPrecache(boolean reloadRenderer) {
@@ -171,17 +171,16 @@ public class PrecacheManager {
 			final PrecacheTuple toCache = (PrecacheTuple) entry.getKey();
 			final File extractDir = new File(cacheRoot, toCache.getPlugin() + "_" + toCache.getVersion()); //Ex. /cache/pluginname/
 			//The extracted file exists and is a directory and isn't empty, move on
-			if (extractDir.exists() && extractDir.isDirectory() && !((List<File>) FileUtils.listFiles(extractDir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)).isEmpty()) {
+			if (extractDir.exists() && extractDir.isDirectory()) {
 				//Do nothing
 			} else {
-				extractDir.mkdirs(); //Make the directories to unzip to
-				final byte[] BUFFER = new byte[10000000]; //~9MB buffer
+				System.out.println("[Spoutcraft] Extracting: " + extractDir.getName() + ".zip");
+				//Make the directories to unzip to
+				extractDir.mkdirs();
+				final byte[] BUFFER = new byte[104857600]; //100MB buffer
 				try  {
 					//Read in a zip stream
-					final File temp = new File(cacheRoot, toCache.getPlugin() + "_" + toCache.getVersion() + ".zip");
-					System.out.println(temp.getName());
-					final ZipInputStream stream = new ZipInputStream(new FileInputStream(temp));
-
+					final ZipInputStream stream = new ZipInputStream(new FileInputStream(getPluginPreCacheFile(toCache)));
 					//Grab the first entry in the zip
 					ZipEntry inner = stream.getNextEntry();
 					while (inner != null) {
@@ -190,7 +189,7 @@ public class PrecacheManager {
 						//Construct an output stream for the entry
 						final FileOutputStream writeInner = new FileOutputStream(new File(extractDir, innerName));
 						int i;
-						//Read in the file. The file will be limited to the 9MB buffer
+						//Read in the file. The file will be limited to the buffer's length
 						while ((i = stream.read(BUFFER, 0, BUFFER.length)) > -1) {
 							//Write the buffer
 							writeInner.write(BUFFER, 0, i);
@@ -210,17 +209,16 @@ public class PrecacheManager {
 			}
 		}
 		for (File file : (List<File>) FileUtils.listFiles(cacheRoot, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)) {
-			if (file.getName().endsWith(".zip")) {
-				continue;
-			}
-			System.out.println("Loading: " + file.getName());
 			if (file.getName().endsWith(".sbd")) {
+				System.out.println("[Spoutcraft] Loading sbd (Spout Block Design): " + file.getName() + " from: " + file.getParent());
 				loadDesign(file);
 			}
 			else if (FileUtil.isImageFile(file.getName())) {
+				System.out.println("[Spoutcraft] Loading image: " + file.getName() + " from: " + file.getParent());
 				CustomTextureManager.getTextureFromUrl(file.getName());
 			}
 		}
+		System.out.println("[Spoutcraft] Updating renderer...");
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
 		}
