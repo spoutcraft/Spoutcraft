@@ -70,6 +70,10 @@ public class PrecacheManager {
 			}
 		}
 		//Either it doesn't exist or crc failed, either or it isn't cached.
+		File temp = new File(FileUtil.getCacheDir(), plugin.getPlugin());
+		if (temp.exists() && temp.isDirectory()) {
+			FileUtil.deleteDirectory(temp);
+		}
 		plugins.put(plugin, false);
 	}
 	
