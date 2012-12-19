@@ -261,8 +261,7 @@ public class WorldRenderer {
 		CTMUtils.start();
 
 		if (!this.needsUpdate) {
-			CTMUtils.finish();
-			System.out.println("SpoutDebug: Chunk Not Updated");
+			CTMUtils.finish();			
 		} else {
 			++chunksUpdated;
 			int x = this.posX;

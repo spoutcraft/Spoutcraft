@@ -38,11 +38,9 @@ public class MobRandomizer {
 		if (Configuration.isRandomMobTextures()) {
 			if (var1.startsWith("/mob/") && var1.endsWith(".png")) {
 				ExtraInfo var2 = ExtraInfo.getInfo(var0);
-				MobRuleList var3 = MobRuleList.get(var1);
-				System.out.println("SpoutDebug: RandomMobs Textures Applied.");
+				MobRuleList var3 = MobRuleList.get(var1);				
 				return var3.getSkin(ExtraInfo.access$100(var2), ExtraInfo.access$200(var2), ExtraInfo.access$300(var2), ExtraInfo.access$400(var2), ExtraInfo.access$500(var2));			
-			} else {
-				System.out.println("SpoutDebug: RandomMobs Textures Skipped.");
+			} else {				
 				return var1;
 			}
 		} else {
