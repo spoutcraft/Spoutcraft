@@ -1,6 +1,10 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
+//Spout Start
+import com.pclewis.mcpatcher.mod.MobRandomizer;
+import org.spoutcraft.client.config.Configuration;
+//Spout End
 
 public class RenderSpider extends RenderLiving {
 	public RenderSpider() {
@@ -20,7 +24,11 @@ public class RenderSpider extends RenderLiving {
 			return -1;
 		} else {
 			// Spout Start
-			loadTexture(par1EntitySpider.getCustomTexture(org.spoutcraft.api.entity.EntitySkinType.SPIDER_EYES, "/mob/spider_eyes.png"));
+			if (Configuration.isRandomMobTextures()) {			
+				this.loadTexture(MobRandomizer.randomTexture((EntityLiving)par1EntitySpider, "/mob/spider_eyes.png"));
+			} else {
+				loadTexture(par1EntitySpider.getCustomTexture(org.spoutcraft.api.entity.EntitySkinType.SPIDER_EYES, "/mob/spider_eyes.png"));
+			}			
 			// Spout End
 			float var4 = 1.0F;
 			GL11.glEnable(GL11.GL_BLEND);

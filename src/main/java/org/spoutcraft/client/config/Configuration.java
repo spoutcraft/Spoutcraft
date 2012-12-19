@@ -83,6 +83,7 @@ public class Configuration {
 	private static int mainMenuState = defaultMenuState();
 	private static boolean connectedTextures = false;
 	private static boolean advancedOptions = false;
+	private static boolean randomMobTextures = false;
 	
 	//Config-specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
@@ -166,8 +167,6 @@ public class Configuration {
 			org.lwjgl.opengl.Display.setVSyncEnabled(vsync);
 		}
 		
-		//Shaders.setMode(0); // Force Shader to 0 to fix hundreds of client crashes per day!
-
 		if (Configuration.getSignDistance() < 8) {
 			signDistance = 8;
 		} else if (Configuration.getSignDistance() >= 128 && Configuration.getSignDistance() != Integer.MAX_VALUE) {
@@ -626,6 +625,15 @@ public class Configuration {
 		onPropertyChange();
 	}
 
+	public static synchronized boolean isRandomMobTextures() {
+		return randomMobTextures;
+	}
+
+	public static synchronized void setRandomMobTextures(boolean randomMobTextures) {
+		Configuration.randomMobTextures = randomMobTextures;
+		onPropertyChange();
+	}
+	
 	public static synchronized boolean isAdvancedOptions() {
 		return advancedOptions;
 	}

@@ -120,10 +120,11 @@ public class EntityList {
 		return classToIDMapping.containsKey(var1) ? ((Integer)classToIDMapping.get(var1)).intValue() : 0;
 	}
 
+	// Spout Duplicate Methods because EntityAgeable has not been overriden.
 	public static Class func_90035_a(int par0) {
 		return (Class)IDtoClassMapping.get(Integer.valueOf(par0));
 	}
-	
+	// Spout End	
 	/**
 	 * Return the class assigned to this entity ID.
 	 */

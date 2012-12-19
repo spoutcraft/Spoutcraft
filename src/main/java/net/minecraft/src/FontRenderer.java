@@ -20,7 +20,7 @@ public class FontRenderer {
 	public int fontTextureName = 0;
 
 	/** the height in pixels of default text */
-	public int FONT_HEIGHT = 9;
+	public int FONT_HEIGHT = 8; // Spout Smaller Text
 	public Random fontRandom = new Random();
 
 	/**

@@ -26,19 +26,18 @@ import org.spoutcraft.api.gui.GenericCheckBox;
 import org.spoutcraft.client.config.Configuration;
 import com.pclewis.mcpatcher.TexturePackAPI;
 
-public class ConnectedTexturesButton extends AutomatedCheckBox {
-	public ConnectedTexturesButton() {
-		super("Connected Textures");
-		setChecked(Configuration.isConnectedTextures());
-		setTooltip("Connects textures of identical blocks next to each other for aesthetics.\n\nCertain texture packs may add additional enhancements");
+public class RandomMobTextureButton extends AutomatedCheckBox {
+	public RandomMobTextureButton() {
+		super("Random Mob Textures");
+		setChecked(Configuration.isRandomMobTextures());
+		setTooltip("Applies Random Textures to Mobs and Animals.\n\nOnly supported by certain texture packs.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		Configuration.setConnectedTextures(!Configuration.isConnectedTextures());
+		Configuration.setRandomMobTextures(!Configuration.isRandomMobTextures());
 		Configuration.write();
-		
-		//TODO: Fixed TexturePackAPI.ChangeHandler.change()
+				
 		TexturePackAPI.ChangeHandler.change();
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();

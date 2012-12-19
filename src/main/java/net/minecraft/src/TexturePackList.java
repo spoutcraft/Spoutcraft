@@ -80,15 +80,7 @@ public class TexturePackList {
 			this.mc.gameSettings.skin = par1ITexturePack.getTexturePackFileName();
 			this.mc.gameSettings.saveOptions();
 			TexturePackAPI.ChangeHandler.checkForTexturePackChange();
-			return true;
-			
-			//TOOD: Not sure if this is still needed.
-			// Spout HD
-			//TextureUtils.setTileSize();
-			//Minecraft var10000 = MCPatcherUtils.getMinecraft();
-			//var10000.renderEngine.setTileSize(var10000);
-			//TextureUtils.setFontRenderer();
-			// Spout HD
+			return true;			
 		}
 	}
 
@@ -172,7 +164,8 @@ public class TexturePackList {
 		}
 
 		this.availableTexturePacks = var1;
-		TexturePackAPI.ChangeHandler.checkForTexturePackChange();
+		//Spout - This isn't needed, don't force texture pack unless asked to do so.
+		//TexturePackAPI.ChangeHandler.checkForTexturePackChange();
 	}
 
 	/**

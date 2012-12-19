@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;  // Spout HD
-
+import com.pclewis.mcpatcher.mod.Colorizer;  // Spout
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class ItemMonsterPlacer extends Item {
 
 	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
 		EntityEggInfo var3 = (EntityEggInfo)EntityList.entityEggs.get(Integer.valueOf(par1ItemStack.getItemDamage()));
-		return var3 != null ? (par2 == 0 ? var3.primaryColor : var3.secondaryColor) : 16777215;
+		return var3 != null ? (par2 == 0 ? Colorizer.colorizeSpawnerEgg(var3.primaryColor, par1ItemStack.getItemDamage(), par2) : Colorizer.colorizeSpawnerEgg(var3.secondaryColor, par1ItemStack.getItemDamage(), par2)) : Colorizer.colorizeSpawnerEgg(16777215, par1ItemStack.getItemDamage(), par2);
 	}
 
 	public boolean requiresMultipleRenderPasses() {

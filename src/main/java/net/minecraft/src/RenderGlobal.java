@@ -173,8 +173,8 @@ public class RenderGlobal implements IWorldAccess {
 	public RenderGlobal(Minecraft par1Minecraft, RenderEngine par2RenderEngine) {
 		this.mc = par1Minecraft;
 		this.renderEngine = par2RenderEngine;
-		byte var3 = 64; // Spout 34  //34
-		byte var4 = 64; // Spout 32   //32
+		byte var3 = 64; // Spout 34 
+		byte var4 = 64; // Spout 32 
 		this.glRenderListBase = GLAllocation.generateDisplayLists(var3 * var3 * var4 * 5);
 		this.occlusionEnabled = OpenGlCapsChecker.checkARBOcclusion();
 
@@ -362,8 +362,7 @@ public class RenderGlobal implements IWorldAccess {
 	 */
 	public void loadRenderers() {
 		if (this.theWorld != null) {
-			Block.leaves.setGraphicsLevel(Configuration.isFancyTrees()); // Spout
-			Block.leaves.setGraphicsLevel(this.mc.gameSettings.fancyGraphics);
+			Block.leaves.setGraphicsLevel(Configuration.isFancyTrees()); // Spout			
 			this.renderDistance = this.mc.gameSettings.renderDistance;
 			int var1;
 
@@ -929,6 +928,16 @@ public class RenderGlobal implements IWorldAccess {
 			float var3 = (float)var2.xCoord;
 			float var4 = (float)var2.yCoord;
 			float var5 = (float)var2.zCoord;
+			
+			// Spout Start
+			Color skyColor = SpoutClient.getInstance().getSkyManager().getSkyColor();
+			if (skyColor != null) {
+				var3 = skyColor.getRedF();
+				var4 = skyColor.getGreenF();
+				var5 = skyColor.getBlueF();
+			}
+			// Spout End
+			
 			float var8;
 
 			if (this.mc.gameSettings.anaglyph) {
@@ -1715,13 +1724,12 @@ public class RenderGlobal implements IWorldAccess {
 	/**
 	 * Plays the specified record. Arg: recordName, x, y, z
 	 */
-	public void playRecord(String par1Str, int par2, int par3, int par4) {
-		// TODO: fix this.
-		//ItemRecord var5 = ItemRecord.getRecord(par1Str);
-		//ItemRecord var5 = ItemRecord.getRecord(par1Str);
-		//if (par1Str != null && var5 != null) {
-		//	this.mc.ingameGUI.setRecordPlayingMessage(var5.getRecordTitle());
-		//}
+	public void playRecord(String par1Str, int par2, int par3, int par4) {		
+		ItemRecord var5 = ItemRecord.func_90042_d(par1Str); // Spout modified for non-overriden class		
+		
+		if (par1Str != null && var5 != null) {
+			this.mc.ingameGUI.setRecordPlayingMessage(var5.func_90043_g()); // Spout modified for non-overriden class
+		}
 
 		this.mc.sndManager.playStreaming(par1Str, (float)par2, (float)par3, (float)par4);
 	}
@@ -1743,11 +1751,11 @@ public class RenderGlobal implements IWorldAccess {
 		try {
 			this.doSpawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
 		} catch (Throwable var17) {
-			//CrashReport var15 = CrashReport.makeCrashReport(var17, "Exception while adding particle");
-			//CrashReportCategory var16 = var15.makeCategory("Particle being added");
-			//var16.addCrashSection("Name", par1Str);
-			//var16.addCrashSectionCallable("Position", new CallableParticlePositionInfo(this, par2, par4, par6));
-			//throw new ReportedException(var15);
+			CrashReport var15 = CrashReport.func_85055_a(var17, "Exception while adding particle");  // Spout modified for non-overriden class
+			CrashReportCategory var16 = var15.func_85058_a("Particle being added");  // Spout modified for non-overriden class
+			var16.addCrashSection("Name", par1Str);
+			var16.addCrashSectionCallable("Position", new CallableParticlePositionInfo(this, par2, par4, par6));
+			throw new ReportedException(var15);
 		}
 	}
 

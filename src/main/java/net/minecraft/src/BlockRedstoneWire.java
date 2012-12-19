@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.Colorizer; //Spout
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
@@ -61,7 +62,7 @@ public class BlockRedstoneWire extends Block {
 	 * first determining what to render.
 	 */
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-		return 8388608;
+		return Colorizer.colorizeRedstoneWire(par1IBlockAccess, par2, par3, par4, 8388608);
 	}
 
 	/**
@@ -405,6 +406,7 @@ public class BlockRedstoneWire extends Block {
 	/**
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
+	// Spout New
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		int var6 = par1World.getBlockMetadata(par2, par3, par4);
 
@@ -412,15 +414,25 @@ public class BlockRedstoneWire extends Block {
 			double var7 = (double)par2 + 0.5D + ((double)par5Random.nextFloat() - 0.5D) * 0.2D;
 			double var9 = (double)((float)par3 + 0.0625F);
 			double var11 = (double)par4 + 0.5D + ((double)par5Random.nextFloat() - 0.5D) * 0.2D;
-			float var13 = (float)var6 / 15.0F;
-			float var14 = var13 * 0.6F + 0.4F;
+			float var16;
+			float var14;
+			float var15;
 
-			if (var6 == 0) {
-				var14 = 0.0F;
+			if (Colorizer.computeRedstoneWireColor(var6)) {
+				var14 = Colorizer.setColor[0];
+				var15 = Colorizer.setColor[1];
+				var16 = Colorizer.setColor[2];
+			} else {
+				float var13 = (float)var6 / 15.0F;
+				var14 = var13 * 0.6F + 0.4F;
+
+				if (var6 == 0) {
+					var14 = 0.0F;
+				}
+
+				var15 = var13 * var13 * 0.7F - 0.5F;
+				var16 = var13 * var13 * 0.6F - 0.7F;
 			}
-
-			float var15 = var13 * var13 * 0.7F - 0.5F;
-			float var16 = var13 * var13 * 0.6F - 0.7F;
 
 			if (var15 < 0.0F) {
 				var15 = 0.0F;
@@ -433,7 +445,7 @@ public class BlockRedstoneWire extends Block {
 			par1World.spawnParticle("reddust", var7, var9, var11, (double)var14, (double)var15, (double)var16);
 		}
 	}
-
+	//Spout End
 	/**
 	 * Returns true if the block coordinate passed can provide power, or is a redstone wire.
 	 */

@@ -371,7 +371,7 @@ public class TexturePackAPI {
 			}
 		}
 	
-		//TODO:  Error: incompatible types
+		// Spout Start
 		public static void change() {
 			for (ChangeHandler handler : handlers) {
 				try {
@@ -381,6 +381,7 @@ public class TexturePackAPI {
 				}
 			}
 		}
+		//Spout End
 		
 		public static void checkForTexturePackChange() {
 			Minecraft var0 = MCPatcherUtils.getMinecraft();

@@ -469,10 +469,7 @@ public class EntityRenderer {
 	/**
 	 * sets up projection, view effects, camera position/rotation
 	 */
-	private void setupCameraTransform(float par1, int par2) {
-		//TODO: This may run better @ 256.
-		//this.farPlaneDistance = (float)(256 >> this.mc.gameSettings.renderDistance);
-
+	private void setupCameraTransform(float par1, int par2) {		
 		// Spout Start
 		this.farPlaneDistance = (float) (32 << 3 - this.mc.gameSettings.renderDistance);
 		if (Configuration.isFarView()) {
@@ -879,8 +876,7 @@ public class EntityRenderer {
 		}
 
 		this.mc.mcProfiler.endSection();
-		if (this.mc.skipRenderWorld) {			
-		}
+		
 		if (!this.mc.skipRenderWorld) {
 			anaglyphEnable = this.mc.gameSettings.anaglyph;
 			ScaledResolution var13 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
@@ -888,7 +884,7 @@ public class EntityRenderer {
 			int var15 = var13.getScaledHeight();
 			int var16 = Mouse.getX() * var14 / this.mc.displayWidth;
 			int var17 = var15 - Mouse.getY() * var15 / this.mc.displayHeight - 1;
-			int var18 = performanceToFps(this.mc.gameSettings.limitFramerate);			
+			int var18 = performanceToFps(this.mc.gameSettings.limitFramerate);
 
 			if (this.mc.theWorld != null) {
 				this.mc.mcProfiler.startSection("level");
@@ -902,7 +898,7 @@ public class EntityRenderer {
 				this.renderEndNanoTime = System.nanoTime();
 				this.mc.mcProfiler.endStartSection("gui");
 
-				if (!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null) {					
+				if (!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null) {		
 					// Spout Start
 					if (Configuration.getFastDebug() != 0) {
 						if (Minecraft.isDebugInfoEnabled()) {
@@ -918,7 +914,7 @@ public class EntityRenderer {
 					if (Configuration.getFastDebug() != 0) {
 						this.mc.gameSettings.showDebugInfo = false;
 					}
-					// Spout End				
+					// Spout End		
 				}
 
 				this.mc.mcProfiler.endSection();
@@ -934,16 +930,16 @@ public class EntityRenderer {
 
 			if (this.mc.currentScreen != null) {
 				GL11.glClear(256);
-
+				 // Spout Start
 				try {
 					this.mc.currentScreen.drawScreen(var16, var17, par1);
 				} catch (Throwable var12) {
-					//CrashReport var10 = CrashReport.makeCrashReport(var12, "Rendering screen");
-					//CrashReportCategory var11 = var10.makeCategory("Screen render details");
-					//var11.addCrashSectionCallable("Screen name", new CallableScreenName(this));
-					//var11.addCrashSectionCallable("Mouse location", new CallableMouseLocation(this, var16, var17));
-					//var11.addCrashSectionCallable("Screen size", new CallableScreenSize(this, var13));
-					//throw new ReportedException(var10);
+					CrashReport var10 = CrashReport.func_85055_a(var12, "Rendering screen"); // Spout modified for non-overriden class
+					CrashReportCategory var11 = var10.func_85058_a("Screen render details"); // Spout modified for non-overriden class
+					var11.addCrashSectionCallable("Screen name", new CallableScreenName(this));
+					var11.addCrashSectionCallable("Mouse location", new CallableMouseLocation(this, var16, var17));
+					var11.addCrashSectionCallable("Screen size", new CallableScreenSize(this, var13));
+					throw new ReportedException(var10);
 				}
 				
 				this.mc.currentScreen.drawScreenPre(var16, var17, par1);
@@ -951,6 +947,7 @@ public class EntityRenderer {
 				if (this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
 					this.mc.currentScreen.guiParticles.draw(par1);
 				}
+				// Spout End
 			}
 		}
 	}
@@ -1664,13 +1661,15 @@ public class EntityRenderer {
 					}
 				} else if (var5 > 0 && Block.blocksList[var5].blockMaterial == Material.water) {
 					GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
-
-					if (var3.isPotionActive(Potion.waterBreathing)) {
-						GL11.glFogf(GL11.GL_FOG_DENSITY, 0.05F);
+					// Spout Start
+					float density = 0.1F;					
+					if (Configuration.isClearWater() || (var3.isPotionActive(Potion.waterBreathing))) {
+						density = 0.05F;
 					} else {
-						GL11.glFogf(GL11.GL_FOG_DENSITY, 0.1F);
+						density = 0.1F;
 					}
-
+					 GL11.glFogf(GL11.GL_FOG_DENSITY, density);
+					// Spout End
 					var6 = 0.4F;
 					var12 = 0.4F;
 					var8 = 0.9F;

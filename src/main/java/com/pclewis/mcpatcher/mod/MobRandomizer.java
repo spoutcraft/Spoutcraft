@@ -1,9 +1,5 @@
 package com.pclewis.mcpatcher.mod;
 
-import com.pclewis.mcpatcher.MCLogger;
-import com.pclewis.mcpatcher.MCPatcherUtils;
-import com.pclewis.mcpatcher.TexturePackAPI;
-
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
@@ -14,6 +10,13 @@ import java.util.Iterator;
 
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.NBTTagCompound;
+
+//Spout Start
+import com.pclewis.mcpatcher.MCLogger;
+import com.pclewis.mcpatcher.MCPatcherUtils;
+import com.pclewis.mcpatcher.TexturePackAPI;
+import org.spoutcraft.client.config.Configuration;
+//Spout End
 
 public class MobRandomizer {
 	private static final MCLogger logger = MCLogger.getLogger("Random Mobs");
@@ -32,13 +35,19 @@ public class MobRandomizer {
 	}
 
 	public static String randomTexture(EntityLiving var0, String var1) {
-		if (var1.startsWith("/mob/") && var1.endsWith(".png")) {
-			ExtraInfo var2 = ExtraInfo.getInfo(var0);
-			MobRuleList var3 = MobRuleList.get(var1);
-			return var3.getSkin(ExtraInfo.access$100(var2), ExtraInfo.access$200(var2), ExtraInfo.access$300(var2), ExtraInfo.access$400(var2), ExtraInfo.access$500(var2));
+		if (Configuration.isRandomMobTextures()) {
+			if (var1.startsWith("/mob/") && var1.endsWith(".png")) {
+				ExtraInfo var2 = ExtraInfo.getInfo(var0);
+				MobRuleList var3 = MobRuleList.get(var1);
+				System.out.println("SpoutDebug: RandomMobs Textures Applied.");
+				return var3.getSkin(ExtraInfo.access$100(var2), ExtraInfo.access$200(var2), ExtraInfo.access$300(var2), ExtraInfo.access$400(var2), ExtraInfo.access$500(var2));			
+			} else {
+				System.out.println("SpoutDebug: RandomMobs Textures Skipped.");
+				return var1;
+			}
 		} else {
 			return var1;
-		}
+		}		
 	}
 
 	public static String randomTexture(Object var0, String var1) {

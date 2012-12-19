@@ -79,7 +79,7 @@ public abstract class TexturePackImplementation implements ITexturePack {
 		} catch (IOException var11) {
 			;
 		} finally {
-			try {				
+			try {
 				var1.close();
 			} catch (IOException var10) {
 				;

@@ -146,7 +146,8 @@ public class WorldRenderer {
 	/**
 	 * Will update this chunk renderer
 	 */
-
+	
+	//TODO: Is it possible to use this Cache system?
 	/*
 	public void updateRenderer() {
 		CTMUtils.start();
@@ -261,7 +262,7 @@ public class WorldRenderer {
 
 		if (!this.needsUpdate) {
 			CTMUtils.finish();
-			System.out.println("Chunk Not Updated");
+			System.out.println("SpoutDebug: Chunk Not Updated");
 		} else {
 			++chunksUpdated;
 			int x = this.posX;

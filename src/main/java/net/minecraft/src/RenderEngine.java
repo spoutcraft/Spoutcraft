@@ -19,6 +19,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 
 import com.pclewis.mcpatcher.mod.CustomAnimation;
+import com.pclewis.mcpatcher.mod.MipmapHelper;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.TexturePackAPI;
 import com.pclewis.mcpatcher.mod.TileSize;
@@ -230,79 +231,82 @@ public class RenderEngine {
 	 * Copy the supplied image onto the specified OpenGL texture
 	 */
 	public void setupTexture(BufferedImage par1BufferedImage, int par2) {
-		if (par1BufferedImage != null) {    // Spout HD
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, par2);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-
-		if (this.blurTexture) {
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-		}
-
-		if (this.clampTexture) {
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
-		} else {
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-		}
-
-			// Spout Start
-			int textureWidth = par1BufferedImage.getWidth();
-			int textureHeight = par1BufferedImage.getHeight();
-			int[] texData = new int[textureWidth * textureHeight];
-			byte[] texColors = new byte[textureWidth * textureHeight * 4];
-			//Performance reasons
-			boolean handled = false;
-			try {
-				java.awt.image.DataBuffer buf = par1BufferedImage.getRaster().getDataBuffer();
-				if (buf instanceof java.awt.image.DataBufferInt) {
-					int[] srcbuf = ((java.awt.image.DataBufferInt) buf).getData();
-					System.arraycopy(srcbuf, 0, texData, 0, srcbuf.length);
-					handled = true;
-				}
-			}
-			catch (Exception ignore) { }
-			if (!handled) {
-				par1BufferedImage.getRGB(0, 0, textureWidth, textureHeight, texData, 0, textureWidth);
+		// Spout Start
+		if (MipmapHelper.currentLevel == 0) {
+			if (par1BufferedImage == null) {
+				return;
 			}
 
-			int var8;
-			int var9;
-			int var10;
-			int var11;
-			int var12;
-			int var13;
-			int var14;
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par2);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+			if (this.blurTexture) {
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			}
+
+			if (this.clampTexture) {
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
+			} else {
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			}
+		}
+		//TODO: Original Code may perform better?
+		int textureWidth = par1BufferedImage.getWidth();
+		int textureHeight = par1BufferedImage.getHeight();
+		int[] texData = new int[textureWidth * textureHeight];
+		byte[] texColors = new byte[textureWidth * textureHeight * 4];
+		boolean handled = false;
+		try {
+			java.awt.image.DataBuffer buf = par1BufferedImage.getRaster().getDataBuffer();
+			if (buf instanceof java.awt.image.DataBufferInt) {
+				int[] srcbuf = ((java.awt.image.DataBufferInt) buf).getData();
+				System.arraycopy(srcbuf, 0, texData, 0, srcbuf.length);
+				handled = true;
+			}
+		}
+		catch (Exception ignore) { }
+		if (!handled) {
+			par1BufferedImage.getRGB(0, 0, textureWidth, textureHeight, texData, 0, textureWidth);				
+		}
+
+		int var8;
+		int var9;
+		int var10;
+		int var11;
+		int var12;
+		int var13;
+		int var14;
 
 		for (int var7 = 0; var7 < texData.length; ++var7) {
 			var8 = texData[var7] >> 24 & 255;
-			var9 = texData[var7] >> 16 & 255;
-			var10 = texData[var7] >> 8 & 255;
-			var11 = texData[var7] & 255;
+		var9 = texData[var7] >> 16 & 255;
+		var10 = texData[var7] >> 8 & 255;
+		var11 = texData[var7] & 255;
 
-			if (this.options != null && this.options.anaglyph) {
-				var12 = (var9 * 30 + var10 * 59 + var11 * 11) / 100;
-				var13 = (var9 * 30 + var10 * 70) / 100;
-				var14 = (var9 * 30 + var11 * 70) / 100;
-				var9 = var12;
-				var10 = var13;
-				var11 = var14;
-			}
+		if (this.options != null && this.options.anaglyph) {
+			var12 = (var9 * 30 + var10 * 59 + var11 * 11) / 100;
+			var13 = (var9 * 30 + var10 * 70) / 100;
+			var14 = (var9 * 30 + var11 * 70) / 100;
+			var9 = var12;
+			var10 = var13;
+			var11 = var14;
+		}
 
-			texColors[var7 * 4 + 0] = (byte)var9;
-			texColors[var7 * 4 + 1] = (byte)var10;
-			texColors[var7 * 4 + 2] = (byte)var11;
-			texColors[var7 * 4 + 3] = (byte)var8;
+		texColors[var7 * 4 + 0] = (byte)var9;
+		texColors[var7 * 4 + 1] = (byte)var10;
+		texColors[var7 * 4 + 2] = (byte)var11;
+		texColors[var7 * 4 + 3] = (byte)var8;
 		}
 		//Spout End
 
 		this.imageData = TextureUtils.getByteBuffer(this.imageData, texColors);
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, textureWidth, textureHeight, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
-		}
-		// Spout HD End
 	}
+	// Spout HD End
 
 	public void createTextureFromBytes(int[] par1ArrayOfInteger, int par2, int par3, int par4) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, par4);
@@ -326,23 +330,23 @@ public class RenderEngine {
 
 		for (int var6 = 0; var6 < par1ArrayOfInteger.length; ++var6) {
 			int var7 = par1ArrayOfInteger[var6] >> 24 & 255;
-			int var8 = par1ArrayOfInteger[var6] >> 16 & 255;
-			int var9 = par1ArrayOfInteger[var6] >> 8 & 255;
-			int var10 = par1ArrayOfInteger[var6] & 255;
+		int var8 = par1ArrayOfInteger[var6] >> 16 & 255;
+		int var9 = par1ArrayOfInteger[var6] >> 8 & 255;
+		int var10 = par1ArrayOfInteger[var6] & 255;
 
-			if (this.options != null && this.options.anaglyph) {
-				int var11 = (var8 * 30 + var9 * 59 + var10 * 11) / 100;
-				int var12 = (var8 * 30 + var9 * 70) / 100;
-				int var13 = (var8 * 30 + var10 * 70) / 100;
-				var8 = var11;
-				var9 = var12;
-				var10 = var13;
-			}
+		if (this.options != null && this.options.anaglyph) {
+			int var11 = (var8 * 30 + var9 * 59 + var10 * 11) / 100;
+			int var12 = (var8 * 30 + var9 * 70) / 100;
+			int var13 = (var8 * 30 + var10 * 70) / 100;
+			var8 = var11;
+			var9 = var12;
+			var10 = var13;
+		}
 
-			var5[var6 * 4 + 0] = (byte)var8;
-			var5[var6 * 4 + 1] = (byte)var9;
-			var5[var6 * 4 + 2] = (byte)var10;
-			var5[var6 * 4 + 3] = (byte)var7;
+		var5[var6 * 4 + 0] = (byte)var8;
+		var5[var6 * 4 + 1] = (byte)var9;
+		var5[var6 * 4 + 2] = (byte)var10;
+		var5[var6 * 4 + 3] = (byte)var7;
 		}
 
 		// Spout HD Start
@@ -382,7 +386,7 @@ public class RenderEngine {
 		return var3 != null && var3.textureName >= 0 ? var3.textureName : (par2Str == null ? -1 : this.getTexture(par2Str));
 	}
 
-	public boolean func_82773_c(String par1Str) {
+	public boolean func_82773_c(String par1Str) {  // Spout MCPatcher field name = hasImageData
 		return this.urlToImageDataMap.containsKey(par1Str);
 	}
 
@@ -455,7 +459,7 @@ public class RenderEngine {
 		CustomAnimation.updateAll();  // Spout HD
 	}
 
-	public int func_82772_a(TextureFX par1TextureFX, int par2) {
+	public int func_82772_a(TextureFX par1TextureFX, int par2) {  
 		// Spout HD Start
 		this.imageData = TextureUtils.getByteBuffer(this.imageData, par1TextureFX.imageData);
 		// Spout HD End
@@ -467,7 +471,9 @@ public class RenderEngine {
 
 		for (int var3 = 0; var3 < par1TextureFX.tileSize; ++var3) {
 			for (int var4 = 0; var4 < par1TextureFX.tileSize; ++var4) {
-				GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, par1TextureFX.iconIndex % 16 * 16 + var3 * 16, par1TextureFX.iconIndex / 16 * 16 + var4 * 16, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
+				//TODO: Old one may work better.
+				//GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, par1TextureFX.iconIndex % 16 * 16 + var3 * 16, par1TextureFX.iconIndex / 16 * 16 + var4 * 16, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
+				MipmapHelper.glTexSubImage2D(3553, 0, par1TextureFX.iconIndex % 16 * TileSize.int_size + var3 * TileSize.int_size, par1TextureFX.iconIndex / 16 * TileSize.int_size + var4 * TileSize.int_size, TileSize.int_size, TileSize.int_size, 6408, 5121, this.imageData, par1TextureFX);			
 			}
 		}
 
@@ -594,12 +600,12 @@ public class RenderEngine {
 		this.refreshTextures();
 		TextureUtils.refreshTextureFX(this.textureList);
 	}
-	
+
 	public void reloadTextures(Minecraft var1) {
 		this.imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
 		this.refreshTextures();
 		TextureUtils.refreshTextureFX(this.textureList);
 	}
-	
+
 	// Spout HD End
 }

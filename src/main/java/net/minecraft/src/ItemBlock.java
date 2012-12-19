@@ -1,8 +1,7 @@
 package net.minecraft.src;
 
 import java.util.List;
-
-import com.pclewis.mcpatcher.mod.Colorizer;  // Spout HD
+import com.pclewis.mcpatcher.mod.Colorizer;  // Spout
 
 public class ItemBlock extends Item {
 
@@ -150,6 +149,10 @@ public class ItemBlock extends Item {
 			return damage;
 		}
 		return super.getMetadata(damage);
+	}
+	
+	public int getColorFromItemStack(ItemStack var1, int var2) {
+		return Colorizer.getItemColorFromDamage(super.getColorFromItemStack(var1, var2), this.blockID, var2);
 	}
 // Spout End
 }

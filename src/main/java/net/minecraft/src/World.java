@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -1377,12 +1378,27 @@ public abstract class World implements IBlockAccess {
 		BiomeGenBase var7 = this.getBiomeGenForCoords(var5, var6);
 		float var8 = var7.getFloatTemperature();
 		int var9 = var7.getSkyColorByTemp(var8);
-		float var10 = (float)(var9 >> 16 & 255) / 255.0F;
-		float var11 = (float)(var9 >> 8 & 255) / 255.0F;
-		float var12 = (float)(var9 & 255) / 255.0F;
+		Colorizer.setupForFog(par1Entity);
+		
+		// Spout Start
+		float var10;
+		float var11;
+		float var12;
+
+		if (Colorizer.computeSkyColor(this, par2)) {
+			var10 = Colorizer.setColor[0];
+			var11 = Colorizer.setColor[1];
+			var12 = Colorizer.setColor[2];
+		} else {
+			var10 = (float)(var9 >> 16 & 255) / 255.0F;
+			var11 = (float)(var9 >> 8 & 255) / 255.0F;
+			var12 = (float)(var9 & 255) / 255.0F;
+		}
+		// Spout End
+		
 		var10 *= var4;
 		var11 *= var4;
-		var12 *= var4;
+		var12 *= var4;		
 		float var13 = this.getRainStrength(par2);
 		float var14;
 		float var15;

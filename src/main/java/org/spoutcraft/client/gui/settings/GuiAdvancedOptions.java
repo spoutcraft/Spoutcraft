@@ -68,6 +68,7 @@ import org.spoutcraft.client.gui.settings.controls.MipMapSlider;
 import org.spoutcraft.client.gui.settings.controls.MusicSlider;
 import org.spoutcraft.client.gui.settings.controls.OptimalGameplayButton;
 import org.spoutcraft.client.gui.settings.controls.PerformanceButton;
+import org.spoutcraft.client.gui.settings.controls.RandomMobTextureButton;
 import org.spoutcraft.client.gui.settings.controls.RenderDistanceButton;
 import org.spoutcraft.client.gui.settings.controls.ResetButton;
 import org.spoutcraft.client.gui.settings.controls.ResizeScreenshotButton;
@@ -342,6 +343,16 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control = new ServerLightButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
+
+		top += 22;
+		
+		control = new RandomMobTextureButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+
+		//control = new ServerLightButton().setAlign(WidgetAnchor.TOP_CENTER);
+		//control.setWidth(150).setHeight(20).setX(right).setY(top);
+		//screen.attachWidget(spoutcraft, control);
 
 		top += 22;
 

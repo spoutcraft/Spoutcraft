@@ -1247,7 +1247,7 @@ public class Block {
 	
 	// Spout New Start
 	public boolean func_85103_a(Explosion par1Explosion) {
-return true;
-}
+		return true;
+	}
 	// Spout New End
 }

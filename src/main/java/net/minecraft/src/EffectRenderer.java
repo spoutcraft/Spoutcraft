@@ -51,11 +51,11 @@ public class EffectRenderer {
 					}
 				}
 			} catch (Throwable var7) {
-				//CrashReport var4 = CrashReport.makeCrashReport(var7, "Uncaught exception while ticking particles");
-				//CrashReportCategory var5 = var4.makeCategory("Particle engine details");
-				//var5.addCrashSectionCallable("Last ticked particle", new CallableLastTickedParticle(this, var2));
-				//var5.addCrashSection("Texture index", Integer.valueOf(var1));
-				//throw new ReportedException(var4);
+				CrashReport var4 = CrashReport.func_85055_a(var7, "Uncaught exception while ticking particles"); // Spout modified for non-overriden class
+				CrashReportCategory var5 = var4.func_85058_a("Particle engine details"); // Spout modified for non-overriden class
+				var5.addCrashSectionCallable("Last ticked particle", new CallableLastTickedParticle(this, var2));
+				var5.addCrashSection("Texture index", Integer.valueOf(var1));
+				throw new ReportedException(var4);
 			}
 		}
 	}

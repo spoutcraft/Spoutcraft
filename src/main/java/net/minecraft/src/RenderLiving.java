@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.MobRandomizer;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
@@ -221,7 +222,10 @@ public class RenderLiving extends Render {
 	 */
 	protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7) {
 		if (!par1EntityLiving.getHasActivePotion()) {
-			this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
+			// Spout Start
+			//this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
+			this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, MobRandomizer.randomTexture(par1EntityLiving));
+			// Spout End
 			this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
 		} else {
 			this.mainModel.setRotationAngles(par2, par3, par4, par5, par6, par7, par1EntityLiving);

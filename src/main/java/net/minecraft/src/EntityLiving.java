@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 // Spout Start
+import com.pclewis.mcpatcher.mod.MobRandomizer;
 import org.spoutcraft.client.entity.CraftLivingEntity;
 import org.spoutcraft.client.entity.EntityData;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -1306,6 +1307,8 @@ public abstract class EntityLiving extends Entity {
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+		MobRandomizer.ExtraInfo.writeToNBT(this, par1NBTTagCompound); //Spout
+		
 		if (this.health < -32768) {
 			this.health = -32768;
 		}
@@ -1356,6 +1359,7 @@ public abstract class EntityLiving extends Entity {
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+		MobRandomizer.ExtraInfo.readFromNBT(this, par1NBTTagCompound); //Spout
 		this.health = par1NBTTagCompound.getShort("Health");
 
 		if (!par1NBTTagCompound.hasKey("Health")) {
