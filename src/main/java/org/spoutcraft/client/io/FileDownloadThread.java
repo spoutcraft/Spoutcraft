@@ -57,33 +57,33 @@ public class FileDownloadThread extends Thread {
 	}
 
 	public boolean isDownloading(String url) {
-		Iterator<Download> i = downloads.iterator();
-		while (i.hasNext()) {
-			Download download = i.next();
-			if (download.getDownloadUrl().equals(url)) {
-				return true;
-			}
-		}
+//		Iterator<Download> i = downloads.iterator();
+//		while (i.hasNext()) {
+//			Download download = i.next();
+//			if (download.getDownloadUrl().equals(url)) {
+//				return true;
+//			}
+//		}
 		return false;
 	}
 
 	public void onTick() {
-		if (!actions.isEmpty()) {
-			Iterator<Runnable> i = actions.iterator();
-			while (i.hasNext()) {
-				Runnable action = i.next();
-				boolean oldLock = SpoutClient.enableSandbox();
-				try {
-					action.run();
-				} catch(Exception e) {
-					System.out.println("Could not run Runnable for download finish:");
-					e.printStackTrace();
-				} finally {
-					SpoutClient.enableSandbox(oldLock);
-				}
-				i.remove();
-			}
-		}
+//		if (!actions.isEmpty()) {
+//			Iterator<Runnable> i = actions.iterator();
+//			while (i.hasNext()) {
+//				Runnable action = i.next();
+//				boolean oldLock = SpoutClient.enableSandbox();
+//				try {
+//					action.run();
+//				} catch(Exception e) {
+//					System.out.println("Could not run Runnable for download finish:");
+//					e.printStackTrace();
+//				} finally {
+//					SpoutClient.enableSandbox(oldLock);
+//				}
+//				i.remove();
+//			}
+//		}
 	}
 
 	public void abort() {
@@ -102,64 +102,64 @@ public class FileDownloadThread extends Thread {
 	}
 
 	public void run() {
-		while (true) {
-			Download next = downloads.poll();
-			if (next != null && !failedUrls.contains(next.getDownloadUrl())) {
-				try {
-					if (!next.isDownloaded()) {
-						System.out.println("Downloading File: " + next.getDownloadUrl());
-						activeDownload = FileUtil.getFileName(next.getDownloadUrl());
-						URL url = new URL(next.getDownloadUrl());
-						URLConnection conn = url.openConnection();
-						conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-						conn.setReadTimeout(10000); //2s timeout
-						InputStream in = conn.getInputStream();
-
-						FileOutputStream fos = new FileOutputStream(next.getTempFile());
-						BufferedOutputStream bos = new BufferedOutputStream(fos);
-
-						long length = conn.getContentLength();
-						int bytes;
-						long totalBytes = 0;
-						long last = 0;
-
-						long step = Math.max(1024*1024, length / 8);
-
-						while ((bytes = in.read(buffer)) >= 0) {
-							bos.write(buffer, 0, bytes);
-							totalBytes += bytes;
-							next.setProgress((int) (((double)totalBytes / (double)length) * 100));
-							if (length > 0 && totalBytes > (last + step)) {
-								last = totalBytes;
-								long mb = totalBytes/(1024*1024);
-								System.out.println("Downloading: " + next.getDownloadUrl() + " " + mb + "MB/" + (length/(1024*1024)));
-							}
-							try {
-								Thread.sleep(25);
-							} catch (InterruptedException e) {
-							}
-						}
-						in.close();
-						bos.close();
-						next.move();
-						//System.out.println("File moved to: " + next.directory.getCanonicalPath());
-						try {
-							sleep(10); // Cool off after heavy network useage
-						} catch (InterruptedException e) {}
-					}
-					if (next.getCompletedAction() != null) {
-						actions.add(next.getCompletedAction());
-					}
-				} catch (Exception e) {
-					failedUrls.add(next.getDownloadUrl());
-					//System.out.println("Download of " + next.getDownloadUrl() + " Failed!");
-				}
-				activeDownload = null;
-			} else {
-				try {
-					sleep(100);
-				} catch (InterruptedException e) {}
-			}
-		}
+//		while (true) {
+//			Download next = downloads.poll();
+//			if (next != null && !failedUrls.contains(next.getDownloadUrl())) {
+//				try {
+//					if (!next.isDownloaded()) {
+//						System.out.println("Downloading File: " + next.getDownloadUrl());
+//						activeDownload = FileUtil.getFileName(next.getDownloadUrl());
+//						URL url = new URL(next.getDownloadUrl());
+//						URLConnection conn = url.openConnection();
+//						conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+//						conn.setReadTimeout(10000); //2s timeout
+//						InputStream in = conn.getInputStream();
+//
+//						FileOutputStream fos = new FileOutputStream(next.getTempFile());
+//						BufferedOutputStream bos = new BufferedOutputStream(fos);
+//
+//						long length = conn.getContentLength();
+//						int bytes;
+//						long totalBytes = 0;
+//						long last = 0;
+//
+//						long step = Math.max(1024*1024, length / 8);
+//
+//						while ((bytes = in.read(buffer)) >= 0) {
+//							bos.write(buffer, 0, bytes);
+//							totalBytes += bytes;
+//							next.setProgress((int) (((double)totalBytes / (double)length) * 100));
+//							if (length > 0 && totalBytes > (last + step)) {
+//								last = totalBytes;
+//								long mb = totalBytes/(1024*1024);
+//								System.out.println("Downloading: " + next.getDownloadUrl() + " " + mb + "MB/" + (length/(1024*1024)));
+//							}
+//							try {
+//								Thread.sleep(25);
+//							} catch (InterruptedException e) {
+//							}
+//						}
+//						in.close();
+//						bos.close();
+//						next.move();
+//						//System.out.println("File moved to: " + next.directory.getCanonicalPath());
+//						try {
+//							sleep(10); // Cool off after heavy network useage
+//						} catch (InterruptedException e) {}
+//					}
+//					if (next.getCompletedAction() != null) {
+//						actions.add(next.getCompletedAction());
+//					}
+//				} catch (Exception e) {
+//					failedUrls.add(next.getDownloadUrl());
+//					//System.out.println("Download of " + next.getDownloadUrl() + " Failed!");
+//				}
+//				activeDownload = null;
+//			} else {
+//				try {
+//					sleep(100);
+//				} catch (InterruptedException e) {}
+//			}
+//		}
 	}
 }

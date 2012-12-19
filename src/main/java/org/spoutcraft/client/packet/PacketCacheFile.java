@@ -126,25 +126,25 @@ public class PacketCacheFile implements CompressablePacket {
 	}
 
 	public void run(int playerId) {
-		this.fileName = FileUtil.getFileName(this.fileName);
-		if (!FileUtil.canCache(fileName)) {
-			System.out.println("WARNING, " + plugin + " tried to cache an invalid file type: " + fileName);
-			return;
-		}
-		File directory = new File(FileUtil.getCacheDir(), plugin);
-		if (!directory.exists()) {
-			directory.mkdir();
-		}
-		File cache = new File(directory, fileName);
-		try {
-			FileUtils.writeByteArrayToFile(cache, fileData);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (cache.exists() && FileUtil.isImageFile(fileName)) {
-			CustomTextureManager.getTextureFromUrl(plugin, fileName);
-		}
-		((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
+//		this.fileName = FileUtil.getFileName(this.fileName);
+//		if (!FileUtil.canCache(fileName)) {
+//			System.out.println("WARNING, " + plugin + " tried to cache an invalid file type: " + fileName);
+//			return;
+//		}
+//		File directory = new File(FileUtil.getCacheDir(), plugin);
+//		if (!directory.exists()) {
+//			directory.mkdir();
+//		}
+//		File cache = new File(directory, fileName);
+//		try {
+//			FileUtils.writeByteArrayToFile(cache, fileData);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		if (cache.exists() && FileUtil.isImageFile(fileName)) {
+//			CustomTextureManager.getTextureFromUrl(plugin, fileName);
+//		}
+//		((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
 	}
 
 	public void failure(int playerId) {

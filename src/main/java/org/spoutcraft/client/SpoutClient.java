@@ -339,7 +339,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		tick++;
 		Configuration.onTick();
 		getHandle().mcProfiler.startSection("httpdownloads");
-		FileDownloadThread.getInstance().onTick();		
+		//FileDownloadThread.getInstance().onTick();
 		getHandle().mcProfiler.endStartSection("packet_decompression");
 		PacketDecompressionThread.onTick();
 		getHandle().mcProfiler.endStartSection("widgets");		

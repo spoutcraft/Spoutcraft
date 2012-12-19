@@ -159,7 +159,7 @@ public class PrecacheManager {
 	}
 	
 	public static File getPluginPreCacheFile(String plugin, String version) {
-		return new File(FileUtil.getCacheDir(), plugin + "_" + version+".zip");
+		return new File(FileUtil.getCacheDir(), plugin + ".zip");
 	}
 	
 	public static void loadPrecache(boolean reloadRenderer) {
@@ -169,9 +169,9 @@ public class PrecacheManager {
 		for(Entry entry : plugins.entrySet()) {
 			//Grab the tuple
 			final PrecacheTuple toCache = (PrecacheTuple) entry.getKey();
-			final File extractDir = new File(cacheRoot, toCache.getPlugin() + "_" + toCache.getVersion()); //Ex. /cache/pluginname/
+			final File extractDir = new File(cacheRoot, toCache.getPlugin()); //Ex. /cache/pluginname/
 			//The extracted file exists and is a directory and isn't empty, move on
-			if (extractDir.exists() && extractDir.isDirectory()) {
+			if (extractDir.exists() && extractDir.isDirectory() && !((List<File>) FileUtils.listFiles(extractDir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)).isEmpty()) {
 				//Do nothing
 			} else {
 				System.out.println("[Spoutcraft] Extracting: " + extractDir.getName() + ".zip");

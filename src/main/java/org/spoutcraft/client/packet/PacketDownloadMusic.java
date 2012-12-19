@@ -63,31 +63,31 @@ public class PacketDownloadMusic implements SpoutPacket {
 	}
 
 	public void run(int PlayerId) {
-		File directory = new File(FileUtil.getTempDir(), plugin);
-		if (!directory.exists()) {
-			directory.mkdir();
-		}
-		String fileName = FileUtil.getFileName(url);
-		if (!FileUtil.isAudioFile(fileName)) {
-			System.out.println("Rejecting download of invalid audio: " + fileName);
-			return;
-		}
-		File song = FileUtil.findFile(plugin, fileName);
-		if (song != null && song.exists()) {
-			QueuedSound action = new QueuedSound(song, x, y, z, volume, distance, soundEffect);
-			action.run();
-			return;
-		} else {
-			song = new File(directory, fileName);
-		}
-
-		QueuedSound action = new QueuedSound(song, x, y, z, volume, distance, soundEffect);
-		Download download = new Download(fileName, directory, url, action);
-		action.setNotify(!download.isDownloaded() && notify);
-		if (!download.isDownloaded() && notify) {
-			SpoutClient.getInstance().getActivePlayer().showAchievement("Downloading Music...", fileName, 2256 /*Gold Record*/);
-		}
-		FileDownloadThread.getInstance().addToDownloadQueue(download);
+//		File directory = new File(FileUtil.getTempDir(), plugin);
+//		if (!directory.exists()) {
+//			directory.mkdir();
+//		}
+//		String fileName = FileUtil.getFileName(url);
+//		if (!FileUtil.isAudioFile(fileName)) {
+//			System.out.println("Rejecting download of invalid audio: " + fileName);
+//			return;
+//		}
+//		File song = FileUtil.findFile(plugin, fileName);
+//		if (song != null && song.exists()) {
+//			QueuedSound action = new QueuedSound(song, x, y, z, volume, distance, soundEffect);
+//			action.run();
+//			return;
+//		} else {
+//			song = new File(directory, fileName);
+//		}
+//
+//		QueuedSound action = new QueuedSound(song, x, y, z, volume, distance, soundEffect);
+//		Download download = new Download(fileName, directory, url, action);
+//		action.setNotify(!download.isDownloaded() && notify);
+//		if (!download.isDownloaded() && notify) {
+//			SpoutClient.getInstance().getActivePlayer().showAchievement("Downloading Music...", fileName, 2256 /*Gold Record*/);
+//		}
+//		FileDownloadThread.getInstance().addToDownloadQueue(download);
 	}
 
 	public PacketType getPacketType() {
