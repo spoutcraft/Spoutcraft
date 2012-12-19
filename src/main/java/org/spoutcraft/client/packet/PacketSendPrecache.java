@@ -52,7 +52,6 @@ public class PacketSendPrecache implements CompressablePacket {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//this.serverName = FileUtil.getFileName(file.getPath());
 	}
 	
 	// TODO move to separate thread?
@@ -124,7 +123,7 @@ public class PacketSendPrecache implements CompressablePacket {
 	}
 	
 	public void failure(int playerId) {
-		// TODO Auto-generated method stub
+
 	}
 
 	public PacketType getPacketType() {
@@ -136,7 +135,7 @@ public class PacketSendPrecache implements CompressablePacket {
 	}
 	
 	public void run(int playerId) {
-		
+		//Packet recieved, grabbing the zip file
 		File zip = PrecacheManager.getPluginPreCacheFile(plugin, version);
 		if (zip.exists()) {
 			zip.delete();
@@ -145,7 +144,6 @@ public class PacketSendPrecache implements CompressablePacket {
 		try {
 			FileUtils.writeByteArrayToFile(zip, fileData);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -153,9 +151,6 @@ public class PacketSendPrecache implements CompressablePacket {
 		if (plugin != null) {
 			PrecacheManager.setCached(plugin);
 		}
-		
 		PrecacheManager.doNextCache();
-		
-		//((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
 	}
 }

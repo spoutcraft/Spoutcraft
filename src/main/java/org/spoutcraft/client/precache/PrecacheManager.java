@@ -20,21 +20,21 @@
 package org.spoutcraft.client.precache;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
+import java.util.zip.*;
 
 import net.minecraft.client.Minecraft;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
+
 import org.bukkit.ChatColor;
 
 import org.spoutcraft.api.block.design.GenericBlockDesign;
@@ -47,9 +47,9 @@ import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.packet.PacketRequestPrecache;
 
 public class PrecacheManager {
-	
 	/**
-	 * Tuple plugin -> boolean isCached
+	 * PrecacheTuple - Holds Plugin Name, Version, and CRC
+	 * Boolean - Is this cached or not?
 	 */
 	public static HashMap<PrecacheTuple, Boolean> plugins = new HashMap<PrecacheTuple, Boolean>();
 	
@@ -58,24 +58,23 @@ public class PrecacheManager {
 	 * @param plugin
 	 */
 	public static void addPlugin(PrecacheTuple plugin) {
-		//check plugin precache.
-		boolean isCached = false;
-		long crc = -1;
+		//Grab precache file
 		File target = getPluginPreCacheFile(plugin);
+		//Does it exist locally?
 		if (target.exists()) {
-			crc = FileUtil.getCRC(target, new byte[(int) target.length()]);
-			if (crc == plugin.getCrc()) { // Cached
-			
-			} else {
-				
+			//Is the crc the same as the one sent from SpoutPlugin?
+			if (plugin.getCrc() == FileUtil.getCRC(target, new byte[(int) target.length()])) {
+				//Its cached, continue on
+				plugins.put(plugin, true);
+				return;
 			}
 		}
-		
-	
+		//Either it doesn't exist or crc failed, either or it isn't cached.
+		plugins.put(plugin, false);
 	}
 	
 	/**
-	 * resets the plugins. Useful to clear out previous entries when starting a new login sequence.
+	 * Resets the plugins. Useful to clear out previous entries when starting a new login sequence.
 	 */
 	public static void reset() {
 		plugins.clear();
@@ -101,9 +100,7 @@ public class PrecacheManager {
 	 * @param plugin
 	 */
 	public static void setCached(PrecacheTuple plugin) {
-		if (plugins.containsKey(plugin)) {
-			plugins.put(plugin, true);
-		}
+		plugins.put(plugin, true);
 	}
 	
 	/**
@@ -111,56 +108,50 @@ public class PrecacheManager {
 	 * @return true if a plugin needs to be cached, false is everything is already cached.
 	 */
 	public static boolean hasNextCache() {
-		System.out.println("PreCacheManager: Starting hasNextCache");
-		for( boolean cached : plugins.values()) {			
-			System.out.println("PreCacheManager: hasNextCache = " + cached);
-			showFiles();
-			//if (cached == false) return true;
+		for (boolean cached : plugins.values()) {
+			if (!cached) {
+				return true;
+			}
 		}
 		return false;
 	}
 	
 	/**
-	 * gets the next item to be cached
-	 * @return
+	 * Gets the next item to be cached
+	 * @return The PrecacheTuple to cache or null if not found
 	 */
 	public static PrecacheTuple getNextToCache() {
-		System.out.println("PreCacheManager: Starting getNextToCache");
-		for( Entry entry : plugins.entrySet()) {
-			if ( ((Boolean)entry.getValue()).booleanValue() == false ) {
-				return (PrecacheTuple)entry.getKey();
+		//Loop through the list of plugins
+		for (Entry entry : plugins.entrySet()) {
+			//Get the status of the entry (cached or not)
+			if ((Boolean) entry.getValue()) {
+				//Its cached, continue
+				continue;
 			}
+			//It wasn't cached so return this entry to be cached
+			return (PrecacheTuple) entry.getKey();
 		}
+		//Nothing is left to cache, return null
 		return null;
-	}
-	
-	public static void showFiles() {
-		for( Entry entry : plugins.entrySet()) {
-		PrecacheTuple plugin = (PrecacheTuple)entry.getKey();
-		System.out.println("PreCacheManager: hasNextCache = " + plugin);
-		}
 	}
 	
 	/**
 	 * Starts the next cache
 	 */
 	public static void doNextCache() {
+		//Check if there is any thing left to be cached
 		if (!hasNextCache()) {
+			//Nothing is left to cache, proceed to load the cache
 			loadPrecache(true);
 			return;
 		}
-		
-		PrecacheTuple next = getNextToCache();
-		
-		if (next == null) {
-			loadPrecache(true);
-			return;
-		}
-		
+		final PrecacheTuple next = getNextToCache();
+
+		//Let the user know we are precaching
 		setPreloadGuiText(ChatColor.BLUE + "Spoutcraft" + "\n"+" "+ "\n"+ ChatColor.WHITE + "Downloading Custom Content for:  " + ChatColor.ITALIC + next.getPlugin() + " " + next.getVersion());
-		
+
+		//Send SpoutPlugin a request for the pre-cache zip
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRequestPrecache(next.getPlugin()));
-		
 	}
 	
 	public static File getPluginPreCacheFile(PrecacheTuple plugin) {
@@ -171,80 +162,67 @@ public class PrecacheManager {
 		return new File(FileUtil.getCacheDir(), plugin+"_"+version+".zip");
 	}
 	
-	public static void loadPrecache(boolean reloadRenderer) {		
-		System.out.println("PreCacheManager: Starting loadPrecache...");
-		//unzip
+	public static void loadPrecache(boolean reloadRenderer) {
+		//Unzip
 		File cacheRoot = FileUtil.getCacheDir();
-		
+		//Loop through the plugins
 		for(Entry entry : plugins.entrySet()) {
-			try {
-				PrecacheTuple plugin = (PrecacheTuple)entry.getKey();
-				boolean isCached = (Boolean)entry.getValue();				
-				System.out.println("PreCacheManager: Current File is Plugin: " + plugin + "Cached: " + isCached);
-				if(isCached == true) {
-					ZipFile zip = new ZipFile(getPluginPreCacheFile(plugin));
-					Enumeration zipEntries = zip.entries();
-					System.out.println("PreCacheManager: Loaded Plugin: " + plugin + "Cached: " + isCached);
-					while (zipEntries.hasMoreElements())
-					{
-						ZipEntry zipEntry = (ZipEntry) zipEntries.nextElement();
-						if (zipEntry.isDirectory()) {
-							continue;
+			//Grab the tuple
+			final PrecacheTuple toCache = (PrecacheTuple) entry.getKey();
+			final File extractDir = new File(cacheRoot, toCache.getPlugin() + "_" + toCache.getVersion()); //Ex. /cache/pluginname/
+			//The extracted file exists and is a directory and isn't empty, move on
+			if (extractDir.exists() && extractDir.isDirectory() && !((List<File>) FileUtils.listFiles(extractDir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)).isEmpty()) {
+				//Do nothing
+			} else {
+				extractDir.mkdirs(); //Make the directories to unzip to
+				final byte[] BUFFER = new byte[10000000]; //~9MB buffer
+				try  {
+					//Read in a zip stream
+					final File temp = new File(cacheRoot, toCache.getPlugin() + "_" + toCache.getVersion() + ".zip");
+					System.out.println(temp.getName());
+					final ZipInputStream stream = new ZipInputStream(new FileInputStream(temp));
+
+					//Grab the first entry in the zip
+					ZipEntry inner = stream.getNextEntry();
+					while (inner != null) {
+						//Grab the entry's name
+						String innerName = inner.getName();
+						//Construct an output stream for the entry
+						final FileOutputStream writeInner = new FileOutputStream(new File(extractDir, innerName));
+						int i;
+						//Read in the file. The file will be limited to the 9MB buffer
+						while ((i = stream.read(BUFFER, 0, BUFFER.length)) > -1) {
+							//Write the buffer
+							writeInner.write(BUFFER, 0, i);
 						}
-						File target = new File(cacheRoot, plugin.getPlugin() + "/" + zipEntry.getName());
-						
-						if (target.exists() && zipEntry.getCrc() == FileUtil.getCRC(target, new byte[(int) target.length()])) {
-							continue;
-						}
-						
-						//at this point if it exists its not a vlid crc
-						if (target.exists()) {
-							target.delete();
-						}
-						
-						//parent folder, not target
-						if(!target.getParentFile().exists()) {
-							target.getParentFile().mkdirs();
-						}
-						
-						BufferedInputStream is = new BufferedInputStream(zip.getInputStream(zipEntry));
-						int currentByte;
-						byte[] buf = new byte[1024];
-						
-						FileOutputStream fos = new FileOutputStream(target);
-						BufferedOutputStream dest = new BufferedOutputStream(fos, 1024);
-						
-						while ((currentByte = is.read(buf, 0, 1024)) != -1) {
-							dest.write(buf, 0, currentByte);
-						}
-						dest.flush();
-						dest.close();
-						is.close();
-						
-						if (target.exists() && target.getName().endsWith(".sbd")) {
-							loadDesign(target);
-						}
-						else if (target.exists() && FileUtil.isImageFile(target.getName())) {
-							CustomTextureManager.getTextureFromUrl(plugin.getPlugin(), target.getName());
-						}
-						
+						//Close the writable buffer
+						writeInner.close();
+						//Close the zip stream for this entry
+						stream.closeEntry();
+						//Grab the next entry in the zip
+						inner = stream.getNextEntry();
 					}
-					
-					zip.close();
+					//Finally close the stream altogether
+					stream.close();
+				} catch (Exception e ) {
+					e.printStackTrace();
 				}
-			} catch (ZipException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
-		
-		if (reloadRenderer == true) {
-			if (Minecraft.theMinecraft.theWorld != null) {
-				Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		for (File file : (List<File>) FileUtils.listFiles(cacheRoot, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)) {
+			if (file.getName().endsWith(".zip")) {
+				continue;
 			}
+			System.out.println("Loading: " + file.getName());
+			if (file.getName().endsWith(".sbd")) {
+				loadDesign(file);
+			}
+			else if (FileUtil.isImageFile(file.getName())) {
+				CustomTextureManager.getTextureFromUrl(file.getName());
+			}
+		}
+		if (Minecraft.theMinecraft.theWorld != null) {
+			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
 		}
 		
 		closePreloadGui();

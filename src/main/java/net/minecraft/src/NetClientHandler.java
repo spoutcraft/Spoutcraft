@@ -125,15 +125,11 @@ public class NetClientHandler extends NetHandler {
 			this.netManager.wakeThreads();
 		}
 
-		// Spout Start
-		if (mc.currentScreen instanceof GuiDownloadTerrain || mc.currentScreen instanceof GuiPrecache) {
+		if (mc.currentScreen instanceof GuiDownloadTerrain) {
 			if (System.currentTimeMillis() > timeout) {
 				mc.displayGuiScreen(null, false);
-				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new org.spoutcraft.client.packet.PacketPreCacheCompleted());	
-				System.out.println("SpoutDebug: Sent PreCacheCompleted Packet within NetClientHandler");
 			}
 		}
-		// Spout End
 	}
 
 	public void handleServerAuthData(Packet253ServerAuthData par1Packet253ServerAuthData) {
