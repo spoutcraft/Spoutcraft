@@ -537,7 +537,7 @@ public class RenderEngine {
 				// Spout HD Start
 				// Gracefully handle errors
 				var2.remove();
-				// var6.printStackTrace();
+				// var7.printStackTrace();
 				// Spout HD End
 			}
 		}

@@ -1902,11 +1902,13 @@ public class RenderGlobal implements IWorldAccess {
 		par1Entity.updateCloak();
 
 		if (par1Entity.skinUrl != null) {
-			this.renderEngine.obtainImageData(par1Entity.skinUrl, new ImageBufferDownload());
+			//this.renderEngine.obtainImageData(par1Entity.skinUrl, new ImageBufferDownload());
+			this.renderEngine.obtainImageData(par1Entity.skinUrl, new HDImageBufferDownload()); // Spout
 		}
 
 		if (par1Entity.cloakUrl != null) {
-			this.renderEngine.obtainImageData(par1Entity.cloakUrl, new ImageBufferDownload());
+			//this.renderEngine.obtainImageData(par1Entity.cloakUrl, new ImageBufferDownload());
+			this.renderEngine.obtainImageData(par1Entity.cloakUrl, new HDImageBufferDownload()); // Spout
 		}
 	}
 
