@@ -16,9 +16,7 @@ public class GlassPaneRenderer {
 	private static double u1;
 	private static double v0;
 	private static double v1;
-	private boolean enabled = false;
 	
-
 	public static void render(RenderBlocks var0, int var1, Block var2, int var3, int var4, int var5, boolean var6, boolean var7, boolean var8, boolean var9) {		
 		if (CTMUtils.active && var1 < 0 && Tessellator.instance instanceof SuperTessellator && CTMUtils.getConnectedTexture(var0, var0.blockAccess, var2, 148, var3, var4, var5, 0)) {
 			renderBlocks = var0;

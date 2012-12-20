@@ -147,9 +147,9 @@ public class WorldRenderer {
 	 * Will update this chunk renderer
 	 */
 	
-	//TODO: Is it possible to use this Cache system?
-	/*
-	public void updateRenderer() {
+	//TODO: The code Below makes Connected Textures Work but not Custom Blocks
+	
+	public void updateRenderer2() {
 		CTMUtils.start();
 
 		if (!this.needsUpdate) {
@@ -163,14 +163,15 @@ public class WorldRenderer {
 			int var5 = this.posY + 16;
 			int var6 = this.posZ + 16;
 
-			for (int var7 = 0; var7 < 4; ++var7) {
+			for (int var7 = 0; var7 < 4; ++var7) {  //var7 = renderPass
 				this.skipRenderPass[var7] = true;
 			}
 
 			Chunk.isLit = false;
 			HashSet var21 = new HashSet();
-			var21.addAll(this.tileEntityRenderers);
+			var21.addAll(this.tileEntityRenderers); //Var21 = tileRenders
 			this.tileEntityRenderers.clear();
+			
 			byte var8 = 1;
 			ChunkCache var9 = new ChunkCache(this.worldObj, var1 - var8, var2 - var8, var3 - var8, var4 + var8, var5 + var8, var6 + var8);
 
@@ -254,7 +255,8 @@ public class WorldRenderer {
 			CTMUtils.finish();
 		}		
 	}	 
-   */
+  
+	// The Code below makes Custom Blocks Render but not Connected Textures
 	
 	public void updateRenderer() {
 		// Spout Start
@@ -296,6 +298,11 @@ public class WorldRenderer {
 			blockRenderer.customIds = customBlockIds;
 
 			int limit = skipRenderPass.length;
+			
+			//if (!Shaders.isEnabled()) {
+			//	limit--;
+			//}
+			System.out.println("limit: " + limit);
 			
 			for (int renderPass = 0; renderPass < limit; ++renderPass) { // Spout - 3 passes for shaders, 2 without
 
