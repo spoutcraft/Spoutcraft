@@ -228,6 +228,7 @@ abstract class TileOverride {
         }
 
         texture = CTMUtils.getTexture(textureName);
+        System.out.println("Texture: " + texture);
         if (texture < 0) {
             if (properties.contains("source")) {
                 error("source texture %s not found", textureName);

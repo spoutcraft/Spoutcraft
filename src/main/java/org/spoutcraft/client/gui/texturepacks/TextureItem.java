@@ -263,7 +263,7 @@ public class TextureItem implements ListWidgetItem {
 						.pingUrl("http://textures.spout.org/download.php?id=" + item.getId());
 				fileName = item.getFileName();
 				folder = SpoutClient.getInstance().getTexturePackFolder();
-				url = new URL("http://static.spout.org/texturedl/" + item.getId() + "/" + item.getFileName());
+				url = new URL("http://cdn.spout.org/texturedl/" + item.getId() + "/" + item.getFileName());
 				File temp = new File(FileUtil.getTempDir(), FileUtil.getFileName(url.toString()));
 				URLConnection conn = url.openConnection();
 				System.setProperty("http.agent", "");
@@ -337,6 +337,6 @@ public class TextureItem implements ListWidgetItem {
 	}
 
 	public String getIconUrl() {
-		return "http://static.spout.org/texture/thumb/" + getId() + ".png";
+		return "http://cdn.spout.org/texture/thumb/" + getId() + ".png";
 	}
 }

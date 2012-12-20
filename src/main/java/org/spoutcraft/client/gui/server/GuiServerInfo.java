@@ -181,8 +181,8 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelSpoutcraft = new GenericLabel("...");
 		labelSpoutcraft.setTextColor(new Color(0xffaaaaaa));
 		content.attachWidget(spoutcraft, labelSpoutcraft);
-
-		textureIcon = new GenericTexture("http://static.spout.org/server/thumb/" + item.getDatabaseId() + ".png");
+		
+		textureIcon = new GenericTexture("http://cdn.spout.org/server/thumb/" + item.getDatabaseId() + ".png");
 		textureIcon.setFinishDelegate(new ImageUpdate());
 		textureIcon.setWidth(48).setHeight(48);
 		content.attachWidget(spoutcraft, textureIcon);
@@ -232,7 +232,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 			labelGalleryImageDesc.recalculateLines();
 			content.updateInnerSize();
 		}
-		textureGalleryImage.setUrl("http://static.spout.org/server/gallery/" + item.getDatabaseId() + "_" + image.getHash() + ".png");
+		textureGalleryImage.setUrl("http://cdn.spout.org/server/gallery/" + item.getDatabaseId() + "_" + image.getHash() + ".png");
 		textureGalleryImage.setFinishDelegate(new ImageUpdate());
 		if (n == 0) {
 			buttonGalleryPrev.setEnabled(false);

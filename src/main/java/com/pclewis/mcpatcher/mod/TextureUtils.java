@@ -419,13 +419,4 @@ public class TextureUtils {
     public static PixelFormat getAAPixelFormat(PixelFormat format) {
         return aaSamples > 0 ? format.withSamples(aaSamples) : format;
     }
-    
-    // Spout HD Start
-   // public void setTileSize(Minecraft var1) {
-   // 	this.imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
-   // 	this.refreshTextures();
-   // 	TextureUtils.refreshTextureFX(this.textureList);
-    //}
-    // Spout HD End
-
 }

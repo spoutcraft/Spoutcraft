@@ -105,7 +105,8 @@ public class StringTranslate {
 		} catch (Exception e) {
 			//If a spout lang couldn't load it shouldnt be a big deal, since
 			//the en_US will provide soft fallback, and I have gui's also using a hard fallback.
-			System.out.println("Unable to load Spout lang: " + lang);
+			//TODO: have this respect Configuration.isDebug
+			//System.out.println("Unable to load Spout lang: " + lang);
 		}
 	}
 	// Spout End

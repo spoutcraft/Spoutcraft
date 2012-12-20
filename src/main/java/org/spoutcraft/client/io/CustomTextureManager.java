@@ -39,7 +39,7 @@ public class CustomTextureManager {
 	static HashMap<String, Texture> textures = new HashMap<String, Texture>();
 	static HashMap<String, File> cacheTextureFiles = new HashMap<String, File>();
 
-	public static void downloadTexture(String url) {
+	public static void downloadTexture(String url) {		
 		downloadTexture(null, url, false);
 	}
 
@@ -61,7 +61,7 @@ public class CustomTextureManager {
 					dir.mkdir();
 				}
 				Download download = new Download(fileName, dir, url, null);
-				FileDownloadThread.getInstance().addToDownloadQueue(download);
+				FileDownloadThread.getInstance().addToDownloadQueue(download);				
 			}
 		} finally {
 			SpoutClient.enableSandbox(wasSandboxed);
@@ -203,10 +203,10 @@ public class CustomTextureManager {
 	}
 
 	public static Texture getTextureFromUrl(String url) {
-		Texture tex = getTextureFromUrl(null, url);
-		/*if (tex == null) {
+		Texture tex = getTextureFromUrl(null, url);		
+		if (tex == null) {
 			tex = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
-		}*/
+		}
 		return tex;
 	}
 

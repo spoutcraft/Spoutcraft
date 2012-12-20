@@ -34,7 +34,7 @@ public class RenderBlocks {
 	private boolean renderAllFaces = false;
 
 	/** Fancy grass side matching biome */
-	public static boolean fancyGrass = true;
+	//public static boolean fancyGrass = true; //Spout Removed
 	public boolean useInventoryTint = true;
 
 	/** Custom minimum X for rendering */
@@ -4031,7 +4031,14 @@ public class RenderBlocks {
 				var18 = true;
 			}
 		}
-
+		// Spout Start
+		if(this.dirtyAmbientOcclusionCache) {
+			this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
+		}
+		if (this.customMinY <= 0.0D) {
+			var21 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 - 1, par4);
+		}
+		// Spout End
 		if (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2, par3 - 1, par4, 0)) {
 			if (this.aoType > 0) {
 				if (this.customMinY <= 0.0D) {
@@ -4131,6 +4138,15 @@ public class RenderBlocks {
 			var8 = true;
 		}
 
+		// Spout Start
+		if(this.dirtyAmbientOcclusionCache) {
+			this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
+		}
+		if (this.customMaxY >= 1.0D) {
+			var24 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 + 1, par4);
+		}
+		// Spout End
+		
 		if (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2, par3 + 1, par4, 1)) {
 			if (this.aoType > 0) {
 				if (this.customMaxY >= 1.0D) {
@@ -4231,7 +4247,14 @@ public class RenderBlocks {
 		}
 
 		int var27;
-
+		// Spout Start
+		if(this.dirtyAmbientOcclusionCache) {
+			this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
+		}
+		if (this.customMinZ <= 0.0D) {
+			var22 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 - 1);
+		}
+		// Spout End
 		if (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2, par3, par4 - 1, 2)) {
 			if (this.aoType > 0) {
 				if (this.customMinZ <= 0.0D) {
@@ -4328,9 +4351,34 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 2);
+			// Spout Start
+			if (Configuration.getBetterGrass() != 0) {
+				if(var27 == 3) {
+					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 2);
+					if(var27 == 0) {
+						this.colorRedTopLeft *= par5;
+						this.colorRedBottomLeft *= par5;
+						this.colorRedBottomRight *= par5;
+						this.colorRedTopRight *= par5;
+						this.colorGreenTopLeft *= par6;
+						this.colorGreenBottomLeft *= par6;
+						this.colorGreenBottomRight *= par6;
+						this.colorGreenTopRight *= par6;
+						this.colorBlueTopLeft *= par7;
+						this.colorBlueBottomLeft *= par7;
+						this.colorBlueBottomRight *= par7;
+						this.colorBlueTopRight *= par7;
+					}
+				}
+
+				if(var27 == 68) {
+					var27 = getSideSnowGrassTexture(this.blockAccess, par2, par3, par4, 2);
+				}
+			}
+			// Spout End
 			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
 
-			if (fancyGrass && var27 == 3 && this.overrideBlockTexture < 0) {
+			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= par5;
 				this.colorRedBottomLeft *= par5;
 				this.colorRedBottomRight *= par5;
@@ -4350,6 +4398,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2, par3, par4 + 1, 3)) {
+			// Spout Start
+			if(this.dirtyAmbientOcclusionCache) {
+				this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
+			}
+			if (this.customMaxZ >= 1.0D) {
+				var25 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 + 1);
+			}
+			// Spout End
 			if (this.aoType > 0) {
 				if (this.customMaxZ >= 1.0D) {
 					++par4;
@@ -4447,7 +4503,34 @@ public class RenderBlocks {
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 3);
 			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 3));
 
-			if (fancyGrass && var27 == 3 && this.overrideBlockTexture < 0) {
+			// Spout Start
+			if (Configuration.getBetterGrass() != 0) {
+				if(var27 == 3) {
+					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 3);
+					if(var27 == 0) {
+						this.colorRedTopLeft *= par5;
+						this.colorRedBottomLeft *= par5;
+						this.colorRedBottomRight *= par5;
+						this.colorRedTopRight *= par5;
+						this.colorGreenTopLeft *= par6;
+						this.colorGreenBottomLeft *= par6;
+						this.colorGreenBottomRight *= par6;
+						this.colorGreenTopRight *= par6;
+						this.colorBlueTopLeft *= par7;
+						this.colorBlueBottomLeft *= par7;
+						this.colorBlueBottomRight *= par7;
+						this.colorBlueTopRight *= par7;
+					}
+				}
+
+				if(var27 == 68) {
+					var27 = getSideSnowGrassTexture(this.blockAccess, par2, par3, par4, 3);
+				}
+			}
+			// Spout End
+			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
+			//TODO: this may be wrong for fancy grass.
+			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= par5;
 				this.colorRedBottomLeft *= par5;
 				this.colorRedBottomRight *= par5;
@@ -4467,6 +4550,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2 - 1, par3, par4, 4)) {
+			// Spout Start
+			if(this.dirtyAmbientOcclusionCache) {
+				this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
+			}
+			if (this.customMinX <= 0.0D) {
+				var20 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 - 1, par3, par4);
+			}
+			// Spout End
 			if (this.aoType > 0) {
 				if (this.customMinX <= 0.0D) {
 					--par2;
@@ -4562,9 +4653,34 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 4);
+			// Spout Start
+			if (Configuration.getBetterGrass() != 0) {
+				if(var27 == 3) {
+					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 4);
+					if(var27 == 0) {
+						this.colorRedTopLeft *= par5;
+						this.colorRedBottomLeft *= par5;
+						this.colorRedBottomRight *= par5;
+						this.colorRedTopRight *= par5;
+						this.colorGreenTopLeft *= par6;
+						this.colorGreenBottomLeft *= par6;
+						this.colorGreenBottomRight *= par6;
+						this.colorGreenTopRight *= par6;
+						this.colorBlueTopLeft *= par7;
+						this.colorBlueBottomLeft *= par7;
+						this.colorBlueBottomRight *= par7;
+						this.colorBlueTopRight *= par7;
+					}
+				}
+
+				if(var27 == 68) {
+					var27 = getSideSnowGrassTexture(this.blockAccess, par2, par3, par4, 4);
+				}
+			}
+			// Spout End
 			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
 
-			if (fancyGrass && var27 == 3 && this.overrideBlockTexture < 0) {
+			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= par5;
 				this.colorRedBottomLeft *= par5;
 				this.colorRedBottomRight *= par5;
@@ -4584,6 +4700,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2 + 1, par3, par4, 5)) {
+			// Spout Start
+			if(this.dirtyAmbientOcclusionCache) {
+				this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
+			}
+			if (this.customMaxX >= 1.0D) {
+				var23 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 + 1, par3, par4);
+			}
+			// Spout End
 			if (this.aoType > 0) {
 				if (this.customMaxX >= 1.0D) {
 					++par2;
@@ -4679,9 +4803,34 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 5);
+			// Spout Start
+			if (Configuration.getBetterGrass() != 0) {
+				if(var27 == 3) {
+					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 5);
+					if(var27 == 0) {
+						this.colorRedTopLeft *= par5;
+						this.colorRedBottomLeft *= par5;
+						this.colorRedBottomRight *= par5;
+						this.colorRedTopRight *= par5;
+						this.colorGreenTopLeft *= par6;
+						this.colorGreenBottomLeft *= par6;
+						this.colorGreenBottomRight *= par6;
+						this.colorGreenTopRight *= par6;
+						this.colorBlueTopLeft *= par7;
+						this.colorBlueBottomLeft *= par7;
+						this.colorBlueBottomRight *= par7;
+						this.colorBlueTopRight *= par7;
+					}
+				}
+
+				if(var27 == 68) {
+					var27 = getSideSnowGrassTexture(this.blockAccess, par2, par3, par4, 5);
+				}
+			}
+			// Spout End
 			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
 
-			if (fancyGrass && var27 == 3 && this.overrideBlockTexture < 0) {
+			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= par5;
 				this.colorRedBottomLeft *= par5;
 				this.colorRedBottomRight *= par5;
@@ -4788,7 +4937,7 @@ public class RenderBlocks {
 
 			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 
-			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) {
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, 38);
 			}
@@ -4807,7 +4956,7 @@ public class RenderBlocks {
 
 			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 
-			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) {
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, 38);
 			}
@@ -4826,7 +4975,7 @@ public class RenderBlocks {
 
 			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 
-			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) {
 				var8.setColorOpaque_F(var19 * par5, var22 * par6, var25 * par7);
 				this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, 38);
 			}
@@ -4845,7 +4994,7 @@ public class RenderBlocks {
 
 			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 
-			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) {
 				var8.setColorOpaque_F(var19 * par5, var22 * par6, var25 * par7);
 				this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, 38);
 			}

@@ -47,6 +47,7 @@ import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.packet.PacketRequestPrecache;
 
 public class PrecacheManager {
+	public static boolean spoutDebug = false;
 	/**
 	 * PrecacheTuple - Holds Plugin Name, Version, and CRC
 	 * Boolean - Is this cached or not?
@@ -178,7 +179,9 @@ public class PrecacheManager {
 			if (extractDir.exists() && extractDir.isDirectory() && !((List<File>) FileUtils.listFiles(extractDir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)).isEmpty()) {
 				//Do nothing
 			} else {
-				System.out.println("[Spoutcraft] Extracting: " + extractDir.getName() + ".zip");
+				if (spoutDebug) {
+					System.out.println("[Spoutcraft] Extracting: " + extractDir.getName() + ".zip");
+				}
 				//Make the directories to unzip to
 				extractDir.mkdirs();
 				final byte[] BUFFER = new byte[104857600]; //100MB buffer
@@ -214,17 +217,24 @@ public class PrecacheManager {
 		}
 		for (File file : (List<File>) FileUtils.listFiles(cacheRoot, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)) {
 			if (file.getName().endsWith(".sbd")) {
-				System.out.println("[Spoutcraft] Loading sbd (Spout Block Design): " + file.getName() + " from: " + file.getParent());
+				if (spoutDebug) {
+					System.out.println("[Spoutcraft] Loading sbd (Spout Block Design): " + file.getName() + " from: " + file.getParent());
+				}
 				loadDesign(file);
 			}
 			else if (FileUtil.isImageFile(file.getName())) {
-				System.out.println("[Spoutcraft] Loading image: " + file.getName() + " from: " + file.getParent());
+				if (spoutDebug) {
+					System.out.println("[Spoutcraft] Loading image: " + file.getName() + " from: " + file.getParent());
+				}
 				CustomTextureManager.getTextureFromUrl(file.getName());
 			}
 		}
-		System.out.println("[Spoutcraft] Updating renderer...");
+		
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+			if (spoutDebug) {
+				System.out.println("[Spoutcraft] Updating renderer...");
+			}
 		}
 		
 		closePreloadGui();

@@ -83,25 +83,19 @@ public class CTMUtils {
                     properties.setProperty("connect", "block");
                     properties.setProperty("blockIDs", "" + BLOCK_ID_GLASS);
                     registerOverride(TileOverride.create("/ctm", properties));
-                }
-
-                if (enableGlassPane) {
+                    
                     properties.clear();
                     properties.setProperty("method", "glass");
                     properties.setProperty("connect", "block");
                     properties.setProperty("blockIDs", "" + BLOCK_ID_GLASS_PANE);
                     registerOverride(TileOverride.create("/ctm", properties));
-                }
-
-                if (enableBookshelf) {
+                
                     properties.clear();
                     properties.setProperty("method", "bookshelf");
                     properties.setProperty("connect", "block");
                     properties.setProperty("blockIDs", "" + BLOCK_ID_BOOKSHELF);
                     registerOverride(TileOverride.create("/ctm", properties));
-                }
-
-                if (enableSandstone) {
+                
                     properties.clear();
                     properties.setProperty("method", "sandstone");
                     properties.setProperty("connect", "tile");
@@ -134,10 +128,10 @@ public class CTMUtils {
         lastOverride = null;
         if (terrainTexture >= 0) {
             SuperTessellator.instance.texture = terrainTexture;
-            active = true;
+            active = true;          
         } else {
             SuperTessellator.instance.texture = -1;
-            active = false;
+            active = false;            
         }
     }
 
@@ -147,7 +141,7 @@ public class CTMUtils {
 
     public static boolean setup(RenderBlocks renderBlocks, Block block, int i, int j, int k, int face, int origTexture) {
         IBlockAccess blockAccess = renderBlocks.blockAccess;
-        if (!enableStandard || !check(blockAccess, block.blockID) || face < 0 || face > 5) {
+        if (!check(blockAccess, block.blockID) || face < 0 || face > 5) {
             return false;
         } else if (getConnectedTexture(renderBlocks, blockAccess, block, origTexture, i, j, k, face)) {
             return true;
@@ -159,7 +153,7 @@ public class CTMUtils {
 
     public static boolean setup(RenderBlocks renderBlocks, Block block, int i, int j, int k, int origTexture) {
         IBlockAccess blockAccess = renderBlocks.blockAccess;
-        if (!enableNonStandard || !check(blockAccess, block.blockID)) {
+        if (!check(blockAccess, block.blockID)) {
             return false;
         } else if (getConnectedTexture(renderBlocks, blockAccess, block, origTexture, i, j, k, -1)) {
             return true;
@@ -191,7 +185,7 @@ public class CTMUtils {
     }
 
     private static boolean getConnectedTexture(RenderBlocks renderBlocks, IBlockAccess blockAccess, Block block, int origTexture, int i, int j, int k, int face, TileOverride[][] allOverrides, int index) {
-        if (index < 0 || index >= allOverrides.length) {
+        if (index < 0 || index >= allOverrides.length) {        	
             return false;
         }
         TileOverride[] overrides = allOverrides[index];
@@ -208,9 +202,9 @@ public class CTMUtils {
                 continue;
             }
             lastOverride = override;
-            newTextureIndex = override.getTile(renderBlocks, blockAccess, block, origTexture, i, j, k, face);
+            newTextureIndex = override.getTile(renderBlocks, blockAccess, block, origTexture, i, j, k, face);            
             if (newTextureIndex >= 0) {
-                newTessellator = SuperTessellator.a.getTessellator(override.texture);
+                newTessellator = SuperTessellator.a.getTessellator(override.texture);               
                 return true;
             }
         }

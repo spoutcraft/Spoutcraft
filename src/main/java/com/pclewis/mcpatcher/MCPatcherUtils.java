@@ -413,8 +413,8 @@ public class MCPatcherUtils {
 
     public static void setVersions(String minecraftVersion, String patcherVersion) {
         MCPatcherUtils.minecraftVersion = minecraftVersion;
-        MCPatcherUtils.patcherVersion = patcherVersion;
-        info("MCPatcherUtils v%s initialized.%s", patcherVersion, directoryStr);
+        MCPatcherUtils.patcherVersion = patcherVersion;        
+        //info("MCPatcherUtils v%s initialized.%s", patcherVersion, directoryStr);
     }
 
     /**

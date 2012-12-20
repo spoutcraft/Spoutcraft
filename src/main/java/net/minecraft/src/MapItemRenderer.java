@@ -104,7 +104,7 @@ public class MapItemRenderer {
 		GL11.glScalef(1.0F, 1.0F, 1.0F);
 		// Spout Start
 		// TODO Removed in 1.4 so temp removed via comment
-		/*ItemStack inHand = par1EntityPlayer.inventory.getCurrentItem();
+		ItemStack inHand = par1EntityPlayer.inventory.getCurrentItem();
 		String customName = null;
 		if (inHand != null) {
 			org.spoutcraft.api.material.Item item = MaterialData.getItem(inHand.itemID, (short) inHand.getItemDamage());
@@ -117,7 +117,7 @@ public class MapItemRenderer {
 		}
 		else {
 			this.fontRenderer.drawString(par3MapData.mapName, var15, var16, -16777216); // removed line in 1.4
-		}*/
+		}
 		// Spout End
 		GL11.glPopMatrix();
 	}
