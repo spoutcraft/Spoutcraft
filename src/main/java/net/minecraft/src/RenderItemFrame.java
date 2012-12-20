@@ -107,7 +107,7 @@ public class RenderItemFrame extends Render {
 			} else {
 				if (var3.item.getItem() == Item.compass) {
 					// Spout Start
-					/*
+					
 					double var8 = TextureCompassFX.field_82391_c.field_76868_i;
 					double var10 = TextureCompassFX.field_82391_c.field_76866_j;
 					TextureCompassFX.field_82391_c.field_76868_i = 0.0D;
@@ -115,8 +115,8 @@ public class RenderItemFrame extends Render {
 					TextureCompassFX.func_82390_a(par1EntityItemFrame.posX, par1EntityItemFrame.posZ, (double)MathHelper.wrapAngleTo180_float((float)(180 + par1EntityItemFrame.hangingDirection * 90)), false, true);
 					TextureCompassFX.field_82391_c.field_76868_i = var8;
 					TextureCompassFX.field_82391_c.field_76866_j = var10;
-					this.renderManager.renderEngine.updateDynamicTexture(TextureCompassFX.field_82391_c, -1);
-					*/
+					this.renderManager.renderEngine.func_82772_a(TextureCompassFX.field_82391_c, -1);
+					
 					// Spout End
 				}
 
@@ -130,8 +130,8 @@ public class RenderItemFrame extends Render {
 
 				if (var3.item.getItem() == Item.compass) {
 					// Spout Start
-					//TextureCompassFX.field_82391_c.onTick(); 
-					//this.renderManager.renderEngine.updateDynamicTexture(TextureCompassFX.field_82391_c, -1);
+					TextureCompassFX.field_82391_c.onTick(); 
+					this.renderManager.renderEngine.func_82772_a(TextureCompassFX.field_82391_c, -1);
 					// Spout End
 				}
 			}

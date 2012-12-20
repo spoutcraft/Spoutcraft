@@ -29,7 +29,7 @@ public class TextureUtils {
     private static final boolean customWater = MCPatcherUtils.getBoolean(MCPatcherUtils.HD_TEXTURES, "customWater", true);
     private static final boolean customPortal = MCPatcherUtils.getBoolean(MCPatcherUtils.HD_TEXTURES, "customPortal", true);
     private static final boolean customOther = MCPatcherUtils.getBoolean(MCPatcherUtils.HD_TEXTURES, "customOther", true);
-    private static final boolean fancyCompass = MCPatcherUtils.getBoolean(MCPatcherUtils.HD_TEXTURES, "fancyCompass", true);
+    private static final boolean fancyCompass = MCPatcherUtils.getBoolean(MCPatcherUtils.HD_TEXTURES, "fancyCompass", false);
 
     private static final boolean useTextureCache = false;
     private static final boolean reclaimGLMemory = false;
@@ -259,9 +259,10 @@ public class TextureUtils {
         CustomAnimation.clear();
 
         Minecraft minecraft = MCPatcherUtils.getMinecraft();
-        //if (!fancyCompass || !FancyCompass.refresh()) { //Spout Removed
-        //     textureList.add(new TextureCompassFX(minecraft)); //Spout Removed
-        //} //Spout Removed
+        // Spout Start
+        if (!fancyCompass ) { //|| !FancyCompass.refresh()) { //Spout Removed        	
+        	textureList.add(new TextureCompassFX(minecraft)); //Spout Removed
+        } //Spout Removed
         textureList.add(new TextureWatchFX(minecraft));
 
         boolean isDefault = TexturePackAPI.isDefaultTexturePack();
