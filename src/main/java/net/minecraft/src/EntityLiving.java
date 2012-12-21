@@ -8,6 +8,7 @@ import java.util.Random;
 
 // Spout Start
 import com.pclewis.mcpatcher.mod.MobRandomizer;
+
 import org.spoutcraft.client.entity.CraftLivingEntity;
 import org.spoutcraft.client.entity.EntityData;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -22,10 +23,16 @@ public abstract class EntityLiving extends Entity {
 	 * An array of probabilities that determines whether a random enchantment should be added to the held item. Indexed by
 	 * difficulty.
 	 */
-	private static final float[] enchantmentProbability = new float[] {0.0F, 0.0F, 0.005F, 0.01F};
-	private static final float[] field_82178_c = new float[] {0.0F, 0.0F, 0.05F, 0.1F};
-	private static final float[] field_82176_d = new float[] {0.0F, 0.0F, 0.005F, 0.02F};
-	public static final float[] field_82181_as = new float[] {0.0F, 0.01F, 0.07F, 0.2F};
+	private static final float[] enchantmentProbability = new float[] {0.0F, 0.0F, 0.05F, 0.1F};
+
+	/** Probability to get enchanted armor */
+	private static final float[] armorEnchantmentProbability = new float[] {0.0F, 0.0F, 0.05F, 0.2F};
+
+	/** Probability to get armor */
+	private static final float[] armorProbability = new float[] {0.0F, 0.0F, 0.05F, 0.02F};
+
+	/** Probability to pick up loot */
+	public static final float[] pickUpLootProability = new float[] {0.0F, 0.1F, 0.15F, 0.45F};
 	public int maxHurtResistantTime = 20;
 	public float field_70769_ao;
 	public float field_70770_ap;
@@ -70,7 +77,7 @@ public abstract class EntityLiving extends Entity {
 	public float jumpMovementFactor = 0.02F;
 	public float prevSwingProgress;
 	public float swingProgress;
-	public int health = this.getMaxHealth(); // Spout - protected to public!
+	public int health = this.getMaxHealth(); // Spout - protected -> public
 	public int prevHealth;
 
 	/**
@@ -195,7 +202,7 @@ public abstract class EntityLiving extends Entity {
 	float field_70706_bo = 0.0F;
 
 	/** Amount of damage taken in last hit, in half-hearts */
-	public int lastDamage = 0; // Spout - protected to public!
+	public int lastDamage = 0; // Spout - protected -> public!
 
 	/** Holds the living entity age, used to control the despawn. */
 	protected int entityAge = 0;
@@ -477,7 +484,7 @@ public abstract class EntityLiving extends Entity {
 		String var1 = this.getLivingSound();
 
 		if (var1 != null) {
-			this.func_85030_a(var1, this.getSoundVolume(), this.getSoundPitch());
+			this.playSound(var1, this.getSoundVolume(), this.getSoundPitch());
 		}
 	}
 
@@ -502,17 +509,19 @@ public abstract class EntityLiving extends Entity {
 			this.extinguish();
 		}
 
-		if (this.isEntityAlive() && this.isInsideOfMaterial(Material.water) && !this.canBreatheUnderwater() && !this.activePotionsMap.containsKey(Integer.valueOf(Potion.waterBreathing.id))) {
+		boolean var1 = this instanceof EntityPlayer && ((EntityPlayer)this).capabilities.disableDamage;
+
+		if (this.isEntityAlive() && this.isInsideOfMaterial(Material.water) && !this.canBreatheUnderwater() && !this.activePotionsMap.containsKey(Integer.valueOf(Potion.waterBreathing.id)) && !var1) {
 			this.setAir(this.decreaseAirSupply(this.getAir()));
 
 			if (this.getAir() == -20) {
 				this.setAir(0);
 
-				for (int var1 = 0; var1 < 8; ++var1) {
-					float var2 = this.rand.nextFloat() - this.rand.nextFloat();
+				for (int var2 = 0; var2 < 8; ++var2) {
 					float var3 = this.rand.nextFloat() - this.rand.nextFloat();
 					float var4 = this.rand.nextFloat() - this.rand.nextFloat();
-					this.worldObj.spawnParticle("bubble", this.posX + (double)var2, this.posY + (double)var3, this.posZ + (double)var4, this.motionX, this.motionY, this.motionZ);
+					float var5 = this.rand.nextFloat() - this.rand.nextFloat();
+					this.worldObj.spawnParticle("bubble", this.posX + (double)var3, this.posY + (double)var4, this.posZ + (double)var5, this.motionX, this.motionY, this.motionZ);
 				}
 
 				this.attackEntityFrom(DamageSource.drown, 2);
@@ -612,7 +621,20 @@ public abstract class EntityLiving extends Entity {
 	 * Get the experience points the entity currently has.
 	 */
 	protected int getExperiencePoints(EntityPlayer par1EntityPlayer) {
-		return this.experienceValue;
+		if (this.experienceValue > 0) {
+			int var2 = this.experienceValue;
+			ItemStack[] var3 = this.getLastActiveItems();
+
+			for (int var4 = 0; var4 < var3.length; ++var4) {
+				if (var3[var4] != null && this.equipmentDropChances[var4] <= 1.0F) {
+					var2 += 1 + this.rand.nextInt(3);
+				}
+			}
+
+			return var2;
+		} else {
+			return this.experienceValue;
+		}
 	}
 
 	/**
@@ -677,7 +699,7 @@ public abstract class EntityLiving extends Entity {
 				}
 			}
 
-			var1 = this.func_85035_bI();
+			var1 = this.getArrowCountInEntity();
 
 			if (var1 > 0) {
 				if (this.arrowHitTimer <= 0) {
@@ -687,7 +709,7 @@ public abstract class EntityLiving extends Entity {
 				--this.arrowHitTimer;
 
 				if (this.arrowHitTimer <= 0) {
-					this.func_85034_r(var1 - 1);
+					this.setArrowCountInEntity(var1 - 1);
 				}
 			}
 		}
@@ -817,7 +839,7 @@ public abstract class EntityLiving extends Entity {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		if (this.func_85032_ar()) {
+		if (this.isEntityInvulnerable()) {
 			return false;
 		} else if (this.worldObj.isRemote) {
 			return false;
@@ -830,7 +852,8 @@ public abstract class EntityLiving extends Entity {
 				return false;
 			} else {
 				if ((par1DamageSource == DamageSource.anvil || par1DamageSource == DamageSource.fallingBlock) && this.getCurrentItemOrArmor(4) != null) {
-					par2 = (int)((float)par2 * 0.55F);
+					this.getCurrentItemOrArmor(4).damageItem(par2 * 4 + this.rand.nextInt(par2 * 2), this);
+					par2 = (int)((float)par2 * 0.75F);
 				}
 
 				this.legYaw = 1.5F;
@@ -876,7 +899,7 @@ public abstract class EntityLiving extends Entity {
 				if (var3) {
 					this.worldObj.setEntityState(this, (byte)2);
 
-					if (par1DamageSource != DamageSource.drown && par1DamageSource != DamageSource.field_76375_l) {
+					if (par1DamageSource != DamageSource.drown && par1DamageSource != DamageSource.explosion2) {
 						this.setBeenAttacked();
 					}
 
@@ -897,12 +920,12 @@ public abstract class EntityLiving extends Entity {
 
 				if (this.health <= 0) {
 					if (var3) {
-						this.func_85030_a(this.getDeathSound(), this.getSoundVolume(), this.getSoundPitch());
+						this.playSound(this.getDeathSound(), this.getSoundVolume(), this.getSoundPitch());
 					}
 
 					this.onDeath(par1DamageSource);
 				} else if (var3) {
-					this.func_85030_a(this.getHurtSound(), this.getSoundVolume(), this.getSoundPitch());
+					this.playSound(this.getHurtSound(), this.getSoundVolume(), this.getSoundPitch());
 				}
 
 				return true;
@@ -981,8 +1004,8 @@ public abstract class EntityLiving extends Entity {
 	 * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health second
 	 * with the reduced value. Args: damageAmount
 	 */
-	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout - protected to public!
-		if (!this.func_85032_ar()) {
+	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout protected -> public
+		if (!this.isEntityInvulnerable()) {
 			par2 = this.applyArmorCalculations(par1DamageSource, par2);
 			par2 = this.applyPotionDamageCalculations(par1DamageSource, par2);
 			this.health -= par2;
@@ -1079,7 +1102,8 @@ public abstract class EntityLiving extends Entity {
 	protected void dropRareDrop(int par1) {}
 
 	/**
-	 * Drop 0-2 items of this living's type
+	 * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+	 * par2 - Level of Looting used to kill this mob.
 	 */
 	protected void dropFewItems(boolean par1, int par2) {
 		int var3 = this.getDropItemId();
@@ -1116,9 +1140,9 @@ public abstract class EntityLiving extends Entity {
 
 		if (var2 > 0) {
 			if (var2 > 4) {
-				this.func_85030_a("damage.fallbig", 1.0F, 1.0F);
+				this.playSound("damage.fallbig", 1.0F, 1.0F);
 			} else {
-				this.func_85030_a("damage.fallsmall", 1.0F, 1.0F);
+				this.playSound("damage.fallsmall", 1.0F, 1.0F);
 			}
 
 			this.attackEntityFrom(DamageSource.fall, var2);
@@ -1126,7 +1150,7 @@ public abstract class EntityLiving extends Entity {
 
 			if (var3 > 0) {
 				StepSound var4 = Block.blocksList[var3].stepSound;
-				this.func_85030_a(var4.getStepSound(), var4.getVolume() * 0.5F, var4.getPitch() * 0.75F);
+				this.playSound(var4.getStepSound(), var4.getVolume() * 0.5F, var4.getPitch() * 0.75F);
 			}
 		}
 	}
@@ -1307,7 +1331,7 @@ public abstract class EntityLiving extends Entity {
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		MobRandomizer.ExtraInfo.writeToNBT(this, par1NBTTagCompound); //Spout
+		MobRandomizer.ExtraInfo.writeToNBT(this, par1NBTTagCompound); // MCPatcher
 		
 		if (this.health < -32768) {
 			this.health = -32768;
@@ -1359,7 +1383,7 @@ public abstract class EntityLiving extends Entity {
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		MobRandomizer.ExtraInfo.readFromNBT(this, par1NBTTagCompound); //Spout
+		MobRandomizer.ExtraInfo.readFromNBT(this, par1NBTTagCompound); // MCPatcher
 		this.health = par1NBTTagCompound.getShort("Health");
 
 		if (!par1NBTTagCompound.hasKey("Health")) {
@@ -1439,6 +1463,10 @@ public abstract class EntityLiving extends Entity {
 			--this.newPosRotationIncrements;
 			this.setPosition(var1, var3, var5);
 			this.setRotation(this.rotationYaw, this.rotationPitch);
+		} else if (!this.isClientWorld()) {
+			this.motionX *= 0.98D;
+			this.motionY *= 0.98D;
+			this.motionZ *= 0.98D;
 		}
 
 		if (Math.abs(this.motionX) < 0.005D) {
@@ -1515,8 +1543,8 @@ public abstract class EntityLiving extends Entity {
 			while (var12.hasNext()) {
 				EntityItem var4 = (EntityItem)var12.next();
 
-				if (!var4.isDead && var4.item != null) {
-					ItemStack var13 = var4.item;
+				if (!var4.isDead && var4.func_92059_d() != null) {
+					ItemStack var13 = var4.func_92059_d();
 					int var6 = func_82159_b(var13);
 
 					if (var6 > -1) {
@@ -1917,10 +1945,10 @@ public abstract class EntityLiving extends Entity {
 			this.hurtResistantTime = this.maxHurtResistantTime;
 			this.hurtTime = this.maxHurtTime = 10;
 			this.attackedAtYaw = 0.0F;
-			this.func_85030_a(this.getHurtSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+			this.playSound(this.getHurtSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			this.attackEntityFrom(DamageSource.generic, 0);
 		} else if (par1 == 3) {
-			this.func_85030_a(this.getDeathSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+			this.playSound(this.getDeathSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			this.health = 0;
 			this.onDeath(DamageSource.generic);
 		} else {
@@ -2143,7 +2171,7 @@ public abstract class EntityLiving extends Entity {
 	 * Renders broken item particles using the given ItemStack
 	 */
 	public void renderBrokenItemStack(ItemStack par1ItemStack) {
-		this.func_85030_a("random.break", 0.8F, 0.8F + this.worldObj.rand.nextFloat() * 0.4F);
+		this.playSound("random.break", 0.8F, 0.8F + this.worldObj.rand.nextFloat() * 0.4F);
 
 		for (int var2 = 0; var2 < 5; ++var2) {
 			Vec3 var3 = this.worldObj.getWorldVec3Pool().getVecFromPool(((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
@@ -2153,7 +2181,7 @@ public abstract class EntityLiving extends Entity {
 			var4.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 			var4.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
 			var4 = var4.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
-			this.worldObj.spawnParticle("iconcrack_" + par1ItemStack.getItem().shiftedIndex, var4.xCoord, var4.yCoord, var4.zCoord, var3.xCoord, var3.yCoord + 0.05D, var3.zCoord);
+			this.worldObj.spawnParticle("iconcrack_" + par1ItemStack.getItem().itemID, var4.xCoord, var4.yCoord, var4.zCoord, var3.xCoord, var3.yCoord + 0.05D, var3.zCoord);
 		}
 	}
 
@@ -2231,19 +2259,19 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	protected void func_82164_bB() {
-		if (this.rand.nextFloat() < field_82176_d[this.worldObj.difficultySetting]) {
+		if (this.rand.nextFloat() < armorProbability[this.worldObj.difficultySetting]) {
 			int var1 = this.rand.nextInt(2);
 			float var2 = this.worldObj.difficultySetting == 3 ? 0.1F : 0.25F;
 
-			if (this.rand.nextFloat() < 0.07F) {
+			if (this.rand.nextFloat() < 0.1F) {
 				++var1;
 			}
 
-			if (this.rand.nextFloat() < 0.07F) {
+			if (this.rand.nextFloat() < 0.1F) {
 				++var1;
 			}
 
-			if (this.rand.nextFloat() < 0.07F) {
+			if (this.rand.nextFloat() < 0.1F) {
 				++var1;
 			}
 
@@ -2287,7 +2315,7 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	public static int func_82159_b(ItemStack par0ItemStack) {
-		if (par0ItemStack.itemID != Block.pumpkin.blockID && par0ItemStack.itemID != Item.skull.shiftedIndex) {
+		if (par0ItemStack.itemID != Block.pumpkin.blockID && par0ItemStack.itemID != Item.skull.itemID) {
 			if (par0ItemStack.getItem() instanceof ItemArmor) {
 				switch (((ItemArmor)par0ItemStack.getItem()).armorType) {
 					case 0:
@@ -2374,14 +2402,14 @@ public abstract class EntityLiving extends Entity {
 
 	protected void func_82162_bC() {
 		if (this.getHeldItem() != null && this.rand.nextFloat() < enchantmentProbability[this.worldObj.difficultySetting]) {
-			EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItem(), 5);
+			EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItem(), 5 + this.worldObj.difficultySetting * this.rand.nextInt(6));
 		}
 
 		for (int var1 = 0; var1 < 4; ++var1) {
 			ItemStack var2 = this.getCurrentArmor(var1);
 
-			if (var2 != null && this.rand.nextFloat() < field_82178_c[this.worldObj.difficultySetting]) {
-				EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
+			if (var2 != null && this.rand.nextFloat() < armorEnchantmentProbability[this.worldObj.difficultySetting]) {
+				EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5 + this.worldObj.difficultySetting * this.rand.nextInt(6));
 			}
 		}
 	}
@@ -2421,16 +2449,21 @@ public abstract class EntityLiving extends Entity {
 		return false;
 	}
 
-	public final int func_85035_bI() {
+	/**
+	 * counts the amount of arrows stuck in the entity. getting hit by arrows increases this, used in rendering
+	 */
+	public final int getArrowCountInEntity() {
 		return this.dataWatcher.getWatchableObjectByte(10);
 	}
 
-	public final void func_85034_r(int par1) {
+	/**
+	 * sets the amount of arrows stuck in the entity. used for rendering those
+	 */
+	public final void setArrowCountInEntity(int par1) {
 		this.dataWatcher.updateObject(10, Byte.valueOf((byte)par1));
 	}
 	
 	// Spout Start
-
 	public EntityData getData() {
 		return entityData;
 	}
@@ -2478,5 +2511,4 @@ public abstract class EntityLiving extends Entity {
 		return getData().getTextureToRender();
 	}
 	// Spout End
-	
 }
