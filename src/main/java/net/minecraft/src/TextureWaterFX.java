@@ -1,29 +1,31 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.TileSize;
+import com.pclewis.mcpatcher.mod.TileSize; // MCPatcher
 
 public class TextureWaterFX extends TextureFX {
 
 	/** red RGB value for water texture */
-	protected float[] red;
+	protected float[] red; // MCPatcher
 
 	/** green RGB value for water texture */
-	protected float[] green;
+	protected float[] green; // MCPatcher
 
 	/** blue RGB value for water texture */
-	protected float[] blue;
+	protected float[] blue; // MCPatcher
 
 	/** alpha RGB value for water texture */
-	protected float[] alpha;
-	private int tickCounter;
+	protected float[] alpha; // MCPatcher
+	private int tickCounter; // MCPatcher
 
 	public TextureWaterFX() {
 		super(Block.waterMoving.blockIndexInTexture);
+		 // MCPatcher Start
 		this.red = new float[TileSize.int_numPixels];
 		this.green = new float[TileSize.int_numPixels];
 		this.blue = new float[TileSize.int_numPixels];
 		this.alpha = new float[TileSize.int_numPixels];
 		this.tickCounter = 0;
+		 // MCPatcher End
 	}
 
 	public void onTick() {
@@ -34,20 +36,25 @@ public class TextureWaterFX extends TextureFX {
 		int var5;
 		int var6;
 
+		 // MCPatcher Start
 		for (var1 = 0; var1 < TileSize.int_size; ++var1) {
 			for (var2 = 0; var2 < TileSize.int_size; ++var2) {
+			// MCPatcher End
 				var3 = 0.0F;
 
 				for (int var4 = var1 - 1; var4 <= var1 + 1; ++var4) {
+					// MCPatcher Start
 					var5 = var4 & TileSize.int_sizeMinus1;
 					var6 = var2 & TileSize.int_sizeMinus1;
 					var3 += this.red[var5 + var6 * TileSize.int_size];
+					// MCPatcher End
 				}
 
-				this.green[var1 + var2 * TileSize.int_size] = var3 / 3.3F + this.blue[var1 + var2 * TileSize.int_size] * 0.8F;
+				this.green[var1 + var2 * TileSize.int_size] = var3 / 3.3F + this.blue[var1 + var2 * TileSize.int_size] * 0.8F; // MCPatcher
 			}
 		}
 
+		// MCPatcher Start
 		for (var1 = 0; var1 < TileSize.int_size; ++var1) {
 			for (var2 = 0; var2 < TileSize.int_size; ++var2) {
 				this.blue[var1 + var2 * TileSize.int_size] += this.alpha[var1 + var2 * TileSize.int_size] * 0.05F;
@@ -57,9 +64,10 @@ public class TextureWaterFX extends TextureFX {
 				}
 
 				this.alpha[var1 + var2 * TileSize.int_size] -= 0.1F;
+				// MCPatcher End
 
 				if (Math.random() < 0.05D) {
-					this.alpha[var1 + var2 * TileSize.int_size] = 0.5F;
+					this.alpha[var1 + var2 * TileSize.int_size] = 0.5F; // MCPatcher
 				}
 			}
 		}
@@ -68,7 +76,7 @@ public class TextureWaterFX extends TextureFX {
 		this.green = this.red;
 		this.red = var12;
 
-		for (var2 = 0; var2 < TileSize.int_numPixels; ++var2) {
+		for (var2 = 0; var2 < TileSize.int_numPixels; ++var2) {// MCPatcher
 			var3 = this.red[var2];
 
 			if (var3 > 1.0F) {
