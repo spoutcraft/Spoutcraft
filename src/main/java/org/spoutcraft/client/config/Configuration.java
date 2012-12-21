@@ -83,7 +83,7 @@ public class Configuration {
 	private static int mainMenuState = defaultMenuState();
 	private static boolean connectedTextures = false;
 	private static boolean advancedOptions = false;
-	private static boolean randomMobTextures = false;
+	private static boolean randomMobTextures = true;
 	
 	//Config-specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
