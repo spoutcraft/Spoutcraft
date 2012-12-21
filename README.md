@@ -5,9 +5,7 @@ Spoutcraft is a modified Minecraft client that adds in custom content and unlock
 Like the project? Feel free to [donate] to help continue development!
 
 ## What is Spoutcraft?
-Spoutcraft is a modified Minecraft client, which is accessible via the Spoutcraft Launcher, that boosts increased FPS, HD textures/fonts,
-minimap, and an overview map. When connecting to a server with SpoutPlugin, custom blocks and items, custom guis, custom sounds, etc are
-all available for use. Spoutcraft is a legacy project and will be replaced by the Spout client when finished.
+Spoutcraft is a modified Minecraft client, which is accessible via the Spoutcraft Launcher, that boosts increased FPS, HD textures/fonts, minimap, and an overview map. When connecting to a server with SpoutPlugin, custom blocks and items, custom guis, custom sounds, etc are all available for use. Spoutcraft is a legacy project and will be replaced by the Spout client when finished.
 
 [![Spoutcraft][Logo]][Homepage]  
 [Homepage] | [Forums] | [Twitter] | [Facebook]
@@ -25,23 +23,8 @@ Download the latest builds from our [build server][Builds]. [![Build Status](htt
 Spoutcraft uses Maven to handle its dependencies.
 
 * Install [Maven 2 or 3](http://maven.apache.org/download.html)  
-* Checkout this repo and run: `mvn clean install`
-
-## Using with Your Project
-For those using [Maven](http://maven.apache.org/download.html) to manage project dependencies, simply include the following in your pom.xml:
-
-    <dependency>
-        <groupId>org.spoutcraft</groupId>
-        <artifactId>spoutcraft</artifactId>
-        <version>1.4.5-SNAPSHOT</version>
-    </dependency>
-
-If you do not already have repo.spout.org in your repository list, you will need to add this also:
-
-    <repository>
-        <id>spout-repo</id>
-        <url>http://repo.spout.org</url>
-    </repository>
+* Checkout this repo and run: `mvn clean package`
+* To create a packaged jar, add `-P mcp-final-win` for Windows, or `-P mcp-final-unix` for Mac OS X/Linux.
 
 ## Coding and Pull Request Conventions
 * Generally follow the Oracle coding standards.

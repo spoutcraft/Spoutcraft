@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.List;
+
+import com.pclewis.mcpatcher.mod.Colorizer; // Spout
 
 public class BlockLilyPad extends BlockFlower {
 	protected BlockLilyPad(int par1, int par2) {

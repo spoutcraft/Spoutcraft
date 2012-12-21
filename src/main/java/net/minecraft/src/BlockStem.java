@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.Random;
+
+import com.pclewis.mcpatcher.mod.Colorizer; // Spout
 
 public class BlockStem extends BlockFlower {
 
@@ -140,7 +141,7 @@ public class BlockStem extends BlockFlower {
 		int var2 = par1 * 32;
 		int var3 = 255 - par1 * 8;
 		int var4 = par1 * 4;
-		return Colorizer.colorizeStem(var2 << 16 | var3 << 8 | var4, par1);
+		return Colorizer.colorizeStem(var2 << 16 | var3 << 8 | var4, par1); // Spout
 	}
 
 	/**
@@ -234,6 +235,6 @@ public class BlockStem extends BlockFlower {
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public int idPicked(World par1World, int par2, int par3, int par4) {
-		return this.fruitType == Block.pumpkin ? Item.pumpkinSeeds.shiftedIndex : (this.fruitType == Block.melon ? Item.melonSeeds.shiftedIndex : 0);
+		return this.fruitType == Block.pumpkin ? Item.pumpkinSeeds.shiftedIndex : (this.fruitType == Block.melon ? Item.melonSeeds.shiftedIndex : 0); // Spout
 	}
 }
