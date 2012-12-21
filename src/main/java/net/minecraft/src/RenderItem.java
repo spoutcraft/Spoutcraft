@@ -196,7 +196,9 @@ public class RenderItem extends Render {
 					if (var14 != null) {
 						this.loadTexture("/terrain.png");
 					} else {
-						this.loadTexture("/gui/items.png");
+						if (!custom) {
+							this.loadTexture("/gui/items.png");
+						}
 					}
 
 					if (this.field_77024_a) {
