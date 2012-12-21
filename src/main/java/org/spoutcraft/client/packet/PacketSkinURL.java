@@ -75,7 +75,7 @@ public class PacketSkinURL implements SpoutPacket {
 			String mcSkin = "http://s3.amazonaws.com/MinecraftSkins/" + e.username + ".png";
 			String mcCape = "http://s3.amazonaws.com/MinecraftCloaks/" + e.username + ".png";
 			if (!"none".equals(this.skinURL)) {
-				System.out.println(e.username + " is going to be sent skinURL: " + skinURL + "from SpoutPlugin's API.");
+				//System.out.println(e.username + " is going to be sent skinURL: " + skinURL + " from SpoutPlugin's API.");
 			}
 			if (this.skinURL.equalsIgnoreCase(mcSkin)) {
 				this.skinURL = "http://cdn.spout.org/game/vanilla/skin/" + e.username + ".png";
