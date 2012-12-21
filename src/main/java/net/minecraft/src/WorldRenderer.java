@@ -309,8 +309,6 @@ public class WorldRenderer {
 
 			int limit = skipRenderPass.length;  // MCPatcher 2.4.4 requires 4, anything less and thinkgs get missed.
 						
-			System.out.println("limit: " + limit);
-			
 			for (int renderPass = 0; renderPass < limit; ++renderPass) { // Spout - 3 passes for shaders, 2 without
 
 				boolean skipRenderPass = false;
