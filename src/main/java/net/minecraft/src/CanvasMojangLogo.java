@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.TexturePackAPI;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,15 +7,19 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
 
+import com.pclewis.mcpatcher.TexturePackAPI; // Spout
+
 class CanvasMojangLogo extends Canvas {
 
-	/** BufferedImage object containing the Majong logo. */
+	/** BufferedImage containing the Majong logo. */
 	private BufferedImage logo;
 
 	public CanvasMojangLogo() {
 		try {
+			// Spout Start
 			this.logo = TexturePackAPI.getImage(PanelCrashReport.class, "/gui/crash_logo.png");
 		} catch (Exception var2) {
+			// Spout End
 			;
 		}
 
