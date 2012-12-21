@@ -364,7 +364,9 @@ public class RenderItem extends Render {
 				if (var6 < 256) {
 					par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/terrain.png"));
 				} else {
-					par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
+					if (!custom) {
+						par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
+					}
 				}
 
 				var9 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);
