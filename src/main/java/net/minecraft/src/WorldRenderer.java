@@ -147,9 +147,12 @@ public class WorldRenderer {
 	 * Will update this chunk renderer
 	 */
 	
-	//TODO: The code Below makes Connected Textures Work but not Custom Blocks
+	//TODO: The following updateRenderer method renders Connected Textures and Better Glass Properly
+	//TODO: However, it lacks the ability to render custom blocks.  This method needs to be combined
+	//TODO: with the updateRenderer() method below this one so that both function properly.
 	
-	public void updateRenderer2() {
+	/*
+	public void updateRenderer() {
 		CTMUtils.start();
 
 		if (!this.needsUpdate) {
@@ -163,15 +166,14 @@ public class WorldRenderer {
 			int var5 = this.posY + 16;
 			int var6 = this.posZ + 16;
 
-			for (int var7 = 0; var7 < 4; ++var7) {  //var7 = renderPass
+			for (int var7 = 0; var7 < 4; ++var7) {
 				this.skipRenderPass[var7] = true;
 			}
 
 			Chunk.isLit = false;
 			HashSet var21 = new HashSet();
-			var21.addAll(this.tileEntityRenderers); //Var21 = tileRenders
+			var21.addAll(this.tileEntityRenderers);
 			this.tileEntityRenderers.clear();
-			
 			byte var8 = 1;
 			ChunkCache var9 = new ChunkCache(this.worldObj, var1 - var8, var2 - var8, var3 - var8, var4 + var8, var5 + var8, var6 + var8);
 
@@ -256,8 +258,16 @@ public class WorldRenderer {
 		}		
 	}	 
   
-	// The Code below makes Custom Blocks Render but not Connected Textures
+	*/
 	
+	//TODO: The below updateRenderer() method was specifically designed for rendering CustomBlocks in the world.  
+	//TODO: However, it does not work for rendering Connected Textures and Better Glass.
+	//TODO: Note, this also limits the renderer pass to 3, which currently wont work because the renderer needs 4
+	//TODO: passes to complete its build for Connected Textures, Better Glass ans Smooth Lighting.
+	//TODO: Without the additional passes lighting is very blocky.
+	
+	//TODO: Note, no performance difference was found between this updateRenderer() with 2 passes vs. the one above it for 4.
+
 	public void updateRenderer() {
 		// Spout Start
 		CTMUtils.start();
@@ -297,11 +307,8 @@ public class WorldRenderer {
 
 			blockRenderer.customIds = customBlockIds;
 
-			int limit = skipRenderPass.length;
-			
-			//if (!Shaders.isEnabled()) {
-			//	limit--;
-			//}
+			int limit = skipRenderPass.length;  // MCPatcher 2.4.4 requires 4, anything less and thinkgs get missed.
+						
 			System.out.println("limit: " + limit);
 			
 			for (int renderPass = 0; renderPass < limit; ++renderPass) { // Spout - 3 passes for shaders, 2 without
@@ -474,8 +481,6 @@ public class WorldRenderer {
 			CTMUtils.finish();
 		}
 	}
-
-
 
 	/**
 	 * Returns the distance of this chunk renderer to the entity without performing the final normalizing square root, for
