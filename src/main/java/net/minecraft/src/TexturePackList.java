@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.TexturePackAPI;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
+
+import com.pclewis.mcpatcher.TexturePackAPI; // MCPatcher
 
 public class TexturePackList {
 
@@ -71,16 +71,16 @@ public class TexturePackList {
 	 */
 	public boolean setTexturePack(ITexturePack par1ITexturePack) {
 		if (par1ITexturePack == this.selectedTexturePack) {
-			System.out.println("TexturePackList:  Returned same texturePack.");
+			System.out.println("TexturePackList: Returned same texturePack."); // Spout
 			return false;
 		} else {
-			System.out.println("TexturePackList:  Different Texturepack Selected..");
+			System.out.println("TexturePackList: Different Texturepack Selected.."); // Spout
 			this.isDownloading = false;
 			this.selectedTexturePack = par1ITexturePack;
 			this.mc.gameSettings.skin = par1ITexturePack.getTexturePackFileName();
 			this.mc.gameSettings.saveOptions();
-			TexturePackAPI.ChangeHandler.checkForTexturePackChange();
-			return true;			
+			TexturePackAPI.ChangeHandler.checkForTexturePackChange(); // MCPatcher
+			return true;
 		}
 	}
 
@@ -104,7 +104,7 @@ public class TexturePackList {
 		HashMap var3 = new HashMap();
 		GuiProgress var4 = new GuiProgress();
 		var3.put("X-Minecraft-Username", this.mc.session.username);
-		var3.put("X-Minecraft-Version", "1.4.5");
+		var3.put("X-Minecraft-Version", "1.4.6");
 		var3.put("X-Minecraft-Supported-Resolutions", "16");
 		this.isDownloading = true;
 		this.mc.displayGuiScreen(var4);
@@ -134,10 +134,12 @@ public class TexturePackList {
 		ArrayList var1 = new ArrayList();
 		this.selectedTexturePack = defaultTexturePack;
 		var1.add(defaultTexturePack);
-		Iterator var2 = this.getTexturePackDirContents().iterator();		
+		Iterator var2 = this.getTexturePackDirContents().iterator();
+
 		while (var2.hasNext()) {
 			File var3 = (File)var2.next();
-			String var4 = this.generateTexturePackID(var3);			
+			String var4 = this.generateTexturePackID(var3);
+
 			if (var4 != null) {
 				Object var5 = (ITexturePack)this.texturePackCache.get(var4);
 
@@ -164,8 +166,7 @@ public class TexturePackList {
 		}
 
 		this.availableTexturePacks = var1;
-		//Spout - This isn't needed, don't force texture pack unless asked to do so.
-		//TexturePackAPI.ChangeHandler.checkForTexturePackChange();
+		//TexturePackAPI.ChangeHandler.checkForTexturePackChange(); // Spout - This isn't needed, don't force texture pack unless asked to do so.
 	}
 
 	/**
@@ -235,7 +236,7 @@ public class TexturePackList {
 		return par0TexturePackList.mc;
 	}
 
-	// Spout HD Start
+	// MCPatcher Start
 	public TexturePackImplementation getSelectedTexturePackImplementation() {
 		return (TexturePackImplementation)this.selectedTexturePack;
 	}
@@ -247,6 +248,6 @@ public class TexturePackList {
 	public TexturePackImplementation getDefaultTexturePack() {
 		return (TexturePackImplementation)defaultTexturePack;
 	}
-	// Spout HD End
+	// MCPatcher End
 	
 }

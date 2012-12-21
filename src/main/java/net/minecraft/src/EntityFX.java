@@ -4,32 +4,35 @@ public class EntityFX extends Entity {
 	private int particleTextureIndex;
 	protected float particleTextureJitterX;
 	protected float particleTextureJitterY;
-	// Spout protected -> public
-	public int particleAge = 0;
-	public int particleMaxAge = 0;
-	public float particleScale;
-	public float particleGravity;
+	public int particleAge = 0; // Spout protected -> public
+	public int particleMaxAge = 0; // Spout protected -> public
+	public float particleScale; // Spout protected -> public
+	public float particleGravity; // Spout protected -> public
 
 	/** The red amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0. */
-	public float particleRed;
+	public float particleRed; // Spout protected -> public
 
 	/**
 	 * The green amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0.
 	 */
-	public float particleGreen;
+	public float particleGreen; // Spout protected -> public
 
 	/**
 	 * The blue amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0.
 	 */
-	public float particleBlue;
-	// Spout End
-	protected float field_82339_as = 1.0F;
+	public float particleBlue; // Spout protected -> public
+
+	/** Particle alpha */
+	protected float particleAlpha;
 	public static double interpPosX;
 	public static double interpPosY;
 	public static double interpPosZ;
 
-	public EntityFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
+	public EntityFX(World par1World, double par2, double par4, double par6) { // Spout protected -> public
 		super(par1World);
+		this.particleAge = 0;
+		this.particleMaxAge = 0;
+		this.particleAlpha = 1.0F;
 		this.setSize(0.2F, 0.2F);
 		this.yOffset = this.height / 2.0F;
 		this.setPosition(par2, par4, par6);
@@ -37,6 +40,15 @@ public class EntityFX extends Entity {
 		this.lastTickPosY = par4;
 		this.lastTickPosZ = par6;
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
+		this.particleTextureJitterX = this.rand.nextFloat() * 3.0F;
+		this.particleTextureJitterY = this.rand.nextFloat() * 3.0F;
+		this.particleScale = (this.rand.nextFloat() * 0.5F + 0.5F) * 2.0F;
+		this.particleMaxAge = (int)(4.0F / (this.rand.nextFloat() * 0.9F + 0.1F));
+		this.particleAge = 0;
+	}
+
+	public EntityFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
+		this(par1World, par2, par4, par6);
 		this.motionX = par8 + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.4F);
 		this.motionY = par10 + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.4F);
 		this.motionZ = par12 + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.4F);
@@ -45,11 +57,6 @@ public class EntityFX extends Entity {
 		this.motionX = this.motionX / (double)var15 * (double)var14 * 0.4000000059604645D;
 		this.motionY = this.motionY / (double)var15 * (double)var14 * 0.4000000059604645D + 0.10000000149011612D;
 		this.motionZ = this.motionZ / (double)var15 * (double)var14 * 0.4000000059604645D;
-		this.particleTextureJitterX = this.rand.nextFloat() * 3.0F;
-		this.particleTextureJitterY = this.rand.nextFloat() * 3.0F;
-		this.particleScale = (this.rand.nextFloat() * 0.5F + 0.5F) * 2.0F;
-		this.particleMaxAge = (int)(4.0F / (this.rand.nextFloat() * 0.9F + 0.1F));
-		this.particleAge = 0;
 	}
 
 	public EntityFX multiplyVelocity(float par1) {
@@ -71,8 +78,11 @@ public class EntityFX extends Entity {
 		this.particleBlue = par3;
 	}
 
-	public void func_82338_g(float par1) {
-		this.field_82339_as = par1;
+	/**
+	 * Sets the particle alpha (float)
+	 */
+	public void setAlphaF(float par1) {
+		this.particleAlpha = par1;
 	}
 
 	public float getRedColorF() {
@@ -131,7 +141,7 @@ public class EntityFX extends Entity {
 		float var14 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)par2 - interpPosY);
 		float var15 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)par2 - interpPosZ);
 		float var16 = 1.0F;
-		par1Tessellator.setColorRGBA_F(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16, this.field_82339_as);
+		par1Tessellator.setColorRGBA_F(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16, this.particleAlpha);
 		par1Tessellator.addVertexWithUV((double)(var13 - par3 * var12 - par6 * var12), (double)(var14 - par4 * var12), (double)(var15 - par5 * var12 - par7 * var12), (double)var9, (double)var11);
 		par1Tessellator.addVertexWithUV((double)(var13 - par3 * var12 + par6 * var12), (double)(var14 + par4 * var12), (double)(var15 - par5 * var12 + par7 * var12), (double)var9, (double)var10);
 		par1Tessellator.addVertexWithUV((double)(var13 + par3 * var12 + par6 * var12), (double)(var14 + par4 * var12), (double)(var15 + par5 * var12 + par7 * var12), (double)var8, (double)var10);
@@ -171,6 +181,6 @@ public class EntityFX extends Entity {
 	}
 
 	public String toString() {
-		return this.getClass().getSimpleName() + ", Pos (" + this.posX + "," + this.posY + "," + this.posZ + "), RGBA (" + this.particleRed + "," + this.particleGreen + "," + this.particleBlue + "," + this.field_82339_as + "), Age " + this.particleAge;
+		return this.getClass().getSimpleName() + ", Pos (" + this.posX + "," + this.posY + "," + this.posZ + "), RGBA (" + this.particleRed + "," + this.particleGreen + "," + this.particleBlue + "," + this.particleAlpha + "), Age " + this.particleAge;
 	}
 }
