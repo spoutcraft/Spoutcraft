@@ -179,9 +179,7 @@ public class PrecacheManager {
 			if (extractDir.exists() && extractDir.isDirectory() && !((List<File>) FileUtils.listFiles(extractDir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)).isEmpty()) {
 				//Do nothing
 			} else {
-				if (spoutDebug) {
-					System.out.println("[Spoutcraft] Extracting: " + extractDir.getName() + ".zip");
-				}
+				System.out.println("[Spoutcraft] Extracting: " + extractDir.getName() + ".zip");
 				//Make the directories to unzip to
 				extractDir.mkdirs();
 				final byte[] BUFFER = new byte[104857600]; //100MB buffer
