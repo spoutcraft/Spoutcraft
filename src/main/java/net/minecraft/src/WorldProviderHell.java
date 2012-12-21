@@ -1,10 +1,13 @@
 package net.minecraft.src;
 
-// Spout Start
-import org.spoutcraft.client.SpoutClient;
+// MCPatcher Start
 import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
+// Spout Start
 import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.client.SpoutClient;
 // Spout End
+
 public class WorldProviderHell extends WorldProvider {
 
 	/**

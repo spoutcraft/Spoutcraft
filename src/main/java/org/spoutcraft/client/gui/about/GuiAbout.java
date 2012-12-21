@@ -88,8 +88,6 @@ public class GuiAbout extends GuiScreen {
 			}
 		} else if (this.isInBoundingRect(this.width / 2 + 30, getScaledHeight(15), 33, 147, mouseX, mouseY)) {
 			browseUrl = "http://spout.in/beast";
-		} else if (this.isInBoundingRect(this.width / 2 + 30, getScaledHeight(85), 33, 147, mouseX, mouseY)) {
-			browseUrl = "http://spout.in/minebiz";
 		} else if (this.isInBoundingRect((int)(0.0325f * this.width), (this.height - 40), (int)(44 * 0.4f), (int)(310 * 0.4f), mouseX, mouseY)) {
 			browseUrl = "http://spout.in/minecraft";
 		} else if (this.isInBoundingRect((this.width - 140), this.height - 45, 32, 128, mouseX, mouseY)) {

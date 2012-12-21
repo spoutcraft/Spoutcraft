@@ -7,23 +7,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.InetAddress;
-import java.net.InetSocketAddress; // Spout
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.net.UnknownHostException; // Spout
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList; // Spout
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javax.crypto.SecretKey;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
-
 // Spout Start
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
+import java.util.LinkedList;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.io.FileDownloadThread;
@@ -71,20 +70,20 @@ public class NetClientHandler extends NetHandler {
 	public long packetQueueTime = 0L;
 	public boolean queued = false;
 	// Spout End
-	
+
 	public NetClientHandler(Minecraft par1Minecraft, String par2Str, int par3) throws IOException {
 		this.mc = par1Minecraft;
-		
+
 		// Spout Start
 		InetSocketAddress address = NetworkUtils.resolve(par2Str, par3);
-		if(address.isUnresolved()) {
+		if (address.isUnresolved()) {
 			throw new UnknownHostException(address.getHostName());
 		}
 		this.netManager = new TcpConnection(new Socket(address.getAddress(), address.getPort()), "Client", this);
 
-		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = par2Str; // Spout
-		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = par3; // Spout
-		
+		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = par2Str;
+		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = par3;
+
 		ClientPlayer.getInstance().resetMainScreen();
 		SpoutClient.getInstance().setSpoutActive(false);
 		// Spout End
@@ -106,11 +105,11 @@ public class NetClientHandler extends NetHandler {
 
 		this.netManager = null;
 		this.worldClient = null;
-		
-		//Spout start
+
+		// Spout Start
 		ClientPlayer.getInstance().resetMainScreen();
 		SpoutClient.getInstance().setSpoutActive(false);
-		//Spout end
+		// Spout End
 	}
 
 	/**
@@ -125,21 +124,23 @@ public class NetClientHandler extends NetHandler {
 			this.netManager.wakeThreads();
 		}
 
-		if (mc.currentScreen instanceof GuiDownloadTerrain) {
+		// Spout Start - This may actually still be needed due to PrePacketManager
+		// TODO: May fail at MainMenu
+		/*if (mc.currentScreen instanceof GuiDownloadTerrain) {
 			if (System.currentTimeMillis() > timeout) {
 				mc.displayGuiScreen(null, false);
 			}
-		}
+		}*/
 	}
 
 	public void handleServerAuthData(Packet253ServerAuthData par1Packet253ServerAuthData) {
 		String var2 = par1Packet253ServerAuthData.getServerId().trim();
 		PublicKey var3 = par1Packet253ServerAuthData.getPublicKey();
-		SecretKey var4 = CryptManager.func_75890_a();
+		SecretKey var4 = CryptManager.createNewSharedKey();
 
 		if (!"-".equals(var2)) {
-			String var5 = (new BigInteger(CryptManager.func_75895_a(var2, var3, var4))).toString(16);
-			String var6 = this.func_72550_a(this.mc.session.username, this.mc.session.sessionId, var5);
+			String var5 = (new BigInteger(CryptManager.getServerIdHash(var2, var3, var4))).toString(16);
+			String var6 = this.sendSessionRequest(this.mc.session.username, this.mc.session.sessionId, var5);
 
 			if (!"ok".equalsIgnoreCase(var6)) {
 				this.netManager.networkShutdown("disconnect.loginFailedInfo", new Object[] {var6});
@@ -150,7 +151,10 @@ public class NetClientHandler extends NetHandler {
 		this.addToSendQueue(new Packet252SharedKey(var4, var3, par1Packet253ServerAuthData.getVerifyToken()));
 	}
 
-	private String func_72550_a(String par1Str, String par2Str, String par3Str) {
+	/**
+	 * Send request to http://session.minecraft.net with user's sessionId and serverId hash
+	 */
+	private String sendSessionRequest(String par1Str, String par2Str, String par3Str) {
 		try {
 			URL var4 = new URL("http://session.minecraft.net/game/joinserver.jsp?user=" + urlEncode(par1Str) + "&sessionId=" + urlEncode(par2Str) + "&serverId=" + urlEncode(par3Str));
 			BufferedReader var5 = new BufferedReader(new InputStreamReader(var4.openStream()));
@@ -181,25 +185,13 @@ public class NetClientHandler extends NetHandler {
 		this.mc.loadWorld(this.worldClient);
 		this.mc.thePlayer.dimension = par1Packet1Login.dimension;
 		this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
-		//this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache()); // Spout  // Dont do this because of the dumb close screen call above it.
+		// Spout Start - Don't do this because of the dumb close screen call above it.
+		//this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache());
+		// Spout End
 		this.mc.thePlayer.entityId = par1Packet1Login.clientEntityId;
 		this.currentServerMaxPlayers = par1Packet1Login.maxPlayers;
 		this.mc.playerController.setGameType(par1Packet1Login.gameType);
 		this.mc.gameSettings.sendSettingsToServer();
-	}
-
-	public void handlePickupSpawn(Packet21PickupSpawn par1Packet21PickupSpawn) {
-		double var2 = (double)par1Packet21PickupSpawn.xPosition / 32.0D;
-		double var4 = (double)par1Packet21PickupSpawn.yPosition / 32.0D;
-		double var6 = (double)par1Packet21PickupSpawn.zPosition / 32.0D;
-		EntityItem var8 = new EntityItem(this.worldClient, var2, var4, var6, par1Packet21PickupSpawn.itemID);
-		var8.motionX = (double)par1Packet21PickupSpawn.rotation / 128.0D;
-		var8.motionY = (double)par1Packet21PickupSpawn.pitch / 128.0D;
-		var8.motionZ = (double)par1Packet21PickupSpawn.roll / 128.0D;
-		var8.serverPosX = par1Packet21PickupSpawn.xPosition;
-		var8.serverPosY = par1Packet21PickupSpawn.yPosition;
-		var8.serverPosZ = par1Packet21PickupSpawn.zPosition;
-		this.worldClient.addEntityToWorld(par1Packet21PickupSpawn.entityId, var8);
 	}
 
 	public void handleVehicleSpawn(Packet23VehicleSpawn par1Packet23VehicleSpawn) {
@@ -207,7 +199,6 @@ public class NetClientHandler extends NetHandler {
 		double var4 = (double)par1Packet23VehicleSpawn.yPosition / 32.0D;
 		double var6 = (double)par1Packet23VehicleSpawn.zPosition / 32.0D;
 		Object var8 = null;
-		boolean var9 = true;
 
 		if (par1Packet23VehicleSpawn.type == 10) {
 			var8 = new EntityMinecart(this.worldClient, var2, var4, var6, 0);
@@ -216,10 +207,10 @@ public class NetClientHandler extends NetHandler {
 		} else if (par1Packet23VehicleSpawn.type == 12) {
 			var8 = new EntityMinecart(this.worldClient, var2, var4, var6, 2);
 		} else if (par1Packet23VehicleSpawn.type == 90) {
-			Entity var10 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
+			Entity var9 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
 
-			if (var10 instanceof EntityPlayer) {
-				var8 = new EntityFishHook(this.worldClient, var2, var4, var6, (EntityPlayer)var10);
+			if (var9 instanceof EntityPlayer) {
+				var8 = new EntityFishHook(this.worldClient, var2, var4, var6, (EntityPlayer)var9);
 			}
 
 			par1Packet23VehicleSpawn.throwerEntityId = 0;
@@ -230,11 +221,12 @@ public class NetClientHandler extends NetHandler {
 		} else if (par1Packet23VehicleSpawn.type == 71) {
 			var8 = new EntityItemFrame(this.worldClient, (int)var2, (int)var4, (int)var6, par1Packet23VehicleSpawn.throwerEntityId);
 			par1Packet23VehicleSpawn.throwerEntityId = 0;
-			var9 = false;
 		} else if (par1Packet23VehicleSpawn.type == 65) {
 			var8 = new EntityEnderPearl(this.worldClient, var2, var4, var6);
 		} else if (par1Packet23VehicleSpawn.type == 72) {
 			var8 = new EntityEnderEye(this.worldClient, var2, var4, var6);
+		} else if (par1Packet23VehicleSpawn.type == 76) {
+			var8 = new EntityFireworkRocket(this.worldClient, var2, var4, var6, (ItemStack)null);
 		} else if (par1Packet23VehicleSpawn.type == 63) {
 			var8 = new EntityLargeFireball(this.worldClient, var2, var4, var6, (double)par1Packet23VehicleSpawn.speedX / 8000.0D, (double)par1Packet23VehicleSpawn.speedY / 8000.0D, (double)par1Packet23VehicleSpawn.speedZ / 8000.0D);
 			par1Packet23VehicleSpawn.throwerEntityId = 0;
@@ -258,6 +250,8 @@ public class NetClientHandler extends NetHandler {
 			var8 = new EntityTNTPrimed(this.worldClient, var2, var4, var6);
 		} else if (par1Packet23VehicleSpawn.type == 51) {
 			var8 = new EntityEnderCrystal(this.worldClient, var2, var4, var6);
+		} else if (par1Packet23VehicleSpawn.type == 2) {
+			var8 = new EntityItem(this.worldClient, var2, var4, var6);
 		} else if (par1Packet23VehicleSpawn.type == 70) {
 			var8 = new EntityFallingSand(this.worldClient, var2, var4, var6, par1Packet23VehicleSpawn.throwerEntityId & 65535, par1Packet23VehicleSpawn.throwerEntityId >> 16);
 			par1Packet23VehicleSpawn.throwerEntityId = 0;
@@ -267,19 +261,15 @@ public class NetClientHandler extends NetHandler {
 			((Entity)var8).serverPosX = par1Packet23VehicleSpawn.xPosition;
 			((Entity)var8).serverPosY = par1Packet23VehicleSpawn.yPosition;
 			((Entity)var8).serverPosZ = par1Packet23VehicleSpawn.zPosition;
+			((Entity)var8).rotationPitch = (float)(par1Packet23VehicleSpawn.field_92077_h * 360) / 256.0F;
+			((Entity)var8).rotationYaw = (float)(par1Packet23VehicleSpawn.field_92078_i * 360) / 256.0F;
+			Entity[] var12 = ((Entity)var8).getParts();
 
-			if (var9) {
-				((Entity)var8).rotationYaw = 0.0F;
-				((Entity)var8).rotationPitch = 0.0F;
-			}
+			if (var12 != null) {
+				int var10 = par1Packet23VehicleSpawn.entityId - ((Entity)var8).entityId;
 
-			Entity[] var14 = ((Entity)var8).getParts();
-
-			if (var14 != null) {
-				int var11 = par1Packet23VehicleSpawn.entityId - ((Entity)var8).entityId;
-
-				for (int var12 = 0; var12 < var14.length; ++var12) {
-					var14[var12].entityId += var11;
+				for (int var11 = 0; var11 < var12.length; ++var11) {
+					var12[var11].entityId += var10;
 				}
 			}
 
@@ -291,8 +281,8 @@ public class NetClientHandler extends NetHandler {
 					Entity var13 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
 
 					if (var13 instanceof EntityLiving) {
-						EntityArrow var15 = (EntityArrow)var8;
-						var15.shootingEntity = var13;
+						EntityArrow var14 = (EntityArrow)var8;
+						var14.shootingEntity = var13;
 					}
 				}
 
@@ -394,8 +384,8 @@ public class NetClientHandler extends NetHandler {
 		if (var12 != null) {
 			var10.getDataWatcher().updateWatchedObjectsFromList(var12);
 		}
-		// Spout Start: set the entity's title
-		if(var10.worldObj.customTitles.containsKey(var10.entityId)) {
+		// Spout Start - Set the entity's title
+		if (var10.worldObj.customTitles.containsKey(var10.entityId)) {
 			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEnty).setTitle(var10.worldObj.customTitles.get(var10.entityId));
 		}
 		// Spout End
@@ -414,6 +404,12 @@ public class NetClientHandler extends NetHandler {
 			float var9 = (float)(par1Packet34EntityTeleport.yaw * 360) / 256.0F;
 			float var10 = (float)(par1Packet34EntityTeleport.pitch * 360) / 256.0F;
 			var2.setPositionAndRotation2(var3, var5, var7, var9, var10, 3);
+		}
+	}
+
+	public void handleBlockItemSwitch(Packet16BlockItemSwitch par1Packet16BlockItemSwitch) {
+		if (par1Packet16BlockItemSwitch.id >= 0 && par1Packet16BlockItemSwitch.id < InventoryPlayer.getHotbarSize()) {
+			this.mc.thePlayer.inventory.currentItem = par1Packet16BlockItemSwitch.id;
 		}
 	}
 
@@ -528,16 +524,16 @@ public class NetClientHandler extends NetHandler {
 	 * Handle Packet51MapChunk (full chunk update of blocks, metadata, light levels, and optionally biome data)
 	 */
 	public void handleMapChunk(Packet51MapChunk par1Packet51MapChunk) {
-		// Spout - start
+		// Spout Start
 		if (par1Packet51MapChunk.yChMax == -1 && par1Packet51MapChunk.yChMin == -1) {
 			getNetManager().networkShutdown("Spout Cache Error - Corrupt File Deleted", new Object[0]);
-			kick("Spout Cache Error - Corrupt File Deleted");
+			kick("Cache Error - Corrupt File Deleted");
 			return;
 		}
 		if (worldClient == null) {
 			return;
 		}
-		// Spout - end
+		// Spout End
 		if (par1Packet51MapChunk.includeInitialize) {
 			if (par1Packet51MapChunk.yChMin == 0) {
 				this.worldClient.doPreChunk(par1Packet51MapChunk.xCh, par1Packet51MapChunk.zCh, false);
@@ -572,11 +568,11 @@ public class NetClientHandler extends NetHandler {
 	public void handleBlockChange(Packet53BlockChange par1Packet53BlockChange) {
 		this.worldClient.setBlockAndMetadataAndInvalidate(par1Packet53BlockChange.xPosition, par1Packet53BlockChange.yPosition, par1Packet53BlockChange.zPosition, par1Packet53BlockChange.type, par1Packet53BlockChange.metadata);
 	}
-	
-	// Spout - start
+
+	// Spout Start
 	public void kick(String reason) {
-		if(this.mc.thePlayer != null) {
-			this.mc.thePlayer.closeScreen(); // Spout - close the active screen first!
+		if (this.mc.thePlayer != null) {
+			this.mc.thePlayer.closeScreen(); // Close the active screen first!
 		}
 		this.netManager.networkShutdown("disconnect.kicked", new Object[0]);
 		this.disconnected = true;
@@ -587,7 +583,7 @@ public class NetClientHandler extends NetHandler {
 	public void handleKickDisconnect(Packet255KickDisconnect par1Packet255KickDisconnect) {
 		kick(par1Packet255KickDisconnect.reason);
 	}
-	// Spout - end
+	// Spout End
 
 	public void handleErrorMessage(String par1Str, Object[] par2ArrayOfObj) {
 		if (!this.disconnected) {
@@ -597,20 +593,15 @@ public class NetClientHandler extends NetHandler {
 			System.out.println(par1Str);
 			if (par1Str != null && par1Str.toLowerCase().contains("endofstream")) {
 				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost());
-			}
-			else if (par2ArrayOfObj == null || par2ArrayOfObj.length == 0 || !(par2ArrayOfObj[0] instanceof String)) {
+			} else if (par2ArrayOfObj == null || par2ArrayOfObj.length == 0 || !(par2ArrayOfObj[0] instanceof String)) {
 				this.mc.displayGuiScreen(new GuiDisconnected("disconnect.lost", par1Str, par2ArrayOfObj));
-			}
-			else if (((String)par2ArrayOfObj[0]).toLowerCase().contains("connection reset")) {
+			} else if (((String)par2ArrayOfObj[0]).toLowerCase().contains("connection reset")) {
 				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost());
-			}
-			else if (((String)par2ArrayOfObj[0]).toLowerCase().contains("connection refused")) {
+			} else if (((String)par2ArrayOfObj[0]).toLowerCase().contains("connection refused")) {
 				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost("The server is not currently online!"));
-			}
-			else if (((String)par2ArrayOfObj[0]).toLowerCase().contains("overflow")) {
+			} else if (((String)par2ArrayOfObj[0]).toLowerCase().contains("overflow")) {
 				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost("The server is currently experiencing heavy traffic. Try again later."));
-			}
-			else {
+			} else {
 				this.mc.displayGuiScreen(new GuiDisconnected("disconnect.lost", par1Str, par2ArrayOfObj));
 			}
 			// Spout End
@@ -734,8 +725,8 @@ public class NetClientHandler extends NetHandler {
 		if (var14 != null) {
 			var10.getDataWatcher().updateWatchedObjectsFromList(var14);
 		}
-		// Spout Start: set the entity's title
-		if(var10.worldObj.customTitles.containsKey(var10.entityId)) {
+		// Spout Start - Set the entity's title
+		if (var10.worldObj.customTitles.containsKey(var10.entityId)) {
 			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEnty).setTitle(var10.worldObj.customTitles.get(var10.entityId));
 		}
 		// Spout End
@@ -753,12 +744,12 @@ public class NetClientHandler extends NetHandler {
 		this.mc.thePlayer.setSpawnChunk(new ChunkCoordinates(par1Packet6SpawnPosition.xPosition, par1Packet6SpawnPosition.yPosition, par1Packet6SpawnPosition.zPosition), true);
 		this.mc.theWorld.getWorldInfo().setSpawnPosition(par1Packet6SpawnPosition.xPosition, par1Packet6SpawnPosition.yPosition, par1Packet6SpawnPosition.zPosition);
 	}
-	
+
 	// Spout Start
 	private void sendCacheSetupPacket() {
 		if (!cachePacketSent) {
 			cachePacketSent = true;
-		//	this.netManager.addToSendQueue(new Packet250CustomPayload("ChkCache:setHash", new byte[1]));
+			//this.netManager.addToSendQueue(new Packet250CustomPayload("ChkCache:setHash", new byte[1]));
 		}
 	}
 	// Spout End
@@ -1009,7 +1000,9 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleCloseWindow(Packet101CloseWindow par1Packet101CloseWindow) {
+		// Spout Start
 		this.mc.thePlayer.closeScreen();
+		// Spout End
 	}
 
 	public void handleBlockEvent(Packet54PlayNoteBlock par1Packet54PlayNoteBlock) {
@@ -1017,13 +1010,13 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleBlockDestroy(Packet55BlockDestroy par1Packet55BlockDestroy) {
-		this.mc.theWorld.destroyBlockInWorldPartially(par1Packet55BlockDestroy.getEntityId(), par1Packet55BlockDestroy.getPosX(), par1Packet55BlockDestroy.getPosY(), par1Packet55BlockDestroy.getPosZ(), par1Packet55BlockDestroy.getDestroyedStage());
+		this.mc.theWorld.cancelDestroyingBlock(par1Packet55BlockDestroy.getEntityId(), par1Packet55BlockDestroy.getPosX(), par1Packet55BlockDestroy.getPosY(), par1Packet55BlockDestroy.getPosZ(), par1Packet55BlockDestroy.getDestroyedStage());
 	}
 
 	public void handleMapChunks(Packet56MapChunks par1Packet56MapChunks) {
-		for (int var2 = 0; var2 < par1Packet56MapChunks.func_73581_d(); ++var2) {
-			int var3 = par1Packet56MapChunks.func_73582_a(var2);
-			int var4 = par1Packet56MapChunks.func_73580_b(var2);
+		for (int var2 = 0; var2 < par1Packet56MapChunks.getNumberOfChunkInPacket(); ++var2) {
+			int var3 = par1Packet56MapChunks.getChunkPosX(var2);
+			int var4 = par1Packet56MapChunks.getChunkPosZ(var2);
 			this.worldClient.doPreChunk(var3, var4, true);
 			this.worldClient.invalidateBlockReceiveRegion(var3 << 4, 0, var4 << 4, (var3 << 4) + 15, 256, (var4 << 4) + 15);
 			Chunk var5 = this.worldClient.getChunkFromChunkCoords(var3, var4);
@@ -1034,7 +1027,7 @@ public class NetClientHandler extends NetHandler {
 			}
 
 			if (var5 != null) {
-				var5.fillChunk(par1Packet56MapChunks.func_73583_c(var2), par1Packet56MapChunks.field_73590_a[var2], par1Packet56MapChunks.field_73588_b[var2], true);
+				var5.fillChunk(par1Packet56MapChunks.getChunkCompressedData(var2), par1Packet56MapChunks.field_73590_a[var2], par1Packet56MapChunks.field_73588_b[var2], true);
 				this.worldClient.markBlockRangeForRenderUpdate(var3 << 4, 0, var4 << 4, (var3 << 4) + 15, 256, (var4 << 4) + 15);
 
 				if (!(this.worldClient.provider instanceof WorldProviderSurface)) {
@@ -1047,49 +1040,15 @@ public class NetClientHandler extends NetHandler {
 	/**
 	 * packet.processPacket is only called if this returns true
 	 */
-	public boolean canProcessPackets() {
+	public boolean canProcessPacketsAsync() {
 		return this.mc != null && this.mc.theWorld != null && this.mc.thePlayer != null && this.worldClient != null;
-	}
-
-	public void handleBed(Packet70GameEvent par1Packet70GameEvent) {
-		EntityClientPlayerMP var2 = this.mc.thePlayer;
-		int var3 = par1Packet70GameEvent.bedState;
-		int var4 = par1Packet70GameEvent.gameMode;
-
-		if (var3 >= 0 && var3 < Packet70GameEvent.bedChat.length && Packet70GameEvent.bedChat[var3] != null) {
-			var2.addChatMessage(Packet70GameEvent.bedChat[var3]);
-		}
-
-		if (var3 == 1) {
-			this.worldClient.getWorldInfo().setRaining(true);
-			this.worldClient.setRainStrength(0.0F);
-		} else if (var3 == 2) {
-			this.worldClient.getWorldInfo().setRaining(false);
-			this.worldClient.setRainStrength(1.0F);
-		} else if (var3 == 3) {
-			this.mc.playerController.setGameType(EnumGameType.getByID(var4));
-		} else if (var3 == 4) {
-			this.mc.displayGuiScreen(new GuiWinGame());
-		} else if (var3 == 5) {
-			GameSettings var5 = this.mc.gameSettings;
-
-			if (var4 == 0) {
-				this.mc.displayGuiScreen(new GuiScreenDemo());
-			} else if (var4 == 101) {
-				this.mc.ingameGUI.getChatGUI().addTranslatedMessage("demo.help.movement", new Object[] {Keyboard.getKeyName(var5.keyBindForward.keyCode), Keyboard.getKeyName(var5.keyBindLeft.keyCode), Keyboard.getKeyName(var5.keyBindBack.keyCode), Keyboard.getKeyName(var5.keyBindRight.keyCode)});
-			} else if (var4 == 102) {
-				this.mc.ingameGUI.getChatGUI().addTranslatedMessage("demo.help.jump", new Object[] {Keyboard.getKeyName(var5.keyBindJump.keyCode)});
-			} else if (var4 == 103) {
-				this.mc.ingameGUI.getChatGUI().addTranslatedMessage("demo.help.inventory", new Object[] {Keyboard.getKeyName(var5.keyBindInventory.keyCode)});
-			}
-		}
 	}
 
 	/**
 	 * Contains logic for handling packets containing arbitrary unique item data. Currently this is only for maps.
 	 */
 	public void handleMapData(Packet131MapData par1Packet131MapData) {
-		if (par1Packet131MapData.itemID == Item.map.shiftedIndex) {
+		if (par1Packet131MapData.itemID == Item.map.itemID) {
 			ItemMap.getMPMapData(par1Packet131MapData.uniqueID, this.mc.theWorld).updateMPMapData(par1Packet131MapData.itemData);
 		} else {
 			System.out.println("Unknown itemid: " + par1Packet131MapData.uniqueID);
@@ -1186,13 +1145,15 @@ public class NetClientHandler extends NetHandler {
 		String[] var2 = par1Packet203AutoComplete.getText().split("\u0000");
 
 		if (this.mc.currentScreen instanceof GuiChat) {
-			GuiChat var3 = (GuiChat)this.mc.currentScreen; // Spout
+			// Spout Start
+			GuiChat var3 = (GuiChat)this.mc.currentScreen;
+			// Spout End
 			var3.func_73894_a(var2);
 		}
 	}
 
 	public void handleLevelSound(Packet62LevelSound par1Packet62LevelSound) {
-		this.mc.theWorld.playSound(par1Packet62LevelSound.getEffectX(), par1Packet62LevelSound.getEffectY(), par1Packet62LevelSound.getEffectZ(), par1Packet62LevelSound.getSoundName(), par1Packet62LevelSound.getVolume(), par1Packet62LevelSound.getPitch());
+		this.mc.theWorld.playSound(par1Packet62LevelSound.getEffectX(), par1Packet62LevelSound.getEffectY(), par1Packet62LevelSound.getEffectZ(), par1Packet62LevelSound.getSoundName(), par1Packet62LevelSound.getVolume(), par1Packet62LevelSound.getPitch(), false);
 	}
 
 	public void handleCustomPayload(Packet250CustomPayload par1Packet250CustomPayload) {

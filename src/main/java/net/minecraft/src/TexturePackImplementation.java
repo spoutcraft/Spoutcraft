@@ -8,25 +8,32 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
-
-import com.pclewis.mcpatcher.MCPatcherUtils; // Spout HD
+// MCPatcher Start
+import com.pclewis.mcpatcher.MCPatcherUtils;
+// MCPatcher End
 
 public abstract class TexturePackImplementation implements ITexturePack {
 
 	/**
 	 * Texture pack ID as returnd by generateTexturePackID(). Used only internally and not visible to the user.
 	 */
+	// MCPatcher Start - private to public
 	public final String texturePackID;
+	// MCPatcher End
 
 	/**
 	 * The name of the texture pack's zip file/directory or "Default" for the builtin texture pack. Shown in the GUI.
 	 */
-	public final String texturePackFileName; // Spout HD private -> public
+	// Spout Start - private to public
+	public final String texturePackFileName;
+	// Spout End
 
 	/**
 	 * File object for the texture pack's zip file in TexturePackCustom or the directory in TexturePackFolder.
 	 */
-	public File texturePackFile;  // Spout HD protected final -> public
+	// MCPatcher Start - protected to public
+	public File texturePackFile;
+	// MCPatcher End
 
 	/**
 	 * First line of texture pack description (from /pack.txt) displayed in the GUI
@@ -72,7 +79,8 @@ public abstract class TexturePackImplementation implements ITexturePack {
 	 * Load and initialize thumbnailImage from the the /pack.png file.
 	 */
 	private void loadThumbnailImage() {
-		InputStream var1 = null;		
+		InputStream var1 = null;
+
 		try {
 			var1 = this.getResourceAsStream("/pack.png");
 			this.thumbnailImage = ImageIO.read(var1);
@@ -176,8 +184,8 @@ public abstract class TexturePackImplementation implements ITexturePack {
 	 */
 	public int getTexturePackResolution() {
 		return 16;
-	}	
-	
+	}
+
 	// Spout Start
 	public void closeTexturePackFile() {
 		this.deleteTexturePack(MCPatcherUtils.getMinecraft().renderEngine);

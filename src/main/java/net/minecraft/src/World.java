@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -10,9 +9,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+// MCPatcher Start
+import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
 // Spout Start
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.NBTTagCompound;
 
 import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.client.config.Configuration;
@@ -70,11 +73,6 @@ public abstract class World implements IBlockAccess {
 	 * Set to 2 whenever a lightning bolt is generated in SSP. Decrements if > 0 in updateWeather(). Value appears to be
 	 * unused.
 	 */
-	protected int lastLightningBolt = 0;
-
-	/**
-	 * If > 0, the sky and skylight colors are illuminated by a lightning flash
-	 */
 	public int lightningFlash = 0;
 
 	/** true while the world is editing blocks */
@@ -91,13 +89,17 @@ public abstract class World implements IBlockAccess {
 	protected List worldAccesses = new ArrayList();
 
 	/** Handles chunk operations and caching */
-	public IChunkProvider chunkProvider; // Spout protected -> public
+	// Spout Start - protected to public
+	public IChunkProvider chunkProvider;
 	protected final ISaveHandler saveHandler;
+	// Spout End
 
 	/**
 	 * holds information about a world (size on disk, time, spawn point, seed, ...)
 	 */
-	public WorldInfo worldInfo; // Spout protected -> public
+	// Spout Start - protected to public
+	public WorldInfo worldInfo;
+	// Spout End
 
 	/** Boolean that is set to true when trying to find a spawn point */
 	public boolean findingSpawnPoint;
@@ -113,10 +115,14 @@ public abstract class World implements IBlockAccess {
 	private boolean scanningTileEntities;
 
 	/** indicates if enemies are spawned or not */
-	public boolean spawnHostileMobs = true; // Spout protected -> public
+	// Spout Start - protected to public
+	public boolean spawnHostileMobs = true;
+	// Spout End
 
 	/** A flag indicating whether we should spawn peaceful mobs. */
-	public boolean spawnPeacefulMobs = true; // Spout protected -> public
+	// Spout Start - protected to public
+	public boolean spawnPeacefulMobs = true;
+	// Spout End
 
 	/** Positions to update */
 	protected Set activeChunkSet = new HashSet();
@@ -130,7 +136,9 @@ public abstract class World implements IBlockAccess {
 	 * 4-bit L is a light level used when darkening blocks. 6-bit numbers x, y and z represent the block's offset from the
 	 * original block, plus 32 (i.e. value of 31 would mean a -1 offset
 	 */
-	public int[] lightUpdateBlockList; // Spout private -> public
+	// Spout Start - private to public
+	public int[] lightUpdateBlockList;
+	// Spout End
 
 	/**
 	 * entities within AxisAlignedBB excluding one, set and returned in getEntitiesWithinAABBExcludingEntity(Entity var1,
@@ -138,10 +146,7 @@ public abstract class World implements IBlockAccess {
 	 */
 	private List entitiesWithinAABBExcludingEntity;
 
-	/**
-	 * This is set to true when you are a client connected to a multiplayer world, false otherwise. As of Minecraft 1.3 and
-	 * the integrated server, this will always return true.
-	 */
+	/** This is set to true for client worlds, and false for server worlds. */
 	public boolean isRemote;
 	// Spout Start
 	public final SpoutcraftWorld world = new SpoutcraftWorld(this);
@@ -224,7 +229,7 @@ public abstract class World implements IBlockAccess {
 			try {
 				this.initialize(par3WorldSettings);
 			} catch (Throwable var10) {
-				CrashReport var7 = CrashReport.func_85055_a(var10, "Exception initializing level");
+				CrashReport var7 = CrashReport.makeCrashReport(var10, "Exception initializing level");
 
 				try {
 					this.addWorldInfoToCrashReport(var7);
@@ -297,8 +302,8 @@ public abstract class World implements IBlockAccess {
 					var4 = this.getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
 					return var4.getBlockID(par1 & 15, par2, par3 & 15);
 				} catch (Throwable var8) {
-					CrashReport var6 = CrashReport.func_85055_a(var8, "Exception getting block type in world");
-					CrashReportCategory var7 = var6.func_85058_a("Requested block coordinates");
+					CrashReport var6 = CrashReport.makeCrashReport(var8, "Exception getting block type in world");
+					CrashReportCategory var7 = var6.makeCategory("Requested block coordinates");
 					var7.addCrashSection("Found chunk", Boolean.valueOf(var4 == null));
 					var7.addCrashSection("Location", CrashReportCategory.func_85071_a(par1, par2, par3));
 					throw new ReportedException(var6);
@@ -622,8 +627,8 @@ public abstract class World implements IBlockAccess {
 				try {
 					var6.onNeighborBlockChange(this, par1, par2, par3, par4);
 				} catch (Throwable var13) {
-					CrashReport var8 = CrashReport.func_85055_a(var13, "Exception while updating neighbours");
-					CrashReportCategory var9 = var8.func_85058_a("Block being updated");
+					CrashReport var8 = CrashReport.makeCrashReport(var13, "Exception while updating neighbours");
+					CrashReportCategory var9 = var8.makeCategory("Block being updated");
 					int var10;
 
 					try {
@@ -1087,10 +1092,13 @@ public abstract class World implements IBlockAccess {
 		}
 	}
 
-	public void func_85173_a(EntityPlayer par1EntityPlayer, String par2Str, float par3, float par4) {
+	/**
+	 * Plays sound to all near players except the player reference given
+	 */
+	public void playSoundToNearExcept(EntityPlayer par1EntityPlayer, String par2Str, float par3, float par4) {
 		if (par1EntityPlayer != null && par2Str != null) {
 			for (int var5 = 0; var5 < this.worldAccesses.size(); ++var5) {
-				((IWorldAccess)this.worldAccesses.get(var5)).func_85102_a(par1EntityPlayer, par2Str, par1EntityPlayer.posX, par1EntityPlayer.posY - (double)par1EntityPlayer.yOffset, par1EntityPlayer.posZ, par3, par4);
+				((IWorldAccess)this.worldAccesses.get(var5)).playSoundToNearExcept(par1EntityPlayer, par2Str, par1EntityPlayer.posX, par1EntityPlayer.posY - (double)par1EntityPlayer.yOffset, par1EntityPlayer.posZ, par3, par4);
 			}
 		}
 	}
@@ -1111,7 +1119,7 @@ public abstract class World implements IBlockAccess {
 	/**
 	 * par8 is loudness, all pars passed to minecraftInstance.sndManager.playSound
 	 */
-	public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9) {}
+	public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9, boolean par10) {}
 
 	/**
 	 * Plays a record at the specified coordinates of the specified name. Args: recordName, x, y, z
@@ -1170,7 +1178,9 @@ public abstract class World implements IBlockAccess {
 	/**
 	 * Start the skin for this entity downloading, if necessary, and increment its reference counter
 	 */
-	public void obtainEntitySkin(Entity par1Entity) { // Spout protected -> public
+	// Spout Start - protected to public
+	public void obtainEntitySkin(Entity par1Entity) {
+	// Spout End
 		for (int var2 = 0; var2 < this.worldAccesses.size(); ++var2) {
 			((IWorldAccess)this.worldAccesses.get(var2)).obtainEntitySkin(par1Entity);
 		}
@@ -1179,7 +1189,9 @@ public abstract class World implements IBlockAccess {
 	/**
 	 * Decrement the reference counter for this entity's skin image data
 	 */
-	public void releaseEntitySkin(Entity par1Entity) { // Spout protected -> public
+	// Spout Start - protected to public
+	public void releaseEntitySkin(Entity par1Entity) {
+	// Spout End
 		for (int var2 = 0; var2 < this.worldAccesses.size(); ++var2) {
 			((IWorldAccess)this.worldAccesses.get(var2)).releaseEntitySkin(par1Entity);
 		}
@@ -1340,7 +1352,10 @@ public abstract class World implements IBlockAccess {
 		return (int)(var3 * 11.0F);
 	}
 
-	public float func_72971_b(float par1) {
+	/**
+	 * Returns the sun brightness - checks time of day, rain and thunder
+	 */
+	public float getSunBrightness(float par1) {
 		float var2 = this.getCelestialAngle(par1);
 		float var3 = 1.0F - (MathHelper.cos(var2 * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
 
@@ -1378,9 +1393,9 @@ public abstract class World implements IBlockAccess {
 		BiomeGenBase var7 = this.getBiomeGenForCoords(var5, var6);
 		float var8 = var7.getFloatTemperature();
 		int var9 = var7.getSkyColorByTemp(var8);
+		// MCPatcher Start
 		Colorizer.setupForFog(par1Entity);
-		
-		// Spout Start
+
 		float var10;
 		float var11;
 		float var12;
@@ -1394,11 +1409,11 @@ public abstract class World implements IBlockAccess {
 			var11 = (float)(var9 >> 8 & 255) / 255.0F;
 			var12 = (float)(var9 & 255) / 255.0F;
 		}
-		// Spout End
-		
+		// MCPatcher End
+
 		var10 *= var4;
 		var11 *= var4;
-		var12 *= var4;		
+		var12 *= var4;
 		float var13 = this.getRainStrength(par2);
 		float var14;
 		float var15;
@@ -1578,10 +1593,11 @@ public abstract class World implements IBlockAccess {
 			var2 = (Entity)this.weatherEffects.get(var1);
 
 			try {
+				++var2.ticksExisted;
 				var2.onUpdate();
-			} catch (Throwable var8) {
-				var4 = CrashReport.func_85055_a(var8, "Ticking entity");
-				var5 = var4.func_85058_a("Entity being ticked");
+			} catch (Throwable var7) {
+				var4 = CrashReport.makeCrashReport(var7, "Ticking entity");
+				var5 = var4.makeCategory("Entity being ticked");
 
 				if (var2 == null) {
 					var5.addCrashSection("Entity", "~~NULL~~");
@@ -1636,9 +1652,9 @@ public abstract class World implements IBlockAccess {
 			if (!var2.isDead) {
 				try {
 					this.updateEntity(var2);
-				} catch (Throwable var6) {
-					var4 = CrashReport.func_85055_a(var6, "Ticking entity");
-					var5 = var4.func_85058_a("Entity being ticked");
+				} catch (Throwable var8) {
+					var4 = CrashReport.makeCrashReport(var8, "Ticking entity");
+					var5 = var4.makeCategory("Entity being ticked");
 
 					if (var2 == null) {
 						var5.addCrashSection("Entity", "~~NULL~~");
@@ -1678,9 +1694,9 @@ public abstract class World implements IBlockAccess {
 			if (!var9.isInvalid() && var9.func_70309_m() && this.blockExists(var9.xCoord, var9.yCoord, var9.zCoord)) {
 				try {
 					var9.updateEntity();
-				} catch (Throwable var7) {
-					var4 = CrashReport.func_85055_a(var7, "Ticking tile entity");
-					var5 = var4.func_85058_a("Tile entity being ticked");
+				} catch (Throwable var6) {
+					var4 = CrashReport.makeCrashReport(var6, "Ticking tile entity");
+					var5 = var4.makeCategory("Tile entity being ticked");
 
 					if (var9 == null) {
 						var5.addCrashSection("Tile entity", "~~NULL~~");
@@ -1777,6 +1793,7 @@ public abstract class World implements IBlockAccess {
 				if (par1Entity.ridingEntity != null) {
 					par1Entity.updateRidden();
 				} else {
+					++par1Entity.ticksExisted;
 					par1Entity.onUpdate();
 				}
 			}
@@ -2346,10 +2363,6 @@ public abstract class World implements IBlockAccess {
 	 */
 	protected void updateWeather() {
 		if (!this.provider.hasNoSky) {
-			if (this.lastLightningBolt > 0) {
-				--this.lastLightningBolt;
-			}
-
 			int var1 = this.worldInfo.getThunderTime();
 
 			if (var1 <= 0) {
@@ -2451,7 +2464,9 @@ public abstract class World implements IBlockAccess {
 
 		this.theProfiler.startSection("playerCheckLight");
 
-		if (!this.playerEntities.isEmpty() && Configuration.isClientLight()) { // Spout
+		// Spout Start
+		if (!this.playerEntities.isEmpty() && Configuration.isClientLight()) {
+		// Spout End
 			var1 = this.rand.nextInt(this.playerEntities.size());
 			var2 = (EntityPlayer)this.playerEntities.get(var1);
 			var3 = MathHelper.floor_double(var2.posX) + this.rand.nextInt(11) - 5;
@@ -2637,8 +2652,8 @@ public abstract class World implements IBlockAccess {
 	private int computeBlockLightValue(int par1, int par2, int par3, int par4, int par5, int par6) {
 		// Spout Start
 		int light = Block.lightValue[par5];
-		
-		//Fix for generation-time accessing
+
+		// Fix for generation-time accessing
 		org.spoutcraft.api.World world = Spoutcraft.getWorld();
 		short customId = 0;
 		if(world != null) {
@@ -2686,13 +2701,13 @@ public abstract class World implements IBlockAccess {
 		return var7;
 	}
 
-	//Spout start
 	public void updateLightByType(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4) {
+	// Spout Start
 		this.updateLightByType(this.lightUpdateBlockList, par1EnumSkyBlock, par2, par3, par4);
 	}
 
 	public void updateLightByType(int[] lightUpdateBlockList, EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4) {
-	//Spout end
+	// Spout End
 		if (this.doChunksNearChunkExist(par2, par3, par4, 17)) {
 			int var5 = 0;
 			int var6 = 0;
@@ -2725,16 +2740,22 @@ public abstract class World implements IBlockAccess {
 			int var18;
 
 			if (var24 > var7) {
-				lightUpdateBlockList[var6++] = 133152; //Spout
+				// Spout Start
+				lightUpdateBlockList[var6++] = 133152;
+				// Spout End
 			} else if (var24 < var7) {
 				if (par1EnumSkyBlock != EnumSkyBlock.Block) {
 					;
 				}
 
-				lightUpdateBlockList[var6++] = 133152 + (var7 << 18); //Spout
+				// Spout Start
+				lightUpdateBlockList[var6++] = 133152 + (var7 << 18);
+				// Spout End
 
 				while (var5 < var6) {
-					var9 = lightUpdateBlockList[var5++]; //Spout
+					// Spout Start
+					var9 = lightUpdateBlockList[var5++];
+					// Spout End
 					var10 = (var9 & 63) - 32 + par2;
 					var24 = (var9 >> 6 & 63) - 32 + par3;
 					var12 = (var9 >> 12 & 63) - 32 + par4;
@@ -2774,11 +2795,11 @@ public abstract class World implements IBlockAccess {
 										var23 = 1;
 									}
 
-									//Spout start
+									// Spout Start
 									if (var14 == var13 - var23 && var6 < lightUpdateBlockList.length) {
 										lightUpdateBlockList[var6++] = var20 - par2 + 32 + (var21 - par3 + 32 << 6) + (var22 - par4 + 32 << 12) + (var13 - var23 << 18);
+									// Spout End
 									}
-									//Spout end
 								}
 							}
 						}
@@ -2792,7 +2813,9 @@ public abstract class World implements IBlockAccess {
 			this.theProfiler.startSection("checkedPosition < toCheckCount");
 
 			while (var5 < var6) {
-				var9 = lightUpdateBlockList[var5++]; //Spout
+				// Spout Start
+				var9 = lightUpdateBlockList[var5++];
+				// Spout End
 				var10 = (var9 & 63) - 32 + par2;
 				var24 = (var9 >> 6 & 63) - 32 + par3;
 				var12 = (var9 >> 12 & 63) - 32 + par4;
@@ -2832,7 +2855,7 @@ public abstract class World implements IBlockAccess {
 							var19 = -var19;
 						}
 
-						// Spout start
+						// Spout Start
 						if (var17 + var18 + var19 < 17 && var6 < lightUpdateBlockList.length - 6) {
 							if (this.getSavedLightValue(par1EnumSkyBlock, var10 - 1, var24, var12) < var16) {
 								lightUpdateBlockList[var6++] = var10 - 1 - par2 + 32 + (var24 - par3 + 32 << 6) + (var12 - par4 + 32 << 12);
@@ -2858,7 +2881,7 @@ public abstract class World implements IBlockAccess {
 								lightUpdateBlockList[var6++] = var10 - par2 + 32 + (var24 - par3 + 32 << 6) + (var12 + 1 - par4 + 32 << 12);
 							}
 						}
-						// Spout end
+						// Spout End
 					}
 				}
 			}
@@ -2903,10 +2926,10 @@ public abstract class World implements IBlockAccess {
 	 * Returns all entities of the specified class type which intersect with the AABB. Args: entityClass, aabb
 	 */
 	public List getEntitiesWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB) {
-		return this.func_82733_a(par1Class, par2AxisAlignedBB, (IEntitySelector)null);
+		return this.selectEntitiesWithinAABB(par1Class, par2AxisAlignedBB, (IEntitySelector)null);
 	}
 
-	public List func_82733_a(Class par1Class, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3IEntitySelector) {
+	public List selectEntitiesWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, IEntitySelector par3IEntitySelector) {
 		int var4 = MathHelper.floor_double((par2AxisAlignedBB.minX - 2.0D) / 16.0D);
 		int var5 = MathHelper.floor_double((par2AxisAlignedBB.maxX + 2.0D) / 16.0D);
 		int var6 = MathHelper.floor_double((par2AxisAlignedBB.minZ - 2.0D) / 16.0D);
@@ -3143,7 +3166,7 @@ public abstract class World implements IBlockAccess {
 		for (int var12 = 0; var12 < this.playerEntities.size(); ++var12) {
 			EntityPlayer var13 = (EntityPlayer)this.playerEntities.get(var12);
 
-			if (!var13.capabilities.disableDamage) {
+			if (!var13.capabilities.disableDamage && var13.isEntityAlive()) {
 				double var14 = var13.getDistanceSq(par1, par3, par5);
 				double var16 = par7;
 
@@ -3197,7 +3220,7 @@ public abstract class World implements IBlockAccess {
 	}
 
 	public void func_82738_a(long par1) {
-		this.worldInfo.func_82572_b(par1);
+		this.worldInfo.incrementTotalWorldTime(par1);
 	}
 
 	/**
@@ -3296,7 +3319,7 @@ public abstract class World implements IBlockAccess {
 	}
 
 	/**
-	 * Gets the GameRules instance
+	 * Gets the GameRules instance.
 	 */
 	public GameRules getGameRules() {
 		return this.worldInfo.getGameRulesInstance();
@@ -3384,7 +3407,7 @@ public abstract class World implements IBlockAccess {
 
 	public void func_82739_e(int par1, int par2, int par3, int par4, int par5) {
 		for (int var6 = 0; var6 < this.worldAccesses.size(); ++var6) {
-			((IWorldAccess)this.worldAccesses.get(var6)).func_82746_a(par1, par2, par3, par4, par5);
+			((IWorldAccess)this.worldAccesses.get(var6)).broadcastSound(par1, par2, par3, par4, par5);
 		}
 	}
 
@@ -3399,8 +3422,18 @@ public abstract class World implements IBlockAccess {
 	 * See description for playAuxSFX.
 	 */
 	public void playAuxSFXAtEntity(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6) {
-		for (int var7 = 0; var7 < this.worldAccesses.size(); ++var7) {
-			((IWorldAccess)this.worldAccesses.get(var7)).playAuxSFX(par1EntityPlayer, par2, par3, par4, par5, par6);
+		try {
+			for (int var7 = 0; var7 < this.worldAccesses.size(); ++var7) {
+				((IWorldAccess)this.worldAccesses.get(var7)).playAuxSFX(par1EntityPlayer, par2, par3, par4, par5, par6);
+			}
+		} catch (Throwable var10) {
+			CrashReport var8 = CrashReport.makeCrashReport(var10, "Playing level event");
+			CrashReportCategory var9 = var8.makeCategory("Level event being played");
+			var9.addCrashSection("Block coordinates", CrashReportCategory.func_85071_a(par3, par4, par5));
+			var9.addCrashSection("Event source", par1EntityPlayer);
+			var9.addCrashSection("Event type", Integer.valueOf(par2));
+			var9.addCrashSection("Event data", Integer.valueOf(par6));
+			throw new ReportedException(var8);
 		}
 	}
 
@@ -3456,7 +3489,7 @@ public abstract class World implements IBlockAccess {
 	 * Adds some basic stats of the world to the given crash report.
 	 */
 	public CrashReportCategory addWorldInfoToCrashReport(CrashReport par1CrashReport) {
-		CrashReportCategory var2 = par1CrashReport.func_85057_a("Affected level", 1);
+		CrashReportCategory var2 = par1CrashReport.makeCategoryDepth("Affected level", 1);
 		var2.addCrashSection("Level name", this.worldInfo == null ? "????" : this.worldInfo.getWorldName());
 		var2.addCrashSectionCallable("All players", new CallableLvl2(this));
 		var2.addCrashSectionCallable("Chunk stats", new CallableLvl3(this));
@@ -3470,11 +3503,20 @@ public abstract class World implements IBlockAccess {
 		return var2;
 	}
 
+	// Spout Start - Hack for MCP field mapping changes
+	public void destroyBlockInWorldPartially(int par1, int par2, int par3, int par4, int par5) {
+		for (int var6 = 0; var6 < this.worldAccesses.size(); ++var6) {
+			IWorldAccess var7 = (IWorldAccess)this.worldAccesses.get(var6);
+			var7.destroyBlockPartially(par1, par2, par3, par4, par5);
+		}
+	}
+	// Spout End
+
 	/**
 	 * Starts (or continues) destroying a block with given ID at the given coordinates for the given partially destroyed
 	 * value
 	 */
-	public void destroyBlockInWorldPartially(int par1, int par2, int par3, int par4, int par5) {
+	public void cancelDestroyingBlock(int par1, int par2, int par3, int par4, int par5) {
 		for (int var6 = 0; var6 < this.worldAccesses.size(); ++var6) {
 			IWorldAccess var7 = (IWorldAccess)this.worldAccesses.get(var6);
 			var7.destroyBlockPartially(par1, par2, par3, par4, par5);
@@ -3539,4 +3581,6 @@ public abstract class World implements IBlockAccess {
 		}
 	}
 	// Spout End
+
+	public void func_92088_a(double par1, double par3, double par5, double par7, double par9, double par11, NBTTagCompound par13NBTTagCompound) {}
 }

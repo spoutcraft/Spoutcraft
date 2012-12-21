@@ -23,15 +23,15 @@ import org.spoutcraft.api.gui.GenericComboBox;
 
 public class UpdatingComboBox extends GenericComboBox {
 	private ButtonUpdater updater = null;
-	
+
 	public ButtonUpdater getUpdater() {
 		return updater;
 	}
-	
+
 	public void setUpdater(ButtonUpdater updater) {
 		this.updater = updater;
 	}
-	
+
 	@Override
 	public void onSelectionChanged(int i, String text) {
 		getUpdater().updateButtons();

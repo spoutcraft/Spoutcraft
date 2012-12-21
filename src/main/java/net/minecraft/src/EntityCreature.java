@@ -1,10 +1,14 @@
 package net.minecraft.src;
 
 public abstract class EntityCreature extends EntityLiving {
-	public PathEntity pathToEntity; // Spout private -> public
-	
+	// Spout Start - private to public
+	public PathEntity pathToEntity;
+	// Spout End
+
 	/** The Entity this EntityCreature is set to attack. */
-	public Entity entityToAttack; // Spout protected -> public
+	// Spout Start - private to public
+	public Entity entityToAttack;
+	// Spout End
 
 	/**
 	 * returns true if a creature has attacked recently only used for creepers and skeletons

@@ -444,7 +444,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 					List<Map<String, String>> gMap = (List<Map<String, String>>) i.get("gallery");
 					gallery.clear();
 					for (Map<String, String> image:gMap) {
-						GalleryImage img = new GalleryImage(image.get("picid"), URLDecoder.decode(image.get("title")), URLDecoder.decode(image.get("desc")));
+						GalleryImage img = new GalleryImage(image.get("picid"), URLDecoder.decode((String) image.get("title"), "UTF-8"), URLDecoder.decode((String) image.get("desc"), "UTF-8"));
 						gallery.add(img);
 					}
 					if (buttonGalleryNext == null) {

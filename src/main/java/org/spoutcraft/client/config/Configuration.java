@@ -26,11 +26,11 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.pclewis.mcpatcher.mod.Shaders;
-
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.io.FileUtil;
+
+import org.lwjgl.opengl.GL11;
 
 public class Configuration {
 
@@ -70,9 +70,9 @@ public class Configuration {
 	private static boolean delayedTooltips = true;
 	private static float mipmapsPercent = 0F;
 	private static boolean automatePerformance = true;
-	private static int automateMode = 0;		
+	private static int automateMode = 0;
 	private static boolean clientLight = false;
-	private static float flightSpeedFactor = 1.0F;	 
+	private static float flightSpeedFactor = 1.0F;
 	private static boolean replaceTools = false;
 	private static boolean replaceBlocks = false;
 	private static boolean hotbarQuickKeysEnabled = true;
@@ -84,7 +84,7 @@ public class Configuration {
 	private static boolean connectedTextures = false;
 	private static boolean advancedOptions = false;
 	private static boolean randomMobTextures = true;
-	
+
 	//Config-specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
 	private static transient boolean dirty = false;
@@ -102,7 +102,7 @@ public class Configuration {
 			}
 			org.bukkit.util.config.Configuration config = new org.bukkit.util.config.Configuration(configFile);
 			config.load();
-			
+
 			Field[] fields = Configuration.class.getDeclaredFields();
 			for (int i = 0; i < fields.length; i++) {
 				Field f = fields[i];
@@ -110,7 +110,7 @@ public class Configuration {
 					f.setAccessible(true);
 					Object value = f.get(null);
 					defaultSettings.put(f.getName(), value);
-					
+
 					if (value instanceof Boolean) {
 						f.set(null, config.getBoolean(f.getName(), (Boolean)value));
 					} else if (value instanceof Integer) {
@@ -166,7 +166,7 @@ public class Configuration {
 			vsync = Configuration.getPerformance() == 3;
 			org.lwjgl.opengl.Display.setVSyncEnabled(vsync);
 		}
-		
+
 		if (Configuration.getSignDistance() < 8) {
 			signDistance = 8;
 		} else if (Configuration.getSignDistance() >= 128 && Configuration.getSignDistance() != Integer.MAX_VALUE) {
@@ -175,13 +175,23 @@ public class Configuration {
 	}
 
 	public static int defaultMenuState() {
-		if (Shaders.isOpenGL(3)) {
+		if (isOpenGL(3)) {
 			return 1;
 		}
-		if (Shaders.isOpenGL(2)) {
+		if (isOpenGL(2)) {
 			return 2;
 		}
 		return 3;
+	}
+
+	public static boolean isOpenGL(int v) {
+		try {
+			String version = GL11.glGetString(GL11.GL_VERSION);
+			return Integer.parseInt(String.valueOf(version.charAt(0))) >= v;
+		}
+		catch (Exception e) {
+			return false;
+		}
 	}
 
 	public static synchronized void restoreDefaults() {
@@ -362,7 +372,7 @@ public class Configuration {
 	public static synchronized void setFancyLight(boolean fancyLight) {
 		Configuration.fancyLight = fancyLight;
 		onPropertyChange();
-	}	
+	}
 
 	public static synchronized int getFastDebug() {
 		return fastDebug;
@@ -525,7 +535,7 @@ public class Configuration {
 		Configuration.automateMode = automateMode;
 		onPropertyChange();
 	}
-	
+
 	public static synchronized boolean isClientLight() {
 		return clientLight;
 	}
@@ -633,7 +643,7 @@ public class Configuration {
 		Configuration.randomMobTextures = randomMobTextures;
 		onPropertyChange();
 	}
-	
+
 	public static synchronized boolean isAdvancedOptions() {
 		return advancedOptions;
 	}

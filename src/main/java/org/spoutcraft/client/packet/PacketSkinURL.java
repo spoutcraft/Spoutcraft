@@ -94,12 +94,12 @@ public class PacketSkinURL implements SpoutPacket {
 			if (!"none".equals(this.cloakURL)) {
 				e.updateCloak(cloakURL);
 			}
-					
+
 			if (release) {
 				e.worldObj.releaseEntitySkin(e);
 			}
-			e.worldObj.obtainEntitySkin(e);		
-			
+			e.worldObj.obtainEntitySkin(e);
+
 		}
 	}
 

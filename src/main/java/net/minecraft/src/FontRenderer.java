@@ -20,7 +20,9 @@ public class FontRenderer {
 	public int fontTextureName = 0;
 
 	/** the height in pixels of default text */
-	public int FONT_HEIGHT = 8; // Spout Smaller Text
+	// Spout Start - Smaller text
+	public int FONT_HEIGHT = 8;
+	// Spout End
 	public Random fontRandom = new Random();
 
 	/**
@@ -31,7 +33,10 @@ public class FontRenderer {
 	/**
 	 * Array of GL texture ids for loaded glyph_XX.png images. Indexed by Unicode block (group of 256 chars).
 	 */
-	private int[] glyphTextureName = new int[256]; //TODO Spout - Removed final modifier
+	// Spout Start - Removed final modifier
+	// TODO: Something?
+	private int[] glyphTextureName = new int[256];
+	// Spout End
 
 	/**
 	 * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of the same colors for drop
@@ -45,7 +50,10 @@ public class FontRenderer {
 	private int boundTextureName;
 
 	/** The RenderEngine used to load and setup glyph textures. */
-	private RenderEngine renderEngine; //TODO Spout - Removed final modifier
+	// Spout start - Removed final modifier
+	// TODO: Something?
+	private RenderEngine renderEngine;
+	// Spout End
 
 	/** Current X coordinate at which to draw the next character. */
 	private float posX;

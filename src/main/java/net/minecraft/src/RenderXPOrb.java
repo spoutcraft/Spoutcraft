@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+// MCPatcher Start
+import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public class RenderXPOrb extends Render {
 	public RenderXPOrb() {
@@ -42,7 +44,9 @@ public class RenderXPOrb extends Render {
 		float var25 = 0.3F;
 		GL11.glScalef(var25, var25, var25);
 		var11.startDrawingQuads();
+		// MCPatcher Start
 		var11.setColorRGBA_I(Colorizer.colorizeXPOrb(var24, var27), 128);
+		// MCPatcher End
 		var11.setNormal(0.0F, 1.0F, 0.0F);
 		var11.addVertexWithUV((double)(0.0F - var17), (double)(0.0F - var18), 0.0D, (double)var12, (double)var15);
 		var11.addVertexWithUV((double)(var16 - var17), (double)(0.0F - var18), 0.0D, (double)var13, (double)var15);

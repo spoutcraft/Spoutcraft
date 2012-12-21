@@ -36,6 +36,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.GuiIngameMenu;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.GuiSelectWorld;
 import net.minecraft.src.StringTranslate;
 
 import org.bukkit.ChatColor;
@@ -82,7 +83,6 @@ public class MainMenu extends GuiScreen {
 
 	public MainMenu() {
 		splashText = new GenericLabel(getSplashText());
-
 		updateBackgrounds();
 
 		Holiday holiday = Resources.getHoliday();
@@ -266,22 +266,21 @@ public class MainMenu extends GuiScreen {
 		debugText.setTextColor(new Color(0xFFE303));
 		debugText.setGeometry(1, 1, 12, 100);
 		debugText.setVisible(false);
-
-		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, buildNumber, about, options, background, logo, splashText, quit, animate, debugText);
+		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, buildNumber, background, splashText, about, options,  logo, quit, animate, debugText);
 	}
 
 	@Override
 	public void buttonClicked(Button btn) {
 		hasLoaded = true;
 		if (singleplayer == btn) {
-			mc.displayGuiScreen(new org.spoutcraft.client.gui.singleplayer.GuiWorldSelection(this));
+			mc.displayGuiScreen(new GuiSelectWorld(this));
 		}
 		if (multiplayer == btn) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
 		}
 		if (textures == btn) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
-		}		
+		}
 		if (about == btn) {
 			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiNewAbout(this));
 		}
@@ -296,11 +295,10 @@ public class MainMenu extends GuiScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float scroll) {
 		super.drawScreen(mouseX, mouseY, scroll);
-
 		if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			mc.displayGuiScreen(new org.spoutcraft.client.gui.singleplayer.GuiWorldSelection(this));	
+			mc.displayGuiScreen(new GuiSelectWorld(this));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {

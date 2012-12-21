@@ -15,7 +15,7 @@ public class TileEntitySign extends TileEntity {
 
 	// Spout Start
 	private byte text = -1; //-1 means invalid cache, 0 means false, 1 means true
-	
+
 	public boolean hasText() {
 		if (text != -1) {
 			return text != 0;
@@ -29,12 +29,12 @@ public class TileEntitySign extends TileEntity {
 		}
 		return text != 0;
 	}
-	
+
 	public void recalculateText() {
 		text = -1;
 	}
 	// Spout End
-	
+
 	/**
 	 * Writes a tile entity to NBT.
 	 */

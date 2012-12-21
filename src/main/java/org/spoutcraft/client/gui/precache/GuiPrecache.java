@@ -28,19 +28,19 @@ import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.WidgetAnchor;
 
 public class GuiPrecache extends GuiScreen {
-	
+
 	public GenericLabel statusText;
-	
+
 	@Override
-	public void initGui() {		
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");		
+	public void initGui() {
+		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		statusText = new GenericLabel();
 		statusText.setAnchor(WidgetAnchor.CENTER_CENTER);
 		statusText.setAlign(WidgetAnchor.CENTER_CENTER);
-		statusText.setText(ChatColor.BLUE + "Spoutcraft" + "\n"+" "+ "\n"+ ChatColor.WHITE + "Verifying Custom Resources");		
+		statusText.setText(ChatColor.BLUE + "Spoutcraft" + "\n"+" "+ "\n"+ ChatColor.WHITE + "Verifying Custom Resources");
 		getScreen().attachWidget(spoutcraft, statusText);
 	}
-	
+
 	@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		this.drawBackground(0);

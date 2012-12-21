@@ -148,7 +148,7 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 			}
 			summon(binding);
 			if (!doubleClick) {
-				Spoutcraft.getActivePlayer().showAchievement(ChatColor.WHITE + "You can use 1-9", "on your keyboard too", Item.book.shiftedIndex);
+				Spoutcraft.getActivePlayer().showAchievement(ChatColor.WHITE + "You can use 1-9", "on your keyboard too", Item.book.itemID);
 			}
 		}
 

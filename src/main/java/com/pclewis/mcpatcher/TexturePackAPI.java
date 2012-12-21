@@ -363,14 +363,14 @@ public class TexturePackAPI {
 
 				handlers.add(var0);
 				TexturePackAPI.access$100().fine("registered texture pack handler %s, priority %d", new Object[] {var0.name, Integer.valueOf(var0.order)});
-                Collections.sort(handlers, new Comparator<ChangeHandler>() {
-                    public int compare(ChangeHandler o1, ChangeHandler o2) {
-                        return o1.order - o2.order;
-                    }
-                });
+				Collections.sort(handlers, new Comparator<ChangeHandler>() {
+					public int compare(ChangeHandler o1, ChangeHandler o2) {
+						return o1.order - o2.order;
+					}
+				});
 			}
 		}
-	
+
 		// Spout Start
 		public static void change() {
 			for (ChangeHandler handler : handlers) {
@@ -381,8 +381,8 @@ public class TexturePackAPI {
 				}
 			}
 		}
-		//Spout End
-		
+		// Spout End
+
 		public static void checkForTexturePackChange() {
 			Minecraft var0 = MCPatcherUtils.getMinecraft();
 

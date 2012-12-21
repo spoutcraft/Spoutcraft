@@ -78,7 +78,8 @@ public class PacketPlaySound implements SpoutPacket {
 					if (!location) {
 						sndManager.playSoundFX(effect.getName(), 0.5F, 0.7F, effect.getSoundId(), volume / 100F);
 					} else {
-						sndManager.playSound(effect.getName(), x, y, z, 0.5F, (distance / 16F), effect.getSoundId(), volume / 100F);
+						//TODO: Needs Repair
+						//sndManager.playSound(effect.getName(), x, y, z, 0.5F, (distance / 16F), 1.0F, volume / 100F);
 					}
 				}
 				soundId -= (1 + SoundEffect.getMaxId());

@@ -1,17 +1,15 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 // Spout
+import java.util.Collections;
+import gnu.trove.map.hash.TLongObjectHashMap;
+import net.minecraft.client.Minecraft;
 import org.spoutcraft.client.ChunkComparator;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
-
-import gnu.trove.map.hash.TLongObjectHashMap;
-
-import net.minecraft.client.Minecraft;
 // Spout End
 
 public class ChunkProviderClient implements IChunkProvider {
@@ -24,8 +22,16 @@ public class ChunkProviderClient implements IChunkProvider {
 	/**
 	 * The mapping between ChunkCoordinates and Chunks that ChunkProviderClient maintains.
 	 */
-	private TLongObjectHashMap<Chunk> chunkMapping = new TLongObjectHashMap<Chunk>(1000); // Spout
-	//private List field_889_c = new ArrayList();
+	// Spout Start
+	private TLongObjectHashMap<Chunk> chunkMapping = new TLongObjectHashMap<Chunk>(1000);
+	// Spout End
+	/**
+	 * This may have been intended to be an iterable version of all currently loaded chunks (MultiplayerChunkCache), with
+	 * identical contents to chunkMapping's values. However it is never actually added to.
+	 */
+	// Spout Start - Unused
+	//private List chunkListing = new ArrayList();
+	// Spout End
 
 	/** Reference to the World object. */
 	private World worldObj;
@@ -33,14 +39,18 @@ public class ChunkProviderClient implements IChunkProvider {
 	public ChunkProviderClient(World par1World) {
 		this.blankChunk = new EmptyChunk(par1World, 0, 0);
 		this.worldObj = par1World;
-		chunkMapping.setAutoCompactionFactor(0.0F); // Spout
+		// Spout Start
+		chunkMapping.setAutoCompactionFactor(0.0F);
+		// Spout End
 	}
 
 	/**
 	 * Checks to see if a chunk exists at x, y
 	 */
+	// Spout Start
 	public boolean chunkExists(int var1, int var2) {
-		return this != null ? true : this.chunkMapping.containsKey(ChunkCoordIntPair.chunkXZ2Int(var1, var2)); // Spout
+		return this != null ? true : this.chunkMapping.containsKey(ChunkCoordIntPair.chunkXZ2Int(var1, var2));
+	// Spout End
 	}
 
 	/**
@@ -49,12 +59,15 @@ public class ChunkProviderClient implements IChunkProvider {
 	 */
 	public void unloadChunk(int par1, int par2) {
 		Chunk var3 = this.provideChunk(par1, par2);
+
 		if (!var3.isEmpty()) {
 			var3.onChunkUnload();
 		}
 
 		this.chunkMapping.remove(ChunkCoordIntPair.chunkXZ2Int(par1, par2));
-		//this.field_889_c.remove(var3); // Spout
+		// Spout Start - Unused
+		//this.chunkListing.remove(var3);
+		// Spout End
 	}
 
 	/**
@@ -62,7 +75,9 @@ public class ChunkProviderClient implements IChunkProvider {
 	 */
 	public Chunk loadChunk(int par1, int par2) {
 		Chunk var3 = new Chunk(this.worldObj, par1, par2);
-		this.chunkMapping.put(ChunkCoordIntPair.chunkXZ2Int(par1, par2), var3); // Spout
+		// Spout Start
+		this.chunkMapping.put(ChunkCoordIntPair.chunkXZ2Int(par1, par2), var3);
+		// Spout End
 		var3.isChunkLoaded = true;
 		return var3;
 	}
@@ -71,8 +86,10 @@ public class ChunkProviderClient implements IChunkProvider {
 	 * Will return back a chunk, if it doesn't exist and its not a MP client it will generates all the blocks for the
 	 * specified chunk from the map seed and chunk seed
 	 */
+	// Spout Start
 	public Chunk provideChunk(int var1, int var2) {
 		Chunk var3 = (Chunk)this.chunkMapping.get(ChunkCoordIntPair.chunkXZ2Int(var1, var2));
+	// Spout End
 		return var3 == null ? this.blankChunk : var3;
 	}
 
@@ -108,7 +125,9 @@ public class ChunkProviderClient implements IChunkProvider {
 	 * Converts the instance data to a readable string.
 	 */
 	public String makeString() {
-		return "MultiplayerChunkCache: " + this.chunkMapping.size(); // Spout
+		// Spout Start
+		return "MultiplayerChunkCache: " + this.chunkMapping.size();
+		// Spout End
 	}
 
 	/**
@@ -126,8 +145,10 @@ public class ChunkProviderClient implements IChunkProvider {
 	}
 
 	public int getLoadedChunkCount() {
-		return chunkMapping.size(); // Spout - this.chunkListing.size();
+		// Spout Start - Was this.chunkListing.size();
+		return chunkMapping.size();
+		// Spout End
 	}
-	
-	public void func_82695_e(int par1, int par2) {}
+
+	public void recreateStructures(int par1, int par2) {}
 }

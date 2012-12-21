@@ -265,7 +265,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		else {
 			itemstack = new net.minecraft.src.ItemStack(is.getTypeId(), is.getAmount(), is.getDurability());
 		}
-		
+
 		Item rawItem = Item.itemsList[itemstack.itemID];
 		List<String> list;
 		if (rawItem != null) {
@@ -275,7 +275,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		}
 		Material item = MaterialData.getMaterial(is.getTypeId(), is.getDurability());
 		String custom = item != null ? String.format(item.getName(), String.valueOf(is.getDurability())) : null;
-		if (custom != null && is.getTypeId() != Item.potion.shiftedIndex) {
+		if (custom != null && is.getTypeId() != Item.potion.itemID) {
 			if (list.size() > 0) {
 				list.set(0, custom);
 			} else {

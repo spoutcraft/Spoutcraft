@@ -28,7 +28,9 @@ public class TexturePackFolder extends TexturePackImplementation {
 		return super.getResourceAsStream(par1Str);
 	}
 
+	// MCPatcher Start
 	public File getFolder() {
 		return this.texturePackFile;
 	}
+	// MCPatcher End
 }

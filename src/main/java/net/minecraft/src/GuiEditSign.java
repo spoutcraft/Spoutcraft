@@ -1,14 +1,14 @@
 package net.minecraft.src;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 // Spout Start
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import org.bukkit.ChatColor;
+import org.spoutcraft.client.config.Configuration;
+import org.spoutcraft.api.Spoutcraft;
 // Spout End
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.config.Configuration; // Spout
-import org.spoutcraft.api.Spoutcraft; // Spout
 
 public class GuiEditSign extends GuiScreen {
 
@@ -102,34 +102,33 @@ public class GuiEditSign extends GuiScreen {
 	/**
 	 * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
 	 */
-	// Spout - rewritten method
-	// Spout Start
+	// Spout Start - Rewritten Method
 	protected void keyTyped(char par1, int par2) {
-		if (par2 == 200) { // up
+		if (par2 == 200) { // Up
 			this.editLine = this.editLine - 1 & 3;
 			editColumn = entitySign.signText[editLine].length();
 		}
 
-		if (par2 == 208 || par2 == 28) { // down
+		if (par2 == 208 || par2 == 28) { // Down
 			this.editLine = this.editLine + 1 & 3;
 			editColumn = entitySign.signText[editLine].length();
 		}
 
-		if (par2 == 205) { // right
+		if (par2 == 205) { // Right
 			editColumn++;
 			if (editColumn > entitySign.signText[editLine].length()) {
 				editColumn--;
 			}
 		}
 
-		if (par2 == 203) {// left
+		if (par2 == 203) {// Left
 			editColumn--;
 			if (editColumn < 0) {
 				editColumn = 0;
 			}
 		}
 
-		if (par2 == 14 && this.entitySign.signText[this.editLine].length() > 0) { // backsp
+		if (par2 == 14 && this.entitySign.signText[this.editLine].length() > 0) { // Backspace
 			String line = entitySign.signText[editLine];
 			int endColumnStart = Math.min(editColumn, line.length());
 			String before = "";
@@ -152,10 +151,10 @@ public class GuiEditSign extends GuiScreen {
 			}
 		}
 
-		if ((allowedCharacters.indexOf(par1) > -1 || par1 > 32) && this.entitySign.signText[this.editLine].length() < 15) { // enter
+		if ((allowedCharacters.indexOf(par1) > -1 || par1 > 32) && this.entitySign.signText[this.editLine].length() < 15) { // Enter
 			String line = entitySign.signText[editLine];
 
-			// prevent out of bounds on the substring call
+			// Prevent out of bounds on the substring call
 			int endColumnStart = Math.min(editColumn, line.length());
 			String before = "";
 			if (endColumnStart > 0) {
@@ -172,8 +171,7 @@ public class GuiEditSign extends GuiScreen {
 			editColumn = endColumnStart;
 		}
 
-		if (par2 == 211) // del
-		{
+		if (par2 == 211) { // Delete
 			String line = entitySign.signText[editLine];
 			String before = line.substring(0, editColumn);
 			String after = "";
@@ -196,7 +194,7 @@ public class GuiEditSign extends GuiScreen {
 	 */
 	public void drawScreen(int par1, int par2, float par3) {
 		this.drawDefaultBackground();
-		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 40, 16777215);		
+		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 40, 16777215);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)(this.width / 2), 0.0F, 50.0F);
 		float var4 = 93.75F;
@@ -229,10 +227,10 @@ public class GuiEditSign extends GuiScreen {
 		}
 
 		// Spout Start
-		// if(this.updateCounter / 6 % 2 == 0) {
+		//if(this.updateCounter / 6 % 2 == 0) {
 		this.entitySign.lineBeingEdited = this.editLine;
 		entitySign.columnBeingEdited = editColumn;
-		// }
+		//}
 		// Spout End
 
 		TileEntityRenderer.instance.renderTileEntityAt(this.entitySign, -0.5D, -0.75D, -0.5D, 0.0F);

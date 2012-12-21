@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+// MCPatcher Start
 import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public class WorldProviderEnd extends WorldProvider {
 
@@ -52,10 +54,12 @@ public class WorldProviderEnd extends WorldProvider {
 		float var5 = (float)(var3 >> 16 & 255) / 255.0F;
 		float var6 = (float)(var3 >> 8 & 255) / 255.0F;
 		float var7 = (float)(var3 & 255) / 255.0F;
+		// MCPatcher Start
 		float var10000 = var5 * (var4 * 0.0F + 0.15F);
 		var10000 = var6 * (var4 * 0.0F + 0.15F);
 		var10000 = var7 * (var4 * 0.0F + 0.15F);
 		return this.worldObj.getWorldVec3Pool().getVecFromPool((double)Colorizer.endFogColor[0], (double)Colorizer.endFogColor[1], (double)Colorizer.endFogColor[2]);
+		// MCPatcher End
 	}
 
 	public boolean isSkyColored() {

@@ -2,8 +2,9 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 import java.util.List;
-
-import org.spoutcraft.client.SpoutClient; // Spout
+// Spout Start
+import org.spoutcraft.client.SpoutClient;
+// Spout End
 
 public class GuiDisconnected extends GuiScreen {
 
@@ -37,7 +38,7 @@ public class GuiDisconnected extends GuiScreen {
 		StringTranslate var1 = StringTranslate.getInstance();
 		this.controlList.clear();
 		// Spout Start
-		controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120 + 12, "Back to "+SpoutClient.getInstance().getServerManager().getJoinedFromName()));
+		controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120 + 12, "Back to " + SpoutClient.getInstance().getServerManager().getJoinedFromName()));
 		// Spout End
 		if (this.field_74247_c != null) {
 			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(var1.translateKeyFormat(this.errorDetail, this.field_74247_c), this.width - 50);
@@ -51,7 +52,9 @@ public class GuiDisconnected extends GuiScreen {
 	 */
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.id == 0) {
-			this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); // Spout
+			// Spout Start
+			this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom());
+			// Spout End
 		}
 	}
 

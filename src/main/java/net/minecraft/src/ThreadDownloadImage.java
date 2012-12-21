@@ -1,9 +1,11 @@
 package net.minecraft.src;
 
-import java.awt.image.BufferedImage; // Spout
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.imageio.ImageIO;
+// Spout Start
+import java.awt.image.BufferedImage;
+// Spout End
 
 class ThreadDownloadImage extends Thread {
 
@@ -50,14 +52,15 @@ class ThreadDownloadImage extends Thread {
 				BufferedImage image = ImageIO.read(var1.getInputStream());
 				if (image != null) {
 					this.imageData.image = this.buffer.parseUserSkin(image);
-				}
-				else {
+				} else {
 					//System.out.println("No image data found for " + location);
 				}
 				// Spout End
 			}
 		} catch (Exception var6) {
-			//var6.printStackTrace(); // Spout
+			// Spout Start
+			//var6.printStackTrace();
+			// Spout End
 		} finally {
 			var1.disconnect();
 		}

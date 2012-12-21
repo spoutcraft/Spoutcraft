@@ -58,7 +58,10 @@ public class BlockTorch extends Block {
 		return par1World.isBlockNormalCubeDefault(par2 - 1, par3, par4, true) ? true : (par1World.isBlockNormalCubeDefault(par2 + 1, par3, par4, true) ? true : (par1World.isBlockNormalCubeDefault(par2, par3, par4 - 1, true) ? true : (par1World.isBlockNormalCubeDefault(par2, par3, par4 + 1, true) ? true : this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))));
 	}
 
-	public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
+	/**
+	 * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
+	 */
+	public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
 		int var10 = par9;
 
 		if (par5 == 1 && this.canPlaceTorchOn(par1World, par2, par3 - 1, par4)) {
@@ -197,13 +200,13 @@ public class BlockTorch extends Block {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		// Spout custom blocks start
+		// Spout Start - Custom blocks
 		Chunk c = par1World.getChunkFromBlockCoords(par2, par4);
 		if (c.spoutChunk.getCustomBlockId(par2, par3, par4) > 0) {
 			return;
 		}
 		int var6 = c.getBlockMetadata(par2 & 0xF, par3, par4 & 0xF);
-		// Spout custom blocks end
+		// Spout End
 		double var7 = (double)((float)par2 + 0.5F);
 		double var9 = (double)((float)par3 + 0.7F);
 		double var11 = (double)((float)par4 + 0.5F);

@@ -1,21 +1,27 @@
 package net.minecraft.src;
 
+// MCPatcher Start
 import com.pclewis.mcpatcher.mod.TileSize;
+// MCPatcher End
 
 public class TextureWaterFlowFX extends TextureFX {
+	// MCPatcher Start
 	protected float[] field_76880_g;
 	protected float[] field_76883_h;
 	protected float[] field_76884_i;
 	protected float[] field_76881_j;
 	private int tickCounter;
+	// MCPatcher End
 
 	public TextureWaterFlowFX() {
 		super(Block.waterMoving.blockIndexInTexture + 1);
+		// MCPatcher Start
 		this.field_76880_g = new float[TileSize.int_numPixels];
 		this.field_76883_h = new float[TileSize.int_numPixels];
 		this.field_76884_i = new float[TileSize.int_numPixels];
 		this.field_76881_j = new float[TileSize.int_numPixels];
 		this.tickCounter = 0;
+		// MCPatcher End
 		this.tileSize = 2;
 	}
 
@@ -27,20 +33,27 @@ public class TextureWaterFlowFX extends TextureFX {
 		int var5;
 		int var6;
 
+		// MCPatcher Start
 		for (var1 = 0; var1 < TileSize.int_size; ++var1) {
 			for (var2 = 0; var2 < TileSize.int_size; ++var2) {
+			// MCPatcher End
 				var3 = 0.0F;
 
 				for (int var4 = var2 - 2; var4 <= var2; ++var4) {
+					// MCPatcher Start
 					var5 = var1 & TileSize.int_sizeMinus1;
 					var6 = var4 & TileSize.int_sizeMinus1;
 					var3 += this.field_76880_g[var5 + var6 * TileSize.int_size];
+					// MCPatcher End
 				}
 
+				// MCPatcher Start
 				this.field_76883_h[var1 + var2 * TileSize.int_size] = var3 / 3.2F + this.field_76884_i[var1 + var2 * TileSize.int_size] * 0.8F;
+				// MCPatcher End
 			}
 		}
 
+		// MCPatcher Start
 		for (var1 = 0; var1 < TileSize.int_size; ++var1) {
 			for (var2 = 0; var2 < TileSize.int_size; ++var2) {
 				this.field_76884_i[var1 + var2 * TileSize.int_size] += this.field_76881_j[var1 + var2 * TileSize.int_size] * 0.05F;
@@ -50,9 +63,12 @@ public class TextureWaterFlowFX extends TextureFX {
 				}
 
 				this.field_76881_j[var1 + var2 * TileSize.int_size] -= 0.3F;
+				// MCPatcher End
 
 				if (Math.random() < 0.2D) {
+					// MCPatcher Start
 					this.field_76881_j[var1 + var2 * TileSize.int_size] = 0.5F;
+					// MCPatcher  End
 				}
 			}
 		}
@@ -61,8 +77,10 @@ public class TextureWaterFlowFX extends TextureFX {
 		this.field_76883_h = this.field_76880_g;
 		this.field_76880_g = var12;
 
+		// MCPatcher Start
 		for (var2 = 0; var2 < TileSize.int_numPixels; ++var2) {
 			var3 = this.field_76880_g[var2 - this.tickCounter * TileSize.int_size & TileSize.int_numPixelsMinus1];
+		// MCPatcher End
 
 			if (var3 > 1.0F) {
 				var3 = 1.0F;

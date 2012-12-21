@@ -37,7 +37,7 @@ public class WorldServer extends World {
 	 * applied locally and send to clients.
 	 */
 	private int blockEventCacheIndex = 0;
-	private static final WeightedRandomChestContent[] bonusChestContent = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.stick.shiftedIndex, 0, 1, 3, 10), new WeightedRandomChestContent(Block.planks.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Item.axeStone.shiftedIndex, 0, 1, 1, 3), new WeightedRandomChestContent(Item.axeWood.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.pickaxeStone.shiftedIndex, 0, 1, 1, 3), new WeightedRandomChestContent(Item.pickaxeWood.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.appleRed.shiftedIndex, 0, 2, 3, 5), new WeightedRandomChestContent(Item.bread.shiftedIndex, 0, 2, 3, 3)};
+	private static final WeightedRandomChestContent[] bonusChestContent = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.stick.itemID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.planks.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Item.axeStone.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.axeWood.itemID, 0, 1, 1, 5), new WeightedRandomChestContent(Item.pickaxeStone.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.pickaxeWood.itemID, 0, 1, 1, 5), new WeightedRandomChestContent(Item.appleRed.itemID, 0, 2, 3, 5), new WeightedRandomChestContent(Item.bread.itemID, 0, 2, 3, 3)};
 
 	/** An IntHashMap of entity IDs (integers) to their Entity objects. */
 	private IntHashMap entityIdMap;
@@ -104,7 +104,7 @@ public class WorldServer extends World {
 		}
 
 		this.sendAndApplyBlockEvents();
-		this.worldInfo.func_82572_b(this.worldInfo.getWorldTotalTime() + 1L);
+		this.worldInfo.incrementTotalWorldTime(this.worldInfo.getWorldTotalTime() + 1L);
 		this.worldInfo.setWorldTime(this.worldInfo.getWorldTime() + 1L);
 		this.theProfiler.endStartSection("tickPending");
 		this.tickUpdates(false);
@@ -246,7 +246,6 @@ public class WorldServer extends World {
 
 				if (this.canLightningStrikeAt(var9, var11, var10)) {
 					this.addWeatherEffect(new EntityLightningBolt(this, (double)var9, (double)var11, (double)var10));
-					this.lastLightningBolt = 2;
 				}
 			}
 
@@ -376,13 +375,16 @@ public class WorldServer extends World {
 				return;
 			}
 		} else {
-			this.func_82742_i();
+			this.resetUpdateEntityTick();
 		}
 
 		super.updateEntities();
 	}
 
-	public void func_82742_i() {
+	/**
+	 * Resets the updateEntityTick field to 0
+	 */
+	public void resetUpdateEntityTick() {
 		this.updateEntityTick = 0;
 	}
 
@@ -417,8 +419,8 @@ public class WorldServer extends World {
 						try {
 							Block.blocksList[var6].updateTick(this, var4.xCoord, var4.yCoord, var4.zCoord, this.rand);
 						} catch (Throwable var13) {
-							CrashReport var8 = CrashReport.func_85055_a(var13, "Exception while ticking a block");
-							CrashReportCategory var9 = var8.func_85058_a("Block being ticked");
+							CrashReport var8 = CrashReport.makeCrashReport(var13, "Exception while ticking a block");
+							CrashReportCategory var9 = var8.makeCategory("Block being ticked");
 							int var10;
 
 							try {
@@ -648,7 +650,9 @@ public class WorldServer extends World {
 	/**
 	 * Start the skin for this entity downloading, if necessary, and increment its reference counter
 	 */
-	public void obtainEntitySkin(Entity par1Entity) { //Spout start protected -> public
+	// Spout Start - protected to public
+	public void obtainEntitySkin(Entity par1Entity) {
+	// Spout End
 		super.obtainEntitySkin(par1Entity);
 		this.entityIdMap.addKey(par1Entity.entityId, par1Entity);
 		Entity[] var2 = par1Entity.getParts();
@@ -663,7 +667,9 @@ public class WorldServer extends World {
 	/**
 	 * Decrement the reference counter for this entity's skin image data
 	 */
-	public void releaseEntitySkin(Entity par1Entity) { //Spout start protected -> public
+	// Spout Start - protected to public
+	public void releaseEntitySkin(Entity par1Entity) {
+	// Spout End
 		super.releaseEntitySkin(par1Entity);
 		this.entityIdMap.removeObject(par1Entity.entityId);
 		Entity[] var2 = par1Entity.getParts();

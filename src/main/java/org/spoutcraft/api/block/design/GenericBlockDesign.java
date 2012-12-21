@@ -201,7 +201,7 @@ public class GenericBlockDesign implements BlockDesign {
 		lightSourceYOffset = PacketUtil.readIntArray(input);
 		lightSourceZOffset = PacketUtil.readIntArray(input);
 	}
-	
+
 	public void read(DataInputStream input) throws IOException {
 		textureURL = PacketUtil.readString(input);
 		if (textureURL.equals(resetString)) {

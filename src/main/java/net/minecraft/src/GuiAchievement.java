@@ -59,7 +59,7 @@ public class GuiAchievement extends Gui {
 		this.theAchievement = par1Achievement;
 		this.haveAchiement = true;
 	}
-	
+
 	// Spout Start
 	public void queueNotification(String title, String message, int toRender) {
 		queueNotification(title, message, toRender, (short) -1, -1);
@@ -105,8 +105,8 @@ public class GuiAchievement extends Gui {
 	 * Updates the small achievement tooltip window, showing a queued achievement if is needed.
 	 */
 	public void updateAchievementWindow() {
-		if ( (this.theAchievement != null || this.customNotification == true) && this.achievementTime != 0L) { // Spout
-			// Spout Start
+		// Spout Start
+		if ((this.theAchievement != null || this.customNotification == true) && this.achievementTime != 0L) {
 			double delayTime = 3000.0D;
 			if (customNotification) {
 				if (time < 1) {
@@ -116,7 +116,7 @@ public class GuiAchievement extends Gui {
 				}
 			}
 			double var1 = (double)(Minecraft.getSystemTime() - this.achievementTime) / delayTime;
-			// Spout End
+		// Spout End
 
 			if (!this.haveAchiement && (var1 < 0.0D || var1 > 1.0D)) {
 				this.achievementTime = 0L;

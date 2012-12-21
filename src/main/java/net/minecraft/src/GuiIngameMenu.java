@@ -1,12 +1,13 @@
 package net.minecraft.src;
 
-//Spout start
+// Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMapAgent;
 import org.spoutcraft.client.gui.server.GuiFavorites;
 import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
 import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
-//Spout end
+// Spout End
+
 public class GuiIngameMenu extends GuiScreen {
 
 	/** Also counts the number of updates, not certain as to why yet. */
@@ -43,7 +44,9 @@ public class GuiIngameMenu extends GuiScreen {
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		switch (par1GuiButton.id) {
 			case 0:
-				this.mc.displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(this)); // Spout		
+				// Spout Start
+				this.mc.displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(this));
+				// Spout End
 				break;
 
 			case 1:
@@ -54,7 +57,9 @@ public class GuiIngameMenu extends GuiScreen {
 				this.mc.statFileWriter.readStat(StatList.leaveGameStat, 1);
 				this.mc.theWorld.sendQuittingDisconnectingPacket();
 				this.mc.loadWorld((WorldClient)null);
-				this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); // Spout
+				// Spout Start
+				this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom());
+				// Spout End
 			case 2:
 			case 3:
 			default:

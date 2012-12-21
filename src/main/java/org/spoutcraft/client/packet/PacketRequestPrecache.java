@@ -25,16 +25,16 @@ import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketRequestPrecache implements SpoutPacket {
-	
+
 	private String plugin;
-	
+
 	public PacketRequestPrecache() {
 	}
-	
+
 	public PacketRequestPrecache(String plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	@Override
 	public void readData(SpoutInputStream input) throws IOException {
 		plugin = input.readString();

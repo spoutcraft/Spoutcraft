@@ -1,17 +1,19 @@
 package net.minecraft.src;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.Block;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+// MCPatcher Start
 import com.pclewis.mcpatcher.mod.CTMUtils;
 import com.pclewis.mcpatcher.mod.Colorizer;
 import com.pclewis.mcpatcher.mod.GlassPaneRenderer;
 import com.pclewis.mcpatcher.mod.RenderPass;
-import net.minecraft.client.Minecraft;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-//Spout Start
+// MCPatcher End
+// Spout Start
 import org.spoutcraft.client.config.Configuration;
-import com.pclewis.mcpatcher.mod.Shaders;
-//Spout End
+// Spout End
 
 public class RenderBlocks {
 
@@ -34,7 +36,9 @@ public class RenderBlocks {
 	private boolean renderAllFaces = false;
 
 	/** Fancy grass side matching biome */
-	//public static boolean fancyGrass = true; //Spout Removed
+	// Spout Start - Removed
+	//public static boolean fancyGrass = true;
+	// Spout End
 	public boolean useInventoryTint = true;
 
 	/** Custom minimum X for rendering */
@@ -358,7 +362,7 @@ public class RenderBlocks {
 	 * Grass flag for ambient occlusion on Center X, Negative Y, and Positive Z
 	 */
 	private boolean aoGrassXYZCNP;
-	
+
 	// Spout Start
 	public short[] customIds = null;
 	// Spout End
@@ -383,6 +387,7 @@ public class RenderBlocks {
 		this.overrideBlockTexture = -1;
 	}
 
+	// Spout Start - Custom blocks
 	/**
 	 * Sets the size and offset of the block to be rendered, ie: half size and rendered center block: 0.25D, 0.75D
 	 */
@@ -396,6 +401,12 @@ public class RenderBlocks {
 			this.customMaxZ = par11;
 		}
 	}
+
+	// Spout Start - MCP field mapping changes
+	public void setRenderBoundsFromBlock(Block par10Block) {
+		updateCustomBlockBounds(par10Block);
+	}
+	// Spout End
 
 	/**
 	 * Updates the custom block bounds with the bounds of the given block
@@ -430,6 +441,7 @@ public class RenderBlocks {
 	public void resetCustomBlockBounds() {
 		this.useCustomBlockBounds = false;
 	}
+	// Spout End
 
 	/**
 	 * Renders a block using the given texture instead of the block's own default texture
@@ -455,7 +467,9 @@ public class RenderBlocks {
 	public boolean renderBlockByRenderType(Block par1Block, int par2, int par3, int par4) {
 		int var5 = par1Block.getRenderType();
 		par1Block.setBlockBoundsBasedOnState(this.blockAccess, par2, par3, par4);
+		// Spout Start - Custom blocks
 		this.updateCustomBlockBounds(par1Block);
+		// Spout End
 		return var5 == 0 ? this.renderStandardBlock(par1Block, par2, par3, par4) : (var5 == 31 ? this.renderBlockLog(par1Block, par2, par3, par4) : (var5 == 4 ? this.renderBlockFluids(par1Block, par2, par3, par4) : (var5 == 13 ? this.renderBlockCactus(par1Block, par2, par3, par4) : (var5 == 1 ? this.renderCrossedSquares(par1Block, par2, par3, par4) : (var5 == 19 ? this.renderBlockStem(par1Block, par2, par3, par4) : (var5 == 23 ? this.renderBlockLilyPad(par1Block, par2, par3, par4) : (var5 == 6 ? this.renderBlockCrops(par1Block, par2, par3, par4) : (var5 == 2 ? this.renderBlockTorch(par1Block, par2, par3, par4) : (var5 == 3 ? this.renderBlockFire(par1Block, par2, par3, par4) : (var5 == 5 ? this.renderBlockRedstoneWire(par1Block, par2, par3, par4) : (var5 == 8 ? this.renderBlockLadder(par1Block, par2, par3, par4) : (var5 == 7 ? this.renderBlockDoor(par1Block, par2, par3, par4) : (var5 == 9 ? this.renderBlockMinecartTrack((BlockRail)par1Block, par2, par3, par4) : (var5 == 10 ? this.renderBlockStairs((BlockStairs)par1Block, par2, par3, par4) : (var5 == 27 ? this.renderBlockDragonEgg((BlockDragonEgg)par1Block, par2, par3, par4) : (var5 == 11 ? this.renderBlockFence((BlockFence)par1Block, par2, par3, par4) : (var5 == 32 ? this.renderBlockWall((BlockWall)par1Block, par2, par3, par4) : (var5 == 12 ? this.renderBlockLever(par1Block, par2, par3, par4) : (var5 == 29 ? this.renderBlockTripWireSource(par1Block, par2, par3, par4) : (var5 == 30 ? this.renderBlockTripWire(par1Block, par2, par3, par4) : (var5 == 14 ? this.renderBlockBed(par1Block, par2, par3, par4) : (var5 == 15 ? this.renderBlockRepeater(par1Block, par2, par3, par4) : (var5 == 16 ? this.renderPistonBase(par1Block, par2, par3, par4, false) : (var5 == 17 ? this.renderPistonExtension(par1Block, par2, par3, par4, true) : (var5 == 18 ? this.renderBlockPane((BlockPane)par1Block, par2, par3, par4) : (var5 == 20 ? this.renderBlockVine(par1Block, par2, par3, par4) : (var5 == 21 ? this.renderBlockFenceGate((BlockFenceGate)par1Block, par2, par3, par4) : (var5 == 24 ? this.renderBlockCauldron((BlockCauldron)par1Block, par2, par3, par4) : (var5 == 33 ? this.renderBlockFlowerpot((BlockFlowerPot)par1Block, par2, par3, par4) : (var5 == 35 ? this.renderBlockAnvil((BlockAnvil)par1Block, par2, par3, par4) : (var5 == 25 ? this.renderBlockBrewingStand((BlockBrewingStand)par1Block, par2, par3, par4) : (var5 == 26 ? this.renderBlockEndPortalFrame(par1Block, par2, par3, par4) : (var5 == 28 ? this.renderBlockCocoa((BlockCocoa)par1Block, par2, par3, par4) : (var5 == 34 ? this.renderBlockBeacon((BlockBeacon)par1Block, par2, par3, par4) : false))))))))))))))))))))))))))))))))));
 	}
 
@@ -509,13 +523,15 @@ public class RenderBlocks {
 		var5.setBrightness(var25);
 		var5.setColorOpaque_F(var9, var9, var9);
 		int var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 0);
-		
+
+		// MCPatcher Start
 		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var27)) {
 			var27 = CTMUtils.newTextureIndex;
 			var5 = CTMUtils.newTessellator;
 		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
 			return false;
 		}
+		// MCPatcher End
 
 		int var28 = (var27 & 15) << 4;
 		int var29 = var27 & 240;
@@ -523,11 +539,13 @@ public class RenderBlocks {
 		double var32 = ((double)(var28 + 16) - 0.01D) / 256.0D;
 		double var34 = (double)((float)var29 / 256.0F);
 		double var36 = ((double)(var29 + 16) - 0.01D) / 256.0D;
+		// Spout Start
 		double var38 = (double)par2 + this.customMinX;
 		double var40 = (double)par2 + this.customMaxX;
 		double var42 = (double)par3 + this.customMinY + 0.1875D;
 		double var44 = (double)par4 + this.customMinZ;
 		double var46 = (double)par4 + this.customMaxZ;
+		// Spout End
 		var5.addVertexWithUV(var38, var42, var46, var30, var36);
 		var5.addVertexWithUV(var38, var42, var44, var30, var34);
 		var5.addVertexWithUV(var40, var42, var44, var32, var34);
@@ -535,14 +553,14 @@ public class RenderBlocks {
 		var5.setBrightness(par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 + 1, par4));
 		var5.setColorOpaque_F(var10, var10, var10);
 		var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 1);
-
+		// MCPatcher Start
 		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var27)) {
 			var27 = CTMUtils.newTextureIndex;
 			var5 = CTMUtils.newTessellator;
 		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
 			return false;
 		}
-
+		// MCPatcher End
 		var28 = (var27 & 15) << 4;
 		var29 = var27 & 240;
 		var30 = (double)((float)var28 / 256.0F);
@@ -579,11 +597,13 @@ public class RenderBlocks {
 			var52 = var34;
 		}
 
+		// Spout Start
 		double var54 = (double)par2 + this.customMinX;
 		double var56 = (double)par2 + this.customMaxX;
 		double var58 = (double)par3 + this.customMaxY;
 		double var60 = (double)par4 + this.customMinZ;
 		double var62 = (double)par4 + this.customMaxZ;
+		// Spout End
 		var5.addVertexWithUV(var56, var58, var62, var46, var50);
 		var5.addVertexWithUV(var56, var58, var60, var38, var42);
 		var5.addVertexWithUV(var54, var58, var60, var40, var44);
@@ -2368,25 +2388,25 @@ public class RenderBlocks {
 		double var17 = (double)(((float)var13 + 15.99F) / 256.0F);
 		double var19 = (double)((float)var14 / 256.0F);
 		double var21 = (double)(((float)var14 + 15.99F) / 256.0F);
-		boolean var29 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2 - 1, par3, par4, 1) || !this.blockAccess.isBlockNormalCube(par2 - 1, par3, par4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2 - 1, par3 - 1, par4, -1);
-		boolean var30 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2 + 1, par3, par4, 3) || !this.blockAccess.isBlockNormalCube(par2 + 1, par3, par4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2 + 1, par3 - 1, par4, -1);
-		boolean var31 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2, par3, par4 - 1, 2) || !this.blockAccess.isBlockNormalCube(par2, par3, par4 - 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2, par3 - 1, par4 - 1, -1);
-		boolean var32 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2, par3, par4 + 1, 0) || !this.blockAccess.isBlockNormalCube(par2, par3, par4 + 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2, par3 - 1, par4 + 1, -1);
+		boolean var29 = BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2 - 1, par3, par4, 1) || !this.blockAccess.isBlockNormalCube(par2 - 1, par3, par4) && BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2 - 1, par3 - 1, par4, -1);
+		boolean var30 = BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2 + 1, par3, par4, 3) || !this.blockAccess.isBlockNormalCube(par2 + 1, par3, par4) && BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2 + 1, par3 - 1, par4, -1);
+		boolean var31 = BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2, par3, par4 - 1, 2) || !this.blockAccess.isBlockNormalCube(par2, par3, par4 - 1) && BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2, par3 - 1, par4 - 1, -1);
+		boolean var32 = BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2, par3, par4 + 1, 0) || !this.blockAccess.isBlockNormalCube(par2, par3, par4 + 1) && BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2, par3 - 1, par4 + 1, -1);
 
 		if (!this.blockAccess.isBlockNormalCube(par2, par3 + 1, par4)) {
-			if (this.blockAccess.isBlockNormalCube(par2 - 1, par3, par4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2 - 1, par3 + 1, par4, -1)) {
+			if (this.blockAccess.isBlockNormalCube(par2 - 1, par3, par4) && BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2 - 1, par3 + 1, par4, -1)) {
 				var29 = true;
 			}
 
-			if (this.blockAccess.isBlockNormalCube(par2 + 1, par3, par4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2 + 1, par3 + 1, par4, -1)) {
+			if (this.blockAccess.isBlockNormalCube(par2 + 1, par3, par4) && BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2 + 1, par3 + 1, par4, -1)) {
 				var30 = true;
 			}
 
-			if (this.blockAccess.isBlockNormalCube(par2, par3, par4 - 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2, par3 + 1, par4 - 1, -1)) {
+			if (this.blockAccess.isBlockNormalCube(par2, par3, par4 - 1) && BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2, par3 + 1, par4 - 1, -1)) {
 				var31 = true;
 			}
 
-			if (this.blockAccess.isBlockNormalCube(par2, par3, par4 + 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, par2, par3 + 1, par4 + 1, -1)) {
+			if (this.blockAccess.isBlockNormalCube(par2, par3, par4 + 1) && BlockRedstoneWire.canConnectRedstone(this.blockAccess, par2, par3 + 1, par4 + 1, -1)) {
 				var32 = true;
 			}
 		}
@@ -3331,14 +3351,14 @@ public class RenderBlocks {
 	/**
 	 * Utility function to draw crossed swuares
 	 */
-	
-	//Spout Start
+
+	// Spout Start
 	public void drawCrossedSquares(Block par1Block, int par2, double par3, double par5, double par7, float par9) {
 		drawCrossedSquares(par1Block, par2, par3, par5, par7, par9, false);
 	}
 
 	public void drawCrossedSquares(Block par1Block, int par2, double par3, double par5, double par7, float par9, boolean customUV) {
-		//Spout End
+	// Spout End
 		Tessellator var10 = Tessellator.instance;
 		int var11 = par1Block.getBlockTextureFromSideAndMetadata(0, par2);
 
@@ -4102,7 +4122,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZNNN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNN, this.aoLightValueYNeg);
 				}
 				// Spout End
-				
+
 				var9 = (this.aoLightValueScratchXYZNNP + this.aoLightValueScratchXYNN + this.aoLightValueScratchYZNP + this.aoLightValueYNeg) / 4.0F;
 				var12 = (this.aoLightValueScratchYZNP + this.aoLightValueYNeg + this.aoLightValueScratchXYZPNP + this.aoLightValueScratchXYPN) / 4.0F;
 				var11 = (this.aoLightValueYNeg + this.aoLightValueScratchYZNN + this.aoLightValueScratchXYPN + this.aoLightValueScratchXYZPNN) / 4.0F;
@@ -4146,7 +4166,7 @@ public class RenderBlocks {
 			var24 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 + 1, par4);
 		}
 		// Spout End
-		
+
 		if (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2, par3 + 1, par4, 1)) {
 			if (this.aoType > 0) {
 				if (this.customMaxY >= 1.0D) {
@@ -4210,7 +4230,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZNPN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPN, this.aoLightValueYPos);
 				}
 				// Spout End
-				
+
 				var12 = (this.aoLightValueScratchXYZNPP + this.aoLightValueScratchXYNP + this.aoLightValueScratchYZPP + this.aoLightValueYPos) / 4.0F;
 				var9 = (this.aoLightValueScratchYZPP + this.aoLightValueYPos + this.aoLightValueScratchXYZPPP + this.aoLightValueScratchXYPP) / 4.0F;
 				var10 = (this.aoLightValueYPos + this.aoLightValueScratchYZPN + this.aoLightValueScratchXYPP + this.aoLightValueScratchXYZPPN) / 4.0F;
@@ -4318,7 +4338,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZNNN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNN, this.aoLightValueZNeg);
 				}
 				// Spout End
-				
+
 				var9 = (this.aoLightValueScratchXZNN + this.aoLightValueScratchXYZNPN + this.aoLightValueZNeg + this.aoLightValueScratchYZPN) / 4.0F;
 				var10 = (this.aoLightValueZNeg + this.aoLightValueScratchYZPN + this.aoLightValueScratchXZPN + this.aoLightValueScratchXYZPPN) / 4.0F;
 				var11 = (this.aoLightValueScratchYZNN + this.aoLightValueZNeg + this.aoLightValueScratchXYZPNN + this.aoLightValueScratchXZPN) / 4.0F;
@@ -4468,7 +4488,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZNNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNP, this.aoLightValueZPos);
 				}
 				// Spout End
-				
+
 				var9 = (this.aoLightValueScratchXZNP + this.aoLightValueScratchXYZNPP + this.aoLightValueZPos + this.aoLightValueScratchYZPP) / 4.0F;
 				var12 = (this.aoLightValueZPos + this.aoLightValueScratchYZPP + this.aoLightValueScratchXZPP + this.aoLightValueScratchXYZPPP) / 4.0F;
 				var11 = (this.aoLightValueScratchYZNP + this.aoLightValueZPos + this.aoLightValueScratchXYZPNP + this.aoLightValueScratchXZPP) / 4.0F;
@@ -4620,7 +4640,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZNNN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNN, this.aoLightValueXNeg);
 				}
 				// Spout End
-				
+
 				var12 = (this.aoLightValueScratchXYNN + this.aoLightValueScratchXYZNNP + this.aoLightValueXNeg + this.aoLightValueScratchXZNP) / 4.0F;
 				var9 = (this.aoLightValueXNeg + this.aoLightValueScratchXZNP + this.aoLightValueScratchXYNP + this.aoLightValueScratchXYZNPP) / 4.0F;
 				var10 = (this.aoLightValueScratchXZNN + this.aoLightValueXNeg + this.aoLightValueScratchXYZNPN + this.aoLightValueScratchXYNP) / 4.0F;
@@ -4770,7 +4790,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZPNN = adjustAmbientOcclusion(this.aoLightValueScratchXYZPNN, this.aoLightValueXPos);
 				}
 				// Spout End
-				
+
 				var9 = (this.aoLightValueScratchXYPN + this.aoLightValueScratchXYZPNP + this.aoLightValueXPos + this.aoLightValueScratchXZPP) / 4.0F;
 				var12 = (this.aoLightValueXPos + this.aoLightValueScratchXZPP + this.aoLightValueScratchXYPP + this.aoLightValueScratchXYZPPP) / 4.0F;
 				var11 = (this.aoLightValueScratchXZPN + this.aoLightValueXPos + this.aoLightValueScratchXYZPPN + this.aoLightValueScratchXYPP) / 4.0F;
@@ -5174,7 +5194,7 @@ public class RenderBlocks {
 	private boolean renderBlockBeacon(BlockBeacon par1BlockBeacon, int par2, int par3, int par4) {
 		float var5 = 0.1875F;
 		this.setOverrideBlockTexture(Block.obsidian.blockIndexInTexture);
-		this.setRenderMinMax(0.125D, 0.0D, 0.125D, 0.875D, (double)var5, 0.875D);
+		this.setRenderMinMax(0.125D, 0.0062500000931322575D, 0.125D, 0.875D, (double)var5, 0.875D);
 		this.renderStandardBlock(par1BlockBeacon, par2, par3, par4);
 		this.setOverrideBlockTexture(Block.glass.blockIndexInTexture);
 		this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -6773,7 +6793,7 @@ public class RenderBlocks {
 	public static boolean renderItemIn3d(int par0) {
 		return par0 == 0 ? true : (par0 == 31 ? true : (par0 == 13 ? true : (par0 == 10 ? true : (par0 == 11 ? true : (par0 == 27 ? true : (par0 == 22 ? true : (par0 == 21 ? true : (par0 == 16 ? true : (par0 == 26 ? true : (par0 == 32 ? true : (par0 == 34 ? true : par0 == 35)))))))))));
 	}
-	
+
 	// Spout Start
 	public static int getSideGrassTexture(IBlockAccess world, int x, int y, int z, int blockface) {
 		if (Configuration.getBetterGrass() == 0) {

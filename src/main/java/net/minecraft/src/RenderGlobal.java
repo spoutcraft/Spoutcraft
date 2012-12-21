@@ -1,8 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
-import com.pclewis.mcpatcher.mod.RenderPass;
-import com.pclewis.mcpatcher.mod.SkyRenderer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,8 +12,12 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
-
-//Spout Start
+// MCPatcher Start
+import com.pclewis.mcpatcher.mod.Colorizer;
+import com.pclewis.mcpatcher.mod.RenderPass;
+import com.pclewis.mcpatcher.mod.SkyRenderer;
+// MCPatcher End
+// Spout Start
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.TileEntityComparator;
@@ -24,8 +25,7 @@ import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
 import org.spoutcraft.api.gui.Color;
-
-//Spout End
+// Spout End
 
 public class RenderGlobal implements IWorldAccess {
 	public List tileEntities = new ArrayList();
@@ -35,7 +35,9 @@ public class RenderGlobal implements IWorldAccess {
 	private final RenderEngine renderEngine;
 	private List worldRenderersToUpdate = new ArrayList();
 	private WorldRenderer[] sortedWorldRenderers;
-	public WorldRenderer[] worldRenderers; // Spout private -> public
+	// Spout Start - private to public
+	public WorldRenderer[] worldRenderers;
+	// Spout End
 	private int renderChunksWide;
 	private int renderChunksTall;
 	private int renderChunksDeep;
@@ -173,9 +175,11 @@ public class RenderGlobal implements IWorldAccess {
 	public RenderGlobal(Minecraft par1Minecraft, RenderEngine par2RenderEngine) {
 		this.mc = par1Minecraft;
 		this.renderEngine = par2RenderEngine;
-		byte var3 = 64; // Spout 34 
-		byte var4 = 64; // Spout 32 
+		// Spout Start
+		byte var3 = 64;
+		byte var4 = 64;
 		this.glRenderListBase = GLAllocation.generateDisplayLists(var3 * var3 * var4 * 5);
+		// Spout End
 		this.occlusionEnabled = OpenGlCapsChecker.checkARBOcclusion();
 
 		if (this.occlusionEnabled) {
@@ -293,7 +297,9 @@ public class RenderGlobal implements IWorldAccess {
 		Tessellator var2 = Tessellator.instance;
 		var2.startDrawingQuads();
 
-		for (int var3 = 0; var3 < SpoutClient.getInstance().getSkyManager().getStarFrequency(); ++var3) { // Spout
+		// Spout Start
+		for (int var3 = 0; var3 < SpoutClient.getInstance().getSkyManager().getStarFrequency(); ++var3) {
+		// Spout End
 			double var4 = (double)(var1.nextFloat() * 2.0F - 1.0F);
 			double var6 = (double)(var1.nextFloat() * 2.0F - 1.0F);
 			double var8 = (double)(var1.nextFloat() * 2.0F - 1.0F);
@@ -362,7 +368,9 @@ public class RenderGlobal implements IWorldAccess {
 	 */
 	public void loadRenderers() {
 		if (this.theWorld != null) {
-			Block.leaves.setGraphicsLevel(Configuration.isFancyTrees()); // Spout			
+			// Spout Start
+			Block.leaves.setGraphicsLevel(Configuration.isFancyTrees());
+			// Spout End
 			this.renderDistance = this.mc.gameSettings.renderDistance;
 			int var1;
 
@@ -380,8 +388,8 @@ public class RenderGlobal implements IWorldAccess {
 			var1 = 512;
 			} else if (var1 > 400) {
 			var1 = 400;
-			}
 			// Spout End
+			}
 
 			this.renderChunksWide = var1 / 16 + 1;
 			this.renderChunksTall = 16;
@@ -421,7 +429,9 @@ public class RenderGlobal implements IWorldAccess {
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].markDirty();
 						this.sortedWorldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4] = this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4];
 						this.worldRenderersToUpdate.add(this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4]);
+						// Spout Start - 3 to 5
 						var2 += 5;
+						// Spout End
 					}
 				}
 			}
@@ -488,7 +498,7 @@ public class RenderGlobal implements IWorldAccess {
 
 			this.theWorld.theProfiler.endStartSection("tileentities");
 			RenderHelper.enableStandardItemLighting();
-			
+
 			// Spout Start
 			int max = tileEntities.size();
 			int threshold = (int) Math.min(1000, (Math.max(100, (SpoutWorth.getInstance().getAverageFPS() * 8))));
@@ -506,8 +516,8 @@ public class RenderGlobal implements IWorldAccess {
 					TileEntityRenderer.instance.renderTileEntity(var9, par3);
 				}
 			}
-			// Spout End		
-			
+			// Spout End
+
 			for (var6 = 0; var6 < this.tileEntities.size(); ++var6) {
 				TileEntityRenderer.instance.renderTileEntity((TileEntity)this.tileEntities.get(var6), par3);
 			}
@@ -844,7 +854,9 @@ public class RenderGlobal implements IWorldAccess {
 	 * Render all render lists
 	 */
 	public void renderAllRenderLists(int par1, double par2) {
+		// Spout Start
 		RenderPass.enableDisableLightmap(this.mc.entityRenderer, par2, par1);
+		// Spout End
 
 		for (int var4 = 0; var4 < this.allRenderLists.length; ++var4) {
 			this.allRenderLists[var4].func_78419_a();
@@ -874,7 +886,9 @@ public class RenderGlobal implements IWorldAccess {
 	 * Renders the sky with the partial tick time. Args: partialTickTime
 	 */
 	public void renderSky(float par1) {
+		// Spout Start
 		SkyRenderer.setup(this.theWorld, this.renderEngine, par1, this.theWorld.getCelestialAngle(par1));
+		// Spout End
 
 		if (this.mc.theWorld.provider.dimensionId == 1) {
 			GL11.glDisable(GL11.GL_FOG);
@@ -910,7 +924,9 @@ public class RenderGlobal implements IWorldAccess {
 				}
 
 				var21.startDrawingQuads();
+				// MCPatcher Start
 				var21.setColorOpaque_I(Colorizer.endSkyColor);
+				// MCPatcher End
 				var21.addVertexWithUV(-100.0D, -100.0D, -100.0D, 0.0D, 0.0D);
 				var21.addVertexWithUV(-100.0D, -100.0D, 100.0D, 0.0D, 16.0D);
 				var21.addVertexWithUV(100.0D, -100.0D, 100.0D, 16.0D, 16.0D);
@@ -928,7 +944,7 @@ public class RenderGlobal implements IWorldAccess {
 			float var3 = (float)var2.xCoord;
 			float var4 = (float)var2.yCoord;
 			float var5 = (float)var2.zCoord;
-			
+
 			// Spout Start
 			Color skyColor = SpoutClient.getInstance().getSkyManager().getSkyColor();
 			if (skyColor != null) {
@@ -937,7 +953,7 @@ public class RenderGlobal implements IWorldAccess {
 				var5 = skyColor.getBlueF();
 			}
 			// Spout End
-			
+
 			float var8;
 
 			if (this.mc.gameSettings.anaglyph) {
@@ -970,8 +986,10 @@ public class RenderGlobal implements IWorldAccess {
 			float var11;
 			float var12;
 
-			
-			if (var24 != null && Configuration.isSky()) { //Spout				
+			// MCPatcher Start
+			if (var24 != null && Configuration.isSky()) {
+			// MCPatcher End
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
 				GL11.glShadeModel(GL11.GL_SMOOTH);
 				GL11.glPushMatrix();
 				GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
@@ -1019,11 +1037,11 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, var8);
 			GL11.glTranslatef(var9, var10, var11);
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+			// MCPatcher Start
 			SkyRenderer.renderAll();
+			// MCPatcher End
 			GL11.glRotatef(this.theWorld.getCelestialAngle(par1) * 360.0F, 1.0F, 0.0F, 0.0F);
-			
 			var12 = 30.0F;
-			
 			// Spout Start
 			if (SpoutClient.getInstance().getSkyManager().isSunVisible()) {
 			if (SpoutClient.getInstance().getSkyManager().getSunTextureUrl() == null || CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getSunTextureUrl()) == null) {
@@ -1034,6 +1052,7 @@ public class RenderGlobal implements IWorldAccess {
 			double multiplier = (SpoutClient.getInstance().getSkyManager().getSunSizePercent() / 100D);
 			// Spout End
 			var23.startDrawingQuads();
+			// Spout Start
 			var23.addVertexWithUV((double)(-var12), 100.0D / multiplier, (double)(-var12), 0.0D, 0.0D);
 			var23.addVertexWithUV((double)var12, 100.0D / multiplier, (double)(-var12), 1.0D, 0.0D);
 			var23.addVertexWithUV((double)var12, 100.0D / multiplier, (double)var12, 1.0D, 1.0D);
@@ -1041,9 +1060,7 @@ public class RenderGlobal implements IWorldAccess {
 			var23.draw();
 			}
 			// Spout End
-						
 			var12 = 20.0F;
-							
 			// Spout Start
 			if (SpoutClient.getInstance().getSkyManager().isMoonVisible()) {
 			if (SpoutClient.getInstance().getSkyManager().getMoonTextureUrl() == null || CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl()) == null) {
@@ -1059,7 +1076,6 @@ public class RenderGlobal implements IWorldAccess {
 			float var18 = (float)(var30 + 1) / 4.0F;
 			float var19 = (float)(var29 + 1) / 2.0F;
 			var23.startDrawingQuads();
-
 			double multiplier = (SpoutClient.getInstance().getSkyManager().getMoonSizePercent() / 100D);
 			var23.addVertexWithUV((double)(-var12), -100.0D, (double)var12, (double)var18, (double)var19);
 			var23.addVertexWithUV((double)var12, -100.0D, (double)var12, (double)var16, (double)var19);
@@ -1068,7 +1084,6 @@ public class RenderGlobal implements IWorldAccess {
 			var23.draw();
 			}
 			// Spout End
-			
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			float var20 = this.theWorld.getStarBrightness(par1) * var8;
 
@@ -1127,13 +1142,11 @@ public class RenderGlobal implements IWorldAccess {
 
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, -((float)(var25 - 16.0D)), 0.0F);
-			
 			// Spout Start
 			if (Configuration.isSky()) {
 			GL11.glCallList(this.glSkyList2);
 			}
 			// Spout End
-			
 			GL11.glPopMatrix();
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glDepthMask(true);
@@ -1181,7 +1194,7 @@ public class RenderGlobal implements IWorldAccess {
 				int var18 = MathHelper.floor_double(var15 / 2048.0D);
 				var13 -= (double)(var17 * 2048);
 				var15 -= (double)(var18 * 2048);
-				
+
 				// Spout Start
 				float var19 = SpoutClient.getInstance().getSkyManager().getCloudHeight() - var2 + 0.33F;
 				// Spout End
@@ -1240,7 +1253,6 @@ public class RenderGlobal implements IWorldAccess {
 		float var16 = (float)var15.xCoord;
 		float var17 = (float)var15.yCoord;
 		float var18 = (float)var15.zCoord;
-		
 		// Spout Start
 		Color cloudColor = SpoutClient.getInstance().getSkyManager().getCloudColor();
 		if (cloudColor != null) {
@@ -1249,7 +1261,6 @@ public class RenderGlobal implements IWorldAccess {
 		var18 = cloudColor.getBlueF();
 		}
 		// Spout End
-		
 		float var19;
 		float var21;
 		float var20;
@@ -1390,48 +1401,48 @@ public class RenderGlobal implements IWorldAccess {
 		int var12;
 		label136:
 
-			for (var9 = 0; var9 < var7; ++var9) {
-				var10 = (WorldRenderer)this.worldRenderersToUpdate.get(var9);
+		for (var9 = 0; var9 < var7; ++var9) {
+			var10 = (WorldRenderer)this.worldRenderersToUpdate.get(var9);
 
-				if (var10 != null) {
-					if (!par2) {
-						if (var10.distanceToEntitySquared(par1EntityLiving) > 256.0F) {
-							for (var11 = 0; var11 < var3 && (var5[var11] == null || var4.doCompare(var5[var11], var10) <= 0); ++var11) {
-								;
-							}
-
-							--var11;
-
-							if (var11 > 0) {
-								var12 = var11;
-
-								while (true) {
-									--var12;
-
-									if (var12 == 0) {
-										var5[var11] = var10;
-										continue label136;
-									}
-
-									var5[var12 - 1] = var5[var12];
-								}
-							}
-
-							continue;
+			if (var10 != null) {
+				if (!par2) {
+					if (var10.distanceToEntitySquared(par1EntityLiving) > 256.0F) {
+						for (var11 = 0; var11 < var3 && (var5[var11] == null || var4.doCompare(var5[var11], var10) <= 0); ++var11) {
+							;
 						}
-					} else if (!var10.isInFrustum) {
+
+						--var11;
+
+						if (var11 > 0) {
+							var12 = var11;
+
+							while (true) {
+								--var12;
+
+								if (var12 == 0) {
+									var5[var11] = var10;
+									continue label136;
+								}
+
+								var5[var12 - 1] = var5[var12];
+							}
+						}
+
 						continue;
 					}
-
-					if (var6 == null) {
-						var6 = new ArrayList();
-					}
-
-					++var8;
-					var6.add(var10);
-					this.worldRenderersToUpdate.set(var9, (Object)null);
+				} else if (!var10.isInFrustum) {
+					continue;
 				}
+
+				if (var6 == null) {
+					var6 = new ArrayList();
+				}
+
+				++var8;
+				var6.add(var10);
+				this.worldRenderersToUpdate.set(var9, (Object)null);
 			}
+		}
 
 		this.theWorld.theProfiler.endSection();
 		this.theWorld.theProfiler.startSection("sort");
@@ -1724,11 +1735,11 @@ public class RenderGlobal implements IWorldAccess {
 	/**
 	 * Plays the specified record. Arg: recordName, x, y, z
 	 */
-	public void playRecord(String par1Str, int par2, int par3, int par4) {		
-		ItemRecord var5 = ItemRecord.func_90042_d(par1Str); // Spout modified for non-overriden class		
-		
+	public void playRecord(String par1Str, int par2, int par3, int par4) {
+		ItemRecord var5 = ItemRecord.getRecord(par1Str);
+
 		if (par1Str != null && var5 != null) {
-			this.mc.ingameGUI.setRecordPlayingMessage(var5.func_90043_g()); // Spout modified for non-overriden class
+			this.mc.ingameGUI.setRecordPlayingMessage(var5.getRecordTitle());
 		}
 
 		this.mc.sndManager.playStreaming(par1Str, (float)par2, (float)par3, (float)par4);
@@ -1739,20 +1750,25 @@ public class RenderGlobal implements IWorldAccess {
 	 */
 	public void playSound(String par1Str, double par2, double par4, double par6, float par8, float par9) {}
 
-	public void func_85102_a(EntityPlayer par1EntityPlayer, String par2Str, double par3, double par5, double par7, float par9, float par10) {}
+	/**
+	 * Plays sound to all near players except the player reference given
+	 */
+	public void playSoundToNearExcept(EntityPlayer par1EntityPlayer, String par2Str, double par3, double par5, double par7, float par9, float par10) {}
 
 	/**
 	 * Spawns a particle. Arg: particleType, x, y, z, velX, velY, velZ
 	 */
 	public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {
 		// Spout Start
-		if (mc == null || theWorld == null || mc.renderViewEntity == null) return;
+		if (mc == null || theWorld == null || mc.renderViewEntity == null) {
+			return;
+		}
 		// Spout End
 		try {
 			this.doSpawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
 		} catch (Throwable var17) {
-			CrashReport var15 = CrashReport.func_85055_a(var17, "Exception while adding particle");  // Spout modified for non-overriden class
-			CrashReportCategory var16 = var15.func_85058_a("Particle being added");  // Spout modified for non-overriden class
+			CrashReport var15 = CrashReport.makeCrashReport(var17, "Exception while adding particle");
+			CrashReportCategory var16 = var15.makeCategory("Particle being added");
 			var16.addCrashSection("Name", par1Str);
 			var16.addCrashSectionCallable("Position", new CallableParticlePositionInfo(this, par2, par4, par6));
 			throw new ReportedException(var15);
@@ -1779,18 +1795,19 @@ public class RenderGlobal implements IWorldAccess {
 				this.mc.effectRenderer.addEffect(var21 = new EntityHugeExplodeFX(this.theWorld, par2, par4, par6, par8, par10, par12));
 			} else if (par1Str.equals("largeexplode")) {
 				this.mc.effectRenderer.addEffect(var21 = new EntityLargeExplodeFX(this.renderEngine, this.theWorld, par2, par4, par6, par8, par10, par12));
+			} else if (par1Str.equals("fireworksSpark")) {
+				this.mc.effectRenderer.addEffect(var21 = new EntityFireworkSparkFX(this.theWorld, par2, par4, par6, par8, par10, par12, this.mc.effectRenderer));
 			}
 
 			if (var21 != null) {
 				return (EntityFX)var21;
 			} else {
 				// Spout Start
-				// TODO: might not be needed, old variable = var22 = 6D; (from modified spoutcraft version)
 				double var22=6D;
 				if (!org.spoutcraft.client.config.Configuration.isFancyParticles()) {
 					var22 = 16.0D;
 				} 
-				// Spout end
+				// Spout End
 
 				if (var15 * var15 + var17 * var17 + var19 * var19 > var22 * var22) {
 					return null;
@@ -1804,7 +1821,9 @@ public class RenderGlobal implements IWorldAccess {
 					} else if (par1Str.equals("depthsuspend")) {
 						var21 = new EntityAuraFX(this.theWorld, par2, par4, par6, par8, par10, par12);
 					} else if (par1Str.equals("townaura")) {
+						// MCPatcher Start
 						var21 = (new EntityAuraFX(this.theWorld, par2, par4, par6, par8, par10, par12)).colorize();
+						// MCPatcher End
 					} else if (par1Str.equals("crit")) {
 						var21 = new EntityCritFX(this.theWorld, par2, par4, par6, par8, par10, par12);
 					} else if (par1Str.equals("magicCrit")) {
@@ -1818,17 +1837,16 @@ public class RenderGlobal implements IWorldAccess {
 						((EntityFX)var21).setRBGColorF((float)par8, (float)par10, (float)par12);
 					} else if (par1Str.equals("mobSpellAmbient")) {
 						var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-						//TODO: unable to find variable setAlphaF
-						//((EntityFX)var21).setAlphaF(0.15F);
+						((EntityFX)var21).setAlphaF(0.15F);
 						((EntityFX)var21).setRBGColorF((float)par8, (float)par10, (float)par12);
 					} else if (par1Str.equals("spell")) {
 						var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, par8, par10, par12);
 					} else if (par1Str.equals("instantSpell")) {
 						var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, par8, par10, par12);
-						((EntitySpellParticleFX)var21).func_70589_b(144);
+						((EntitySpellParticleFX)var21).setBaseSpellTextureIndex(144);
 					} else if (par1Str.equals("witchMagic")) {
 						var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, par8, par10, par12);
-						((EntitySpellParticleFX)var21).func_70589_b(144);
+						((EntitySpellParticleFX)var21).setBaseSpellTextureIndex(144);
 						float var24 = this.theWorld.rand.nextFloat() * 0.5F + 0.35F;
 						((EntityFX)var21).setRBGColorF(1.0F * var24, 0.0F * var24, 1.0F * var24);
 					} else if (par1Str.equals("note")) {
@@ -1880,7 +1898,7 @@ public class RenderGlobal implements IWorldAccess {
 						String[] var28 = par1Str.split("_", 3);
 						int var25 = Integer.parseInt(var28[1]);
 						int var26 = Integer.parseInt(var28[2]);
-						var21 = (new EntityDiggingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Block.blocksList[var25], 0, var26)).func_90019_g(var26);
+						var21 = (new EntityDiggingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Block.blocksList[var25], 0, var26)).applyRenderColor(var26);
 					}
 
 					if (var21 != null) {
@@ -1902,13 +1920,15 @@ public class RenderGlobal implements IWorldAccess {
 		par1Entity.updateCloak();
 
 		if (par1Entity.skinUrl != null) {
-			//this.renderEngine.obtainImageData(par1Entity.skinUrl, new ImageBufferDownload());
-			this.renderEngine.obtainImageData(par1Entity.skinUrl, new HDImageBufferDownload()); // Spout
+			// Spout Start
+			this.renderEngine.obtainImageData(par1Entity.skinUrl, new HDImageBufferDownload());
+			// Spout End
 		}
 
 		if (par1Entity.cloakUrl != null) {
-			//this.renderEngine.obtainImageData(par1Entity.cloakUrl, new ImageBufferDownload());
-			this.renderEngine.obtainImageData(par1Entity.cloakUrl, new HDImageBufferDownload()); // Spout
+			// Spout Start
+			this.renderEngine.obtainImageData(par1Entity.cloakUrl, new HDImageBufferDownload());
+			// Spout End
 		}
 	}
 
@@ -1925,39 +1945,42 @@ public class RenderGlobal implements IWorldAccess {
 		}
 	}
 
-	public void func_72728_f() {
+	/**
+	 * Deletes all display lists
+	 */
+	public void deleteAllDisplayLists() {
 		GLAllocation.deleteDisplayLists(this.glRenderListBase);
 	}
 
-	public void func_82746_a(int par1, int par2, int par3, int par4, int par5) {
+	public void broadcastSound(int par1, int par2, int par3, int par4, int par5) {
 		Random var6 = this.theWorld.rand;
 
 		switch (par1) {
-		case 1013:
-		case 1018:
-			if (this.mc.renderViewEntity != null) {
-				double var7 = (double)par2 - this.mc.renderViewEntity.posX;
-				double var9 = (double)par3 - this.mc.renderViewEntity.posY;
-				double var11 = (double)par4 - this.mc.renderViewEntity.posZ;
-				double var13 = Math.sqrt(var7 * var7 + var9 * var9 + var11 * var11);
-				double var15 = this.mc.renderViewEntity.posX;
-				double var17 = this.mc.renderViewEntity.posY;
-				double var19 = this.mc.renderViewEntity.posZ;
+			case 1013:
+			case 1018:
+				if (this.mc.renderViewEntity != null) {
+					double var7 = (double)par2 - this.mc.renderViewEntity.posX;
+					double var9 = (double)par3 - this.mc.renderViewEntity.posY;
+					double var11 = (double)par4 - this.mc.renderViewEntity.posZ;
+					double var13 = Math.sqrt(var7 * var7 + var9 * var9 + var11 * var11);
+					double var15 = this.mc.renderViewEntity.posX;
+					double var17 = this.mc.renderViewEntity.posY;
+					double var19 = this.mc.renderViewEntity.posZ;
 
-				if (var13 > 0.0D) {
-					var15 += var7 / var13 * 2.0D;
-					var17 += var9 / var13 * 2.0D;
-					var19 += var11 / var13 * 2.0D;
+					if (var13 > 0.0D) {
+						var15 += var7 / var13 * 2.0D;
+						var17 += var9 / var13 * 2.0D;
+						var19 += var11 / var13 * 2.0D;
+					}
+
+					if (par1 == 1013) {
+						this.theWorld.playSound(var15, var17, var19, "mob.wither.spawn", 1.0F, 1.0F, false);
+					} else if (par1 == 1018) {
+						this.theWorld.playSound(var15, var17, var19, "mob.enderdragon.end", 5.0F, 1.0F, false);
+					}
 				}
 
-				if (par1 == 1013) {
-					this.theWorld.playSound(var15, var17, var19, "mob.wither.spawn", 1.0F, 1.0F);
-				} else if (par1 == 1018) {
-					this.theWorld.playSound(var15, var17, var19, "mob.enderdragon.end", 5.0F, 1.0F);
-				}
-			}
-
-		default:
+			default:
 		}
 	}
 
@@ -1966,7 +1989,9 @@ public class RenderGlobal implements IWorldAccess {
 	 */
 	public void playAuxSFX(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6) {
 		// Spout Start
-		if (mc == null || theWorld == null || mc.renderViewEntity == null) return;
+		if (mc == null || theWorld == null || mc.renderViewEntity == null) {
+			return;
+		}
 		// Spout End
 		Random var7 = this.theWorld.rand;
 		double var8;
@@ -1982,186 +2007,186 @@ public class RenderGlobal implements IWorldAccess {
 		double var39;
 
 		switch (par2) {
-		case 1000:
-			this.theWorld.playSound((double)par3, (double)par4, (double)par5, "random.click", 1.0F, 1.0F);
-			break;
+			case 1000:
+				this.theWorld.playSound((double)par3, (double)par4, (double)par5, "random.click", 1.0F, 1.0F, false);
+				break;
 
-		case 1001:
-			this.theWorld.playSound((double)par3, (double)par4, (double)par5, "random.click", 1.0F, 1.2F);
-			break;
+			case 1001:
+				this.theWorld.playSound((double)par3, (double)par4, (double)par5, "random.click", 1.0F, 1.2F, false);
+				break;
 
-		case 1002:
-			this.theWorld.playSound((double)par3, (double)par4, (double)par5, "random.bow", 1.0F, 1.2F);
-			break;
+			case 1002:
+				this.theWorld.playSound((double)par3, (double)par4, (double)par5, "random.bow", 1.0F, 1.2F, false);
+				break;
 
-		case 1003:
-			if (Math.random() < 0.5D) {
-				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_open", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
-			} else {
-				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_close", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
-			}
-
-			break;
-
-		case 1004:
-			this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.fizz", 0.5F, 2.6F + (var7.nextFloat() - var7.nextFloat()) * 0.8F);
-			break;
-
-		case 1005:
-			if (Item.itemsList[par6] instanceof ItemRecord) {
-				this.theWorld.playRecord(((ItemRecord)Item.itemsList[par6]).recordName, par3, par4, par5);
-			} else {
-				this.theWorld.playRecord((String)null, par3, par4, par5);
-			}
-
-			break;
-
-		case 1007:
-			this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.charge", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
-			break;
-
-		case 1008:
-			this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
-			break;
-
-		case 1009:
-			this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
-			break;
-
-		case 1010:
-			this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.wood", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
-			break;
-
-		case 1011:
-			this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.metal", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
-			break;
-
-		case 1012:
-			this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
-			break;
-
-		case 1014:
-			this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.wither.shoot", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
-			break;
-
-		case 1015:
-			this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.bat.takeoff", 0.05F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
-			break;
-
-		case 1016:
-			this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.infect", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
-			break;
-
-		case 1017:
-			this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.unfect", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
-			break;
-
-		case 1020:
-			this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.anvil_break", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
-			break;
-
-		case 1021:
-			this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.anvil_use", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
-			break;
-
-		case 1022:
-			this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.anvil_land", 0.3F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
-			break;
-
-		case 2000:
-			int var33 = par6 % 3 - 1;
-			int var9 = par6 / 3 % 3 - 1;
-			var10 = (double)par3 + (double)var33 * 0.6D + 0.5D;
-			var12 = (double)par4 + 0.5D;
-			double var34 = (double)par5 + (double)var9 * 0.6D + 0.5D;
-
-			for (int var35 = 0; var35 < 10; ++var35) {
-				double var37 = var7.nextDouble() * 0.2D + 0.01D;
-				double var38 = var10 + (double)var33 * 0.01D + (var7.nextDouble() - 0.5D) * (double)var9 * 0.5D;
-				var39 = var12 + (var7.nextDouble() - 0.5D) * 0.5D;
-				var23 = var34 + (double)var9 * 0.01D + (var7.nextDouble() - 0.5D) * (double)var33 * 0.5D;
-				var25 = (double)var33 * var37 + var7.nextGaussian() * 0.01D;
-				var27 = -0.03D + var7.nextGaussian() * 0.01D;
-				var29 = (double)var9 * var37 + var7.nextGaussian() * 0.01D;
-				this.spawnParticle("smoke", var38, var39, var23, var25, var27, var29);
-			}
-
-			return;
-
-		case 2001:
-			var20 = par6 & 4095;
-
-			if (var20 > 0) {
-				Block var40 = Block.blocksList[var20];
-				this.mc.sndManager.playSound(var40.stepSound.getBreakSound(), (float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, (var40.stepSound.getVolume() + 1.0F) / 2.0F, var40.stepSound.getPitch() * 0.8F);
-			}
-
-			this.mc.effectRenderer.addBlockDestroyEffects(par3, par4, par5, par6 & 4095, par6 >> 12 & 255);
-			break;
-
-		case 2002:
-			var8 = (double)par3;
-			var10 = (double)par4;
-			var12 = (double)par5;
-			var14 = "iconcrack_" + Item.potion.shiftedIndex;
-
-			for (var15 = 0; var15 < 8; ++var15) {
-				this.spawnParticle(var14, var8, var10, var12, var7.nextGaussian() * 0.15D, var7.nextDouble() * 0.2D, var7.nextGaussian() * 0.15D);
-			}
-
-			var15 = Item.potion.getColorFromDamage(par6);
-			float var16 = (float)(var15 >> 16 & 255) / 255.0F;
-			float var17 = (float)(var15 >> 8 & 255) / 255.0F;
-			float var18 = (float)(var15 >> 0 & 255) / 255.0F;
-			String var19 = "spell";
-
-			if (Item.potion.isEffectInstant(par6)) {
-				var19 = "instantSpell";
-			}
-
-			for (var20 = 0; var20 < 100; ++var20) {
-				var39 = var7.nextDouble() * 4.0D;
-				var23 = var7.nextDouble() * Math.PI * 2.0D;
-				var25 = Math.cos(var23) * var39;
-				var27 = 0.01D + var7.nextDouble() * 0.5D;
-				var29 = Math.sin(var23) * var39;
-				EntityFX var31 = this.doSpawnParticle(var19, var8 + var25 * 0.1D, var10 + 0.3D, var12 + var29 * 0.1D, var25, var27, var29);
-
-				if (var31 != null) {
-					float var32 = 0.75F + var7.nextFloat() * 0.25F;
-					var31.setRBGColorF(var16 * var32, var17 * var32, var18 * var32);
-					var31.multiplyVelocity((float)var39);
+			case 1003:
+				if (Math.random() < 0.5D) {
+					this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_open", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
+				} else {
+					this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_close", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
 				}
-			}
 
-			this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.glass", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
-			break;
+				break;
 
-		case 2003:
-			var8 = (double)par3 + 0.5D;
-			var10 = (double)par4;
-			var12 = (double)par5 + 0.5D;
-			var14 = "iconcrack_" + Item.eyeOfEnder.shiftedIndex;
+			case 1004:
+				this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.fizz", 0.5F, 2.6F + (var7.nextFloat() - var7.nextFloat()) * 0.8F, false);
+				break;
 
-			for (var15 = 0; var15 < 8; ++var15) {
-				this.spawnParticle(var14, var8, var10, var12, var7.nextGaussian() * 0.15D, var7.nextDouble() * 0.2D, var7.nextGaussian() * 0.15D);
-			}
+			case 1005:
+				if (Item.itemsList[par6] instanceof ItemRecord) {
+					this.theWorld.playRecord(((ItemRecord)Item.itemsList[par6]).recordName, par3, par4, par5);
+				} else {
+					this.theWorld.playRecord((String)null, par3, par4, par5);
+				}
 
-			for (double var36 = 0.0D; var36 < (Math.PI * 2D); var36 += 0.15707963267948966D) {
-				this.spawnParticle("portal", var8 + Math.cos(var36) * 5.0D, var10 - 0.4D, var12 + Math.sin(var36) * 5.0D, Math.cos(var36) * -5.0D, 0.0D, Math.sin(var36) * -5.0D);
-				this.spawnParticle("portal", var8 + Math.cos(var36) * 5.0D, var10 - 0.4D, var12 + Math.sin(var36) * 5.0D, Math.cos(var36) * -7.0D, 0.0D, Math.sin(var36) * -7.0D);
-			}
+				break;
 
-			return;
+			case 1007:
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.charge", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F, false);
+				break;
 
-		case 2004:
-			for (int var21 = 0; var21 < 20; ++var21) {
-				double var22 = (double)par3 + 0.5D + ((double)this.theWorld.rand.nextFloat() - 0.5D) * 2.0D;
-				double var24 = (double)par4 + 0.5D + ((double)this.theWorld.rand.nextFloat() - 0.5D) * 2.0D;
-				double var26 = (double)par5 + 0.5D + ((double)this.theWorld.rand.nextFloat() - 0.5D) * 2.0D;
-				this.theWorld.spawnParticle("smoke", var22, var24, var26, 0.0D, 0.0D, 0.0D);
-				this.theWorld.spawnParticle("flame", var22, var24, var26, 0.0D, 0.0D, 0.0D);
-			}
+			case 1008:
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F, false);
+				break;
+
+			case 1009:
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F, false);
+				break;
+
+			case 1010:
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.wood", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F, false);
+				break;
+
+			case 1011:
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.metal", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F, false);
+				break;
+
+			case 1012:
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F, false);
+				break;
+
+			case 1014:
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.wither.shoot", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F, false);
+				break;
+
+			case 1015:
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.bat.takeoff", 0.05F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F, false);
+				break;
+
+			case 1016:
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.infect", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F, false);
+				break;
+
+			case 1017:
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.unfect", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F, false);
+				break;
+
+			case 1020:
+				this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.anvil_break", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
+				break;
+
+			case 1021:
+				this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.anvil_use", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
+				break;
+
+			case 1022:
+				this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.anvil_land", 0.3F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
+				break;
+
+			case 2000:
+				int var33 = par6 % 3 - 1;
+				int var9 = par6 / 3 % 3 - 1;
+				var10 = (double)par3 + (double)var33 * 0.6D + 0.5D;
+				var12 = (double)par4 + 0.5D;
+				double var34 = (double)par5 + (double)var9 * 0.6D + 0.5D;
+
+				for (int var35 = 0; var35 < 10; ++var35) {
+					double var37 = var7.nextDouble() * 0.2D + 0.01D;
+					double var38 = var10 + (double)var33 * 0.01D + (var7.nextDouble() - 0.5D) * (double)var9 * 0.5D;
+					var39 = var12 + (var7.nextDouble() - 0.5D) * 0.5D;
+					var23 = var34 + (double)var9 * 0.01D + (var7.nextDouble() - 0.5D) * (double)var33 * 0.5D;
+					var25 = (double)var33 * var37 + var7.nextGaussian() * 0.01D;
+					var27 = -0.03D + var7.nextGaussian() * 0.01D;
+					var29 = (double)var9 * var37 + var7.nextGaussian() * 0.01D;
+					this.spawnParticle("smoke", var38, var39, var23, var25, var27, var29);
+				}
+
+				return;
+
+			case 2001:
+				var20 = par6 & 4095;
+
+				if (var20 > 0) {
+					Block var40 = Block.blocksList[var20];
+					this.mc.sndManager.playSound(var40.stepSound.getBreakSound(), (float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, (var40.stepSound.getVolume() + 1.0F) / 2.0F, var40.stepSound.getPitch() * 0.8F);
+				}
+
+				this.mc.effectRenderer.addBlockDestroyEffects(par3, par4, par5, par6 & 4095, par6 >> 12 & 255);
+				break;
+
+			case 2002:
+				var8 = (double)par3;
+				var10 = (double)par4;
+				var12 = (double)par5;
+				var14 = "iconcrack_" + Item.potion.itemID;
+
+				for (var15 = 0; var15 < 8; ++var15) {
+					this.spawnParticle(var14, var8, var10, var12, var7.nextGaussian() * 0.15D, var7.nextDouble() * 0.2D, var7.nextGaussian() * 0.15D);
+				}
+
+				var15 = Item.potion.getColorFromDamage(par6);
+				float var16 = (float)(var15 >> 16 & 255) / 255.0F;
+				float var17 = (float)(var15 >> 8 & 255) / 255.0F;
+				float var18 = (float)(var15 >> 0 & 255) / 255.0F;
+				String var19 = "spell";
+
+				if (Item.potion.isEffectInstant(par6)) {
+					var19 = "instantSpell";
+				}
+
+				for (var20 = 0; var20 < 100; ++var20) {
+					var39 = var7.nextDouble() * 4.0D;
+					var23 = var7.nextDouble() * Math.PI * 2.0D;
+					var25 = Math.cos(var23) * var39;
+					var27 = 0.01D + var7.nextDouble() * 0.5D;
+					var29 = Math.sin(var23) * var39;
+					EntityFX var31 = this.doSpawnParticle(var19, var8 + var25 * 0.1D, var10 + 0.3D, var12 + var29 * 0.1D, var25, var27, var29);
+
+					if (var31 != null) {
+						float var32 = 0.75F + var7.nextFloat() * 0.25F;
+						var31.setRBGColorF(var16 * var32, var17 * var32, var18 * var32);
+						var31.multiplyVelocity((float)var39);
+					}
+				}
+
+				this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.glass", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F, false);
+				break;
+
+			case 2003:
+				var8 = (double)par3 + 0.5D;
+				var10 = (double)par4;
+				var12 = (double)par5 + 0.5D;
+				var14 = "iconcrack_" + Item.eyeOfEnder.itemID;
+
+				for (var15 = 0; var15 < 8; ++var15) {
+					this.spawnParticle(var14, var8, var10, var12, var7.nextGaussian() * 0.15D, var7.nextDouble() * 0.2D, var7.nextGaussian() * 0.15D);
+				}
+
+				for (double var36 = 0.0D; var36 < (Math.PI * 2D); var36 += 0.15707963267948966D) {
+					this.spawnParticle("portal", var8 + Math.cos(var36) * 5.0D, var10 - 0.4D, var12 + Math.sin(var36) * 5.0D, Math.cos(var36) * -5.0D, 0.0D, Math.sin(var36) * -5.0D);
+					this.spawnParticle("portal", var8 + Math.cos(var36) * 5.0D, var10 - 0.4D, var12 + Math.sin(var36) * 5.0D, Math.cos(var36) * -7.0D, 0.0D, Math.sin(var36) * -7.0D);
+				}
+
+				return;
+
+			case 2004:
+				for (int var21 = 0; var21 < 20; ++var21) {
+					double var22 = (double)par3 + 0.5D + ((double)this.theWorld.rand.nextFloat() - 0.5D) * 2.0D;
+					double var24 = (double)par4 + 0.5D + ((double)this.theWorld.rand.nextFloat() - 0.5D) * 2.0D;
+					double var26 = (double)par5 + 0.5D + ((double)this.theWorld.rand.nextFloat() - 0.5D) * 2.0D;
+					this.theWorld.spawnParticle("smoke", var22, var24, var26, 0.0D, 0.0D, 0.0D);
+					this.theWorld.spawnParticle("flame", var22, var24, var26, 0.0D, 0.0D, 0.0D);
+				}
 		}
 	}
 
@@ -2184,9 +2209,9 @@ public class RenderGlobal implements IWorldAccess {
 			this.damagedBlocks.remove(Integer.valueOf(par1));
 		}
 	}
-	
-	// TODO: Some methods here may not be called.
+
 	// Spout Start
+	// TODO: Some methods here may not be called.
 	public int renderAllSortedRenderers(int var1, double var2) {
 		return this.renderSortedRenderers(0, this.sortedWorldRenderers.length, var1, var2);
 	}

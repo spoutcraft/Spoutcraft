@@ -44,10 +44,10 @@ public class ContainerMerchant extends Container {
 	// Spout End
 
 	/**
-	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
+	 * Looks for changes made in the container, sends them to every listener.
 	 */
-	public void updateCraftingResults() {
-		super.updateCraftingResults();
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
 	}
 
 	/**

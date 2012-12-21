@@ -16,8 +16,8 @@ public class GlassPaneRenderer {
 	private static double u1;
 	private static double v0;
 	private static double v1;
-	
-	public static void render(RenderBlocks var0, int var1, Block var2, int var3, int var4, int var5, boolean var6, boolean var7, boolean var8, boolean var9) {		
+
+	public static void render(RenderBlocks var0, int var1, Block var2, int var3, int var4, int var5, boolean var6, boolean var7, boolean var8, boolean var9) {
 		if (CTMUtils.active && var1 < 0 && Tessellator.instance instanceof SuperTessellator && CTMUtils.getConnectedTexture(var0, var0.blockAccess, var2, 148, var3, var4, var5, 0)) {
 			renderBlocks = var0;
 			blockPane = var2;
@@ -35,7 +35,7 @@ public class GlassPaneRenderer {
 			Tessellator var26 = CTMUtils.newTessellator;
 			active = true;
 			boolean var27 = var8 || var9 || var6 || var7;
-			
+
 			if ((!var9 || !var8) && var27) {
 				if (var8 && !var9) {
 					setupTileCoords(3);
@@ -112,11 +112,11 @@ public class GlassPaneRenderer {
 		} else {
 			active = false;
 			renderBlocks = null;
-			blockPane = null;			
+			blockPane = null;
 		}
-	} 
+	}
 
-	private static void setupTileCoords(int var0) {		
+	private static void setupTileCoords(int var0) {
 		int var1 = CTMUtils.lastOverride.getTile(renderBlocks, renderBlocks.blockAccess, blockPane, 49, i, j, k, var0);
 		int var2 = (var1 & 15) << 4;
 		int var3 = var1 & 240;

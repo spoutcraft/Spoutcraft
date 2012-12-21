@@ -34,5 +34,5 @@ public class CraftEntityFactory {
 		}
 		return null; //Should not break, got most of the important stuff
 	}
-	
+
 }

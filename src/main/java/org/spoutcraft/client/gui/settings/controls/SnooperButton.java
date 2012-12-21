@@ -37,7 +37,7 @@ public class SnooperButton extends GenericButton {
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		GuiSnooper snooperSettings = new GuiSnooper(parent, SpoutClient.getHandle().gameSettings);		
+		GuiSnooper snooperSettings = new GuiSnooper(parent, SpoutClient.getHandle().gameSettings);
 		SpoutClient.getHandle().displayGuiScreen(snooperSettings);
 	}
 }

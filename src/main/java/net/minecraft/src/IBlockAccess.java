@@ -82,13 +82,9 @@ public interface IBlockAccess {
 
 	// Spout Start
 	public int getGrassColorCache(int x, int y, int z);
-
 	public void setGrassColorCache(int x, int y, int z, int color);
-
 	public int getWaterColorCache(int x, int y, int z);
-
 	public void setWaterColorCache(int x, int y, int z, int color);
-	
 	public WorldChunkManager getWorldChunkManager();
 	// Spout End
 }

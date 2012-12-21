@@ -24,7 +24,7 @@ public class ContainerDispenser extends Container {
 			this.addSlotToContainer(new Slot(par1IInventory, var3, 8 + var3 * 18, 142));
 		}
 	}
-	
+
 	// Spout Start
 	public IInventory getIInventory() {
 		return tileEntityDispenser;

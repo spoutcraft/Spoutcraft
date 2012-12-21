@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+// MCPatcher Start
 import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public class EntityReddustFX extends EntityFX {
 	float reddustParticleScale;
@@ -18,11 +20,13 @@ public class EntityReddustFX extends EntityFX {
 		if (par9 == 0.0F) {
 			par9 = 1.0F;
 
-			if (Colorizer.computeRedstoneWireColor(15)) {
+			// MCPatcher Start
+			if (Colorizer.computeRedstoneWireColor(15)) { 
 				par9 = Colorizer.setColor[0];
 				par10 = Colorizer.setColor[1];
 				par11 = Colorizer.setColor[2];
 			}
+			// MCPatcher End
 		}
 
 		float var12 = (float)Math.random() * 0.4F + 0.6F;

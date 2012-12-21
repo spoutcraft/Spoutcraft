@@ -154,7 +154,9 @@ public class BlockPane extends Block {
 	 * of blockID passed in. Args: blockID
 	 */
 	public final boolean canThisPaneConnectToThisBlockID(int par1) {
-		return Block.opaqueCubeLookup[par1] || par1 == this.blockID || par1 == Block.glass.blockID || par1 == Block.cloth.blockID || par1 == Block.stoneBrick.blockID; // Spout add cloth- & stonebrick ID
+		// Spout Start - Add cloth and stoneBrick IDs
+		return Block.opaqueCubeLookup[par1] || par1 == this.blockID || par1 == Block.glass.blockID || par1 == Block.cloth.blockID || par1 == Block.stoneBrick.blockID;
+		// Spout End
 	}
 
 	/**

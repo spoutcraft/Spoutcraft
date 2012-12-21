@@ -1,11 +1,12 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.MobRandomizer;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
+// MCPatcher Start
+import com.pclewis.mcpatcher.mod.MobRandomizer;
+// MCPatcher End
 // Spout Start
 import org.lwjgl.opengl.GL13;
 import org.newdawn.slick.opengl.Texture;
@@ -222,9 +223,9 @@ public class RenderLiving extends Render {
 	 */
 	protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7) {
 		if (!par1EntityLiving.getHasActivePotion()) {
-			// Spout Start			
+			// MCPatcher Start
 			this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, MobRandomizer.randomTexture(par1EntityLiving));
-			// Spout End
+			// MCPatcher End
 			this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
 		} else {
 			this.mainModel.setRotationAngles(par2, par3, par4, par5, par6, par7, par1EntityLiving);
@@ -266,8 +267,11 @@ public class RenderLiving extends Render {
 
 	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {}
 
-	protected void func_85093_e(EntityLiving par1EntityLiving, float par2) {
-		int var3 = par1EntityLiving.func_85035_bI();
+	/**
+	 * renders arrows the Entity has been attacked with, attached to it
+	 */
+	protected void renderArrowsStuckInEntity(EntityLiving par1EntityLiving, float par2) {
+		int var3 = par1EntityLiving.getArrowCountInEntity();
 
 		if (var3 > 0) {
 			EntityArrow var4 = new EntityArrow(par1EntityLiving.worldObj, par1EntityLiving.posX, par1EntityLiving.posY, par1EntityLiving.posZ);
@@ -342,10 +346,9 @@ public class RenderLiving extends Render {
 	 */
 	protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6) {
 		// Spout Start
-		if(Minecraft.isDebugInfoEnabled() && SpoutClient.getInstance().isEntityLabelCheat()) {
+		if (Minecraft.isDebugInfoEnabled() && SpoutClient.getInstance().isEntityLabelCheat()) {
 			this.renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4, par6, 64);
-		}
-		else {
+		} else {
 			String title = par1EntityLiving.displayName;
 			if (title != null && !title.equals("[hide]")) {
 				String lines[] = title.split("\\n");

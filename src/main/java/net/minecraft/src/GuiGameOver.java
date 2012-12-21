@@ -2,7 +2,9 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.gui.mainmenu.MainMenu; // Spout
+// Spout Start
+import org.spoutcraft.client.gui.mainmenu.MainMenu;
+// Spout End
 
 public class GuiGameOver extends GuiScreen {
 
@@ -58,7 +60,6 @@ public class GuiGameOver extends GuiScreen {
 				this.mc.theWorld.sendQuittingDisconnectingPacket();
 				this.mc.loadWorld((WorldClient)null);
 				// Spout Start
-				//this.mc.displayGuiScreen(new GuiMainMenu());
 				this.mc.displayGuiScreen(new MainMenu());
 				// Spout End
 		}

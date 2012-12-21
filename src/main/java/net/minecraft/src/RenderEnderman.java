@@ -3,7 +3,6 @@ package net.minecraft.src;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
 // Spout Start
 import com.pclewis.mcpatcher.mod.MobRandomizer;
 import org.spoutcraft.client.config.Configuration;

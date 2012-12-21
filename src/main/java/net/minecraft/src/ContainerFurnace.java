@@ -23,7 +23,7 @@ public class ContainerFurnace extends Container {
 			this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
 		}
 	}
-	
+
 	// Spout Start
 	public IInventory getIInventory() {
 		return furnace;
@@ -38,10 +38,10 @@ public class ContainerFurnace extends Container {
 	}
 
 	/**
-	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
+	 * Looks for changes made in the container, sends them to every listener.
 	 */
-	public void updateCraftingResults() {
-		super.updateCraftingResults();
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
 
 		for (int var1 = 0; var1 < this.crafters.size(); ++var1) {
 			ICrafting var2 = (ICrafting)this.crafters.get(var1);
@@ -100,7 +100,7 @@ public class ContainerFurnace extends Container {
 
 				var4.onSlotChange(var5, var3);
 			} else if (par2 != 1 && par2 != 0) {
-				if (FurnaceRecipes.smelting().getSmeltingResult(var5.getItem().shiftedIndex) != null) {
+				if (FurnaceRecipes.smelting().getSmeltingResult(var5.getItem().itemID) != null) {
 					if (!this.mergeItemStack(var5, 0, 1, false)) {
 						return null;
 					}

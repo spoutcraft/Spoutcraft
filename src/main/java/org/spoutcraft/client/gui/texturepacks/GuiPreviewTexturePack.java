@@ -74,7 +74,7 @@ public class GuiPreviewTexturePack extends GuiSpoutScreen {
 			if (item == null) {
 				continue;
 			}
-			GenericItemWidget icon = new GenericItemWidget(new ItemStack(item.shiftedIndex));
+			GenericItemWidget icon = new GenericItemWidget(new ItemStack(item.itemID));
 			previewIcons.add(icon);
 		}
 		scroll.attachWidgets(spoutcraft, previewIcons.toArray(new Widget[0]));

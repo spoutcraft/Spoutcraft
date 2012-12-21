@@ -88,7 +88,7 @@ public enum PacketType {
 	PacketValidatePrecache(63, PacketValidatePrecache.class),
 	PacketRequestPrecache(64, PacketRequestPrecache.class),
 	PacketSendPrecache(65, PacketSendPrecache.class);
-	
+
 	private final int id;
 	private final Class<? extends SpoutPacket> packetClass;
 	private static final HashMap<Integer, PacketType> lookupId = new HashMap<Integer, PacketType>();

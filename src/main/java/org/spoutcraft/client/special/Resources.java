@@ -114,12 +114,11 @@ public enum Resources implements YAMLResource {
 
 		return vips.get(username.toLowerCase());
 	}
-	
+
 	public static String formatChatColors(String message) {
 		message = message.replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
 		message = message.replaceAll("(&([k-oK-O0-9]))", "\u00A7$2");
 		message = message.replaceAll("(&([r|R]))", "\u00A7$2");
 		return message;
 	}
-
 }

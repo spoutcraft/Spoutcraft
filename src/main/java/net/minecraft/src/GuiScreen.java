@@ -14,7 +14,6 @@ import org.lwjgl.opengl.GL11;
 // Spout Start
 import java.util.IdentityHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
-
 import org.spoutcraft.client.ScheduledTextFieldUpdate;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
@@ -32,7 +31,7 @@ import org.spoutcraft.api.gui.Slot;
 // Spout End
 
 public class GuiScreen extends Gui {
-	public static final boolean field_90017_e = Minecraft.getOs() == EnumOS.MACOS;
+	public static final boolean isMacOs = Minecraft.getOs() == EnumOS.MACOS;
 
 	/** Reference to the Minecraft object. */
 	protected Minecraft mc;
@@ -55,6 +54,7 @@ public class GuiScreen extends Gui {
 	private GuiButton selectedButton = null;
 	private int field_85042_b = 0;
 	private long field_85043_c = 0L;
+	private int field_92018_d = 0;
 
 	// Spout Start
 	public GenericGradient bg;
@@ -78,7 +78,7 @@ public class GuiScreen extends Gui {
 	}
 
 	protected IdentityHashMap<TextField, ScheduledTextFieldUpdate> scheduledTextFieldUpdates = new IdentityHashMap<TextField, ScheduledTextFieldUpdate>();
-	
+
 	/**
 	 * Draws the screen with widgets - do not override - use drawScreen() instead
 	 */
@@ -99,7 +99,7 @@ public class GuiScreen extends Gui {
 
 			this.renderEndNanoTime = System.nanoTime();
 		}
-		
+
 		int i = 0;
 		int j = 0;
 		if(mc.thePlayer != null) {
@@ -174,11 +174,8 @@ public class GuiScreen extends Gui {
 		return "";
 	}
 
-	// Spout Start
-	// Wrap ALL the methods!!
-
-	// Making these protected so you can always override behaviour you don't
-	// want
+	// Spout Start - Wrap ALL the methods!
+	// Making these protected so you can always override behaviour you don't want.
 	protected void mouseClickedPre(int mouseX, int mouseY, int eventButton) {
 		mouseClicked(mouseX, mouseY, eventButton); // Call vanilla method
 		if (getScreen() == null) {
@@ -250,11 +247,11 @@ public class GuiScreen extends Gui {
 				}
 			}
 		} else if (eventButton == 1) {
-			for(Widget widget : screen.getAttachedWidgets(true)) {
+			for (Widget widget : screen.getAttachedWidgets(true)) {
 				if (widget instanceof Control) {
 					Control c = (Control) widget;
-					if(c.isEnabled() && c.isVisible() && isInBoundingRect(widget, mouseX, mouseY)) {
-						if(widget instanceof Slot) {
+					if (c.isEnabled() && c.isVisible() && isInBoundingRect(widget, mouseX, mouseY)) {
+						if (widget instanceof Slot) {
 							handleClickOnSlot((Slot) widget, 1);
 							break;
 						}
@@ -277,29 +274,29 @@ public class GuiScreen extends Gui {
 			PacketSlotClick packet = new PacketSlotClick(slot, button,Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
 			ItemStack stackOnCursor = new ItemStack(0);
-			if(mc.thePlayer.inventory.getItemStack() != null) {
+			if (mc.thePlayer.inventory.getItemStack() != null) {
 				net.minecraft.src.ItemStack mcStack = mc.thePlayer.inventory.getItemStack();
 				stackOnCursor = new ItemStack(mcStack.itemID, mcStack.stackSize, (short) mcStack.getItemDamage());
 			}
 			ItemStack stackInSlot = slot.getItem();
-			if((stackOnCursor == null || stackOnCursor.getTypeId() == 0) && stackInSlot.getTypeId() == 0) {
+			if ((stackOnCursor == null || stackOnCursor.getTypeId() == 0) && stackInSlot.getTypeId() == 0) {
 				return; //Nothing to do
 			}
-			if(stackOnCursor.getTypeId() == 0 && stackInSlot.getTypeId() != 0 && button == 1) { //Split item
+			if (stackOnCursor.getTypeId() == 0 && stackInSlot.getTypeId() != 0 && button == 1) { //Split item
 				int amountSlot = stackInSlot.getAmount() / 2;
 				int amountCursor = stackInSlot.getAmount() - amountSlot;
-				if(stackInSlot.getAmount() == 1) {
+				if (stackInSlot.getAmount() == 1) {
 					amountSlot = 0;
 					amountCursor = 1;
 				}
 				stackOnCursor = stackInSlot.clone();
 				stackOnCursor.setAmount(amountCursor);
 				stackInSlot.setAmount(amountSlot);
-				if(amountSlot == 0) {
+				if (amountSlot == 0) {
 					stackInSlot = new ItemStack(0);
 				}
 				boolean success = slot.onItemTake(stackOnCursor);
-				if(success) {
+				if (success) {
 					slot.setItem(stackInSlot);
 				} else {
 					return;
@@ -307,26 +304,26 @@ public class GuiScreen extends Gui {
 			} else if (stackOnCursor != null && (stackInSlot.getTypeId() == 0 || (stackInSlot.getTypeId() == stackOnCursor.getTypeId() && stackInSlot.getDurability() == stackOnCursor.getDurability()))) { //Put item
 				ItemStack toPut = stackOnCursor.clone();
 				int putAmount = toPut.getAmount();
-				if(button == 1) {
+				if (button == 1) {
 					putAmount = 1;
 				}
 				int amount = stackInSlot.getTypeId() == 0 ? 0 : stackInSlot.getAmount();
 				amount += putAmount;
 				System.out.println(amount);
 				int maxStackSize = toPut.getMaxStackSize();
-				if(maxStackSize == -1) {
+				if (maxStackSize == -1) {
 					maxStackSize = 64;
 				}
-				if(amount > maxStackSize) {
+				if (amount > maxStackSize) {
 					putAmount -= amount - maxStackSize;
 					amount = maxStackSize;
 				}
-				if(putAmount <= 0) {
+				if (putAmount <= 0) {
 					return;
 				}
 				toPut.setAmount(putAmount);
 				boolean success = slot.onItemPut(toPut);
-				if(success) {
+				if (success) {
 					stackOnCursor.setAmount(stackOnCursor.getAmount() - putAmount);
 					if(stackOnCursor.getAmount() == 0) {
 						stackOnCursor = new ItemStack(0);
@@ -336,24 +333,24 @@ public class GuiScreen extends Gui {
 					slot.setItem(put);
 				}
 			} else if (stackOnCursor == null || stackOnCursor.getTypeId() == 0) { //Take item or shift click
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 					slot.onItemShiftClicked();
 				} else { //Take item
 					boolean success = slot.onItemTake(stackInSlot);
-					if(success) {
+					if (success) {
 						stackOnCursor = stackInSlot;
 						slot.setItem(new ItemStack(0));
 					}
 				}
 			} else if (stackOnCursor.getTypeId() != stackInSlot.getTypeId() || stackOnCursor.getDurability() != stackInSlot.getDurability()) { //Exchange slot stack and cursor stack
 				boolean success = slot.onItemExchange(stackInSlot, stackOnCursor.clone());
-				if(success) {
+				if (success) {
 					slot.setItem(stackOnCursor.clone());
 					stackOnCursor = stackInSlot;
 				}
 			}
-			
-			if(stackOnCursor == null || stackOnCursor.getTypeId() == 0) {
+
+			if (stackOnCursor == null || stackOnCursor.getTypeId() == 0) {
 				mc.thePlayer.inventory.setItemStack(null);
 			} else {
 				net.minecraft.src.ItemStack mcStack = new net.minecraft.src.ItemStack(stackOnCursor.getTypeId(), stackOnCursor.getAmount(), stackOnCursor.getDurability());
@@ -378,7 +375,7 @@ public class GuiScreen extends Gui {
 		}
 	}
 
-	// Note: Already in sandbox, in mouseClickedPre
+	// Already in sandbox, in mouseClickedPre
 	private boolean handleClickOnListWidget(ListWidget lw, int mouseX,
 			int mouseY) {
 		int x = (int) (mouseX - lw.getActualX());
@@ -407,7 +404,7 @@ public class GuiScreen extends Gui {
 				ListWidgetItem current = lw.getSelectedItem();
 				current.onClick(x - 5, y - currentHeight, doubleclick);
 				lw.onSelected(lw.getSelectedRow(), doubleclick);
-				if(lw instanceof ComboBoxView) {
+				if (lw instanceof ComboBoxView) {
 					PacketComboBox packet = new PacketComboBox(((ComboBoxView) lw).getComboBox());
 					SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
 				} else {
@@ -423,7 +420,7 @@ public class GuiScreen extends Gui {
 		return false;
 	}
 
-	// Note: Already in sandbox, in mouseClickedPre
+	// Already in sandbox, in mouseClickedPre
 	private boolean handleClickOnScrollable(Scrollable lw, int mouseX,
 			int mouseY) {
 		int x = (int) (mouseX - lw.getActualX());
@@ -469,7 +466,7 @@ public class GuiScreen extends Gui {
 		ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
 		((Button) control).onButtonClick(event);
 		SpoutClient.getInstance().getAddonManager().callEvent(event);
-		if(control instanceof GenericComboBox) {
+		if (control instanceof GenericComboBox) {
 			PacketComboBox packet = new PacketComboBox((GenericComboBox) control);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
 		}
@@ -632,32 +629,21 @@ public class GuiScreen extends Gui {
 	/**
 	 * Handles mouse input.
 	 */
-	// Spout Start rewritten
-	/*public void handleMouseInput() {
-		int var1 = Mouse.getEventX() * this.width / this.mc.displayWidth;
-		int var2 = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-
-		if (Mouse.getEventButtonState()) {
-			this.field_85042_b = Mouse.getEventButton();
-			this.field_85043_c = Minecraft.getSystemTime();
-			this.mouseClicked(var1, var2, this.field_85042_b);
-		} else if (Mouse.getEventButton() != -1) {
-			this.field_85042_b = -1;
-			this.mouseMovedOrUp(var1, var2, Mouse.getEventButton());
-		} else if (this.mc.gameSettings.field_85185_A && this.field_85042_b != -1 && this.field_85043_c > 0L) {
-			long var3 = Minecraft.getSystemTime() - this.field_85043_c;
-			this.func_85041_a(var1, var2, this.field_85042_b, var3);
-		}
-	}*/
-	
+	// Spout Start - Rewritten
 	public void handleMouseInput() {
 		int x;
 		int y;
 		if (Mouse.getEventButtonState()) {
+			if (this.mc.gameSettings.touchscreen && this.field_92018_d++ > 0) {
+				return;
+			}
 			x = Mouse.getEventX() * this.width / this.mc.displayWidth;
 			y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 			this.mouseClickedPre(x, y, Mouse.getEventButton());
 		} else {
+			if (this.mc.gameSettings.touchscreen && this.field_92018_d++ > 0) {
+				return;
+			}
 			x = Mouse.getEventX() * this.width / this.mc.displayWidth;
 			y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 			this.mouseMovedOrUpPre(x, y, Mouse.getEventButton());
@@ -670,6 +656,7 @@ public class GuiScreen extends Gui {
 		}
 		SpoutClient.disableSandbox();
 	}
+
 
 	protected void handleScroll(int x, int y, int scroll) {
 		Orientation axis = Orientation.VERTICAL;
@@ -692,7 +679,7 @@ public class GuiScreen extends Gui {
 			}
 		}
 	}
-	// Spout End rewritten
+	// Spout End
 
 	/**
 	 * Handles keyboard input.
@@ -728,36 +715,36 @@ public class GuiScreen extends Gui {
 				}
 				if (widget instanceof TextField) {
 					TextField tf = (TextField) widget;
-					// handle tabbing get all textfields of this screen and start looking for the next bigger tab-index
+					// Handle tabbing get all textfields of this screen and start looking for the next bigger tab-index
 					if (tab) {
 						if (tf.isFocus())
 							focusedTF = tf;
 						tabIndexMap.put(tf.getTabIndex(), tf);
-					}
-					// pass typed key to text processor
-					else if (tf.isEnabled() && tf.isFocus()) {
+					// Pass typed key to text processor
+					} else if (tf.isEnabled() && tf.isFocus()) {
 						if (tf.getTextProcessor().handleInput(Keyboard.getEventCharacter(), Keyboard.getEventKey())) {
 							TextFieldChangeEvent event = TextFieldChangeEvent.getInstance(getPlayer(), screen, tf, tf.getText());
 							tf.onTextFieldChange(event);
 							SpoutClient.getInstance().getAddonManager().callEvent(event);
 
-							// disable the sandbox for this thread
+							// Disable the sandbox for this thread
 							SpoutClient.disableSandbox();
 
 							ScheduledTextFieldUpdate updateThread = null;
 							if (scheduledTextFieldUpdates.containsKey(tf)) {
 								updateThread = scheduledTextFieldUpdates.get(tf);
-								if (updateThread.isAlive())
+								if (updateThread.isAlive()) {
 									updateThread.delay();
-								else
+								} else {
 									updateThread.start();
+								}
 							} else {
 								updateThread = new ScheduledTextFieldUpdate(screen, tf);
 								scheduledTextFieldUpdates.put(tf, updateThread);
 								updateThread.start();
 							}
 
-							// reenable the sandbox
+							// Re-enable the sandbox
 							SpoutClient.enableSandbox();
 						}
 						handled = true;
@@ -798,11 +785,12 @@ public class GuiScreen extends Gui {
 				}
 			}
 
-			// start looking for the next bigger tab-index
+			// Start looking for the next bigger tab-index
 			if (tab && focusedTF != null) {
 				Integer index = tabIndexMap.higherKey(focusedTF.getTabIndex());
-				if (index == null)
+				if (index == null) {
 					index = tabIndexMap.ceilingKey(0);
+			}
 				if (index != null) {
 					focusedTF.setFocus(false);
 					tabIndexMap.get(index).setFocus(true);
@@ -813,7 +801,7 @@ public class GuiScreen extends Gui {
 			SpoutClient.disableSandbox();
 		}
 		if (!handled) {
-			// Spout - Start of vanilla code, got wrapped with this if
+			// Start of vanilla code - got wrapped with this if
 			if (Keyboard.getEventKeyState()) {
 				if (Keyboard.getEventKey() == 87) {
 					this.mc.toggleFullscreen();
@@ -821,7 +809,7 @@ public class GuiScreen extends Gui {
 				}
 				this.keyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());
 			}
-			// Spout - End of vanilla code
+			// End of vanilla code
 		}
 		// Spout End
 	}
@@ -889,9 +877,8 @@ public class GuiScreen extends Gui {
 		if (getScreen() == null) {
 			return;
 		}
-		// Draw ALL the widgets!!
+		// Draw ALL the widgets!
 		SpoutClient.enableSandbox();
-
 		screen.render();
 		if (shouldShowTooltip()) {
 			drawTooltips(x, y);
@@ -915,9 +902,8 @@ public class GuiScreen extends Gui {
 							}
 						}
 						tooltip = widget.getTooltip();
-						// tooltipWidget = widget;
-						// No return here, when a widget that is over it comes
-						// next, tooltip will be overwritten.
+						//tooltipWidget = widget;
+						// No return here, when a widget that is over it comes next, tooltip will be overwritten.
 					} else if(widget.getTooltip() == null && widget.isVisible()) {
 						return;
 					}
@@ -930,15 +916,14 @@ public class GuiScreen extends Gui {
 		}
 	}
 
-	// Note: already inside of the sandbox
+	// Already inside of the sandbox
 	public void drawTooltip(String tooltip, int x, int y) {
 		GL11.glPushMatrix();
 		String lines[] = this.fontRenderer.wrapFormattedStringToWidth(tooltip,(width-22)).split("\n");	// Meow- Autowrap tooltips to reported screen width
 		int tooltipWidth = 0;
 		int tooltipHeight = 8 * lines.length + 3;
 		for (String line : lines) {
-			tooltipWidth = Math.max(this.fontRenderer.getStringWidth(line),
-					tooltipWidth);
+			tooltipWidth = Math.max(this.fontRenderer.getStringWidth(line), tooltipWidth);
 		}
 		int offsetX = 0;
 		if (x + tooltipWidth > width) {
@@ -987,11 +972,10 @@ public class GuiScreen extends Gui {
 			drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, (j3 - 3) + 1, j4, j4);
 			drawGradientRect(l2 - 3, j3 + l3 + 2, l2 + k3 + 3, j3 + l3 + 3, k4, k4);
 
-			// this.drawGradientRect(x - 3 + offsetX, y - 3 + offsetY, x +
-			// tooltipWidth + 3 + offsetX, y + tooltipHeight + offsetY, -1073741824,
-			// -1073741824);
+			//this.drawGradientRect(x - 3 + offsetX, y - 3 + offsetY, x +
+			//tooltipWidth + 3 + offsetX, y + tooltipHeight + offsetY, -1073741824, -1073741824);
 
-			// int i = 0;
+			//int i = 0;
 			GL11.glColor4f(1f, 1f, 1f, 1f);
 			for (String line : lines) {
 				this.fontRenderer.drawStringWithShadow(line, l2, j3, -1);
@@ -1024,8 +1008,7 @@ public class GuiScreen extends Gui {
 		return false;
 	}
 
-	public boolean isInBoundingRect(int widgetX, int widgetY, int height,
-			int width, int x, int y) {
+	public boolean isInBoundingRect(int widgetX, int widgetY, int height, int width, int x, int y) {
 		int left = widgetX;
 		int top = widgetY;
 		int right = left + width;
@@ -1054,7 +1037,7 @@ public class GuiScreen extends Gui {
 
 	public static boolean isCtrlKeyDown() {
 		boolean var0 = Keyboard.isKeyDown(28) && Keyboard.getEventCharacter() == 0;
-		return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157) || field_90017_e && (var0 || Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220));
+		return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157) || isMacOs && (var0 || Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220));
 	}
 
 	public static boolean isShiftKeyDown() {

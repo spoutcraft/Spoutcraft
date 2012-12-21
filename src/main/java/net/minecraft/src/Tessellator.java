@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.SuperTessellator;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -9,6 +8,9 @@ import java.nio.ShortBuffer;
 import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
+// MCPatcher Start
+import com.pclewis.mcpatcher.mod.SuperTessellator;
+// MCPatcher End
 
 public class Tessellator {
 
@@ -40,7 +42,9 @@ public class Tessellator {
 	/**
 	 * The number of vertices to be drawn in the next draw call. Reset to 0 between draw calls.
 	 */
+	// MCPatcher Start - private to public
 	public int vertexCount = 0;
+	// MCPatcher End
 
 	/** The first coordinate to be used for the texture. */
 	private double textureU;
@@ -69,19 +73,25 @@ public class Tessellator {
 	private boolean hasNormals = false;
 
 	/** The index into the raw buffer to be used for the next data. */
+	// MCPatcher Start - private to public
 	public int rawBufferIndex = 0;
+	// MCPatcher End
 
 	/**
 	 * The number of vertices manually added to the given draw call. This differs from vertexCount because it adds extra
 	 * vertices when converting quads to triangles.
 	 */
+	// MCPatcher Start - private to public
 	public int addedVertices = 0;
+	// MCPatcher End
 
 	/** Disables all color information for the following draw call. */
 	private boolean isColorDisabled = false;
 
 	/** The draw mode currently being used by the tessellator. */
+	// MCPatcher Start - private to public
 	public int drawMode;
+	// MCPatcher End
 
 	/**
 	 * An offset to be applied along the x-axis for all vertices in this draw call.
@@ -102,10 +112,14 @@ public class Tessellator {
 	private int normal;
 
 	/** The static instance of the Tessellator. */
+	// MCPatcher Start
 	public static final Tessellator instance = new SuperTessellator(2097152);
+	// MCPatcher End
 
 	/** Whether this tessellator is currently in draw mode. */
+	// MCPatcher Start - private to public
 	public boolean isDrawing = false;
+	// MCPatcher End
 
 	/** Whether we are currently using VBO or not. */
 	private boolean useVBO = false;
@@ -123,10 +137,12 @@ public class Tessellator {
 	private int vboCount = 10;
 
 	/** The size of the buffers used (in integers). */
+	// MCPatcher Start - private to public
 	public int bufferSize;
 	public int texture;
 
 	public Tessellator(int par1) {
+	// MCPatcher End
 		this.bufferSize = par1;
 		this.byteBuffer = GLAllocation.createDirectByteBuffer(par1 * 4);
 		this.intBuffer = this.byteBuffer.asIntBuffer();
@@ -140,7 +156,9 @@ public class Tessellator {
 			ARBVertexBufferObject.glGenBuffersARB(this.vertexBuffers);
 		}
 
+		// MCPatcher Start
 		this.texture = -1;
+		// MCPatcher End
 	}
 
 	/**
@@ -153,9 +171,11 @@ public class Tessellator {
 			this.isDrawing = false;
 
 			if (this.vertexCount > 0) {
+				// MCPatcher Start
 				if (this.texture >= 0) {
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture);
 				}
+				// MCPatcher End
 
 				this.intBuffer.clear();
 				this.intBuffer.put(this.rawBuffer, 0, this.rawBufferIndex);
@@ -260,7 +280,9 @@ public class Tessellator {
 	/**
 	 * Clears the tessellator state in preparation for new drawing.
 	 */
+	// MCPatcher Start - private to public
 	public void reset() {
+	// MCPatcher End
 		this.vertexCount = 0;
 		this.byteBuffer.clear();
 		this.rawBufferIndex = 0;
@@ -447,9 +469,9 @@ public class Tessellator {
 	 */
 	public void setColorOpaque_I(int par1) {
 		int var2 = par1 >> 16 & 255;
-				int var3 = par1 >> 8 & 255;
-				int var4 = par1 & 255;
-				this.setColorOpaque(var2, var3, var4);
+		int var3 = par1 >> 8 & 255;
+		int var4 = par1 & 255;
+		this.setColorOpaque(var2, var3, var4);
 	}
 
 	/**
@@ -457,9 +479,9 @@ public class Tessellator {
 	 */
 	public void setColorRGBA_I(int par1, int par2) {
 		int var3 = par1 >> 16 & 255;
-				int var4 = par1 >> 8 & 255;
-				int var5 = par1 & 255;
-				this.setColorRGBA(var3, var4, var5, par2);
+		int var4 = par1 >> 8 & 255;
+		int var5 = par1 & 255;
+		this.setColorRGBA(var3, var4, var5, par2);
 	}
 
 	/**

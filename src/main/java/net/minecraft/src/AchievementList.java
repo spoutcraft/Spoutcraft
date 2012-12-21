@@ -105,6 +105,8 @@ public class AchievementList {
 	public static void init() {}
 
 	static {
-		//System.out.println(achievementList.size() + " achievements");  // Spout
+		// Spout Start - Removed debug message
+		//System.out.println(achievementList.size() + " achievements");
+		// Spout End
 	}
 }

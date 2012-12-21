@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.material.MaterialData;
@@ -47,7 +46,9 @@ public abstract class Packet {
 	/**
 	 * Adds a two way mapping between the packet ID and packet class.
 	 */
-	public static void addIdClassMapping(int par0, boolean par1, boolean par2, Class par3Class) { // Spout default -> public
+	// Spout Start - static to public static
+	public static void addIdClassMapping(int par0, boolean par1, boolean par2, Class par3Class) {
+	// Spout End
 		if (packetIdToClassMap.containsItem(par0)) {
 			throw new IllegalArgumentException("Duplicate packet id:" + par0);
 		} else if (packetClassToIdMap.containsKey(par3Class)) {
@@ -234,9 +235,10 @@ public abstract class Packet {
 	}
 
 	/**
-	 * if this returns false, processPacket is deffered for processReadPackets to handle
+	 * If this returns true, the packet may be processed on any thread; otherwise it is queued for the main thread to
+	 * handle.
 	 */
-	public boolean isWritePacket() {
+	public boolean canProcessAsync() {
 		return false;
 	}
 
@@ -327,12 +329,14 @@ public abstract class Packet {
 		addIdClassMapping(13, true, true, Packet13PlayerLookMove.class);
 		addIdClassMapping(14, false, true, Packet14BlockDig.class);
 		addIdClassMapping(15, false, true, Packet15Place.class);
-		addIdClassMapping(16, false, true, Packet16BlockItemSwitch.class);
+		addIdClassMapping(16, true, true, Packet16BlockItemSwitch.class);
 		addIdClassMapping(17, true, false, Packet17Sleep.class);
 		addIdClassMapping(18, true, true, Packet18Animation.class);
 		addIdClassMapping(19, false, true, Packet19EntityAction.class);
 		addIdClassMapping(20, true, false, Packet20NamedEntitySpawn.class);
-		addIdClassMapping(21, true, false, Packet21PickupSpawn.class);
+		// Spout Start
+		//addIdClassMapping(21, true, false, Packet21PickupSpawn.class);
+		// Spout End
 		addIdClassMapping(22, true, false, Packet22Collect.class);
 		addIdClassMapping(23, true, false, Packet23VehicleSpawn.class);
 		addIdClassMapping(24, true, false, Packet24MobSpawn.class);

@@ -91,7 +91,7 @@ public class ScreenUtil {
 				break;
 			case MINIMAP_SETTINGS:
 				toOpen = new GuiMinimapMenu(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
-				break;			
+				break;
 			case MOVE_MINIMAP:
 				toOpen = new GuiMoveMinimap(new GuiMinimapMenu(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu())));
 				break;
@@ -151,9 +151,9 @@ public class ScreenUtil {
 		} else if (gui instanceof GuiMinimapMenu) {
 			screen = ScreenType.MINIMAP_SETTINGS;
 		} else if (gui instanceof GuiAmbigousInput) {
-			screen = ScreenType.AMBIGUOUS_SHORTCUT;		
+			screen = ScreenType.AMBIGUOUS_SHORTCUT;
 		} else if (gui instanceof GuiControls) {
-			screen = ScreenType.CONTROLS_MENU;		
+			screen = ScreenType.CONTROLS_MENU;
 		} else if (gui instanceof GuiMoveMinimap) {
 			screen = ScreenType.MOVE_MINIMAP;
 		} else if (gui instanceof GuiOverviewMap) {
@@ -161,7 +161,7 @@ public class ScreenUtil {
 		} else if (gui instanceof GuiStats) {
 			screen = ScreenType.STATISTICS_SCREEN;
 		} else if (gui instanceof GuiWinGame) {
-			screen = ScreenType.WIN_GAME;		
+			screen = ScreenType.WIN_GAME;
 		}
 
 		return screen;

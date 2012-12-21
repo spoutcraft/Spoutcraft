@@ -37,7 +37,7 @@ public class ContainerWorkbench extends Container {
 
 		this.onCraftMatrixChanged(this.craftMatrix);
 	}
-	
+
 	// Spout Start
 	public IInventory getIInventory() {
 		return null;

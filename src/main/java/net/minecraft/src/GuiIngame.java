@@ -6,7 +6,6 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
 // Spout Start
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
@@ -20,10 +19,11 @@ import org.spoutcraft.api.gui.ServerPlayerList;
 import org.spoutcraft.api.player.ChatMessage;
 // Spout End
 
-
 public class GuiIngame extends Gui {
 	private static final RenderItem itemRenderer = new RenderItem();
-	public static final Random rand = new Random(); // Spout private -> public static final
+	// Spout Start - private to public static final
+	public static final Random rand = new Random();
+	// Spout End
 	private final Minecraft mc;
 
 	/** ChatGUI instance that retains all previous chat data */
@@ -39,6 +39,8 @@ public class GuiIngame extends Gui {
 
 	/** Previous frame vignette brightness (slowly changes by 1% each frame) */
 	public float prevVignetteBrightness = 1.0F;
+	private int field_92017_k;
+	private ItemStack field_92016_l;
 
 	public GuiIngame(Minecraft par1Minecraft) {
 		this.mc = par1Minecraft;
@@ -57,9 +59,8 @@ public class GuiIngame extends Gui {
 	/**
 	 * Render the ingame overlay with quick icon bar, ...
 	 */
-	// Spout Start
-	// TODO Rewrite again, it's in a horrible state, i'm surprised it works...
-	// Most of function rewritten
+	// Spout Start - Most of function rewritten
+	// TODO: Rewrite again, it's in a horrible state, I'm surprised it works...
 	public void renderGameOverlay(float f, boolean flag, int i, int j) {
 		InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
 
@@ -77,13 +78,15 @@ public class GuiIngame extends Gui {
 		}
 
 		ItemStack helmet = this.mc.thePlayer.inventory.armorItemInSlot(3);
-		if(this.mc.gameSettings.thirdPersonView == 0 && helmet != null && helmet.itemID == Block.pumpkin.blockID) {
+
+		if (this.mc.gameSettings.thirdPersonView == 0 && helmet != null && helmet.itemID == Block.pumpkin.blockID) {
 			this.renderPumpkinBlur(screenWidth, screenHeight);
 		}
 
-		if(!this.mc.thePlayer.isPotionActive(Potion.confusion)) {
+		if (!this.mc.thePlayer.isPotionActive(Potion.confusion)) {
 			float var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * f;
-			if(var10 > 0.0F) {
+
+			if (var10 > 0.0F) {
 				this.renderPortalOverlay(var10, screenWidth, screenHeight);
 			}
 		}
@@ -106,11 +109,11 @@ public class GuiIngame extends Gui {
 
 		this.renderBossHealth();
 
-		//better safe than sorry
+		// Better safe than sorry
 		SpoutClient.enableSandbox();
 
-		//Toggle visibility if needed
-		if(needsUpdate && mainScreen.getHealthBar().isVisible() == mc.playerController.isInCreativeMode()) {
+		// Toggle visibility if needed
+		if (needsUpdate && mainScreen.getHealthBar().isVisible() == mc.playerController.isInCreativeMode()) {
 			mainScreen.toggleSurvivalHUD(!mc.playerController.isInCreativeMode());
 		}
 		needsUpdate = false;
@@ -161,7 +164,7 @@ public class GuiIngame extends Gui {
 			GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
 			var15 = this.mc.thePlayer.getSleepTimer();
 			float var26 = (float)var15 / 100.0F;
-			if(var26 > 1.0F) {
+			if (var26 > 1.0F) {
 				var26 = 1.0F - (float)(var15 - 100) / 10.0F;
 			}
 
@@ -174,7 +177,7 @@ public class GuiIngame extends Gui {
 		SpoutClient.enableSandbox();
 		mainScreen.render();
 		SpoutClient.disableSandbox();
-		if (this.mc.gameSettings.showDebugInfo) {			
+		if (this.mc.gameSettings.showDebugInfo) {
 			this.mc.mcProfiler.startSection("debug");
 			GL11.glPushMatrix();
 			if (Configuration.getFastDebug() != 2) {
@@ -334,8 +337,8 @@ public class GuiIngame extends Gui {
 	 * Renders dragon's (boss) health on the HUD
 	 */
 	private void renderBossHealth() {
-		if (BossStatus.bossName != null && BossStatus.field_82826_b > 0) {
-			--BossStatus.field_82826_b;
+		if (BossStatus.bossName != null && BossStatus.statusBarLength > 0) {
+			--BossStatus.statusBarLength;
 			FontRenderer var1 = this.mc.fontRenderer;
 			ScaledResolution var2 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 			int var3 = var2.getScaledWidth();
@@ -479,6 +482,22 @@ public class GuiIngame extends Gui {
 		}
 
 		++this.updateCounter;
+
+		if (this.mc.thePlayer != null) {
+			ItemStack var1 = this.mc.thePlayer.inventory.getCurrentItem();
+
+			if (var1 == null) {
+				this.field_92017_k = 0;
+			} else if (this.field_92016_l != null && var1.itemID == this.field_92016_l.itemID && ItemStack.areItemStackTagsEqual(var1, this.field_92016_l) && (var1.isItemStackDamageable() || var1.getItemDamage() == this.field_92016_l.getItemDamage())) {
+				if (this.field_92017_k > 0) {
+					--this.field_92017_k;
+				}
+			} else {
+				this.field_92017_k = 40;
+			}
+
+			this.field_92016_l = var1;
+		}
 	}
 
 	public void setRecordPlayingMessage(String par1Str) {

@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;  // Spout
 import java.util.Iterator;
 import java.util.List;
+// MCPatcher Start
+import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public class ItemMonsterPlacer extends Item {
 	public ItemMonsterPlacer(int par1) {
@@ -24,7 +26,9 @@ public class ItemMonsterPlacer extends Item {
 
 	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
 		EntityEggInfo var3 = (EntityEggInfo)EntityList.entityEggs.get(Integer.valueOf(par1ItemStack.getItemDamage()));
+		// MCPatcher Start
 		return var3 != null ? (par2 == 0 ? Colorizer.colorizeSpawnerEgg(var3.primaryColor, par1ItemStack.getItemDamage(), par2) : Colorizer.colorizeSpawnerEgg(var3.secondaryColor, par1ItemStack.getItemDamage(), par2)) : Colorizer.colorizeSpawnerEgg(16777215, par1ItemStack.getItemDamage(), par2);
+		// MCPatcher End
 	}
 
 	public boolean requiresMultipleRenderPasses() {
@@ -77,11 +81,14 @@ public class ItemMonsterPlacer extends Item {
 			for (int var9 = 0; var9 < 1; ++var9) {
 				var8 = EntityList.createEntityByID(par1, par0World);
 
-				if (var8 != null) {
-					var8.setLocationAndAngles(par2, par4, par6, par0World.rand.nextFloat() * 360.0F, 0.0F);
-					((EntityLiving)var8).initCreature();
+				if (var8 != null && var8 instanceof EntityLiving) {
+					EntityLiving var10 = (EntityLiving)var8;
+					var8.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
+					var10.rotationYawHead = var10.rotationYaw;
+					var10.renderYawOffset = var10.rotationYaw;
+					var10.initCreature();
 					par0World.spawnEntityInWorld(var8);
-					((EntityLiving)var8).playLivingSound();
+					var10.playLivingSound();
 				}
 			}
 

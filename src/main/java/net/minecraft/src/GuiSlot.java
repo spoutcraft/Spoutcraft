@@ -260,7 +260,7 @@ public abstract class GuiSlot {
 				this.initialClickY = (float)par2;
 			}
 		} else {
-			while (!this.mc.gameSettings.field_85185_A && Mouse.next()) {
+			while (!this.mc.gameSettings.touchscreen && Mouse.next()) {
 				int var16 = Mouse.getEventDWheel();
 
 				if (var16 != 0) {
@@ -411,11 +411,15 @@ public abstract class GuiSlot {
 	 * Overlays the background to hide scrolled items
 	 */
 	private void overlayBackground(int par1, int par2, int par3, int par4) {
-		GL11.glPushMatrix(); // Spout
+		// Spout Start
+		GL11.glPushMatrix();
+		// Spout End
 		Tessellator var5 = Tessellator.instance;
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/background.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glTranslatef(0, 0, -0.1f); // Spout
+		// Spout Start
+		GL11.glTranslatef(0, 0, -0.1f);
+		// Spout End
 		float var6 = 32.0F;
 		var5.startDrawingQuads();
 		var5.setColorRGBA_I(4210752, par4);
@@ -425,6 +429,8 @@ public abstract class GuiSlot {
 		var5.addVertexWithUV((double)this.width, (double)par1, 0.0D, (double)((float)this.width / var6), (double)((float)par1 / var6));
 		var5.addVertexWithUV(0.0D, (double)par1, 0.0D, 0.0D, (double)((float)par1 / var6));
 		var5.draw();
-		GL11.glPopMatrix(); // Spout
+		// Spout Start
+		GL11.glPopMatrix();
+		// Spout End
 	}
 }

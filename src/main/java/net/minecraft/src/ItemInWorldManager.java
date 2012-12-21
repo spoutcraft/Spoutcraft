@@ -9,16 +9,19 @@ public class ItemInWorldManager {
 	public EntityPlayerMP thisPlayerMP;
 	private EnumGameType gameType;
 
-	/**
-	 * set to true on first call of destroyBlockInWorldPartially, false before any further calls
-	 */
-	private boolean isPartiallyDestroyedBlockWhole;
+	/** True if the player is destroying a block */
+	private boolean isDestroyingBlock;
 	private int initialDamage;
 	private int partiallyDestroyedBlockX;
 	private int partiallyDestroyedBlockY;
 	private int partiallyDestroyedBlockZ;
 	private int curblockDamage;
-	private boolean field_73097_j;
+
+	/**
+	 * Set to true when the "finished destroying block" packet is received but the block wasn't fully damaged yet. The
+	 * block will not be destroyed while this is false.
+	 */
+	private boolean receivedFinishDiggingPacket;
 	private int posX;
 	private int posY;
 	private int posZ;
@@ -65,42 +68,46 @@ public class ItemInWorldManager {
 		float var4;
 		int var5;
 
-		if (this.field_73097_j) {
+		if (this.receivedFinishDiggingPacket) {
 			var1 = this.curblockDamage - this.field_73093_n;
 			int var2 = this.theWorld.getBlockId(this.posX, this.posY, this.posZ);
 
 			if (var2 == 0) {
-				this.field_73097_j = false;
+				this.receivedFinishDiggingPacket = false;
 			} else {
 				Block var3 = Block.blocksList[var2];
-				var4 = var3.getPlayerRelativeBlockHardness(this.thisPlayerMP) * (float)(var1 + 1); // Spout
+				// Spout Start
+				var4 = var3.getPlayerRelativeBlockHardness(this.thisPlayerMP) * (float)(var1 + 1);
+				// Spout End
 				var5 = (int)(var4 * 10.0F);
 
 				if (var5 != this.durabilityRemainingOnBlock) {
-					this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, this.posX, this.posY, this.posZ, var5);
+					this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, this.posX, this.posY, this.posZ, var5);
 					this.durabilityRemainingOnBlock = var5;
 				}
 
 				if (var4 >= 1.0F) {
-					this.field_73097_j = false;
+					this.receivedFinishDiggingPacket = false;
 					this.tryHarvestBlock(this.posX, this.posY, this.posZ);
 				}
 			}
-		} else if (this.isPartiallyDestroyedBlockWhole) {
+		} else if (this.isDestroyingBlock) {
 			var1 = this.theWorld.getBlockId(this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ);
 			Block var6 = Block.blocksList[var1];
 
 			if (var6 == null) {
-				this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, -1);
+				this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, -1);
 				this.durabilityRemainingOnBlock = -1;
-				this.isPartiallyDestroyedBlockWhole = false;
+				this.isDestroyingBlock = false;
 			} else {
 				int var7 = this.curblockDamage - this.initialDamage;
-				var4 = var6.getPlayerRelativeBlockHardness(this.thisPlayerMP) * (float)(var7 + 1); // Spout
+				// Spout Start
+				var4 = var6.getPlayerRelativeBlockHardness(this.thisPlayerMP) * (float)(var7 + 1);
+				// Spout End
 				var5 = (int)(var4 * 10.0F);
 
 				if (var5 != this.durabilityRemainingOnBlock) {
-					this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, var5);
+					this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, var5);
 					this.durabilityRemainingOnBlock = var5;
 				}
 			}
@@ -108,7 +115,7 @@ public class ItemInWorldManager {
 	}
 
 	/**
-	 * if not creative, it calls destroyBlockInWorldPartially untill the block is broken first. par4 is the specific side.
+	 * if not creative, it calls cancelDestroyingBlock untill the block is broken first. par4 is the specific side.
 	 * tryHarvestBlock can also be the result of this call
 	 */
 	public void onBlockClicked(int par1, int par2, int par3, int par4) {
@@ -125,18 +132,20 @@ public class ItemInWorldManager {
 
 				if (var6 > 0) {
 					Block.blocksList[var6].onBlockClicked(this.theWorld, par1, par2, par3, this.thisPlayerMP);
-					var5 = Block.blocksList[var6].getPlayerRelativeBlockHardness(this.thisPlayerMP); // Spout
+					// Spout Start
+					var5 = Block.blocksList[var6].getPlayerRelativeBlockHardness(this.thisPlayerMP);
+					// Spout End
 				}
 
 				if (var6 > 0 && var5 >= 1.0F) {
 					this.tryHarvestBlock(par1, par2, par3);
 				} else {
-					this.isPartiallyDestroyedBlockWhole = true;
+					this.isDestroyingBlock = true;
 					this.partiallyDestroyedBlockX = par1;
 					this.partiallyDestroyedBlockY = par2;
 					this.partiallyDestroyedBlockZ = par3;
 					int var7 = (int)(var5 * 10.0F);
-					this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, par1, par2, par3, var7);
+					this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, par1, par2, par3, var7);
 					this.durabilityRemainingOnBlock = var7;
 				}
 			}
@@ -150,15 +159,17 @@ public class ItemInWorldManager {
 
 			if (var5 != 0) {
 				Block var6 = Block.blocksList[var5];
-				float var7 = var6.getPlayerRelativeBlockHardness(this.thisPlayerMP) * (float)(var4 + 1); // Spout
+				// Spout Start
+				float var7 = var6.getPlayerRelativeBlockHardness(this.thisPlayerMP) * (float)(var4 + 1);
+				// Spout End
 
 				if (var7 >= 0.7F) {
-					this.isPartiallyDestroyedBlockWhole = false;
-					this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, par1, par2, par3, -1);
+					this.isDestroyingBlock = false;
+					this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, par1, par2, par3, -1);
 					this.tryHarvestBlock(par1, par2, par3);
-				} else if (!this.field_73097_j) {
-					this.isPartiallyDestroyedBlockWhole = false;
-					this.field_73097_j = true;
+				} else if (!this.receivedFinishDiggingPacket) {
+					this.isDestroyingBlock = false;
+					this.receivedFinishDiggingPacket = true;
 					this.posX = par1;
 					this.posY = par2;
 					this.posZ = par3;
@@ -168,16 +179,22 @@ public class ItemInWorldManager {
 		}
 	}
 
+	// Spout Start - Hack for MCP field mapping changes
+	public void destroyBlockInWorldPartially(int var1, int var2, int var3) {
+		cancelDestroyingBlock(var1, var2, var3);
+	}
+	// Spout End
+
 	/**
 	 * note: this ignores the pars passed in and continues to destroy the onClickedBlock
 	 */
-	public void destroyBlockInWorldPartially(int par1, int par2, int par3) {
-		this.isPartiallyDestroyedBlockWhole = false;
-		this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, -1);
+	public void cancelDestroyingBlock(int par1, int par2, int par3) {
+		this.isDestroyingBlock = false;
+		this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, -1);
 	}
 
 	/**
-	 * Removes a block and triggers the appropriate  events
+	 * Removes a block and triggers the appropriate events
 	 */
 	private boolean removeBlock(int par1, int par2, int par3) {
 		Block var4 = Block.blocksList[this.theWorld.getBlockId(par1, par2, par3)];
@@ -269,19 +286,25 @@ public class ItemInWorldManager {
 	 * yOffset, zOffset
 	 */
 	public boolean activateBlockOrUseItem(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
-		int var11 = par2World.getBlockId(par4, par5, par6);
+		int var11;
 
-		if (var11 > 0 && Block.blocksList[var11].onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, par8, par9, par10)) {
-			return true;
-		} else if (par3ItemStack == null) {
+		if (!par1EntityPlayer.isSneaking() || par1EntityPlayer.getHeldItem() == null) {
+			var11 = par2World.getBlockId(par4, par5, par6);
+
+			if (var11 > 0 && Block.blocksList[var11].onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, par8, par9, par10)) {
+				return true;
+			}
+		}
+
+		if (par3ItemStack == null) {
 			return false;
 		} else if (this.isCreative()) {
-			int var12 = par3ItemStack.getItemDamage();
-			int var13 = par3ItemStack.stackSize;
-			boolean var14 = par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, par8, par9, par10);
-			par3ItemStack.setItemDamage(var12);
-			par3ItemStack.stackSize = var13;
-			return var14;
+			var11 = par3ItemStack.getItemDamage();
+			int var12 = par3ItemStack.stackSize;
+			boolean var13 = par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, par8, par9, par10);
+			par3ItemStack.setItemDamage(var11);
+			par3ItemStack.stackSize = var12;
+			return var13;
 		} else {
 			return par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, par8, par9, par10);
 		}

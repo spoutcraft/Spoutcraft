@@ -229,19 +229,19 @@ public class FontUtils {
 		setFontRenderer(var0, var1, var2);
 	}
 
-    static {
-        TexturePackAPI.loadFontFromTexturePack = true;
+	static {
+		TexturePackAPI.loadFontFromTexturePack = true;
 
-        TexturePackAPI.ChangeHandler.register(new TexturePackAPI.ChangeHandler(MCPatcherUtils.HD_FONT, 2) {
-            @Override
-            protected void onChange() {
-        		Minecraft var1 = MCPatcherUtils.getMinecraft();
-        		FontUtils.access$000(var1, var1.fontRenderer, "/font/default.png");
+		TexturePackAPI.ChangeHandler.register(new TexturePackAPI.ChangeHandler(MCPatcherUtils.HD_FONT, 2) {
+			@Override
+			protected void onChange() {
+				Minecraft var1 = MCPatcherUtils.getMinecraft();
+				FontUtils.access$000(var1, var1.fontRenderer, "/font/default.png");
 
-        		if (var1.standardGalacticFontRenderer != var1.fontRenderer) {
-        			FontUtils.access$000(var1, var1.standardGalacticFontRenderer, "/font/alternate.png");
-        		}
-            }
-        });
-    }
+				if (var1.standardGalacticFontRenderer != var1.fontRenderer) {
+					FontUtils.access$000(var1, var1.standardGalacticFontRenderer, "/font/alternate.png");
+				}
+			}
+		});
+	}
 }

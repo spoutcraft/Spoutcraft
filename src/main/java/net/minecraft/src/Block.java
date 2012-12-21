@@ -1,18 +1,22 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.List;
 import java.util.Random;
-//Spout
-import gnu.trove.map.hash.TIntFloatHashMap;
+// MCPatcher Start
+import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
+// Spout Start
 import java.util.ArrayList; 
+import gnu.trove.map.hash.TIntFloatHashMap;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.World;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.api.entity.ActivePlayer;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.util.FastLocation;
 import org.spoutcraft.api.util.FixedLocation;
-// Spout end
+// Spout End
 
 
 public class Block {
@@ -188,6 +192,8 @@ public class Block {
 	public static final Block cauldron = (new BlockCauldron(118)).setHardness(2.0F).setBlockName("cauldron").setRequiresSelfNotify();
 	public static final Block endPortal = (new BlockEndPortal(119, Material.portal)).setHardness(-1.0F).setResistance(6000000.0F);
 	public static final Block endPortalFrame = (new BlockEndPortalFrame(120)).setStepSound(soundGlassFootstep).setLightValue(0.125F).setHardness(-1.0F).setBlockName("endPortalFrame").setRequiresSelfNotify().setResistance(6000000.0F).setCreativeTab(CreativeTabs.tabDecorations);
+
+	/** The rock found in The End. */
 	public static final Block whiteStone = (new Block(121, 175, Material.rock)).setHardness(3.0F).setResistance(15.0F).setStepSound(soundStoneFootstep).setBlockName("whiteStone").setCreativeTab(CreativeTabs.tabBlock);
 	public static final Block dragonEgg = (new BlockDragonEgg(122, 167)).setHardness(3.0F).setResistance(15.0F).setStepSound(soundStoneFootstep).setLightValue(0.125F).setBlockName("dragonEgg");
 	public static final Block redstoneLampIdle = (new BlockRedstoneLight(123, false)).setHardness(0.3F).setStepSound(soundGlassFootstep).setBlockName("redstoneLight").setCreativeTab(CreativeTabs.tabRedstone);
@@ -224,10 +230,14 @@ public class Block {
 	public final int blockID;
 
 	/** Indicates how many hits it takes to break a block. */
-	public float blockHardness; // Spout protected -> public
+	// Spout Start - protected to public
+	public float blockHardness;
+	// Spout End
 
 	/** Indicates the blocks resistance to explosions. */
-	public float blockResistance; // Spout protected -> public
+	// Spout Start - protected to public
+	public float blockResistance;
+	// Spout End
 
 	/**
 	 * set to true when Block's constructor is called through the chain of super()'s. Note: Never used
@@ -333,7 +343,9 @@ public class Block {
 	/**
 	 * Sets how much light is blocked going through this block. Returns the object for convenience in constructing.
 	 */
-	public Block setLightOpacity(int par1) { // Spout protected -> public
+	// Spout Start - protected to public
+	public Block setLightOpacity(int par1) {
+	// Spout End
 		lightOpacity[this.blockID] = par1;
 		return this;
 	}
@@ -455,7 +467,7 @@ public class Block {
 			}
 		}
 		return par1IBlockAccess.getBrightness(x, y, z, light);
-		// Spout End
+	// Spout End
 	}
 
 	/**
@@ -475,7 +487,7 @@ public class Block {
 			}
 		}
 		return par1IBlockAccess.getLightBrightnessForSkyBlocks(x, y, z, light);
-		// Spout End
+	// Spout End
 	}
 
 	/**
@@ -619,8 +631,18 @@ public class Block {
 	 * Gets the hardness of block at the given coordinates in the given world, relative to the ability of the given
 	 * EntityPlayer.
 	 */
+	// TODO: This should be combined into one method.
+	public float getPlayerRelativeBlockHardness(EntityPlayer par1EntityPlayer, World par2World, int par3, int par4, int par5) {
+		float var6 = this.getBlockHardness(par2World, par3, par4, par5);
+		return var6 < 0.0F ? 0.0F : (!par1EntityPlayer.canHarvestBlock(this) ? 1.0F / var6 / 100.0F : par1EntityPlayer.getCurrentPlayerStrVsBlock(this) / var6 / 30.0F);
+	}
+
 	// Spout Start
-	public final float getPlayerRelativeBlockHardness(EntityPlayer entityhuman) {
+	/**
+	 * Gets the hardness of block at the given coordinates in the given world, relative to the ability of the given
+	 * EntityPlayer.
+	 */
+	public float getPlayerRelativeBlockHardness(EntityPlayer entityhuman) {
 		if (entityhuman instanceof EntityPlayerSP) {
 			ActivePlayer player = (ActivePlayer) entityhuman.spoutEnty;
 			FixedLocation target = player.getLastClickedLocation();
@@ -643,8 +665,8 @@ public class Block {
 			}
 		}
 		return this.blockHardness < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? 1.0F / this.blockHardness / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0F);
-	}
 	// Spout End
+	}
 
 	/**
 	 * Drops the specified block items
@@ -707,11 +729,11 @@ public class Block {
 		return 0;
 	}
 
-	// Spout start
-	public float getHardness() { // getBlockHardness version with removed random params
+	// Spout Start - getBlockHardness version with removed random params.
+	public float getHardness() {
 		return this.blockHardness;
 	}
-	// Spout end
+	// Spout End
 
 	/**
 	 * Returns how much this block can resist explosions from the passed in entity.
@@ -878,7 +900,10 @@ public class Block {
 	 */
 	public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity) {}
 
-	public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
+	/**
+	 * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
+	 */
+	public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
 		return par9;
 	}
 
@@ -954,7 +979,9 @@ public class Block {
 	 * Returns the color this block should be rendered. Used by leaves.
 	 */
 	public int getRenderColor(int par1) {
+		// MCPatcher Start
 		return Colorizer.colorizeBlock(this);
+		// MCPatcher End
 	}
 
 	/**
@@ -962,13 +989,15 @@ public class Block {
 	 * first determining what to render.
 	 */
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+		// MCPatcher Start
 		return Colorizer.colorizeBlock(this, par2, par3, par4, par1IBlockAccess.getBlockMetadata(par2, par3, par4));
+		// MCPatcher End
 	}
 
 	/**
 	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
 	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X, Y,
-	 * Z, side
+	 * Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	public boolean isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return false;
@@ -987,7 +1016,8 @@ public class Block {
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {}
 
 	/**
-	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z, side
+	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
+	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	public boolean isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return false;
@@ -1058,7 +1088,10 @@ public class Block {
 	 */
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving) {}
 
-	public void func_85105_g(World par1World, int par2, int par3, int par4, int par5) {}
+	/**
+	 * Called after a block is placed
+	 */
+	public void onPostBlockPlaced(World par1World, int par2, int par3, int par4, int par5) {}
 
 	/**
 	 * set name of block from language file
@@ -1244,10 +1277,4 @@ public class Block {
 		canBlockGrass[0] = true;
 		StatList.initBreakableStats();
 	}
-	
-	// Spout New Start
-	public boolean func_85103_a(Explosion par1Explosion) {
-		return true;
-	}
-	// Spout New End
 }

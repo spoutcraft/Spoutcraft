@@ -50,16 +50,22 @@ public class MapColor {
 	public static final MapColor woodColor = new MapColor(13, 6837042);
 
 	/** Holds the color in RGB value that will be rendered on maps. */
-	public int colorValue; // Spout final -> gone
+	// MCPatcher Start - Removed final
+	public int colorValue;
+	// MCPatcher End
 
 	/** Holds the index of the color used on map. */
 	public final int colorIndex;
-	public int origColorValue; // Spout
+	// MCPatcher Start - Removed final
+	public int origColorValue;
+	// MCPatcher End
 
 	private MapColor(int par1, int par2) {
 		this.colorIndex = par1;
 		this.colorValue = par2;
-		this.origColorValue = par2; // Spout
+		// MCPatcher Start
+		this.origColorValue = par2;
+		// MCPatcher End
 		mapColorArray[par1] = this;
 	}
 }

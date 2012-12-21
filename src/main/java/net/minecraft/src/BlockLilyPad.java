@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.List;
+// MCPatcher Start
+import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public class BlockLilyPad extends BlockFlower {
 	protected BlockLilyPad(int par1, int par2) {
@@ -37,14 +39,18 @@ public class BlockLilyPad extends BlockFlower {
 	}
 
 	public int getBlockColor() {
+		// MCPatcher Start
 		return Colorizer.getLilyPadColor();
+		// MCPatcher End
 	}
 
 	/**
 	 * Returns the color this block should be rendered. Used by leaves.
 	 */
 	public int getRenderColor(int par1) {
+		// MCPatcher Start
 		return Colorizer.getLilyPadColor();
+		// MCPatcher End
 	}
 
 	/**
@@ -52,7 +58,9 @@ public class BlockLilyPad extends BlockFlower {
 	 * first determining what to render.
 	 */
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+		// MCPatcher Start
 		return Colorizer.getLilyPadColor();
+		// MCPatcher End
 	}
 
 	/**

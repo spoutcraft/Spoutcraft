@@ -37,7 +37,7 @@ public class ChatButton extends GenericButton {
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ScreenChatOptions chatSettings = new ScreenChatOptions(parent, SpoutClient.getHandle().gameSettings);		
+		ScreenChatOptions chatSettings = new ScreenChatOptions(parent, SpoutClient.getHandle().gameSettings);
 		SpoutClient.getHandle().displayGuiScreen(chatSettings);
 	}
 }

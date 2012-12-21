@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
@@ -33,7 +32,9 @@ public class Packet51MapChunk extends Packet {
 
 	/** The transmitted chunk data, decompressed. */
 	private byte[] chunkData;
-	private byte[] field_73596_g;
+
+	/** The compressed chunk data */
+	private byte[] compressedChunkData;
 
 	/**
 	 * Whether to initialize the Chunk before applying the effect of the Packet51MapChunk.
@@ -57,14 +58,14 @@ public class Packet51MapChunk extends Packet {
 		this.includeInitialize = par2;
 		Packet51MapChunkData var4 = getMapChunkData(par1Chunk, par2, par3);
 		Deflater var5 = new Deflater(-1);
-		this.yChMax = var4.field_74581_c;
-		this.yChMin = var4.field_74580_b;
+		this.yChMax = var4.chunkHasAddSectionFlag;
+		this.yChMin = var4.chunkExistFlag;
 
 		try {
-			this.field_73596_g = var4.field_74582_a;
-			var5.setInput(var4.field_74582_a, 0, var4.field_74582_a.length);
+			this.compressedChunkData = var4.compressedData;
+			var5.setInput(var4.compressedData, 0, var4.compressedData.length);
 			var5.finish();
-			this.chunkData = new byte[var4.field_74582_a.length];
+			this.chunkData = new byte[var4.compressedData.length];
 			this.tempLength = var5.deflate(this.chunkData);
 		} finally {
 			var5.end();
@@ -102,7 +103,7 @@ public class Packet51MapChunk extends Packet {
 			var3 += 256;
 		}
 
-		this.field_73596_g = new byte[var3];
+		this.compressedChunkData = new byte[var3];
 		Inflater var4 = new Inflater();
 		var4.setInput(temp, 0, this.tempLength);
 
@@ -120,7 +121,7 @@ public class Packet51MapChunk extends Packet {
 			yChMin = -1;
 			yChMax = -1;
 		} else {
-			this.field_73596_g = uncachedData;
+			this.compressedChunkData = uncachedData;
 		}
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(xCh, zCh));
 		// Spout End
@@ -154,7 +155,7 @@ public class Packet51MapChunk extends Packet {
 	}
 
 	public byte[] func_73593_d() {
-		return this.field_73596_g;
+		return this.compressedChunkData;
 	}
 
 	public static Packet51MapChunkData getMapChunkData(Chunk par0Chunk, boolean par1, int par2) {
@@ -172,10 +173,10 @@ public class Packet51MapChunk extends Packet {
 
 		for (var8 = 0; var8 < var4.length; ++var8) {
 			if (var4[var8] != null && (!par1 || !var4[var8].isEmpty()) && (par2 & 1 << var8) != 0) {
-				var6.field_74580_b |= 1 << var8;
+				var6.chunkExistFlag |= 1 << var8;
 
 				if (var4[var8].getBlockMSBArray() != null) {
-					var6.field_74581_c |= 1 << var8;
+					var6.chunkHasAddSectionFlag |= 1 << var8;
 					++var5;
 				}
 			}
@@ -207,11 +208,13 @@ public class Packet51MapChunk extends Packet {
 			}
 		}
 
-		for (var8 = 0; var8 < var4.length; ++var8) {
-			if (var4[var8] != null && (!par1 || !var4[var8].isEmpty()) && (par2 & 1 << var8) != 0) {
-				var10 = var4[var8].getSkylightArray();
-				System.arraycopy(var10.data, 0, var7, var3, var10.data.length);
-				var3 += var10.data.length;
+		if (!par0Chunk.worldObj.provider.hasNoSky) {
+			for (var8 = 0; var8 < var4.length; ++var8) {
+				if (var4[var8] != null && (!par1 || !var4[var8].isEmpty()) && (par2 & 1 << var8) != 0) {
+					var10 = var4[var8].getSkylightArray();
+					System.arraycopy(var10.data, 0, var7, var3, var10.data.length);
+					var3 += var10.data.length;
+				}
 			}
 		}
 
@@ -231,8 +234,8 @@ public class Packet51MapChunk extends Packet {
 			var3 += var11.length;
 		}
 
-		var6.field_74582_a = new byte[var3];
-		System.arraycopy(var7, 0, var6.field_74582_a, 0, var3);
+		var6.compressedData = new byte[var3];
+		System.arraycopy(var7, 0, var6.compressedData, 0, var3);
 		return var6;
 	}
 }

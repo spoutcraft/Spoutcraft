@@ -59,20 +59,20 @@ public class GuiSimpleOptions extends GuiScreen {
 	GenericScrollArea scroll;
 	Label title;
 	CheckBox switchToAdvancedCheck;
-	
+
 	public static GuiScreen constructOptionsScreen(GuiScreen parent) {
 		return Configuration.isAdvancedOptions() ? new GuiAdvancedOptions(parent) : new GuiSimpleOptions(parent);
 	}
-	
+
 	public GuiSimpleOptions(GuiScreen parent) {
 		this.parent = parent;
 	}
-	
+
 	@Override
 	public void initGui() {
 		Control control;
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		
+
 		GenericScrollArea screen = new GenericScrollArea();
 		scroll = screen;
 		screen.setHeight(height - 24 - 30).setWidth(width).setY(24).setX(0);
@@ -91,7 +91,7 @@ public class GuiSimpleOptions extends GuiScreen {
 		control = new ResetButton(parent).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
 		getScreen().attachWidget(spoutcraft, control);
-		
+
 		switchToAdvancedCheck = new GenericCheckBox("Advanced");
 		switchToAdvancedCheck.setChecked(false);
 		switchToAdvancedCheck.setX(5).setY(3).setWidth(100).setHeight(20);
@@ -107,7 +107,7 @@ public class GuiSimpleOptions extends GuiScreen {
 		int top = 5;
 
 		Color grey = new Color(0.80F, 0.80F, 0.80F, 0.65F);
-		
+
 		label = new GenericLabel("Controls and Audio Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
@@ -152,7 +152,7 @@ public class GuiSimpleOptions extends GuiScreen {
 		control = new ChatButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control = new MinimapButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -214,13 +214,13 @@ public class GuiSimpleOptions extends GuiScreen {
 		top += 22;
 		// TODO add option controls to the scroll area
 	}
-	
+
 	@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		drawDefaultBackground();
 		super.drawScreen(par1, par2, par3);
 	}
-	
+
 	@Override
 	protected void buttonClicked(Button btn) {
 		if (btn == doneButton) {

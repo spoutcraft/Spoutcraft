@@ -27,7 +27,7 @@ class NetClientWebTextures extends GuiScreen {
 		if (this.mc.getServerData() != null) {
 			this.mc.getServerData().setAcceptsTextures(par1);
 			ServerList.func_78852_b(this.mc.getServerData());
-			
+
 			// Spout Start
 			SpoutClient.getInstance().getServerManager().getFavorites().save();
 			// Spout End

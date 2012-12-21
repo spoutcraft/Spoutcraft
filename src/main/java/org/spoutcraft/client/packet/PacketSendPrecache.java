@@ -37,15 +37,15 @@ import org.spoutcraft.client.precache.PrecacheManager;
 import org.spoutcraft.client.precache.PrecacheTuple;
 
 public class PacketSendPrecache implements CompressablePacket {
-	
+
 	private byte[] fileData;
 	private String plugin;
 	private String version;
 	private boolean compressed = false;
-	
+
 	public PacketSendPrecache() {
 	}
-	
+
 	public PacketSendPrecache(File file) {
 		try {
 			this.fileData = FileUtils.readFileToByteArray(file);
@@ -53,7 +53,7 @@ public class PacketSendPrecache implements CompressablePacket {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// TODO move to separate thread?
 	public void compress() {
 		if (!compressed) {
@@ -76,11 +76,11 @@ public class PacketSendPrecache implements CompressablePacket {
 			compressed = true;
 		}
 	}
-	
+
 	public boolean isCompressed() {
 		return compressed;
 	}
-	
+
 	public void decompress() {
 		if (compressed) {
 			Inflater decompressor = new Inflater();
@@ -104,7 +104,7 @@ public class PacketSendPrecache implements CompressablePacket {
 			fileData = bos.toByteArray();
 		}
 	}
-	
+
 	public void readData(SpoutInputStream input) throws IOException {
 		this.plugin = input.readString();
 		this.version = input.readString();
@@ -121,7 +121,7 @@ public class PacketSendPrecache implements CompressablePacket {
 		output.writeInt(fileData.length);
 		output.write(fileData);
 	}
-	
+
 	public void failure(int playerId) {
 
 	}
@@ -133,20 +133,20 @@ public class PacketSendPrecache implements CompressablePacket {
 	public int getVersion() {
 		return 0;
 	}
-	
+
 	public void run(int playerId) {
 		//Packet recieved, grabbing the zip file
 		File zip = PrecacheManager.getPluginPreCacheFile(plugin, version);
 		if (zip.exists()) {
 			zip.delete();
 		}
-		
+
 		try {
 			FileUtils.writeByteArrayToFile(zip, fileData);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		PrecacheTuple plugin = PrecacheManager.getPrecacheTuple(this.plugin, version);
 		if (plugin != null) {
 			PrecacheManager.setCached(plugin);

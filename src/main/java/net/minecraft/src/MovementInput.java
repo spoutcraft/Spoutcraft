@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+// Spout Start
 import net.minecraft.src.EntityPlayer;
+// Spout End
 
 public class MovementInput {
 
@@ -20,5 +22,7 @@ public class MovementInput {
 	public boolean flyingDown = false;
 	// Spout End
 
-	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) {} // Spout - kept parameter. TODO add a reason why
+	// Spout Start - Kept parameter. TODO: Add a reason why.
+	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) {}
+	// Spout End
 }

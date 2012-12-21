@@ -127,13 +127,13 @@ public class ServerItem implements ListWidgetItem {
 	}
 
 	public void render(int x, int y, int width, int height) {
-		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();		
+		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
 		if (databaseId != -1) {
 			String iconUrl = "http://cdn.spout.org/server/thumb/" + databaseId + ".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl("Spoutcraft", iconUrl);
 			if (icon == null) {
 				CustomTextureManager.downloadTexture(iconUrl, true);
-				icon = CustomTextureManager.getTextureFromJar("/res/icon/unknown_server.png");				
+				icon = CustomTextureManager.getTextureFromJar("/res/icon/unknown_server.png");
 			}
 			GL11.glPushMatrix();
 			GL11.glTranslated(x + 2, y + 2, 0);

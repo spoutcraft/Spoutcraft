@@ -40,7 +40,7 @@ public class ClippingHelperImpl extends ClippingHelper {
 		modelviewMatrixBuffer = ActiveRenderInfo.modelMatrix.duplicate();
 		projectionMatrixBuffer = ActiveRenderInfo.projectionMatrix.duplicate();
 		// Spout End
-		
+
 		this.projectionMatrixBuffer.flip().limit(16);
 		this.projectionMatrixBuffer.get(this.projectionMatrix);
 		this.modelviewMatrixBuffer.flip().limit(16);

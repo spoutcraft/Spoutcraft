@@ -1,8 +1,9 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.gui.mainmenu.MainMenu; // Spout
-
 import net.minecraft.client.Minecraft;
+// Spout Start
+import org.spoutcraft.client.gui.mainmenu.MainMenu;
+// Spout End
 
 public class GuiConnecting extends GuiScreen {
 
@@ -65,7 +66,9 @@ public class GuiConnecting extends GuiScreen {
 				this.clientHandler.disconnect();
 			}
 
-			this.mc.displayGuiScreen(new MainMenu()); // Spout
+			// Spout Start
+			this.mc.displayGuiScreen(new MainMenu());
+			// Spout End
 		}
 	}
 

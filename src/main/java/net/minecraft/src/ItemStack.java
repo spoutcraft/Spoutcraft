@@ -2,14 +2,15 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.List;
-
 // Spout Start
 import net.minecraft.src.NBTTagList;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.inventory.InventoryUtil;
 // Spout End
 
-public class ItemStack { // Spout final -> gone
+// Spout Start - Removed final
+public class ItemStack {
+// Spout End
 
 	/** Size of the stack. */
 	public int stackSize;
@@ -46,15 +47,15 @@ public class ItemStack { // Spout final -> gone
 	}
 
 	public ItemStack(Item par1Item) {
-		this(par1Item.shiftedIndex, 1, 0);
+		this(par1Item.itemID, 1, 0);
 	}
 
 	public ItemStack(Item par1Item, int par2) {
-		this(par1Item.shiftedIndex, par2, 0);
+		this(par1Item.itemID, par2, 0);
 	}
 
 	public ItemStack(Item par1Item, int par2, int par3) {
-		this(par1Item.shiftedIndex, par2, par3);
+		this(par1Item.itemID, par2, par3);
 	}
 
 	public ItemStack(int par1, int par2, int par3) {
@@ -110,6 +111,7 @@ public class ItemStack { // Spout final -> gone
 		if (var10) {
 			par1EntityPlayer.addStat(StatList.objectUseStats[this.itemID], 1);
 		}
+
 		// Spout Start
 		if (var10 && stackSize == 0 && getItem() instanceof ItemBlock && Configuration.isReplaceBlocks()) {
 			InventoryUtil.replaceItem(this.itemID, getItem().getMetadata(this.getItemDamage()));
@@ -232,9 +234,18 @@ public class ItemStack { // Spout final -> gone
 	public void damageItem(int par1, EntityLiving par2EntityLiving) {
 		if (this.isItemStackDamageable()) {
 			if (par1 > 0 && par2EntityLiving instanceof EntityPlayer) {
-				int var3 = EnchantmentHelper.getUnbreakingModifier(par2EntityLiving);
+				int var3 = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, this);
+				int var4 = 0;
 
-				if (var3 > 0 && par2EntityLiving.worldObj.rand.nextInt(var3 + 1) > 0) {
+				for (int var5 = 0; var3 > 0 && var5 < par1; ++var5) {
+					if (EnchantmentDurability.func_92097_a(this, var3, par2EntityLiving.worldObj.rand)) {
+						++var4;
+					}
+				}
+
+				par1 -= var4;
+
+				if (par1 <= 0) {
 					return;
 				}
 			}
@@ -257,7 +268,7 @@ public class ItemStack { // Spout final -> gone
 				}
 
 				this.itemDamage = 0;
-				
+
 				// Spout Start
 				if (stackSize == 0 && Configuration.isReplaceTools()) {
 					InventoryUtil.replaceItem(this.itemID, -1);
@@ -405,7 +416,7 @@ public class ItemStack { // Spout final -> gone
 	}
 
 	public NBTTagList getEnchantmentTagList() {
-		// Spout Start
+	// Spout Start
 		NBTTagList list = getAllEnchantmentTagList();
 		if (list == null) {
 			return null;
@@ -425,7 +436,7 @@ public class ItemStack { // Spout final -> gone
 	}
 
 	public NBTTagList getAllEnchantmentTagList() {
-		// Spout End
+	// Spout End
 		return this.stackTagCompound == null ? null : (NBTTagList)this.stackTagCompound.getTag("ench");
 	}
 
@@ -500,7 +511,7 @@ public class ItemStack { // Spout final -> gone
 			} else {
 				var5 = var5 + String.format("#%04d%s", new Object[] {Integer.valueOf(this.itemID), var6});
 			}
-		} else if (!this.hasDisplayName() && this.itemID == Item.map.shiftedIndex) {
+		} else if (!this.hasDisplayName() && this.itemID == Item.map.itemID) {
 			var5 = var5 + " #" + this.itemDamage;
 		}
 

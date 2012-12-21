@@ -18,12 +18,13 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.username = par2Str;
 		this.yOffset = 0.0F;
 		this.stepHeight = 0.0F;
-		// Spout Start
+
 		if (par2Str != null && par2Str.length() > 0) {
+			// Spout Start
 			this.skinUrl = "http://cdn.spout.org/game/vanilla/skin/" + ChatColor.stripColor(par2Str) + ".png";
 			this.vip = Resources.getVIP(ChatColor.stripColor(par2Str));
+			// Spout End
 		}
-		// Spout End
 
 		this.noClip = true;
 		this.field_71082_cx = 0.25F;
@@ -66,13 +67,13 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.otherPlayerMPPosRotationIncrements = par9;
 	}
 
-	// Spout Start
 	public void updateCloak() {
+		// Spout Start
 		if (this.cloakUrl == null || this.playerCloakUrl == null) {
 			super.updateCloak();
 		}
+		// Spout End
 	}
-	// Spout End
 
 	/**
 	 * Called to update the entity's position/logic.
@@ -170,7 +171,10 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	}
 
 	public void sendChatToPlayer(String par1Str) {
-		//Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(par1Str); // Spout removed TODO
+		// Spout Start - Removed
+		// TODO: Something?
+		//Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(par1Str);
+		// Spout End
 	}
 
 	/**

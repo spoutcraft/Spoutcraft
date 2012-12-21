@@ -73,7 +73,7 @@ public final class Lightmap {
 	}
 
 	private boolean compute(EntityRenderer var1, World var2, float var3) {
-		float var4 = Colorizer.clamp(var2.lightningFlash > 0 ? 1.0F : 1.1666666F * (var2.func_72971_b(1.0F) - 0.2F)) * (float)(this.width - 1);
+		float var4 = Colorizer.clamp(var2.lightningFlash > 0 ? 1.0F : 1.1666666F * (var2.getSunBrightness(1.0F) - 0.2F)) * (float)(this.width - 1);
 		float var5 = Colorizer.clamp(var1.torchFlickerX + 0.5F) * (float)(this.width - 1);
 		float var6 = var1.getNightVisionStrength(var3);
 		float var7 = Colorizer.clamp(MCPatcherUtils.getMinecraft().gameSettings.gammaSetting);

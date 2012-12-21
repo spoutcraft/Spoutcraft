@@ -3,13 +3,13 @@ package net.minecraft.client;
 import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
-import net.minecraft.client.Minecraft; // Spout
 import net.minecraft.src.CanvasMinecraftApplet;
 import net.minecraft.src.MinecraftAppletImpl;
 import net.minecraft.src.Session;
 // Spout Start
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import net.minecraft.client.Minecraft;
 // Spout End
 
 public class MinecraftApplet extends Applet {
@@ -116,7 +116,7 @@ public class MinecraftApplet extends Applet {
 			this.mcThread = null;
 		}
 	}
-	
+
 	// Spout Start
 	private static class ProxyAuthenticator extends Authenticator {
 		final String user, pass;

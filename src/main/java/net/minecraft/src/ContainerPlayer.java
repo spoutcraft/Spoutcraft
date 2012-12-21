@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft; // Spout
+// Spout Start
+import net.minecraft.client.Minecraft;
+// Spout End
 
 public class ContainerPlayer extends Container {
 
@@ -42,7 +44,7 @@ public class ContainerPlayer extends Container {
 		this.onCraftMatrixChanged(this.craftMatrix);
 	}
 
-	// Spout Start
+	// Spout Start - Inventory sorting
 	public IInventory getIInventory() {
 		return Minecraft.theMinecraft.thePlayer.inventory;
 	}

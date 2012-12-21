@@ -161,7 +161,7 @@ public class PlayerControllerMP {
 					this.curBlockDamageMP = 0.0F;
 					this.prevBlockDamageMP = 0.0F;
 					this.stepSoundTickCounter = 0.0F;
-					this.mc.theWorld.destroyBlockInWorldPartially(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
+					this.mc.theWorld.cancelDestroyingBlock(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
 				}
 			}
 		}
@@ -177,7 +177,7 @@ public class PlayerControllerMP {
 
 		this.isHittingBlock = false;
 		this.curBlockDamageMP = 0.0F;
-		this.mc.theWorld.destroyBlockInWorldPartially(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, -1);
+		this.mc.theWorld.cancelDestroyingBlock(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, -1);
 	}
 
 	/**
@@ -220,7 +220,7 @@ public class PlayerControllerMP {
 					this.blockHitDelay = 5;
 				}
 
-				this.mc.theWorld.destroyBlockInWorldPartially(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
+				this.mc.theWorld.cancelDestroyingBlock(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
 			} else {
 				this.clickBlock(par1, par2, par3, par4);
 			}

@@ -89,7 +89,7 @@ public class EntityBoat extends Entity {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		if (this.func_85032_ar()) {
+		if (this.isEntityInvulnerable()) {
 			return false;
 		} else if (!this.worldObj.isRemote && !this.isDead) {
 			this.setForwardDirection(-this.getForwardDirection());
@@ -106,7 +106,7 @@ public class EntityBoat extends Entity {
 					this.riddenByEntity.mountEntity(this);
 				}
 
-				this.dropItemWithOffset(Item.boat.shiftedIndex, 1, 0.0F);
+				this.dropItemWithOffset(Item.boat.itemID, 1, 0.0F);
 				this.setDead();
 			}
 
@@ -272,20 +272,19 @@ public class EntityBoat extends Entity {
 			if (this.riddenByEntity != null) {
 				this.motionX += this.riddenByEntity.motionX * this.field_70276_b;
 				this.motionZ += this.riddenByEntity.motionZ * this.field_70276_b;
-			}
 			// Spout Start
-			else if (unoccupiedDeceleration >= 0) {
-				 this.motionX *= unoccupiedDeceleration;
-				 this.motionZ *= unoccupiedDeceleration;
-				 // Kill lingering speed
-				 if (motionX <= 0.00001) {
-					  motionX = 0;
-				 }
-				 if (motionZ <= 0.00001) {
-					  motionZ = 0;
-				 }
+			} else if (unoccupiedDeceleration >= 0) {
+				this.motionX *= unoccupiedDeceleration;
+				this.motionZ *= unoccupiedDeceleration;
+				// Kill lingering speed
+				if (motionX <= 0.00001) {
+					motionX = 0;
+				}
+				if (motionZ <= 0.00001) {
+					motionZ = 0;
+				}
 			}
-			
+
 			var24 = this.maxSpeed;
 			// Spout End
 
@@ -330,7 +329,7 @@ public class EntityBoat extends Entity {
 					}
 
 					for (var25 = 0; var25 < 2; ++var25) {
-						this.dropItemWithOffset(Item.stick.shiftedIndex, 1, 0.0F);
+						this.dropItemWithOffset(Item.stick.itemID, 1, 0.0F);
 					}
 				}
 			} else {
@@ -394,9 +393,10 @@ public class EntityBoat extends Entity {
 				}
 
 				if (this.riddenByEntity != null && this.riddenByEntity.isDead) {
-
-					riddenByEntity.ridingEntity = null; // Spout
+					// Spout Start
+					riddenByEntity.ridingEntity = null;
 					this.riddenByEntity = null;
+					// Spout End
 				}
 			}
 		}

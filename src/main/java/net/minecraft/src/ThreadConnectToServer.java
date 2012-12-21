@@ -2,8 +2,9 @@ package net.minecraft.src;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
-
-import net.minecraft.client.Minecraft; // Spout
+// Spout Start
+import net.minecraft.client.Minecraft;
+// Spout End
 
 class ThreadConnectToServer extends Thread {
 
@@ -29,18 +30,20 @@ class ThreadConnectToServer extends Thread {
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
-			// Spout - start
+			// Spout Start
 			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet250CustomPayload("REGISTER", "AutoProto:HShake".getBytes()));
 			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet250CustomPayload("REGISTER", "ChkCache:setHash".getBytes()));
 			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet250CustomPayload("AutoProto:HShake", "VanillaProtocol".getBytes()));
-			// Spout - end
-			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2ClientProtocol(49, GuiConnecting.func_74254_c(this.connectingGui).session.username, this.ip, this.port));
+			// Spout End
+			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2ClientProtocol(51, GuiConnecting.func_74254_c(this.connectingGui).session.username, this.ip, this.port));
 		} catch (UnknownHostException var2) {
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
 
-			displayConnectionIssue(ip, port, "Unknown host \'" + this.ip + "\'"); // Spout
+			// Spout Start
+			displayConnectionIssue(ip, port, "Unknown host \'" + this.ip + "\'");
+			// Spout End
 		} catch (ConnectException var3) {
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
@@ -64,7 +67,7 @@ class ThreadConnectToServer extends Thread {
 			// Spout End
 		}
 	}
-	
+
 	// Spout Start
 	private void displayConnectionIssue(String ip, int port, String message) {
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = ip;

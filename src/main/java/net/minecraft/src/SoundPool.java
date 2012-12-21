@@ -82,7 +82,7 @@ public class SoundPool {
 		}
 		return (SoundPoolEntry)list.get(id);
 	}
-	
+
 	public SoundPoolEntry addCustomSound(String sound, File file) {
 		try {
 			if(!nameToSoundPoolEntriesMapping.containsKey(sound)) {
@@ -96,6 +96,5 @@ public class SoundPool {
 			return null;
 		}
 	}
-	
 	// Spout End
 }

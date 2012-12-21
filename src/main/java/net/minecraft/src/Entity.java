@@ -1,24 +1,21 @@
 package net.minecraft.src;
 
-
 import java.util.List;
 import java.util.Random;
 import net.minecraft.server.MinecraftServer;
 
-//Spout start
-import java.util.LinkedList; 
+// Spout Start
+import java.util.LinkedList;
 import java.util.UUID;
-import org.spoutcraft.client.SpoutClient; 
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.entity.CraftEntityFactory;
-//Spout end
+// Spout End
 
 public abstract class Entity {
 	private static int nextEntityID = 0;
-
 	// Spout Start
 	public static List<Entity> toProcess = new LinkedList<Entity>();
 	// Spout End
-
 	public int entityId;
 	public double renderDistanceWeight;
 
@@ -153,7 +150,9 @@ public abstract class Entity {
 	 * The amount of ticks you have to stand inside of fire before be set on fire
 	 */
 	public int fireResistance;
-	public int fire; // Spout private -> public
+	// Spout Start
+	public int fire;
+	// Spout End
 
 	/**
 	 * Whether this entity is currently inside of water (if it handles water movement that is)
@@ -195,12 +194,12 @@ public abstract class Entity {
 
 	/** Whether the entity is inside a Portal */
 	protected boolean inPortal;
-	private int field_82153_h;
+	protected int field_82153_h;
 
 	/** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
 	public int dimension;
 	protected int field_82152_aq;
-	private boolean field_83001_bt;
+	private boolean invulnerable;
 	// Spout Start
 	public boolean partiallyInWater = false;
 	public org.spoutcraft.api.entity.Entity spoutEnty;
@@ -243,7 +242,7 @@ public abstract class Entity {
 		this.dataWatcher = new DataWatcher();
 		this.addedToChunk = false;
 		this.field_82152_aq = 0;
-		this.field_83001_bt = false;
+		this.invulnerable = false;
 		this.myEntitySize = EnumEntitySize.SIZE_2;
 		this.worldObj = par1World;
 		this.setPosition(0.0D, 0.0D, 0.0D);
@@ -255,10 +254,9 @@ public abstract class Entity {
 		this.dataWatcher.addObject(0, Byte.valueOf((byte)0));
 		this.dataWatcher.addObject(1, Short.valueOf((short)300));
 		this.entityInit();
-		
-		//Spout start
+		// Spout Start
 		this.spoutEnty = CraftEntityFactory.getCraftEntity(this);
-		//Spout end
+		// Spout End
 	}
 
 	protected abstract void entityInit();
@@ -387,7 +385,7 @@ public abstract class Entity {
 		// Spout Start
 		partiallyInWater = isInsideOfMaterial(Material.water, -1);
 		// Spout End
-		++this.ticksExisted;
+		// TODO: Is this needed? //++this.ticksExisted;
 		this.prevDistanceWalkedModified = this.distanceWalkedModified;
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -507,6 +505,7 @@ public abstract class Entity {
 	 */
 	public void setFire(int par1) {
 		int var2 = par1 * 20;
+		var2 = EnchantmentProtection.func_92093_a(this, var2);
 
 		if (this.fire < var2) {
 			this.fire = var2;
@@ -792,7 +791,7 @@ public abstract class Entity {
 							var39 = 1.0F;
 						}
 
-						this.func_85030_a("liquid.swim", var39, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+						this.playSound("liquid.swim", var39, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
 					}
 
 					this.playStepSound(var37, var30, var31, var32);
@@ -818,7 +817,7 @@ public abstract class Entity {
 			}
 
 			if (var38 && this.fire > 0) {
-				this.func_85030_a("random.fizz", 0.7F, 1.6F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+				this.playSound("random.fizz", 0.7F, 1.6F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
 				this.fire = -this.fireResistance;
 			}
 
@@ -860,13 +859,13 @@ public abstract class Entity {
 
 		if (this.worldObj.getBlockId(par1, par2 + 1, par3) == Block.snow.blockID) {
 			var5 = Block.snow.stepSound;
-			this.func_85030_a(var5.getStepSound(), var5.getVolume() * 0.15F, var5.getPitch());
+			this.playSound(var5.getStepSound(), var5.getVolume() * 0.15F, var5.getPitch());
 		} else if (!Block.blocksList[par4].blockMaterial.isLiquid()) {
-			this.func_85030_a(var5.getStepSound(), var5.getVolume() * 0.15F, var5.getPitch());
+			this.playSound(var5.getStepSound(), var5.getVolume() * 0.15F, var5.getPitch());
 		}
 	}
 
-	protected void func_85030_a(String par1Str, float par2, float par3) {
+	public void playSound(String par1Str, float par2, float par3) {
 		this.worldObj.playSoundAtEntity(this, par1Str, par2, par3);
 	}
 
@@ -948,7 +947,7 @@ public abstract class Entity {
 					var1 = 1.0F;
 				}
 
-				this.func_85030_a("liquid.splash", var1, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+				this.playSound("liquid.splash", var1, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
 				float var2 = (float)MathHelper.floor_double(this.boundingBox.minY);
 				int var3;
 				float var4;
@@ -976,30 +975,33 @@ public abstract class Entity {
 
 		return this.inWater;
 	}
-	
-	// Spout Start
+
 	/**
 	 * Checks if the current block the entity is within of the specified material type
 	 */
+	// Spout Start
 	public boolean isInsideOfMaterial(Material material) {
 		return isInsideOfMaterial(material, 0);
 	}
 
 	public boolean isInsideOfMaterial(Material material, float offset) {
 		double var2 = this.posY + (double)this.getEyeHeight() + offset;
+	// Spout End
 		int var4 = MathHelper.floor_double(this.posX);
 		int var5 = MathHelper.floor_float((float)MathHelper.floor_double(var2));
 		int var6 = MathHelper.floor_double(this.posZ);
 		int var7 = this.worldObj.getBlockId(var4, var5, var6);
 
+		// Spout Start
 		if (var7 != 0 && Block.blocksList[var7].blockMaterial == material) {
+		// Spout End
 			float var8 = BlockFluid.getFluidHeightPercent(this.worldObj.getBlockMetadata(var4, var5, var6)) - 0.11111111F;
 			float var9 = (float)(var5 + 1) - var8;
 			return var2 < (double)var9;
 		}
 		return false;
+		// Spout End
 	}
-	// Spout End
 
 	public float getEyeHeight() {
 		return 0.0F;
@@ -1204,7 +1206,7 @@ public abstract class Entity {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		if (this.func_85032_ar()) {
+		if (this.isEntityInvulnerable()) {
 			return false;
 		} else {
 			this.setBeenAttacked();
@@ -1292,12 +1294,12 @@ public abstract class Entity {
 			par1NBTTagCompound.setLong("ID_LSB", uniqueId.getLeastSignificantBits());
 			par1NBTTagCompound.setLong("ID_MSB", uniqueId.getMostSignificantBits());
 			// Spout End
-			par1NBTTagCompound.setBoolean("Invulnerable", this.field_83001_bt);
+			par1NBTTagCompound.setBoolean("Invulnerable", this.invulnerable);
 			par1NBTTagCompound.setInteger("PortalCooldown", this.timeUntilPortal);
 			this.writeEntityToNBT(par1NBTTagCompound);
 		} catch (Throwable var5) {
-			CrashReport var3 = CrashReport.func_85055_a(var5, "Saving entity NBT");
-			CrashReportCategory var4 = var3.func_85058_a("Entity being saved");
+			CrashReport var3 = CrashReport.makeCrashReport(var5, "Saving entity NBT");
+			CrashReportCategory var4 = var3.makeCategory("Entity being saved");
 			this.func_85029_a(var4);
 			throw new ReportedException(var3);
 		}
@@ -1337,7 +1339,7 @@ public abstract class Entity {
 			this.setAir(par1NBTTagCompound.getShort("Air"));
 			this.onGround = par1NBTTagCompound.getBoolean("OnGround");
 			this.dimension = par1NBTTagCompound.getInteger("Dimension");
-			this.field_83001_bt = par1NBTTagCompound.getBoolean("Invulnerable");
+			this.invulnerable = par1NBTTagCompound.getBoolean("Invulnerable");
 			this.timeUntilPortal = par1NBTTagCompound.getInteger("PortalCooldown");
 			this.setPosition(this.posX, this.posY, this.posZ);
 			this.setRotation(this.rotationYaw, this.rotationPitch);
@@ -1351,8 +1353,8 @@ public abstract class Entity {
 			// Spout End
 			this.readEntityFromNBT(par1NBTTagCompound);
 		} catch (Throwable var5) {
-			CrashReport var3 = CrashReport.func_85055_a(var5, "Loading entity NBT");
-			CrashReportCategory var4 = var3.func_85058_a("Entity being loaded");
+			CrashReport var3 = CrashReport.makeCrashReport(var5, "Loading entity NBT");
+			CrashReportCategory var4 = var3.makeCategory("Entity being loaded");
 			this.func_85029_a(var4);
 			throw new ReportedException(var3);
 		}
@@ -1785,7 +1787,9 @@ public abstract class Entity {
 	/**
 	 * Enable or disable a entity flag, see getEntityFlag to read the know flags.
 	 */
-	public void setFlag(int par1, boolean par2) { // Spout protected -> public
+	// Spout Start - protected to public
+	public void setFlag(int par1, boolean par2) {
+	// Spout End
 		byte var3 = this.dataWatcher.getWatchableObjectByte(0);
 
 		if (par2) {
@@ -1958,8 +1962,11 @@ public abstract class Entity {
 		return String.format("%s[\'%s\'/%d, l=\'%s\', x=%.2f, y=%.2f, z=%.2f]", new Object[] {this.getClass().getSimpleName(), this.getEntityName(), Integer.valueOf(this.entityId), this.worldObj == null ? "~NULL~" : this.worldObj.getWorldInfo().getWorldName(), Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)});
 	}
 
-	public boolean func_85032_ar() {
-		return this.field_83001_bt;
+	/**
+	 * Return whether this entity is invulnerable to damage.
+	 */
+	public boolean isEntityInvulnerable() {
+		return this.invulnerable;
 	}
 
 	public void func_82149_j(Entity par1Entity) {
@@ -2004,8 +2011,8 @@ public abstract class Entity {
 
 			this.isDead = true;
 			this.worldObj.theProfiler.endSection();
-			var4.func_82742_i();
-			var5.func_82742_i();
+			var4.resetUpdateEntityTick();
+			var5.resetUpdateEntityTick();
 			this.worldObj.theProfiler.endSection();
 		}
 	}
@@ -2038,7 +2045,10 @@ public abstract class Entity {
 		par1CrashReportCategory.addCrashSection("Momentum", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.motionX), Double.valueOf(this.motionY), Double.valueOf(this.motionZ)}));
 	}
 
-	public boolean func_90999_ad() {
+	/**
+	 * Return whether this entity should be rendered as on fire.
+	 */
+	public boolean canRenderOnFire() {
 		return this.isBurning();
 	}
 }

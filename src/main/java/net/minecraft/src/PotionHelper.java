@@ -1,11 +1,13 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer; // Spout HD
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+// MCPatcher Start
+import com.pclewis.mcpatcher.mod.Colorizer;
+// MCpatcher End
 
 public class PotionHelper {
 	public static final String field_77924_a = null;
@@ -21,7 +23,9 @@ public class PotionHelper {
 	public static final String gunpowderEffect;
 	public static final String field_82818_l;
 	private static final HashMap potionRequirements = new HashMap();
-	private static final HashMap field_77928_m = new HashMap();
+
+	/** Potion effect amplifier map */
+	private static final HashMap potionAmplifiers = new HashMap();
 	private static final HashMap field_77925_n;
 
 	/** An array of possible potion prefix names, as translation IDs. */
@@ -56,7 +60,9 @@ public class PotionHelper {
 	 * Given a {@link Collection}<{@link PotionEffect}> will return an Integer color.
 	 */
 	public static int calcPotionLiquidColor(Collection par0Collection) {
-		int var1 = Colorizer.getWaterBottleColor(); // Spout HD
+		// MCPatcher Start
+		int var1 = Colorizer.getWaterBottleColor();
+		// MCPatcher End
 
 		if (par0Collection != null && !par0Collection.isEmpty()) {
 			float var2 = 0.0F;
@@ -96,7 +102,7 @@ public class PotionHelper {
 			}
 
 			var2 = (PotionEffect)var1.next();
-		} while (var2.func_82720_e());
+		} while (var2.getIsAmbient());
 
 		return false;
 	}
@@ -307,7 +313,7 @@ public class PotionHelper {
 
 					if (var8 > 0) {
 						int var9 = 0;
-						String var10 = (String)field_77928_m.get(Integer.valueOf(var6.getId()));
+						String var10 = (String)potionAmplifiers.get(Integer.valueOf(var6.getId()));
 
 						if (var10 != null) {
 							var9 = parsePotionEffects(var10, 0, var10.length(), par0);
@@ -469,14 +475,14 @@ public class PotionHelper {
 		potionRequirements.put(Integer.valueOf(Potion.nightVision.getId()), "!0 & 1 & 2 & !3 & 2+6");
 		potionRequirements.put(Integer.valueOf(Potion.invisibility.getId()), "!0 & 1 & 2 & 3 & 2+6");
 		glowstoneEffect = "+5-6-7";
-		field_77928_m.put(Integer.valueOf(Potion.moveSpeed.getId()), "5");
-		field_77928_m.put(Integer.valueOf(Potion.digSpeed.getId()), "5");
-		field_77928_m.put(Integer.valueOf(Potion.damageBoost.getId()), "5");
-		field_77928_m.put(Integer.valueOf(Potion.regeneration.getId()), "5");
-		field_77928_m.put(Integer.valueOf(Potion.harm.getId()), "5");
-		field_77928_m.put(Integer.valueOf(Potion.heal.getId()), "5");
-		field_77928_m.put(Integer.valueOf(Potion.resistance.getId()), "5");
-		field_77928_m.put(Integer.valueOf(Potion.poison.getId()), "5");
+		potionAmplifiers.put(Integer.valueOf(Potion.moveSpeed.getId()), "5");
+		potionAmplifiers.put(Integer.valueOf(Potion.digSpeed.getId()), "5");
+		potionAmplifiers.put(Integer.valueOf(Potion.damageBoost.getId()), "5");
+		potionAmplifiers.put(Integer.valueOf(Potion.regeneration.getId()), "5");
+		potionAmplifiers.put(Integer.valueOf(Potion.harm.getId()), "5");
+		potionAmplifiers.put(Integer.valueOf(Potion.heal.getId()), "5");
+		potionAmplifiers.put(Integer.valueOf(Potion.resistance.getId()), "5");
+		potionAmplifiers.put(Integer.valueOf(Potion.poison.getId()), "5");
 		redstoneEffect = "-5+6-7";
 		gunpowderEffect = "+14&13-13";
 		field_77925_n = new HashMap();

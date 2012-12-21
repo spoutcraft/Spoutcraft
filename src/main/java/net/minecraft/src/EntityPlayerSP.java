@@ -15,7 +15,9 @@ import org.spoutcraft.api.util.FixedLocation;
 // Spout End
 
 public class EntityPlayerSP extends EntityPlayer {
-	//public MovementInput movementInput; // Spout moved to EntityPlayer
+	// Spout Start - Moved to EntityPlayer
+	//public MovementInput movementInput;
+	// Spout End
 	protected Minecraft mc;
 
 	/**
@@ -48,8 +50,8 @@ public class EntityPlayerSP extends EntityPlayer {
 		super(par2World);
 		this.mc = par1Minecraft;
 		this.dimension = par4;
-		// Spout Start
 		if (par3Session != null && par3Session.username != null && par3Session.username.length() > 0) {
+			// Spout Start
 			this.skinUrl = "http://cdn.spout.org/game/vanilla/skin/" + ChatColor.stripColor(par3Session.username) + ".png";
 			this.vip = Resources.getVIP(ChatColor.stripColor(par3Session.username));
 			if (vip != null) {
@@ -57,8 +59,8 @@ public class EntityPlayerSP extends EntityPlayer {
 			} else {
 				displayName = par3Session.username;
 			}
+			// Spout End
 		}
-		// Spout End
 
 		this.username = par3Session.username;
 		// Spout Start
@@ -80,7 +82,9 @@ public class EntityPlayerSP extends EntityPlayer {
 		super.updateEntityActionState();
 		this.moveStrafing = this.movementInput.moveStrafe;
 		this.moveForward = this.movementInput.moveForward;
-		this.isJumping = this.movementInput.jump || this.isTreadingWater(); // Spout
+		// Spout Start
+		this.isJumping = this.movementInput.jump || this.isTreadingWater();
+		// Spout End
 		this.prevRenderArmYaw = this.renderArmYaw;
 		this.prevRenderArmPitch = this.renderArmPitch;
 		this.renderArmPitch = (float)((double)this.renderArmPitch + (double)(this.rotationPitch - this.renderArmPitch) * 0.5D);
@@ -99,7 +103,9 @@ public class EntityPlayerSP extends EntityPlayer {
 	 * this to react to sunlight and start to burn.
 	 */
 	public void onLivingUpdate() {
-		if (this.sprintingTicksLeft > 0 && !runToggle) { // Spout
+		// Spout Start
+		if (this.sprintingTicksLeft > 0 && !runToggle) {
+		// Spout End
 			--this.sprintingTicksLeft;
 
 			if (this.sprintingTicksLeft == 0) {
@@ -120,7 +126,9 @@ public class EntityPlayerSP extends EntityPlayer {
 			this.posY = 68.5D;
 		} else {
 			if (!this.mc.statFileWriter.hasAchievementUnlocked(AchievementList.openInventory)) {
-				//this.mc.guiAchievement.queueAchievementInformation(AchievementList.openInventory); // Spout this was bugging me
+				// Spout Start
+				//this.mc.guiAchievement.queueAchievementInformation(AchievementList.openInventory);
+				// Spout End
 			}
 
 			this.prevTimeInPortal = this.timeInPortal;
@@ -160,7 +168,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			if (this.timeUntilPortal > 0) {
 				--this.timeUntilPortal;
 			}
-			
+
 			// Spout Start
 			boolean wasFlightUp = movementInput.flyingUp;
 			// Spout End
@@ -168,7 +176,9 @@ public class EntityPlayerSP extends EntityPlayer {
 			boolean var1 = this.movementInput.jump;
 			float var2 = 0.8F;
 			boolean var3 = this.movementInput.moveForward >= var2;
-			this.movementInput.updatePlayerMoveState(this); // Spout - kept parameter
+			// Spout Start - Kept parameter
+			this.movementInput.updatePlayerMoveState(this);
+			// Spout End
 
 			if (this.isUsingItem()) {
 				this.movementInput.moveStrafe *= 0.2F;
@@ -203,7 +213,9 @@ public class EntityPlayerSP extends EntityPlayer {
 				this.setSprinting(false);
 			}
 
-			if (this.capabilities.allowFlying && !wasFlightUp && this.movementInput.flyingUp) { // Spout
+			// Spout Start
+			if (this.capabilities.allowFlying && !wasFlightUp && this.movementInput.flyingUp) {
+			// Spout End
 				if (this.flyToggleTimer == 0) {
 					this.flyToggleTimer = 7;
 				} else {
@@ -246,7 +258,7 @@ public class EntityPlayerSP extends EntityPlayer {
 
 		var1 *= (this.landMovementFactor * this.getSpeedModifier() / this.speedOnGround + 1.0F) / 2.0F;
 
-		if (this.isUsingItem() && this.getItemInUse().itemID == Item.bow.shiftedIndex) {
+		if (this.isUsingItem() && this.getItemInUse().itemID == Item.bow.itemID) {
 			int var2 = this.getItemInUseDuration();
 			float var3 = (float)var2 / 20.0F;
 
@@ -513,7 +525,9 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 
 	public void sendChatToPlayer(String par1Str) {
-		//this.mc.ingameGUI.getChatGUI().printChatMessage(par1Str); // Spout removed
+		// Spout Start - Removed
+		//this.mc.ingameGUI.getChatGUI().printChatMessage(par1Str);
+		// Spout End
 	}
 
 	/**
@@ -537,21 +551,21 @@ public class EntityPlayerSP extends EntityPlayer {
 		return this.inventory.getCurrentItem();
 	}
 
-	protected void func_85030_a(String par1Str, float par2, float par3) {
-		this.worldObj.playSound(this.posX, this.posY - (double)this.yOffset, this.posZ, par1Str, par2, par3);
+	public void playSound(String par1Str, float par2, float par3) {
+		this.worldObj.playSound(this.posX, this.posY - (double)this.yOffset, this.posZ, par1Str, par2, par3, false);
 	}
-	
+
 	// Spout
 	public boolean canSprint() {
 		return this.getFoodStats().getFoodLevel() > 6.0F;
 	}
-	
+
 	@Override
 	public void handleKeyPress(int key, boolean keyReleased) {
 		if (keyReleased) {
 			final GameSettings settings = SpoutClient.getHandle().gameSettings;
-			
-			//Fog toggle
+
+			// Fog toggle
 			if (key == settings.keyBindToggleFog.keyCode) {
 				byte view = (byte)settings.renderDistance;
 				byte newView = (byte) SpoutClient.getInstance().getActivePlayer().getNextRenderDistance().getValue();
@@ -564,75 +578,59 @@ public class EntityPlayerSP extends EntityPlayer {
 						SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)newView));
 					}
 				}
-			}
-			
-			//Sneak toggle
-			else if (key == settings.keySneakToggle.keyCode) {
+			// Sneak toggle
+			} else if (key == settings.keySneakToggle.keyCode) {
 				sneakToggle = !sneakToggle;
 				if (sneakToggle) {
 					runToggle = false;
 					setSprinting(false);
 					treadWaterToggle = false;
 				}
-			}
-			
-			//Run toggle
-			else if (key == settings.keyRunToggle.keyCode) {
+			// Run toggle
+			} else if (key == settings.keyRunToggle.keyCode) {
 				runToggle = !runToggle;
 				setSprinting(runToggle);
 				if (runToggle) {
 					sneakToggle = false;
 					treadWaterToggle = false;
 				}
-			}
-			
-			//Water tread
-			else if (key == settings.keyTreadWaterToggle.keyCode) {
+			// Water tread
+			} else if (key == settings.keyTreadWaterToggle.keyCode) {
 				treadWaterToggle = !treadWaterToggle;
 				if (treadWaterToggle) {
 					runToggle = false;
 					setSprinting(false);
 					sneakToggle = false;
 				}
-			}
-
-			//Auto forward
-			else if (key == settings.keyAutoForward.keyCode) {
+			// Auto forward
+			} else if (key == settings.keyAutoForward.keyCode) {
 				if (Spoutcraft.hasPermission("spout.client.autorun.forward")) {
 					autoforwardToggle = !autoforwardToggle;
 					autoBackwardToggle = false;
 				}
-			}
-			else if (key == settings.keyBindForward.keyCode && autoforwardToggle) {
+			} else if (key == settings.keyBindForward.keyCode && autoforwardToggle) {
 				autoforwardToggle = false;
 				autoBackwardToggle = false;
-			}
-			
-			//Auto backward
-			else if (key == settings.keyAutoBackward.keyCode) {
+			// Auto backward
+			} else if (key == settings.keyAutoBackward.keyCode) {
 				if (Spoutcraft.hasPermission("spout.client.autorun.backward")) {
 					autoBackwardToggle = !autoBackwardToggle;
 					autoforwardToggle = false;
 				}
-			}
-			else if (key == settings.keyBindBack.keyCode && autoBackwardToggle) {
+			} else if (key == settings.keyBindBack.keyCode && autoBackwardToggle) {
 				autoBackwardToggle = false;
 				autoforwardToggle = false;
-			}
-			
-			//Overview map
-			else if (key == settings.keyWaypoint.keyCode){
+			// Overview map
+			} else if (key == settings.keyWaypoint.keyCode){
 				if(Spoutcraft.hasPermission("spout.client.overviewmap")) {
 					mc.displayGuiScreen(new GuiOverviewMap());
 				}
-			}
-			
-			else if (key == settings.keyHideChat.keyCode){
+			} else if (key == settings.keyHideChat.keyCode){
 				if (Spoutcraft.getActivePlayer() != null) {
 					Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox().setVisible(!Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox().isVisible());
 				}
 			}
-			
+
 			if (this.capabilities.allowFlying && key == settings.keyFlyToggle.keyCode) {
 				this.capabilities.isFlying = !this.capabilities.isFlying;
 				if (this.capabilities.isFlying) {
@@ -642,7 +640,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			}
 		}
 	}
-	
+
 	@Override
 	public void onUpdate() {
 		if (fogKey != null) {

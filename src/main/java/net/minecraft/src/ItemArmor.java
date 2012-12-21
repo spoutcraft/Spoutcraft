@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+// MCPatcher Start
 import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public class ItemArmor extends Item {
 
@@ -87,7 +89,9 @@ public class ItemArmor extends Item {
 				return Colorizer.undyedLeatherColor;
 			} else {
 				NBTTagCompound var3 = var2.getCompoundTag("display");
+				// MCPatcher Start
 				return var3 == null ? Colorizer.undyedLeatherColor : (var3.hasKey("color") ? var3.getInteger("color") : Colorizer.undyedLeatherColor);
+				// MCPatcher End
 			}
 		}
 	}

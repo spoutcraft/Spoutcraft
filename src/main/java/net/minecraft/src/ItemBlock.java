@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import java.util.List;
-import com.pclewis.mcpatcher.mod.Colorizer;  // Spout
+// MCPatcher Start
+import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public class ItemBlock extends Item {
 
@@ -65,12 +67,12 @@ public class ItemBlock extends Item {
 		} else if (par3World.canPlaceEntityOnSide(this.blockID, par4, par5, par6, false, par7, par2EntityPlayer)) {
 			Block var12 = Block.blocksList[this.blockID];
 			int var13 = this.getMetadata(par1ItemStack.getItemDamage());
-			int var14 = Block.blocksList[this.blockID].func_85104_a(par3World, par4, par5, par6, par7, par8, par9, par10, var13);
+			int var14 = Block.blocksList[this.blockID].onBlockPlaced(par3World, par4, par5, par6, par7, par8, par9, par10, var13);
 
 			if (par3World.setBlockAndMetadataWithNotify(par4, par5, par6, this.blockID, var14)) {
 				if (par3World.getBlockId(par4, par5, par6) == this.blockID) {
 					Block.blocksList[this.blockID].onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer);
-					Block.blocksList[this.blockID].func_85105_g(par3World, par4, par5, par6, var14);
+					Block.blocksList[this.blockID].onPostBlockPlaced(par3World, par4, par5, par6, var14);
 				}
 
 				par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), var12.stepSound.getPlaceSound(), (var12.stepSound.getVolume() + 1.0F) / 2.0F, var12.stepSound.getPitch() * 0.8F);
@@ -142,17 +144,18 @@ public class ItemBlock extends Item {
 		Block.blocksList[this.blockID].getSubBlocks(par1, par2CreativeTabs, par3List);
 	}
 
-// Spout Start
-	//fix metadata for double slabs
+	// Spout Start - Fix metadata for double slabs
 	public int getMetadata(int damage) {
 		if (blockID == Block.stoneDoubleSlab.blockID){
 			return damage;
 		}
 		return super.getMetadata(damage);
 	}
-	
+	// Spout End
+
+	// MCPatcher Start
 	public int getColorFromItemStack(ItemStack var1, int var2) {
 		return Colorizer.getItemColorFromDamage(super.getColorFromItemStack(var1, var2), this.blockID, var2);
 	}
-// Spout End
+	// MCPatcher End
 }

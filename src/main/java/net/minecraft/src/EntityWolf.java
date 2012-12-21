@@ -80,7 +80,7 @@ public class EntityWolf extends EntityTameable {
 	 * Plays step sound at given x, y, z for the entity
 	 */
 	protected void playStepSound(int par1, int par2, int par3, int par4) {
-		this.func_85030_a("mob.wolf.step", 0.15F, 1.0F);
+		this.playSound("mob.wolf.step", 0.15F, 1.0F);
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class EntityWolf extends EntityTameable {
 			this.prevTimeWolfIsShaking = 0.0F;
 		} else if ((this.isShaking || this.field_70928_h) && this.field_70928_h) {
 			if (this.timeWolfIsShaking == 0.0F) {
-				this.func_85030_a("mob.wolf.shake", this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+				this.playSound("mob.wolf.shake", this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			}
 
 			this.prevTimeWolfIsShaking = this.timeWolfIsShaking;
@@ -270,7 +270,7 @@ public class EntityWolf extends EntityTameable {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		if (this.func_85032_ar()) {
+		if (this.isEntityInvulnerable()) {
 			return false;
 		} else {
 			Entity var3 = par1DamageSource.getEntity();
@@ -313,7 +313,7 @@ public class EntityWolf extends EntityTameable {
 
 						return true;
 					}
-				} else if (var2.itemID == Item.dyePowder.shiftedIndex) {
+				} else if (var2.itemID == Item.dyePowder.itemID) {
 					int var4 = BlockCloth.getBlockFromDye(var2.getItemDamage());
 
 					if (var4 != this.getCollarColor()) {
@@ -333,7 +333,7 @@ public class EntityWolf extends EntityTameable {
 				this.isJumping = false;
 				this.setPathToEntity((PathEntity)null);
 			}
-		} else if (var2 != null && var2.itemID == Item.bone.shiftedIndex && !this.isAngry()) {
+		} else if (var2 != null && var2.itemID == Item.bone.itemID && !this.isAngry()) {
 			if (!par1EntityPlayer.capabilities.isCreativeMode) {
 				--var2.stackSize;
 			}
@@ -472,7 +472,7 @@ public class EntityWolf extends EntityTameable {
 		return this.dataWatcher.getWatchableObjectByte(19) == 1;
 	}
 
-	public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable) {
+	public EntityAgeable createChild(EntityAgeable par1EntityAgeable) {
 		return this.spawnBabyAnimal(par1EntityAgeable);
 	}
 }

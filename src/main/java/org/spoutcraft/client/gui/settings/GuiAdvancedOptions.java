@@ -127,7 +127,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control = new ResetButton(parent).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
 		getScreen().attachWidget(spoutcraft, control);
-		
+
 		switchToSimpleCheck = new GenericCheckBox("Advanced");
 		switchToSimpleCheck.setChecked(true);
 		switchToSimpleCheck.setAlign(WidgetAnchor.CENTER_CENTER);
@@ -199,7 +199,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control = new ChatButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control = new MinimapButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -274,12 +274,12 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 		UUID fancyGraphics = control.getId();
 		top+=20;
-	
+
 		control = new FancyGrassButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		graphicCheckboxes.add((CheckBox) control);
-		
+
 		control = new FancyCloudsButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -345,7 +345,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 
 		top += 22;
-		
+
 		control = new RandomMobTextureButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -506,7 +506,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control = new HotbarQuickKeysButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		top += 22;
 
 		top += 5;
@@ -545,7 +545,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control.setWidth(35).setHeight(15).setX(right+75).setY(top + 2);
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
-		
+
 		control = new SnooperButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(center).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -555,7 +555,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);		
+		screen.attachWidget(spoutcraft, linebreak);
 	}
 
 	@Override

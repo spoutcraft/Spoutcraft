@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+// Spout Start
+import java.util.Iterator;
+// Spout End
 
 public class ContainerEnchantment extends Container {
 
@@ -46,7 +48,7 @@ public class ContainerEnchantment extends Container {
 		return tableInventory;
 	}
 	// Spout End
-	
+
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
 		par1ICrafting.sendProgressBarUpdate(this, 0, this.enchantLevels[0]);
@@ -55,10 +57,10 @@ public class ContainerEnchantment extends Container {
 	}
 
 	/**
-	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
+	 * Looks for changes made in the container, sends them to every listener.
 	 */
-	public void updateCraftingResults() {
-		super.updateCraftingResults();
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
 
 		for (int var1 = 0; var1 < this.crafters.size(); ++var1) {
 			ICrafting var2 = (ICrafting)this.crafters.get(var1);
@@ -127,7 +129,7 @@ public class ContainerEnchantment extends Container {
 						this.enchantLevels[var4] = EnchantmentHelper.calcItemStackEnchantability(this.rand, var4, var3, var2);
 					}
 
-					this.updateCraftingResults();
+					this.detectAndSendChanges();
 				}
 			} else {
 				for (var3 = 0; var3 < 3; ++var3) {
@@ -146,14 +148,27 @@ public class ContainerEnchantment extends Container {
 		if (this.enchantLevels[par2] > 0 && var3 != null && (par1EntityPlayer.experienceLevel >= this.enchantLevels[par2] || par1EntityPlayer.capabilities.isCreativeMode)) {
 			if (!this.worldPointer.isRemote) {
 				List var4 = EnchantmentHelper.buildEnchantmentList(this.rand, var3, this.enchantLevels[par2]);
+				boolean var5 = var3.itemID == Item.book.itemID;
 
 				if (var4 != null) {
 					par1EntityPlayer.addExperienceLevel(-this.enchantLevels[par2]);
-					Iterator var5 = var4.iterator();
 
-					while (var5.hasNext()) {
-						EnchantmentData var6 = (EnchantmentData)var5.next();
-						var3.addEnchantment(var6.enchantmentobj, var6.enchantmentLevel);
+					if (var5) {
+						var3.itemID = Item.field_92105_bW.itemID;
+					}
+
+					int var6 = var5 ? this.rand.nextInt(var4.size()) : -1;
+
+					for (int var7 = 0; var7 < var4.size(); ++var7) {
+						EnchantmentData var8 = (EnchantmentData)var4.get(var7);
+
+						if (!var5 || var7 == var6) {
+							if (var5) {
+								Item.field_92105_bW.func_92115_a(var3, var8);
+							} else {
+								var3.addEnchantment(var8.enchantmentobj, var8.enchantmentLevel);
+							}
+						}
 					}
 
 					this.onCraftMatrixChanged(this.tableInventory);

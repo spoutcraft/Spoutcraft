@@ -28,12 +28,12 @@ public class ContainerChest extends Container {
 			this.addSlotToContainer(new Slot(par1IInventory, var4, 8 + var4 * 18, 161 + var3));
 		}
 	}
-	
-	// Spout Start
+
+	// Spout Start - Chest sorting
 	public IInventory getIInventory() {
 		return lowerChestInventory;
 	}
-	
+
 	@Override
 	public boolean isSortableInventory() {
 		return true;
@@ -81,7 +81,10 @@ public class ContainerChest extends Container {
 		this.lowerChestInventory.closeChest();
 	}
 
-	public IInventory func_85151_d() {
+	/**
+	 * Return this chest container's lower chest inventory.
+	 */
+	public IInventory getLowerChestInventory() {
 		return this.lowerChestInventory;
 	}
 }

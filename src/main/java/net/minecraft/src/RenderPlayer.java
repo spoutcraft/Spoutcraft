@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
-
 // Spout Start
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.HDImageBufferDownload;
@@ -13,8 +12,10 @@ import org.spoutcraft.client.special.VIP;
 // Spout End
 
 public class RenderPlayer extends RenderLiving {
-	public ModelBiped modelBipedMain; // Spout: private to public
-	// Spout Start
+	// Spout Start - private to public
+	public ModelBiped modelBipedMain;
+	// Spout End
+	// Spout Start - narrowtux model
 	private ModelNarrowtux modelNarrowtux;
 	private float lastScale = 1f;
 	// Spout End
@@ -139,7 +140,7 @@ public class RenderPlayer extends RenderLiving {
 		if (par1EntityPlayer.isSneaking() && !(par1EntityPlayer instanceof EntityPlayerSP)) {
 			var14 -= 0.125D;
 		}
-		// Spout Start
+		// Spout Start - VIP
 		if(!AccessoryHandler.isHandled(par1EntityPlayer.username)) {
 			 AccessoryHandler.addVIPAccessoriesFor(par1EntityPlayer);
 		}
@@ -176,34 +177,33 @@ public class RenderPlayer extends RenderLiving {
 				String title = par1EntityPlayer.displayName;
 				//int color = EasterEggs.getEasterEggTitleColor();
 				float alpha = 0.25F;
-				//if a plugin hasn't set a title, use the easter egg title (if one exists)
-				//if (EasterEggs.getEasterEggTitle(var1.username) != null && color == -1) {
-				//	title = EasterEggs.getEasterEggTitle(var1.username);
-				//	alpha = 0.0F;
-				//}
+				// If a plugin hasn't set a title, use the easter egg title (if one exists)
+				/*if (EasterEggs.getEasterEggTitle(var1.username) != null && color == -1) {
+					title = EasterEggs.getEasterEggTitle(var1.username);
+					alpha = 0.0F;
+				}*/
 				if (!title.equals("[hide]")) {
 					String lines[] = title.split("\\n");
 					double y = par4;
 					for (int line = 0; line < lines.length; line++) {
 						title = lines[line];
 						par4 = y + (0.275D * (lines.length - line - 1));
-						
+
 						if (AccessoryHandler.hasAccessory(par1EntityPlayer.username, AccessoryType.NOTCHHAT)) {
 							par4 = par4 + 0.275d;
 						} else if (AccessoryHandler.hasAccessory(par1EntityPlayer.username, AccessoryType.TOPHAT)) {
 							par4 = par4 + 0.5d;
 						}
-						
-						if(!par1EntityPlayer.isSneaking()) {
-							if(par1EntityPlayer.isPlayerSleeping()) {
+
+						if (!par1EntityPlayer.isSneaking()) {
+							if (par1EntityPlayer.isPlayerSleeping()) {
 								this.renderLivingLabel(par1EntityPlayer, title, par2, par4 - 1.5D, par6, 64);
 							} else {
-								//if (color != -1) {
-								//	this.renderLivingLabel(var1, title, var2, var4, var6, 64, color, color);
-								//}
-								//else {
+								/*if (color != -1) {
+									this.renderLivingLabel(var1, title, var2, var4, var6, 64, color, color);
+								} else {
 									this.renderLivingLabel(par1EntityPlayer, title, par2, par4, par6, 64);
-								//}
+								}*/
 							}
 						} else {
 							title = org.bukkit.ChatColor.stripColor(title); //strip colors when sneaking
@@ -217,7 +217,7 @@ public class RenderPlayer extends RenderLiving {
 							GL11.glDisable(GL11.GL_LIGHTING);
 							GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
 							GL11.glDepthMask(false);
-		
+
 							GL11.glEnable(GL11.GL_BLEND);
 							GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 							Tessellator var15 = Tessellator.instance;
@@ -234,7 +234,7 @@ public class RenderPlayer extends RenderLiving {
 							GL11.glDepthMask(true);
 							var14.drawString(title, -var14.getStringWidth(title) / 2, 0, 553648127);
 							GL11.glEnable(GL11.GL_LIGHTING);
-		
+
 							GL11.glDisable(GL11.GL_BLEND);
 							GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 							GL11.glPopMatrix();
@@ -253,7 +253,7 @@ public class RenderPlayer extends RenderLiving {
 		float var3 = 1.0F;
 		GL11.glColor3f(var3, var3, var3);
 		super.renderEquippedItems(par1EntityPlayer, par2);
-		super.func_85093_e(par1EntityPlayer, par2);
+		super.renderArrowsStuckInEntity(par1EntityPlayer, par2);
 		ItemStack var4 = par1EntityPlayer.inventory.armorItemInSlot(3);
 
 		if (var4 != null) {
@@ -261,7 +261,7 @@ public class RenderPlayer extends RenderLiving {
 			this.modelBipedMain.bipedHead.postRender(0.0625F);
 			float var5;
 
-			if (var4.getItem().shiftedIndex < 256) {
+			if (var4.getItem().itemID < 256) {
 				if (RenderBlocks.renderItemIn3d(Block.blocksList[var4.itemID].getRenderType())) {
 					var5 = 0.625F;
 					GL11.glTranslatef(0.0F, -0.25F, 0.0F);
@@ -270,7 +270,7 @@ public class RenderPlayer extends RenderLiving {
 				}
 
 				this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var4, 0);
-			} else if (var4.getItem().shiftedIndex == Item.skull.shiftedIndex) {
+			} else if (var4.getItem().itemID == Item.skull.itemID) {
 				var5 = 1.0625F;
 				GL11.glScalef(var5, -var5, -var5);
 				String var6 = "";
@@ -373,7 +373,7 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glScalef(-var7, -var7, var7);
-			} else if (var21.itemID == Item.bow.shiftedIndex) {
+			} else if (var21.itemID == Item.bow.itemID) {
 				var7 = 0.625F;
 				GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
 				GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
@@ -381,7 +381,7 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 			// Spout Start
-			} else if (Item.itemsList[var21.itemID].isFull3D() || var21.itemID == Item.flint.shiftedIndex && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) {
+			} else if (Item.itemsList[var21.itemID].isFull3D() || var21.itemID == Item.flint.itemID && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) {
 			// Spout End
 				var7 = 0.625F;
 

@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.Tessellator;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // Spout Start
@@ -69,7 +71,7 @@ public class ItemRenderer {
 				}
 			}
 		}
-		
+
 		if (!custom) {
 			if (par2ItemStack.itemID < 256) {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
@@ -78,7 +80,7 @@ public class ItemRenderer {
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/items.png"));
 			}
 		}
-		
+
 		if (design != null) {
 			design.renderItemstack(null, -0.5F, -0.5F, -0.5F, 0, 1F, rand);
 		}
@@ -112,9 +114,9 @@ public class ItemRenderer {
 			if (par2ItemStack != null) {
 				Colorizer.colorizeWaterBlockGL(par2ItemStack.itemID);
 			}
-			
+
 			this.renderItemIn2D(var5, var8, var9, var7, var10);
-			
+
 			if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0) {
 				GL11.glDepthFunc(GL11.GL_EQUAL);
 				GL11.glDisable(GL11.GL_LIGHTING);
@@ -240,6 +242,89 @@ public class ItemRenderer {
 		par1Tessellator.draw();
 	}
 
+	// Spout Start - New 2D method needs to be adapted for custom items.
+	/**
+	 * Renders an item held in hand as a 2D texture with thickness
+	 */
+	public static void renderItemIn2D(Tessellator par0Tessellator, float par1, float par2, float par3, float par4, float par5) {
+		float var6 = 1.0F;
+		par0Tessellator.startDrawingQuads();
+		par0Tessellator.setNormal(0.0F, 0.0F, 1.0F);
+		par0Tessellator.addVertexWithUV(0.0D, 0.0D, 0.0D, (double)par1, (double)par4);
+		par0Tessellator.addVertexWithUV((double)var6, 0.0D, 0.0D, (double)par3, (double)par4);
+		par0Tessellator.addVertexWithUV((double)var6, 1.0D, 0.0D, (double)par3, (double)par2);
+		par0Tessellator.addVertexWithUV(0.0D, 1.0D, 0.0D, (double)par1, (double)par2);
+		par0Tessellator.draw();
+		par0Tessellator.startDrawingQuads();
+		par0Tessellator.setNormal(0.0F, 0.0F, -1.0F);
+		par0Tessellator.addVertexWithUV(0.0D, 1.0D, (double)(0.0F - par5), (double)par1, (double)par2);
+		par0Tessellator.addVertexWithUV((double)var6, 1.0D, (double)(0.0F - par5), (double)par3, (double)par2);
+		par0Tessellator.addVertexWithUV((double)var6, 0.0D, (double)(0.0F - par5), (double)par3, (double)par4);
+		par0Tessellator.addVertexWithUV(0.0D, 0.0D, (double)(0.0F - par5), (double)par1, (double)par4);
+		par0Tessellator.draw();
+		par0Tessellator.startDrawingQuads();
+		par0Tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+		int var7;
+		float var8;
+		float var9;
+		float var10;
+
+		for (var7 = 0; var7 < 16; ++var7) {
+			var8 = (float)var7 / 16.0F;
+			var9 = par1 + (par3 - par1) * var8 - 0.001953125F;
+			var10 = var6 * var8;
+			par0Tessellator.addVertexWithUV((double)var10, 0.0D, (double)(0.0F - par5), (double)var9, (double)par4);
+			par0Tessellator.addVertexWithUV((double)var10, 0.0D, 0.0D, (double)var9, (double)par4);
+			par0Tessellator.addVertexWithUV((double)var10, 1.0D, 0.0D, (double)var9, (double)par2);
+			par0Tessellator.addVertexWithUV((double)var10, 1.0D, (double)(0.0F - par5), (double)var9, (double)par2);
+		}
+
+		par0Tessellator.draw();
+		par0Tessellator.startDrawingQuads();
+		par0Tessellator.setNormal(1.0F, 0.0F, 0.0F);
+
+		for (var7 = 0; var7 < 16; ++var7) {
+			var8 = (float)var7 / 16.0F;
+			var9 = par1 + (par3 - par1) * var8 - 0.001953125F;
+			var10 = var6 * var8 + 0.0625F;
+			par0Tessellator.addVertexWithUV((double)var10, 1.0D, (double)(0.0F - par5), (double)var9, (double)par2);
+			par0Tessellator.addVertexWithUV((double)var10, 1.0D, 0.0D, (double)var9, (double)par2);
+			par0Tessellator.addVertexWithUV((double)var10, 0.0D, 0.0D, (double)var9, (double)par4);
+			par0Tessellator.addVertexWithUV((double)var10, 0.0D, (double)(0.0F - par5), (double)var9, (double)par4);
+		}
+
+		par0Tessellator.draw();
+		par0Tessellator.startDrawingQuads();
+		par0Tessellator.setNormal(0.0F, 1.0F, 0.0F);
+
+		for (var7 = 0; var7 < 16; ++var7) {
+			var8 = (float)var7 / 16.0F;
+			var9 = par4 + (par2 - par4) * var8 - 0.001953125F;
+			var10 = var6 * var8 + 0.0625F;
+			par0Tessellator.addVertexWithUV(0.0D, (double)var10, 0.0D, (double)par1, (double)var9);
+			par0Tessellator.addVertexWithUV((double)var6, (double)var10, 0.0D, (double)par3, (double)var9);
+			par0Tessellator.addVertexWithUV((double)var6, (double)var10, (double)(0.0F - par5), (double)par3, (double)var9);
+			par0Tessellator.addVertexWithUV(0.0D, (double)var10, (double)(0.0F - par5), (double)par1, (double)var9);
+		}
+
+		par0Tessellator.draw();
+		par0Tessellator.startDrawingQuads();
+		par0Tessellator.setNormal(0.0F, -1.0F, 0.0F);
+
+		for (var7 = 0; var7 < 16; ++var7) {
+			var8 = (float)var7 / 16.0F;
+			var9 = par4 + (par2 - par4) * var8 - 0.001953125F;
+			var10 = var6 * var8;
+			par0Tessellator.addVertexWithUV((double)var6, (double)var10, 0.0D, (double)par3, (double)var9);
+			par0Tessellator.addVertexWithUV(0.0D, (double)var10, 0.0D, (double)par1, (double)var9);
+			par0Tessellator.addVertexWithUV(0.0D, (double)var10, (double)(0.0F - par5), (double)par1, (double)var9);
+			par0Tessellator.addVertexWithUV((double)var6, (double)var10, (double)(0.0F - par5), (double)par3, (double)var9);
+		}
+
+		par0Tessellator.draw();
+	}
+	// Spout End
+
 	/**
 	 * Renders the active item in the player's hand when in first person mode. Args: partialTickTime
 	 */
@@ -291,7 +376,7 @@ public class ItemRenderer {
 		Render var24;
 		RenderPlayer var26;
 
-		if (var17 != null && var17.itemID == Item.map.shiftedIndex) {
+		if (var17 != null && var17.itemID == Item.map.itemID) {
 			GL11.glPushMatrix();
 			var7 = 0.8F;
 			var20 = var3.getSwingProgress(par1);

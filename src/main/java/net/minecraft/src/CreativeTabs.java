@@ -7,7 +7,9 @@ import org.spoutcraft.client.gui.inventory.CreativeTabCustom;
 // Spout End
 
 public class CreativeTabs {
-	public static final CreativeTabs[] creativeTabArray = new CreativeTabs[13]; // Spout - one moar
+	// Spout Start - Custom item/block tab
+	public static final CreativeTabs[] creativeTabArray = new CreativeTabs[13];
+	// Spout End
 	public static final CreativeTabs tabBlock = new CreativeTabBlock(0, "buildingBlocks");
 	public static final CreativeTabs tabDecorations = new CreativeTabDeco(1, "decorations");
 	public static final CreativeTabs tabRedstone = new CreativeTabRedstone(2, "redstone");
@@ -20,7 +22,9 @@ public class CreativeTabs {
 	public static final CreativeTabs tabBrewing = new CreativeTabBrewing(9, "brewing");
 	public static final CreativeTabs tabMaterials = new CreativeTabMaterial(10, "materials");
 	public static final CreativeTabs tabInventory = (new CreativeTabInventory(11, "inventory")).setBackgroundImageName("survival_inv.png").setNoScrollbar().setNoTitle();
-	public static final CreativeTabs tabSpout = new CreativeTabCustom(12, "custom"); // Spout
+	// Spout Start - Custom item/block tab
+	public static final CreativeTabs tabSpout = new CreativeTabCustom(12, "custom");
+	// Spout End
 	private final int tabIndex;
 	private final String tabLabel;
 
@@ -115,7 +119,30 @@ public class CreativeTabs {
 			Item var5 = var2[var4];
 
 			if (var5 != null && var5.getCreativeTab() == this) {
-				var5.getSubItems(var5.shiftedIndex, this, par1List);
+				var5.getSubItems(var5.itemID, this, par1List);
+			}
+		}
+	}
+
+	public void func_92116_a(List par1List, EnumEnchantmentType ... par2ArrayOfEnumEnchantmentType) {
+		Enchantment[] var3 = Enchantment.enchantmentsList;
+		int var4 = var3.length;
+
+		for (int var5 = 0; var5 < var4; ++var5) {
+			Enchantment var6 = var3[var5];
+
+			if (var6 != null && var6.type != null) {
+				boolean var7 = false;
+
+				for (int var8 = 0; var8 < par2ArrayOfEnumEnchantmentType.length && !var7; ++var8) {
+					if (var6.type == par2ArrayOfEnumEnchantmentType[var8]) {
+						var7 = true;
+					}
+				}
+
+				if (var7) {
+					par1List.add(Item.field_92105_bW.func_92111_a(new EnchantmentData(var6, var6.getMaxLevel())));
+				}
 			}
 		}
 	}

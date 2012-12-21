@@ -1,11 +1,15 @@
 package net.minecraft.src;
 
+// MCPatcher Start
 import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public class ColorizerFoliage {
 
 	/** Color buffer for foliage */
+	// MCPatcher Start - private to public
 	public static int[] foliageBuffer = new int[65536];
+	// MCPatcher End
 
 	public static void setFoliageBiomeColorizer(int[] par0ArrayOfInteger) {
 		foliageBuffer = par0ArrayOfInteger;
@@ -25,17 +29,23 @@ public class ColorizerFoliage {
 	 * Gets the foliage color for pine type (metadata 1) trees
 	 */
 	public static int getFoliageColorPine() {
+		// MCPatcher Start
 		return Colorizer.colorizeBiome(6396257, Colorizer.COLOR_MAP_PINE);
+		// MCPatcher End
 	}
 
 	/**
 	 * Gets the foliage color for birch type (metadata 2) trees
 	 */
 	public static int getFoliageColorBirch() {
+		// MCPatcher Start
 		return Colorizer.colorizeBiome(8431445, Colorizer.COLOR_MAP_BIRCH);
+		// MCPatcher End
 	}
 
 	public static int getFoliageColorBasic() {
+		// MCPatcher Start
 		return Colorizer.colorizeBiome(4764952, Colorizer.COLOR_MAP_FOLIAGE);
+		// MCPatcher End
 	}
 }

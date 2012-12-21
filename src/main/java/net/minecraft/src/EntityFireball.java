@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.List;
 
-
 public abstract class EntityFireball extends Entity {
 	private int xTile = -1;
 	private int yTile = -1;
@@ -244,7 +243,7 @@ public abstract class EntityFireball extends Entity {
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		if (this.func_85032_ar()) {
+		if (this.isEntityInvulnerable()) {
 			return false;
 		} else {
 			this.setBeenAttacked();

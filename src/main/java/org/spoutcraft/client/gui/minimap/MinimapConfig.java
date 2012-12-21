@@ -208,7 +208,7 @@ public class MinimapConfig {
 		for (Class<? extends Entity> e:blockedEntities) {
 			blocked.add(e.getName());
 		}
-		
+
 		config.save();
 	}
 

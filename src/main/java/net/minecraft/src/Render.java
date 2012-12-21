@@ -32,7 +32,9 @@ public abstract class Render {
 	/**
 	 * loads the specified downloadable texture or alternative built in texture
 	 */
-	public boolean loadDownloadableImageTexture(String par1Str, String par2Str) { // Spout: changed protected to public
+	// Spout Start - protected to public
+	public boolean loadDownloadableImageTexture(String par1Str, String par2Str) {
+	// Spout End
 		RenderEngine var3 = this.renderManager.renderEngine;
 		int var4 = var3.getTextureForDownloadableImage(par1Str, par2Str);
 
@@ -301,7 +303,7 @@ public abstract class Render {
 			}
 		}
 
-		if (par1Entity.func_90999_ad()) {
+		if (par1Entity.canRenderOnFire()) {
 			this.renderEntityOnFire(par1Entity, par2, par4, par6, par9);
 		}
 	}

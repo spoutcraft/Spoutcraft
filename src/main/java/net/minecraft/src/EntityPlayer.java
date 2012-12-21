@@ -311,8 +311,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		return 10;
 	}
 
-	protected void func_85030_a(String par1Str, float par2, float par3) {
-		this.worldObj.func_85173_a(this, par1Str, par2, par3);
+	public void playSound(String par1Str, float par2, float par3) {
+		this.worldObj.playSoundToNearExcept(this, par1Str, par2, par3);
 	}
 
 	/**
@@ -320,7 +320,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	 */
 	protected void updateItemUse(ItemStack par1ItemStack, int par2) {
 		if (par1ItemStack.getItemUseAction() == EnumAction.drink) {
-			this.func_85030_a("random.drink", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+			this.playSound("random.drink", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
 		}
 
 		if (par1ItemStack.getItemUseAction() == EnumAction.eat) {
@@ -332,10 +332,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 				var5.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 				var5.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
 				var5 = var5.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
-				this.worldObj.spawnParticle("iconcrack_" + par1ItemStack.getItem().shiftedIndex, var5.xCoord, var5.yCoord, var5.zCoord, var4.xCoord, var4.yCoord + 0.05D, var4.zCoord);
+				this.worldObj.spawnParticle("iconcrack_" + par1ItemStack.getItem().itemID, var5.xCoord, var5.yCoord, var5.zCoord, var4.xCoord, var4.yCoord + 0.05D, var4.zCoord);
 			}
 
-			this.func_85030_a("random.eat", 0.5F + 0.5F * (float)this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+			this.playSound("random.eat", 0.5F + 0.5F * (float)this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 		}
 	}
 
@@ -401,7 +401,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			if (holiday != null && holiday.getCape() != null) {
 				playerCloakUrl = holiday.getCape();
 			}
-		}	
+		}
 		this.cloakUrl = this.playerCloakUrl;
 	}
 	// Spout End
@@ -462,7 +462,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		this.landMovementFactor = this.capabilities.getWalkSpeed();
 		this.jumpMovementFactor = this.speedInAir;
 
-		if (this.isSprinting() && this.movementInput.moveForward >= 0F) { // Spout no sprinting while moving backwards
+		// Spout Start - No sprinting while moving backwards
+		if (this.isSprinting() && this.movementInput.moveForward >= 0F) {
+		// Spout End
 			this.landMovementFactor = (float)((double)this.landMovementFactor + (double)this.capabilities.getWalkSpeed() * 0.3D);
 			this.jumpMovementFactor = (float)((double)this.jumpMovementFactor + (double)this.speedInAir * 0.3D);
 		}
@@ -508,11 +510,17 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		return this.dataWatcher.getWatchableObjectInt(18);
 	}
 
-	public void func_85040_s(int par1) {
+	/**
+	 * Set player's score
+	 */
+	public void setScore(int par1) {
 		this.dataWatcher.updateObject(18, Integer.valueOf(par1));
 	}
 
-	public void func_85039_t(int par1) {
+	/**
+	 * Add to player's score
+	 */
+	public void addScore(int par1) {
 		int var2 = this.getScore();
 		this.dataWatcher.updateObject(18, Integer.valueOf(var2 + par1));
 	}
@@ -550,7 +558,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	 * scoreToAdd
 	 */
 	public void addToPlayerScore(Entity par1Entity, int par2) {
-		this.func_85039_t(par2);
+		this.addScore(par2);
 
 		if (par1Entity instanceof EntityPlayer) {
 			this.addStat(StatList.playerKillsStat, 1);
@@ -562,8 +570,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	/**
 	 * Called when player presses the drop item key
 	 */
-	public EntityItem dropOneItem() {
-		return this.dropPlayerItemWithRandomChoice(this.inventory.decrStackSize(this.inventory.currentItem, 1), false);
+	public EntityItem dropOneItem(boolean par1) {
+		return this.dropPlayerItemWithRandomChoice(this.inventory.decrStackSize(this.inventory.currentItem, par1 && this.inventory.getCurrentItem() != null ? this.inventory.getCurrentItem().stackSize : 1), false);
 	}
 
 	/**
@@ -624,9 +632,16 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public float getCurrentPlayerStrVsBlock(Block par1Block) {
 		float var2 = this.inventory.getStrVsBlock(par1Block);
 		int var3 = EnchantmentHelper.getEfficiencyModifier(this);
+		ItemStack var4 = this.inventory.getCurrentItem();
 
-		if (var3 > 0 && this.inventory.canHarvestBlock(par1Block)) {
-			var2 += (float)(var3 * var3 + 1);
+		if (var3 > 0 && var4 != null) {
+			float var5 = (float)(var3 * var3 + 1);
+
+			if (!var4.canHarvestBlock(par1Block) && var2 <= 1.0F) {
+				var2 += var5 * 0.08F;
+			} else {
+				var2 += var5;
+			}
 		}
 
 		if (this.isPotionActive(Potion.digSpeed)) {
@@ -662,12 +677,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		super.readEntityFromNBT(par1NBTTagCompound);
 		NBTTagList var2 = par1NBTTagCompound.getTagList("Inventory");
 		this.inventory.readFromNBT(var2);
+		this.inventory.currentItem = par1NBTTagCompound.getInteger("SelectedItemSlot");
 		this.sleeping = par1NBTTagCompound.getBoolean("Sleeping");
 		this.sleepTimer = par1NBTTagCompound.getShort("SleepTimer");
 		this.experience = par1NBTTagCompound.getFloat("XpP");
 		this.experienceLevel = par1NBTTagCompound.getInteger("XpLevel");
 		this.experienceTotal = par1NBTTagCompound.getInteger("XpTotal");
-		this.func_85040_s(par1NBTTagCompound.getInteger("Score"));
+		this.setScore(par1NBTTagCompound.getInteger("Score"));
 
 		if (this.sleeping) {
 			this.playerLocation = new ChunkCoordinates(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
@@ -694,6 +710,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeEntityToNBT(par1NBTTagCompound);
 		par1NBTTagCompound.setTag("Inventory", this.inventory.writeToNBT(new NBTTagList()));
+		par1NBTTagCompound.setInteger("SelectedItemSlot", this.inventory.currentItem);
 		par1NBTTagCompound.setBoolean("Sleeping", this.sleeping);
 		par1NBTTagCompound.setShort("SleepTimer", (short)this.sleepTimer);
 		par1NBTTagCompound.setFloat("XpP", this.experience);
@@ -745,7 +762,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	 * Called when the entity is attacked.
 	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		if (this.func_85032_ar()) {
+		if (this.isEntityInvulnerable()) {
 			return false;
 		} else if (this.capabilities.disableDamage && !par1DamageSource.canHarmInCreative()) {
 			return false;
@@ -759,7 +776,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 					this.wakeUpPlayer(true, true, false);
 				}
 
-				if (par1DamageSource.func_76350_n()) {
+				if (par1DamageSource.isDifficultyScaled()) {
 					if (this.worldObj.difficultySetting == 0) {
 						par2 = 0;
 					}
@@ -887,8 +904,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	 * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health second
 	 * with the reduced value. Args: damageAmount
 	 */
-	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout protected -> public
-		if (!this.func_85032_ar()) {
+	// Spout Start - protected to public
+	public void damageEntity(DamageSource par1DamageSource, int par2) {
+	// Spout End
+		if (!this.isEntityInvulnerable()) {
 			if (!par1DamageSource.isUnblockable() && this.isBlocking()) {
 				par2 = 1 + par2 >> 1;
 			}
@@ -1015,7 +1034,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 					var2 += var4;
 					boolean var6 = false;
-					int var7 = EnchantmentHelper.func_90036_a(this);
+					int var7 = EnchantmentHelper.getFireAspectModifier(this);
 
 					if (par1Entity instanceof EntityLiving && var7 > 0 && !par1Entity.isBurning()) {
 						var6 = true;
@@ -1045,6 +1064,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 						}
 
 						this.setLastAttackingEntity(par1Entity);
+
+						if (par1Entity instanceof EntityLiving) {
+							EnchantmentThorns.func_92096_a(this, (EntityLiving)par1Entity, this.rand);
+						}
 					}
 
 					ItemStack var9 = this.getCurrentEquippedItem();
@@ -1521,14 +1544,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public int getItemIcon(ItemStack par1ItemStack, int par2) {
 		int var3 = super.getItemIcon(par1ItemStack, par2);
 
-		if (par1ItemStack.itemID == Item.fishingRod.shiftedIndex && this.fishEntity != null) {
+		if (par1ItemStack.itemID == Item.fishingRod.itemID && this.fishEntity != null) {
 			var3 = par1ItemStack.getIconIndex() + 16;
 		} else {
 			if (par1ItemStack.getItem().requiresMultipleRenderPasses()) {
 				return par1ItemStack.getItem().getIconFromDamageForRenderPass(par1ItemStack.getItemDamage(), par2);
 			}
 
-			if (this.itemInUse != null && par1ItemStack.itemID == Item.bow.shiftedIndex) {
+			if (this.itemInUse != null && par1ItemStack.itemID == Item.bow.itemID) {
 				int var4 = par1ItemStack.getMaxItemUseDuration() - this.itemInUseCount;
 
 				if (var4 >= 18) {
@@ -1560,7 +1583,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	 * This method increases the player's current amount of experience.
 	 */
 	public void addExperience(int par1) {
-		this.func_85039_t(par1);
+		this.addScore(par1);
 		int var2 = Integer.MAX_VALUE - this.experienceTotal;
 
 		if (par1 > var2) {
@@ -1583,11 +1606,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 		if (this.experienceLevel < 0) {
 			this.experienceLevel = 0;
+			this.experience = 0.0F;
+			this.experienceTotal = 0;
 		}
 
 		if (par1 > 0 && this.experienceLevel % 5 == 0 && (float)this.field_82249_h < (float)this.ticksExisted - 100.0F) {
 			float var2 = this.experienceLevel > 30 ? 1.0F : (float)this.experienceLevel / 30.0F;
-			this.func_85030_a("random.levelup", var2 * 0.75F, 1.0F);
+			this.worldObj.playSoundAtEntity(this, "random.levelup", var2 * 0.75F, 1.0F);
 			this.field_82249_h = this.ticksExisted;
 		}
 	}
@@ -1714,28 +1739,29 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			this.experienceLevel = par1EntityPlayer.experienceLevel;
 			this.experienceTotal = par1EntityPlayer.experienceTotal;
 			this.experience = par1EntityPlayer.experience;
-			this.func_85040_s(par1EntityPlayer.getScore());
+			this.setScore(par1EntityPlayer.getScore());
 			this.field_82152_aq = par1EntityPlayer.field_82152_aq;
 		} else if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
 			this.inventory.copyInventory(par1EntityPlayer.inventory);
 			this.experienceLevel = par1EntityPlayer.experienceLevel;
 			this.experienceTotal = par1EntityPlayer.experienceTotal;
 			this.experience = par1EntityPlayer.experience;
-			this.func_85040_s(par1EntityPlayer.getScore());
+			this.setScore(par1EntityPlayer.getScore());
 		}
 
 		this.theInventoryEnderChest = par1EntityPlayer.theInventoryEnderChest;
 	}
-	// Spout added back handle key press
+	// Spout Start - Added back handle key press
 	public void handleKeyPress(int i, boolean keyReleased) {
-		
+
 	}
-	
+
 	public boolean isTreadingWater() {
 		return (this.inWater || this.partiallyInWater) && this.treadWaterToggle;
 	}
+	// Spout End
 
-	// Spout Easter Egg
+	// Spout Start - Easter egg
 	public void doFancyStuff() {
 		if (isSneaking()) {
 			return;
@@ -1756,7 +1782,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		}
 	}
 	// Spout End
-	
+
 	/**
 	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
 	 * prevent them from trampling crops
@@ -1770,7 +1796,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	 */
 	public void sendPlayerAbilities() {}
 
-	public void sendGameTypeToPlayer(EnumGameType par1EnumGameType) {}
+	/**
+	 * Sets the player's game mode and sends it to them.
+	 */
+	public void setGameType(EnumGameType par1EnumGameType) {}
 
 	/**
 	 * Gets the name of this command sender (usually username, but possibly "Rcon")

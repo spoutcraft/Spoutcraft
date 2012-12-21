@@ -138,11 +138,11 @@ public class PollResult {
 		}
 		return result;
 	}
-	
+
 	public String getVersion() {
 		return version;
 	}
-	
+
 	public void setVersion(String version) {
 		this.version = version;
 	}
@@ -150,11 +150,11 @@ public class PollResult {
 	public int getProtocolVersion() {
 		return protocolVersion;
 	}
-	
+
 	public void setProtocolVersion(int protocolVersion) {
 		this.protocolVersion = protocolVersion;
 	}
-	
+
 	public String getMotd() {
 		return motd;
 	}
@@ -228,11 +228,11 @@ public class PollResult {
 				for (int i = 0; i < size; i++) {
 					builder.append(input.readChar());
 				}
-				
+
 				long end = System.currentTimeMillis();
 				String sPacket = builder.toString();
 				ping = (int) (end - start);
-				
+
 				// Check if we have new format here (1.4), and fall back to old format if not
 				if (sPacket.startsWith("\u00a71")) {
 					String split[] = sPacket.split("\u0000");

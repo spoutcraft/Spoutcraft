@@ -15,15 +15,16 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
-// Spout HD Start
-import net.minecraft.client.Minecraft;
-
+// MCPatcher Start
 import com.pclewis.mcpatcher.mod.CustomAnimation;
 import com.pclewis.mcpatcher.mod.MipmapHelper;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.TexturePackAPI;
 import com.pclewis.mcpatcher.mod.TileSize;
-// Spout HD End
+// MCPatcher End
+// Spout Start
+import net.minecraft.client.Minecraft;
+// Spout End
 
 public class RenderEngine {
 	private HashMap textureMap = new HashMap();
@@ -39,7 +40,9 @@ public class RenderEngine {
 
 	/** Stores the image data for the texture. */
 	private ByteBuffer imageData = GLAllocation.createDirectByteBuffer(16777216);
-	public List textureList = new ArrayList(); // Spout private -> public
+	// Spout Start - private to public
+	public List textureList = new ArrayList();
+	// Spout End
 
 	/** A mapping from image URLs to ThreadDownloadImageData instances */
 	private Map urlToImageDataMap = new HashMap();
@@ -54,7 +57,9 @@ public class RenderEngine {
 	public boolean blurTexture = false;
 
 	/** Texture pack */
-	public TexturePackList texturePack; // Spout private -> public
+	// Spout Start - private to public
+	public TexturePackList texturePack;
+	// Spout End
 
 	/** Missing texture image */
 	private BufferedImage missingTextureImage = new BufferedImage(64, 64, 2);
@@ -85,21 +90,21 @@ public class RenderEngine {
 				int[] var7;
 
 				if (par1Str.startsWith("##")) {
-					// Spout HD Start
+					// MCPatcher Start
 					var7 = this.getImageContentsAndAllocate(this.unwrapImageByColumns(TextureUtils.getImage(this, var2, par1Str.substring(2))));
-					// Spout HD End
+					// MCPatcher End
 				} else if (par1Str.startsWith("%clamp%")) {
 					this.clampTexture = true;
-					// Spout HD Start
+					// MCPatcher Start
 					var7 = this.getImageContentsAndAllocate(TextureUtils.getImage(this, var2, par1Str.substring(7)));
-					// Spout HD End
+					// MCPatcher End
 					this.clampTexture = false;
 				} else if (par1Str.startsWith("%blur%")) {
 					this.blurTexture = true;
 					this.clampTexture = true;
-					// Spout HD Start
+					// MCPatcher Start
 					var7 = this.getImageContentsAndAllocate(TextureUtils.getImage(this, var2, par1Str.substring(6)));
-					// Spout HD Start
+					// MCPatcher Start
 					this.clampTexture = false;
 					this.blurTexture = false;
 				} else {
@@ -132,7 +137,7 @@ public class RenderEngine {
 	}
 
 	private int[] getImageContents(BufferedImage par1BufferedImage, int[] par2ArrayOfInteger) {
-		// Spout HD Start
+		// MCPatcher Start
 		if (par1BufferedImage == null) {
 			return par2ArrayOfInteger;
 		} else {
@@ -141,7 +146,7 @@ public class RenderEngine {
 			par1BufferedImage.getRGB(0, 0, var3, var4, par2ArrayOfInteger, 0, var3);
 			return par2ArrayOfInteger;
 		}
-		// Spout HD End
+		// MCPatcher End
 	}
 
 	public int getTexture(String par1Str) {
@@ -158,31 +163,31 @@ public class RenderEngine {
 				int var3 = this.singleIntBuffer.get(0);
 
 				if (par1Str.startsWith("##")) {
-					// Spout HD Start
+					// MCPatcher Start
 					this.setupTexture(this.unwrapImageByColumns(TextureUtils.getImage(this, var6, par1Str.substring(2))), var3);
-					// Spout HD End
+					// MCPatcher End
 				} else if (par1Str.startsWith("%clamp%")) {
 					this.clampTexture = true;
-					// Spout HD Start
+					// MCPatcher Start
 					this.setupTexture(TextureUtils.getImage(this, var6, par1Str.substring(7)), var3);
-					// Spout HD End
+					// MCPatcher End
 					this.clampTexture = false;
 				} else if (par1Str.startsWith("%blur%")) {
 					this.blurTexture = true;
-					// Spout HD Start
+					// MCPatcher Start
 					this.setupTexture(TextureUtils.getImage(this, var6, par1Str.substring(6)), var3);
-					// Spout HD End
+					// MCPatcher End
 					this.blurTexture = false;
 				} else if (par1Str.startsWith("%blurclamp%")) {
 					this.blurTexture = true;
 					this.clampTexture = true;
-					// Spout HD Start
+					// MCPatcher Start
 					this.setupTexture(TextureUtils.getImage(this, var6, par1Str.substring(11)), var3);
-					// Spout HD End
+					// MCPatcher End
 					this.blurTexture = false;
 					this.clampTexture = false;
 				} else {
-					this.setupTexture(TexturePackAPI.getImage(par1Str), var3); // Spout HD
+					this.setupTexture(TexturePackAPI.getImage(par1Str), var3); // MCPatcher
 				}
 
 				this.textureMap.put(par1Str, Integer.valueOf(var3));
@@ -254,7 +259,7 @@ public class RenderEngine {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 			}
 		}
-		//TODO: Original Code may perform better?
+
 		int textureWidth = par1BufferedImage.getWidth();
 		int textureHeight = par1BufferedImage.getHeight();
 		int[] texData = new int[textureWidth * textureHeight];
@@ -267,10 +272,9 @@ public class RenderEngine {
 				System.arraycopy(srcbuf, 0, texData, 0, srcbuf.length);
 				handled = true;
 			}
-		}
-		catch (Exception ignore) { }
+		} catch (Exception ignore) { }
 		if (!handled) {
-			par1BufferedImage.getRGB(0, 0, textureWidth, textureHeight, texData, 0, textureWidth);				
+			par1BufferedImage.getRGB(0, 0, textureWidth, textureHeight, texData, 0, textureWidth);
 		}
 
 		int var8;
@@ -301,12 +305,12 @@ public class RenderEngine {
 		texColors[var7 * 4 + 2] = (byte)var11;
 		texColors[var7 * 4 + 3] = (byte)var8;
 		}
-		//Spout End
+		// Spout End
 
 		this.imageData = TextureUtils.getByteBuffer(this.imageData, texColors);
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, textureWidth, textureHeight, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
 	}
-	// Spout HD End
+	// MCPatcher End
 
 	public void createTextureFromBytes(int[] par1ArrayOfInteger, int par2, int par3, int par4) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, par4);
@@ -330,28 +334,28 @@ public class RenderEngine {
 
 		for (int var6 = 0; var6 < par1ArrayOfInteger.length; ++var6) {
 			int var7 = par1ArrayOfInteger[var6] >> 24 & 255;
-		int var8 = par1ArrayOfInteger[var6] >> 16 & 255;
-		int var9 = par1ArrayOfInteger[var6] >> 8 & 255;
-		int var10 = par1ArrayOfInteger[var6] & 255;
+			int var8 = par1ArrayOfInteger[var6] >> 16 & 255;
+			int var9 = par1ArrayOfInteger[var6] >> 8 & 255;
+			int var10 = par1ArrayOfInteger[var6] & 255;
 
-		if (this.options != null && this.options.anaglyph) {
-			int var11 = (var8 * 30 + var9 * 59 + var10 * 11) / 100;
-			int var12 = (var8 * 30 + var9 * 70) / 100;
-			int var13 = (var8 * 30 + var10 * 70) / 100;
-			var8 = var11;
-			var9 = var12;
-			var10 = var13;
+			if (this.options != null && this.options.anaglyph) {
+				int var11 = (var8 * 30 + var9 * 59 + var10 * 11) / 100;
+				int var12 = (var8 * 30 + var9 * 70) / 100;
+				int var13 = (var8 * 30 + var10 * 70) / 100;
+				var8 = var11;
+				var9 = var12;
+				var10 = var13;
+			}
+
+			var5[var6 * 4 + 0] = (byte)var8;
+			var5[var6 * 4 + 1] = (byte)var9;
+			var5[var6 * 4 + 2] = (byte)var10;
+			var5[var6 * 4 + 3] = (byte)var7;
 		}
 
-		var5[var6 * 4 + 0] = (byte)var8;
-		var5[var6 * 4 + 1] = (byte)var9;
-		var5[var6 * 4 + 2] = (byte)var10;
-		var5[var6 * 4 + 3] = (byte)var7;
-		}
-
-		// Spout HD Start
+		// MCPatcher Start
 		this.imageData = TextureUtils.getByteBuffer(this.imageData, var5);
-		// Spout HD End
+		// MCPatcher End
 		GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, par2, par3, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
 	}
 
@@ -386,7 +390,10 @@ public class RenderEngine {
 		return var3 != null && var3.textureName >= 0 ? var3.textureName : (par2Str == null ? -1 : this.getTexture(par2Str));
 	}
 
-	public boolean func_82773_c(String par1Str) {  // Spout MCPatcher field name = hasImageData
+	/**
+	 * Checks if urlToImageDataMap has image data for the given key
+	 */
+	public boolean hasImageData(String par1Str) {
 		return this.urlToImageDataMap.containsKey(par1Str);
 	}
 
@@ -442,9 +449,9 @@ public class RenderEngine {
 	}
 
 	public void registerTextureFX(TextureFX par1TextureFX) {
-		// Spout HD Start
+		// MCPatcher Start
 		TextureUtils.registerTextureFX(this.textureList, par1TextureFX);
-		// Spout HD End
+		// MCPatcher End
 	}
 
 	public void updateDynamicTextures() {
@@ -454,15 +461,20 @@ public class RenderEngine {
 			TextureFX var3 = (TextureFX)this.textureList.get(var2);
 			var3.anaglyphEnabled = this.options.anaglyph;
 			var3.onTick();
-			var1 = this.func_82772_a(var3, var1);
+			var1 = this.updateDynamicTexture(var3, var1);
 		}
-		CustomAnimation.updateAll();  // Spout HD
+		// MCPatcher Start
+		CustomAnimation.updateAll();
+		// MCPatcher End
 	}
 
-	public int func_82772_a(TextureFX par1TextureFX, int par2) {  
-		// Spout HD Start
+	/**
+	 * Updates a single dynamic texture
+	 */
+	public int updateDynamicTexture(TextureFX par1TextureFX, int par2) {
+		// MCPatcher Start
 		this.imageData = TextureUtils.getByteBuffer(this.imageData, par1TextureFX.imageData);
-		// Spout HD End
+		// MCPatcher End
 
 		if (par1TextureFX.iconIndex != par2) {
 			par1TextureFX.bindImage(this);
@@ -471,9 +483,11 @@ public class RenderEngine {
 
 		for (int var3 = 0; var3 < par1TextureFX.tileSize; ++var3) {
 			for (int var4 = 0; var4 < par1TextureFX.tileSize; ++var4) {
-				//TODO: Old one may work better.
+				// Spout Start
+				// TODO: Old one may work better.
 				//GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, par1TextureFX.iconIndex % 16 * 16 + var3 * 16, par1TextureFX.iconIndex / 16 * 16 + var4 * 16, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
-				MipmapHelper.glTexSubImage2D(3553, 0, par1TextureFX.iconIndex % 16 * TileSize.int_size + var3 * TileSize.int_size, par1TextureFX.iconIndex / 16 * TileSize.int_size + var4 * TileSize.int_size, TileSize.int_size, TileSize.int_size, 6408, 5121, this.imageData, par1TextureFX);			
+				MipmapHelper.glTexSubImage2D(3553, 0, par1TextureFX.iconIndex % 16 * TileSize.int_size + var3 * TileSize.int_size, par1TextureFX.iconIndex / 16 * TileSize.int_size + var4 * TileSize.int_size, TileSize.int_size, TileSize.int_size, 6408, 5121, this.imageData, par1TextureFX);
+				// Spout End
 			}
 		}
 
@@ -507,7 +521,7 @@ public class RenderEngine {
 			var9 = (String)var2.next();
 
 			try {
-				// Spout HD Start
+				// MCPatcher Start
 				if (var9.startsWith("##")) {
 					var4 = this.unwrapImageByColumns(TextureUtils.getImage(this, var1, var9.substring(2)));
 				} else if (var9.startsWith("%clamp%")) {
@@ -527,18 +541,17 @@ public class RenderEngine {
 					var2.remove();
 					continue;
 				}
-				// Spout HD End
+				// MCPatcher End
 
 				int var5 = ((Integer)this.textureMap.get(var9)).intValue();
 				this.setupTexture(var4, var5);
 				this.blurTexture = false;
 				this.clampTexture = false;
 			} catch (IOException var7) {
-				// Spout HD Start
-				// Gracefully handle errors
+				// MCPatcher Start - Gracefully handle errors
 				var2.remove();
 				// var7.printStackTrace();
-				// Spout HD End
+				// MCPatcher End
 			}
 		}
 
@@ -548,7 +561,7 @@ public class RenderEngine {
 			var9 = (String)var2.next();
 
 			try {
-				// Spout HD Start
+				// MCPatcher Start
 				if (var9.startsWith("##")) {
 					var4 = this.unwrapImageByColumns(TextureUtils.getImage(this, var1, var9.substring(2)));
 				} else if (var9.startsWith("%clamp%")) {
@@ -564,17 +577,16 @@ public class RenderEngine {
 					var2.remove();
 					continue;
 				}
-				// Spout HD End
+				// MCPatcher End
 
 				this.getImageContents(var4, (int[])this.textureContentsMap.get(var9));
 				this.blurTexture = false;
 				this.clampTexture = false;
 			} catch (IOException var6) {
-				// Spout HD Start
-				//Gracefully handle errors
+				// MCPatcher Start - Gracefully handle errors
 				var2.remove();
 				//var6.printStackTrace();
-				// Spout HD End
+				// MCPatcher End
 			}
 		}
 	}
@@ -594,7 +606,7 @@ public class RenderEngine {
 		}
 	}
 
-	// Spout HD Start
+	// MCPatcher Start
 	public void setTileSize(Minecraft var1) {
 		this.imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
 		this.refreshTextures();
@@ -606,6 +618,5 @@ public class RenderEngine {
 		this.refreshTextures();
 		TextureUtils.refreshTextureFX(this.textureList);
 	}
-
-	// Spout HD End
+	// MCPatcher End
 }

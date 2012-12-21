@@ -29,7 +29,7 @@ import org.spoutcraft.client.precache.PrecacheTuple;
 public class PacketValidatePrecache implements SpoutPacket {
 	int count;
 	PrecacheTuple[] plugins;
-	
+
 	@Override
 	public void readData(SpoutInputStream input) throws IOException {
 		count = input.readInt();
@@ -55,8 +55,8 @@ public class PacketValidatePrecache implements SpoutPacket {
 	}
 
 	@Override
-	public void run(int playerId) {		
-		PrecacheManager.showPreloadGui();		
+	public void run(int playerId) {
+		PrecacheManager.showPreloadGui();
 		PrecacheManager.reset();
 		//Build the precache list
 		for (PrecacheTuple plugin : plugins) {
@@ -68,7 +68,7 @@ public class PacketValidatePrecache implements SpoutPacket {
 
 	@Override
 	public void failure(int playerId) {
-		
+
 	}
 
 	@Override

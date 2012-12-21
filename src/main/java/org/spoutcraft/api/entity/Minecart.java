@@ -73,7 +73,7 @@ public interface Minecart extends Vehicle {
 	 *
 	 * @return The vector factor
 	 */
-	public Vector getFlyingVelocityMod();
+	public Vector isFlyingVelocityMod();
 
 	/**
 	 * Sets the flying velocity modifier. Used for minecarts that are in mid-air.
