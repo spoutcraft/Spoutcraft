@@ -1,11 +1,14 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.List;
 import java.util.Random;
 //Spout
-import gnu.trove.map.hash.TIntFloatHashMap;
 import java.util.ArrayList; 
+
+import gnu.trove.map.hash.TIntFloatHashMap;
+
+import com.pclewis.mcpatcher.mod.Colorizer;
+
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.api.entity.ActivePlayer;
 import org.spoutcraft.api.material.CustomBlock;
@@ -188,6 +191,8 @@ public class Block {
 	public static final Block cauldron = (new BlockCauldron(118)).setHardness(2.0F).setBlockName("cauldron").setRequiresSelfNotify();
 	public static final Block endPortal = (new BlockEndPortal(119, Material.portal)).setHardness(-1.0F).setResistance(6000000.0F);
 	public static final Block endPortalFrame = (new BlockEndPortalFrame(120)).setStepSound(soundGlassFootstep).setLightValue(0.125F).setHardness(-1.0F).setBlockName("endPortalFrame").setRequiresSelfNotify().setResistance(6000000.0F).setCreativeTab(CreativeTabs.tabDecorations);
+
+	/** The rock found in The End. */
 	public static final Block whiteStone = (new Block(121, 175, Material.rock)).setHardness(3.0F).setResistance(15.0F).setStepSound(soundStoneFootstep).setBlockName("whiteStone").setCreativeTab(CreativeTabs.tabBlock);
 	public static final Block dragonEgg = (new BlockDragonEgg(122, 167)).setHardness(3.0F).setResistance(15.0F).setStepSound(soundStoneFootstep).setLightValue(0.125F).setBlockName("dragonEgg");
 	public static final Block redstoneLampIdle = (new BlockRedstoneLight(123, false)).setHardness(0.3F).setStepSound(soundGlassFootstep).setBlockName("redstoneLight").setCreativeTab(CreativeTabs.tabRedstone);
@@ -455,7 +460,7 @@ public class Block {
 			}
 		}
 		return par1IBlockAccess.getBrightness(x, y, z, light);
-		// Spout End
+	// Spout End
 	}
 
 	/**
@@ -475,7 +480,7 @@ public class Block {
 			}
 		}
 		return par1IBlockAccess.getLightBrightnessForSkyBlocks(x, y, z, light);
-		// Spout End
+	// Spout End
 	}
 
 	/**
@@ -643,8 +648,8 @@ public class Block {
 			}
 		}
 		return this.blockHardness < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? 1.0F / this.blockHardness / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0F);
-	}
 	// Spout End
+	}
 
 	/**
 	 * Drops the specified block items
@@ -878,7 +883,10 @@ public class Block {
 	 */
 	public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity) {}
 
-	public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
+	/**
+	 * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
+	 */
+	public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
 		return par9;
 	}
 
@@ -954,7 +962,7 @@ public class Block {
 	 * Returns the color this block should be rendered. Used by leaves.
 	 */
 	public int getRenderColor(int par1) {
-		return Colorizer.colorizeBlock(this);
+		return Colorizer.colorizeBlock(this); // MCPatcher
 	}
 
 	/**
@@ -962,13 +970,13 @@ public class Block {
 	 * first determining what to render.
 	 */
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-		return Colorizer.colorizeBlock(this, par2, par3, par4, par1IBlockAccess.getBlockMetadata(par2, par3, par4));
+		return Colorizer.colorizeBlock(this, par2, par3, par4, par1IBlockAccess.getBlockMetadata(par2, par3, par4)); // MCPatcher
 	}
 
 	/**
 	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
 	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X, Y,
-	 * Z, side
+	 * Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	public boolean isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return false;
@@ -987,7 +995,8 @@ public class Block {
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {}
 
 	/**
-	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z, side
+	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
+	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	public boolean isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return false;
@@ -1058,7 +1067,10 @@ public class Block {
 	 */
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving) {}
 
-	public void func_85105_g(World par1World, int par2, int par3, int par4, int par5) {}
+	/**
+	 * Called after a block is placed
+	 */
+	public void onPostBlockPlaced(World par1World, int par2, int par3, int par4, int par5) {}
 
 	/**
 	 * set name of block from language file

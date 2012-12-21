@@ -139,7 +139,7 @@ public class RenderBiped extends RenderLiving {
 			GL11.glPushMatrix();
 			this.modelBipedMain.bipedHead.postRender(0.0625F);
 
-			if (var5.getItem().shiftedIndex < 256) {
+			if (var5.getItem().itemID < 256) {
 				if (RenderBlocks.renderItemIn3d(Block.blocksList[var5.itemID].getRenderType())) {
 					var6 = 0.625F;
 					GL11.glTranslatef(0.0F, -0.25F, 0.0F);
@@ -148,7 +148,7 @@ public class RenderBiped extends RenderLiving {
 				}
 
 				this.renderManager.itemRenderer.renderItem(par1EntityLiving, var5, 0);
-			} else if (var5.getItem().shiftedIndex == Item.skull.shiftedIndex) {
+			} else if (var5.getItem().itemID == Item.skull.itemID) {
 				var6 = 1.0625F;
 				GL11.glScalef(var6, -var6, -var6);
 				String var7 = "";
@@ -183,14 +183,14 @@ public class RenderBiped extends RenderLiving {
 				GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glScalef(-var6, -var6, var6);
-			} else if (var4.itemID == Item.bow.shiftedIndex) {
+			} else if (var4.itemID == Item.bow.itemID) {
 				var6 = 0.625F;
 				GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
 				GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glScalef(var6, -var6, var6);
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			} else if (Item.itemsList[var4.itemID].isFull3D() || var4.itemID == Item.flint.shiftedIndex && org.spoutcraft.api.material.MaterialData.getCustomItem(var4.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) { // Spout
+			} else if (Item.itemsList[var4.itemID].isFull3D() || var4.itemID == Item.flint.itemID && org.spoutcraft.api.material.MaterialData.getCustomItem(var4.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) { // Spout
 				var6 = 0.625F;
 
 				if (Item.itemsList[var4.itemID].shouldRotateAroundWhenRendering()) {

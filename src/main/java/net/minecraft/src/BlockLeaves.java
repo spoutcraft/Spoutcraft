@@ -1,8 +1,9 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.List;
 import java.util.Random;
+
+import com.pclewis.mcpatcher.mod.Colorizer; // Spout
 
 public class BlockLeaves extends BlockLeavesBase {
 
@@ -42,9 +43,9 @@ public class BlockLeaves extends BlockLeavesBase {
 		int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
 
 		if ((var5 & 3) == 1) {
-			return Colorizer.colorizeBiomeWithBlending(ColorizerFoliage.getFoliageColorPine(), Colorizer.COLOR_MAP_PINE, par2, par3, par4);
+			return Colorizer.colorizeBiomeWithBlending(ColorizerFoliage.getFoliageColorPine(), Colorizer.COLOR_MAP_PINE, par2, par3, par4); // MCPatcher
 		} else if ((var5 & 3) == 2) {
-			return Colorizer.colorizeBiomeWithBlending(ColorizerFoliage.getFoliageColorBirch(), Colorizer.COLOR_MAP_BIRCH, par2, par3, par4);
+			return Colorizer.colorizeBiomeWithBlending(ColorizerFoliage.getFoliageColorBirch(), Colorizer.COLOR_MAP_BIRCH, par2, par3, par4); // MCPatcher
 		} else {
 			int var6 = 0;
 			int var7 = 0;
@@ -231,7 +232,7 @@ public class BlockLeaves extends BlockLeavesBase {
 	 * and l is the block's subtype/damage.
 	 */
 	public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6) {
-		if (!par1World.isRemote && par2EntityPlayer.getCurrentEquippedItem() != null && par2EntityPlayer.getCurrentEquippedItem().itemID == Item.shears.shiftedIndex) {
+		if (!par1World.isRemote && par2EntityPlayer.getCurrentEquippedItem() != null && par2EntityPlayer.getCurrentEquippedItem().itemID == Item.shears.itemID) {
 			par2EntityPlayer.addStat(StatList.mineBlockStatArray[this.blockID], 1);
 			this.dropBlockAsItem_do(par1World, par3, par4, par5, new ItemStack(Block.leaves.blockID, 1, par6 & 3));
 		} else {
@@ -277,5 +278,13 @@ public class BlockLeaves extends BlockLeavesBase {
 		par3List.add(new ItemStack(par1, 1, 1));
 		par3List.add(new ItemStack(par1, 1, 2));
 		par3List.add(new ItemStack(par1, 1, 3));
+	}
+
+	/**
+	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage and
+	 * is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
+	 */
+	protected ItemStack createStackedBlock(int par1) {
+		return new ItemStack(this.blockID, 1, par1 & 3);
 	}
 }

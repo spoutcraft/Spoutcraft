@@ -38,10 +38,10 @@ public class ContainerBrewingStand extends Container {
 	}
 
 	/**
-	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
+	 * Looks for changes made in the container, sends them to every listener.
 	 */
-	public void updateCraftingResults() {
-		super.updateCraftingResults();
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
 
 		for (int var1 = 0; var1 < this.crafters.size(); ++var1) {
 			ICrafting var2 = (ICrafting)this.crafters.get(var1);
@@ -80,7 +80,7 @@ public class ContainerBrewingStand extends Container {
 					if (!this.mergeItemStack(var5, 3, 4, false)) {
 						return null;
 					}
-				} else if (SlotBrewingStandPotion.func_75243_a_(var3)) {
+				} else if (SlotBrewingStandPotion.canHoldPotion(var3)) {
 					if (!this.mergeItemStack(var5, 0, 3, false)) {
 						return null;
 					}
