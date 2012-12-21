@@ -96,6 +96,5 @@ public class SoundPool {
 			return null;
 		}
 	}
-	
 	// Spout End
 }

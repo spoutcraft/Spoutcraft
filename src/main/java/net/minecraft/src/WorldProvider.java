@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.pclewis.mcpatcher.mod.Colorizer; // MCPatcher
 
 public abstract class WorldProvider {
 
@@ -37,7 +37,7 @@ public abstract class WorldProvider {
 	public final void registerWorld(World par1World) {
 		this.worldObj = par1World;
 		this.terrainType = par1World.getWorldInfo().getTerrainType();
-		this.field_82913_c = par1World.getWorldInfo().func_82571_y();
+		this.field_82913_c = par1World.getWorldInfo().getGeneratorOptions();
 		this.registerWorldChunkManager();
 		this.generateLightBrightnessTable();
 	}
@@ -59,7 +59,7 @@ public abstract class WorldProvider {
 	 */
 	protected void registerWorldChunkManager() {
 		if (this.worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT) {
-			FlatGeneratorInfo var1 = FlatGeneratorInfo.createFlatGeneratorFromString(this.worldObj.getWorldInfo().func_82571_y());
+			FlatGeneratorInfo var1 = FlatGeneratorInfo.createFlatGeneratorFromString(this.worldObj.getWorldInfo().getGeneratorOptions());
 			this.worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.biomeList[var1.getBiome()], 0.5F, 0.5F);
 		} else {
 			this.worldChunkMgr = new WorldChunkManager(this.worldObj);
@@ -149,6 +149,7 @@ public abstract class WorldProvider {
 			var3 = 1.0F;
 		}
 
+		// MCPatcher Start
 		float var4;
 		float var5;
 		float var6;
@@ -162,7 +163,7 @@ public abstract class WorldProvider {
 			var5 = 0.84705883F;
 			var6 = 1.0F;
 		}
-
+		//MCPatcher End
 		var4 *= var3 * 0.94F + 0.06F;
 		var5 *= var3 * 0.94F + 0.06F;
 		var6 *= var3 * 0.91F + 0.09F;

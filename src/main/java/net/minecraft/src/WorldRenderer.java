@@ -1,13 +1,12 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.CTMUtils;
-import com.pclewis.mcpatcher.mod.RenderPass;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 //Spout Start
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.Chunk;
@@ -20,6 +19,8 @@ import net.minecraft.src.Tessellator;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityRenderer;
 import net.minecraft.src.World;
+import com.pclewis.mcpatcher.mod.CTMUtils;
+import com.pclewis.mcpatcher.mod.RenderPass;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -28,8 +29,6 @@ import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.block.design.GenericBlockDesign;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
-
-import net.minecraft.client.Minecraft;
 //Spout End
 
 public class WorldRenderer {
@@ -63,7 +62,7 @@ public class WorldRenderer {
 	public boolean isInFrustum = false;
 
 	/** Should this renderer skip this render pass */
-	public boolean[] skipRenderPass = new boolean[4]; //Spout was 4
+	public boolean[] skipRenderPass = new boolean[4]; // Spout was 4
 
 	/** Pos X plus */
 	public int posXPlus;
@@ -132,7 +131,7 @@ public class WorldRenderer {
 			this.posZMinus = par3 - this.posZClip;
 			float var4 = 6.0F;
 			this.rendererBoundingBox = AxisAlignedBB.getBoundingBox((double)((float)par1 - var4), (double)((float)par2 - var4), (double)((float)par3 - var4), (double)((float)(par1 + 16) + var4), (double)((float)(par2 + 16) + var4), (double)((float)(par3 + 16) + var4));
-			GL11.glNewList(this.glRenderList + 4, GL11.GL_COMPILE);
+			GL11.glNewList(this.glRenderList + 4, GL11.GL_COMPILE); // Spout
 			RenderItem.renderAABB(AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)((float)this.posXClip - var4), (double)((float)this.posYClip - var4), (double)((float)this.posZClip - var4), (double)((float)(this.posXClip + 16) + var4), (double)((float)(this.posYClip + 16) + var4), (double)((float)(this.posZClip + 16) + var4)));
 			GL11.glEndList();
 			this.markDirty();
@@ -146,11 +145,11 @@ public class WorldRenderer {
 	/**
 	 * Will update this chunk renderer
 	 */
-	
+
+	// Spout Start
 	//TODO: The following updateRenderer method renders Connected Textures and Better Glass Properly
 	//TODO: However, it lacks the ability to render custom blocks.  This method needs to be combined
 	//TODO: with the updateRenderer() method below this one so that both function properly.
-	
 	/*
 	public void updateRenderer() {
 		CTMUtils.start();
@@ -255,17 +254,16 @@ public class WorldRenderer {
 			this.isChunkLit = Chunk.isLit;
 			this.isInitialized = true;
 			CTMUtils.finish();
-		}		
+		}
 	}	 
-  
 	*/
-	
+
 	//TODO: The below updateRenderer() method was specifically designed for rendering CustomBlocks in the world.  
 	//TODO: However, it does not work for rendering Connected Textures and Better Glass.
 	//TODO: Note, this also limits the renderer pass to 3, which currently wont work because the renderer needs 4
 	//TODO: passes to complete its build for Connected Textures, Better Glass ans Smooth Lighting.
 	//TODO: Without the additional passes lighting is very blocky.
-	
+
 	//TODO: Note, no performance difference was found between this updateRenderer() with 2 passes vs. the one above it for 4.
 
 	public void updateRenderer() {
@@ -477,6 +475,7 @@ public class WorldRenderer {
 			this.isInitialized = true;
 			blockRenderer.customIds = null;
 			CTMUtils.finish();
+			// Spout End
 		}
 	}
 
@@ -495,7 +494,7 @@ public class WorldRenderer {
 	 * When called this renderer won't draw anymore until its gets initialized again
 	 */
 	public void setDontDraw() {
-		for (int var1 = 0; var1 < skipRenderPass.length; ++var1) { //Spout
+		for (int var1 = 0; var1 < skipRenderPass.length; ++var1) { // Spout
 			this.skipRenderPass[var1] = true;
 		}
 
@@ -523,14 +522,14 @@ public class WorldRenderer {
 	 * Renders the occlusion query GL List
 	 */
 	public void callOcclusionQueryList() {
-		GL11.glCallList(this.glRenderList + 4);
+		GL11.glCallList(this.glRenderList + 4); // Spout ?
 	}
 
 	/**
 	 * Checks if all render passes are to be skipped. Returns false if the renderer is not initialized
 	 */
 	public boolean skipAllRenderPasses() {
-		return !this.isInitialized ? false : RenderPass.skipAllRenderPasses(this.skipRenderPass);
+		return !this.isInitialized ? false : RenderPass.skipAllRenderPasses(this.skipRenderPass); // Spout ?
 	}
 
 	/**
