@@ -2,10 +2,10 @@ package net.minecraft.src;
 
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
+import org.lwjgl.opengl.GL11;
 // Spout Start
 import org.spoutcraft.api.material.MaterialData;
 // Spout End
-import org.lwjgl.opengl.GL11;
 
 public class MapItemRenderer {
 	private int[] intArray = new int[16384];
@@ -103,7 +103,7 @@ public class MapItemRenderer {
 		GL11.glTranslatef(0.0F, 0.0F, -0.04F);
 		GL11.glScalef(1.0F, 1.0F, 1.0F);
 		// Spout Start
-		// TODO Removed in 1.4 so temp removed via comment
+		// TODO: Removed in 1.4 so temp removed via comment
 		ItemStack inHand = par1EntityPlayer.inventory.getCurrentItem();
 		String customName = null;
 		if (inHand != null) {
@@ -114,9 +114,8 @@ public class MapItemRenderer {
 		}
 		if (customName != null && customName.length() > 0) {
 			this.fontRenderer.drawString(customName, var15, var16, -16777216);
-		}
-		else {
-			this.fontRenderer.drawString(par3MapData.mapName, var15, var16, -16777216); // removed line in 1.4
+		} else {
+			this.fontRenderer.drawString(par3MapData.mapName, var15, var16, -16777216); // Removed line in 1.4
 		}
 		// Spout End
 		GL11.glPopMatrix();

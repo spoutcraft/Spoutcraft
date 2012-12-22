@@ -1,10 +1,15 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.TexturePackAPI;
-import com.pclewis.mcpatcher.mod.TileSize;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+// MCPatcher Start - Removed unused import
+//import javax.imageio.ImageIO;
+// MCPatcher End
 import net.minecraft.client.Minecraft;
+// MCPatcher Start
+import com.pclewis.mcpatcher.TexturePackAPI;
+import com.pclewis.mcpatcher.mod.TileSize;
+// MCPatcher End
 
 public class TextureCompassFX extends TextureFX {
 
@@ -12,22 +17,28 @@ public class TextureCompassFX extends TextureFX {
 	private Minecraft mc;
 
 	/** Holds the image of the compass from items.png in rgb format. */
+	// MCPatcher Start
 	private int[] compassIconImageData;
+	// MCPatcher End
 	public double field_76868_i;
 	public double field_76866_j;
 	public static TextureCompassFX field_82391_c;
 
 	public TextureCompassFX(Minecraft par1Minecraft) {
 		super(Item.compass.getIconFromDamage(0));
+		// MCPatcher Start
 		this.compassIconImageData = new int[TileSize.int_numPixels];
+		// MCPatcher End
 		this.mc = par1Minecraft;
 		this.tileImage = 1;
 
 		try {
+			// MCPatcher Start
 			BufferedImage var2 = TexturePackAPI.getImage(Minecraft.class, "/gui/items.png");
 			int var3 = this.iconIndex % 16 * TileSize.int_size;
 			int var4 = this.iconIndex / 16 * TileSize.int_size;
 			var2.getRGB(var3, var4, TileSize.int_size, TileSize.int_size, this.compassIconImageData, 0, TileSize.int_size);
+			// MCPatcher End
 		} catch (IOException var5) {
 			var5.printStackTrace();
 		}
@@ -49,7 +60,9 @@ public class TextureCompassFX extends TextureFX {
 		int var17;
 		int var16;
 
+		// MCPatcher Start
 		for (int var10 = 0; var10 < TileSize.int_numPixels; ++var10) {
+		// MCPatcher End
 			int var11 = var8[var10] >> 24 & 255;
 			int var12 = var8[var10] >> 16 & 255;
 			int var13 = var8[var10] >> 8 & 255;
@@ -121,10 +134,12 @@ public class TextureCompassFX extends TextureFX {
 		int var24;
 		int var26;
 
+		// MCPatcher Start
 		for (var16 = TileSize.int_compassCrossMin; var16 <= TileSize.int_compassCrossMax; ++var16) {
 			var17 = (int)(TileSize.double_compassCenterMax + var31 * (double)var16 * 0.3D);
 			var18 = (int)(TileSize.double_compassCenterMin - var30 * (double)var16 * 0.3D * 0.5D);
 			var19 = var18 * TileSize.int_size + var17;
+		// MCPatcher End
 			var20 = 100;
 			var21 = 100;
 			var22 = 100;
@@ -145,10 +160,12 @@ public class TextureCompassFX extends TextureFX {
 			var9[var19 * 4 + 3] = (byte)var23;
 		}
 
+		// MCPatcher Start
 		for (var16 = TileSize.int_compassNeedleMin; var16 <= TileSize.int_compassNeedleMax; ++var16) {
 			var17 = (int)(TileSize.double_compassCenterMax + var30 * (double)var16 * 0.3D);
 			var18 = (int)(TileSize.double_compassCenterMin + var31 * (double)var16 * 0.3D * 0.5D);
 			var19 = var18 * TileSize.int_size + var17;
+		// MCPatcher End
 			var20 = var16 >= 0 ? 255 : 100;
 			var21 = var16 >= 0 ? 20 : 100;
 			var22 = var16 >= 0 ? 20 : 100;

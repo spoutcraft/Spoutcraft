@@ -1,19 +1,25 @@
 package net.minecraft.src;
 
+// MCPatcher Start
 import com.pclewis.mcpatcher.mod.TileSize;
+// MCPatcher End
 
 public class TextureLavaFX extends TextureFX {
+	// MCPatcher Start
 	protected float[] field_76876_g;
 	protected float[] field_76878_h;
 	protected float[] field_76879_i;
 	protected float[] field_76877_j;
+	// MCPatcher End
 
 	public TextureLavaFX() {
 		super(Block.lavaMoving.blockIndexInTexture);
+		// MCPatcher Start
 		this.field_76876_g = new float[TileSize.int_numPixels];
 		this.field_76878_h = new float[TileSize.int_numPixels];
 		this.field_76879_i = new float[TileSize.int_numPixels];
 		this.field_76877_j = new float[TileSize.int_numPixels];
+		// MCPatcher End
 	}
 
 	public void onTick() {
@@ -25,31 +31,41 @@ public class TextureLavaFX extends TextureFX {
 		int var8;
 		int var9;
 
+		// MCPatcher Start
 		for (int var1 = 0; var1 < TileSize.int_size; ++var1) {
 			for (var2 = 0; var2 < TileSize.int_size; ++var2) {
+		// MCPatcher End
 				var3 = 0.0F;
 				int var4 = (int)(MathHelper.sin((float)var2 * (float)Math.PI * 2.0F / 16.0F) * 1.2F);
 				var5 = (int)(MathHelper.sin((float)var1 * (float)Math.PI * 2.0F / 16.0F) * 1.2F);
 
 				for (var6 = var1 - 1; var6 <= var1 + 1; ++var6) {
 					for (var7 = var2 - 1; var7 <= var2 + 1; ++var7) {
+						// MCPatcher Start
 						var8 = var6 + var4 & TileSize.int_sizeMinus1;
 						var9 = var7 + var5 & TileSize.int_sizeMinus1;
 						var3 += this.field_76876_g[var8 + var9 * TileSize.int_size];
+						// MCPatcher End
 					}
 				}
 
+				// MCPatcher Start
 				this.field_76878_h[var1 + var2 * TileSize.int_size] = var3 / 10.0F + (this.field_76879_i[(var1 + 0 & TileSize.int_sizeMinus1) + (var2 + 0 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_76879_i[(var1 + 1 & TileSize.int_sizeMinus1) + (var2 + 0 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_76879_i[(var1 + 1 & TileSize.int_sizeMinus1) + (var2 + 1 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_76879_i[(var1 + 0 & TileSize.int_sizeMinus1) + (var2 + 1 & TileSize.int_sizeMinus1) * TileSize.int_size]) / 4.0F * 0.8F;
 				this.field_76879_i[var1 + var2 * TileSize.int_size] += this.field_76877_j[var1 + var2 * TileSize.int_size] * 0.01F;
 
 				if (this.field_76879_i[var1 + var2 * TileSize.int_size] < 0.0F) {
 					this.field_76879_i[var1 + var2 * TileSize.int_size] = 0.0F;
+				// MCPatcher End
 				}
 
+				// MCPatcher Start
 				this.field_76877_j[var1 + var2 * TileSize.int_size] -= 0.06F;
+				// MCPatcher End
 
 				if (Math.random() < 0.005D) {
+					// MCPatcher Start
 					this.field_76877_j[var1 + var2 * TileSize.int_size] = 1.5F;
+					// MCPatcher End
 				}
 			}
 		}
@@ -58,7 +74,9 @@ public class TextureLavaFX extends TextureFX {
 		this.field_76878_h = this.field_76876_g;
 		this.field_76876_g = var11;
 
+		// MCPatcher Start
 		for (var2 = 0; var2 < TileSize.int_numPixels; ++var2) {
+		// MCPatcher End
 			var3 = this.field_76876_g[var2] * 2.0F;
 
 			if (var3 > 1.0F) {

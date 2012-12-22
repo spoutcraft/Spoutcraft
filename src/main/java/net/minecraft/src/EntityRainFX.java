@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+// MCPatcher Start
 import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public class EntityRainFX extends EntityFX {
 	public EntityRainFX(World par1World, double par2, double par4, double par6) {
@@ -9,6 +11,7 @@ public class EntityRainFX extends EntityFX {
 		this.motionY = (double)((float)Math.random() * 0.2F + 0.1F);
 		this.motionZ *= 0.30000001192092896D;
 
+		// MCPatcher Start
 		if (Colorizer.computeWaterColor(this.posX, this.posY, this.posZ)) {
 			this.particleRed = Colorizer.waterColor[0];
 			this.particleGreen = Colorizer.waterColor[1];
@@ -18,6 +21,7 @@ public class EntityRainFX extends EntityFX {
 			this.particleGreen = 0.3F;
 			this.particleBlue = 1.0F;
 		}
+		// MCPatcher End
 
 		this.setParticleTextureIndex(19 + this.rand.nextInt(4));
 		this.setSize(0.01F, 0.01F);

@@ -1,10 +1,12 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+// MCPatcher Start
+import com.pclewis.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public abstract class BiomeGenBase {
 
@@ -208,10 +210,7 @@ public abstract class BiomeGenBase {
 		return this;
 	}
 
-	// Spout Start
-	/**
-	 * sets enableSnow to true during biome initialization. returns BiomeGenBase.
-	 */
+	// MCPatcher Start
 	protected BiomeGenBase setEnableSnow(boolean bool) {
 		enableSnow = bool;
 		return this;
@@ -225,11 +224,13 @@ public abstract class BiomeGenBase {
 	protected String getBiomeName() {
 		return biomeName;
 	}
-	// Spout End
+	// MCPatcher End
 
 	protected BiomeGenBase setBiomeName(String par1Str) {
 		this.biomeName = par1Str;
-		Colorizer.setupBiome(this); // Spout
+		// MCPatcher Start
+		Colorizer.setupBiome(this);
+		// MCPatcher End
 		return this;
 	}
 
