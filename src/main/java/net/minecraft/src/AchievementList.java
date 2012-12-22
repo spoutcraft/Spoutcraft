@@ -105,6 +105,6 @@ public class AchievementList {
 	public static void init() {}
 
 	static {
-		//System.out.println(achievementList.size() + " achievements");  // Spout
+		//System.out.println(achievementList.size() + " achievements"); //Spout
 	}
 }

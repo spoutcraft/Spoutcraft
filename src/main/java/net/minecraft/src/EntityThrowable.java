@@ -13,8 +13,8 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 	/**
 	 * Is the entity that throws this 'thing' (snowball, ender pearl, eye of ender or potion)
 	 */
-	public EntityLiving thrower; // Spout private -> public
-	private String field_85053_h = null;
+	public EntityLiving thrower; //Spout private -> public
+	private String throwerName = null;
 	private int ticksInGround;
 	private int ticksInAir = 0;
 
@@ -156,7 +156,7 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 			Entity var4 = null;
 			List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 			double var6 = 0.0D;
-			EntityLiving var8 = this.func_85052_h();
+			EntityLiving var8 = this.getThrower();
 
 			for (int var9 = 0; var9 < var5.size(); ++var9) {
 				Entity var10 = (Entity)var5.get(var9);
@@ -256,11 +256,11 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 		par1NBTTagCompound.setByte("shake", (byte)this.throwableShake);
 		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
 
-		if ((this.field_85053_h == null || this.field_85053_h.length() == 0) && this.thrower != null && this.thrower instanceof EntityPlayer) {
-			this.field_85053_h = this.thrower.getEntityName();
+		if ((this.throwerName == null || this.throwerName.length() == 0) && this.thrower != null && this.thrower instanceof EntityPlayer) {
+			this.throwerName = this.thrower.getEntityName();
 		}
 
-		par1NBTTagCompound.setString("ownerName", this.field_85053_h == null ? "" : this.field_85053_h);
+		par1NBTTagCompound.setString("ownerName", this.throwerName == null ? "" : this.throwerName);
 	}
 
 	/**
@@ -273,10 +273,10 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 		this.inTile = par1NBTTagCompound.getByte("inTile") & 255;
 		this.throwableShake = par1NBTTagCompound.getByte("shake") & 255;
 		this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
-		this.field_85053_h = par1NBTTagCompound.getString("ownerName");
+		this.throwerName = par1NBTTagCompound.getString("ownerName");
 
-		if (this.field_85053_h != null && this.field_85053_h.length() == 0) {
-			this.field_85053_h = null;
+		if (this.throwerName != null && this.throwerName.length() == 0) {
+			this.throwerName = null;
 		}
 	}
 
@@ -284,9 +284,9 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 		return 0.0F;
 	}
 
-	public EntityLiving func_85052_h() {
-		if (this.thrower == null && this.field_85053_h != null && this.field_85053_h.length() > 0) {
-			this.thrower = this.worldObj.getPlayerEntityByName(this.field_85053_h);
+	public EntityLiving getThrower() {
+		if (this.thrower == null && this.throwerName != null && this.throwerName.length() > 0) {
+			this.thrower = this.worldObj.getPlayerEntityByName(this.throwerName);
 		}
 
 		return this.thrower;

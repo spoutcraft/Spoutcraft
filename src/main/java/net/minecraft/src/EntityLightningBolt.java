@@ -20,14 +20,15 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 	 */
 	private int boltLivingTime;
 	public boolean effect = false; // Spout
-
+	
 	public EntityLightningBolt(World par1World, double par2, double par4, double par6) {
 		super(par1World);
 		this.setLocationAndAngles(par2, par4, par6, 0.0F, 0.0F);
 		this.lightningState = 2;
 		this.boltVertex = this.rand.nextLong();
 		this.boltLivingTime = this.rand.nextInt(3) + 1;
-		if (!par1World.isRemote && !effect && par1World.difficultySetting >= 2 && par1World.doChunksNearChunkExist(MathHelper.floor_double(par2), MathHelper.floor_double(par4), MathHelper.floor_double(par6), 10)) { // Spout
+
+		if (!par1World.isRemote && !effect && par1World.difficultySetting >= 2 && par1World.doChunksNearChunkExist(MathHelper.floor_double(par2), MathHelper.floor_double(par4), MathHelper.floor_double(par6), 10)) { //Spout
 			int var8 = MathHelper.floor_double(par2);
 			int var9 = MathHelper.floor_double(par4);
 			int var10 = MathHelper.floor_double(par6);
@@ -69,7 +70,7 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 				this.lightningState = 1;
 				this.boltVertex = this.rand.nextLong();
 
-				if (!this.worldObj.isRemote && !effect && this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10)) { // Spout
+				if (!this.worldObj.isRemote && !effect && this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10)) { //Spout
 					int var1 = MathHelper.floor_double(this.posX);
 					int var2 = MathHelper.floor_double(this.posY);
 					int var3 = MathHelper.floor_double(this.posZ);
@@ -81,7 +82,7 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 			}
 		}
 
-		if (!this.worldObj.isRemote && !effect && this.lightningState >= 0) { // Spout
+		if (!this.worldObj.isRemote && !effect && this.lightningState >= 0) { //Spout
 			if (this.worldObj.isRemote) {
 				this.worldObj.lastLightningBolt = 2;
 			} else {

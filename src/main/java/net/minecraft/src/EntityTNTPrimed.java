@@ -8,7 +8,7 @@ public class EntityTNTPrimed extends Entity {
 	public float yield = 4F;
 	public boolean incendiary = true;
 	// Spout End
-
+	
 	public EntityTNTPrimed(World par1World) {
 		super(par1World);
 		this.fuse = 0;
