@@ -2,14 +2,13 @@ package net.minecraft.src;
 
 import java.util.Random;
 
-
 public class EntitySheep extends EntityAnimal {
 	private final InventoryCrafting field_90016_e = new InventoryCrafting(new ContainerSheep(this), 2, 1);
 
 	/**
 	 * Holds the RGB table of the sheep colors - in OpenGL glColor3f values - used to render the sheep colored fleece.
 	 */
-	public static float[][] fleeceColorTable = new float[][] { { 1.0F, 1.0F, 1.0F }, { 0.85F, 0.5F, 0.2F }, { 0.7F, 0.3F, 0.85F }, { 0.4F, 0.6F, 0.85F }, { 0.9F, 0.9F, 0.2F }, { 0.5F, 0.8F, 0.1F }, { 0.95F, 0.5F, 0.65F }, { 0.3F, 0.3F, 0.3F }, { 0.6F, 0.6F, 0.6F }, { 0.3F, 0.5F, 0.6F }, { 0.5F, 0.25F, 0.7F }, { 0.2F, 0.3F, 0.7F }, { 0.4F, 0.3F, 0.2F }, { 0.4F, 0.5F, 0.2F }, { 0.6F, 0.2F, 0.2F }, { 0.1F, 0.1F, 0.1F } }; // Spout removed final
+	public static float[][] fleeceColorTable = new float[][] {{1.0F, 1.0F, 1.0F}, {0.85F, 0.5F, 0.2F}, {0.7F, 0.3F, 0.85F}, {0.4F, 0.6F, 0.85F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.5F, 0.65F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.5F, 0.6F}, {0.5F, 0.25F, 0.7F}, {0.2F, 0.3F, 0.7F}, {0.4F, 0.3F, 0.2F}, {0.4F, 0.5F, 0.2F}, {0.6F, 0.2F, 0.2F}, {0.1F, 0.1F, 0.1F}}; //Spout -> Removed final
 
 	/**
 	 * Used to control movement as well as wool regrowth. Set to 40 on handleHealthUpdate and counts down with each tick.
@@ -18,7 +17,6 @@ public class EntitySheep extends EntityAnimal {
 
 	/** The eat grass AI task for this mob. */
 	private EntityAIEatGrass aiEatGrass = new EntityAIEatGrass(this);
-	public static float[][] origFleeceColorTable = (float[][])fleeceColorTable.clone(); // Spout
 
 	public EntitySheep(World par1World) {
 		super(par1World);
@@ -29,7 +27,7 @@ public class EntitySheep extends EntityAnimal {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
 		this.tasks.addTask(2, new EntityAIMate(this, var2));
-		this.tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.shiftedIndex, false));
+		this.tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.itemID, false));
 		this.tasks.addTask(4, new EntityAIFollowParent(this, 0.25F));
 		this.tasks.addTask(5, this.aiEatGrass);
 		this.tasks.addTask(6, new EntityAIWander(this, var2));
@@ -47,7 +45,7 @@ public class EntitySheep extends EntityAnimal {
 	}
 
 	protected void updateAITasks() {
-		this.sheepTimer = this.aiEatGrass.func_75362_f();
+		this.sheepTimer = this.aiEatGrass.getEatGrassTick();
 		super.updateAITasks();
 	}
 
@@ -73,7 +71,8 @@ public class EntitySheep extends EntityAnimal {
 	}
 
 	/**
-	 * Drop 0-2 items of this living's type
+	 * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+	 * par2 - Level of Looting used to kill this mob.
 	 */
 	protected void dropFewItems(boolean par1, int par2) {
 		if (!this.getSheared()) {
@@ -115,7 +114,7 @@ public class EntitySheep extends EntityAnimal {
 	public boolean interact(EntityPlayer par1EntityPlayer) {
 		ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
 
-		if (var2 != null && var2.itemID == Item.shears.shiftedIndex && !this.getSheared() && !this.isChild()) {
+		if (var2 != null && var2.itemID == Item.shears.itemID && !this.getSheared() && !this.isChild()) {
 			if (!this.worldObj.isRemote) {
 				this.setSheared(true);
 				int var3 = 1 + this.rand.nextInt(3);
@@ -129,7 +128,7 @@ public class EntitySheep extends EntityAnimal {
 			}
 
 			var2.damageItem(1, par1EntityPlayer);
-			this.func_85030_a("mob.sheep.shear", 1.0F, 1.0F);
+			this.playSound("mob.sheep.shear", 1.0F, 1.0F);
 		}
 
 		return super.interact(par1EntityPlayer);
@@ -178,7 +177,7 @@ public class EntitySheep extends EntityAnimal {
 	 * Plays step sound at given x, y, z for the entity
 	 */
 	protected void playStepSound(int par1, int par2, int par3, int par4) {
-		this.func_85030_a("mob.sheep.step", 0.15F, 1.0F);
+		this.playSound("mob.sheep.step", 0.15F, 1.0F);
 	}
 
 	public int getFleeceColor() {
@@ -259,7 +258,7 @@ public class EntitySheep extends EntityAnimal {
 		ItemStack var5 = CraftingManager.getInstance().findMatchingRecipe(this.field_90016_e, ((EntitySheep)par1EntityAnimal).worldObj);
 		int var6;
 
-		if (var5 != null && var5.getItem().shiftedIndex == Item.dyePowder.shiftedIndex) {
+		if (var5 != null && var5.getItem().itemID == Item.dyePowder.itemID) {
 			var6 = var5.getItemDamage();
 		} else {
 			var6 = this.worldObj.rand.nextBoolean() ? var3 : var4;
@@ -272,7 +271,7 @@ public class EntitySheep extends EntityAnimal {
 		return 15 - ((EntitySheep)par1EntityAnimal).getFleeceColor();
 	}
 
-	public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable) {
+	public EntityAgeable createChild(EntityAgeable par1EntityAgeable) {
 		return this.func_90015_b(par1EntityAgeable);
 	}
 }
