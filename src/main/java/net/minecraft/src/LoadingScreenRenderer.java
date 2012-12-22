@@ -60,15 +60,15 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 	/**
 	 * This is called with "Working..." by resetProgressAndMessage
 	 */
-	public void resetProgresAndWorkingMessage(String par1Str) {		
+	public void resetProgresAndWorkingMessage(String par1Str) {
 		if (!this.mc.running) {
-			if (!this.field_73724_e) {				
+			if (!this.field_73724_e) {
 				throw new MinecraftError();
 			}
-		} else {			
+		} else {
 			this.field_73723_d = 0L;
 			this.field_73727_a = par1Str;
-			this.setLoadingProgress(-1); //Spout, this shouldn't be needed...
+			this.setLoadingProgress(-1); //Spout - this shouldn't be needed...
 			this.field_73723_d = 0L;
 		}
 	}
@@ -82,8 +82,9 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 				throw new MinecraftError();
 			}
 		} else {
-			long var2 = Minecraft.getSystemTime();			
-			if (var2 - this.field_73723_d >= 100L) {				
+			long var2 = Minecraft.getSystemTime();
+
+			if (var2 - this.field_73723_d >= 100L) {
 				this.field_73723_d = var2;
 				ScaledResolution var4 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 				int var5 = var4.getScaledWidth();
@@ -108,7 +109,7 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 				var7.addVertexWithUV(0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 				var7.draw();
 
-				if (par1 >= 0) {					
+				if (par1 >= 0) {
 					byte var10 = 100;
 					byte var11 = 2;
 					int var12 = var5 / 2 - var10 / 2;
@@ -129,8 +130,8 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 					GL11.glEnable(GL11.GL_TEXTURE_2D);
 				}
 
-				this.mc.fontRenderer.drawStringWithShadow(this.currentlyDisplayedText, (var5 - this.mc.fontRenderer.getStringWidth(this.currentlyDisplayedText)) / 2, var6 / 2 - 4 - 16, 16777215);				
-				this.mc.fontRenderer.drawStringWithShadow(this.field_73727_a, (var5 - this.mc.fontRenderer.getStringWidth(this.field_73727_a)) / 2, var6 / 2 - 4 + 8, 16777215);						
+				this.mc.fontRenderer.drawStringWithShadow(this.currentlyDisplayedText, (var5 - this.mc.fontRenderer.getStringWidth(this.currentlyDisplayedText)) / 2, var6 / 2 - 4 - 16, 16777215);
+				this.mc.fontRenderer.drawStringWithShadow(this.field_73727_a, (var5 - this.mc.fontRenderer.getStringWidth(this.field_73727_a)) / 2, var6 / 2 - 4 + 8, 16777215);
 				Display.update();
 
 				try {

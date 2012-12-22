@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.ArrayList;
+
+import com.pclewis.mcpatcher.mod.Colorizer; // MCPatcher
 
 public class RecipesArmorDyes implements IRecipe {
 
@@ -25,7 +26,7 @@ public class RecipesArmorDyes implements IRecipe {
 
 					var3 = var6;
 				} else {
-					if (var6.itemID != Item.dyePowder.shiftedIndex) {
+					if (var6.itemID != Item.dyePowder.itemID) {
 						return false;
 					}
 
@@ -77,11 +78,11 @@ public class RecipesArmorDyes implements IRecipe {
 						++var5;
 					}
 				} else {
-					if (var8.itemID != Item.dyePowder.shiftedIndex) {
+					if (var8.itemID != Item.dyePowder.itemID) {
 						return null;
 					}
 
-					float[] var14 = Colorizer.armorColors[BlockCloth.getBlockFromDye(var8.getItemDamage())];
+					float[] var14 = Colorizer.armorColors[BlockCloth.getBlockFromDye(var8.getItemDamage())]; // MCPatcher
 					int var16 = (int)(var14[0] * 255.0F);
 					int var15 = (int)(var14[1] * 255.0F);
 					var17 = (int)(var14[2] * 255.0F);

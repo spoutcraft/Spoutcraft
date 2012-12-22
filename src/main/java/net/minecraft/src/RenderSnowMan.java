@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.MobOverlay;
 import org.lwjgl.opengl.GL11;
+
+import com.pclewis.mcpatcher.mod.MobOverlay; // MCPatcher
 
 public class RenderSnowMan extends RenderLiving {
 
@@ -21,7 +22,7 @@ public class RenderSnowMan extends RenderLiving {
 		super.renderEquippedItems(par1EntitySnowman, par2);
 		ItemStack var3 = new ItemStack(Block.pumpkin, 1);
 
-		if (var3 != null && var3.getItem().shiftedIndex < 256) {
+		if (var3 != null && var3.getItem().itemID < 256) {
 			GL11.glPushMatrix();
 			this.snowmanModel.head.postRender(0.0625F);
 
@@ -32,12 +33,14 @@ public class RenderSnowMan extends RenderLiving {
 				GL11.glScalef(var4, -var4, var4);
 			}
 
+			// MCPatcher Start
 			if (MobOverlay.setupSnowman(par1EntitySnowman)) {
 				this.loadTexture(MobOverlay.snowmanOverlayTexture);
 				MobOverlay.renderSnowmanOverlay();
 			} else {
 				this.renderManager.itemRenderer.renderItem(par1EntitySnowman, var3, 0);
 			}
+			// MCPatcher End
 
 			GL11.glPopMatrix();
 		}

@@ -50,7 +50,7 @@ public class MapColor {
 	public static final MapColor woodColor = new MapColor(13, 6837042);
 
 	/** Holds the color in RGB value that will be rendered on maps. */
-	public int colorValue; // Spout final -> gone
+	public int colorValue; // Spout - removed final
 
 	/** Holds the index of the color used on map. */
 	public final int colorIndex;

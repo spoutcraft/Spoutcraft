@@ -1,8 +1,11 @@
 package net.minecraft.src;
 
+import org.lwjgl.opengl.GL11;
+
+// MCPatcher Start
 import com.pclewis.mcpatcher.mod.Colorizer;
 import com.pclewis.mcpatcher.mod.MobRandomizer;
-import org.lwjgl.opengl.GL11;
+// MCPatcher End
 
 public class RenderWolf extends RenderLiving {
 	public RenderWolf(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3) {
@@ -23,10 +26,10 @@ public class RenderWolf extends RenderLiving {
 			GL11.glColor3f(var4, var4, var4);
 			return 1;
 		} else if (par2 == 1 && par1EntityWolf.isTamed()) {
-			this.loadTexture(MobRandomizer.randomTexture((Object)par1EntityWolf, "/mob/wolf_collar.png"));
+			this.loadTexture(MobRandomizer.randomTexture((Object)par1EntityWolf, "/mob/wolf_collar.png")); // MCPatcher
 			var4 = 1.0F;
 			int var5 = par1EntityWolf.getCollarColor();
-			GL11.glColor3f(var4 * Colorizer.collarColors[var5][0], var4 * Colorizer.collarColors[var5][1], var4 * Colorizer.collarColors[var5][2]);
+			GL11.glColor3f(var4 * Colorizer.collarColors[var5][0], var4 * Colorizer.collarColors[var5][1], var4 * Colorizer.collarColors[var5][2]); // MCPatcher
 			return 1;
 		} else {
 			return -1;

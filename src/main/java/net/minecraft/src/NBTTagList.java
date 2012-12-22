@@ -10,7 +10,7 @@ import java.util.List;
 public class NBTTagList extends NBTBase {
 
 	/** The array list containing the tags encapsulated in this list. */
-	public List tagList = new ArrayList();; // Spout: private to public
+	public List tagList = new ArrayList(); // Spout private -> public
 
 	/**
 	 * The type byte for the tags in the list - they must all be of the same type.

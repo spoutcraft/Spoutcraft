@@ -74,10 +74,8 @@ public class StringTranslate {
 				}
 			}
 		}
-		
-		// Spout Start
-		this.loadSpoutLanguage(par1Properties, par2Str);
-		// Spout End
+
+		this.loadSpoutLanguage(par1Properties, par2Str); // Spout
 	}
 	
 	// Spout Start
