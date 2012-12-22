@@ -327,12 +327,12 @@ public abstract class Packet {
 		addIdClassMapping(13, true, true, Packet13PlayerLookMove.class);
 		addIdClassMapping(14, false, true, Packet14BlockDig.class);
 		addIdClassMapping(15, false, true, Packet15Place.class);
-		addIdClassMapping(16, false, true, Packet16BlockItemSwitch.class);
+		addIdClassMapping(16, true, true, Packet16BlockItemSwitch.class);
 		addIdClassMapping(17, true, false, Packet17Sleep.class);
 		addIdClassMapping(18, true, true, Packet18Animation.class);
 		addIdClassMapping(19, false, true, Packet19EntityAction.class);
 		addIdClassMapping(20, true, false, Packet20NamedEntitySpawn.class);
-		addIdClassMapping(21, true, false, Packet21PickupSpawn.class);
+		//addIdClassMapping(21, true, false, Packet21PickupSpawn.class);
 		addIdClassMapping(22, true, false, Packet22Collect.class);
 		addIdClassMapping(23, true, false, Packet23VehicleSpawn.class);
 		addIdClassMapping(24, true, false, Packet24MobSpawn.class);

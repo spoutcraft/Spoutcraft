@@ -146,7 +146,7 @@ public class GuiChat extends GuiScreen {
 				if (var5 != null) {
 					if (this.mc.gameSettings.chatLinksPrompt) {
 						this.clickedURI = var5;
-						this.mc.displayGuiScreen(new GuiChatConfirmLink(this, this, var4.getClickedUrl(), 0, var4));
+						this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, var4.getClickedUrl(), 0));						
 					} else {
 						this.func_73896_a(var5);
 					}
@@ -283,7 +283,7 @@ public class GuiChat extends GuiScreen {
 				String var5 = var2[var4];
 
 				if (var5.length() > 0) {
-					this.field_73904_o.add(var5+" ");
+					this.field_73904_o.add(var5);
 				}
 			}
 
@@ -299,5 +299,5 @@ public class GuiChat extends GuiScreen {
 	 */
 	public boolean doesGuiPauseGame() {
 		return false;
-	}	
+	}
 }

@@ -194,7 +194,7 @@ public class FontRenderer {
 
 		try {
 			var2 = TexturePackAPI.getImage(RenderEngine.class, var3);
-		} catch (Exception var5) {
+		} catch (IOException var5) {
 			throw new RuntimeException(var5);
 		}
 

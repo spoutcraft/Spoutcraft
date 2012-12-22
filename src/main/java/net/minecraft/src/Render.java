@@ -301,7 +301,7 @@ public abstract class Render {
 			}
 		}
 
-		if (par1Entity.func_90999_ad()) {
+		if (par1Entity.canRenderOnFire()) {
 			this.renderEntityOnFire(par1Entity, par2, par4, par6, par9);
 		}
 	}

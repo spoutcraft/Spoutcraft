@@ -119,4 +119,28 @@ public class CreativeTabs {
 			}
 		}
 	}
+	
+
+	public void func_92116_a(List par1List, EnumEnchantmentType ... par2ArrayOfEnumEnchantmentType) {
+		Enchantment[] var3 = Enchantment.enchantmentsList;
+		int var4 = var3.length;
+
+		for (int var5 = 0; var5 < var4; ++var5) {
+			Enchantment var6 = var3[var5];
+
+			if (var6 != null && var6.type != null) {
+				boolean var7 = false;
+
+				for (int var8 = 0; var8 < par2ArrayOfEnumEnchantmentType.length && !var7; ++var8) {
+					if (var6.type == par2ArrayOfEnumEnchantmentType[var8]) {
+						var7 = true;
+					}
+				}
+
+				if (var7) {
+					par1List.add(Item.field_92105_bW.func_92111_a(new EnchantmentData(var6, var6.getMaxLevel())));
+				}
+			}
+		}
+	}
 }

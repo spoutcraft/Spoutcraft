@@ -77,11 +77,14 @@ public class ItemMonsterPlacer extends Item {
 			for (int var9 = 0; var9 < 1; ++var9) {
 				var8 = EntityList.createEntityByID(par1, par0World);
 
-				if (var8 != null) {
-					var8.setLocationAndAngles(par2, par4, par6, par0World.rand.nextFloat() * 360.0F, 0.0F);
-					((EntityLiving)var8).initCreature();
+				if (var8 != null && var8 instanceof EntityLiving) {
+					EntityLiving var10 = (EntityLiving)var8;
+					var8.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
+					var10.rotationYawHead = var10.rotationYaw;
+					var10.renderYawOffset = var10.rotationYaw;
+					var10.initCreature();
 					par0World.spawnEntityInWorld(var8);
-					((EntityLiving)var8).playLivingSound();
+					var10.playLivingSound();
 				}
 			}
 

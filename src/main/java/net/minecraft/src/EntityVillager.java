@@ -369,7 +369,8 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 
 		MerchantRecipeList var2;
 		var2 = new MerchantRecipeList();
-		label48:
+		int var6;
+		label50:
 
 		switch (this.getProfession()) {
 			case 0:
@@ -400,6 +401,15 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 				addBlacksmithItem(var2, Block.glass.blockID, this.rand, this.func_82188_j(0.2F));
 				addBlacksmithItem(var2, Item.compass.shiftedIndex, this.rand, this.func_82188_j(0.2F));
 				addBlacksmithItem(var2, Item.pocketSundial.shiftedIndex, this.rand, this.func_82188_j(0.2F));
+				
+
+				if (this.rand.nextFloat() < this.func_82188_j(0.07F)) {
+					Enchantment var8 = Enchantment.field_92090_c[this.rand.nextInt(Enchantment.field_92090_c.length)];
+					int var10 = MathHelper.getRandomIntegerInRange(this.rand, var8.getMinLevel(), var8.getMaxLevel());
+					ItemStack var11 = Item.field_92105_bW.func_92111_a(new EnchantmentData(var8, var10));
+					var6 = 2 + this.rand.nextInt(5 + var10 * 10) + 3 * var10;
+					var2.add(new MerchantRecipe(new ItemStack(Item.book), new ItemStack(Item.emerald, var6), var11));
+				}
 				break;
 
 			case 2:
@@ -410,11 +420,11 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 				int[] var3 = new int[] {Item.swordSteel.shiftedIndex, Item.swordDiamond.shiftedIndex, Item.plateSteel.shiftedIndex, Item.plateDiamond.shiftedIndex, Item.axeSteel.shiftedIndex, Item.axeDiamond.shiftedIndex, Item.pickaxeSteel.shiftedIndex, Item.pickaxeDiamond.shiftedIndex};
 				int[] var4 = var3;
 				int var5 = var3.length;
-				int var6 = 0;
+				var6 = 0;
 
 				while (true) {
 					if (var6 >= var5) {
-						break label48;
+						break label50;
 					}
 
 					int var7 = var4[var6];
@@ -478,8 +488,8 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 			this.buyingList = new MerchantRecipeList();
 		}
 
-		for (int var8 = 0; var8 < par1 && var8 < var2.size(); ++var8) {
-			this.buyingList.addToListWithCheck((MerchantRecipe)var2.get(var8));
+		for (int var9 = 0; var9 < par1 && var9 < var2.size(); ++var9) {
+			this.buyingList.addToListWithCheck((MerchantRecipe)var2.get(var9));
 		}
 	}
 

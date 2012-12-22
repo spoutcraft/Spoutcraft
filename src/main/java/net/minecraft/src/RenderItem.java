@@ -70,6 +70,12 @@ public class RenderItem extends Render {
 			if (par1EntityItem.item.stackSize > 20) {
 				var13 = 4;
 			}
+			
+			//TODO: May cause conflict @ runtime w/Spout API.
+			if (par1EntityItem.func_92059_d().stackSize > 40) {
+				var13 = 5;
+			}
+			
 			// Spout Start
 			boolean custom = false;
 			BlockDesign design = null;
@@ -169,6 +175,7 @@ public class RenderItem extends Render {
 					this.loadTexture("/gui/items.png");
 
 					for (var15 = 0; var15 <= 1; ++var15) {
+						this.random.setSeed(187L);
 						var16 = var10.getItem().getIconFromDamageForRenderPass(var10.getItemDamage(), var15);
 						var17 = 1.0F;
 
@@ -178,6 +185,9 @@ public class RenderItem extends Render {
 							var20 = (float)(var18 >> 8 & 255) / 255.0F;
 							float var21 = (float)(var18 & 255) / 255.0F;
 							GL11.glColor4f(var19 * var17, var20 * var17, var21 * var17, 1.0F);
+							this.func_77020_a(par1EntityItem, var16, var13, par9, var19 * var17, var20 * var17, var21 * var17);
+						} else {
+							this.func_77020_a(par1EntityItem, var16, var13, par9, 1.0F, 1.0F, 1.0F);						
 						}
 
 						this.func_77020_a(var16, var13);
@@ -206,9 +216,14 @@ public class RenderItem extends Render {
 						var19 = (float)(var16 & 255) / 255.0F;
 						var20 = 1.0F;
 						GL11.glColor4f(var17 * var20, var24 * var20, var19 * var20, 1.0F);
+						this.func_77020_a(par1EntityItem, var15, var13, par9, var17 * var20, var24 * var20, var19 * var20);
+					} else {
+						this.func_77020_a(par1EntityItem, var15, var13, par9, 1.0F, 1.0F, 1.0F);
+					
 					}
 					
 					// Spout Start
+					// TODO: May need updates from official.
 					this.renderItemBillboard(var15, var13, custom);
 					// Spout End
 				}

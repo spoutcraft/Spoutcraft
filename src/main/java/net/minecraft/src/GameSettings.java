@@ -65,7 +65,10 @@ public class GameSettings {
 
 	/** Whether to show your cape */
 	public boolean showCape = true;
-	public boolean field_85185_A = false;
+	public boolean touchscreen = false;
+	public int field_92118_B = 0;
+	public int field_92119_C = 0;
+	public boolean field_92117_D = true;
 	public KeyBinding keyBindForward = new KeyBinding("key.forward", 17);
 	public KeyBinding keyBindLeft = new KeyBinding("key.left", 30);
 	public KeyBinding keyBindBack = new KeyBinding("key.back", 31);
@@ -327,7 +330,7 @@ public class GameSettings {
 		}
 
 		if (par1EnumOptions == EnumOptions.TOUCHSCREEN) {
-			this.field_85185_A = !this.field_85185_A;
+			this.touchscreen = !this.touchscreen;
 		}
 
 		if (par1EnumOptions == EnumOptions.USE_FULLSCREEN) {
@@ -395,7 +398,7 @@ public class GameSettings {
 				return this.showCape;
 
 			case 15:
-				return this.field_85185_A;
+				return this.touchscreen;
 
 			default:
 				return false;
@@ -582,7 +585,19 @@ public class GameSettings {
 					}
 
 					if (var3[0].equals("touchscreen")) {
-						this.field_85185_A = var3[1].equals("true");
+						this.touchscreen = var3[1].equals("true");
+					}
+
+					if (var3[0].equals("overrideHeight")) {
+						this.field_92119_C = Integer.parseInt(var3[1]);
+					}
+
+					if (var3[0].equals("overrideWidth")) {
+						this.field_92118_B = Integer.parseInt(var3[1]);
+					}
+
+					if (var3[0].equals("heldItemTooltips")) {
+						this.field_92117_D = var3[1].equals("true");
 					}
 
 					for (int var4 = 0; var4 < this.keyBindings.length; ++var4) {
@@ -659,7 +674,11 @@ public class GameSettings {
 			var1.println("advancedItemTooltips:" + this.advancedItemTooltips);
 			var1.println("pauseOnLostFocus:" + this.pauseOnLostFocus);
 			var1.println("showCape:" + this.showCape);
-			var1.println("touchscreen:" + this.field_85185_A);
+			var1.println("touchscreen:" + this.touchscreen);
+			var1.println("overrideWidth:" + this.field_92118_B);
+			var1.println("overrideHeight:" + this.field_92119_C);
+			var1.println("heldItemTooltips:" + this.field_92117_D);
+
 
 			for (int var2 = 0; var2 < this.keyBindings.length; ++var2) {
 				var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);

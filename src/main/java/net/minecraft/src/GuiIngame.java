@@ -334,8 +334,8 @@ public class GuiIngame extends Gui {
 	 * Renders dragon's (boss) health on the HUD
 	 */
 	private void renderBossHealth() {
-		if (BossStatus.bossName != null && BossStatus.field_82826_b > 0) {
-			--BossStatus.field_82826_b;
+		if (BossStatus.bossName != null && BossStatus.statusBarLenght > 0) {
+			--BossStatus.statusBarLenght;
 			FontRenderer var1 = this.mc.fontRenderer;
 			ScaledResolution var2 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 			int var3 = var2.getScaledWidth();
@@ -479,6 +479,22 @@ public class GuiIngame extends Gui {
 		}
 
 		++this.updateCounter;
+		
+		if (this.mc.thePlayer != null) {
+			ItemStack var1 = this.mc.thePlayer.inventory.getCurrentItem();
+
+			if (var1 == null) {
+				this.field_92017_k = 0;
+			} else if (this.field_92016_l != null && var1.itemID == this.field_92016_l.itemID && ItemStack.areItemStackTagsEqual(var1, this.field_92016_l) && (var1.isItemStackDamageable() || var1.getItemDamage() == this.field_92016_l.getItemDamage())) {
+				if (this.field_92017_k > 0) {
+					--this.field_92017_k;
+				}
+			} else {
+				this.field_92017_k = 40;
+			}
+
+			this.field_92016_l = var1;
+		}
 	}
 
 	public void setRecordPlayingMessage(String par1Str) {
