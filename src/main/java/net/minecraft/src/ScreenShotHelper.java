@@ -3,12 +3,14 @@ package net.minecraft.src;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft; // Spout
+
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse; // Spout
@@ -17,25 +19,21 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import org.spoutcraft.client.config.Configuration; // Spout
-
 public class ScreenShotHelper {
 	private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
-	// Spout Start -- moved to be local variables
-	/*private static IntBuffer field_74293_b;
-	private static int[] field_74294_c;*/
-	// Spout End
+	/* Spout start -> moved to local variables
+	private static IntBuffer field_74293_b;
+	private static int[] field_74294_c;
+	Spout end */
 
 	/**
 	 * Takes a screenshot and saves it to the screenshots directory. Returns the filename of the screenshot.
 	 */
 	public static String saveScreenshot(File par0File, int par1, int par2) {
-		// Spout Start
-		//if(Configuration.isResizeScreenshots()) return saveResizedScreenshot(par0File, Configuration.getResizedScreenshotWidth(), Configuration.getResizedScreenshotHeight());
 		return saveScreenshot(par0File, (String)null, par1, par2);
-		// Spout End
 	}
 
-	// Spout Start - method renamed from func_74292_a to saveScreenshot
+	//Spout Start = method renamed from func_74292_a to saveScreenshot
 	public static String saveScreenshot(File file, String imageFileName, int screenWidth, int screenHeight) {
 		ByteBuffer buffer = BufferUtils.createByteBuffer(screenWidth * screenHeight * 3);
 		byte[] pixelData = new byte[screenWidth * screenHeight * 3];
@@ -90,7 +88,7 @@ public class ScreenShotHelper {
 			return (new StringBuilder()).append("Failed to save: ").append(exception).toString();
 		}
 	}
-
+	
 	// Spout Start -- new method
 	public static BufferedImage getScreenshot(int screenWidth, int screenHeight) {
 		ByteBuffer buffer = BufferUtils.createByteBuffer(screenWidth * screenHeight * 3);
@@ -115,71 +113,34 @@ public class ScreenShotHelper {
 		BufferedImage bufferedimage = new BufferedImage(screenWidth, screenHeight, 1);
 		bufferedimage.setRGB(0, 0, screenWidth, screenHeight, imageData, 0, screenWidth);
 		return bufferedimage;
-	}
+	}	
 	// Spout End
 	
-	//public static String saveResizedScreenshot(File base, int width, int height) {
-		/*
-		int texture = GL11.glGenTextures();
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
-		GL11.glTexEnvf( GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE );
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0 , 3, width, height, 0 , GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
-		
-		int buffer = EXTFramebufferObject.glGenFramebuffersEXT();
-		//EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, buffer);
-		//EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, texture, 0);
-		
-		int renderbuffer = EXTFramebufferObject.glGenRenderbuffersEXT();
-		//EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, renderbuffer);
-		EXTFramebufferObject.glRenderbufferStorageEXT( EXTFramebufferObject.GL_RENDERBUFFER_EXT, GL11.GL_DEPTH_COMPONENT, width, height);
-		//EXTFramebufferObject.glFramebufferRenderbufferEXT( EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT, EXTFramebufferObject.GL_RENDERBUFFER_EXT, renderbuffer);
-		
-		int oldwidth = Minecraft.theMinecraft.displayWidth;
-		int oldheight = Minecraft.theMinecraft.displayHeight;
-		//resize
-		Minecraft.theMinecraft.resize(width, height);
-		//draw world
-		Minecraft.theMinecraft.entityRenderer.renderWorld(0, 0);
-		//draw gui
-		ScaledResolution res = new ScaledResolution(Minecraft.theMinecraft.gameSettings, width, height);
-		int renderwidth = Mouse.getX() * res.getScaledWidth() / width;
-		int renderheight = res.getScaledHeight() - Mouse.getY() * res.getScaledHeight() / height - 1;
-		if (!Minecraft.theMinecraft.gameSettings.hideGUI || Minecraft.theMinecraft.currentScreen != null) {
-			Minecraft.theMinecraft.ingameGUI.renderGameOverlay(0, Minecraft.theMinecraft.currentScreen != null, renderwidth, renderheight);
-		}
-		if (Minecraft.theMinecraft.currentScreen != null) {
-			GL11.glClear(256);
-			// Spout Start
-			Minecraft.theMinecraft.currentScreen.drawScreenPre(renderwidth, renderheight, 0);
-			// Spout End
-			if (Minecraft.theMinecraft.currentScreen != null && Minecraft.theMinecraft.currentScreen.guiParticles != null) {
-				Minecraft.theMinecraft.currentScreen.guiParticles.draw(0);
-			}
-		}
-		//return to old size
-		Minecraft.theMinecraft.resize(oldwidth, oldheight);
-		
-		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
-		EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, 0);
-		
-		BufferedImage image = ScreenShotHelper.getScreenshot(texture, width, height);
-		File screenshotsDir = new File(base, "screenshots");
-		screenshotsDir.mkdir();
-		File file;
-		String s1 = (new StringBuilder()).append("").append(dateFormat.format(new Date())).toString();
-		for (int k = 1; (file = new File(screenshotsDir, (new StringBuilder()).append(s1).append(k != 1 ? (new StringBuilder()).append("_").append(k).toString() : "").append(".png").toString())).exists(); k++) ;
-		try {
-			ImageIO.write(image, "png", file);
-			return (new StringBuilder()).append("Saved screenshot as ").append(file.getName()).toString();
-		} catch(Exception e) {
-			e.printStackTrace();
-			*/
-		//	return (new StringBuilder()).append("Failed to save: ").append(e).toString();
-		//}
-		//return null;
-		//return saveScreenshot(par0File, (String)null, par1, par2);
-	//}
+	private static File func_74290_a(File par0File) {
+		String var2 = dateFormat.format(new Date()).toString();
+		int var3 = 1;
 
+		while (true) {
+			File var1 = new File(par0File, var2 + (var3 == 1 ? "" : "_" + var3) + ".png");
+
+			if (!var1.exists()) {
+				return var1;
+			}
+
+			++var3;
+		}
+	}
+
+	private static void func_74289_a(int[] par0ArrayOfInteger, int par1, int par2) {
+		int[] var3 = new int[par1];
+		int var4 = par2 / 2;
+
+		for (int var5 = 0; var5 < var4; ++var5) {
+			System.arraycopy(par0ArrayOfInteger, var5 * par1, var3, 0, par1);
+			System.arraycopy(par0ArrayOfInteger, (par2 - 1 - var5) * par1, par0ArrayOfInteger, var5 * par1, par1);
+			System.arraycopy(var3, 0, par0ArrayOfInteger, (par2 - 1 - var5) * par1, par1);
+		}
+	}
 	
 	public static BufferedImage getScreenshot(int texture, int screenWidth, int screenHeight) {
 		ByteBuffer buffer = BufferUtils.createByteBuffer(screenWidth * screenHeight * 3);
@@ -203,5 +164,5 @@ public class ScreenShotHelper {
 		BufferedImage bufferedimage = new BufferedImage(screenWidth, screenHeight, 1);
 		bufferedimage.setRGB(0, 0, screenWidth, screenHeight, imageData, 0, screenWidth);
 		return bufferedimage;
-	}
+	}	
 }
