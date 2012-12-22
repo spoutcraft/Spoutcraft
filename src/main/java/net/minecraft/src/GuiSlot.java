@@ -260,7 +260,7 @@ public abstract class GuiSlot {
 				this.initialClickY = (float)par2;
 			}
 		} else {
-			while (!this.mc.gameSettings.field_85185_A && Mouse.next()) {
+			while (!this.mc.gameSettings.touchscreen && Mouse.next()) {
 				int var16 = Mouse.getEventDWheel();
 
 				if (var16 != 0) {
