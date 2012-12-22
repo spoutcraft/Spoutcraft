@@ -1,9 +1,10 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import com.pclewis.mcpatcher.mod.Colorizer; // MCPatcher
 
 public class EntityList {
 
@@ -40,7 +41,7 @@ public class EntityList {
 	 * Adds a entity mapping with egg info.
 	 */
 	private static void addMapping(Class par0Class, String par1Str, int par2, int par3, int par4) {
-		Colorizer.setupSpawnerEgg(par1Str, par2, par3, par4);
+		Colorizer.setupSpawnerEgg(par1Str, par2, par3, par4); // MCPatcher
 		addMapping(par0Class, par1Str, par2);
 		entityEggs.put(Integer.valueOf(par2), new EntityEggInfo(par2, par3, par4));
 	}
@@ -120,7 +121,7 @@ public class EntityList {
 		return classToIDMapping.containsKey(var1) ? ((Integer)classToIDMapping.get(var1)).intValue() : 0;
 	}
 
-	// Spout Duplicate Methods because EntityAgeable has not been overriden.
+	// Spout - Duplicate methods because EntityAgeable has not been overriden.
 	public static Class func_90035_a(int par0) {
 		return (Class)IDtoClassMapping.get(Integer.valueOf(par0));
 	}
@@ -163,6 +164,7 @@ public class EntityList {
 		addMapping(EntityWitherSkull.class, "WitherSkull", 19);
 		addMapping(EntityTNTPrimed.class, "PrimedTnt", 20);
 		addMapping(EntityFallingSand.class, "FallingSand", 21);
+		addMapping(EntityFireworkRocket.class, "FireworksRocketEntity", 22);
 		addMapping(EntityMinecart.class, "Minecart", 40);
 		addMapping(EntityBoat.class, "Boat", 41);
 		addMapping(EntityLiving.class, "Mob", 48);

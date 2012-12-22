@@ -507,7 +507,8 @@ public abstract class Entity {
 	 */
 	public void setFire(int par1) {
 		int var2 = par1 * 20;
-
+		var2 = EnchantmentProtection.func_92093_a(this, var2);
+		
 		if (this.fire < var2) {
 			this.fire = var2;
 		}
@@ -866,7 +867,7 @@ public abstract class Entity {
 		}
 	}
 
-	protected void func_85030_a(String par1Str, float par2, float par3) {
+	public void func_85030_a(String par1Str, float par2, float par3) {
 		this.worldObj.playSoundAtEntity(this, par1Str, par2, par3);
 	}
 
@@ -1296,8 +1297,8 @@ public abstract class Entity {
 			par1NBTTagCompound.setInteger("PortalCooldown", this.timeUntilPortal);
 			this.writeEntityToNBT(par1NBTTagCompound);
 		} catch (Throwable var5) {
-			CrashReport var3 = CrashReport.func_85055_a(var5, "Saving entity NBT");
-			CrashReportCategory var4 = var3.func_85058_a("Entity being saved");
+			CrashReport var3 = CrashReport.makeCrashReport(var5, "Saving entity NBT");
+			CrashReportCategory var4 = var3.makeCategory("Entity being saved");
 			this.func_85029_a(var4);
 			throw new ReportedException(var3);
 		}
@@ -1351,8 +1352,8 @@ public abstract class Entity {
 			// Spout End
 			this.readEntityFromNBT(par1NBTTagCompound);
 		} catch (Throwable var5) {
-			CrashReport var3 = CrashReport.func_85055_a(var5, "Loading entity NBT");
-			CrashReportCategory var4 = var3.func_85058_a("Entity being loaded");
+			CrashReport var3 = CrashReport.makeCrashReport(var5, "Loading entity NBT");
+			CrashReportCategory var4 = var3.makeCategory("Entity being loaded");
 			this.func_85029_a(var4);
 			throw new ReportedException(var3);
 		}
@@ -2038,7 +2039,10 @@ public abstract class Entity {
 		par1CrashReportCategory.addCrashSection("Momentum", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.motionX), Double.valueOf(this.motionY), Double.valueOf(this.motionZ)}));
 	}
 
-	public boolean func_90999_ad() {
+	/**
+	 * Return whether this entity should be rendered as on fire.
+	 */
+	public boolean canRenderOnFire() {
 		return this.isBurning();
 	}
 }

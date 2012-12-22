@@ -266,8 +266,11 @@ public class RenderLiving extends Render {
 
 	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {}
 
-	protected void func_85093_e(EntityLiving par1EntityLiving, float par2) {
-		int var3 = par1EntityLiving.func_85035_bI();
+	/**
+	 * renders arrows the Entity has been attacked with, attached to it
+	 */
+	protected void renderArrowsStuckInEntity(EntityLiving par1EntityLiving, float par2) {
+		int var3 = par1EntityLiving.getArrowCountInEntity();
 
 		if (var3 > 0) {
 			EntityArrow var4 = new EntityArrow(par1EntityLiving.worldObj, par1EntityLiving.posX, par1EntityLiving.posY, par1EntityLiving.posZ);

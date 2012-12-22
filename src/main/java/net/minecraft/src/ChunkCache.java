@@ -254,37 +254,41 @@ public class ChunkCache implements IBlockAccess {
 		}
 
 		if (par3 >= 0 && par3 < 256 && par2 >= -30000000 && par4 >= -30000000 && par2 < 30000000 && par4 <= 30000000) {
-			int var5;
-			int var6;
-
-			if (Block.useNeighborBrightness[this.getBlockId(par2, par3, par4)]) {
-				var5 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2, par3 + 1, par4);
-				var6 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2 + 1, par3, par4);
-				int var7 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2 - 1, par3, par4);
-				int var8 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2, par3, par4 + 1);
-				int var9 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2, par3, par4 - 1);
-
-				if (var6 > var5) {
-					var5 = var6;
-				}
-
-				if (var7 > var5) {
-					var5 = var7;
-				}
-
-				if (var8 > var5) {
-					var5 = var8;
-				}
-
-				if (var9 > var5) {
-					var5 = var9;
-				}
-
-				return var5;
+			if (par1EnumSkyBlock == EnumSkyBlock.Sky && this.worldObj.provider.hasNoSky) {
+				return 0;
 			} else {
-				var5 = (par2 >> 4) - this.chunkX;
-				var6 = (par4 >> 4) - this.chunkZ;
-				return this.chunkArray[var5][var6].getSavedLightValue(par1EnumSkyBlock, par2 & 15, par3, par4 & 15);
+				int var5;
+				int var6;
+
+				if (Block.useNeighborBrightness[this.getBlockId(par2, par3, par4)]) {
+					var5 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2, par3 + 1, par4);
+					var6 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2 + 1, par3, par4);
+					int var7 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2 - 1, par3, par4);
+					int var8 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2, par3, par4 + 1);
+					int var9 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2, par3, par4 - 1);
+
+					if (var6 > var5) {
+						var5 = var6;
+					}
+
+					if (var7 > var5) {
+						var5 = var7;
+					}
+
+					if (var8 > var5) {
+						var5 = var8;
+					}
+
+					if (var9 > var5) {
+						var5 = var9;
+					}
+
+					return var5;
+				} else {
+					var5 = (par2 >> 4) - this.chunkX;
+					var6 = (par4 >> 4) - this.chunkZ;
+					return this.chunkArray[var5][var6].getSavedLightValue(par1EnumSkyBlock, par2 & 15, par3, par4 & 15);
+				}
 			}
 		} else {
 			return par1EnumSkyBlock.defaultLightValue;

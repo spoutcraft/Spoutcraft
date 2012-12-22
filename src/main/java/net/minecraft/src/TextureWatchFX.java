@@ -1,10 +1,13 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.TexturePackAPI;
-import com.pclewis.mcpatcher.mod.TileSize;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import net.minecraft.client.Minecraft;
+
+// MCPatcher Start
+import com.pclewis.mcpatcher.TexturePackAPI;
+import com.pclewis.mcpatcher.mod.TileSize;
+// MCPatcher End
 
 public class TextureWatchFX extends TextureFX {
 
@@ -14,21 +17,24 @@ public class TextureWatchFX extends TextureFX {
 	private Minecraft mc;
 
 	/** Holds the image of the watch from items.png in rgb format. */
-	private int[] watchIconImageData;
+	private int[] watchIconImageData;// MCPatcher
 
 	/** Holds the image of the dial.png in rgb format. */
-	private int[] dialImageData;
+	private int[] dialImageData;// MCPatcher
 	private double field_76861_j;
 	private double field_76862_k;
 
 	public TextureWatchFX(Minecraft par1Minecraft) {
 		super(Item.pocketSundial.getIconFromDamage(0));
+		// MCPatcher Start
 		this.watchIconImageData = new int[TileSize.int_numPixels];
 		this.dialImageData = new int[TileSize.int_numPixels];
+		// MCPatcher End
 		this.mc = par1Minecraft;
 		this.tileImage = 1;
 
 		try {
+			// MCPatcher Start
 			BufferedImage var2 = TexturePackAPI.getImage(Minecraft.class, "/gui/items.png");
 			int var3 = this.iconIndex % 16 * TileSize.int_size;
 			int var4 = this.iconIndex / 16 * TileSize.int_size;
@@ -36,6 +42,7 @@ public class TextureWatchFX extends TextureFX {
 			var2 = TexturePackAPI.getImage(Minecraft.class, "/misc/dial.png");
 			var2.getRGB(0, 0, TileSize.int_size, TileSize.int_size, this.dialImageData, 0, TileSize.int_size);
 		} catch (Exception var5) {
+		// MCPatcher End
 			var5.printStackTrace();
 		}
 	}
@@ -76,19 +83,21 @@ public class TextureWatchFX extends TextureFX {
 		double var5 = Math.sin(this.field_76861_j);
 		double var7 = Math.cos(this.field_76861_j);
 
-		for (int var9 = 0; var9 < TileSize.int_numPixels; ++var9) {
+		for (int var9 = 0; var9 < TileSize.int_numPixels; ++var9) {// MCPatcher
 			int var10 = this.watchIconImageData[var9] >> 24 & 255;
 			int var11 = this.watchIconImageData[var9] >> 16 & 255;
 			int var12 = this.watchIconImageData[var9] >> 8 & 255;
 			int var13 = this.watchIconImageData[var9] >> 0 & 255;
 
 			if (var11 == var13 && var12 == 0 && var13 > 0) {
+				// MCPatcher Start
 				double var14 = -((double)(var9 % TileSize.int_size) / TileSize.double_sizeMinus1 - 0.5D);
 				double var16 = (double)(var9 / TileSize.int_size) / TileSize.double_sizeMinus1 - 0.5D;
 				int var18 = var11;
 				int var19 = (int)((var14 * var7 + var16 * var5 + 0.5D) * TileSize.double_size);
 				int var20 = (int)((var16 * var7 - var14 * var5 + 0.5D) * TileSize.double_size);
 				int var21 = (var19 & TileSize.int_sizeMinus1) + (var20 & TileSize.int_sizeMinus1) * TileSize.int_size;
+				// MCPatcher End
 				var10 = this.dialImageData[var21] >> 24 & 255;
 				var11 = (this.dialImageData[var21] >> 16 & 255) * var11 / 255;
 				var12 = (this.dialImageData[var21] >> 8 & 255) * var18 / 255;

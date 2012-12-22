@@ -81,7 +81,10 @@ public class ContainerChest extends Container {
 		this.lowerChestInventory.closeChest();
 	}
 
-	public IInventory func_85151_d() {
+	/**
+	 * Return this chest container's lower chest inventory.
+	 */
+	public IInventory getLowerChestInventory() {
 		return this.lowerChestInventory;
 	}
 }

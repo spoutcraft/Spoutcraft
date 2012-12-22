@@ -28,7 +28,7 @@ public class TextureCompassFX extends TextureFX {
 			int var3 = this.iconIndex % 16 * TileSize.int_size;
 			int var4 = this.iconIndex / 16 * TileSize.int_size;
 			var2.getRGB(var3, var4, TileSize.int_size, TileSize.int_size, this.compassIconImageData, 0, TileSize.int_size);
-		} catch (Exception var5) {
+		} catch (IOException var5) {
 			var5.printStackTrace();
 		}
 

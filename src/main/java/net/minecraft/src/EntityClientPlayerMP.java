@@ -99,7 +99,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		double var7 = this.posZ - this.oldPosZ;
 		double var9 = (double)(this.rotationYaw - this.oldRotationYaw);
 		double var11 = (double)(this.rotationPitch - this.oldRotationPitch);
-		boolean var13 = var3 * var3 + var5 * var5 + var7 * var7 > 9.0E-4D || this.field_71168_co >= (this.isAirBorne ? 4 : 20); //Spout send more updates while airborne
+		boolean var13 = var3 * var3 + var5 * var5 + var7 * var7 > 9.0E-4D || this.field_71168_co >= (this.isAirBorne ? 4 : 20); // Spout - send more updates while airborne
 		boolean var14 = var9 != 0.0D || var11 != 0.0D;
 
 		if (this.ridingEntity != null) {
@@ -135,8 +135,9 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	/**
 	 * Called when player presses the drop item key
 	 */
-	public EntityItem dropOneItem() {
-		this.sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0));
+	public EntityItem dropOneItem(boolean par1) {
+		int var2 = par1 ? 3 : 4;
+		this.sendQueue.addToSendQueue(new Packet14BlockDig(var2, 0, 0, 0, 0));
 		return null;
 	}
 
@@ -168,10 +169,10 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	 * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health second
 	 * with the reduced value. Args: damageAmount
 	 */
-	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout - public
-		if (!this.func_85032_ar()) {
+	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout private -> public
+		if (!this.isEntityInvulnerable()) {
 			this.setEntityHealth(this.getHealth() - par2);
-		}		
+		}
 	}
 
 	/**
@@ -179,6 +180,10 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	 */
 	public void closeScreen() {
 		this.sendQueue.addToSendQueue(new Packet101CloseWindow(this.openContainer.windowId));
+		this.func_92015_f();
+	}
+
+	public void func_92015_f() {
 		this.inventory.setItemStack((ItemStack)null);
 		super.closeScreen();
 	}

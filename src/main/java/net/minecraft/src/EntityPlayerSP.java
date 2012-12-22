@@ -537,7 +537,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		return this.inventory.getCurrentItem();
 	}
 
-	protected void func_85030_a(String par1Str, float par2, float par3) {
+	public void func_85030_a(String par1Str, float par2, float par3) {
 		this.worldObj.playSound(this.posX, this.posY - (double)this.yOffset, this.posZ, par1Str, par2, par3);
 	}
 	

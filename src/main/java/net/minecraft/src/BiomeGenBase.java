@@ -226,9 +226,10 @@ public abstract class BiomeGenBase {
 		return biomeName;
 	}
 	// Spout End
+
 	protected BiomeGenBase setBiomeName(String par1Str) {
 		this.biomeName = par1Str;
-		Colorizer.setupBiome(this);
+		Colorizer.setupBiome(this); // Spout
 		return this;
 	}
 

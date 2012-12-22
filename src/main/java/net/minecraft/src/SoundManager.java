@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Set;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
-//import paulscode.sound.codecs.CodecJOrbis; // Spout - not used
+import paulscode.sound.codecs.CodecJOrbis; 
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
@@ -44,6 +44,7 @@ public class SoundManager {
 
 	/** Identifiers of all currently playing sounds. Type: HashSet<String> */
 	private Set playingSounds = new HashSet();
+	private List field_92072_h = new ArrayList();
 
 	/** Set to true when the SoundManager has been initialised. */
 	private static boolean loaded = false;
@@ -603,5 +604,26 @@ public class SoundManager {
 			String var2 = (String)var1.next();
 			sndSystem.play(var2);
 		}
+	}
+	
+	//TODO: Class may need additional update.
+	public void func_92071_g() {
+		if (!this.field_92072_h.isEmpty()) {
+			Iterator var1 = this.field_92072_h.iterator();
+
+			while (var1.hasNext()) {
+				ScheduledSound var2 = (ScheduledSound)var1.next();
+				--var2.field_92064_g;
+
+				if (var2.field_92064_g <= 0) {
+					this.playSound(var2.field_92069_a, var2.field_92067_b, var2.field_92068_c, var2.field_92065_d, var2.field_92066_e, var2.field_92063_f);
+					var1.remove();
+				}
+			}
+		}
+	}
+
+	public void func_92070_a(String par1Str, float par2, float par3, float par4, float par5, float par6, int par7) {
+		this.field_92072_h.add(new ScheduledSound(par1Str, par2, par3, par4, par5, par6, par7));
 	}
 }

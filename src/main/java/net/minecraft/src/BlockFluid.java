@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.Random;
+
+import com.pclewis.mcpatcher.mod.Colorizer; // Spout
 
 public abstract class BlockFluid extends Block {
 	protected BlockFluid(int par1, Material par2Material) {
@@ -34,7 +35,7 @@ public abstract class BlockFluid extends Block {
 
 			for (int var8 = -1; var8 <= 1; ++var8) {
 				for (int var9 = -1; var9 <= 1; ++var9) {
-					int var10 = Colorizer.colorizeWater(par1IBlockAccess, par2 + var9, par4 + var8);
+					int var10 = Colorizer.colorizeWater(par1IBlockAccess, par2 + var9, par4 + var8); // MCPatcher
 					var5 += (var10 & 16711680) >> 16;
 					var6 += (var10 & 65280) >> 8;
 					var7 += var10 & 255;
@@ -379,7 +380,7 @@ public abstract class BlockFluid extends Block {
 			var6 = par1World.getBlockMetadata(par2, par3, par4);
 
 			if (var6 > 0 && var6 < 8) {
-				par1World.playSound((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
+				par1World.playSound((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F, false);
 			}
 		}
 
@@ -393,11 +394,11 @@ public abstract class BlockFluid extends Block {
 				var22 = (double)par3 + this.maxY;
 				var23 = (double)((float)par4 + par5Random.nextFloat());
 				par1World.spawnParticle("lava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
-				par1World.playSound(var21, var22, var23, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+				par1World.playSound(var21, var22, var23, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F, false);
 			}
 
 			if (par5Random.nextInt(200) == 0) {
-				par1World.playSound((double)par2, (double)par3, (double)par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+				par1World.playSound((double)par2, (double)par3, (double)par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F, false);
 			}
 		}
 

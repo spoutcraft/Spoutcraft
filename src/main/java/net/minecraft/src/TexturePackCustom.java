@@ -9,10 +9,10 @@ import java.util.zip.ZipFile;
 public class TexturePackCustom extends TexturePackImplementation {
 
 	/** ZipFile object used to access the texture pack file's contents. */
-	public ZipFile texturePackZipFile;
-	public ZipFile origZip;
-	public File tmpFile;
-	public long lastModified;
+	public ZipFile texturePackZipFile; // Spout private -> public
+	public ZipFile origZip; // Spout
+	public File tmpFile; // Spout
+	public long lastModified; // Spout
 
 	public TexturePackCustom(String par1Str, File par2File) {
 		super(par1Str, par2File, par2File.getName());
@@ -57,7 +57,6 @@ public class TexturePackCustom extends TexturePackImplementation {
 	/**
 	 * Open the texture pack's file and initialize texturePackZipFile
 	 */
-		
 	private void openTexturePackFile() {
 		if (this.texturePackZipFile == null) {
 			try {
@@ -66,5 +65,5 @@ public class TexturePackCustom extends TexturePackImplementation {
 				;
 			}
 		}
-	}	
+	}
 }

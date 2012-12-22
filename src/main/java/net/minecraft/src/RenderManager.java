@@ -84,6 +84,7 @@ public class RenderManager {
 		this.entityRenderMap.put(EntityEgg.class, new RenderSnowball(Item.egg.getIconFromDamage(0)));
 		this.entityRenderMap.put(EntityPotion.class, new RenderSnowball(154));
 		this.entityRenderMap.put(EntityExpBottle.class, new RenderSnowball(Item.expBottle.getIconFromDamage(0)));
+		this.entityRenderMap.put(EntityFireworkRocket.class, new RenderSnowball(Item.field_92104_bU.getIconFromDamage(0)));		
 		this.entityRenderMap.put(EntityLargeFireball.class, new RenderFireball(2.0F));
 		this.entityRenderMap.put(EntitySmallFireball.class, new RenderFireball(0.5F));
 		this.entityRenderMap.put(EntityWitherSkull.class, new RenderWitherSkull());
@@ -194,11 +195,11 @@ public class RenderManager {
 			var10 = this.getEntityRenderObject(par1Entity);
 
 			if (var10 != null && this.renderEngine != null) {
-				if (field_85095_o) {
+				if (field_85095_o && !par1Entity.getHasActivePotion() {
 					try {
 						this.func_85094_b(par1Entity, par2, par4, par6, par8, par9);
 					} catch (Throwable var17) {
-						throw new ReportedException(CrashReport.func_85055_a(var17, "Rendering entity hitbox in world"));
+						throw new ReportedException(CrashReport.makeCrashReport(var17, "Rendering entity hitbox in world"));
 					}
 				}
 
@@ -210,22 +211,22 @@ public class RenderManager {
 					var10.doRender(par1Entity, par2, par4, par6, par8, par9);
 				} catch(NullPointerException ignore) { // Spout Ignore NullPointerExceptions, the old way
 				} catch (Throwable var16) {
-					throw new ReportedException(CrashReport.func_85055_a(var16, "Rendering entity in world"));
+					throw new ReportedException(CrashReport.makeCrashReport(var16, "Rendering entity in world"));
 				}
 
 				try {
 					var10.doRenderShadowAndFire(par1Entity, par2, par4, par6, par8, par9);
 				} catch(NullPointerException ignore) { // Spout Ignore NullPointerExceptions, the old way
 				} catch (Throwable var15) {
-					throw new ReportedException(CrashReport.func_85055_a(var15, "Post-rendering entity in world"));
+					throw new ReportedException(CrashReport.makeCrashReport(var15, "Post-rendering entity in world"));
 				}
 			}
 		} catch(NullPointerException ignore) { // Spout Ignore NullPointerExceptions, the old way
 		} catch (Throwable var18) {
-			CrashReport var12 = CrashReport.func_85055_a(var18, "Rendering entity in world");
-			CrashReportCategory var13 = var12.func_85058_a("Entity being rendered");
+			CrashReport var12 = CrashReport.makeCrashReport(var18, "Rendering entity in world");
+			CrashReportCategory var13 = var12.makeCategory("Entity being rendered");
 			par1Entity.func_85029_a(var13);
-			CrashReportCategory var14 = var12.func_85058_a("Renderer details");
+			CrashReportCategory var14 = var12.makeCategory("Renderer details");
 			var14.addCrashSection("Assigned renderer", var10);
 			var14.addCrashSection("Location", CrashReportCategory.func_85074_a(par2, par4, par6));
 			var14.addCrashSection("Rotation", Float.valueOf(par8));

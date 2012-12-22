@@ -46,7 +46,7 @@ public abstract class Container {
 		} else {
 			this.crafters.add(par1ICrafting);
 			par1ICrafting.sendContainerAndContentsToPlayer(this, this.getInventory());
-			this.updateCraftingResults();
+			this.detectAndSendChanges();
 		}
 	}
 
@@ -71,9 +71,9 @@ public abstract class Container {
 	}
 
 	/**
-	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
+	 * Looks for changes made in the container, sends them to every listener.
 	 */
-	public void updateCraftingResults() {
+	public void detectAndSendChanges() {
 		for (int var1 = 0; var1 < this.inventorySlots.size(); ++var1) {
 			ItemStack var2 = ((Slot)this.inventorySlots.get(var1)).getStack();
 			ItemStack var3 = (ItemStack)this.inventoryItemStacks.get(var1);
@@ -200,7 +200,7 @@ public abstract class Container {
 
 							var7.onPickupFromSlot(par4EntityPlayer, var6.getItemStack());
 						} else if (var7.isItemValid(var13)) {
-							if (var8.itemID == var13.itemID && (!var8.getHasSubtypes() || var8.getItemDamage() == var13.getItemDamage()) && ItemStack.areItemStackTagsEqual(var8, var13)) {
+							if (var8.itemID == var13.itemID && var8.getItemDamage() == var13.getItemDamage() && ItemStack.areItemStackTagsEqual(var8, var13)) {
 								var10 = par2 == 0 ? var13.stackSize : 1;
 
 								if (var10 > var7.getSlotStackLimit() - var8.stackSize) {
@@ -261,10 +261,12 @@ public abstract class Container {
 					if ((var7.inventory != var6 || !var7.isItemValid(var8)) && var8 != null) {
 						if (var10 > -1) {
 							var6.addItemStackToInventory(var8);
+							var7.decrStackSize(var11.stackSize);
 							var7.putStack((ItemStack)null);
 							var7.onPickupFromSlot(par4EntityPlayer, var11);
 						}
 					} else {
+						var7.decrStackSize(var11.stackSize);
 						var7.putStack(var8);
 						var7.onPickupFromSlot(par4EntityPlayer, var11);
 					}
@@ -306,7 +308,7 @@ public abstract class Container {
 	 * Callback for when the crafting matrix is changed.
 	 */
 	public void onCraftMatrixChanged(IInventory par1IInventory) {
-		this.updateCraftingResults();
+		this.detectAndSendChanges();
 	}
 
 	/**

@@ -1,10 +1,11 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer; //Spout
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
+import com.pclewis.mcpatcher.mod.Colorizer; //Spout
 
 public class BlockRedstoneWire extends Block {
 
@@ -62,7 +63,7 @@ public class BlockRedstoneWire extends Block {
 	 * first determining what to render.
 	 */
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-		return Colorizer.colorizeRedstoneWire(par1IBlockAccess, par2, par3, par4, 8388608);
+		return Colorizer.colorizeRedstoneWire(par1IBlockAccess, par2, par3, par4, 8388608); // MCPatcher
 	}
 
 	/**
@@ -346,11 +347,12 @@ public class BlockRedstoneWire extends Block {
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	public int idDropped(int par1, Random par2Random, int par3) {
-		return Item.redstone.shiftedIndex;
+		return Item.redstone.itemID;
 	}
 
 	/**
-	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z, side
+	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
+	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	public boolean isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return !this.wiresProvidePower ? false : this.isProvidingWeakPower(par1IBlockAccess, par2, par3, par4, par5);
@@ -359,7 +361,7 @@ public class BlockRedstoneWire extends Block {
 	/**
 	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
 	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X, Y,
-	 * Z, side
+	 * Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	public boolean isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		if (!this.wiresProvidePower) {
@@ -447,9 +449,10 @@ public class BlockRedstoneWire extends Block {
 	}
 	//Spout End
 	/**
-	 * Returns true if the block coordinate passed can provide power, or is a redstone wire.
+	 * Returns true if redstone wire can connect to the specified block. Params: World, X, Y, Z, side (not a normal notch-
+	 * side, this can be 0, 1, 2, 3 or -1)
 	 */
-	public static boolean isPowerProviderOrWire(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, int par4) {
+	public static boolean canConnectRedstone(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, int par4) {
 		int var5 = par0IBlockAccess.getBlockId(par1, par2, par3);
 
 		if (var5 == Block.redstoneWire.blockID) {
@@ -469,7 +472,7 @@ public class BlockRedstoneWire extends Block {
 	 * powered.
 	 */
 	public static boolean isPoweredOrRepeater(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, int par4) {
-		if (isPowerProviderOrWire(par0IBlockAccess, par1, par2, par3, par4)) {
+		if (canConnectRedstone(par0IBlockAccess, par1, par2, par3, par4)) {
 			return true;
 		} else {
 			int var5 = par0IBlockAccess.getBlockId(par1, par2, par3);
@@ -487,6 +490,6 @@ public class BlockRedstoneWire extends Block {
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public int idPicked(World par1World, int par2, int par3, int par4) {
-		return Item.redstone.shiftedIndex;
+		return Item.redstone.itemID;
 	}
 }
