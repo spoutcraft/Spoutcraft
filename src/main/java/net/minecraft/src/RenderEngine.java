@@ -254,7 +254,7 @@ public class RenderEngine {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 			}
 		}
-		//TODO: Original Code may perform better?
+		
 		int textureWidth = par1BufferedImage.getWidth();
 		int textureHeight = par1BufferedImage.getHeight();
 		int[] texData = new int[textureWidth * textureHeight];
@@ -386,7 +386,10 @@ public class RenderEngine {
 		return var3 != null && var3.textureName >= 0 ? var3.textureName : (par2Str == null ? -1 : this.getTexture(par2Str));
 	}
 
-	public boolean func_82773_c(String par1Str) {  // Spout MCPatcher field name = hasImageData
+	/**
+	 * Checks if urlToImageDataMap has image data for the given key
+	 */
+	public boolean hasImageData(String par1Str) {		
 		return this.urlToImageDataMap.containsKey(par1Str);
 	}
 
@@ -454,12 +457,12 @@ public class RenderEngine {
 			TextureFX var3 = (TextureFX)this.textureList.get(var2);
 			var3.anaglyphEnabled = this.options.anaglyph;
 			var3.onTick();
-			var1 = this.func_82772_a(var3, var1);
+			var1 = this.updateDynamicTexture(var3, var1);
 		}
 		CustomAnimation.updateAll();  // Spout HD
 	}
 
-	public int func_82772_a(TextureFX par1TextureFX, int par2) {  
+	public int updateDynamicTexture(TextureFX par1TextureFX, int par2) {  
 		// Spout HD Start
 		this.imageData = TextureUtils.getByteBuffer(this.imageData, par1TextureFX.imageData);
 		// Spout HD End

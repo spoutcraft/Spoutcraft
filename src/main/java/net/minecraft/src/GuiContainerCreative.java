@@ -215,8 +215,9 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		var1.itemList.clear();
 		Item[] var2 = Item.itemsList;
 		int var3 = var2.length;
+		int var4;
 
-		for (int var4 = 0; var4 < var3; ++var4) {
+		for (var4 = 0; var4 < var3; ++var4) {
 			Item var5 = var2[var4];
 
 			if (var5 != null && var5.getCreativeTab() != null) {
@@ -224,27 +225,38 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 			}
 		}
 
-		Iterator var8 = var1.itemList.iterator();
-		String var9 = this.searchField.getText().toLowerCase();
+		Enchantment[] var8 = Enchantment.enchantmentsList;
+		var3 = var8.length;
 
-		while (var8.hasNext()) {
-			ItemStack var10 = (ItemStack)var8.next();
-			boolean var11 = false;
-			Iterator var6 = var10.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips).iterator();
+		for (var4 = 0; var4 < var3; ++var4) {
+			Enchantment var12 = var8[var4];
+
+			if (var12 != null && var12.type != null) {
+				Item.field_92105_bW.func_92113_a(var12, var1.itemList);
+			}
+		}
+
+		Iterator var9 = var1.itemList.iterator();
+		String var10 = this.searchField.getText().toLowerCase();
+
+		while (var9.hasNext()) {
+			ItemStack var11 = (ItemStack)var9.next();
+			boolean var13 = false;
+			Iterator var6 = var11.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips).iterator();
 
 			while (true) {
 				if (var6.hasNext()) {
 					String var7 = (String)var6.next();
 
-					if (!var7.toLowerCase().contains(var9)) {
+					if (!var7.toLowerCase().contains(var10)) {
 						continue;
 					}
 
-					var11 = true;
+					var13 = true;
 				}
 
-				if (!var11) {
-					var8.remove();
+				if (!var13) {
+					var9.remove();
 				}
 
 				break;
@@ -284,6 +296,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 					return;
 				}
 			}
+			//TODO: This might not be needed
 			handleSpoutMouse(par1, par2, true); //Spout
 		}
 

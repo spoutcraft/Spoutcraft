@@ -347,7 +347,7 @@ public class GuiMultiplayer extends GuiScreen {
 				} else {
 					par1ServerData.gameVersion = "???";
 					par1ServerData.serverMOTD = "\u00a78???";
-					par1ServerData.field_82821_f = 50;
+					par1ServerData.field_82821_f = 52;
 					par1ServerData.populationInfo = "\u00a78???";
 				}
 			} else {
@@ -372,7 +372,7 @@ public class GuiMultiplayer extends GuiScreen {
 				}
 
 				par1ServerData.gameVersion = "1.3";
-				par1ServerData.field_82821_f = 48;
+				par1ServerData.field_82821_f = 50;
 			}
 		} finally {
 			try {

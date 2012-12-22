@@ -207,11 +207,13 @@ public class Packet51MapChunk extends Packet {
 			}
 		}
 
-		for (var8 = 0; var8 < var4.length; ++var8) {
-			if (var4[var8] != null && (!par1 || !var4[var8].isEmpty()) && (par2 & 1 << var8) != 0) {
-				var10 = var4[var8].getSkylightArray();
-				System.arraycopy(var10.data, 0, var7, var3, var10.data.length);
-				var3 += var10.data.length;
+		if (!par0Chunk.worldObj.provider.hasNoSky) {
+			for (var8 = 0; var8 < var4.length; ++var8) {
+				if (var4[var8] != null && (!par1 || !var4[var8].isEmpty()) && (par2 & 1 << var8) != 0) {
+					var10 = var4[var8].getSkylightArray();
+					System.arraycopy(var10.data, 0, var7, var3, var10.data.length);
+					var3 += var10.data.length;
+				}
 			}
 		}
 

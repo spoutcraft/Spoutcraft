@@ -32,7 +32,7 @@ import org.spoutcraft.api.gui.Slot;
 // Spout End
 
 public class GuiScreen extends Gui {
-	public static final boolean field_90017_e = Minecraft.getOs() == EnumOS.MACOS;
+	public static final boolean isMacOs = Minecraft.getOs() == EnumOS.MACOS;
 
 	/** Reference to the Minecraft object. */
 	protected Minecraft mc;
@@ -55,6 +55,7 @@ public class GuiScreen extends Gui {
 	private GuiButton selectedButton = null;
 	private int field_85042_b = 0;
 	private long field_85043_c = 0L;
+	private int field_92018_d = 0;
 
 	// Spout Start
 	public GenericGradient bg;
@@ -654,10 +655,16 @@ public class GuiScreen extends Gui {
 		int x;
 		int y;
 		if (Mouse.getEventButtonState()) {
+			if (this.mc.gameSettings.touchscreen && this.field_92018_d++ > 0) {
+				return;
+			}
 			x = Mouse.getEventX() * this.width / this.mc.displayWidth;
 			y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 			this.mouseClickedPre(x, y, Mouse.getEventButton());
 		} else {
+			if (this.mc.gameSettings.touchscreen && this.field_92018_d++ > 0) {
+				return;
+			}
 			x = Mouse.getEventX() * this.width / this.mc.displayWidth;
 			y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 			this.mouseMovedOrUpPre(x, y, Mouse.getEventButton());
@@ -1054,7 +1061,7 @@ public class GuiScreen extends Gui {
 
 	public static boolean isCtrlKeyDown() {
 		boolean var0 = Keyboard.isKeyDown(28) && Keyboard.getEventCharacter() == 0;
-		return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157) || field_90017_e && (var0 || Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220));
+		return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157) || isMacOs && (var0 || Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220));
 	}
 
 	public static boolean isShiftKeyDown() {

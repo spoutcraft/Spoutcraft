@@ -253,7 +253,7 @@ public class RenderPlayer extends RenderLiving {
 		float var3 = 1.0F;
 		GL11.glColor3f(var3, var3, var3);
 		super.renderEquippedItems(par1EntityPlayer, par2);
-		super.func_85093_e(par1EntityPlayer, par2);
+		super.renderArrowsStuckInEntity(par1EntityPlayer, par2);
 		ItemStack var4 = par1EntityPlayer.inventory.armorItemInSlot(3);
 
 		if (var4 != null) {
