@@ -146,14 +146,27 @@ public class ContainerEnchantment extends Container {
 		if (this.enchantLevels[par2] > 0 && var3 != null && (par1EntityPlayer.experienceLevel >= this.enchantLevels[par2] || par1EntityPlayer.capabilities.isCreativeMode)) {
 			if (!this.worldPointer.isRemote) {
 				List var4 = EnchantmentHelper.buildEnchantmentList(this.rand, var3, this.enchantLevels[par2]);
+				boolean var5 = var3.itemID == Item.book.shiftedIndex;
 
 				if (var4 != null) {
 					par1EntityPlayer.addExperienceLevel(-this.enchantLevels[par2]);
-					Iterator var5 = var4.iterator();
 
-					while (var5.hasNext()) {
-						EnchantmentData var6 = (EnchantmentData)var5.next();
-						var3.addEnchantment(var6.enchantmentobj, var6.enchantmentLevel);
+					if (var5) {
+						var3.itemID = Item.field_92105_bW.shiftedIndex;
+					}
+
+					int var6 = var5 ? this.rand.nextInt(var4.size()) : -1;
+
+					for (int var7 = 0; var7 < var4.size(); ++var7) {
+						EnchantmentData var8 = (EnchantmentData)var4.get(var7);
+
+						if (!var5 || var7 == var6) {
+							if (var5) {
+								Item.field_92105_bW.func_92115_a(var3, var8);
+							} else {
+								var3.addEnchantment(var8.enchantmentobj, var8.enchantmentLevel);
+							}
+						}
 					}
 
 					this.onCraftMatrixChanged(this.tableInventory);
@@ -165,6 +178,7 @@ public class ContainerEnchantment extends Container {
 			return false;
 		}
 	}
+
 
 	/**
 	 * Callback for when the crafting gui is closed.

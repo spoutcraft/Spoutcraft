@@ -5,7 +5,7 @@ public class GuiOptions extends GuiScreen {
 	/**
 	 * An array of options that can be changed directly from the options GUI.
 	 */
-	private static final EnumOptions[] relevantOptions = new EnumOptions[] {EnumOptions.MUSIC, EnumOptions.SOUND, EnumOptions.INVERT_MOUSE, EnumOptions.SENSITIVITY, EnumOptions.FOV, EnumOptions.DIFFICULTY};
+	private static final EnumOptions[] relevantOptions = new EnumOptions[] {EnumOptions.MUSIC, EnumOptions.SOUND, EnumOptions.INVERT_MOUSE, EnumOptions.SENSITIVITY, EnumOptions.FOV, EnumOptions.DIFFICULTY, EnumOptions.TOUCHSCREEN};
 
 	/**
 	 * A reference to the screen object that created this. Used for navigating between screens.
@@ -107,7 +107,7 @@ public class GuiOptions extends GuiScreen {
 	 */
 	public void drawScreen(int par1, int par2, float par3) {
 		this.drawDefaultBackground();
-		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
+		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 15, 16777215);
 		super.drawScreen(par1, par2, par3);
 	}
 }

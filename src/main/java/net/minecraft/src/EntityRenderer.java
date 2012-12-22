@@ -676,7 +676,7 @@ public class EntityRenderer {
 					float var5 = var2.provider.lightBrightnessTable[var3 / 16] * var4;
 					float var6 = var2.provider.lightBrightnessTable[var3 % 16] * (this.torchFlickerX * 0.1F + 1.5F);
 
-					if (var2.lightningFlash > 0) {
+					if (var2.lastLightningBolt > 0) {
 						var5 = var2.provider.lightBrightnessTable[var3 / 16];
 					}
 
@@ -840,8 +840,8 @@ public class EntityRenderer {
 		this.mc.mcProfiler.endSection();
 		boolean var2 = Display.isActive();
 
-		if (!var2 && this.mc.gameSettings.pauseOnLostFocus && (!Mouse.isButtonDown(1))) { // TODO:  This doesnt exist: !this.mc.gameSettings.touchscreen || 
-			if (Minecraft.getSystemTime() - this.prevFrameTime > 500L) {
+		if (!var2 && this.mc.gameSettings.pauseOnLostFocus && (!this.mc.gameSettings.touchscreen || !Mouse.isButtonDown(1))) {
+				if (Minecraft.getSystemTime() - this.prevFrameTime > 500L) {
 				this.mc.displayInGameMenu();
 			}
 		} else {
@@ -934,15 +934,13 @@ public class EntityRenderer {
 				try {
 					this.mc.currentScreen.drawScreen(var16, var17, par1);
 				} catch (Throwable var12) {
-					CrashReport var10 = CrashReport.func_85055_a(var12, "Rendering screen"); // Spout modified for non-overriden class
-					CrashReportCategory var11 = var10.func_85058_a("Screen render details"); // Spout modified for non-overriden class
+					CrashReport var10 = CrashReport.makeCrashReport(var12, "Rendering screen"); 
+					CrashReportCategory var11 = var10.makeCategory("Screen render details");
 					var11.addCrashSectionCallable("Screen name", new CallableScreenName(this));
 					var11.addCrashSectionCallable("Mouse location", new CallableMouseLocation(this, var16, var17));
 					var11.addCrashSectionCallable("Screen size", new CallableScreenSize(this, var13));
 					throw new ReportedException(var10);
 				}
-				
-				this.mc.currentScreen.drawScreenPre(var16, var17, par1);
 				
 				if (this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
 					this.mc.currentScreen.guiParticles.draw(par1);

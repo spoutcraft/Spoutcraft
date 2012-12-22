@@ -24,6 +24,7 @@ public class Packet56MapChunks extends Packet {
 	private byte[] field_73587_e;
 	private byte[][] field_73584_f;
 	private int field_73585_g;
+	private boolean field_92076_h;
 	private static byte[] field_73591_h = new byte[0];
 
 	public Packet56MapChunks() {}
@@ -35,6 +36,7 @@ public class Packet56MapChunks extends Packet {
 		this.field_73590_a = new int[var2];
 		this.field_73588_b = new int[var2];
 		this.field_73584_f = new byte[var2][];
+		this.field_92076_h = !par1List.isEmpty() && !((Chunk)par1List.get(0)).worldObj.provider.hasNoSky;
 		int var3 = 0;
 
 		for (int var4 = 0; var4 < var2; ++var4) {
@@ -76,6 +78,7 @@ public class Packet56MapChunks extends Packet {
 	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
 		short var2 = par1DataInputStream.readShort();
 		this.field_73585_g = par1DataInputStream.readInt();
+		this.field_92076_h = par1DataInputStream.readBoolean();
 		this.field_73589_c = new int[var2];
 		this.field_73586_d = new int[var2];
 		this.field_73590_a = new int[var2];
@@ -101,7 +104,7 @@ public class Packet56MapChunks extends Packet {
 		int length = 0;
 		try {
 			length = var4.inflate(inflateBuffer);
-		} catch (DataFormatException var11) {
+		} catch (DataFormatException var12) {
 			throw new IOException("Bad compressed data format");
 		} finally {
 			var4.end();
@@ -118,25 +121,34 @@ public class Packet56MapChunks extends Packet {
 			this.field_73590_a[var6] = par1DataInputStream.readShort();
 			this.field_73588_b[var6] = par1DataInputStream.readShort();
 			int var7 = 0;
-			int var8;
+			int var8 = 0;
+			int var9;
 
-			for (var8 = 0; var8 < 16; ++var8) {
-				var7 += this.field_73590_a[var6] >> var8 & 1;
+			for (var9 = 0; var9 < 16; ++var9) {
+				var7 += this.field_73590_a[var6] >> var9 & 1;
+				var8 += this.field_73588_b[var6] >> var9 & 1;
 			}
 
-			var8 = 2048 * 5 * var7 + 256;
-			this.field_73584_f[var6] = new byte[var8];
-			System.arraycopy(var3, var5, this.field_73584_f[var6], 0, var8);
-			var5 += var8;
+			var9 = 2048 * 4 * var7 + 256;
+			var9 += 2048 * var8;
+
+			if (this.field_92076_h) {
+				var9 += 2048 * var7;
+			}
+
+			this.field_73584_f[var6] = new byte[var9];
+			System.arraycopy(var3, var5, this.field_73584_f[var6], 0, var9);
+			var5 += var9;
 		}
 	}
-
+	
 	/**
 	 * Abstract. Writes the raw packet data to the data stream.
 	 */
 	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
 		par1DataOutputStream.writeShort(this.field_73589_c.length);
 		par1DataOutputStream.writeInt(this.field_73585_g);
+		par1DataOutputStream.writeBoolean(this.field_92076_h);
 		par1DataOutputStream.write(this.field_73587_e, 0, this.field_73585_g);
 
 		for (int var2 = 0; var2 < this.field_73589_c.length; ++var2) {
