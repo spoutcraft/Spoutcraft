@@ -147,11 +147,9 @@ public class WorldRenderer {
 	 * Will update this chunk renderer
 	 */
 
-	//TODO: The following updateRenderer method renders Connected Textures and Better Glass Properly
-	//TODO: However, it lacks the ability to render custom blocks.  This method needs to be combined
-	//TODO: with the updateRenderer() method below this one so that both function properly.
+	// MCPatcher Start
 
-
+	/*
 	public void updateRenderer2() {
 		CTMUtils.start();
 
@@ -257,21 +255,13 @@ public class WorldRenderer {
 			CTMUtils.finish();
 		}		
 	}	 
+*/
+	//MCPatch End
 
-
-
-	//TODO: The below updateRenderer() method was specifically designed for rendering CustomBlocks in the world.  
-	//TODO: However, it does not work for rendering Connected Textures and Better Glass.
-	//TODO: Note, this also limits the renderer pass to 3, which currently wont work because the renderer needs 4
-	//TODO: passes to complete its build for Connected Textures, Better Glass ans Smooth Lighting.
-	//TODO: Without the additional passes lighting is very blocky.
-
-	//TODO: Note, no performance difference was found between this updateRenderer() with 2 passes vs. the one above it for 4.
-
-	public void updateRenderer() {
-		// Spout Start
+	// Spout Start
+	
+	public void updateRenderer() {		
 		CTMUtils.start();
-
 		if (!this.needsUpdate) {
 			CTMUtils.finish();			
 		} else {
@@ -297,28 +287,22 @@ public class WorldRenderer {
 				++chunksUpdated;
 				RenderBlocks blockRenderer = new RenderBlocks(chunkCache);
 				
-				List<String> hitTextures = new ArrayList<String>();
-				List<String> hitTexturesPlugins = new ArrayList<String>();
-				
-				int currentTexture = 0;
-				
 				Minecraft game = SpoutClient.getHandle();
-				
-				hitTextures.add("/terrain.png");
-				hitTexturesPlugins.add("");
-				
+				int currentTexture = 0;
+				int limit = skipRenderPass.length;  // MCPatcher 2.4.4 requires 4, anything less and things get missed.
 				int defaultTexture = game.renderEngine.getTexture("/terrain.png");
-				
 				game.renderEngine.bindTexture(defaultTexture);
+				
+				List<String> hitTextures = new ArrayList<String>();
+				List<String> hitTexturesPlugins = new ArrayList<String>();			
+				hitTextures.add("/terrain.png");
+				hitTexturesPlugins.add("");				
 
 				short[] customBlockIds = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockIds();
 				byte[] customBlockData = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockData();
-
 				blockRenderer.customIds = customBlockIds;
-
-				int limit = skipRenderPass.length;  // MCPatcher 2.4.4 requires 4, anything less and thinkgs get missed.
-
-				for (int renderPass = 0; renderPass < limit; ++renderPass) { // Spout - 3 passes for shaders, 2 without
+				
+				for (int renderPass = 0; renderPass < limit; ++renderPass) { 
 
 					boolean skipRenderPass = false;
 					boolean rendered = false;
@@ -390,7 +374,6 @@ public class WorldRenderer {
 											customTexture = design.getTexureURL();
 											customTextureAddon = design.getTextureAddon();
 										}
-
 
 										if(customTexture != null){
 											boolean found = false;
@@ -487,7 +470,6 @@ public class WorldRenderer {
 			var24.removeAll(tileRenderers);
 			this.tileEntities.addAll(var24);
 			tileRenderers.removeAll(this.tileEntityRenderers);			
-			// Spout End
 			this.tileEntities.removeAll(tileRenderers);
 			this.isChunkLit = Chunk.isLit;
 			this.isInitialized = true;			
@@ -495,6 +477,8 @@ public class WorldRenderer {
 		}
 	}
 
+	// Spout End
+	
 	/**
 	 * Returns the distance of this chunk renderer to the entity without performing the final normalizing square root, for
 	 * performance reasons.
