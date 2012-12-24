@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -53,7 +54,7 @@ public class PrecacheManager {
 	 * Boolean - Is this cached or not?
 	 */
 	public static HashMap<PrecacheTuple, Boolean> plugins = new HashMap<PrecacheTuple, Boolean>();
-	
+	public static ArrayList<String> names = new ArrayList<String>();
 	/**
 	 * Adds a plugin tuple to the hashmap, and checks if its cached and valid
 	 * @param plugin
@@ -67,6 +68,9 @@ public class PrecacheManager {
 			if (plugin.getCrc() == FileUtil.getCRC(target, new byte[(int) target.length()])) {
 				//Its cached, continue on
 				plugins.put(plugin, true);
+				if (!names.contains(plugin.getPlugin())){
+					names.add(plugin.getPlugin());
+				}
 				return;
 			}
 		}
@@ -76,6 +80,9 @@ public class PrecacheManager {
 			FileUtil.deleteDirectory(temp);
 		}
 		plugins.put(plugin, false);
+		if (!names.contains(plugin.getPlugin())) {
+			names.add(plugin.getPlugin());
+		}
 	}
 	
 	/**
@@ -214,6 +221,13 @@ public class PrecacheManager {
 			}
 		}
 		for (File file : (List<File>) FileUtils.listFiles(cacheRoot, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)) {
+			if (file.isDirectory()) {
+				continue;
+			}
+			//This file is unknown to this server, it isn't from a plugin installed, skip!
+			if (!names.contains(file.getParent())) {
+				continue;
+			}
 			if (file.getName().endsWith(".sbd")) {
 				if (spoutDebug) {
 					System.out.println("[Spoutcraft] Loading sbd (Spout Block Design): " + file.getName() + " from: " + file.getParent());
