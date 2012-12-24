@@ -2,6 +2,9 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 
+import net.minecraft.src.Block;
+import net.minecraft.src.ItemStack;
+
 // Spout Start
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
@@ -280,4 +283,16 @@ public class EntityItem extends Entity {
 			this.func_85054_d();
 		}
 	}
+	
+	public ItemStack item() {
+		ItemStack var1 = this.getDataWatcher().getWatchableObjectItemStack(10);
+
+		if (var1 == null) {
+			System.out.println("Item entity " + this.entityId + " has no item?!");
+			return new ItemStack(Block.stone);
+		} else {
+			return var1;
+		}
+	}
+	
 }
