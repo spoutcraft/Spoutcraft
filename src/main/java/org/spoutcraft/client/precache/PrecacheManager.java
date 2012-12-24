@@ -225,7 +225,7 @@ public class PrecacheManager {
 				continue;
 			}
 			//This file is unknown to this server, it isn't from a plugin installed, skip!
-			if (!names.contains(file.getParent())) {
+			if (!names.contains(file.getParentFile().getName())) {
 				continue;
 			}
 			if (file.getName().endsWith(".sbd")) {
