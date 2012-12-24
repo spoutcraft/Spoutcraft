@@ -54,7 +54,6 @@ public class PrecacheManager {
 	 * Boolean - Is this cached or not?
 	 */
 	public static HashMap<PrecacheTuple, Boolean> plugins = new HashMap<PrecacheTuple, Boolean>();
-	public static ArrayList<String> names = new ArrayList<String>();
 	/**
 	 * Adds a plugin tuple to the hashmap, and checks if its cached and valid
 	 * @param plugin
@@ -68,9 +67,6 @@ public class PrecacheManager {
 			if (plugin.getCrc() == FileUtil.getCRC(target, new byte[(int) target.length()])) {
 				//Its cached, continue on
 				plugins.put(plugin, true);
-				if (!names.contains(plugin.getPlugin())){
-					names.add(plugin.getPlugin());
-				}
 				return;
 			}
 		}
@@ -80,9 +76,6 @@ public class PrecacheManager {
 			FileUtil.deleteDirectory(temp);
 		}
 		plugins.put(plugin, false);
-		if (!names.contains(plugin.getPlugin())) {
-			names.add(plugin.getPlugin());
-		}
 	}
 	
 	/**
@@ -220,25 +213,25 @@ public class PrecacheManager {
 				}
 			}
 		}
-		for (File file : (List<File>) FileUtils.listFiles(cacheRoot, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)) {
-			if (file.isDirectory()) {
+		for (Entry entry : plugins.entrySet()) {
+			final File dir = new File(cacheRoot, ((PrecacheTuple) entry.getKey()).getPlugin());
+			if (!dir.isDirectory()) {
 				continue;
 			}
-			//This file is unknown to this server, it isn't from a plugin installed, skip!
-			if (!names.contains(file.getParentFile().getName())) {
-				continue;
-			}
-			if (file.getName().endsWith(".sbd")) {
-				if (spoutDebug) {
-					System.out.println("[Spoutcraft] Loading sbd (Spout Block Design): " + file.getName() + " from: " + file.getParent());
+			final File[] files = dir.listFiles();
+			for (File file : files) {
+				if (file.getName().endsWith(".sbd")) {
+					if (spoutDebug) {
+						System.out.println("[Spoutcraft] Loading sbd (Spout Block Design): " + file.getName() + " from: " + file.getParent());
+					}
+					loadDesign(file);
 				}
-				loadDesign(file);
-			}
-			else if (FileUtil.isImageFile(file.getName())) {
-				if (spoutDebug) {
-					System.out.println("[Spoutcraft] Loading image: " + file.getName() + " from: " + file.getParent());
+				else if (FileUtil.isImageFile(file.getName())) {
+					if (spoutDebug) {
+						System.out.println("[Spoutcraft] Loading image: " + file.getName() + " from: " + file.getParent());
+					}
+					CustomTextureManager.getTextureFromUrl(file.getName());
 				}
-				CustomTextureManager.getTextureFromUrl(file.getName());
 			}
 		}
 		
