@@ -146,13 +146,11 @@ public class WorldRenderer {
 	/**
 	 * Will update this chunk renderer
 	 */
-	
-	//TODO: The following updateRenderer method renders Connected Textures and Better Glass Properly
-	//TODO: However, it lacks the ability to render custom blocks.  This method needs to be combined
-	//TODO: with the updateRenderer() method below this one so that both function properly.
-	
+
+	// MCPatcher Start
+
 	/*
-	public void updateRenderer() {
+	public void updateRenderer2() {
 		CTMUtils.start();
 
 		if (!this.needsUpdate) {
@@ -257,25 +255,17 @@ public class WorldRenderer {
 			CTMUtils.finish();
 		}		
 	}	 
-  
-	*/
-	
-	//TODO: The below updateRenderer() method was specifically designed for rendering CustomBlocks in the world.  
-	//TODO: However, it does not work for rendering Connected Textures and Better Glass.
-	//TODO: Note, this also limits the renderer pass to 3, which currently wont work because the renderer needs 4
-	//TODO: passes to complete its build for Connected Textures, Better Glass ans Smooth Lighting.
-	//TODO: Without the additional passes lighting is very blocky.
-	
-	//TODO: Note, no performance difference was found between this updateRenderer() with 2 passes vs. the one above it for 4.
+*/
+	//MCPatch End
 
-	public void updateRenderer() {
-		// Spout Start
+	// Spout Start
+	
+	public void updateRenderer() {		
 		CTMUtils.start();
-
 		if (!this.needsUpdate) {
 			CTMUtils.finish();			
 		} else {
-			++chunksUpdated;
+			
 			int x = this.posX;
 			int y = this.posY;
 			int z = this.posZ;
@@ -291,195 +281,204 @@ public class WorldRenderer {
 			HashSet tileRenderers = new HashSet();
 			tileRenderers.addAll(this.tileEntityRenderers);
 			this.tileEntityRenderers.clear();
-			//ChunkCache chunkCache = new ChunkCache(this.worldObj, x - 1, y - 1, z - 1, sizeXOffset + 1, sizeYOffset + 1, sizeZOffset + 1);
-			RenderBlocks blockRenderer = new RenderBlocks(worldObj);
-			List<String> hitTextures = new ArrayList<String>();
-			List<String> hitTexturesPlugins = new ArrayList<String>();
-			int currentTexture = 0;
-			Minecraft game = SpoutClient.getHandle();
-			hitTextures.add("/terrain.png");
-			hitTexturesPlugins.add("");
-			int defaultTexture = game.renderEngine.getTexture("/terrain.png");
-			game.renderEngine.bindTexture(defaultTexture);
-
-			short[] customBlockIds = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockIds();
-			byte[] customBlockData = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockData();
-
-			blockRenderer.customIds = customBlockIds;
-
-			int limit = skipRenderPass.length;  // MCPatcher 2.4.4 requires 4, anything less and thinkgs get missed.
-						
-			for (int renderPass = 0; renderPass < limit; ++renderPass) { // Spout - 3 passes for shaders, 2 without
-
-				boolean skipRenderPass = false;
-				boolean rendered = false;
-				boolean drawBlock = false;
-
-				if (!drawBlock) {
-					drawBlock = true;
-					GL11.glNewList(this.glRenderList + renderPass, GL11.GL_COMPILE);
-					GL11.glPushMatrix();
-					this.setupGLTranslation();
-					GL11.glTranslatef(-8F, -8F, -8F);
-					GL11.glScalef(1F, 1F, 1F);
-					GL11.glTranslatef(8F, 8F, 8F);
-					tessellator.startDrawingQuads();
-					tessellator.setTranslation((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
-				}
-
+			ChunkCache chunkCache = new ChunkCache(this.worldObj, x - 1, y - 1, z - 1, sizeXOffset + 1, sizeYOffset + 1, sizeZOffset + 1);	
+			
+			if (!chunkCache.extendedLevelsInChunkCache()) {
+				++chunksUpdated;
+				RenderBlocks blockRenderer = new RenderBlocks(chunkCache);
+				
+				Minecraft game = SpoutClient.getHandle();
+				int currentTexture = 0;
+				int limit = skipRenderPass.length;  // MCPatcher 2.4.4 requires 4, anything less and things get missed.
+				int defaultTexture = game.renderEngine.getTexture("/terrain.png");
 				game.renderEngine.bindTexture(defaultTexture);
-				for (currentTexture = 0; currentTexture < hitTextures.size(); currentTexture++) {	
-					int texture = defaultTexture;
-					//First pass (currentTexture == 0) is for the default terrain.png texture. Subsquent passes are for custom textures
-					//This design is to avoid unnessecary glBindTexture calls.
-					if(currentTexture > 0) {
-						Texture customTexture = CustomTextureManager.getTextureFromUrl(hitTexturesPlugins.get(currentTexture), hitTextures.get(currentTexture));
-						if (customTexture == null) {
-							customTexture = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
-						}
-						if (customTexture != null) {
-							texture = customTexture.getTextureID();
-							game.renderEngine.bindTexture(texture);
-							if(texture <= 0) {
-								texture = defaultTexture;
-							}
-						}
-					}
+				
+				List<String> hitTextures = new ArrayList<String>();
+				List<String> hitTexturesPlugins = new ArrayList<String>();			
+				hitTextures.add("/terrain.png");
+				hitTexturesPlugins.add("");				
 
-					if(tessellator.texture != texture){
-						tessellator.draw();
-						tessellator.texture = texture;
+				short[] customBlockIds = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockIds();
+				byte[] customBlockData = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockData();
+				blockRenderer.customIds = customBlockIds;
+				
+				for (int renderPass = 0; renderPass < limit; ++renderPass) { 
+
+					boolean skipRenderPass = false;
+					boolean rendered = false;
+					boolean drawBlock = false;
+
+					if (!drawBlock) {
+						drawBlock = true;
+						GL11.glNewList(this.glRenderList + renderPass, GL11.GL_COMPILE);
+						GL11.glPushMatrix();
+						this.setupGLTranslation();
+						GL11.glTranslatef(-8F, -8F, -8F);
+						GL11.glScalef(1F, 1F, 1F);
+						GL11.glTranslatef(8F, 8F, 8F);
 						tessellator.startDrawingQuads();
+						tessellator.setTranslation((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
 					}
 
-					float[] oldBounds = new float[6];
+					game.renderEngine.bindTexture(defaultTexture);			
+					
+					for (currentTexture = 0; currentTexture < hitTextures.size(); currentTexture++) {	
+						int texture = defaultTexture;
+						//First pass (currentTexture == 0) is for the default terrain.png texture. Subsquent passes are for custom textures
+						//This design is to avoid unnessecary glBindTexture calls.
+						if(currentTexture > 0) {
+							Texture customTexture = CustomTextureManager.getTextureFromUrl(hitTexturesPlugins.get(currentTexture), hitTextures.get(currentTexture));
+							if (customTexture == null) {
+								customTexture = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
+							}
+							if (customTexture != null) {
+								texture = customTexture.getTextureID();
+								game.renderEngine.bindTexture(texture);
+								if(texture <= 0) {
+									texture = defaultTexture;
+								}
+							}							
+						}
 
-					//The x,y,z order is important, don't change!
-					for (int dx = x; dx < sizeXOffset; ++dx) {
-						for (int dz = z; dz < sizeZOffset; ++dz) {
-							for (int dy = y; dy < sizeYOffset; ++dy) {
-								int id = worldObj.getBlockId(dx, dy, dz);
-								if (id > 0) {
-									String customTexture = null;
-									String customTextureAddon = null;
-									GenericBlockDesign design = null;
+						if(tessellator.texture != texture){
+							tessellator.draw();
+							tessellator.texture = texture;
+							tessellator.startDrawingQuads();
+						}
 
-									CustomBlock mat = null;
-									if (customBlockIds != null) {
-										int key = ((dx & 0xF) << 12) | ((dz & 0xF) << 8) | (dy & 0xFF);
-										if (customBlockIds[key] != 0) {
-											mat = MaterialData.getCustomBlock(customBlockIds[key]);
-											if (mat != null) {
-												design = (GenericBlockDesign) mat.getBlockDesign(customBlockData == null ? 0 : customBlockData[key]);
+						float[] oldBounds = new float[6];
+
+						//The x,y,z order is important, don't change!
+						for (int dx = x; dx < sizeXOffset; ++dx) {
+							for (int dz = z; dz < sizeZOffset; ++dz) {
+								for (int dy = y; dy < sizeYOffset; ++dy) {
+									int id = chunkCache.getBlockId(dx, dy, dz);
+									if (id > 0) {
+										
+										String customTexture = null;
+										String customTextureAddon = null;
+										GenericBlockDesign design = null;
+										CustomBlock mat = null;
+										
+										if (customBlockIds != null) {
+											int key = ((dx & 0xF) << 12) | ((dz & 0xF) << 8) | (dy & 0xFF);
+											if (customBlockIds[key] != 0) {
+												mat = MaterialData.getCustomBlock(customBlockIds[key]);
+												if (mat != null) {
+													design = (GenericBlockDesign) mat.getBlockDesign(customBlockData == null ? 0 : customBlockData[key]);
+												}
 											}
 										}
-									}
 
-									if (design != null) {
-										customTexture = design.getTexureURL();
-										customTextureAddon = design.getTextureAddon();
-									}
+										if (design != null) {
+											customTexture = design.getTexureURL();
+											customTextureAddon = design.getTextureAddon();
+										}
 
+										if(customTexture != null){
+											boolean found = false;
 
-									if(customTexture != null){
-										boolean found = false;
+											//Search for the custom texture in our list
+											for(int i = 0; i < hitTextures.size(); i++){
+												if(hitTextures.get(i).equals(customTexture) && hitTexturesPlugins.get(i).equals(customTextureAddon)) {
+													found = true;
+													break;
+												}
+											}
+											//If it is not already accounted for, add it so we do an additional pass for it.
+											if(!found) {
+												hitTextures.add(customTexture);
+												hitTexturesPlugins.add(customTextureAddon);
+											}
 
-										//Search for the custom texture in our list
-										for(int i = 0; i < hitTextures.size(); i++){
-											if(hitTextures.get(i).equals(customTexture) && hitTexturesPlugins.get(i).equals(customTextureAddon)) {
-												found = true;
-												break;
+											//Do not render if we are using a different texture than the current one
+											if(!hitTextures.get(currentTexture).equals(customTexture) || !hitTexturesPlugins.get(currentTexture).equals(customTextureAddon)) {
+												continue;
 											}
 										}
-										//If it is not already accounted for, add it so we do an additional pass for it.
-										if(!found) {
-											hitTextures.add(customTexture);
-											hitTexturesPlugins.add(customTextureAddon);
-										}
-
-										//Do not render if we are using a different texture than the current one
-										if(!hitTextures.get(currentTexture).equals(customTexture) || !hitTexturesPlugins.get(currentTexture).equals(customTextureAddon)) {
+										//Do not render if we are not using the terrain.png and can't find a valid texture for this custom block
+										else if (currentTexture != 0) {
 											continue;
 										}
-									}
-									//Do not render if we are not using the terrain.png and can't find a valid texture for this custom block
-									else if (currentTexture != 0) {
-										continue;
-									}
 
-									Block block = Block.blocksList[id];
-									if (renderPass == 0 && block.hasTileEntity()) {
-										TileEntity var20 = worldObj.getBlockTileEntity(dx, dy, dz);
-										if (TileEntityRenderer.instance.hasSpecialRenderer(var20)) {
-											this.tileEntityRenderers.add(var20);
-										}
-									}
+										Block block = Block.blocksList[id];
+											
+										if (block != null) {
+											if (renderPass == 0 && block.hasTileEntity()) {
+												TileEntity var20 = chunkCache.getBlockTileEntity(dx, dy, dz);
+												if (TileEntityRenderer.instance.hasSpecialRenderer(var20)) {
+													this.tileEntityRenderers.add(var20);
+												}
+											}
 
-									//Determine which pass this block needs to be rendered on
-									int blockRenderPass = block.getRenderBlockPass();
-									if (design != null) {
-										blockRenderPass = design.getRenderPass();
-									}
+											//Determine which pass this block needs to be rendered on											
+											int blockRenderPass = RenderPass.getBlockRenderPass(block);											
+											
+											if (design != null) {
+												blockRenderPass = design.getRenderPass();
+											}
 
-									if (blockRenderPass != renderPass) {
-										skipRenderPass = true;
-									}
-									else {										
-										if (design != null) {
-											oldBounds[0] = (float) block.minX;
-											oldBounds[1] = (float) block.minY;
-											oldBounds[2] = (float) block.minZ;
-											oldBounds[3] = (float) block.maxX;
-											oldBounds[4] = (float) block.maxY;
-											oldBounds[5] = (float) block.maxZ;
-											block.setBlockBounds(design.getLowXBound(), design.getLowYBound(), design.getLowZBound(), design.getHighXBound(), design.getHighYBound(), design.getHighZBound());
-											rendered |= design.renderBlock(mat, dx, dy, dz);
-											block.setBlockBounds(oldBounds[0], oldBounds[1], oldBounds[2], oldBounds[3], oldBounds[4], oldBounds[5]);
-										}
-										else {
-											rendered |= blockRenderer.renderBlockByRenderType(block, dx, dy, dz);
-										}
+											if (blockRenderPass != renderPass) {
+												skipRenderPass = true;
+											}
+											else {										
+												if (design != null) {
+													oldBounds[0] = (float) block.minX;
+													oldBounds[1] = (float) block.minY;
+													oldBounds[2] = (float) block.minZ;
+													oldBounds[3] = (float) block.maxX;
+													oldBounds[4] = (float) block.maxY;
+													oldBounds[5] = (float) block.maxZ;
+													block.setBlockBounds(design.getLowXBound(), design.getLowYBound(), design.getLowZBound(), design.getHighXBound(), design.getHighYBound(), design.getHighZBound());
+													rendered |= design.renderBlock(mat, dx, dy, dz);
+													block.setBlockBounds(oldBounds[0], oldBounds[1], oldBounds[2], oldBounds[3], oldBounds[4], oldBounds[5]);
+												}
+												else {
+													rendered |= blockRenderer.renderBlockByRenderType(block, dx, dy, dz);
+												}
+											}
+										}										
 									}
 								}
 							}
 						}
 					}
-				}
 
-				if (drawBlock) {
-					tessellator.draw();
-					tessellator.texture = 0;
-					GL11.glPopMatrix();
-					GL11.glEndList();
-					game.renderEngine.bindTexture(defaultTexture);
-					tessellator.setTranslation(0.0D, 0.0D, 0.0D);
-				} else {
-					rendered = false;
-				}
+					if (drawBlock) {
+						tessellator.draw();
+						tessellator.texture = 0;
+						GL11.glPopMatrix();
+						GL11.glEndList();
+						game.renderEngine.bindTexture(defaultTexture);
+						tessellator.setTranslation(0.0D, 0.0D, 0.0D);
+					} else {
+						rendered = false;
+					}
 
-				if (rendered) {
-					this.skipRenderPass[renderPass] = false;
-				}
+					if (rendered) {
+						this.skipRenderPass[renderPass] = false;
+					}
 
-				if (!skipRenderPass) {
-					break;
-				}
+					if (!skipRenderPass) {
+						break;
+					}
+					blockRenderer.customIds = null;
+				} 
 			}
-
 			HashSet var24 = new HashSet();
 			var24.addAll(this.tileEntityRenderers);
 			var24.removeAll(tileRenderers);
 			this.tileEntities.addAll(var24);
 			tileRenderers.removeAll(this.tileEntityRenderers);			
-			// Spout End
 			this.tileEntities.removeAll(tileRenderers);
 			this.isChunkLit = Chunk.isLit;
-			this.isInitialized = true;
-			blockRenderer.customIds = null;
+			this.isInitialized = true;			
 			CTMUtils.finish();
 		}
 	}
 
+	// Spout End
+	
 	/**
 	 * Returns the distance of this chunk renderer to the entity without performing the final normalizing square root, for
 	 * performance reasons.
