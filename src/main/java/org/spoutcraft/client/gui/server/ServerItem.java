@@ -60,6 +60,7 @@ public class ServerItem implements ListWidgetItem {
 	public static final int WHITELIST = 1;
 	public static final int GRAYLIST = 2;
 	public static final int BLACKLIST = 3;
+	public int versionWidth = 10;
 
 	protected byte accessType = ServerItem.OPEN;
 
@@ -72,7 +73,7 @@ public class ServerItem implements ListWidgetItem {
 
 	protected PollResult pollResult;
 
-	private static final String latestMC = "1.4.5";
+	private static final String latestMC = "1.4.6";
 	protected String mcversion = latestMC;
 	private boolean showPing = false;
 
@@ -272,13 +273,16 @@ public class ServerItem implements ListWidgetItem {
 			GL11.glPopMatrix();
 			iconMargin += 5 + 7;
 		}
-
-		// if (!latestMC.equals(pollResult.getVersion()) { // TODO use this when bukkit returns the correct version number again
-		if (pollResult.getProtocolVersion() != 49 && pollResult.getProtocolVersion() != 0) {
-			GL11.glPushMatrix();
-			GL11.glTranslatef(x+width/5, y+20F, 0);
-			GL11.glRotatef(-37.5F, 0F, 0F, 1F);
-			font.drawStringWithShadow("Outdated!", 0, 0, 0xFF0000);
+		
+		if (pollResult.getVersion() != null) {	
+			GL11.glPushMatrix();			
+			versionWidth = font.getStringWidth("1.0.0");
+			font.drawStringWithShadow(pollResult.getVersion(), x + width - versionWidth - 20, y + 21, 0x00FF00);			
+			GL11.glPopMatrix();
+		} else {
+			GL11.glPushMatrix();			
+			versionWidth = font.getStringWidth("Unknown");
+			font.drawStringWithShadow("Unknown", x + width - versionWidth - 20, y + 21, 0xFF0000);			
 			GL11.glPopMatrix();
 		}
 	}
