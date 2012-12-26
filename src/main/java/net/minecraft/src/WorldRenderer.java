@@ -281,8 +281,7 @@ public class WorldRenderer {
 												continue;
 											}
 										// Do not render if we are not using the terrain.png and can't find a valid texture for this custom block
-										} else if (currentTexture != 0) {
-											System.out.println("Spout Debug: currentTexture = " + currentTexture);
+										} else if (currentTexture != 0) {											
 											continue;
 										}
 
