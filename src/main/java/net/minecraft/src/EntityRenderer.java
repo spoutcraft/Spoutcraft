@@ -947,7 +947,11 @@ public class EntityRenderer {
 					throw new ReportedException(var10);
 				}
 
-				this.mc.currentScreen.drawScreenPre(var16, var17, par1);
+				if (this.mc.currentScreen!= null) {				
+					this.mc.currentScreen.drawScreenPre(var16, var17, par1);
+				} else {
+					System.out.println("SpoutDebug:  CurrentScreen was null prior to trying to drawScreenPre");
+				}
 
 				if (this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
 					this.mc.currentScreen.guiParticles.draw(par1);
