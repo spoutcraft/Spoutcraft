@@ -1042,6 +1042,44 @@ public class NetClientHandler extends NetHandler {
 		return this.mc != null && this.mc.theWorld != null && this.mc.thePlayer != null && this.worldClient != null;
 	}
 
+	
+	public void handleGameEvent(Packet70GameEvent par1Packet70GameEvent) {
+		EntityClientPlayerMP var2 = this.mc.thePlayer;
+		int var3 = par1Packet70GameEvent.eventType;
+		int var4 = par1Packet70GameEvent.gameMode;
+
+		if (var3 >= 0 && var3 < Packet70GameEvent.clientMessage.length && Packet70GameEvent.clientMessage[var3] != null) {
+			var2.addChatMessage(Packet70GameEvent.clientMessage[var3]);
+		}
+
+		if (var3 == 1) {
+			this.worldClient.getWorldInfo().setRaining(true);
+			this.worldClient.setRainStrength(0.0F);
+		} else if (var3 == 2) {
+			this.worldClient.getWorldInfo().setRaining(false);
+			this.worldClient.setRainStrength(1.0F);
+		} else if (var3 == 3) {
+			this.mc.playerController.setGameType(EnumGameType.getByID(var4));
+		} else if (var3 == 4) {
+			this.mc.displayGuiScreen(new GuiWinGame());
+		} else if (var3 == 5) {
+			GameSettings var5 = this.mc.gameSettings;
+
+			if (var4 == 0) {
+				this.mc.displayGuiScreen(new GuiScreenDemo());
+			} else if (var4 == 101) {
+				this.mc.ingameGUI.getChatGUI().addTranslatedMessage("demo.help.movement", new Object[] {Keyboard.getKeyName(var5.keyBindForward.keyCode), Keyboard.getKeyName(var5.keyBindLeft.keyCode), Keyboard.getKeyName(var5.keyBindBack.keyCode), Keyboard.getKeyName(var5.keyBindRight.keyCode)});
+			} else if (var4 == 102) {
+				this.mc.ingameGUI.getChatGUI().addTranslatedMessage("demo.help.jump", new Object[] {Keyboard.getKeyName(var5.keyBindJump.keyCode)});
+			} else if (var4 == 103) {
+				this.mc.ingameGUI.getChatGUI().addTranslatedMessage("demo.help.inventory", new Object[] {Keyboard.getKeyName(var5.keyBindInventory.keyCode)});
+			}
+		} else if (var3 == 6) {
+			this.worldClient.playSound(var2.posX, var2.posY + (double)var2.getEyeHeight(), var2.posZ, "random.successful_hit", 0.15F, 0.45F, false);
+		}
+	}
+
+	
 	/**
 	 * Contains logic for handling packets containing arbitrary unique item data. Currently this is only for maps.
 	 */
