@@ -65,7 +65,7 @@ public class NetClientHandler extends NetHandler {
 	/** RNG. */
 	Random rand = new Random();
 	// Spout Start
-	long timeout = System.currentTimeMillis() + 5000;
+	long timeout = System.currentTimeMillis() + 1000;
 	public LinkedList<Packet> queue = new LinkedList<Packet>();
 	public long packetQueueTime = 0L;
 	public boolean queued = false;
@@ -123,14 +123,12 @@ public class NetClientHandler extends NetHandler {
 		if (this.netManager != null) {
 			this.netManager.wakeThreads();
 		}
-
-		// Spout Start - This may actually still be needed due to PrePacketManager
-		// TODO: May fail at MainMenu
-		/*if (mc.currentScreen instanceof GuiDownloadTerrain) {
+	
+		if (mc.currentScreen instanceof GuiDownloadTerrain) {  // If PreCache Manager was never called, this will close Downloading Terrain Screen.
 			if (System.currentTimeMillis() > timeout) {
 				mc.displayGuiScreen(null, false);
 			}
-		}*/
+		}
 	}
 
 	public void handleServerAuthData(Packet253ServerAuthData par1Packet253ServerAuthData) {
