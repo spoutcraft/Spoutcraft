@@ -199,6 +199,8 @@ public class RenderPlayer extends RenderLiving {
 							if (par1EntityPlayer.isPlayerSleeping()) {
 								this.renderLivingLabel(par1EntityPlayer, title, par2, par4 - 1.5D, par6, 64);
 							} else {
+								this.renderLivingLabel(par1EntityPlayer, title, par2, par4, par6, 64);
+								// TODO: Adapation needed.
 								/*if (color != -1) {
 									this.renderLivingLabel(var1, title, var2, var4, var6, 64, color, color);
 								} else {
