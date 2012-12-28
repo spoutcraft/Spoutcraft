@@ -287,6 +287,8 @@ public class RenderPlayer extends RenderLiving {
 			GL11.glPopMatrix();
 		}
 
+		AccessoryHandler.renderAllAccessories(par1EntityPlayer, 0.0625F, par2); // Spout
+		
 		float var7;
 		float var8;
 
