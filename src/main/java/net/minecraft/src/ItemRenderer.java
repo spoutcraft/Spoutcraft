@@ -109,13 +109,12 @@ public class ItemRenderer {
 			GL11.glRotatef(50.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(335.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glTranslatef(-0.9375F, -0.0625F, 0.0F);
-			this.renderItemIn2D(var5, var8, var9, var7, var10);
-
+			
 			if (par2ItemStack != null) {
 				Colorizer.colorizeWaterBlockGL(par2ItemStack.itemID);
 			}
 
-			this.renderItemIn2D(var5, var8, var9, var7, var10);
+			renderItemIn2D(var5, var8, var9, var7, var10, 0.0625F);
 
 			if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0) {
 				GL11.glDepthFunc(GL11.GL_EQUAL);
@@ -132,20 +131,20 @@ public class ItemRenderer {
 				float var16 = (float)(Minecraft.getSystemTime() % 3000L) / 3000.0F * 8.0F;
 				GL11.glTranslatef(var16, 0.0F, 0.0F);
 				GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
-				this.renderItemIn2D(var5, 0.0F, 0.0F, 1.0F, 1.0F);
+				renderItemIn2D(var5, 0.0F, 0.0F, 1.0F, 1.0F, 0.0625F);
 				GL11.glPopMatrix();
 				GL11.glPushMatrix();
 				GL11.glScalef(var15, var15, var15);
 				var16 = (float)(Minecraft.getSystemTime() % 4873L) / 4873.0F * 8.0F;
 				GL11.glTranslatef(-var16, 0.0F, 0.0F);
 				GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
-				this.renderItemIn2D(var5, 0.0F, 0.0F, 1.0F, 1.0F);
+				renderItemIn2D(var5, 0.0F, 0.0F, 1.0F, 1.0F, 0.0625F);
 				GL11.glPopMatrix();
 				GL11.glMatrixMode(GL11.GL_MODELVIEW);
 				GL11.glDisable(GL11.GL_BLEND);
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glDepthFunc(GL11.GL_LEQUAL);
-			}
+				}
 
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		}
@@ -153,96 +152,7 @@ public class ItemRenderer {
 		GL11.glPopMatrix();
 	}
 
-	/**
-	 * Renders an item held in hand as a 2D texture with thickness
-	 */
-	private void renderItemIn2D(Tessellator par1Tessellator, float par2, float par3, float par4, float par5) {
-		float var6 = 1.0F;
-		float var7 = 0.0625F;
-		par1Tessellator.startDrawingQuads();
-		par1Tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		par1Tessellator.addVertexWithUV(0.0D, 0.0D, 0.0D, (double)par2, (double)par5);
-		par1Tessellator.addVertexWithUV((double)var6, 0.0D, 0.0D, (double)par4, (double)par5);
-		par1Tessellator.addVertexWithUV((double)var6, 1.0D, 0.0D, (double)par4, (double)par3);
-		par1Tessellator.addVertexWithUV(0.0D, 1.0D, 0.0D, (double)par2, (double)par3);
-		par1Tessellator.draw();
-		par1Tessellator.startDrawingQuads();
-		par1Tessellator.setNormal(0.0F, 0.0F, -1.0F);
-		par1Tessellator.addVertexWithUV(0.0D, 1.0D, (double)(0.0F - var7), (double)par2, (double)par3);
-		par1Tessellator.addVertexWithUV((double)var6, 1.0D, (double)(0.0F - var7), (double)par4, (double)par3);
-		par1Tessellator.addVertexWithUV((double)var6, 0.0D, (double)(0.0F - var7), (double)par4, (double)par5);
-		par1Tessellator.addVertexWithUV(0.0D, 0.0D, (double)(0.0F - var7), (double)par2, (double)par5);
-		par1Tessellator.draw();
-		par1Tessellator.startDrawingQuads();
-		par1Tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-		int var8;
-		float var9;
-		float var10;
-		float var11;
-		// Spout HD Start
-		for (var8 = 0; var8 < TileSize.int_size; ++var8) {
-			var9 = (float)var8 / TileSize.float_size;
-			var10 = par2 + (par4 - par2) * var9 - TileSize.float_texNudge;
-			// Spout HD End
-			var11 = var6 * var9;
-			par1Tessellator.addVertexWithUV((double)var11, 0.0D, (double)(0.0F - var7), (double)var10, (double)par5);
-			par1Tessellator.addVertexWithUV((double)var11, 0.0D, 0.0D, (double)var10, (double)par5);
-			par1Tessellator.addVertexWithUV((double)var11, 1.0D, 0.0D, (double)var10, (double)par3);
-			par1Tessellator.addVertexWithUV((double)var11, 1.0D, (double)(0.0F - var7), (double)var10, (double)par3);
-		}
-
-		par1Tessellator.draw();
-		par1Tessellator.startDrawingQuads();
-		par1Tessellator.setNormal(1.0F, 0.0F, 0.0F);
-
-		// Spout HD Start
-		for (var8 = 0; var8 < TileSize.int_size; ++var8) {
-			var9 = (float)var8 / TileSize.float_size;
-			var10 = par2 + (par4 - par2) * var9 - TileSize.float_texNudge;
-			var11 = var6 * var9 + TileSize.float_reciprocal;
-			// Spout HD End
-			par1Tessellator.addVertexWithUV((double)var11, 1.0D, (double)(0.0F - var7), (double)var10, (double)par3);
-			par1Tessellator.addVertexWithUV((double)var11, 1.0D, 0.0D, (double)var10, (double)par3);
-			par1Tessellator.addVertexWithUV((double)var11, 0.0D, 0.0D, (double)var10, (double)par5);
-			par1Tessellator.addVertexWithUV((double)var11, 0.0D, (double)(0.0F - var7), (double)var10, (double)par5);
-		}
-
-		par1Tessellator.draw();
-		par1Tessellator.startDrawingQuads();
-		par1Tessellator.setNormal(0.0F, 1.0F, 0.0F);
-
-		// Spout HD Start
-		for (var8 = 0; var8 < TileSize.int_size; ++var8) {
-			var9 = (float)var8 / TileSize.float_size;
-			var10 = par5 + (par3 - par5) * var9 - TileSize.float_texNudge;
-			var11 = var6 * var9 + TileSize.float_reciprocal;
-			// Spout HD End
-			par1Tessellator.addVertexWithUV(0.0D, (double)var11, 0.0D, (double)par2, (double)var10);
-			par1Tessellator.addVertexWithUV((double)var6, (double)var11, 0.0D, (double)par4, (double)var10);
-			par1Tessellator.addVertexWithUV((double)var6, (double)var11, (double)(0.0F - var7), (double)par4, (double)var10);
-			par1Tessellator.addVertexWithUV(0.0D, (double)var11, (double)(0.0F - var7), (double)par2, (double)var10);
-		}
-
-		par1Tessellator.draw();
-		par1Tessellator.startDrawingQuads();
-		par1Tessellator.setNormal(0.0F, -1.0F, 0.0F);
-
-		// Spout HD Start
-		for (var8 = 0; var8 < TileSize.int_size; ++var8) {
-			var9 = (float)var8 / TileSize.float_size;
-			var10 = par5 + (par3 - par5) * var9 - TileSize.float_texNudge;
-			// Spout HD End
-			var11 = var6 * var9;
-			par1Tessellator.addVertexWithUV((double)var6, (double)var11, 0.0D, (double)par4, (double)var10);
-			par1Tessellator.addVertexWithUV(0.0D, (double)var11, 0.0D, (double)par2, (double)var10);
-			par1Tessellator.addVertexWithUV(0.0D, (double)var11, (double)(0.0F - var7), (double)par2, (double)var10);
-			par1Tessellator.addVertexWithUV((double)var6, (double)var11, (double)(0.0F - var7), (double)par4, (double)var10);
-		}
-
-		par1Tessellator.draw();
-	}
-
-	// Spout Start - New 2D method needs to be adapted for custom items.
+	// MCPatcher Start
 	/**
 	 * Renders an item held in hand as a 2D texture with thickness
 	 */
@@ -269,9 +179,9 @@ public class ItemRenderer {
 		float var9;
 		float var10;
 
-		for (var7 = 0; var7 < 16; ++var7) {
-			var8 = (float)var7 / 16.0F;
-			var9 = par1 + (par3 - par1) * var8 - 0.001953125F;
+		for (var7 = 0; var7 < TileSize.int_size; ++var7) {
+			var8 = (float)var7 / TileSize.float_size;
+			var9 = par1 + (par3 - par1) * var8 - TileSize.float_texNudge;
 			var10 = var6 * var8;
 			par0Tessellator.addVertexWithUV((double)var10, 0.0D, (double)(0.0F - par5), (double)var9, (double)par4);
 			par0Tessellator.addVertexWithUV((double)var10, 0.0D, 0.0D, (double)var9, (double)par4);
@@ -283,10 +193,10 @@ public class ItemRenderer {
 		par0Tessellator.startDrawingQuads();
 		par0Tessellator.setNormal(1.0F, 0.0F, 0.0F);
 
-		for (var7 = 0; var7 < 16; ++var7) {
-			var8 = (float)var7 / 16.0F;
-			var9 = par1 + (par3 - par1) * var8 - 0.001953125F;
-			var10 = var6 * var8 + 0.0625F;
+		for (var7 = 0; var7 < TileSize.int_size; ++var7) {
+			var8 = (float)var7 / TileSize.float_size;
+			var9 = par1 + (par3 - par1) * var8 - TileSize.float_texNudge;
+			var10 = var6 * var8 + TileSize.float_reciprocal;
 			par0Tessellator.addVertexWithUV((double)var10, 1.0D, (double)(0.0F - par5), (double)var9, (double)par2);
 			par0Tessellator.addVertexWithUV((double)var10, 1.0D, 0.0D, (double)var9, (double)par2);
 			par0Tessellator.addVertexWithUV((double)var10, 0.0D, 0.0D, (double)var9, (double)par4);
@@ -297,10 +207,10 @@ public class ItemRenderer {
 		par0Tessellator.startDrawingQuads();
 		par0Tessellator.setNormal(0.0F, 1.0F, 0.0F);
 
-		for (var7 = 0; var7 < 16; ++var7) {
-			var8 = (float)var7 / 16.0F;
-			var9 = par4 + (par2 - par4) * var8 - 0.001953125F;
-			var10 = var6 * var8 + 0.0625F;
+		for (var7 = 0; var7 < TileSize.int_size; ++var7) {
+			var8 = (float)var7 / TileSize.float_size;
+			var9 = par4 + (par2 - par4) * var8 - TileSize.float_texNudge;
+			var10 = var6 * var8 + TileSize.float_reciprocal;
 			par0Tessellator.addVertexWithUV(0.0D, (double)var10, 0.0D, (double)par1, (double)var9);
 			par0Tessellator.addVertexWithUV((double)var6, (double)var10, 0.0D, (double)par3, (double)var9);
 			par0Tessellator.addVertexWithUV((double)var6, (double)var10, (double)(0.0F - par5), (double)par3, (double)var9);
@@ -311,9 +221,9 @@ public class ItemRenderer {
 		par0Tessellator.startDrawingQuads();
 		par0Tessellator.setNormal(0.0F, -1.0F, 0.0F);
 
-		for (var7 = 0; var7 < 16; ++var7) {
-			var8 = (float)var7 / 16.0F;
-			var9 = par4 + (par2 - par4) * var8 - 0.001953125F;
+		for (var7 = 0; var7 < TileSize.int_size; ++var7) {
+			var8 = (float)var7 / TileSize.float_size;
+			var9 = par4 + (par2 - par4) * var8 - TileSize.float_texNudge;
 			var10 = var6 * var8;
 			par0Tessellator.addVertexWithUV((double)var6, (double)var10, 0.0D, (double)par3, (double)var9);
 			par0Tessellator.addVertexWithUV(0.0D, (double)var10, 0.0D, (double)par1, (double)var9);
@@ -323,7 +233,6 @@ public class ItemRenderer {
 
 		par0Tessellator.draw();
 	}
-	// Spout End
 
 	/**
 	 * Renders the active item in the player's hand when in first person mode. Args: partialTickTime
@@ -575,6 +484,8 @@ public class ItemRenderer {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		RenderHelper.disableStandardItemLighting();
 	}
+	
+	// MCPatcher End
 
 	/**
 	 * Renders all the overlays that are in first person mode. Args: partialTickTime
