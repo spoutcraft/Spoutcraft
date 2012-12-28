@@ -73,7 +73,7 @@ public class ServerItem implements ListWidgetItem {
 
 	protected PollResult pollResult;
 
-	private static final String latestMC = "1.4.6";
+	private static final String latestMC = "1.4.7";
 	protected String mcversion = latestMC;
 	private boolean showPing = false;
 

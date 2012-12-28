@@ -387,7 +387,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		StatList.nopInit();
 		// MCPatcher Start
 		MCPatcherUtils.setMinecraft(this);
-		MCPatcherUtils.setVersions("1.4.6", "2.4.4_01");
+		MCPatcherUtils.setVersions("1.4.7", "2.4.4_01");
 		// MCPatcher End
 		this.tempDisplayHeight = par4;
 		this.fullscreen = par5;
@@ -471,7 +471,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
 		}
 
-		Display.setTitle("Minecraft Minecraft 1.4.6");
+		Display.setTitle("Minecraft Minecraft 1.4.7");
 		System.out.println("LWJGL Version: " + Sys.getVersion());
 
 		try {
