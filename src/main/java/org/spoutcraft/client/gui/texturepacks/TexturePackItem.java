@@ -93,10 +93,9 @@ public class TexturePackItem implements ListWidgetItem {
 		font.drawStringWithShadow(getName(), x + 29, y + 2, 0xffffffff);
 		font.drawStringWithShadow(pack.getFirstDescriptionLine(), x + 29, y + 11, 0xffaaaaaa);
 		font.drawStringWithShadow(pack.getSecondDescriptionLine(), x + 29, y + 20, 0xffaaaaaa);
-
 		String sTileSize;
 		if (tileSize != -1) {
-			sTileSize = tileSize + "x";
+			sTileSize = ChatColor.GREEN + "" + tileSize + "x";
 		} else {
 			sTileSize = ChatColor.YELLOW + "Calculating...";
 		}
@@ -186,12 +185,11 @@ class TexturePackSizeThread extends Thread {
 
 	@Override
 	public void run() {
-		//TODO: Needs Rewrite
-		//item.tileSize = TextureUtils.getTileSize(texturePack);
-		//synchronized(TexturePackItem.texturePackSize) {
-		//	TexturePackItem.texturePackSize.put(getName(), item.tileSize);
-		//}
+		item.tileSize = TextureUtils.getTileSize(texturePack);
+		synchronized(TexturePackItem.texturePackSize) {
+			TexturePackItem.texturePackSize.put(getName(), item.tileSize);
+		}
 
-		//TexturePackItem.activeThread = null;
+		TexturePackItem.activeThread = null;
 	}
 }

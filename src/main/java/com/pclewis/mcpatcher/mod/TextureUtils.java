@@ -7,15 +7,30 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.PixelFormat;
 
-import java.awt.*;
+// Spout Start
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Map.Entry;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
+// Spout End
 
 public class TextureUtils {
 	private static final MCLogger logger = MCLogger.getLogger(MCPatcherUtils.HD_TEXTURES);
@@ -58,6 +73,11 @@ public class TextureUtils {
 	private static boolean bindImageReentry;
 
 	public static boolean oldCreativeGui;
+	
+	// Spout Start
+	private static TexturePackImplementation lastTexturePack = null;
+	private static HashMap cache = new HashMap();
+	// Spout End
 
 	static {
 		expectedColumns.put("/terrain.png", 16);
@@ -371,22 +391,180 @@ public class TextureUtils {
 			return true;
 		}
 	}
-
-	private static int getTileSize() {
-		int size = 0;
-		enableResizing = false;
-		for (Map.Entry<String, Integer> entry : expectedColumns.entrySet()) {
-			BufferedImage image = TexturePackAPI.getImage(entry.getKey());
-			if (image != null) {
-				int newSize = image.getWidth() / entry.getValue();
-				logger.fine("%s tile size is %d", entry.getKey(), newSize);
-				size = Math.max(size, newSize);
+		
+ 	// Spout Start
+	public static int getTileSize() {
+		return getTileSize(getSelectedTexturePack());
+	}
+	
+	public static int getTileSize(TexturePackImplementation var0) {
+		int var1 = 0;
+		Iterator var2 = expectedColumns.entrySet().iterator();
+		while (var2.hasNext()) {
+			Entry var3 = (Entry)var2.next();
+			InputStream var4 = null;
+			try {
+				var4 = getResourceAsStream(var0, (String)var3.getKey());
+				if (var4 != null) {
+					BufferedImage var5 = ImageIO.read(var4);
+					int var6 = var5.getWidth() / ((Integer)var3.getValue()).intValue();
+					var1 = Math.max(var1, var6);
+				}
+			} catch (Exception var10) {
+			} finally {
+				MCPatcherUtils.close(var4);
 			}
-		}
-		enableResizing = true;
-		return size > 0 ? size : 16;
+		}	
+		return var1 > 0 ? var1 : 16;
 	}
 
+	public static InputStream getResourceAsStream(TexturePackImplementation var0, String var1) {
+		InputStream var2 = null;
+
+		if (oldCreativeGui && var1.equals("/gui/allitems.png")) {
+			var2 = getResourceAsStream(var0, "/gui/allitemsx.png");
+
+			if (var2 != null) {
+				return var2;
+			}
+		}
+
+		if (var0 != null) {
+			try {
+				var2 = var0.getResourceAsStream(var1);
+			} catch (Exception var4) {
+				var4.printStackTrace();
+			}
+		}
+
+		if (var2 == null) {
+			var2 = TextureUtils.class.getResourceAsStream(var1);
+		}
+
+		if (var2 == null && var1.startsWith("/anim/custom_")) {
+			var2 = getResourceAsStream(var0, var1.substring(5));
+		}
+
+		if (var2 == null && isRequiredResource(var1)) {
+			var2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(var1);
+		}
+
+		return var2;
+	}
+
+	public static BufferedImage getResourceAsBufferedImage(TexturePackImplementation var0, String texture) throws IOException {
+		BufferedImage image = null;
+		boolean var3 = false;
+
+		if (useTextureCache && var0 == lastTexturePack) {
+			image = (BufferedImage)cache.get(texture);
+
+			if (image != null) {
+				var3 = true;
+			}
+		}
+
+		if (image == null) {
+			InputStream var4 = getResourceAsStream(var0, texture);
+
+			if (var4 != null) {
+				try {
+					image = ImageIO.read(var4);
+				} finally {
+					MCPatcherUtils.close(var4);
+				}
+			}
+		}
+
+		if (image == null) {
+			// Search local files (downloaded texture)
+			FileImageInputStream imageStream = null;
+			try {
+				File test = new File(texture);
+				if (test.exists()) {
+					imageStream = new FileImageInputStream(test);
+					image = ImageIO.read(imageStream);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally {
+				if (imageStream != null) {
+					try {
+						imageStream.close();
+					} catch (Exception e) { }
+				}
+			}
+		}
+
+		if (image == null) {
+			if (isRequiredResource(texture)) {
+				throw new IOException(texture + " image is null");
+			} else {
+				return null;
+			}
+		} else {
+			if (useTextureCache && !var3 && var0 != lastTexturePack) {
+				cache.clear();
+			}
+
+			if (!var3) {
+				Integer var11;
+
+				if (isCustomTerrainItemResource(texture)) {
+					var11 = Integer.valueOf(1);
+				} else {
+					var11 = (Integer)expectedColumns.get(texture);
+				}
+
+				if (var11 != null && image.getWidth() != var11.intValue() * TileSize.int_size) {
+					image = resizeImage(image, var11.intValue() * TileSize.int_size);
+				}
+
+				if (useTextureCache) {
+					lastTexturePack = var0;
+					cache.put(texture, image);
+				}
+
+				if (texture.matches("^/mob/.*_eyes\\d*\\.png$")) {
+					int var5 = 0;
+
+					for (int var6 = 0; var6 < image.getWidth(); ++var6) {
+						for (int var7 = 0; var7 < image.getHeight(); ++var7) {
+							int var8 = image.getRGB(var6, var7);
+
+							if ((var8 & -16777216) == 0 && var8 != 0) {
+								image.setRGB(var6, var7, 0);
+								++var5;
+							}
+						}
+					}
+				}
+			}
+
+			return image;
+		}
+	}
+
+	public static InputStream getResourceAsStream(String var0) {
+		return getResourceAsStream(getSelectedTexturePack(), var0);
+	}
+	
+	public static boolean isRequiredResource(String var0) {
+		return var0.equals("/terrain.png") || var0.equals("/gui/items.png");
+	}
+	
+	public static TexturePackImplementation getSelectedTexturePack() {
+		Minecraft var0 = MCPatcherUtils.getMinecraft();
+		return (TexturePackImplementation) (var0 == null ? null : (var0.texturePackList == null ? null : var0.texturePackList.getSelectedTexturePack()));
+	}
+
+	public static String getTexturePackName(TexturePackImplementation var0) {
+		return var0 == null ? "Default" : var0.texturePackFileName;
+	}
+
+	// Spout End
+	
 	static BufferedImage resizeImage(BufferedImage image, int width) {
 		if (width == image.getWidth()) {
 			return image;
