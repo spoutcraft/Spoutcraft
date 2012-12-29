@@ -117,6 +117,7 @@ public class FontUtils {
 		float var2 = 0.0F;
 
 		if (var1 != null) {
+			var1 = var1.replaceAll("(?i)\u00A7[0-F]", ""); //Spout - Strip ordinary colors
 			boolean var3 = false;
 
 			for (int var4 = 0; var4 < var1.length(); ++var4) {
