@@ -19,6 +19,15 @@
  */
 package org.spoutcraft.api.inventory;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+
+import net.minecraft.src.Enchantment;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.NBTTagList;
+import net.minecraft.src.NBTTagString;
+
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.CustomItem;
 import org.spoutcraft.api.material.Material;
@@ -31,6 +40,10 @@ public class ItemStack implements Cloneable{
 	private int type;
 	private int amount = 0;
 	private short durability = 0;
+	
+	private String displayName = null;
+	private List<String> lore = null;
+	private HashMap<Enchantment, Integer> enchants = null;
 
 	public ItemStack(final int type) {
 		this(type, 0);
@@ -84,7 +97,124 @@ public class ItemStack implements Cloneable{
 	public ItemStack(CustomBlock block, int amount) {
 		this(block.getBlockItem(), amount);
 	}
-
+	
+	/**
+	 * Checks if this item has a custom display name
+	 * @return - true if this item has a custom display name, false otherwise.
+	 */
+	public boolean hasDisplayName() {
+		if (displayName != null && !displayName.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * sets the custom display name for this item
+	 * @param name - The custom name for this item
+	 */
+	public void setDisplayName(String name) {
+		this.displayName = name;
+	}
+	
+	/**
+	 * gets the custom display name for this item
+	 * @return - the custom display name.
+	 */
+	public String getDisplayName() {
+		return displayName;
+	}
+	
+	/**
+	 * Checks if this item has enchantments.
+	 * @return - true if this item has enchantments.
+	 */
+	public boolean hasEnchants() {
+		if (enchants != null && enchants.size() > 0){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * sets the enchantments for this item.
+	 * @param enchants - a hashmap of enchantments.
+	 */
+	public void setEnchants(HashMap<Enchantment, Integer> enchants) {
+		this.enchants = enchants;
+	}
+	
+	/**
+	 * gets this items enchantments
+	 * @return - the hashmap of this items enchantments.
+	 */
+	public HashMap<Enchantment, Integer> getEnchants() {
+		return enchants;
+	}
+	
+	/**
+	 * Checks if this item has lore
+	 * @return - true if this item has lore, false otherwise.
+	 */
+	public boolean hasLore() {
+		if (lore != null && lore.size() > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Sets this item lore
+	 * @param lore - a List of Strings representing the lore for this item.
+	 */
+	public void setLore(List<String> lore) {
+		this.lore = lore;
+	}
+	
+	/**
+	 * gets this items lore.
+	 * @return - A list of Strings representing this item's lore.
+	 */
+	public List<String> getLore() {
+		return lore;
+	}
+	
+	/**
+	 * gets the net.minecraft.src.ItemStack version of this item
+	 * @return - this itemstack in NMS form.
+	 */
+	public net.minecraft.src.ItemStack asNMSItenStack() {
+		net.minecraft.src.ItemStack itemstack = new net.minecraft.src.ItemStack(getTypeId(), getAmount(), getDurability());
+		if (hasDisplayName()) {
+			itemstack.setItemName(getDisplayName());
+		}
+		
+		if (hasEnchants()) {
+			for (Entry<Enchantment, Integer> entry : getEnchants().entrySet()) {
+				itemstack.addEnchantment(entry.getKey(), entry.getValue());
+			}
+		}
+		
+		if (hasLore()) {
+			if (itemstack.stackTagCompound == null) {
+				itemstack.stackTagCompound = new NBTTagCompound();
+			}
+			if (!itemstack.stackTagCompound.hasKey("display")) {
+				itemstack.stackTagCompound.setCompoundTag("display", new NBTTagCompound());
+			}
+			
+			NBTTagList loreTagList = new NBTTagList();
+			
+			for(String l : getLore()) {
+				loreTagList.appendTag(new NBTTagString(l));
+			}
+			
+			itemstack.stackTagCompound.getCompoundTag("display").setTag("Lore", loreTagList);
+		}
+		
+		return itemstack;
+	}
+	
 	/**
 	 * Is true if the item is a custom item, not in the vanilla game
 	 * @return true if custom item
@@ -207,7 +337,11 @@ public class ItemStack implements Cloneable{
 
 	@Override
 	public ItemStack clone() {
-		return new ItemStack(type, amount, durability);
+		ItemStack item = new ItemStack(type, amount, durability);
+		item.setDisplayName(displayName);
+		item.setEnchants(enchants);
+		item.setLore(lore);
+		return item;
 	}
 
 	@Override

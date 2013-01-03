@@ -20,6 +20,11 @@
 package org.spoutcraft.api.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import net.minecraft.src.Enchantment;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.inventory.ItemStack;
@@ -83,8 +88,44 @@ public class GenericSlot extends GenericControl implements Slot {
 	@Override
 	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
+		
 		setItem(new ItemStack(input.readInt(), (int) input.readShort(), input.readShort()));
 		depth = input.readInt();
+		
+		
+		boolean hasDisplayName = input.readBoolean();
+		if (hasDisplayName == true) {
+			stack.setDisplayName(input.readString());
+		}
+		
+		boolean hasLore = input.readBoolean();
+		if (hasLore == true) {
+			//TODO: Gather lore
+			int lsize = input.readInt();
+			List<String> lore = new ArrayList<String>();
+			for (int i = 0; i<lsize; i++) {
+				lore.add(input.readString());
+			}
+			
+			stack.setLore(lore);
+		}
+		
+		boolean hasEnchants = input.readBoolean();
+		if (hasEnchants == true) {
+			int esize = input.readInt();
+			HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+			for(int i = 0; i<esize; i++) {
+				int ekey = input.readInt();
+				int eval = input.readInt();
+				enchants.put(Enchantment.enchantmentsList[ekey], eval);
+			}
+			if (enchants.size() > 0) {
+				stack.setEnchants(enchants);
+			}
+		}
+		
+		setTooltip(Spoutcraft.getMaterialManager().getToolTip(stack));
+		
 	}
 
 	@Override

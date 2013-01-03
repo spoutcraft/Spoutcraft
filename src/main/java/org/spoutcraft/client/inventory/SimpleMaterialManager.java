@@ -263,7 +263,7 @@ public class SimpleMaterialManager implements MaterialManager {
 			itemstack = ((CraftItemStack)is).item;
 		}
 		else {
-			itemstack = new net.minecraft.src.ItemStack(is.getTypeId(), is.getAmount(), is.getDurability());
+			itemstack = is.asNMSItenStack();
 		}
 
 		Item rawItem = Item.itemsList[itemstack.itemID];
