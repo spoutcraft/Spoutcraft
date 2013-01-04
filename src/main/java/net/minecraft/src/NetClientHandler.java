@@ -951,6 +951,9 @@ public class NetClientHandler extends NetHandler {
 					}
 
 					var4.onInventoryChanged();
+					// Spout Start
+					var4.recalculateText();
+					// Spout End
 				}
 
 				var2 = true;
