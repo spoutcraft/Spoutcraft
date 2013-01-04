@@ -166,7 +166,7 @@ public class RenderPlayer extends RenderLiving {
 	 * Used to render a player's name above their head
 	 */
 	protected void renderName(EntityPlayer par1EntityPlayer, double par2, double par4, double par6) {
-		if(Minecraft.isGuiEnabled() && (par1EntityPlayer != this.renderManager.livingPlayer || (Minecraft.theMinecraft.gameSettings.thirdPersonView != 0 && Minecraft.theMinecraft.currentScreen == null) || !par1EntityPlayer.getHasActivePotion())) {	
+		if(Minecraft.isGuiEnabled() && (par1EntityPlayer != this.renderManager.livingPlayer || (Minecraft.theMinecraft.gameSettings.thirdPersonView != 0 && Minecraft.theMinecraft.currentScreen == null && !par1EntityPlayer.getHasActivePotion()))) {	
 			float var8 = 1.6F;
 			float var9 = 0.016666668F * var8;
 			double var10 = par1EntityPlayer.getDistanceSqToEntity(this.renderManager.livingPlayer);
