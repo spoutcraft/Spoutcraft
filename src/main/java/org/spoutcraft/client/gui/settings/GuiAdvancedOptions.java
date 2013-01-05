@@ -31,6 +31,7 @@ import org.spoutcraft.api.gui.*;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.settings.controls.AdvancedOpenGLButton;
+import org.spoutcraft.client.gui.settings.controls.AmbientOcclusionButton;
 import org.spoutcraft.client.gui.settings.controls.Anaglyph3DButton;
 import org.spoutcraft.client.gui.settings.controls.AutosaveButton;
 import org.spoutcraft.client.gui.settings.controls.BetterGrassButton;
@@ -350,9 +351,9 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
 
-		//control = new ServerLightButton().setAlign(WidgetAnchor.TOP_CENTER);
-		//control.setWidth(150).setHeight(20).setX(right).setY(top);
-		//screen.attachWidget(spoutcraft, control);
+		control = new AmbientOcclusionButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget(spoutcraft, control);
 
 		top += 22;
 

@@ -84,6 +84,7 @@ public class Configuration {
 	private static boolean connectedTextures = false;
 	private static boolean advancedOptions = false;
 	private static boolean randomMobTextures = true;
+	private static boolean ambientOcclusion = true;
 
 	//Config-specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
@@ -651,6 +652,15 @@ public class Configuration {
 	public static synchronized void setAdvancedOptions(boolean advancedOptions) {
 		Configuration.advancedOptions = advancedOptions;
 		onPropertyChange();
+	}
+	
+	public static synchronized void setAmbientOcclusion(boolean ambientOcclusion) {
+		Configuration.ambientOcclusion = ambientOcclusion;
+		onPropertyChange();
+	}
+
+	public static synchronized boolean isAmbientOcclusion() {
+		return ambientOcclusion;
 	}
 
 	private static synchronized void onPropertyChange() {

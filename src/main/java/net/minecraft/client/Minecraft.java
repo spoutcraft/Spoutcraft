@@ -2330,8 +2330,10 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	/**
 	 * Returns if ambient occlusion is enabled
 	 */
-	public static boolean isAmbientOcclusionEnabled() {
-		return theMinecraft != null && theMinecraft.gameSettings.ambientOcclusion;
+	public static boolean isAmbientOcclusionEnabled() {		
+		// Spout Start
+		return theMinecraft != null && Configuration.isAmbientOcclusion();
+		// Spout End
 	}
 
 	public static boolean isDebugInfoEnabled() {
