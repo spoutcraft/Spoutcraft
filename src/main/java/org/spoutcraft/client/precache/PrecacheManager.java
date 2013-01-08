@@ -33,6 +33,7 @@ import java.util.Map.Entry;
 import java.util.zip.*;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.GuiDownloadTerrain;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
@@ -247,8 +248,10 @@ public class PrecacheManager {
 	
 	public static void showPreloadGui() {
 		//display precache gui.
-		SpoutClient.getHandle().displayGuiScreen(new GuiPrecache(), false);
-		setPreloadGuiText("Checking Plugin Caches...");
+		if (SpoutClient.getHandle().currentScreen instanceof GuiDownloadTerrain) {
+			SpoutClient.getHandle().displayGuiScreen(new GuiPrecache(), false);
+			setPreloadGuiText("Checking Plugin Caches...");
+		}
 	}
 	
 	public static void closePreloadGui() {
@@ -257,8 +260,8 @@ public class PrecacheManager {
 			SpoutClient.getHandle().displayGuiScreen(null, false);
 			// Prevent closing a plugin created menu from opening the downloading terrain
 			SpoutClient.getHandle().clearPreviousScreen();
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new org.spoutcraft.client.packet.PacketPreCacheCompleted());		
 		}
+		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new org.spoutcraft.client.packet.PacketPreCacheCompleted());
 	}
 	
 	public static void setPreloadGuiText(String text) {
