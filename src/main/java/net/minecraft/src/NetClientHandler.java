@@ -65,7 +65,7 @@ public class NetClientHandler extends NetHandler {
 	/** RNG. */
 	Random rand = new Random();
 	// Spout Start
-	long timeout = System.currentTimeMillis() + 1000;
+	long timeout = System.currentTimeMillis() + 5000;
 	public LinkedList<Packet> queue = new LinkedList<Packet>();
 	public long packetQueueTime = 0L;
 	public boolean queued = false;
