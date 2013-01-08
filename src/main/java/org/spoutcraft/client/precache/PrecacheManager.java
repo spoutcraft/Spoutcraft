@@ -195,7 +195,6 @@ public class PrecacheManager {
 					//Construct an output stream for the entry
 					final File toExtract = new File(extractDir, inner.getName());
 					if (!toExtract.exists()) {
-						System.out.println("[Spoutcraft] Extracting: " + toExtract.getName());
 						final FileOutputStream write = new FileOutputStream(toExtract);
 						write.getChannel().transferFrom(read, 0, Long.MAX_VALUE);
 						//Close the writable buffer
