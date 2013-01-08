@@ -118,4 +118,13 @@ public abstract class PacketUtil {
 
 		return string;
 	}
+
+	public static String readString(SpoutInputStream input) throws IOException {
+		int length = input.readInt();
+		byte[] data = new byte[length];
+		input.read(data);
+		String string = new String(data,"UTF-8");
+
+		return string;
+	}
 }

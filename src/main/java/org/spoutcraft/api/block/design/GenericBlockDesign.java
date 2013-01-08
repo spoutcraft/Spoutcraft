@@ -182,7 +182,7 @@ public class GenericBlockDesign implements BlockDesign {
 			return;
 		}
 		reset = false;
-		textureAddon = input.readString();
+		textureAddon = PacketUtil.readString(input);
 		System.out.println(textureAddon);
 		xPos = PacketUtil.readDoubleArray(input);
 		yPos = PacketUtil.readDoubleArray(input);
