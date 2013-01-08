@@ -182,7 +182,7 @@ public class PrecacheManager {
 			//Grab the tuple
 			final PrecacheTuple toCache = (PrecacheTuple) entry.getKey();
 			final File extractDir = new File(cacheRoot, toCache.getPlugin()); //Ex. /cache/pluginname/
-			System.out.println("[Spoutcraft] Reading: " + extractDir.getName() + ".zip");
+			//System.out.println("[Spoutcraft] Reading: " + extractDir.getName() + ".zip");
 			//Make the directories to unzip to
 			extractDir.mkdirs();
 			try  {
@@ -195,7 +195,7 @@ public class PrecacheManager {
 					//Construct an output stream for the entry
 					final File toExtract = new File(extractDir, inner.getName());
 					if (!toExtract.exists()) {
-						System.out.println("[Spoutcraft] Extracting: " + toExtract.getName());
+						//System.out.println("[Spoutcraft] Extracting: " + toExtract.getName());
 						final FileOutputStream write = new FileOutputStream(toExtract);
 						write.getChannel().transferFrom(read, 0, Long.MAX_VALUE);
 						//Close the writable buffer
@@ -221,13 +221,13 @@ public class PrecacheManager {
 			for (File file : files) {
 				if (file.getName().endsWith(".sbd")) {
 					if (spoutDebug) {
-						System.out.println("[Spoutcraft] Loading Spout Block Design: " + file.getName() + " from: " + file.getParent());
+						//System.out.println("[Spoutcraft] Loading Spout Block Design: " + file.getName() + " from: " + file.getParent());
 					}
 					loadDesign(file);
 				}
 				else if (FileUtil.isImageFile(file.getName())) {
 					if (spoutDebug) {
-						System.out.println("[Spoutcraft] Loading image: " + file.getName() + " from: " + file.getParent());
+						//System.out.println("[Spoutcraft] Loading image: " + file.getName() + " from: " + file.getParent());
 					}
 					CustomTextureManager.getTextureFromUrl(file.getName());
 				}
@@ -237,7 +237,7 @@ public class PrecacheManager {
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
 			if (spoutDebug) {
-				System.out.println("[Spoutcraft] Updating renderer...");
+				//System.out.println("[Spoutcraft] Updating renderer...");
 			}
 		}
 		
@@ -275,9 +275,10 @@ public class PrecacheManager {
 		GenericBlockDesign design = null;
 		
 		try {
+			final FileInputStream stream = new FileInputStream(file);
 			final FileChannel read = new FileInputStream(file).getChannel();
+			stream.close();
 			final MappedByteBuffer buffer = read.map(FileChannel.MapMode.READ_ONLY, 0, read.size());
-			read.close();
 			customId = buffer.getShort();
 			data = buffer.get();
 			design = new GenericBlockDesign();	
