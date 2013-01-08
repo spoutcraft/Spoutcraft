@@ -35,7 +35,6 @@ public class PacketFullVersion implements SpoutPacket {
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
-		// Nothing to Read.		
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {

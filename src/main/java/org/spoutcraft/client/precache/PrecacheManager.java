@@ -26,6 +26,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.Channel;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +45,7 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.bukkit.ChatColor;
 
 import org.spoutcraft.api.block.design.GenericBlockDesign;
+import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
@@ -148,7 +154,7 @@ public class PrecacheManager {
 		//Check if there is any thing left to be cached
 		if (!hasNextCache()) {
 			//Nothing is left to cache, proceed to load the cache
-			loadPrecache(true);
+			loadPrecache();
 			return;
 		}
 		final PrecacheTuple next = getNextToCache();
@@ -168,42 +174,32 @@ public class PrecacheManager {
 		return new File(FileUtil.getCacheDir(), plugin + ".zip");
 	}
 	
-	public static void loadPrecache(boolean reloadRenderer) {
+	public static void loadPrecache() {
 		//Unzip
-		File cacheRoot = FileUtil.getCacheDir();
-		//Loop through the
-		List<File> dirty = new ArrayList<File>();
+		final File cacheRoot = FileUtil.getCacheDir();
 
 		for(Entry entry : plugins.entrySet()) {
 			//Grab the tuple
 			final PrecacheTuple toCache = (PrecacheTuple) entry.getKey();
 			final File extractDir = new File(cacheRoot, toCache.getPlugin()); //Ex. /cache/pluginname/
-			System.out.println("[Spoutcraft] Extracting: " + extractDir.getName() + ".zip");
+			System.out.println("[Spoutcraft] Reading: " + extractDir.getName() + ".zip");
 			//Make the directories to unzip to
 			extractDir.mkdirs();
-			final byte[] BUFFER = new byte[104857600]; //100MB buffer
 			try  {
 				//Read in a zip stream
 				final ZipInputStream stream = new ZipInputStream(new FileInputStream(getPluginPreCacheFile(toCache)));
+				final ReadableByteChannel read = Channels.newChannel(stream);
 				//Grab the first entry in the zip
 				ZipEntry inner = stream.getNextEntry();
 				while (inner != null) {
-					//Grab the entry's name
-					String innerName = inner.getName();
 					//Construct an output stream for the entry
-					final File toExtract = new File(extractDir, innerName);
+					final File toExtract = new File(extractDir, inner.getName());
 					if (!toExtract.exists()) {
-						final FileOutputStream writeInner = new FileOutputStream(toExtract);
-						int i;
-						//Read in the file. The file will be limited to the buffer's length
-						while ((i = stream.read(BUFFER, 0, BUFFER.length)) > -1) {
-							//Write the buffer
-							writeInner.write(BUFFER, 0, i);
-						}
+						System.out.println("[Spoutcraft] Extracting: " + toExtract.getName());
+						final FileOutputStream write = new FileOutputStream(toExtract);
+						write.getChannel().transferFrom(read, 0, Long.MAX_VALUE);
 						//Close the writable buffer
-						writeInner.close();
-					} else {
-						dirty.add(toExtract);
+						write.close();
 					}
 					//Close the zip stream for this entry
 					stream.closeEntry();
@@ -223,12 +219,9 @@ public class PrecacheManager {
 			}
 			final File[] files = dir.listFiles();
 			for (File file : files) {
-				if (dirty.contains(file)) {
-					continue;
-				}
 				if (file.getName().endsWith(".sbd")) {
 					if (spoutDebug) {
-						System.out.println("[Spoutcraft] Loading sbd (Spout Block Design): " + file.getName() + " from: " + file.getParent());
+						System.out.println("[Spoutcraft] Loading Spout Block Design: " + file.getName() + " from: " + file.getParent());
 					}
 					loadDesign(file);
 				}
@@ -282,15 +275,13 @@ public class PrecacheManager {
 		GenericBlockDesign design = null;
 		
 		try {
-			DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
-			customId = in.readShort();
-			data = in.readByte();
+			final FileChannel read = new FileInputStream(file).getChannel();
+			final MappedByteBuffer buffer = read.map(FileChannel.MapMode.READ_ONLY, 0, read.size());
+			customId = buffer.getShort();
+			data = buffer.get();
 			design = new GenericBlockDesign();	
-			design.read(in);
+			design.read(new SpoutInputStream(buffer));
 			
-		} catch (EOFException e) {
-			//data input stream always throws EOFException when complete
-			//e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
