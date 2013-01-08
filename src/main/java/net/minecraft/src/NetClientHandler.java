@@ -1204,7 +1204,11 @@ public class NetClientHandler extends NetHandler {
 				if (this.mc.texturePackList.getAcceptsTextures()) {
 					this.mc.texturePackList.requestDownloadOfTexture(var3);
 				} else if (this.mc.texturePackList.func_77300_f()) {
-					this.mc.displayGuiScreen(new GuiYesNo(new NetClientWebTextures(this, var3), StringTranslate.getInstance().translateKey("multiplayer.texturePrompt.line1"), StringTranslate.getInstance().translateKey("multiplayer.texturePrompt.line2"), 0));
+					// Spout Start
+					if (Configuration.isServerTexturePromptsEnabled()) {
+						this.mc.displayGuiScreen(new GuiYesNo(new NetClientWebTextures(this, var3), StringTranslate.getInstance().translateKey("multiplayer.texturePrompt.line1"), StringTranslate.getInstance().translateKey("multiplayer.texturePrompt.line2"), 0));
+					}
+					// Spout End
 				}
 			}
 		} else if ("MC|TrList".equals(par1Packet250CustomPayload.channel)) {

@@ -77,6 +77,7 @@ import org.spoutcraft.client.gui.settings.controls.ResizeScreenshotHeightField;
 import org.spoutcraft.client.gui.settings.controls.ResizeScreenshotWidthField;
 import org.spoutcraft.client.gui.settings.controls.SensitivitySlider;
 import org.spoutcraft.client.gui.settings.controls.ServerLightButton;
+import org.spoutcraft.client.gui.settings.controls.ServerTexturesButton;
 import org.spoutcraft.client.gui.settings.controls.SignDistanceButton;
 import org.spoutcraft.client.gui.settings.controls.SkyToggleButton;
 import org.spoutcraft.client.gui.settings.controls.SmoothFPSButton;
@@ -478,10 +479,10 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
 
-		control = new GuiScaleButton(this).setAlign(WidgetAnchor.TOP_CENTER);
+		control = new ServerTexturesButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
-
+		
 		top += 22;
 
 		control = new SmoothLightingSlider().setAlign(WidgetAnchor.TOP_CENTER);
@@ -506,6 +507,10 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		control = new HotbarQuickKeysButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		
+		control = new GuiScaleButton(this).setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
 
 		top += 22;

@@ -85,6 +85,7 @@ public class Configuration {
 	private static boolean advancedOptions = false;
 	private static boolean randomMobTextures = true;
 	private static boolean ambientOcclusion = true;
+	private static boolean serverTexturePromptsEnabled = true;
 
 	//Config-specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
@@ -661,6 +662,15 @@ public class Configuration {
 
 	public static synchronized boolean isAmbientOcclusion() {
 		return ambientOcclusion;
+	}
+	
+	public static synchronized boolean isServerTexturePromptsEnabled() {
+		return serverTexturePromptsEnabled;
+	}
+
+	public static synchronized void setServerTexturePromptsEnabled(boolean serverTexturePromptsEnabled) {
+		Configuration.serverTexturePromptsEnabled = serverTexturePromptsEnabled;
+		onPropertyChange();
 	}
 
 	private static synchronized void onPropertyChange() {
