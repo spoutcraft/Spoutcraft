@@ -176,14 +176,13 @@ public class GenericBlockDesign implements BlockDesign {
 	}
 
 	public void read(SpoutInputStream input) throws IOException {
-		textureURL = input.readString();
+		textureURL = PacketUtil.readString(input);
 		if (textureURL.equals(resetString)) {
 			reset = true;
 			return;
 		}
 		reset = false;
 		textureAddon = PacketUtil.readString(input);
-		System.out.println(textureAddon);
 		xPos = PacketUtil.readDoubleArray(input);
 		yPos = PacketUtil.readDoubleArray(input);
 		zPos = PacketUtil.readDoubleArray(input);
