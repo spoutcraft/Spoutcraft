@@ -171,29 +171,29 @@ public class PrecacheManager {
 	public static void loadPrecache(boolean reloadRenderer) {
 		//Unzip
 		File cacheRoot = FileUtil.getCacheDir();
-		//Loop through the plugins
+		//Loop through the
+		List<File> dirty = new ArrayList<File>();
+
 		for(Entry entry : plugins.entrySet()) {
 			//Grab the tuple
 			final PrecacheTuple toCache = (PrecacheTuple) entry.getKey();
 			final File extractDir = new File(cacheRoot, toCache.getPlugin()); //Ex. /cache/pluginname/
-			//The extracted file exists and is a directory and isn't empty, move on
-			if (extractDir.exists() && extractDir.isDirectory() && !((List<File>) FileUtils.listFiles(extractDir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)).isEmpty()) {
-				//Do nothing
-			} else {
-				System.out.println("[Spoutcraft] Extracting: " + extractDir.getName() + ".zip");
-				//Make the directories to unzip to
-				extractDir.mkdirs();
-				final byte[] BUFFER = new byte[104857600]; //100MB buffer
-				try  {
-					//Read in a zip stream
-					final ZipInputStream stream = new ZipInputStream(new FileInputStream(getPluginPreCacheFile(toCache)));
-					//Grab the first entry in the zip
-					ZipEntry inner = stream.getNextEntry();
-					while (inner != null) {
-						//Grab the entry's name
-						String innerName = inner.getName();
-						//Construct an output stream for the entry
-						final FileOutputStream writeInner = new FileOutputStream(new File(extractDir, innerName));
+			System.out.println("[Spoutcraft] Extracting: " + extractDir.getName() + ".zip");
+			//Make the directories to unzip to
+			extractDir.mkdirs();
+			final byte[] BUFFER = new byte[104857600]; //100MB buffer
+			try  {
+				//Read in a zip stream
+				final ZipInputStream stream = new ZipInputStream(new FileInputStream(getPluginPreCacheFile(toCache)));
+				//Grab the first entry in the zip
+				ZipEntry inner = stream.getNextEntry();
+				while (inner != null) {
+					//Grab the entry's name
+					String innerName = inner.getName();
+					//Construct an output stream for the entry
+					final File toExtract = new File(extractDir, innerName);
+					if (!toExtract.exists()) {
+						final FileOutputStream writeInner = new FileOutputStream(toExtract);
 						int i;
 						//Read in the file. The file will be limited to the buffer's length
 						while ((i = stream.read(BUFFER, 0, BUFFER.length)) > -1) {
@@ -202,16 +202,18 @@ public class PrecacheManager {
 						}
 						//Close the writable buffer
 						writeInner.close();
-						//Close the zip stream for this entry
-						stream.closeEntry();
-						//Grab the next entry in the zip
-						inner = stream.getNextEntry();
+					} else {
+						dirty.add(toExtract);
 					}
-					//Finally close the stream altogether
-					stream.close();
-				} catch (Exception e ) {
-					e.printStackTrace();
+					//Close the zip stream for this entry
+					stream.closeEntry();
+					//Grab the next entry in the zip
+					inner = stream.getNextEntry();
 				}
+				//Finally close the stream altogether
+				stream.close();
+			} catch (Exception e ) {
+				e.printStackTrace();
 			}
 		}
 		for (Entry entry : plugins.entrySet()) {
@@ -221,6 +223,9 @@ public class PrecacheManager {
 			}
 			final File[] files = dir.listFiles();
 			for (File file : files) {
+				if (dirty.contains(file)) {
+					continue;
+				}
 				if (file.getName().endsWith(".sbd")) {
 					if (spoutDebug) {
 						System.out.println("[Spoutcraft] Loading sbd (Spout Block Design): " + file.getName() + " from: " + file.getParent());
