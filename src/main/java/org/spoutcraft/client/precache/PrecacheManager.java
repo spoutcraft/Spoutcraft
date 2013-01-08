@@ -277,6 +277,7 @@ public class PrecacheManager {
 		try {
 			final FileChannel read = new FileInputStream(file).getChannel();
 			final MappedByteBuffer buffer = read.map(FileChannel.MapMode.READ_ONLY, 0, read.size());
+			read.close();
 			customId = buffer.getShort();
 			data = buffer.get();
 			design = new GenericBlockDesign();	
