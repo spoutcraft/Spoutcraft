@@ -193,7 +193,7 @@ public class WorldRenderer {
 					boolean skipRenderPass = false;
 					boolean rendered = false;
 					boolean drawBlock = false;
-
+					RenderPass.start(renderPass);
 					if (!drawBlock) {
 						drawBlock = true;
 						GL11.glNewList(this.glRenderList + renderPass, GL11.GL_COMPILE);
