@@ -26,15 +26,15 @@ import org.spoutcraft.client.config.Configuration;
 
 public class BetterGrassButton extends AutomatedButton {
 	public BetterGrassButton() {
-		setTooltip("Better Grass\nOFF - default side grass texture, fastest\nFast - full side grass texture, slower\nFancy - dynamic side grass texture, slowest");
+		setTooltip("Better Grass / Snow\nOFF - default side grass texture, fastest\nFast - full side grass texture, slower\nFancy - dynamic side grass texture, slowest");
 	}
 
 	@Override
 	public String getText() {
 		switch(Configuration.getBetterGrass()) {
-			case 0: return "Better Grass: OFF";
-			case 1: return "Better Grass: Fast";
-			case 2: return "Better Grass: Fancy";
+			case 0: return "Better Grass / Snow: OFF";
+			case 1: return "Better Grass / Snow: Fast";
+			case 2: return "Better Grass / Snow: Fancy";
 		}
 		return "Unknown State: " + Configuration.getBetterGrass();
 	}

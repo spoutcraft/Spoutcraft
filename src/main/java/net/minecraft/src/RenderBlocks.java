@@ -4520,8 +4520,7 @@ public class RenderBlocks {
 			this.colorRedTopRight *= var12;
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
-			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 3);
-			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 3));
+			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 3);			
 
 			// Spout Start
 			if (Configuration.getBetterGrass() != 0) {
