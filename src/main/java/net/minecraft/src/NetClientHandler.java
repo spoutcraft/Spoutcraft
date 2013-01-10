@@ -1080,6 +1080,9 @@ public class NetClientHandler extends NetHandler {
 		} else if (var3 == 6) {
 			this.worldClient.playSound(var2.posX, var2.posY + (double)var2.getEyeHeight(), var2.posZ, "random.successful_hit", 0.15F, 0.45F, false);
 		}
+		// Spout Start
+		GuiIngame.dirtySurvival(); // Trigger SurvivalHUD update
+		// Spout End
 	}
 
 	
