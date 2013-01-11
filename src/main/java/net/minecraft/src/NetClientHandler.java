@@ -1063,6 +1063,9 @@ public class NetClientHandler extends NetHandler {
 			this.worldClient.setRainStrength(1.0F);
 		} else if (var3 == 3) {
 			this.mc.playerController.setGameType(EnumGameType.getByID(var4));
+			// Spout Start
+			GuiIngame.dirtySurvival(); // Trigger SurvivalHUD update
+			// Spout End
 		} else if (var3 == 4) {
 			this.mc.displayGuiScreen(new GuiWinGame());
 		} else if (var3 == 5) {
@@ -1079,10 +1082,7 @@ public class NetClientHandler extends NetHandler {
 			}
 		} else if (var3 == 6) {
 			this.worldClient.playSound(var2.posX, var2.posY + (double)var2.getEyeHeight(), var2.posZ, "random.successful_hit", 0.15F, 0.45F, false);
-		}
-		// Spout Start
-		GuiIngame.dirtySurvival(); // Trigger SurvivalHUD update
-		// Spout End
+		}		
 	}
 
 	
