@@ -174,8 +174,13 @@ public class RenderPlayer extends RenderLiving {
 
 			if (var10 < (double)(var12 * var12)) {
 				// Spout Start
-				String title = par1EntityPlayer.displayName;
-				//int color = EasterEggs.getEasterEggTitleColor();
+				String title = null;
+				VIP vip = par1EntityPlayer.vip;				
+				if (vip != null) {
+					title = vip.getTitle();
+				} else {
+					title = par1EntityPlayer.displayName;
+				}
 				float alpha = 0.25F;
 				// If a plugin hasn't set a title, use the easter egg title (if one exists)
 				/*if (EasterEggs.getEasterEggTitle(var1.username) != null && color == -1) {
