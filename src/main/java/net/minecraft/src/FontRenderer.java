@@ -1,8 +1,8 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.TexturePackAPI;
 import com.pclewis.mcpatcher.mod.Colorizer;
 import com.pclewis.mcpatcher.mod.FontUtils;
+import com.pclewis.mcpatcher.mod.TextureUtils;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -116,7 +116,9 @@ public class FontRenderer {
 		BufferedImage var5;
 
 		try {
-			var5 = TexturePackAPI.getImage(RenderEngine.class, par2Str);
+			// Spout Start
+			var5 = TextureUtils.getResourceAsBufferedImage((Object)RenderEngine.class, par2Str);
+			// Spout End
 			InputStream var6 = RenderEngine.class.getResourceAsStream("/font/glyph_sizes.bin");
 			var6.read(this.glyphWidth);
 		} catch (IOException var17) {
@@ -201,7 +203,9 @@ public class FontRenderer {
 		BufferedImage var2;
 
 		try {
-			var2 = TexturePackAPI.getImage(RenderEngine.class, var3);
+			// Spout Start
+			var2 = TextureUtils.getResourceAsBufferedImage((Object)RenderEngine.class, var3);
+			// Spout End
 		} catch (Exception var5) {
 			throw new RuntimeException(var5);
 		}
@@ -806,7 +810,9 @@ public class FontRenderer {
 		BufferedImage var5;
 
 		try {
-			var5 = TexturePackAPI.getImage(RenderEngine.class, var2);
+			// Spout Start
+			var5 = TextureUtils.getResourceAsBufferedImage((Object)RenderEngine.class, var2);
+			// Spout End
 			InputStream var6 = RenderEngine.class.getResourceAsStream("/font/glyph_sizes.bin");
 			var6.read(this.glyphWidth);
 		} catch (IOException var17) {

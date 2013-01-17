@@ -393,6 +393,18 @@ public class TextureUtils {
 	}
 		
  	// Spout Start
+	public static BufferedImage getResourceAsBufferedImage(String var0) throws IOException {
+		return getResourceAsBufferedImage(getSelectedTexturePack(), var0);
+	}
+
+	public static BufferedImage getResourceAsBufferedImage(Object var0, String var1) throws IOException {
+		return getResourceAsBufferedImage(var1);
+	}
+
+	public static BufferedImage getResourceAsBufferedImage(Object var0, Object var1, String var2) throws IOException {
+		return getResourceAsBufferedImage(var2);
+	}
+	
 	public static int getTileSize() {
 		return getTileSize(getSelectedTexturePack());
 	}

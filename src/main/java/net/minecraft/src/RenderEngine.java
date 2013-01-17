@@ -78,38 +78,29 @@ public class RenderEngine {
 		var3.dispose();
 	}
 
+	// Spout Start - Don't use MCPatchers version
 	public int[] getTextureContents(String par1Str) {
 		ITexturePack var2 = this.texturePack.getSelectedTexturePack();
 		int[] var3 = (int[])this.textureContentsMap.get(par1Str);
-
 		if (var3 != null) {
 			return var3;
 		} else {
 			try {
-				Object var4 = null;
 				int[] var7;
-
-				if (par1Str.startsWith("##")) {
-					// MCPatcher Start
-					var7 = this.getImageContentsAndAllocate(this.unwrapImageByColumns(TextureUtils.getImage(this, var2, par1Str.substring(2))));
-					// MCPatcher End
+				if (par1Str.startsWith("##")) {				
+					var7 = this.getImageContentsAndAllocate(this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(2))));
 				} else if (par1Str.startsWith("%clamp%")) {
 					this.clampTexture = true;
-					// MCPatcher Start
-					var7 = this.getImageContentsAndAllocate(TextureUtils.getImage(this, var2, par1Str.substring(7)));
-					// MCPatcher End
+					var7 = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(7)));
 					this.clampTexture = false;
 				} else if (par1Str.startsWith("%blur%")) {
 					this.blurTexture = true;
 					this.clampTexture = true;
-					// MCPatcher Start
-					var7 = this.getImageContentsAndAllocate(TextureUtils.getImage(this, var2, par1Str.substring(6)));
-					// MCPatcher Start
+					var7 = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(6)));
 					this.clampTexture = false;
 					this.blurTexture = false;
 				} else {
 					InputStream var8 = var2.getResourceAsStream(par1Str);
-
 					if (var8 == null) {
 						var7 = this.getImageContentsAndAllocate(this.missingTextureImage);
 					} else {
@@ -119,14 +110,15 @@ public class RenderEngine {
 
 				this.textureContentsMap.put(par1Str, var7);
 				return var7;
-			} catch (IOException var6) {
-				var6.printStackTrace();
-				int[] var5 = this.getImageContentsAndAllocate(this.missingTextureImage);
-				this.textureContentsMap.put(par1Str, var5);
-				return var5;
+			} catch (IOException var5) {
+				var5.printStackTrace();
+				int[] var4 = this.getImageContentsAndAllocate(this.missingTextureImage);
+				this.textureContentsMap.put(par1Str, var4);
+				return var4;
 			}
 		}
 	}
+	// Spout End
 
 	private int[] getImageContentsAndAllocate(BufferedImage par1BufferedImage) {
 		int var2 = par1BufferedImage.getWidth();
@@ -149,45 +141,35 @@ public class RenderEngine {
 		// MCPatcher End
 	}
 
+	// Spout Start - Don't use MCPatchers Version
 	public int getTexture(String par1Str) {
 		Integer var2 = (Integer)this.textureMap.get(par1Str);
-
 		if (var2 != null) {
 			return var2.intValue();
 		} else {
 			ITexturePack var6 = this.texturePack.getSelectedTexturePack();
-
 			try {
 				this.singleIntBuffer.clear();
 				GLAllocation.generateTextureNames(this.singleIntBuffer);
 				int var3 = this.singleIntBuffer.get(0);
-
-				if (par1Str.startsWith("##")) {
-					// MCPatcher Start
-					this.setupTexture(this.unwrapImageByColumns(TextureUtils.getImage(this, var6, par1Str.substring(2))), var3);
-					// MCPatcher End
+				if (par1Str.startsWith("##")) {				
+					this.setupTexture(this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(2))), var3);
 				} else if (par1Str.startsWith("%clamp%")) {
 					this.clampTexture = true;
-					// MCPatcher Start
-					this.setupTexture(TextureUtils.getImage(this, var6, par1Str.substring(7)), var3);
-					// MCPatcher End
+					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(7)), var3);
 					this.clampTexture = false;
 				} else if (par1Str.startsWith("%blur%")) {
 					this.blurTexture = true;
-					// MCPatcher Start
-					this.setupTexture(TextureUtils.getImage(this, var6, par1Str.substring(6)), var3);
-					// MCPatcher End
+					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(6)), var3);
 					this.blurTexture = false;
 				} else if (par1Str.startsWith("%blurclamp%")) {
 					this.blurTexture = true;
 					this.clampTexture = true;
-					// MCPatcher Start
-					this.setupTexture(TextureUtils.getImage(this, var6, par1Str.substring(11)), var3);
-					// MCPatcher End
+					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(11)), var3);
 					this.blurTexture = false;
 					this.clampTexture = false;
 				} else {
-					this.setupTexture(TexturePackAPI.getImage(par1Str), var3); // MCPatcher
+					this.setupTexture(TextureUtils.getResourceAsBufferedImage(par1Str), var3);
 				}
 
 				this.textureMap.put(par1Str, Integer.valueOf(var3));
@@ -202,6 +184,7 @@ public class RenderEngine {
 			}
 		}
 	}
+	// Spout End
 
 	/**
 	 * Takes an image with multiple 16-pixel-wide columns and creates a new 16-pixel-wide image where the columns are
@@ -334,23 +317,23 @@ public class RenderEngine {
 
 		for (int var6 = 0; var6 < par1ArrayOfInteger.length; ++var6) {
 			int var7 = par1ArrayOfInteger[var6] >> 24 & 255;
-			int var8 = par1ArrayOfInteger[var6] >> 16 & 255;
-			int var9 = par1ArrayOfInteger[var6] >> 8 & 255;
-			int var10 = par1ArrayOfInteger[var6] & 255;
+		int var8 = par1ArrayOfInteger[var6] >> 16 & 255;
+		int var9 = par1ArrayOfInteger[var6] >> 8 & 255;
+		int var10 = par1ArrayOfInteger[var6] & 255;
 
-			if (this.options != null && this.options.anaglyph) {
-				int var11 = (var8 * 30 + var9 * 59 + var10 * 11) / 100;
-				int var12 = (var8 * 30 + var9 * 70) / 100;
-				int var13 = (var8 * 30 + var10 * 70) / 100;
-				var8 = var11;
-				var9 = var12;
-				var10 = var13;
-			}
+		if (this.options != null && this.options.anaglyph) {
+			int var11 = (var8 * 30 + var9 * 59 + var10 * 11) / 100;
+			int var12 = (var8 * 30 + var9 * 70) / 100;
+			int var13 = (var8 * 30 + var10 * 70) / 100;
+			var8 = var11;
+			var9 = var12;
+			var10 = var13;
+		}
 
-			var5[var6 * 4 + 0] = (byte)var8;
-			var5[var6 * 4 + 1] = (byte)var9;
-			var5[var6 * 4 + 2] = (byte)var10;
-			var5[var6 * 4 + 3] = (byte)var7;
+		var5[var6 * 4 + 0] = (byte)var8;
+		var5[var6 * 4 + 1] = (byte)var9;
+		var5[var6 * 4 + 2] = (byte)var10;
+		var5[var6 * 4 + 3] = (byte)var7;
 		}
 
 		// MCPatcher Start
@@ -376,7 +359,6 @@ public class RenderEngine {
 	 */
 	public int getTextureForDownloadableImage(String par1Str, String par2Str) {
 		ThreadDownloadImageData var3 = (ThreadDownloadImageData)this.urlToImageDataMap.get(par1Str);
-
 		if (var3 != null && var3.image != null && !var3.textureSetupComplete) {
 			if (var3.textureName < 0) {
 				var3.textureName = this.allocateAndSetupTexture(var3.image);
@@ -521,21 +503,21 @@ public class RenderEngine {
 			var9 = (String)var2.next();
 
 			try {
-				// MCPatcher Start
+				// Spout Start - Dont use MCPatchers Version
 				if (var9.startsWith("##")) {
-					var4 = this.unwrapImageByColumns(TextureUtils.getImage(this, var1, var9.substring(2)));
+					var4 = this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(2)));
 				} else if (var9.startsWith("%clamp%")) {
 					this.clampTexture = true;
-					var4 = TextureUtils.getImage(this, var1, var9.substring(7));
+					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(7));
 				} else if (var9.startsWith("%blur%")) {
 					this.blurTexture = true;
-					var4 = TextureUtils.getImage(this, var1, var9.substring(6));
+					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(6));
 				} else if (var9.startsWith("%blurclamp%")) {
 					this.blurTexture = true;
 					this.clampTexture = true;
-					var4 = TextureUtils.getImage(this, var1, var9.substring(11));
+					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(11));
 				} else {
-					var4 = TextureUtils.getImage(this, var1, var9);
+					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9);
 				}
 				if (var4 == null) {
 					var2.remove();
@@ -561,23 +543,23 @@ public class RenderEngine {
 			var9 = (String)var2.next();
 
 			try {
-				// MCPatcher Start
+				// Spout Start - Don't use MCPatchers Version
 				if (var9.startsWith("##")) {
-					var4 = this.unwrapImageByColumns(TextureUtils.getImage(this, var1, var9.substring(2)));
+					var4 = this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(2)));
 				} else if (var9.startsWith("%clamp%")) {
 					this.clampTexture = true;
-					var4 = TextureUtils.getImage(this, var1, var9.substring(7));
+					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(7));
 				} else if (var9.startsWith("%blur%")) {
 					this.blurTexture = true;
-					var4 = TextureUtils.getImage(this, var1, var9.substring(6));
+					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9.substring(6));
 				} else {
-					var4 = TextureUtils.getImage(this, var1, var9);
+					var4 = TextureUtils.getResourceAsBufferedImage(this, var1, var9);
 				}
 				if (var4 == null) {
 					var2.remove();
 					continue;
 				}
-				// MCPatcher End
+				// Spout End
 
 				this.getImageContents(var4, (int[])this.textureContentsMap.get(var9));
 				this.blurTexture = false;
