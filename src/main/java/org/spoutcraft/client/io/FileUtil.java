@@ -140,14 +140,16 @@ public class FileUtil {
 
 	public static File findFile(String plugin, String fileName) {
 		File result = null;
-		result = matchFile(new File(getCacheDir(), plugin), fileName);
-		if (result != null) {
-			return result;
-		}
 		result = matchFile(new File(SpoutClient.getInstance().getAddonFolder(), plugin), fileName);
 		if (result != null) {
 			return result;
 		}
+		
+		result = matchFile(new File(getCacheDir(), plugin), fileName);
+		if (result != null) {
+			return result;
+		}
+		
 		return null;
 	}
 
