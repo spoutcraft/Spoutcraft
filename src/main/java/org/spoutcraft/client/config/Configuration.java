@@ -84,7 +84,7 @@ public class Configuration {
 	private static boolean connectedTextures = false;
 	private static boolean advancedOptions = false;
 	private static boolean randomMobTextures = true;
-	private static boolean ambientOcclusion = true;
+	private static boolean ambientOcclusion = false;
 	private static boolean serverTexturePromptsEnabled = true;
 
 	//Config-specific

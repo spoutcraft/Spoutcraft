@@ -231,6 +231,11 @@ public class SpoutWorth {
 			Configuration.write();
 			return;
 		}
+		if (!Configuration.isAmbientOcclusion()) {
+			Configuration.setAmbientOcclusion(true);
+			Configuration.write();
+			return;
+		}
 	}
 
 	public void decreaseAppearance() {
@@ -357,6 +362,13 @@ public class SpoutWorth {
 		}
 		if (Configuration.isFancyWater()) {
 			Configuration.setFancyWater(false);
+			if (--downgrade == 0) {
+				Configuration.write();
+				return;
+			}
+		}
+		if (Configuration.isAmbientOcclusion()) {
+			Configuration.setAmbientOcclusion(false);
 			if (--downgrade == 0) {
 				Configuration.write();
 				return;
