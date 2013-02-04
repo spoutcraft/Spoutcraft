@@ -462,7 +462,7 @@ public enum SoundEffect {
 
 	private final int id;
 	private final String name;
-	private final int soundId;
+	private final int variationId;
 	private static final Map<String, SoundEffect> lookupName = new HashMap<String, SoundEffect>();
 	private static final Map<Integer, SoundEffect> lookupId = new HashMap<Integer, SoundEffect>();
 	private static int last = 0;
@@ -470,13 +470,13 @@ public enum SoundEffect {
 	SoundEffect(final int id, final String name) {
 		this.id = id;
 		this.name = name;
-		this.soundId = -1;
+		this.variationId = -1;
 	}
 
-	SoundEffect(final int id, final String name, final int soundId) {
+	SoundEffect(final int id, final String name, final int variationId) {
 		this.id = id;
 		this.name = name;
-		this.soundId = soundId;
+		this.variationId = variationId;
 	}
 
 	public int getId() {
@@ -487,8 +487,8 @@ public enum SoundEffect {
 		return name;
 	}
 
-	public int getSoundId() {
-		return soundId;
+	public int getVariationId() {
+		return variationId;
 	}
 
 	public static SoundEffect getSoundEffectFromId(int id) {

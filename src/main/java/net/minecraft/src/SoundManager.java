@@ -398,33 +398,65 @@ public class SoundManager {
 			}
 		}
 	}
-
+	
+	// Spout Start
 	/**
 	 * Plays a sound. Args: soundName, x, y, z, volume, pitch
+	 * calls upon the replacement method so the original calls function properly.
 	 */
-	public void playSound(String par1Str, float par2, float par3, float par4, float par5, float par6) {
-		if (loaded && this.options.soundVolume != 0.0F) {
-			SoundPoolEntry var7 = this.soundPoolSounds.getRandomSoundFromSoundPool(par1Str);
-
-			if (var7 != null && par5 > 0.0F) {
-				this.latestSoundID = (this.latestSoundID + 1) % 256;
-				String var8 = "sound_" + this.latestSoundID;
-				float var9 = 16.0F;
-
-				if (par5 > 1.0F) {
-					var9 *= par5;
-				}
-
-				sndSystem.newSource(par5 > 1.0F, var8, var7.soundUrl, var7.soundName, false, par2, par3, par4, 2, var9);
-				sndSystem.setPitch(var8, par6);
-
-				if (par5 > 1.0F) {
-					par5 = 1.0F;
-				}
-
-				sndSystem.setVolume(var8, par5 * this.options.soundVolume);
-				sndSystem.play(var8);
+	public void playSound(String s, float f, float f1, float f2, float f3, float f4) {
+		playSound(s, f, f1, f2, f3, f4, -1, 1.0F);
+	}
+	
+	/**
+	 * Replaces the original playSound method 
+	 * @param s - effect name.
+	 * @param f - x
+	 * @param f1 - y
+	 * @param f2 - z
+	 * @param f3 - pitch
+	 * @param f4 - distance
+	 * @param variationId - variation of the sound effect. Set to -1 to select a random variation or if no variations exist
+	 * @param volume - volume
+	 */
+	public void playSound(String s, float f, float f1, float f2, float f3, float f4, int variationId, float volume) {
+		if(!loaded || options.soundVolume == 0.0F) {
+			return;
+		}
+		if (soundEffectsLimit-- <= 0) {
+			return;
+		}
+		
+		SoundPoolEntry soundpoolentry;
+		
+		if (variationId > -1) {
+			soundpoolentry = soundPoolSounds.getSoundFromSoundPool(s, variationId);
+		} else {
+			soundpoolentry = soundPoolSounds.getRandomSoundFromSoundPool(s);
+		}
+		
+		if(soundpoolentry != null && f3 > 0.0F) {
+			latestSoundID = (latestSoundID + 1) % 256;
+			String s1;
+			
+			if (variationId == -1) {
+				s1 = (new StringBuilder()).append("sound_").append(latestSoundID).toString();
+			} else {
+				s1 = (new StringBuilder()).append("sound_").append(variationId).toString();
 			}
+			
+			float f5 = 16F;
+			if(f3 > 1.0F){
+				f5 *= f3;
+			}
+			sndSystem.newSource(f3 > 1.0F, s1, soundpoolentry.soundUrl, soundpoolentry.soundName, false, f, f1, f2, 2, f5);
+			sndSystem.setPitch(s1, f4);
+			if(f3 > 1.0F) {
+				f3 = 1.0F;
+			}
+			f3 *= volume;
+			sndSystem.setVolume(s1, f3 * options.soundVolume);
+			sndSystem.play(s1);
 		}
 	}
 
