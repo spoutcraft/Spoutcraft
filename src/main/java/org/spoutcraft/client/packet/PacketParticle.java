@@ -57,8 +57,6 @@ public class PacketParticle implements SpoutPacket {
 
 	@Override
 	public void run(int playerId) {
-		//TODO: Fix this.
-		/*
 		Random r = new Random();
 		for (int i = 0; i < amount; i++) {
 			double x = location.getX();
@@ -69,8 +67,8 @@ public class PacketParticle implements SpoutPacket {
 				y += (r.nextBoolean() ? 2 : -2) * r.nextFloat();
 				z += (r.nextBoolean() ? 2 : -2) * r.nextFloat();
 			}
-			TODO: Fix this.
-			EntityFX particle = Minecraft.theMinecraft.renderGlobal.func_40193_b(name, x, y, z, motion.getX(), motion.getY(), motion.getZ(), 256D);
+			
+			EntityFX particle = Minecraft.theMinecraft.renderGlobal.doSpawnParticle(name, x, y, z, motion.getX(), motion.getY(), motion.getZ());
 			if (particle != null) {
 				if (scale > 0) {
 					particle.particleScale = scale;
@@ -88,7 +86,6 @@ public class PacketParticle implements SpoutPacket {
 				particle.particleMaxAge = maxAge;
 			}
 		}
-		*/
 	}
 
 	@Override
