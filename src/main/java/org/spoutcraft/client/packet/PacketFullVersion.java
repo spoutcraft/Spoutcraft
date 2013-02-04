@@ -31,7 +31,11 @@ public class PacketFullVersion implements SpoutPacket {
 	}
 
 	public PacketFullVersion(String versionString) {
-		version = versionString.split("b")[1];
+		try {
+			version = versionString.split("b")[1];
+		} catch (Exception e) {
+			version = versionString;
+		}
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
