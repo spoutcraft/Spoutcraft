@@ -37,6 +37,7 @@ import org.yaml.snakeyaml.introspector.BeanAccess;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockWorkbench;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.GuiChat;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.ScreenType;
@@ -278,7 +279,10 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				GuiScreen parent = SpoutClient.getHandle().currentScreen;
 				SpoutClient.getHandle().displayGuiScreen(new GuiAmbigousInput(effective, parent));
 			} else {
-				Spoutcraft.getActivePlayer().showAchievement("Multiple Bindings ...", "are assigned to Key " + Keyboard.getKeyName(key), Block.workbench.blockID);
+				GuiScreen parent = SpoutClient.getHandle().currentScreen;				
+				if (!(parent instanceof GuiChat)) {
+					Spoutcraft.getActivePlayer().showAchievement("Multiple Bindings ...", "are assigned to Key " + Keyboard.getKeyName(key), Block.workbench.blockID);	
+				}				
 			}
 		}
 	}
