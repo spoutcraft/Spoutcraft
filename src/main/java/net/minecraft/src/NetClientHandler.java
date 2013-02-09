@@ -182,9 +182,10 @@ public class NetClientHandler extends NetHandler {
 		this.worldClient.isRemote = true;
 		this.mc.loadWorld(this.worldClient);
 		this.mc.thePlayer.dimension = par1Packet1Login.dimension;
-		this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
-		// Spout Start - Don't do this because of the dumb close screen call above it.
-		//this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache());
+		//this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
+		// Spout Start
+		this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache());
+		System.out.println("[Spoutcraft Cache Manager] - Starting: "+ System.currentTimeMillis());
 		// Spout End
 		this.mc.thePlayer.entityId = par1Packet1Login.clientEntityId;
 		this.currentServerMaxPlayers = par1Packet1Login.maxPlayers;

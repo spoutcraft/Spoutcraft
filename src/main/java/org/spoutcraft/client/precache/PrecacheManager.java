@@ -160,8 +160,9 @@ public class PrecacheManager {
 		final PrecacheTuple next = getNextToCache();
 
 		//Let the user know we are precaching
-		setPreloadGuiText(ChatColor.BLUE + "Spoutcraft" + "\n"+" "+ "\n"+ ChatColor.WHITE + "Downloading Custom Content for:  " + ChatColor.ITALIC + next.getPlugin() + " " + next.getVersion());
-
+		if (spoutDebug) {
+			setPreloadGuiText(ChatColor.BLUE + "Spoutcraft" + "\n"+" "+ "\n"+ ChatColor.WHITE + "Downloading Custom Content for:  " + ChatColor.ITALIC + next.getPlugin() + " " + next.getVersion());
+		}
 		//Send SpoutPlugin a request for the pre-cache zip
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRequestPrecache(next.getPlugin()));
 	}
@@ -247,7 +248,7 @@ public class PrecacheManager {
 		//display precache gui.
 		if (SpoutClient.getHandle().currentScreen instanceof GuiDownloadTerrain) {
 			SpoutClient.getHandle().displayGuiScreen(new GuiPrecache(), false);
-			setPreloadGuiText("Checking Plugin Caches...");
+			//setPreloadGuiText("Checking Plugin Caches...");
 		}
 	}
 	
