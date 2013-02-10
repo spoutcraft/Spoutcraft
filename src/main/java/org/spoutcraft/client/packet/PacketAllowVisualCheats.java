@@ -26,57 +26,97 @@ import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.client.SpoutClient;
 
 public class PacketAllowVisualCheats implements SpoutPacket {
-	private boolean sky = false;
-	private boolean clearwater = false;
-	private boolean stars = false;
-	private boolean weather = false;
+	private boolean cheatsky = false;
+	private boolean forcesky = false;
+	private boolean showsky = true;
+	private boolean cheatclearwater = false;
+	private boolean forceclearwater = false;	
+	private boolean showclearwater = false;
+	private boolean cheatstars = false;
+	private boolean forcestars = false;
+	private boolean showstars = true;
+	private boolean cheatweather = false;
+	private boolean forceweather = false;
+	private boolean showweather = true;
 	private boolean time = false;
 	private boolean coords = false;
 	private boolean entitylabel = false;
-	private boolean voidfog = false;
+	private boolean cheatvoidfog = false;
+	private boolean forcevoidfog = false;
+	private boolean showvoidfog = true;
 	private boolean flyspeed = false;
 
 	public PacketAllowVisualCheats() {
 	}
 
-	public PacketAllowVisualCheats(boolean tsky, boolean tclearwater, boolean tstars, boolean tweather, boolean ttime, boolean tcoords, boolean tentitylabel, boolean tvoidfog, boolean tflyspeed) {
-		this.sky = tsky;
-		this.clearwater = tclearwater;
-		this.stars = tstars;
-		this.weather = tweather;
+	public PacketAllowVisualCheats(boolean tsky, boolean fsky, boolean ssky, boolean tclearwater, boolean fclearwater, boolean sclearwater, boolean tstars, boolean fstars, boolean sstars, boolean tweather, boolean fweather, boolean sweather, boolean ttime, boolean tcoords, boolean tentitylabel, boolean tvoidfog, boolean fvoidfog, boolean svoidfog, boolean tflyspeed) {
+		this.cheatsky = tsky;
+		this.forcesky = fsky;
+		this.showsky = ssky;
+		this.cheatclearwater = tclearwater;
+		this.forceclearwater = fclearwater;
+		this.showclearwater = sclearwater;
+		this.cheatstars = tstars;
+		this.forcestars = fstars;
+		this.showstars = sstars;
+		this.cheatweather = tweather;
+		this.forceweather = fweather;
+		this.showweather = sweather;
 		this.time = ttime;
 		this.coords = tcoords;
 		this.entitylabel = tentitylabel;
-		this.voidfog = tvoidfog;
+		this.cheatvoidfog = tvoidfog;
+		this.forcevoidfog = fvoidfog;
+		this.showvoidfog = svoidfog;
 		this.flyspeed = tflyspeed;
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
-		sky = input.readBoolean();
-		clearwater = input.readBoolean();
-		stars = input.readBoolean();
-		weather = input.readBoolean();
+		cheatsky = input.readBoolean();
+		forcesky = input.readBoolean();
+		showsky = input.readBoolean();
+		cheatclearwater = input.readBoolean();
+		forceclearwater = input.readBoolean();
+		showclearwater = input.readBoolean();
+		cheatstars = input.readBoolean();
+		forcestars = input.readBoolean();
+		showstars = input.readBoolean();
+		cheatweather = input.readBoolean();
+		forceweather = input.readBoolean();
+		showweather = input.readBoolean();
 		time = input.readBoolean();
 		coords = input.readBoolean();
 		entitylabel = input.readBoolean();
-		voidfog = input.readBoolean();
+		cheatvoidfog = input.readBoolean();
+		forcevoidfog = input.readBoolean();
+		showvoidfog = input.readBoolean();
 		flyspeed = input.readBoolean();
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {
-		output.writeBoolean(sky);
-		output.writeBoolean(clearwater);
-		output.writeBoolean(stars);
-		output.writeBoolean(weather);
+		output.writeBoolean(cheatsky);
+		output.writeBoolean(forcesky);
+		output.writeBoolean(showsky);
+		output.writeBoolean(cheatclearwater);		
+		output.writeBoolean(forceclearwater);
+		output.writeBoolean(showclearwater);
+		output.writeBoolean(cheatstars);
+		output.writeBoolean(forcestars);
+		output.writeBoolean(showstars);
+		output.writeBoolean(cheatweather);
+		output.writeBoolean(forceweather);
+		output.writeBoolean(showweather);
 		output.writeBoolean(time);
 		output.writeBoolean(coords);
 		output.writeBoolean(entitylabel);
-		output.writeBoolean(voidfog);
+		output.writeBoolean(cheatvoidfog);
+		output.writeBoolean(forcevoidfog);
+		output.writeBoolean(showvoidfog);
 		output.writeBoolean(flyspeed);
 	}
 
-	public void run(int playerId) {
-		SpoutClient.getInstance().setVisualCheats(sky, clearwater, stars, weather, time, coords, entitylabel, voidfog, flyspeed);
+	public void run(int playerId) {		
+		SpoutClient.getInstance().setVisualCheats(cheatsky, forcesky, showsky, cheatclearwater, forceclearwater, showclearwater, cheatstars, forcestars, showstars, cheatweather, forceweather, showweather, time, coords, entitylabel, cheatvoidfog, forcevoidfog, showvoidfog, flyspeed);
 	}
 
 	public PacketType getPacketType() {

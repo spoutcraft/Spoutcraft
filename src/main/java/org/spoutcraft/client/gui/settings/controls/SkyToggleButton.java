@@ -21,13 +21,14 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 
 public class SkyToggleButton extends GenericCheckBox {
 	public SkyToggleButton() {
 		super("Sky");
 		setChecked(Configuration.isSky());
-		//setEnabled(SpoutClient.getInstance().isSkyCheat());
+		setEnabled(SpoutClient.getInstance().isSkyCheat());
 		setTooltip("Sky\nON - sky is visible, slower\nOFF  - sky is not visible, faster\nWhen sky is OFF the moon and sun are still visible.");
 	}
 
