@@ -21,12 +21,18 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 
 public class FlightSpeedSlider extends GenericSlider {
 	public FlightSpeedSlider() {
 		super("Flight Speed");
-		this.setSliderPosition(Configuration.getFlightSpeedFactor() / 10);
+		setEnabled(SpoutClient.getInstance().isFlySpeedCheat());		
+		if (SpoutClient.getInstance().isFlySpeedCheat()) {
+			this.setSliderPosition(Configuration.getFlightSpeedFactor() / 10);
+		} else {
+			this.setSliderPosition(1.0F / 10);
+		}
 		setTooltip("Flight Speed Multiplier\nAlters how fast you fly in creative. 1X is vanilla speed.");
 	}
 

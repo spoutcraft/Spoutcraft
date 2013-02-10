@@ -34,11 +34,12 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 	private boolean coords = false;
 	private boolean entitylabel = false;
 	private boolean voidfog = false;
+	private boolean flyspeed = false;
 
 	public PacketAllowVisualCheats() {
 	}
 
-	public PacketAllowVisualCheats(boolean tsky, boolean tclearwater, boolean tstars, boolean tweather, boolean ttime, boolean tcoords, boolean tentitylabel, boolean tvoidfog) {
+	public PacketAllowVisualCheats(boolean tsky, boolean tclearwater, boolean tstars, boolean tweather, boolean ttime, boolean tcoords, boolean tentitylabel, boolean tvoidfog, boolean tflyspeed) {
 		this.sky = tsky;
 		this.clearwater = tclearwater;
 		this.stars = tstars;
@@ -47,6 +48,7 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 		this.coords = tcoords;
 		this.entitylabel = tentitylabel;
 		this.voidfog = tvoidfog;
+		this.flyspeed = tflyspeed;
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
@@ -58,6 +60,7 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 		coords = input.readBoolean();
 		entitylabel = input.readBoolean();
 		voidfog = input.readBoolean();
+		flyspeed = input.readBoolean();
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {
@@ -69,10 +72,11 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 		output.writeBoolean(coords);
 		output.writeBoolean(entitylabel);
 		output.writeBoolean(voidfog);
+		output.writeBoolean(flyspeed);
 	}
 
 	public void run(int playerId) {
-		SpoutClient.getInstance().setVisualCheats(sky, clearwater, stars, weather, time, coords, entitylabel, voidfog);
+		SpoutClient.getInstance().setVisualCheats(sky, clearwater, stars, weather, time, coords, entitylabel, voidfog, flyspeed);
 	}
 
 	public PacketType getPacketType() {
@@ -80,7 +84,7 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 	}
 
 	public int getVersion() {
-		return 3;
+		return 4;
 	}
 
 	public void failure(int playerId) {

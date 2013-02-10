@@ -228,11 +228,19 @@ public class EntityPlayerSP extends EntityPlayer {
 			if (this.capabilities.isFlying) {
 				// Spout Start
 				if (this.movementInput.flyingDown) { 
-					this.motionY -= 0.15D * Configuration.getFlightSpeedFactor();
+					if (SpoutClient.getInstance().isFlySpeedCheat()) {
+						this.motionY -= 0.15D * Configuration.getFlightSpeedFactor();
+					} else {
+						this.motionY -= 0.15D;
+					}
 				}
 
 				if (this.movementInput.flyingUp) {
-					this.motionY += 0.15D * Configuration.getFlightSpeedFactor();
+					if (SpoutClient.getInstance().isFlySpeedCheat()) {
+						this.motionY += 0.15D * Configuration.getFlightSpeedFactor();
+					} else {
+						this.motionY += 0.15D;
+					}
 				}
 				// Spout End
 			}
