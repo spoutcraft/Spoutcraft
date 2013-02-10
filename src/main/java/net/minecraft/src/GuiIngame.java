@@ -194,22 +194,24 @@ public class GuiIngame extends Gui {
 				this.drawString(font, var45, screenWidth - font.getStringWidth(var45) - 2, 2, 14737632);
 				var45 = "Allocated memory: " + var34 * 100L / var41 + "% (" + var34 / 1024L / 1024L + "MB)";
 				this.drawString(font, var45, screenWidth - font.getStringWidth(var45) - 2, 12, 14737632);
-				if(SpoutClient.getInstance().isCoordsCheat()) {
-					this.drawString(font, String.format("x: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posX)}), 2, 64, 14737632);
-					this.drawString(font, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
-					this.drawString(font, String.format("z: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posZ)}), 2, 80, 14737632);
-					this.drawString(font, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
-				}
 				int var47 = MathHelper.floor_double(this.mc.thePlayer.posX);
 				int var22 = MathHelper.floor_double(this.mc.thePlayer.posY);
-				int var233 = MathHelper.floor_double(this.mc.thePlayer.posZ);
-
-				if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var47, var22, var233)) {
-					Chunk var48 = this.mc.theWorld.getChunkFromBlockCoords(var47, var233);
-					this.drawString(font, "lc: " + (var48.getTopFilledSegment() + 15) + " b: " + var48.getBiomeGenForWorldCoords(var47 & 15, var233 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var48.getSavedLightValue(EnumSkyBlock.Block, var47 & 15, var22, var233 & 15) + " sl: " + var48.getSavedLightValue(EnumSkyBlock.Sky, var47 & 15, var22, var233 & 15) + " rl: " + var48.getBlockLightValue(var47 & 15, var22, var233 & 15, 0), 2, 96, 14737632);
+				int var23 = MathHelper.floor_double(this.mc.thePlayer.posZ);				
+				if(SpoutClient.getInstance().isCoordsCheat()) {
+					this.drawString(font, String.format("x: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posX), Integer.valueOf(var47), Integer.valueOf(var47 >> 4), Integer.valueOf(var47 & 15)}), 2, 64, 14737632);
+					this.drawString(font, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
+					this.drawString(font, String.format("z: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posZ), Integer.valueOf(var23), Integer.valueOf(var23 >> 4), Integer.valueOf(var23 & 15)}), 2, 80, 14737632);
+					int var24 = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+					this.drawString(font, "f: " + var24 + " (" + Direction.directions[var24] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
+				}
+				
+				if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var47, var22, var23)) {
+					Chunk var48 = this.mc.theWorld.getChunkFromBlockCoords(var47, var23);
+					this.drawString(font, "lc: " + (var48.getTopFilledSegment() + 15) + " b: " + var48.getBiomeGenForWorldCoords(var47 & 15, var23 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var48.getSavedLightValue(EnumSkyBlock.Block, var47 & 15, var22, var23 & 15) + " sl: " + var48.getSavedLightValue(EnumSkyBlock.Sky, var47 & 15, var22, var23 & 15) + " rl: " + var48.getBlockLightValue(var47 & 15, var22, var23 & 15, 0), 2, 96, 14737632);
 				}
 
-				this.drawString(font, String.format("ws: %.3f, fs: %.3f, g: %b", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround)}), 2, 104, 14737632);
+				this.drawString(font, String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround), Integer.valueOf(this.mc.theWorld.getHeightValue(var47, var23))}), 2, 104, 14737632);
+
 				// Spout Start
 				boolean cacheInUse = ChunkNetCache.cacheInUse.get();
 				int y = 115;
