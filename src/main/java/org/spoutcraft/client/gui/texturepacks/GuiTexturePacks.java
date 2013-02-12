@@ -19,7 +19,9 @@
  */
 package org.spoutcraft.client.gui.texturepacks;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import org.apache.commons.io.FileUtils;
@@ -141,8 +143,11 @@ public class GuiTexturePacks extends GuiScreen {
 			SpoutClient.getHandle().displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 		}
 		if (btn.equals(buttonOpenFolder)) {
-			System.out.println(SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());
-			Sys.openURL("file://" + SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());
+			try {
+				Desktop.getDesktop().open(SpoutClient.getInstance().getTexturePackFolder());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		if (btn.equals(buttonSelect) && view.getSelectedRow() != -1) {
 			TexturePackItem item = model.getItem(view.getSelectedRow());
