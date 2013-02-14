@@ -73,7 +73,7 @@ public class MainMenu extends GuiScreen {
 	static String timeOfDay = "";
 	final static List<String> backgrounds = new ArrayList<String>();
 	// Animate click delay
-	private static final int CLICK_DELAY = 7;
+	private static final int CLICK_DELAY = 50;
 	int clickDelay = 0;
 	// Debug
 	long lastTime = System.currentTimeMillis();
