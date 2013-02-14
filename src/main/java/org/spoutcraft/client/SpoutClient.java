@@ -182,6 +182,8 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public static SpoutClient getInstance() {
+		int mb = 1024*1024;
+
 		if (instance == null) {
 			new SpoutClient();
 			Spoutcraft.setClient(instance);
@@ -190,7 +192,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			ServerAddon addon = new ServerAddon("Spoutcraft", version, null);
 			instance.addonManager.addFakeAddon(addon);
 
-			System.out.println("Available Memory: " + Runtime.getRuntime().maxMemory() + " mb");
+			System.out.println("Available Memory: " + Runtime.getRuntime().maxMemory() / mb + " mb");
 		}
 		return instance;
 	}
