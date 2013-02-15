@@ -782,9 +782,9 @@ public class MCRenderDelegate implements RenderDelegate {
 				int maxHeight = height - 4;
 				float f = (float) t.getImageWidth() / (float) t.getImageHeight();
 				int w = (int) (maxHeight * f);
-				GL11.glTranslated(2, 2, 0);
+				GL11.glTranslated(6, 2, 0);
 				drawTexture(t, maxHeight, w);
-				GL11.glTranslated(-2, -2, 0);
+				GL11.glTranslated(-6, -2, 0);
 
 				x += 2 + w;
 			}
