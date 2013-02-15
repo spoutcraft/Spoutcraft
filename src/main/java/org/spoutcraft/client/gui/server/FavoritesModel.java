@@ -56,6 +56,7 @@ public class FavoritesModel extends ServerModel {
 					for (HashMap<String, Object> item : list) {
 						String title = "";
 						String ip = "";
+						String country = "";
 						int port = ServerItem.DEFAULT_PORT;
 						int databaseId = -1;
 						Boolean acceptsTextures = null;
@@ -74,7 +75,12 @@ public class FavoritesModel extends ServerModel {
 						if (item.containsKey("acceptsTextures")) {
 							acceptsTextures = (Boolean) item.get("acceptsTextures");
 						}
-						addServer(title, ip, port, databaseId, acceptsTextures);
+						
+						if (item.containsKey("country")) {
+							country = (String) item.get("country");
+						}
+						
+						addServer(title, ip, port, databaseId, acceptsTextures, country);
 					}
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
@@ -153,6 +159,8 @@ public class FavoritesModel extends ServerModel {
 			data.put("ip", item.getIp());
 			data.put("port", item.getPort());
 			data.put("databaseid", item.getDatabaseId());
+			data.put("country", item.getCountry());
+			item.showPing = true;
 			if (item.getAcceptsTextures() != null) {
 				data.put("acceptsTextures", item.getAcceptsTextures().booleanValue());
 			}
@@ -204,6 +212,21 @@ public class FavoritesModel extends ServerModel {
 			item.setAcceptsTextures(acceptsTextures);
 		}
 		item.poll();
+		items.add(item);
+		sizeChanged();
+		if (gui != null) {
+			gui.updateButtons();
+		}
+	}
+	
+	public void addServer(String title, String ip, int port, int databaseId, Boolean acceptsTextures, String country) {
+		ServerItem item = new ServerItem(title, ip, port, databaseId);
+		item.setShowPing(true);
+		if (acceptsTextures != null) {
+			item.setAcceptsTextures(acceptsTextures);
+		}
+		item.poll();
+		item.country = country;
 		items.add(item);
 		sizeChanged();
 		if (gui != null) {

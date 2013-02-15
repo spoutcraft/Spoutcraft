@@ -47,8 +47,7 @@ public class GuiFavorites extends GuiScreen {
 	private TextField textQuickJoin;
 	private GenericListView view;
 	private GenericComboBox comboSource;
-	public ServerModel model = SpoutClient.getInstance().getServerManager()
-			.getFavorites();
+	public ServerModel model = SpoutClient.getInstance().getServerManager().getFavorites();
 	private long pollTime = 0L;
 
 	public GuiFavorites(GuiScreen parent) {
@@ -174,7 +173,7 @@ public class GuiFavorites extends GuiScreen {
 		buttonMainMenu = new GenericButton("Main Menu");
 		buttonMainMenu.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonMainMenu);
-
+		refresh();
 		updateButtons();
 	}
 

@@ -130,6 +130,7 @@ public class ServerListModel extends AbstractAPIModel {
 				ServerItem server = new ServerItem(name, adress, port, uid, version);
 				server.setFavorite(false);
 				server.setCountry(country);
+				System.out.println("Country: " + country);
 				server.setAccessType(accessType);
 				entries.add(server);
 			} catch(UnsupportedEncodingException e) {}

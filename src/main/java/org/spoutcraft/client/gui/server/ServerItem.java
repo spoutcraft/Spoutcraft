@@ -66,7 +66,7 @@ public class ServerItem implements ListWidgetItem {
 
 	protected boolean showPingWhilePolling = false;
 
-	protected ServerModel favorites = SpoutClient.getInstance().getServerManager().getFavorites();
+	protected ServerModel favorites = SpoutClient.getInstance().getServerManager().getFavorites();	
 	protected ServerListModel serverList = SpoutClient.getInstance().getServerManager().getServerList();
 
 	protected boolean isFavorite = true;
@@ -75,7 +75,7 @@ public class ServerItem implements ListWidgetItem {
 
 	private static final String latestMC = "1.4.7";
 	protected String mcversion = latestMC;
-	private boolean showPing = false;
+	public boolean showPing = false;
 
 	public ServerItem clone() {
 		ServerItem clone = new ServerItem(getTitle(), getIp(), getPort(), getDatabaseId(),  mcversion);
@@ -133,7 +133,7 @@ public class ServerItem implements ListWidgetItem {
 			String iconUrl = "http://cdn.spout.org/server/thumb/" + databaseId + ".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl("Spoutcraft", iconUrl);
 			if (icon == null) {
-				CustomTextureManager.downloadTexture(iconUrl, true);
+				CustomTextureManager.downloadTexture("Spoutcraft", iconUrl, true);
 				icon = CustomTextureManager.getTextureFromJar("/res/icon/unknown_server.png");
 			}
 			GL11.glPushMatrix();

@@ -42,6 +42,8 @@ import net.minecraft.src.GuiDownloadTerrain;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
+import org.newdawn.slick.opengl.Texture;
+
 import org.bukkit.ChatColor;
 
 import org.spoutcraft.api.block.design.GenericBlockDesign;
@@ -224,20 +226,22 @@ public class PrecacheManager {
 						System.out.println("[Spoutcraft] Loading Spout Block Design: " + file.getName() + " from: " + file.getParent());
 					}
 					loadDesign(file);
-				}
-				else if (FileUtil.isImageFile(file.getName())) {
+				} else if (FileUtil.isImageFile(file.getName())) {
 					if (spoutDebug) {
 						System.out.println("[Spoutcraft] Loading image: " + file.getName() + " from: " + file.getParent());
 					}
-					CustomTextureManager.getTextureFromUrl(file.getName());
-				}
+					Texture tex = CustomTextureManager.getTextureFromUrl(((PrecacheTuple) entry.getKey()).getPlugin(),file.getName());
+					if (spoutDebug && tex == null) {
+						System.out.println("[Spoutcraft] Precache tried to load a null image: " + tex);
+					}
+				}		
 			}
 		}
 		
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
 			if (spoutDebug) {
-				//System.out.println("[Spoutcraft] Updating renderer...");
+				System.out.println("[Spoutcraft] Updating renderer...");
 			}
 		}
 		
