@@ -113,8 +113,7 @@ public class ItemRenderer {
 			if (par2ItemStack != null) {
 				Colorizer.colorizeWaterBlockGL(par2ItemStack.itemID);
 			}
-
-			if (!par1EntityLiving.getHasActivePotion()){
+			
 			renderItemIn2D(var5, var8, var9, var7, var10, 0.0625F);
 
 			if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0) {
@@ -146,8 +145,6 @@ public class ItemRenderer {
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glDepthFunc(GL11.GL_LEQUAL);
 				}
-			}
-
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		}
 
