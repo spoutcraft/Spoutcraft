@@ -19,7 +19,9 @@
  */
 package org.spoutcraft.client.gui.texturepacks;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import org.apache.commons.io.FileUtils;
@@ -46,7 +48,7 @@ public class GuiTexturePacks extends GuiScreen {
 	private GenericListView view;
 	private Label screenTitle;
 	private Label loadingTexture;
-	private Button buttonDone, buttonOpenFolder, buttonSelect, buttonReservoir, buttonDelete, buttonInfo;
+	private Button buttonDone, buttonOpenFolder, buttonSelect, buttonDelete;
 	private boolean instancesCreated = false;
 	private TexturePacksModel model = SpoutClient.getInstance().getTexturePacksModel();
 
@@ -65,11 +67,7 @@ public class GuiTexturePacks extends GuiScreen {
 		buttonDone = new GenericButton(t.translateKey("gui.done", "Main Menu"));
 		buttonOpenFolder = new GenericButton(t.translateKey("texturePack.openFolder", "Open Folder"));
 		buttonSelect = new GenericButton(t.translateKey("spout.texturepack.select", "Select"));
-		buttonReservoir = new GenericButton(t.translateKey("spout.texturepack.database", "Database"));
-		buttonReservoir.setEnabled(false);
-		buttonReservoir.setTooltip(t.translateKey("spout.texturepack.tip.database", "Disabled until further notice"));
 		buttonDelete = new DeleteTexturepackButton(this, t.translateKey("spout.texturepack.delete", "Delete"));
-		buttonInfo = new GenericButton(t.translateKey("spout.texturepack.info", "Info"));
 	}
 
 	public void initGui() {
@@ -101,24 +99,18 @@ public class GuiTexturePacks extends GuiScreen {
 		int center = left + 5 + cellWidth;
 		int right = center + 5 + cellWidth;
 
-		buttonSelect.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
+		buttonSelect.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonSelect);
-
-		buttonInfo.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonInfo);
 
 		buttonDelete.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonDelete);
 
-		top += 25;
-
-		buttonOpenFolder.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
+		buttonOpenFolder.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonOpenFolder);
 
-		buttonReservoir.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonReservoir);
+		top += 25;
 
-		buttonDone.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
+		buttonDone.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonDone);
 
 		if (!instancesCreated) {
@@ -141,8 +133,11 @@ public class GuiTexturePacks extends GuiScreen {
 			SpoutClient.getHandle().displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 		}
 		if (btn.equals(buttonOpenFolder)) {
-			System.out.println(SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());
-			Sys.openURL("file://" + SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());
+			try {
+				Desktop.getDesktop().open(SpoutClient.getInstance().getTexturePackFolder());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		if (btn.equals(buttonSelect) && view.getSelectedRow() != -1) {
 			TexturePackItem item = model.getItem(view.getSelectedRow());
@@ -155,18 +150,6 @@ public class GuiTexturePacks extends GuiScreen {
 				mc.displayGuiScreen(preview);
 			}
 		}
-		if (btn.equals(buttonReservoir)) {
-			mc.displayGuiScreen(new GuiTexturePacksDatabase());
-		}
-		if (btn.equals(buttonInfo)) {
-			try {
-				TexturePackItem item = model.getItem(view.getSelectedRow());
-				if (item.id != -1) {
-					Sys.openURL("http://textures.spout.org/info/" + item.id);
-				}
-			} catch(Exception e) {
-			}
-		}
 	}
 
 	public void updateButtons() {
@@ -177,10 +160,10 @@ public class GuiTexturePacks extends GuiScreen {
 			buttonSelect.setEnabled(true);
 			if (current) {
 				buttonSelect.setText(t.translateKey("spout.texturepack.preview.button", "Preview"));
+				updateScreen();
 			} else {
 				buttonSelect.setText(t.translateKey("spout.texturepack.select", "Select"));
 			}
-			buttonInfo.setEnabled(item.id != -1);
 			buttonDelete.setEnabled(!current && (item.getPack() instanceof TexturePackCustom));
 		} catch(Exception e) {}
 	}

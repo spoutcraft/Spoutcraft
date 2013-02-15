@@ -71,7 +71,7 @@ public class GuiUnexpectedError extends GuiScreen {
 		screen.setHeight(height - 16 - 24).setWidth(width).setY(16 + 24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 
-		GenericLabel label = new GenericLabel("Oh Noes! An Error has occured!");
+		GenericLabel label = new GenericLabel("Oh noes! An error has occurred!");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(16);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
