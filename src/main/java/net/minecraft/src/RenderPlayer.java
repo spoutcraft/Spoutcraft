@@ -142,7 +142,7 @@ public class RenderPlayer extends RenderLiving {
 		}
 		// Spout Start - VIP
 		if(!AccessoryHandler.isHandled(par1EntityPlayer.username)) {
-			 AccessoryHandler.addVIPAccessoriesFor(par1EntityPlayer);
+			AccessoryHandler.addVIPAccessoriesFor(par1EntityPlayer);
 		}
 
 		VIP vip = par1EntityPlayer.vip;
@@ -166,86 +166,88 @@ public class RenderPlayer extends RenderLiving {
 	 * Used to render a player's name above their head
 	 */
 	protected void renderName(EntityPlayer par1EntityPlayer, double par2, double par4, double par6) {
-		if(Minecraft.isGuiEnabled() && (par1EntityPlayer != this.renderManager.livingPlayer || (Minecraft.theMinecraft.gameSettings.thirdPersonView != 0 && Minecraft.theMinecraft.currentScreen == null && !par1EntityPlayer.getHasActivePotion()))) {	
-			float var8 = 1.6F;
-			float var9 = 0.016666668F * var8;
-			double var10 = par1EntityPlayer.getDistanceSqToEntity(this.renderManager.livingPlayer);
-			float var12 = par1EntityPlayer.isSneaking() ? 32.0F : 64.0F;
+		if (!par1EntityPlayer.getHasActivePotion()) {
+			if(Minecraft.isGuiEnabled() && (par1EntityPlayer != this.renderManager.livingPlayer || (Minecraft.theMinecraft.gameSettings.thirdPersonView != 0 && Minecraft.theMinecraft.currentScreen == null))) {	
+				float var8 = 1.6F;
+				float var9 = 0.016666668F * var8;
+				double var10 = par1EntityPlayer.getDistanceSqToEntity(this.renderManager.livingPlayer);
+				float var12 = par1EntityPlayer.isSneaking() ? 32.0F : 64.0F;
 
-			if (var10 < (double)(var12 * var12)) {
-				// Spout Start
-				String title = null;
-				VIP vip = par1EntityPlayer.vip;				
-				if (vip != null) {
-					title = vip.getTitle();
-				} else {
-					title = par1EntityPlayer.displayName;
-				}
-				float alpha = 0.25F;
-				// If a plugin hasn't set a title, use the easter egg title (if one exists)
-				/*if (EasterEggs.getEasterEggTitle(var1.username) != null && color == -1) {
+				if (var10 < (double)(var12 * var12)) {
+					// Spout Start
+					String title = null;
+					VIP vip = par1EntityPlayer.vip;				
+					if (vip != null) {
+						title = vip.getTitle();
+					} else {
+						title = par1EntityPlayer.displayName;
+					}
+					float alpha = 0.25F;
+					// If a plugin hasn't set a title, use the easter egg title (if one exists)
+					/*if (EasterEggs.getEasterEggTitle(var1.username) != null && color == -1) {
 					title = EasterEggs.getEasterEggTitle(var1.username);
 					alpha = 0.0F;
 				}*/
-				if (!title.equals("[hide]")) {
-					String lines[] = title.split("\\n");
-					double y = par4;
-					for (int line = 0; line < lines.length; line++) {
-						title = lines[line];
-						par4 = y + (0.275D * (lines.length - line - 1));
+					if (!title.equals("[hide]")) {
+						String lines[] = title.split("\\n");
+						double y = par4;
+						for (int line = 0; line < lines.length; line++) {
+							title = lines[line];
+							par4 = y + (0.275D * (lines.length - line - 1));
 
-						if (AccessoryHandler.hasAccessory(par1EntityPlayer.username, AccessoryType.NOTCHHAT)) {
-							par4 = par4 + 0.275d;
-						} else if (AccessoryHandler.hasAccessory(par1EntityPlayer.username, AccessoryType.TOPHAT)) {
-							par4 = par4 + 0.5d;
-						}
+							if (AccessoryHandler.hasAccessory(par1EntityPlayer.username, AccessoryType.NOTCHHAT)) {
+								par4 = par4 + 0.275d;
+							} else if (AccessoryHandler.hasAccessory(par1EntityPlayer.username, AccessoryType.TOPHAT)) {
+								par4 = par4 + 0.5d;
+							}
 
-						if (!par1EntityPlayer.isSneaking()) {
-							if (par1EntityPlayer.isPlayerSleeping()) {
-								this.renderLivingLabel(par1EntityPlayer, title, par2, par4 - 1.5D, par6, 64);
-							} else {
-								this.renderLivingLabel(par1EntityPlayer, title, par2, par4, par6, 64);
-								// TODO: Adapation needed.
-								/*if (color != -1) {
+							if (!par1EntityPlayer.isSneaking()) {
+								if (par1EntityPlayer.isPlayerSleeping()) {
+									this.renderLivingLabel(par1EntityPlayer, title, par2, par4 - 1.5D, par6, 64);								
+								} else {
+									this.renderLivingLabel(par1EntityPlayer, title, par2, par4, par6, 64);									
+									// TODO: Adapation needed.
+									/*if (color != -1) {
 									this.renderLivingLabel(var1, title, var2, var4, var6, 64, color, color);
 								} else {
 									this.renderLivingLabel(par1EntityPlayer, title, par2, par4, par6, 64);
 								}*/
+								}
+							} else {
+								title = org.bukkit.ChatColor.stripColor(title); //strip colors when sneaking
+								FontRenderer var14 = this.getFontRendererFromRenderManager();
+								GL11.glPushMatrix();
+								GL11.glTranslatef((float)par2 + 0.0F, (float)par4 + 2.3F, (float)par6);
+								GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+								GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+								GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+								GL11.glScalef(-var9, -var9, var9);
+								GL11.glDisable(GL11.GL_LIGHTING);
+								GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
+								GL11.glDepthMask(false);
+
+								GL11.glEnable(GL11.GL_BLEND);
+								GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+								Tessellator var15 = Tessellator.instance;
+								GL11.glDisable(GL11.GL_TEXTURE_2D);
+								var15.startDrawingQuads();
+								int var16 = var14.getStringWidth(title) / 2;
+								var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+								var15.addVertex((double)(-var16 - 1), -1.0D, 0.0D);
+								var15.addVertex((double)(-var16 - 1), 8.0D, 0.0D);
+								var15.addVertex((double)(var16 + 1), 8.0D, 0.0D);
+								var15.addVertex((double)(var16 + 1), -1.0D, 0.0D);
+								var15.draw();
+								GL11.glEnable(GL11.GL_TEXTURE_2D);
+								GL11.glDepthMask(true);
+								var14.drawString(title, -var14.getStringWidth(title) / 2, 0, 553648127);
+								GL11.glEnable(GL11.GL_LIGHTING);
+
+								GL11.glDisable(GL11.GL_BLEND);
+								GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+								GL11.glPopMatrix();
+								// Spout End
 							}
-						} else {
-							title = org.bukkit.ChatColor.stripColor(title); //strip colors when sneaking
-							FontRenderer var14 = this.getFontRendererFromRenderManager();
-							GL11.glPushMatrix();
-							GL11.glTranslatef((float)par2 + 0.0F, (float)par4 + 2.3F, (float)par6);
-							GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-							GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-							GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-							GL11.glScalef(-var9, -var9, var9);
-							GL11.glDisable(GL11.GL_LIGHTING);
-							GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
-							GL11.glDepthMask(false);
-
-							GL11.glEnable(GL11.GL_BLEND);
-							GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-							Tessellator var15 = Tessellator.instance;
-							GL11.glDisable(GL11.GL_TEXTURE_2D);
-							var15.startDrawingQuads();
-							int var16 = var14.getStringWidth(title) / 2;
-							var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-							var15.addVertex((double)(-var16 - 1), -1.0D, 0.0D);
-							var15.addVertex((double)(-var16 - 1), 8.0D, 0.0D);
-							var15.addVertex((double)(var16 + 1), 8.0D, 0.0D);
-							var15.addVertex((double)(var16 + 1), -1.0D, 0.0D);
-							var15.draw();
-							GL11.glEnable(GL11.GL_TEXTURE_2D);
-							GL11.glDepthMask(true);
-							var14.drawString(title, -var14.getStringWidth(title) / 2, 0, 553648127);
-							GL11.glEnable(GL11.GL_LIGHTING);
-
-							GL11.glDisable(GL11.GL_BLEND);
-							GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-							GL11.glPopMatrix();
-							// Spout End
 						}
 					}
 				}
@@ -295,7 +297,7 @@ public class RenderPlayer extends RenderLiving {
 		if (!par1EntityPlayer.getHasActivePotion()){
 			AccessoryHandler.renderAllAccessories(par1EntityPlayer, 0.0625F, par2); // Spout
 		}
-		
+
 		float var7;
 		float var8;
 
@@ -391,9 +393,9 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glScalef(var7, -var7, var7);
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			// Spout Start
+				// Spout Start
 			} else if (Item.itemsList[var21.itemID].isFull3D() || var21.itemID == Item.flint.itemID && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) {
-			// Spout End
+				// Spout End
 				var7 = 0.625F;
 
 				if (Item.itemsList[var21.itemID].shouldRotateAroundWhenRendering()) {
