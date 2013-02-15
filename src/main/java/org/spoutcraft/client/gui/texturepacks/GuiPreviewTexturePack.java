@@ -19,6 +19,7 @@
  */
 package org.spoutcraft.client.gui.texturepacks;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,13 +64,6 @@ public class GuiPreviewTexturePack extends GuiSpoutScreen {
 		title = new GenericLabel(t.translateKey("spout.texturepack.preview.title", "Texture Pack Preview"));
 		getScreen().attachWidgets(spoutcraft, scroll, buttonDone, title);
 
-		for (Block block : Block.blocksList) {
-			if (block == null) {
-				continue;
-			}
-			GenericItemWidget icon = new GenericItemWidget(new ItemStack(block.blockID));
-			previewIcons.add(icon);
-		}
 		for (Item item : Item.itemsList) {
 			if (item == null) {
 				continue;
@@ -89,7 +83,7 @@ public class GuiPreviewTexturePack extends GuiSpoutScreen {
 
 		scroll.setGeometry(5, title.getY() + 16, width - 10, height - title.getY() - 16 - 5 - 5 - 20);
 
-		buttonDone.setGeometry(width - 205, height - 25, 200, 20);
+		buttonDone.setGeometry(width / 2 - 50, height - 25, 100, 20);
 
 		int SIZE = 32;
 
@@ -98,7 +92,7 @@ public class GuiPreviewTexturePack extends GuiSpoutScreen {
 		int i = 0;
 		int line = 0;
 		for (ItemWidget icon : previewIcons) {
-			icon.setGeometry(0,0,SIZE,SIZE);
+			icon.setGeometry(0, 0, SIZE, SIZE);
 			icon.setX(i % fitting * (SIZE + 5) + 5);
 			icon.setY(line * (SIZE + 5) + 5);
 			if (i % fitting == fitting - 1) {
