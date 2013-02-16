@@ -71,6 +71,8 @@ import org.spoutcraft.client.gui.settings.controls.OptimalGameplayButton;
 import org.spoutcraft.client.gui.settings.controls.PerformanceButton;
 import org.spoutcraft.client.gui.settings.controls.RandomMobTextureButton;
 import org.spoutcraft.client.gui.settings.controls.RenderDistanceButton;
+import org.spoutcraft.client.gui.settings.controls.ReplaceBlocksButton;
+import org.spoutcraft.client.gui.settings.controls.ReplaceToolsButton;
 import org.spoutcraft.client.gui.settings.controls.ResetButton;
 import org.spoutcraft.client.gui.settings.controls.ResizeScreenshotButton;
 import org.spoutcraft.client.gui.settings.controls.ResizeScreenshotHeightField;
@@ -562,6 +564,30 @@ public class GuiAdvancedOptions extends GuiScreen {
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget(spoutcraft, linebreak);
+		top += 6;
+		
+		label = new GenericLabel("Auto Inventory / Tools Settings");
+		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
+		label.setX((int) (width / 2 - size / 2)).setY(top);
+		label.setTextColor(grey);
+		screen.attachWidget(spoutcraft, label);
+		top += 11;
+
+		control = new ReplaceToolsButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+
+		control = new ReplaceBlocksButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		top += 22;
+		
+		linebreak = new GenericGradient();
+		linebreak.setBottomColor(grey);
+		linebreak.setTopColor(grey);
+		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
+		screen.attachWidget(spoutcraft, linebreak);
+		top += 6;
 	}
 
 	@Override

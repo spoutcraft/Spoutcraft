@@ -16,9 +16,11 @@ import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericCheckBox;
+import org.spoutcraft.api.gui.ScreenType;
 import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.client.MCItemStackComparator;
 import org.spoutcraft.client.config.Configuration;
+import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.client.inventory.InventoryUtil;
 import org.spoutcraft.client.inventory.CraftItemStack;
 // Spout End
@@ -69,7 +71,7 @@ public abstract class GuiContainer extends GuiScreen {
 	private long field_92032_z = 0L;
 
 	// Spout Start
-	private Button orderByAlphabet, orderById, replaceTools, replaceBlocks;
+	private Button orderByAlphabet, orderById;
 	static {
 		itemRenderer = GuiScreen.ourItemRenderer;
 	}
@@ -87,33 +89,30 @@ public abstract class GuiContainer extends GuiScreen {
 		this.mc.thePlayer.openContainer = this.inventorySlots;
 		this.guiLeft = (this.width - this.xSize) / 2;
 		this.guiTop = (this.height - this.ySize) / 2;
-		// Spout Start
+
+		// Spout Start		
 		if (Spoutcraft.hasPermission("spout.client.sortinventory")) {
 			Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-			orderByAlphabet = new GenericButton("Sort A-Z");
-			orderByAlphabet.setGeometry(10, 80, 75, 20);
-			orderById = new GenericButton("Sort by Id");
-			orderById.setGeometry(10, 105, 75, 20);
+			orderByAlphabet = new GenericButton("A-Z");
+			orderById = new GenericButton("Id");
 			orderByAlphabet.setTooltip("Will sort the inventory contents by their name");
 			orderById.setTooltip("Will sort the inventory contents by their id");
-
-			replaceTools = new GenericCheckBox("Replace tools").setChecked(Configuration.isReplaceTools());
-			replaceTools.setGeometry(10, 130, 75, 20);
-			replaceTools.setTooltip("Replaces used up tools with spares from your inventory");
-
-			replaceBlocks = new GenericCheckBox("Replace blocks").setChecked(Configuration.isReplaceBlocks());
-			replaceBlocks.setGeometry(10, 155, 75, 20);
-			replaceBlocks.setTooltip("Replaces used up blocks with spares from your inventory");
-
+			ScreenType type = ScreenUtil.getType(this);
+			
+			if (type == ScreenType.PLAYER_INVENTORY) {
+				orderByAlphabet.setGeometry((guiLeft+90), (guiTop+65), 27, 13);		
+				orderById.setGeometry((guiLeft+120), (guiTop+65), 22, 13);
+			} else if (type == ScreenType.CHEST_INVENTORY) {				
+				orderByAlphabet.setGeometry((guiLeft+115), (guiTop+3), 27, 12);
+				orderById.setGeometry((guiLeft+145), (guiTop+3), 22, 12);
+			}
+			
 			IInventory inv = inventorySlots.getIInventory();
 			if (inv != null && inventorySlots.isSortableInventory()) {
-				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById, replaceTools, replaceBlocks);
-				if (!(inv instanceof InventoryPlayer)) {
-					replaceTools.setVisible(false);
-					replaceBlocks.setVisible(false);
-				}
+				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById);
 			}
 		}
+		// Spout End
 	}
 
 	@Override
@@ -144,16 +143,6 @@ public abstract class GuiContainer extends GuiScreen {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		if (btn == replaceTools) {
-			Configuration.setReplaceTools(!Configuration.isReplaceTools());
-			((GenericCheckBox)replaceTools).setChecked(Configuration.isReplaceTools());
-			Configuration.write();
-		}
-		if (btn == replaceBlocks) {
-			Configuration.setReplaceBlocks(!Configuration.isReplaceBlocks());
-			((GenericCheckBox)replaceBlocks).setChecked(Configuration.isReplaceBlocks());
-			Configuration.write();
 		}
 	}
 
@@ -321,9 +310,10 @@ public abstract class GuiContainer extends GuiScreen {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		super.drawScreen(par1, par2, par3);
-		RenderHelper.enableGUIStandardItemLighting();
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)var4, (float)var5, 0.0F);
+		this.drawGuiContainerForegroundLayer(par1, par2);
+		RenderHelper.enableGUIStandardItemLighting();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		this.theSlot = null;
@@ -348,8 +338,7 @@ public abstract class GuiContainer extends GuiScreen {
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
 			}
 		}
-
-		this.drawGuiContainerForegroundLayer(par1, par2);
+		
 		InventoryPlayer var15 = this.mc.thePlayer.inventory;
 		ItemStack var16 = this.draggedStack == null ? var15.getItemStack() : this.draggedStack;
 
@@ -379,19 +368,20 @@ public abstract class GuiContainer extends GuiScreen {
 			int var12 = this.field_85048_s + (int)((float)var10 * var17);
 			this.drawItemStack(this.returningStack, var11, var12);
 		}
-
+				
 		if (var15.getItemStack() == null && this.theSlot != null && this.theSlot.getHasStack()) {
 			ItemStack var19 = this.theSlot.getStack();
 			this.drawItemStackTooltip(var19, par1 - var4 + 8, par2 - var5 + 8);
 		}
-
+		
 		GL11.glPopMatrix();
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		RenderHelper.enableStandardItemLighting();
+		RenderHelper.disableStandardItemLighting();
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 	}
 
-	private void drawItemStack(ItemStack par1ItemStack, int par2, int par3) {
+	private void drawItemStack(ItemStack par1ItemStack, int par2, int par3) {		
 		GL11.glTranslatef(0.0F, 0.0F, 32.0F);
 		this.zLevel = 200.0F;
 		itemRenderer.zLevel = 200.0F;
