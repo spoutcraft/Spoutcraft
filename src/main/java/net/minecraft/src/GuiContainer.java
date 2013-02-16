@@ -100,8 +100,13 @@ public abstract class GuiContainer extends GuiScreen {
 			ScreenType type = ScreenUtil.getType(this);
 			
 			if (type == ScreenType.PLAYER_INVENTORY) {
-				orderByAlphabet.setGeometry((guiLeft+90), (guiTop+65), 27, 13);		
-				orderById.setGeometry((guiLeft+120), (guiTop+65), 22, 13);
+				if (!this.mc.thePlayer.getActivePotionEffects().isEmpty()) {
+				orderByAlphabet.setGeometry((guiLeft+146), (guiTop+65), 27, 13);		
+				orderById.setGeometry((guiLeft+176), (guiTop+65), 22, 13);
+				} else {
+					orderByAlphabet.setGeometry((guiLeft+86), (guiTop+65), 27, 13);		
+					orderById.setGeometry((guiLeft+116), (guiTop+65), 22, 13);
+				}
 			} else if (type == ScreenType.CHEST_INVENTORY) {				
 				orderByAlphabet.setGeometry((guiLeft+115), (guiTop+3), 27, 12);
 				orderById.setGeometry((guiLeft+145), (guiTop+3), 22, 12);
