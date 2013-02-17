@@ -185,7 +185,9 @@ public class PrecacheManager {
 			//Grab the tuple
 			final PrecacheTuple toCache = (PrecacheTuple) entry.getKey();
 			final File extractDir = new File(cacheRoot, toCache.getPlugin()); //Ex. /cache/pluginname/
-			System.out.println("[Spoutcraft] Reading: " + extractDir.getName() + ".zip");
+			if (spoutDebug) {
+				System.out.println("[Spoutcraft] Reading: " + extractDir.getName() + ".zip");
+			}
 			//Make the directories to unzip to
 			extractDir.mkdirs();
 			try  {

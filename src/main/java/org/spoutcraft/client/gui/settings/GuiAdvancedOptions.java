@@ -558,13 +558,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control.setWidth(150).setHeight(20).setX(center).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
-
-		linebreak = new GenericGradient();
-		linebreak.setBottomColor(grey);
-		linebreak.setTopColor(grey);
-		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
-		top += 6;
+		top += 5;
 		
 		label = new GenericLabel("Auto Inventory / Tools Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
