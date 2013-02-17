@@ -42,7 +42,8 @@ import org.spoutcraft.client.gui.GuiSpoutScreen;
 
 public class GuiOverviewMap extends GuiSpoutScreen {
 	private MapWidget map;
-	private Label title, menuTitle;
+	private Boolean minimapEnabled;
+	private Label title, menuTitle, noRenderLabel;
 	private Button buttonDone, buttonWaypoint, buttonFocus, buttonCloseMenu, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave, buttonDeathpoints;
 	private GenericScrollArea hoverMenu;
 
@@ -63,6 +64,8 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 
 		title = new GenericLabel("Overview Map");
+		noRenderLabel = new GenericLabel("The overview map will not work until the minimap is enabled.");
+		minimapEnabled = MinimapConfig.getInstance().isEnabled();
 		buttonDone = new GenericButton("Done");
 		buttonZoomIn = new GenericButton("+");
 		buttonZoomOut = new GenericButton("-");
@@ -74,7 +77,12 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		map = new MapWidget(this);
 		map.setGeometry(0, 0, width, height);
 		map.scrollTo(map.getPlayerPosition(), false, 0);
-		getScreen().attachWidgets(spoutcraft, map, title, buttonDone, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave, buttonDeathpoints);
+
+		if (minimapEnabled == false) {
+			getScreen().attachWidgets(spoutcraft, noRenderLabel, buttonDone);
+		} else {
+			getScreen().attachWidgets(spoutcraft, map, title, buttonDone, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave, buttonDeathpoints);
+		}
 
 		hoverMenu = new GenericScrollArea();
 		hoverMenu.setBackgroundColor(new Color(0x55ffffff));
@@ -94,6 +102,9 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 	protected void layoutWidgets() {
 		title.setX(width / 2 - SpoutClient.getHandle().fontRenderer.getStringWidth(title.getText()) / 2);
 		title.setY(5);
+
+		noRenderLabel.setX(width / 2 - SpoutClient.getHandle().fontRenderer.getStringWidth(noRenderLabel.getText()) / 2);
+		noRenderLabel.setY(height / 2);
 
 		map.setGeometry(0, 0, width, height);
 		map.setPriority(RenderPriority.Highest);
