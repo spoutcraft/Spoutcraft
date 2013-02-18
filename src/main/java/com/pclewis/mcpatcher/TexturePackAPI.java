@@ -353,7 +353,7 @@ public class TexturePackAPI {
 			if (var0 != null) {
 				if (TexturePackAPI.access$000() != null) {
 					try {
-						TexturePackAPI.access$100().info("initializing %s...", new Object[] {var0.name});
+						//TexturePackAPI.access$100().info("initializing %s...", new Object[] {var0.name});
 						var0.onChange();
 					} catch (Throwable var2) {
 						var2.printStackTrace();
@@ -409,11 +409,11 @@ public class TexturePackAPI {
 				long var4 = -(var3.totalMemory() - var3.freeMemory());
 
 				if (TexturePackAPI.access$000() == null) {
-					TexturePackAPI.access$100().info("\nsetting texture pack to %s", new Object[] {var0.texturePackID});
+					//TexturePackAPI.access$100().info("\nsetting texture pack to %s", new Object[] {var0.texturePackID});
 				} else if (TexturePackAPI.access$000() == var0) {
-					TexturePackAPI.access$100().info("\nreloading texture pack %s", new Object[] {var0.texturePackID});
+					//TexturePackAPI.access$100().info("\nreloading texture pack %s", new Object[] {var0.texturePackID});
 				} else {
-					TexturePackAPI.access$100().info("\nchanging texture pack from %s to %s", new Object[] {TexturePackAPI.access$000().texturePackID, var0.texturePackID});
+					//TexturePackAPI.access$100().info("\nchanging texture pack from %s to %s", new Object[] {TexturePackAPI.access$000().texturePackID, var0.texturePackID});
 				}
 
 				TexturePackAPI.access$002(var0);
@@ -423,7 +423,7 @@ public class TexturePackAPI {
 					ChangeHandler var7 = (ChangeHandler)var6.next();
 
 					try {
-						TexturePackAPI.access$100().info("refreshing %s...", new Object[] {var7.name});
+						//TexturePackAPI.access$100().info("refreshing %s...", new Object[] {var7.name});
 						var7.onChange();
 					} catch (Throwable var9) {
 						var9.printStackTrace();
@@ -434,7 +434,7 @@ public class TexturePackAPI {
 				System.gc();
 				var1 += System.currentTimeMillis();
 				var4 += var3.totalMemory() - var3.freeMemory();
-				TexturePackAPI.access$100().info("done (%.3fs elapsed, mem usage %+.1fMB)\n", new Object[] {Double.valueOf((double)var1 / 1000.0D), Double.valueOf((double)var4 / 1048576.0D)});
+				TexturePackAPI.access$100().info("Done (%.3fs elapsed, mem usage %+.1fMB)\n", new Object[] {Double.valueOf((double)var1 / 1000.0D), Double.valueOf((double)var4 / 1048576.0D)});
 				changing = false;
 			}
 		}

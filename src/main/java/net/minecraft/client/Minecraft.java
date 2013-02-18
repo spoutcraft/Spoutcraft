@@ -494,7 +494,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		this.gameSettings = new GameSettings(this, this.mcDataDir);
 		this.texturePackList = new TexturePackList(this.mcDataDir, this);
 		// Spout Start
-		System.out.println("Launching Spoutcraft " + SpoutClient.getClientVersion());
+		System.out.println("[Spoutcraft] Version: " + SpoutClient.getClientVersion());
+		System.out.println("[Texture Pack] INFO: Starting texture pack initialization...");
 		// Spout End
 		// MCPatcher Start
 		this.renderEngine = new RenderEngine(this.texturePackList, this.gameSettings);

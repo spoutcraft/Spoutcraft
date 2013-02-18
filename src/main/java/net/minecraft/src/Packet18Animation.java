@@ -66,7 +66,7 @@ public class Packet18Animation extends Packet {
 				if(!Spoutcraft.getAddonStore().isEnabled(a) || (a instanceof ServerAddon)) i.remove();
 			}
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketClientAddons(addons.toArray(new Addon[0])));
-			System.out.println("Detected Spout server.");
+			System.out.println("Detected SpoutPlugin enabled server.");
 		} else {
 			par1NetHandler.handleAnimation(this);
 		}
