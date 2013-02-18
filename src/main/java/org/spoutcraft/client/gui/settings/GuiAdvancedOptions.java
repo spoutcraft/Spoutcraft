@@ -417,6 +417,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		top += 5;
 
+		// Appearance
 		label = new GenericLabel("Appearance Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
@@ -519,6 +520,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		top += 5;
 
+		// Inventory
 		label = new GenericLabel("Inventory Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
@@ -542,6 +544,9 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
 
+		top += 5;
+
+		// Miscellaneous
 		label = new GenericLabel("Miscellaneous Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
