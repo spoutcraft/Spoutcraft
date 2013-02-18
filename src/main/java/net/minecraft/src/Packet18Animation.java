@@ -26,7 +26,8 @@ public class Packet18Animation extends Packet {
 	/** The entity ID, in this case it's the player ID. */
 	public int entityId;
 	public int animate;
-
+	Minecraft mc = SpoutClient.getHandle();
+	
 	public Packet18Animation() {}
 
 	public Packet18Animation(Entity par1Entity, int par2) {
@@ -67,7 +68,11 @@ public class Packet18Animation extends Packet {
 			}
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketClientAddons(addons.toArray(new Addon[0])));
 			System.out.println("Detected SpoutPlugin enabled server.");
-		} else {
+			if (this.mc.currentScreen instanceof GuiDownloadTerrain) { 
+				this.mc.displayGuiScreen(null, false);
+				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache());
+			}
+		} else {						
 			par1NetHandler.handleAnimation(this);
 		}
 		// Spout End
