@@ -257,6 +257,6 @@ public class Animation {
 			byte p1 = (Byte) startNumber, p2 = (Byte) endNumber;
 			return (byte) (p1 + (p2 - p1)*p);
 		}
-		throw new IllegalStateException("Numbers of type "+startNumber.getClass().getSimpleName() + " cannot be used.");
+		throw new IllegalStateException("Numbers of type " + startNumber.getClass().getSimpleName() + " cannot be used.");
 	}
 }

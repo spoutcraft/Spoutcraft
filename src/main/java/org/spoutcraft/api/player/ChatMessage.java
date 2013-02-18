@@ -179,7 +179,7 @@ public class ChatMessage {
 //				for (String highlightWord:Spoutcraft.getChatManager().getWordsToHighlight()) {
 //					if (Spoutcraft.getChatManager().isUsingRegex()) {
 //						try {
-//							if (message.matches(".*"+highlightWord+".*")) {
+//							if (message.matches(".*" + highlightWord + ".*")) {
 //								highlighted = true;
 //								break;
 //							}
@@ -204,7 +204,7 @@ public class ChatMessage {
 //			for (String name:Spoutcraft.getChatManager().getIgnoredPlayers()) {
 //				if (Spoutcraft.getChatManager().isUsingRegex()) {
 //					try {
-//						if (ret.getPlayer().matches(".*"+name+".*")) {
+//						if (ret.getPlayer().matches(".*" + name + ".*")) {
 //							ret.setIgnoredPerson(true);
 //							break;
 //						}

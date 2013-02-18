@@ -138,7 +138,6 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer {
 	}
 
 	public void chat(String msg) {
-
 	}
 
 	public boolean performCommand(String command) {

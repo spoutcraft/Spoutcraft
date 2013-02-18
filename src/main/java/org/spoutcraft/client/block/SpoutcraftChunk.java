@@ -215,6 +215,6 @@ public class SpoutcraftChunk implements Chunk {
 	}
 
 	public String toString() {
-		return "SpoutcraftChunk (" + x + ", " + z +") ";
+		return "SpoutcraftChunk (" + x + ", " + z + ") ";
 	}
 }

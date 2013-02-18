@@ -64,36 +64,36 @@ public class PrecacheManager {
 	 */
 	public static HashMap<PrecacheTuple, Boolean> plugins = new HashMap<PrecacheTuple, Boolean>();
 	/**
-	 * Adds a plugin tuple to the hashmap, and checks if its cached and valid
+	 * Adds a plugin tuple to the hashmap, and checks if it's cached and valid
 	 * @param plugin
 	 */
 	public static void addPlugin(PrecacheTuple plugin) {
-		//Grab precache file
+		// Grab precache file
 		File target = getPluginPreCacheFile(plugin);
-		//Does it exist locally?
+		// Does it exist locally?
 		if (target.exists()) {
-			//Is the crc the same as the one sent from SpoutPlugin?
+			// Is the CRC the same as the one sent from SpoutPlugin?
 			if (plugin.getCrc() == FileUtil.getCRC(target, new byte[(int) target.length()])) {
-				//Its cached, continue on
+				// It's cached, continue on
 				plugins.put(plugin, true);
 				return;
 			}
 		}
-		//Either it doesn't exist or crc failed, either or it isn't cached.
+		// Either it doesn't exist or CRC failed, either or it isn't cached.
 		File temp = new File(FileUtil.getCacheDir(), plugin.getPlugin());
 		if (temp.exists() && temp.isDirectory()) {
 			FileUtil.deleteDirectory(temp);
 		}
 		plugins.put(plugin, false);
 	}
-	
+
 	/**
 	 * Resets the plugins. Useful to clear out previous entries when starting a new login sequence.
 	 */
 	public static void reset() {
 		plugins.clear();
 	}
-	
+
 	/**
 	 * Returns the tuple that matches to parameters
 	 * @param plugin
@@ -102,13 +102,13 @@ public class PrecacheManager {
 	public static PrecacheTuple getPrecacheTuple(String plugin, String version) {
 		for (Entry entry : plugins.entrySet()) {
 			PrecacheTuple tuple = (PrecacheTuple)entry.getKey();
-			if(tuple.getPlugin().equalsIgnoreCase(plugin) && tuple.getVersion().equalsIgnoreCase(version)) {
+			if (tuple.getPlugin().equalsIgnoreCase(plugin) && tuple.getVersion().equalsIgnoreCase(version)) {
 				return tuple;
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Sets the given plugin precache tuple to a cached status.
 	 * @param plugin
@@ -116,7 +116,7 @@ public class PrecacheManager {
 	public static void setCached(PrecacheTuple plugin) {
 		plugins.put(plugin, true);
 	}
-	
+
 	/**
 	 * Checks if there is a plugin precache still needing to be cached.
 	 * @return true if a plugin needs to be cached, false is everything is already cached.
@@ -129,88 +129,88 @@ public class PrecacheManager {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Gets the next item to be cached
 	 * @return The PrecacheTuple to cache or null if not found
 	 */
 	public static PrecacheTuple getNextToCache() {
-		//Loop through the list of plugins
+		// Loop through the list of plugins
 		for (Entry entry : plugins.entrySet()) {
-			//Get the status of the entry (cached or not)
+			// Get the status of the entry (cached or not)
 			if ((Boolean) entry.getValue()) {
-				//Its cached, continue
+				// It's cached, continue
 				continue;
 			}
-			//It wasn't cached so return this entry to be cached
+			// It wasn't cached so return this entry to be cached
 			return (PrecacheTuple) entry.getKey();
 		}
-		//Nothing is left to cache, return null
+		// Nothing is left to cache, return null
 		return null;
 	}
-	
+
 	/**
 	 * Starts the next cache
 	 */
 	public static void doNextCache() {
-		//Check if there is any thing left to be cached
+		// Check if there is any thing left to be cached
 		if (!hasNextCache()) {
-			//Nothing is left to cache, proceed to load the cache
+			// Nothing is left to cache, proceed to load the cache
 			loadPrecache();
 			return;
 		}
 		final PrecacheTuple next = getNextToCache();
 
-		//Let the user know we are precaching
+		// Let the user know we are precaching
 		if (spoutDebug) {
-			setPreloadGuiText(ChatColor.BLUE + "Spoutcraft" + "\n"+" "+ "\n"+ ChatColor.WHITE + "Downloading Custom Content for:  " + ChatColor.ITALIC + next.getPlugin() + " " + next.getVersion());
+			setPreloadGuiText(ChatColor.BLUE + "Spoutcraft" + "\n" + " " + "\n" + ChatColor.WHITE + "Downloading Custom Content for:  " + ChatColor.ITALIC + next.getPlugin() + " " + next.getVersion());
 		}
-		//Send SpoutPlugin a request for the pre-cache zip
+		// Send SpoutPlugin a request for the pre-cache zip
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRequestPrecache(next.getPlugin()));
 	}
-	
+
 	public static File getPluginPreCacheFile(PrecacheTuple plugin) {
 		return getPluginPreCacheFile(plugin.getPlugin(), plugin.getVersion());
 	}
-	
+
 	public static File getPluginPreCacheFile(String plugin, String version) {
 		return new File(FileUtil.getCacheDir(), plugin + ".zip");
 	}
-	
+
 	public static void loadPrecache() {
-		//Unzip
+		// Unzip
 		final File cacheRoot = FileUtil.getCacheDir();
 
-		for(Entry entry : plugins.entrySet()) {
-			//Grab the tuple
+		for (Entry entry : plugins.entrySet()) {
+			// Grab the tuple
 			final PrecacheTuple toCache = (PrecacheTuple) entry.getKey();
 			final File extractDir = new File(cacheRoot, toCache.getPlugin()); //Ex. /cache/pluginname/
 			if (spoutDebug) {
 				System.out.println("[Spoutcraft] Reading: " + extractDir.getName() + ".zip");
 			}
-			//Make the directories to unzip to
+			// Make the directories to unzip to
 			extractDir.mkdirs();
 			try  {
-				//Read in a zip stream
+				// Read in a zip stream
 				final ZipInputStream stream = new ZipInputStream(new FileInputStream(getPluginPreCacheFile(toCache)));
 				final ReadableByteChannel read = Channels.newChannel(stream);
-				//Grab the first entry in the zip
+				// Grab the first entry in the zip
 				ZipEntry inner = stream.getNextEntry();
 				while (inner != null) {
-					//Construct an output stream for the entry
+					// Construct an output stream for the entry
 					final File toExtract = new File(extractDir, inner.getName());
 					if (!toExtract.exists()) {
 						final FileOutputStream write = new FileOutputStream(toExtract);
 						write.getChannel().transferFrom(read, 0, Long.MAX_VALUE);
-						//Close the writable buffer
+						// Close the writable buffer
 						write.close();
 					}
-					//Close the zip stream for this entry
+					// Close the zip stream for this entry
 					stream.closeEntry();
-					//Grab the next entry in the zip
+					// Grab the next entry in the zip
 					inner = stream.getNextEntry();
 				}
-				//Finally close the stream altogether
+				// Finally close the stream altogether
 				stream.close();
 			} catch (Exception e ) {
 				e.printStackTrace();
@@ -236,28 +236,28 @@ public class PrecacheManager {
 					if (spoutDebug && tex == null) {
 						System.out.println("[Spoutcraft] Precache tried to load a null image: " + tex);
 					}
-				}		
+				}
 			}
 		}
-		
+
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
 			if (spoutDebug) {
 				System.out.println("[Spoutcraft] Updating renderer...");
 			}
 		}
-		
+
 		closePreloadGui();
 	}
-	
+
 	public static void showPreloadGui() {
-		//display precache gui.
+		// Display precache GUI
 		if (SpoutClient.getHandle().currentScreen instanceof GuiDownloadTerrain) {
 			SpoutClient.getHandle().displayGuiScreen(new GuiPrecache(), false);
-			//setPreloadGuiText("Checking Plugin Caches...");
+			//setPreloadGuiText("Checking plugin caches...");
 		}
 	}
-	
+
 	public static void closePreloadGui() {
 		if (SpoutClient.getHandle().currentScreen instanceof GuiPrecache) {
 			// Closes downloading terrain
@@ -267,19 +267,19 @@ public class PrecacheManager {
 		}
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new org.spoutcraft.client.packet.PacketPreCacheCompleted());
 	}
-	
+
 	public static void setPreloadGuiText(String text) {
 		if (SpoutClient.getHandle().currentScreen instanceof GuiPrecache) {
 			((GuiPrecache)SpoutClient.getHandle().currentScreen).statusText.setText(text);
 			((GuiPrecache)SpoutClient.getHandle().currentScreen).statusText.onTick();
 		}
 	}
-	
+
 	public static void loadDesign(File file) {
 		short customId = -1;
 		byte data = 0;
 		GenericBlockDesign design = null;
-		
+
 		try {
 			final FileInputStream stream = new FileInputStream(file);
 			final FileChannel read = stream.getChannel();
@@ -287,9 +287,9 @@ public class PrecacheManager {
 			stream.close();
 			customId = buffer.getShort();
 			data = buffer.get();
-			design = new GenericBlockDesign();	
+			design = new GenericBlockDesign();
 			design.read(new SpoutInputStream(buffer));
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

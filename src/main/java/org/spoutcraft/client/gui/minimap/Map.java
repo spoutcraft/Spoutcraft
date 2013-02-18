@@ -198,12 +198,12 @@ public class Map {
 	 */
 	public double getCurrOffsetX(double playerZ) {
 		double wrapped = wrapIndex(((int) -playerZ), imageSize);
-		double leftover = 0;//playerZ - ((double)(int)playerZ);
+		double leftover = 0; // playerZ - ((double)(int)playerZ);
 		return (wrapped+leftover)/2;
 	}
 	public double getCurrOffsetY(double playerX) {
 		double wrapped = wrapIndex(((int) playerX), imageSize);
-		double leftover = 0;//playerX - ((double)(int)playerX);
+		double leftover = 0; // playerX - ((double)(int)playerX);
 		return (wrapped+leftover)/2;
 	}
 }

@@ -27,7 +27,7 @@ import org.spoutcraft.client.config.Configuration;
 public class FlightSpeedSlider extends GenericSlider {
 	public FlightSpeedSlider() {
 		super("Flight Speed");
-		setEnabled(SpoutClient.getInstance().isFlySpeedCheat());		
+		setEnabled(SpoutClient.getInstance().isFlySpeedCheat());
 		if (SpoutClient.getInstance().isFlySpeedCheat()) {
 			this.setSliderPosition(Configuration.getFlightSpeedFactor() / 10);
 		} else {

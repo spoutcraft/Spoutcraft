@@ -25,7 +25,6 @@ import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketRequestPrecache implements SpoutPacket {
-
 	private String plugin;
 
 	public PacketRequestPrecache() {

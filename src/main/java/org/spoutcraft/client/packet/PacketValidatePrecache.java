@@ -35,7 +35,7 @@ public class PacketValidatePrecache implements SpoutPacket {
 		count = input.readInt();
 		plugins = new PrecacheTuple[count];
 		if (count > 0) {
-			for(int i = 0; i<count; i++) {
+			for (int i = 0; i<count; i++) {
 				String plugin = input.readString();
 				String version = input.readString();
 				long crc = input.readLong();
@@ -58,7 +58,7 @@ public class PacketValidatePrecache implements SpoutPacket {
 	public void run(int playerId) {
 		PrecacheManager.showPreloadGui();
 		PrecacheManager.reset();
-		//Build the precache list
+		// Build the precache list
 		for (PrecacheTuple plugin : plugins) {
 			PrecacheManager.addPlugin(plugin);
 		}
@@ -68,7 +68,6 @@ public class PacketValidatePrecache implements SpoutPacket {
 
 	@Override
 	public void failure(int playerId) {
-
 	}
 
 	@Override

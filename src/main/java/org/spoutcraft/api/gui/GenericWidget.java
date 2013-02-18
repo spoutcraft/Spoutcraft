@@ -161,7 +161,7 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 	}
 
 	public Widget setScreen(Screen screen) {
-//		System.out.println("Screen of " +this+" set to "+screen);
+//		System.out.println("Screen of " +this + " set to " + screen);
 		this.screen = screen;
 		return this;
 	}

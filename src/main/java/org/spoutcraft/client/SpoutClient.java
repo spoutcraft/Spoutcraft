@@ -273,11 +273,11 @@ public class SpoutClient extends PropertyObject implements Client {
 	public boolean isSkyCheat() {
 		return cheatsky || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public boolean isForceSky() {
 		return forcesky || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public boolean isShowSky() {
 		return showsky || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
@@ -288,7 +288,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public boolean isForceClearWater() {
 		return forceclearwater || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public boolean isShowClearWater() {
 		return showclearwater || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
@@ -296,27 +296,27 @@ public class SpoutClient extends PropertyObject implements Client {
 	public boolean isStarsCheat() {
 		return cheatstars || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public boolean isForceStars() {
 		return forcestars || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public boolean isShowStars() {
 		return showstars || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
 
-	public boolean isWeatherCheat() {		
+	public boolean isWeatherCheat() {
 		return cheatweather || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
 
 	public boolean isForceWeather() {
 		return forceweather || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public boolean isShowWeather() {
 		return showweather || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public boolean isTimeCheat() {
 		return time || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
@@ -336,7 +336,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public boolean isVoidFogCheat() {
 		return cheatvoidfog || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public boolean isForceVoidFog() {
 		return forcevoidfog || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
@@ -344,8 +344,8 @@ public class SpoutClient extends PropertyObject implements Client {
 	public boolean isShowVoidFog() {
 		return showvoidfog || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-				
-	public void setVisualCheats(boolean tsky, boolean fsky, boolean ssky, boolean tclearwater, boolean fclearwater, boolean sclearwater, boolean tstars, boolean fstars, boolean sstars, boolean tweather, boolean fweather, boolean sweather, boolean ttime, boolean tcoords, boolean tentitylabel, boolean tvoidfog, boolean fvoidfog, boolean svoidfog, boolean tflyspeed) {		
+
+	public void setVisualCheats(boolean tsky, boolean fsky, boolean ssky, boolean tclearwater, boolean fclearwater, boolean sclearwater, boolean tstars, boolean fstars, boolean sstars, boolean tweather, boolean fweather, boolean sweather, boolean ttime, boolean tcoords, boolean tentitylabel, boolean tvoidfog, boolean fvoidfog, boolean svoidfog, boolean tflyspeed) {
 		this.cheatsky = tsky;
 		this.forcesky = fsky;
 		this.showsky = ssky;
@@ -365,57 +365,57 @@ public class SpoutClient extends PropertyObject implements Client {
 		this.forcevoidfog = fvoidfog;
 		this.showvoidfog = svoidfog;
 		this.flySpeed = tflyspeed;
-		
+
 		if (!isTimeCheat()) {
 			Configuration.setTime(0);
 		}
-				
+
 		if (cheatweather) {
 			Configuration.cheatweather = true;
 		} else {
 			Configuration.cheatweather = false;
 		}
-		
+
 		if (cheatsky) {
 			Configuration.cheatsky = true;
 		} else {
-			Configuration.cheatsky = false;			
+			Configuration.cheatsky = false;
 		}
-		
+
 		if (cheatstars) {
 			Configuration.cheatstars = true;
 		} else {
 			Configuration.cheatstars = false;
 		}
-		
+
 		if (cheatvoidfog) {
 			Configuration.cheatvoidFog = true;
 		} else {
 			Configuration.cheatvoidFog = false;
 		}
-		
+
 		if (cheatclearwater) {
 			Configuration.cheatclearWater = true;
 		} else {
-			Configuration.cheatclearWater = false;			
+			Configuration.cheatclearWater = false;
 		}
-		
+
 		if (isForceWeather()) {
 			if (isShowWeather()) {
 				Configuration.setWeather(true);
 			} else {
-				Configuration.setWeather(false);			
+				Configuration.setWeather(false);
 			}
-		}	
-		
+		}
+
 		if (isForceStars()) {
 			if (isShowStars()) {
 				Configuration.setStars(true);
 			} else {
 				Configuration.setStars(false);
-			}			
+			}
 		}
-		
+
 		if (isForceSky()) {
 			if (isShowSky()) {
 				Configuration.setSky(true);
@@ -423,7 +423,7 @@ public class SpoutClient extends PropertyObject implements Client {
 				Configuration.setSky(false);
 			}
 		}
-		
+
 		if (isForceClearWater()) {
 			if (isShowClearWater()) {
 				Configuration.setClearWater(true);
@@ -431,23 +431,23 @@ public class SpoutClient extends PropertyObject implements Client {
 				Configuration.setClearWater(false);
 			}
 		}
-		
+
 		if (isForceWeather()) {
 			if (isShowWeather()) {
 				Configuration.setWeather(true);
 			} else {
 				Configuration.setWeather(false);
-			}			
+			}
 		}
-		
+
 		if (isForceVoidFog()) {
 			if (isShowVoidFog()) {
 				Configuration.setVoidFog(true);
 			} else {
 				Configuration.setVoidFog(false);
-			}			
+			}
 		}
-	}			
+	}
 
 	public boolean isSpoutEnabled() {
 		return server >= 0;

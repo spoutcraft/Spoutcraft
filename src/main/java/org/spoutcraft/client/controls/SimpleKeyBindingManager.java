@@ -279,10 +279,10 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				GuiScreen parent = SpoutClient.getHandle().currentScreen;
 				SpoutClient.getHandle().displayGuiScreen(new GuiAmbigousInput(effective, parent));
 			} else {
-				GuiScreen parent = SpoutClient.getHandle().currentScreen;				
+				GuiScreen parent = SpoutClient.getHandle().currentScreen;
 				if (!(parent instanceof GuiChat)) {
-					Spoutcraft.getActivePlayer().showAchievement("Multiple Bindings ...", "are assigned to Key " + Keyboard.getKeyName(key), Block.workbench.blockID);	
-				}				
+					Spoutcraft.getActivePlayer().showAchievement("Multiple Bindings ...", "are assigned to Key " + Keyboard.getKeyName(key), Block.workbench.blockID);
+				}
 			}
 		}
 	}

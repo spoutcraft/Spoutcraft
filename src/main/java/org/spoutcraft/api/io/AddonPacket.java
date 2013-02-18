@@ -55,7 +55,6 @@ public abstract class AddonPacket {
 			throw new IllegalArgumentException("Any AddonPacket Must Provide An Empty Constructor");
 		}
 
-
 		packets.put(uniqueId, packet);
 		packetsIds.put(packet, uniqueId);
 	}

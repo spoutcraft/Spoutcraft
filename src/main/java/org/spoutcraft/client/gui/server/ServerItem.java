@@ -66,7 +66,7 @@ public class ServerItem implements ListWidgetItem {
 
 	protected boolean showPingWhilePolling = false;
 
-	protected ServerModel favorites = SpoutClient.getInstance().getServerManager().getFavorites();	
+	protected ServerModel favorites = SpoutClient.getInstance().getServerManager().getFavorites();
 	protected ServerListModel serverList = SpoutClient.getInstance().getServerManager().getServerList();
 
 	protected boolean isFavorite = true;
@@ -164,7 +164,6 @@ public class ServerItem implements ListWidgetItem {
 			margin2 = playerswidth;
 			font.drawStringWithShadow(sPlayers, x + width - playerswidth - 2, y + 11, 0xaaaaaa);
 		}
-
 
 		font.drawStringWithShadow(r.getFittingText(title, width - margin1 - marginleft), x + marginleft, y + 2, 0xffffff);
 		String sMotd = "";
@@ -273,16 +272,16 @@ public class ServerItem implements ListWidgetItem {
 			GL11.glPopMatrix();
 			iconMargin += 5 + 7;
 		}
-		
-		if (pollResult.getVersion() != null) {	
-			GL11.glPushMatrix();			
+
+		if (pollResult.getVersion() != null) {
+			GL11.glPushMatrix();
 			versionWidth = font.getStringWidth("1.0.0");
-			font.drawStringWithShadow(pollResult.getVersion(), x + width - versionWidth - 20, y + 21, 0x00FF00);			
+			font.drawStringWithShadow(pollResult.getVersion(), x + width - versionWidth - 20, y + 21, 0x00FF00);
 			GL11.glPopMatrix();
 		} else {
-			GL11.glPushMatrix();			
+			GL11.glPushMatrix();
 			versionWidth = font.getStringWidth("Unknown");
-			font.drawStringWithShadow("Unknown", x + width - versionWidth - 20, y + 21, 0xFF0000);			
+			font.drawStringWithShadow("Unknown", x + width - versionWidth - 20, y + 21, 0xFF0000);
 			GL11.glPopMatrix();
 		}
 	}

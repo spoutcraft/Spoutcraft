@@ -37,7 +37,6 @@ import org.spoutcraft.client.precache.PrecacheManager;
 import org.spoutcraft.client.precache.PrecacheTuple;
 
 public class PacketSendPrecache implements CompressablePacket {
-
 	private byte[] fileData;
 	private String plugin;
 	private String version;
@@ -123,7 +122,6 @@ public class PacketSendPrecache implements CompressablePacket {
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {
@@ -135,7 +133,7 @@ public class PacketSendPrecache implements CompressablePacket {
 	}
 
 	public void run(int playerId) {
-		//Packet recieved, grabbing the zip file
+		// Packet recieved, grabbing the zip file
 		File zip = PrecacheManager.getPluginPreCacheFile(plugin, version);
 		if (zip.exists()) {
 			zip.delete();

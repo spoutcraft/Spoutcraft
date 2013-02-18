@@ -149,7 +149,7 @@ public class SimpleAddonStore implements AddonStore {
 			HashMap<String, Object> item = new HashMap<String, Object>();
 
 			item.put("databaseId", info.getDatabaseId());
-			//Identified by name
+			// Identified by name
 			if (info.getAddon() == null) {
 				continue;
 			}

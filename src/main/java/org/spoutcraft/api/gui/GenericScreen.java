@@ -267,6 +267,6 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 	}
 
 	protected void onScreenResized(int oldWidth, int oldHeight, int newWidth, int newHeight) {
-		//STUB
+		// STUB
 	}
 }
