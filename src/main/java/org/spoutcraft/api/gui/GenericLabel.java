@@ -114,7 +114,6 @@ public class GenericLabel extends GenericWidget implements BasicLabel {
 		return this;
 	}
 
-
 	public Label setScale(float scale) {
 		this.scale = scale;
 		return this;

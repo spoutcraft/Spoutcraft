@@ -83,14 +83,14 @@ public final class SimpleCommandMap implements CommandMap {
 			}
 		}
 
-		// Register to us so further updates of the commands label and aliases are postponed until its reregistered
+		// Register to us so further updates of the commands label and aliases are postponed until it's reregistered
 		command.register(this);
 
 		return registeredPassedLabel;
 	}
 
 	/**
-	 * Registers a command with the given name is possible, otherwise uses fallbackPrefix to create a unique name if its not an alias
+	 * Registers a command with the given name is possible, otherwise uses fallbackPrefix to create a unique name if it's not an alias
 	 *
 	 * @param name the name of the command, without the '/'-prefix.
 	 * @param fallbackPrefix a prefix which is prepended to the command with a ':' one or more times to make the command unique

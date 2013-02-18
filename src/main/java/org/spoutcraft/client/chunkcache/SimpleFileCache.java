@@ -226,7 +226,6 @@ public class SimpleFileCache {
 	}
 
 	public byte[] getData(long hash) {
-
 		Reference<byte[]> ref = cache.get(hash);
 
 		byte[] data = null;
@@ -392,7 +391,6 @@ public class SimpleFileCache {
 	}
 
 	private class FileCompare implements Comparator<File> {
-
 		public int compare(File f1, File f2) {
 			return getIntFromName(f1) - getIntFromName(f2);
 		}
@@ -400,7 +398,6 @@ public class SimpleFileCache {
 	}
 
 	private class DataWriteThread extends Thread {
-
 		private final List<MapEntry> entryList;
 		private final int id;
 

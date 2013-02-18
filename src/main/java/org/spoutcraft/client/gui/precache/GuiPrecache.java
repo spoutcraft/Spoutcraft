@@ -28,16 +28,15 @@ import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.WidgetAnchor;
 
 public class GuiPrecache extends GuiScreen {
-
-	public GenericLabel statusText;	
+	public GenericLabel statusText;
 
 	@Override
 	public void initGui() {
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");	
+		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		statusText = new GenericLabel();
 		statusText.setAnchor(WidgetAnchor.CENTER_CENTER);
 		statusText.setAlign(WidgetAnchor.CENTER_CENTER);
-		statusText.setText(ChatColor.BLUE + "Spoutcraft" + "\n"+" "+ "\n"+ ChatColor.WHITE + "Loading terrain and custom resources" + "\n" + "\n" + ChatColor.MAGIC + "ShowMagic");
+		statusText.setText(ChatColor.BLUE + "Spoutcraft" + "\n" + " " + "\n" + ChatColor.WHITE + "Loading terrain and custom resources" + "\n" + "\n" + ChatColor.MAGIC + "ShowMagic");
 		getScreen().attachWidgets(spoutcraft, statusText);
 	}
 

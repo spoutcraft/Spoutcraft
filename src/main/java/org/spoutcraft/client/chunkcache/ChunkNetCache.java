@@ -62,7 +62,6 @@ public class ChunkNetCache {
 	public static AtomicBoolean cacheInUse = new AtomicBoolean(false);
 
 	public static byte[] handle(byte[] chunkData, int decompressedSize, int compressedSize, int numChunks, int cx, int cz) throws IOException {
-
 		int d = totalData.addAndGet(compressedSize);
 		int c = chunks.addAndGet(numChunks);
 

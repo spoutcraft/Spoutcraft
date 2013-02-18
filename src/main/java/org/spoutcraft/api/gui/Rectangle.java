@@ -189,7 +189,7 @@ public class Rectangle extends PropertyObject implements PropertyInterface, Anim
 
 	@Override
 	public String toString() {
-		return super.toString() + "{ x: "+x+" y: "+y+" width: "+width+" height: "+height+" }";
+		return super.toString() + "{ x: " + x + " y: " + y + " width: " + width + " height: " + height + " }";
 	}
 
 	public Rectangle clone() {

@@ -133,7 +133,7 @@ public final class Color implements Animatable {
 	}
 
 	public String toString() {
-		return "r: "+red+" g: "+green+" b: "+blue+" a: "+alpha;
+		return "r: " + red + " g: " + green + " b: " + blue + " a: " + alpha;
 	}
 
 	public boolean isInvalid() {

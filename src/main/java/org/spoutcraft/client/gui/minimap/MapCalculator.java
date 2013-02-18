@@ -114,13 +114,13 @@ public class MapCalculator implements Runnable {
 
 		// return world.b(x, z).b(x & 0xf, z & 0xf);
 		/*
-		 * li chunk = world.b(x, z); int y = (int)(game.h.aM); //starty; x &=
+		 * li chunk = world.b(x, z); int y = (int)(game.h.aM); // starty; x &=
 		 * 0xf; z &= 0xf;
 		 * 
 		 * //while (y > 0) // {
 		 * 
 		 * 
-		 * if (getBlockColor(id, meta).alpha == 0) return -1;//y--; else return
+		 * if (getBlockColor(id, meta).alpha == 0) return -1; // y--; else return
 		 * y + 1; // what //}
 		 */
 		// return -1;
@@ -364,7 +364,7 @@ public class MapCalculator implements Runnable {
 				}
 				//long dur = System.currentTimeMillis() - start;
 				//int chunks = (int) Math.pow(MinimapConfig.getInstance().getScanRadius() * 2, 2);
-				//System.out.println("Took " + dur + "ms to scan "+chunks+" chunks.\nThat is " + (float) (dur/(float)chunks) + " per chunk!");
+				//System.out.println("Took " + dur + "ms to scan " + chunks + " chunks.\nThat is " + (float) (dur/(float)chunks) + " per chunk!");
 				mapCalc();
 
 				entityCalc();

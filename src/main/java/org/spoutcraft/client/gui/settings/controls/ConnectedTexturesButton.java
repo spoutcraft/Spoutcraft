@@ -38,7 +38,7 @@ public class ConnectedTexturesButton extends AutomatedCheckBox {
 		Configuration.setConnectedTextures(!Configuration.isConnectedTextures());
 		Configuration.write();
 
-		//TODO: Fixed TexturePackAPI.ChangeHandler.change()
+		// TODO: Fixed TexturePackAPI.ChangeHandler.change()
 		TexturePackAPI.ChangeHandler.change();
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();

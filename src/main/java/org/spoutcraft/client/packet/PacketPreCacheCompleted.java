@@ -32,7 +32,7 @@ import org.spoutcraft.client.io.FileDownloadThread;
 
 public class PacketPreCacheCompleted implements SpoutPacket {
 	public PacketPreCacheCompleted() {
-		System.out.println("[Spoutcraft Cache Manager] - Completed: "+ System.currentTimeMillis());
+		System.out.println("[Spoutcraft Cache Manager] Completed: " + System.currentTimeMillis());
 	}
 
 	public int getNumBytes() {
@@ -54,12 +54,12 @@ public class PacketPreCacheCompleted implements SpoutPacket {
 			// Prevent closing a plugin created menu from opening the downloading terrain
 			SpoutClient.getHandle().clearPreviousScreen();
 		}
-		if (SpoutClient.getHandle().currentScreen instanceof GuiPrecache) {			
+		if (SpoutClient.getHandle().currentScreen instanceof GuiPrecache) {
 			// Closes downloading terrain
 			SpoutClient.getHandle().displayGuiScreen(null, false);
 			// Prevent closing a plugin created menu from opening the downloading terrain
 			SpoutClient.getHandle().clearPreviousScreen();
-		}		
+		}
 	}
 
 	public void failure(int playerId) {

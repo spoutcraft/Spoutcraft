@@ -41,7 +41,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 
 		allowedPermissions = new HashSet<String>();
 
-		allowedPermissions.add("accessDeclaredMembers");  // Ok?
+		allowedPermissions.add("accessDeclaredMembers");  // Okay?
 
 		// This defines the white list for class/methods pairs that can be used when sandboxed
 		//
@@ -49,7 +49,6 @@ public final class SimpleSecurityManager extends SecurityManager {
 		// This means that the only system level classes are called between the security manager check and the calling method
 		//
 		// This allows whitelisting of system methods that are safe, even if they use protected functionality
-		//
 
 		systemMethodWhiteList = new HashMap<String,HashSet<String>>();
 
@@ -158,7 +157,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkCreateClassLoader() {
-		//checkAccess(); // TODO : Commented out so that Addons can load
+		//checkAccess(); // TODO Commented out so that Addons can load
 	}
 
 	@Override
@@ -232,7 +231,6 @@ public final class SimpleSecurityManager extends SecurityManager {
 	@Override
 	public void checkPermission(Permission perm) {
 		if (isLocked()) {
-
 			if (allowedPermissions.contains(perm.getName())) {
 				return;
 			}

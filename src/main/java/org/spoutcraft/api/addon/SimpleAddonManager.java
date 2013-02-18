@@ -276,9 +276,9 @@ public class SimpleAddonManager implements AddonManager {
 			return;
 		}
 		if (!addon.isEnabled()) {
-			//Check if disabled by user
+			// Check if disabled by user
 			if (!Spoutcraft.getAddonStore().isEnabled(addon)) {
-				System.out.println("Addon "+addon.getDescription().getName()+" could not be loaded because it is disabled.");
+				System.out.println("Addon " + addon.getDescription().getName() + " could not be loaded because it is disabled.");
 				return;
 			}
 			securityManager.lock(key);
@@ -340,16 +340,16 @@ public class SimpleAddonManager implements AddonManager {
 		Listener<TEvent>[][] handlers = handlerlist.handlers;
 		int[] handlerids = handlerlist.handlerids;
 
-		//We wouldn't want to open the lock prematurely if it was locked by the caller, would we now? :)
+		// We wouldn't want to open the lock prematurely if it was locked by the caller, would we now? :)
 		boolean wasLocked = securityManager.isLocked();
 		if (!wasLocked) {
 			securityManager.lock(key);
 		}
 
 		for (int arrayidx = 0; arrayidx < handlers.length; arrayidx++) {
-			// if the order slot is even and the event has stopped propogating
+			// If the order slot is even and the event has stopped propogating
 			if (event.isCancelled() && (handlerids[arrayidx] & 1) == 0)
-				continue; // then don't call this order slot
+				continue; // Then don't call this order slot
 
 			for (int handler = 0; handler < handlers[arrayidx].length; handler++) {
 				try {

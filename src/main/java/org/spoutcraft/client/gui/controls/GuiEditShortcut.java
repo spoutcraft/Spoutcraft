@@ -126,7 +126,7 @@ public class GuiEditShortcut extends GuiScreen {
 
 		delayText = new GenericTextField();
 		delayText.setGeometry(right, top - 1, width - right - 10, 16);
-		delayText.setText(item.getDelay()+"");
+		delayText.setText(item.getDelay() + "");
 		delayText.setTextProcessor(new GenericTextProcessor() {
 			protected boolean insert(char c) {
 				if (c >= '0' && c <= '9') {

@@ -144,18 +144,18 @@ public class FileUtil {
 		if (result != null) {
 			return result;
 		}
-		
+
 		result = matchFile(new File(getCacheDir(), plugin), fileName);
 		if (result != null) {
 			return result;
 		}
-		
+
 		return null;
 	}
 
 	private static File matchFile(File directory, String fileName) {
 		if (directory.isDirectory() && directory.exists()) {
-			File file = new File(directory+"/"+fileName);
+			File file = new File(directory + "/" + fileName);
 			boolean exists = file.exists();
 			if (exists) {
 				return file;

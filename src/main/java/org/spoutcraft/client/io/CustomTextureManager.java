@@ -205,7 +205,7 @@ public class CustomTextureManager {
 	public static Texture getTextureFromUrl(String url) {
 		Texture tex = getTextureFromUrl(null, url);
 		if (tex == null) {
-			CustomTextureManager.downloadTexture(url, true);			
+			CustomTextureManager.downloadTexture(url, true);
 			tex = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
 		}
 		return tex;

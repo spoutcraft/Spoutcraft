@@ -95,7 +95,6 @@ class PasteBinAPI {
 				return response.toString();
 
 		} catch (Exception e) {
-
 				e.printStackTrace();
 				return null;
 

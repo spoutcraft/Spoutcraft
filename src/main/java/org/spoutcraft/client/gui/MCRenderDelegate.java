@@ -778,7 +778,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		if (lwi.getIconUrl() != null && !lwi.getIconUrl().isEmpty()) {
 			Texture t = CustomTextureManager.getTextureFromUrl(lwi.getIconUrl());
 			if (t != null) {
-				
 				int maxHeight = height - 4;
 				float f = (float) t.getImageWidth() / (float) t.getImageHeight();
 				int w = (int) (maxHeight * f);

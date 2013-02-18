@@ -75,11 +75,11 @@ public class FavoritesModel extends ServerModel {
 						if (item.containsKey("acceptsTextures")) {
 							acceptsTextures = (Boolean) item.get("acceptsTextures");
 						}
-						
+
 						if (item.containsKey("country")) {
 							country = (String) item.get("country");
 						}
-						
+
 						addServer(title, ip, port, databaseId, acceptsTextures, country);
 					}
 				} catch (FileNotFoundException e) {
@@ -218,7 +218,7 @@ public class FavoritesModel extends ServerModel {
 			gui.updateButtons();
 		}
 	}
-	
+
 	public void addServer(String title, String ip, int port, int databaseId, Boolean acceptsTextures, String country) {
 		ServerItem item = new ServerItem(title, ip, port, databaseId);
 		item.setShowPing(true);

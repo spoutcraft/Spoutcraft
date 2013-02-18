@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum SoundEffect {
-	
 	/* Ambient Sound Effects */
 	CAVE_RANDOM(0, "ambient.cave.cave"),
 	CAVE_MYSTERIOUS(1, "ambient.cave.cave", 0),
@@ -54,59 +53,59 @@ public enum SoundEffect {
 	/* Damage */
 	FALL_BIG(23, "damage.fallbig"),
 	FALL_SMALL(24, "damage.fallsmall"),
-	
+
 	HIT(25, "damage.hit"),
 	HIT_1(26, "damage.hit", 0),
 	HIT_2(27, "damage.hit", 1),
 	HIT_3(28, "damage.hit", 2),
-	
+
 	/* Dig */
 	DIG_CLOTH(29, "dig.cloth"),
 	DIG_CLOTH_1(30, "dig.cloth", 0),
 	DIG_CLOTH_2(31, "dig.cloth", 1),
 	DIG_CLOTH_3(32, "dig.cloth", 2),
 	DIG_CLOTH_4(33, "dig.cloth", 3),
-	
+
 	DIG_GRASS(34, "dig.grass"),
 	DIG_GRASS_1(35, "dig.grass", 0),
 	DIG_GRASS_2(36, "dig.grass", 1),
 	DIG_GRASS_3(37, "dig.grass", 2),
 	DIG_GRASS_4(38, "dig.grass", 3),
-	
+
 	DIG_GRAVEL(39, "dig.gravel"),
 	DIG_GRAVEL_1(40, "dig.gravel", 0),
 	DIG_GRAVEL_2(41, "dig.gravel", 1),
 	DIG_GRAVEL_3(42, "dig.gravel", 2),
 	DIG_GRAVEL_4(43, "dig.gravel", 3),
-	
+
 	DIG_SAND(44, "dig.sand"),
 	DIG_SAND_1(45, "dig.sand", 0),
 	DIG_SAND_2(46, "dig.sand", 1),
 	DIG_SAND_3(47, "dig.sand", 2),
 	DIG_SAND_4(48, "dig.sand", 3),
-	
+
 	DIG_SNOW(49, "dig.snow"),
 	DIG_SNOW_1(50, "dig.snow", 0),
 	DIG_SNOW_2(51, "dig.snow", 1),
 	DIG_SNOW_3(52, "dig.snow", 2),
 	DIG_SNOW_4(53, "dig.snow", 3),
-	
+
 	DIG_STONE(54, "dig.stone"),
 	DIG_STONE_1(55, "dig.stone", 0),
 	DIG_STONE_2(56, "dig.stone", 1),
 	DIG_STONE_3(57, "dig.stone", 2),
 	DIG_STONE_4(58, "dig.stone", 3),
-	
+
 	DIG_WOOD(59, "dig.wood"),
 	DIG_WOOD_1(60, "dig.wood", 0),
 	DIG_WOOD_2(61, "dig.wood", 1),
 	DIG_WOOD_3(62, "dig.wood", 2),
 	DIG_WOOD_4(63, "dig.wood", 3),
-	
+
 	/* Fire */
 	FIRE(64, "fire.fire"),
 	FIRE_IGNITE(65, "fire.ignite"),
-	
+
 	/* Fireworks */
 	FIREWORK_BLAST(66, "fireworks.blast"),
 	FIREWORK_BLAST_FAR(67, "fireworks.blast_far"),
@@ -115,27 +114,27 @@ public enum SoundEffect {
 	FIREWORK_LAUNCH(70, "fireworks.launch"),
 	FIREWORK_TWINKLE(71, "fireworks.twinkle"),
 	FIREWORK_TWINKLE_FAR(72, "fireworks.twinkle_far"),
-	
+
 	/* Liquid */
 	LAVA(73, "liquid.lava"),
 	LAVA_POP(74, "liquid.lavapop"),
-	
+
 	WATER_SPLASH(75, "liquid.splash"),
 	WATER_SPLASH_1(76, "liquid.splash", 0),
 	WATER_SPLASH_2(77, "liquid.splash", 1),
-	
+
 	SWIM(78, "liquid.swim"),
 	SWIM_1(79, "liquid.swim", 0),
 	SWIM_2(80, "liquid.swim", 1),
 	SWIM_3(81, "liquid.swim", 2),
 	SWIM_4(82, "liquid.swim", 3),
-	
+
 	WATER(83, "liquid.water"),
-	
+
 	/* Minecart */
 	MINECART_BASE(84, "minecart.base"),
 	MINECART_INSIDE(85, "minecart.inside"),
-	
+
 	/* Mob Sound Effects */
 	BAT_DEATH(86, "mob.bat.death"),
 	BAT_HURT(87, "mob.bat.hurt"),
@@ -150,7 +149,7 @@ public enum SoundEffect {
 	BAT_IDLE_4(96, "mob.bat.idle", 3),
 	BAT_LOOP(97, "mob.bat.loop"),
 	BAT_TAKEOFF(98, "mob.bat.takeoff"),
-	
+
 	BLAZE_BREATHE(99, "mob.blaze.breathe"),
 	BLAZE_BREATHE_1(100, "mob.blaze.breathe", 0),
 	BLAZE_BREATHE_2(101, "mob.blaze.breathe", 1),
@@ -162,7 +161,7 @@ public enum SoundEffect {
 	BLAZE_HIT_2(107, "mob.blaze.hit", 1),
 	BLAZE_HIT_3(108, "mob.blaze.hit", 2),
 	BLAZE_HIT_4(109, "mob.blaze.hit", 3),
-	
+
 	CAT_HISS(110, "mob.cat.hiss"),
 	CAT_HISS_1(111, "mob.cat.hiss", 0),
 	CAT_HISS_2(112, "mob.cat.hiss", 1),
@@ -183,7 +182,7 @@ public enum SoundEffect {
 	CAT_PURREOW(127, "mob.cat.purreow"),
 	CAT_PURREOW_1(128, "mob.cat.purreow", 0),
 	CAT_PURREOW_2(129, "mob.cat.purreow", 1),
-	
+
 	CHICKEN_HURT(130, "mob.chicken.hurt"),
 	CHICKEN_HURT_1(131, "mob.chicken.hurt", 0),
 	CHICKEN_HURT_2(132, "mob.chicken.hurt", 1),
@@ -195,7 +194,7 @@ public enum SoundEffect {
 	CHICKEN_STEP(138, "mob.chicken.step"),
 	CHICKEN_STEP_1(139, "mob.chicken.step", 0),
 	CHICKEN_STEP_2(140, "mob.chicken.step", 1),
-	
+
 	COW_HURT(141, "mob.cow.hurt"),
 	COW_HURT_1(142, "mob.cow.hurt", 0),
 	COW_HURT_2(143, "mob.cow.hurt", 1),
@@ -210,14 +209,14 @@ public enum SoundEffect {
 	COW_STEP_2(152, "mob.cow.step", 1),
 	COW_STEP_3(153, "mob.cow.step", 2),
 	COW_STEP_4(154, "mob.cow.step", 3),
-	
+
 	CREEPER_DEATH(155, "mob.creeper.death"),
 	CREEPER_SAY(156, "mob.creeper.say"),
 	CREEPER_SAY_1(157, "mob.creeper.say", 0),
 	CREEPER_SAY_2(158, "mob.creeper.say", 1),
 	CREEPER_SAY_3(159, "mob.creeper.say", 2),
 	CREEPER_SAY_4(160, "mob.creeper.say", 3),
-	
+
 	ENDERDRAGON_END(161, "mob.enderdragon.end"),
 	ENDERDRAGON_GROWL(162, "mob.enderdragon.growl"),
 	ENDERDRAGON_GROWL_1(163, "mob.enderdragon.growl", 0),
@@ -236,7 +235,7 @@ public enum SoundEffect {
 	ENDERDRAGON_WINGS_4(176, "mob.enderdragon.wings", 3),
 	ENDERDRAGON_WINGS_5(177, "mob.enderdragon.wings", 4),
 	ENDERDRAGON_WINGS_6(178, "mob.enderdragon.wings", 5),
-	
+
 	ENDERMEN_DEATH(179, "mob.endermen.death"),
 	ENDERMEN_HIT(180, "mob.endermen.hit"),
 	ENDERMEN_HIT_1(181, "mob.endermen.hit", 0),
@@ -258,7 +257,7 @@ public enum SoundEffect {
 	ENDERMEN_SCREAM_3(197, "mob.endermen.scream", 2),
 	ENDERMEN_SCREAM_4(198, "mob.endermen.scream", 3),
 	ENDERMEN_STARE(199, "mob.endermen.stare"),
-	
+
 	GHAST_AFFECTIONATE_SCREAM(200,	"mob.ghast.affectionate scream"),
 	GHAST_CHARGE(201, "mob.ghast.charge"),
 	GHAST_DEATH(202, "mob.ghast.death"),
@@ -277,7 +276,7 @@ public enum SoundEffect {
 	GHAST_SCREAM_3(215, "mob.ghast.scream", 2),
 	GHAST_SCREAM_4(216, "mob.ghast.scream", 3),
 	GHAST_SCREAM_5(217, "mob.ghast.scream", 4),
-	
+
 	IRONGOLEM_DEATH(218, "mob.irongolem.death"),
 	IRONGOLEM_HIT(219, "mob.irongolem.hit"),
 	IRONGOLEM_HIT_1(220, "mob.irongolem.hit", 0),
@@ -290,7 +289,7 @@ public enum SoundEffect {
 	IRONGOLEM_WALK_2(227, "mob.irongolem.walk", 1),
 	IRONGOLEM_WALK_3(228, "mob.irongolem.walk", 2),
 	IRONGOLEM_WALK_4(229, "mob.irongolem.walk", 3),
-	
+
 	MAGMACUBE_BIG(230, "mob.magmacube.big"),
 	MAGMACUBE_BIG_1(231, "mob.magmacube.big", 0),
 	MAGMACUBE_BIG_2(232, "mob.magmacube.big", 1),
@@ -307,7 +306,7 @@ public enum SoundEffect {
 	MAGMACUBE_SMALL_3(243, "mob.magmacube.small", 2),
 	MAGMACUBE_SMALL_4(244, "mob.magmacube.small", 3),
 	MAGMACUBE_SMALL_5(245, "mob.magmacube.small", 4),
-	
+
 	PIG_DEATH(246, "mob.pig.death"),
 	PIG_SAY(247, "mob.pig.say"),
 	PIG_SAY_1(248, "mob.pig.say", 0),
@@ -319,7 +318,7 @@ public enum SoundEffect {
 	PIG_STEP_3(254, "mob.pig.step", 2),
 	PIG_STEP_4(255, "mob.pig.step", 3),
 	PIG_STEP_5(256, "mob.pig.step", 4),
-	
+
 	SHEEP_SAY(257, "mob.sheep.say"),
 	SHEEP_SAY_1(258, "mob.sheep.say", 0),
 	SHEEP_SAY_2(259, "mob.sheep.say", 1),
@@ -331,7 +330,7 @@ public enum SoundEffect {
 	SHEEP_STEP_3(265, "mob.sheep.step", 2),
 	SHEEP_STEP_4(266, "mob.sheep.step", 3),
 	SHEEP_STEP_5(267, "mob.sheep.step", 4),
-	
+
 	SILVERFISH_HIT(268, "mob.silverfish.hit"),
 	SILVERFISH_HIT_1(269, "mob.silverfish.hit", 0),
 	SILVERFISH_HIT_2(270, "mob.silverfish.hit", 1),
@@ -347,7 +346,7 @@ public enum SoundEffect {
 	SILVERFISH_STEP_2(280, "mob.silverfish.step", 1),
 	SILVERFISH_STEP_3(281, "mob.silverfish.step", 2),
 	SILVERFISH_STEP_4(282, "mob.silverfish.step", 3),
-	
+
 	SKELETON_DEATH(283, "mob.skeleton.death"),
 	SKELETON_HURT(284, "mob.skeleton.hurt"),
 	SKELETON_HURT_1(285, "mob.skeleton.hurt", 0),
@@ -363,7 +362,7 @@ public enum SoundEffect {
 	SKELETON_STEP_2(295, "mob.skeleton.step", 1),
 	SKELETON_STEP_3(296, "mob.skeleton.step", 2),
 	SKELETON_STEP_4(297, "mob.skeleton.step", 3),
-	
+
 	SLIME_ATTACK(298, "mob.slime.attack"),
 	SLIME_ATTACK_1(299, "mob.slime.attack", 0),
 	SLIME_ATTACK_2(300, "mob.slime.attack", 1),
@@ -378,7 +377,7 @@ public enum SoundEffect {
 	SLIME_SMALL_3(309, "mob.slime.small", 2),
 	SLIME_SMALL_4(310, "mob.slime.small", 3),
 	SLIME_SMALL_5(311, "mob.slime.small", 4),
-	
+
 	SPIDER_DEATH(312, "mob.spider.death"),
 	SPIDER_SAY(313, "mob.spider.say"),
 	SPIDER_SAY_1(314, "mob.spider.say", 0),
@@ -390,7 +389,7 @@ public enum SoundEffect {
 	SPIDER_STEP_2(320, "mob.spider.step", 1),
 	SPIDER_STEP_3(321, "mob.spider.step", 2),
 	SPIDER_STEP_4(322, "mob.spider.step", 3),
-	
+
 	WITHER_DEATH(323, "mob.wither.death"),
 	WITHER_HURT(324, "mob.wither.hurt"),
 	WITHER_HURT_1(325, "mob.wither.hurt", 0),
@@ -404,7 +403,7 @@ public enum SoundEffect {
 	WITHER_IDLE_4(333, "mob.wither.idle", 3),
 	WITHER_SHOOT(334, "mob.wither.shoot"),
 	WITHER_SPAWN(335, "mob.wither.spawn"),
-	
+
 	WOLF_BARK(336, "mob.wolf.bark"),
 	WOLF_BARK_1(337, "mob.wolf.bark", 0),
 	WOLF_BARK_2(338, "mob.wolf.bark", 1),
@@ -429,7 +428,7 @@ public enum SoundEffect {
 	WOLF_STEP_4(357, "mob.wolf.step", 3),
 	WOLF_STEP_5(358, "mob.wolf.step", 4),
 	WOLF_WHINE(359, "mob.wolf.whine"),
-	
+
 	ZOMBIE_DEATH(360, "mob.zombie.death"),
 	ZOMBIE_HURT(361, "mob.zombie.hurt"),
 	ZOMBIE_HURT_1(362, "mob.zombie.hurt", 0),
@@ -457,7 +456,7 @@ public enum SoundEffect {
 	ZOMBIE_WOOD_3(384, "mob.zombie.wood", 2),
 	ZOMBIE_WOOD_4(385, "mob.zombie.wood", 3),
 	ZOMBIE_WOOD_BREAK(386, "mob.zombie.woodbreak"),
-	
+
 	ZOMBIEPIG(387, "mob.zombiepig.zpig"),
 	ZOMBIEPIG_1(388, "mob.zombiepig.zpig", 0),
 	ZOMBIEPIG_2(389, "mob.zombiepig.zpig", 1),
@@ -472,7 +471,7 @@ public enum SoundEffect {
 	ZOMBIEPIG_HURT(398, "mob.zombiepig.zpighurt"),
 	ZOMBIEPIG_HURT_1(399, "mob.zombiepig.zpighurt", 0),
 	ZOMBIEPIG_HURT_2(400, "mob.zombiepig.zpighurt", 1),
-	
+
 	/* Notes */
 	NOTE_BASS(401, "note.bass"),
 	NOTE_BASS_ATTACK(402, "note.bassattack"),
@@ -491,7 +490,7 @@ public enum SoundEffect {
 	ANVIL_BREAK(411, "random.anvil_break"),
 	ANVIL_LAND(412, "random.anvil_land"),
 	ANVIL_USE(413, "random.anvil_use"),
-	
+
 	BOW(414, "random.bow"),
 	BOW_HIT(415, "random.bowhit"),
 	BOW_HIT_1(416, "random.bowhit", 0),
@@ -528,7 +527,7 @@ public enum SoundEffect {
 	GLASS_BREAK_1(442, "random.glass", 0),
 	GLASS_BREAK_2(443, "random.glass", 1),
 	GLASS_BREAK_3(444, "random.glass", 2),
-	
+
 	LEVEL_UP(445, "random.levelup"),
 	ORB(446, "random.orb"),
 	POP(447, "random.pop"),
@@ -550,33 +549,33 @@ public enum SoundEffect {
 	STEP_GRASS_4(460, "step.grass", 3),
 	STEP_GRASS_5(461, "step.grass", 4),
 	STEP_GRASS_6(462, "step.grass", 5),
-	
+
 	STEP_GRAVEL(463, "step.gravel"),
 	STEP_GRAVEL_1(464, "step.gravel", 0),
 	STEP_GRAVEL_2(465, "step.gravel", 1),
 	STEP_GRAVEL_3(466, "step.gravel", 2),
 	STEP_GRAVEL_4(467, "step.gravel", 3),
-	
+
 	STEP_LADDER(468, "step.ladder"),
 	STEP_LADDER_1(469, "step.ladder", 0),
 	STEP_LADDER_2(470, "step.ladder", 1),
 	STEP_LADDER_3(471, "step.ladder", 2),
 	STEP_LADDER_4(472, "step.ladder", 3),
 	STEP_LADDER_5(473, "step.ladder", 4),
-	
+
 	STEP_SAND(474, "step.gravel"),
 	STEP_SAND_1(475, "step.sand", 0),
 	STEP_SAND_2(476, "step.sand", 1),
 	STEP_SAND_3(477, "step.sand", 2),
 	STEP_SAND_4(478, "step.sand", 3),
 	STEP_SAND_5(479, "step.sand", 4),
-	
+
 	STEP_SNOW(480, "step.snow"),
 	STEP_SNOW_1(481, "step.snow", 0),
 	STEP_SNOW_2(482, "step.snow", 1),
 	STEP_SNOW_3(483, "step.snow", 2),
 	STEP_SNOW_4(484, "step.snow", 3),
-	
+
 	STEP_STONE(485, "step.stone"),
 	STEP_STONE_1(486, "step.stone", 0),
 	STEP_STONE_2(487, "step.stone", 1),
@@ -592,11 +591,11 @@ public enum SoundEffect {
 	STEP_WOOD_4(496, "step.wood", 3),
 	STEP_WOOD_5(497, "step.wood", 4),
 	STEP_WOOD_6(498, "step.wood", 5),
-	
+
 	/* Tile */
 	PISTON_IN(499, "tile.piston.in"),
 	PISTON_OUT(500, "tile.piston.out"),
-	
+
 	/* Custom */
 	CUSTOM_EFFECT(501, "custom");
 

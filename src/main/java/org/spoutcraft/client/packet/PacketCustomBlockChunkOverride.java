@@ -176,7 +176,7 @@ class LightingThread extends Thread {
 
 	@Override
 	public void run() {
-		while(!this.isInterrupted()) {
+		while (!this.isInterrupted()) {
 			try {
 				LightingData data = queue.take();
 				World world = SpoutClient.getHandle().theWorld;

@@ -108,7 +108,7 @@ public abstract class AbstractBinding {
 			case 2:
 				return "Middle button";
 			default:
-				return "Button "+button;
+				return "Button " + button;
 		}
 	}
 

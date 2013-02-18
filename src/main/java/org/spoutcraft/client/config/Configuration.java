@@ -33,7 +33,6 @@ import org.spoutcraft.client.io.FileUtil;
 import org.lwjgl.opengl.GL11;
 
 public class Configuration {
-
 	// Client settings
 	private static int advancedOpenGL = 0;
 	private static boolean anaglyph3D = false;
@@ -42,7 +41,7 @@ public class Configuration {
 	private static boolean fancyBiomeColors = false;
 	private static boolean waterBiomeColors = true;
 	private static float brightnessSlider = 1F;
-	
+
 	private static boolean fancyClouds = false;
 	private static boolean fancyFog = false;
 	private static boolean fancyGraphics = false;
@@ -58,8 +57,8 @@ public class Configuration {
 	private static int performance = 0;
 	private static int chunkRenderPasses = 2;
 	private static int renderDistance = 0;
-	private static int signDistance = 16;	
-	public static boolean cheatsky = true;	
+	private static int signDistance = 16;
+	public static boolean cheatsky = true;
 	private static boolean forcesky = false;
 	private static boolean showsky = true;
 	public static boolean cheatclearWater = false;
@@ -67,17 +66,17 @@ public class Configuration {
 	private static boolean showclearWater = false;
 	public static boolean cheatvoidFog = false;
 	private static boolean forcevoidFog = false;
-	private static boolean showvoidFog = true;	
+	private static boolean showvoidFog = true;
 	public static boolean cheatweather = true;
 	private static boolean forceweather = false;
-	private static boolean showweather = true;	
+	private static boolean showweather = true;
 	public static boolean cheatstars = true;
 	private static boolean forcestars = false;
-	private static boolean showstars = true;	
+	private static boolean showstars = true;
 	private static boolean smoothFPS = false;
-	private static float smoothLighting = 1F;	
+	private static float smoothLighting = 1F;
 	private static int time = 0;
-	private static boolean viewBobbing = false;	
+	private static boolean viewBobbing = false;
 	private static boolean delayedTooltips = true;
 	private static float mipmapsPercent = 0F;
 	private static boolean automatePerformance = true;
@@ -98,13 +97,13 @@ public class Configuration {
 	private static boolean ambientOcclusion = false;
 	private static boolean serverTexturePromptsEnabled = true;
 
-	//Config-specific
+	// Config specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
 	private static transient boolean dirty = false;
 	private static transient boolean vsync = false;
 
 	public static synchronized void read() {
-		//Cleanup old
+		// Cleanup old
 		File old = new File(FileUtil.getConfigDir(), "spoutcraft.properties");
 		old.delete();
 
@@ -444,11 +443,11 @@ public class Configuration {
 	public static synchronized boolean isCheatSky() {
 		return cheatsky;
 	}
-	
+
 	public static synchronized boolean isForceSky() {
 		return forcesky;
 	}
-	
+
 	public static synchronized boolean isSky() {
 		return showsky;
 	}
@@ -457,7 +456,7 @@ public class Configuration {
 		Configuration.showsky = showsky;
 		onPropertyChange();
 	}
-		
+
 	public static synchronized boolean isSmoothFPS() {
 		return smoothFPS;
 	}
@@ -479,11 +478,11 @@ public class Configuration {
 	public static synchronized boolean isCheatStars() {
 		return cheatstars;
 	}
-	
+
 	public static synchronized boolean isForceStars() {
 		return forcestars;
 	}
-	
+
 	public static synchronized boolean isStars() {
 		return showstars;
 	}
@@ -514,11 +513,11 @@ public class Configuration {
 	public static synchronized boolean isCheatVoidFog() {
 		return cheatvoidFog;
 	}
-	
+
 	public static synchronized boolean isForceVoidFog() {
 		return forcevoidFog;
 	}
-	
+
 	public static synchronized boolean isVoidFog() {
 		return showvoidFog;
 	}
@@ -531,11 +530,11 @@ public class Configuration {
 	public static synchronized boolean isCheatWeather() {
 		return cheatweather;
 	}
-	
+
 	public static synchronized boolean isForceWeather() {
 		return forceweather;
 	}
-	
+
 	public static synchronized boolean isWeather() {
 		return showweather;
 	}
@@ -544,7 +543,7 @@ public class Configuration {
 		Configuration.showweather = showweather;
 		onPropertyChange();
 	}
-		
+
 	public static synchronized boolean isDelayedTooltips() {
 		return delayedTooltips;
 	}
@@ -697,7 +696,7 @@ public class Configuration {
 		Configuration.advancedOptions = advancedOptions;
 		onPropertyChange();
 	}
-	
+
 	public static synchronized void setAmbientOcclusion(boolean ambientOcclusion) {
 		Configuration.ambientOcclusion = ambientOcclusion;
 		onPropertyChange();
@@ -706,7 +705,7 @@ public class Configuration {
 	public static synchronized boolean isAmbientOcclusion() {
 		return ambientOcclusion;
 	}
-	
+
 	public static synchronized boolean isServerTexturePromptsEnabled() {
 		return serverTexturePromptsEnabled;
 	}

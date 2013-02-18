@@ -280,7 +280,6 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	}
 
 	public class ComboBoxView extends GenericListView {
-
 		GenericComboBox combo;
 		public ComboBoxView(AbstractListModel model, GenericComboBox box) {
 			super(model);

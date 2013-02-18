@@ -417,6 +417,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		top += 5;
 
+		// Appearance
 		label = new GenericLabel("Appearance Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
@@ -484,7 +485,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control = new ServerTexturesButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		top += 22;
 
 		control = new SmoothLightingSlider().setAlign(WidgetAnchor.TOP_CENTER);
@@ -510,7 +511,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control = new HotbarQuickKeysButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control = new GuiScaleButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -519,6 +520,33 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		top += 5;
 
+		// Inventory
+		label = new GenericLabel("Inventory Settings");
+		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
+		label.setX((int) (width / 2 - size / 2)).setY(top);
+		label.setTextColor(grey);
+		screen.attachWidget(spoutcraft, label);
+		top += 11;
+
+		linebreak = new GenericGradient();
+		linebreak.setBottomColor(grey);
+		linebreak.setTopColor(grey);
+		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
+		screen.attachWidget(spoutcraft, linebreak);
+		top += 6;
+
+		control = new ReplaceToolsButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+
+		control = new ReplaceBlocksButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		top += 22;
+
+		top += 5;
+
+		// Miscellaneous
 		label = new GenericLabel("Miscellaneous Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
@@ -559,29 +587,6 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
 		top += 5;
-		
-		label = new GenericLabel("Auto Inventory / Tools Settings");
-		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
-		label.setX((int) (width / 2 - size / 2)).setY(top);
-		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
-		top += 11;
-
-		control = new ReplaceToolsButton().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
-
-		control = new ReplaceBlocksButton().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
-		top += 22;
-		
-		linebreak = new GenericGradient();
-		linebreak.setBottomColor(grey);
-		linebreak.setTopColor(grey);
-		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
-		top += 6;
 	}
 
 	@Override
@@ -594,6 +599,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		if (btn.equals(doneButton)) {
 			SpoutClient.getHandle().displayGuiScreen(parent);
 		}
+
 		if (btn.equals(switchToSimpleCheck)) {
 			Configuration.setAdvancedOptions(false);
 			SpoutClient.getHandle().displayGuiScreen(new GuiSimpleOptions(parent));

@@ -30,7 +30,7 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 	private boolean forcesky = false;
 	private boolean showsky = true;
 	private boolean cheatclearwater = false;
-	private boolean forceclearwater = false;	
+	private boolean forceclearwater = false;
 	private boolean showclearwater = false;
 	private boolean cheatstars = false;
 	private boolean forcestars = false;
@@ -97,7 +97,7 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 		output.writeBoolean(cheatsky);
 		output.writeBoolean(forcesky);
 		output.writeBoolean(showsky);
-		output.writeBoolean(cheatclearwater);		
+		output.writeBoolean(cheatclearwater);
 		output.writeBoolean(forceclearwater);
 		output.writeBoolean(showclearwater);
 		output.writeBoolean(cheatstars);
@@ -115,7 +115,7 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 		output.writeBoolean(flyspeed);
 	}
 
-	public void run(int playerId) {		
+	public void run(int playerId) {
 		SpoutClient.getInstance().setVisualCheats(cheatsky, forcesky, showsky, cheatclearwater, forceclearwater, showclearwater, cheatstars, forcestars, showstars, cheatweather, forceweather, showweather, time, coords, entitylabel, cheatvoidfog, forcevoidfog, showvoidfog, flyspeed);
 	}
 

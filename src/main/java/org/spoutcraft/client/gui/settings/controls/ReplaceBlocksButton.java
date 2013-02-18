@@ -32,7 +32,7 @@ public class ReplaceBlocksButton extends GenericCheckBox {
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		Configuration.setReplaceBlocks(!Configuration.isReplaceBlocks());		              
+		Configuration.setReplaceBlocks(!Configuration.isReplaceBlocks());
 		Configuration.write();
 	}
 }
