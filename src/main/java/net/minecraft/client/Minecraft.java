@@ -189,10 +189,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	public static Minecraft theMinecraft;
 	// Spout End
 	public PlayerControllerMP playerController;
-	// MCPatcher Start
 	private boolean fullscreen = false;
 	private boolean hasCrashed = false;
-	// MCPatcher End
 
 	/** Instance of CrashReport. */
 	private CrashReport crashReporter;
@@ -214,17 +212,13 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	 */
 	public EntityLiving renderViewEntity;
 	public EffectRenderer effectRenderer;
-	// MCPatcher Start
 	public Session session = null;
-	// MCPatcher End
 	public String minecraftUri;
 	public Canvas mcCanvas;
 
 	/** a boolean to hide a Quit button from the main menu */
-	// MCPatcher Start
 	public boolean hideQuitButton = false;
 	public volatile boolean isGamePaused = false;
-	// MCPatcher End
 
 	/** The RenderEngine instance used by Minecraft */
 	public RenderEngine renderEngine;
@@ -234,9 +228,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	public FontRenderer standardGalacticFontRenderer;
 
 	/** The GuiScreen that's being displayed at the moment. */
-	// MCPatcher Start
 	public GuiScreen currentScreen = null;
-	// MCPatcher End
 	public LoadingScreenRenderer loadingScreen;
 	public EntityRenderer entityRenderer;
 
@@ -244,9 +236,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	private ThreadDownloadResources downloadResourcesThread;
 
 	/** Mouse left click counter */
-	// MCPatcher Start
 	private int leftClickCounter = 0;
-	// MCPatcher End
 
 	/** Display width */
 	private int tempDisplayWidth;
@@ -258,27 +248,19 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	private IntegratedServer theIntegratedServer;
 
 	/** Gui achievement */
-	// MCPatcher Start
 	public GuiAchievement guiAchievement = new GuiAchievement(this);
 	public GuiIngame ingameGUI;
-	// MCPatcher End
 
 	/** Skip render world */
-	// MCPatcher Start
 	public boolean skipRenderWorld = false;
-	// MCPatcher End
 
 	/** The ray trace hit that the mouse is over. */
-	// MCPatcher Start
 	public MovingObjectPosition objectMouseOver = null;
-	// MCPatcher End
 
 	/** The game settings that currently hold effect. */
 	public GameSettings gameSettings;
 	protected MinecraftApplet mcApplet;
-	// MCPatcher Start
 	public SoundManager sndManager = new SoundManager();
-	// MCPatcher End
 
 	/** Mouse helper instance. */
 	public MouseHelper mouseHelper;
@@ -297,9 +279,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	/**
 	 * When you place a block, it's set to 6, decremented once per tick, when it's 0, you can place another block.
 	 */
-	// MCPatcher Start
 	private int rightClickDelayTimer = 0;
-	// MCPatcher End
 
 	/**
 	 * Checked in Minecraft's while(running) loop, if true it's set to false and the textures refreshed.
@@ -310,39 +290,29 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	public StatFileWriter statFileWriter;
 	private String serverName;
 	private int serverPort;
-	// MCPatcher Start
 	private TextureWaterFX textureWaterFX = new TextureWaterFX();
 	private TextureLavaFX textureLavaFX = new TextureLavaFX();
-	// MCPatcher End
 
 	/**
 	 * Makes sure it doesn't keep taking screenshots when both buttons are down.
 	 */
-	// MCPatcher Start
 	boolean isTakingScreenshot = false;
-	// MCPatcher End
 
 	/**
 	 * Does the actual gameplay have focus. If so then mouse and keys will effect the player instead of menus.
 	 */
-	// MCPatcher Start
 	public boolean inGameHasFocus = false;
 	long systemTime = getSystemTime();
-	// MCPatcher End
 
 	/** Join player counter */
-	// MCPatcher Start
 	private int joinPlayerCounter = 0;
-	// MCPatcher End
 	private boolean isDemo;
 	private INetworkManager myNetworkManager;
 	private boolean integratedServerIsRunning;
 
 	/** The profiler instance */
-	// MCPatcher Start
 	public final Profiler mcProfiler = new Profiler();
 	private long field_83002_am = -1L;
-	// MCPatcher End
 
 	/** The working dir (OS specific) for minecraft */
 	private static File minecraftDir = null;
@@ -350,31 +320,20 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	/**
 	 * Set to true to keep the game loop running. Set to false by shutdown() to allow the game loop to exit cleanly.
 	 */
-	// MCPatcher Start
 	public volatile boolean running = true;
-	// MCPatcher End
 
 	/** String that shows the debug information */
-	// MCPatcher Start
-	public String debug ="";
-
-	// MCPatcher End
+	public String debug = "";
 
 	/** Approximate time (in ms) of last update to debug string */
-	// MCPatcher Start
 	long debugUpdateTime = getSystemTime();
-	// MCPatcher End
 
 	/** holds the current fps */
-	// MCPatcher Start
 	int fpsCounter = 0;
 	long prevFrameTime = -1L;
-	// MCPatcher End
 
 	/** Profiler currently displayed in the debug screen pie chart */
-	// MCPatcher Start
 	private String debugProfilerName = "root";
-	// MCPatcher End
 	// Spout Start
 	public static Thread mainThread;
 	private boolean shutdown = false;
@@ -497,8 +456,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		System.out.println("[Spoutcraft] Version: " + SpoutClient.getClientVersion());
 		System.out.println("[Texture Pack] INFO: Starting texture pack initialization...");
 		// Spout End
-		// MCPatcher Start
 		this.renderEngine = new RenderEngine(this.texturePackList, this.gameSettings);
+		// MCPatcher Start
 		this.renderEngine.setTileSize(this);
 		// MCPatcher End
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine, false);
@@ -506,6 +465,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		// MCPatcher Start
 		this.renderEngine.setTileSize(this);
 		// MCPatcher End
+
 		if (this.gameSettings.language != null) {
 			StringTranslate.getInstance().setLanguage(this.gameSettings.language);
 			this.fontRenderer.setUnicodeFlag(StringTranslate.getInstance().isUnicode());
@@ -952,7 +912,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 				}
 				// Spout Start
 				catch (Throwable t) {
-					// try to handle errors gracefuly
+					// Try to handle errors gracefuly
 					try {
 						t.printStackTrace();
 						if (SpoutClient.isSandboxed()) {
@@ -1156,7 +1116,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 				this.debugUpdateTime += 1000L;
 				// Spout Start
 				framesPerSecond = fpsCounter;
-				checkGLError("Late render b4 fps");
+				checkGLError("Late render before fps");
 				SpoutWorth.getInstance().updateFPS(framesPerSecond);
 				checkGLError("Late render after fps");
 				// Spout End
@@ -1221,7 +1181,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		if (Keyboard.isKeyDown(60)) {
 			if (!this.isTakingScreenshot) {
 				this.isTakingScreenshot = true;
-				 // Spout Start - Null check && keep old chat GUI code
+				// Spout Start
 				if (theWorld != null) {
 					this.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(minecraftDir, this.displayWidth, this.displayHeight));
 				}
@@ -1392,7 +1352,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 				this.mouseHelper.grabMouseCursor();
 				// Spout Start
 				if (close) {
-					this.displayGuiScreen((GuiScreen) null);
+					this.displayGuiScreen((GuiScreen)null);
 				}
 				// Spout End
 				this.leftClickCounter = 10000;
@@ -2331,7 +2291,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	/**
 	 * Returns if ambient occlusion is enabled
 	 */
-	public static boolean isAmbientOcclusionEnabled() {		
+	public static boolean isAmbientOcclusionEnabled() {
 		// Spout Start
 		return theMinecraft != null && Configuration.isAmbientOcclusion();
 		// Spout End
