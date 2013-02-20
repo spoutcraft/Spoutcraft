@@ -91,7 +91,7 @@ public abstract class GuiContainer extends GuiScreen {
 		this.guiTop = (this.height - this.ySize) / 2;
 
 		// Spout Start		
-		if (Spoutcraft.hasPermission("spout.client.sortinventory")) {
+		if (Spoutcraft.hasPermission("spout.plugin.sortinventory")) {
 			Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 			orderByAlphabet = new GenericButton("A-Z");
 			orderById = new GenericButton("Id");

@@ -237,7 +237,7 @@ public class MapRenderer {
 	}
 
 	private void renderEntities() {
-		if (!Spoutcraft.hasPermission("spout.client.minimap.showentities")) {
+		if (!Spoutcraft.hasPermission("spout.plugin.minimap.showentities")) {
 			return;
 		}
 		if (!MinimapConfig.getInstance().isShowingEntities()) {

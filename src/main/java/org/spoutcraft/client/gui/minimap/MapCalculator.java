@@ -380,7 +380,7 @@ public class MapCalculator implements Runnable {
 	private void entityCalc() {
 		synchronized(map.watchedEntities) {
 			map.watchedEntities.clear();
-			if (!Spoutcraft.hasPermission("spout.client.minimap.showentities")) {
+			if (!Spoutcraft.hasPermission("spout.plugin.minimap.showentities")) {
 				return;
 			}
 			if (!MinimapConfig.getInstance().isShowingEntities()) {

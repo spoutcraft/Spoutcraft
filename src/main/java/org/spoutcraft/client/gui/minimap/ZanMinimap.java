@@ -82,7 +82,7 @@ public class ZanMinimap {
 			return;
 		}
 
-		if (!Spoutcraft.hasPermission("spout.client.minimap")) {
+		if (!Spoutcraft.hasPermission("spout.plugin.minimap")) {
 			return;
 		}
 

@@ -87,7 +87,7 @@ public class GuiEditSign extends GuiScreen {
 		if (par1GuiButton.enabled) {
 			if (par1GuiButton.id == 0) {
 				// Spout Start
-				if (!Spoutcraft.hasPermission("spout.client.signcolors")) {
+				if (!Spoutcraft.hasPermission("spout.plugin.signcolors")) {
 					for (int i = 0; i < entitySign.signText.length; i++) {
 						entitySign.signText[i] = ChatColor.stripColor(entitySign.signText[i]);
 					}

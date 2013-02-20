@@ -612,7 +612,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				}
 			// Auto forward
 			} else if (key == settings.keyAutoForward.keyCode) {
-				if (Spoutcraft.hasPermission("spout.client.autorun.forward")) {
+				if (Spoutcraft.hasPermission("spout.plugin.autorun.forward")) {
 					autoforwardToggle = !autoforwardToggle;
 					autoBackwardToggle = false;
 				}
@@ -621,7 +621,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				autoBackwardToggle = false;
 			// Auto backward
 			} else if (key == settings.keyAutoBackward.keyCode) {
-				if (Spoutcraft.hasPermission("spout.client.autorun.backward")) {
+				if (Spoutcraft.hasPermission("spout.plugin.autorun.backward")) {
 					autoBackwardToggle = !autoBackwardToggle;
 					autoforwardToggle = false;
 				}
@@ -630,7 +630,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				autoforwardToggle = false;
 			// Overview map
 			} else if (key == settings.keyWaypoint.keyCode){
-				if(Spoutcraft.hasPermission("spout.client.overviewmap")) {
+				if(Spoutcraft.hasPermission("spout.plugin.overviewmap")) {
 					mc.displayGuiScreen(new GuiOverviewMap());
 				}
 			} else if (key == settings.keyHideChat.keyCode){
