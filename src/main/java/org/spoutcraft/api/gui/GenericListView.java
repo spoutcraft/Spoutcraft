@@ -48,7 +48,7 @@ public class GenericListView extends GenericListWidget implements ListWidget {
 
 	public ListWidgetItem[] getItems() {
 		ListWidgetItem items[] = new ListWidgetItem[model.getSize()];
-		for (int i = 0; i < model.getSize()-1; i++) {
+		for (int i = 0; i < model.getSize(); i++) {
 			items[i] = model.getItem(i);
 		}
 		return items;
