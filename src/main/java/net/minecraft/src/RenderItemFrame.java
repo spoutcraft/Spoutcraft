@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 
+import org.spoutcraft.api.material.MaterialData;
+
 public class RenderItemFrame extends Render {
 	private final RenderBlocks renderBlocksInstance = new RenderBlocks();
 
@@ -68,9 +70,22 @@ public class RenderItemFrame extends Render {
 			var3.hoverStart = 0.0F;
 			// Spout Start
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderManager.renderEngine.getTexture("/terrain.png"));
-			// Spout End
 			GL11.glPushMatrix();
-			GL11.glTranslatef(-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.hangingDirection], -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.hangingDirection]);
+			
+			if (var2.itemID == 318 && (MaterialData.getCustomBlock(var2.getItemDamage()) instanceof org.spoutcraft.api.material.Block)) {
+				if (par1EntityItemFrame.hangingDirection == 0) {
+					GL11.glTranslatef((-0.453125F * ((float)Direction.offsetX[par1EntityItemFrame.hangingDirection] + 0.25F)), -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.hangingDirection]);
+				} else if (par1EntityItemFrame.hangingDirection == 1) {
+					GL11.glTranslatef(-0.453125F * ((float)Direction.offsetX[par1EntityItemFrame.hangingDirection]), -0.18F, -0.453125F * ((float)Direction.offsetZ[par1EntityItemFrame.hangingDirection] + 0.25F));
+				} else if (par1EntityItemFrame.hangingDirection == 2) {
+					GL11.glTranslatef((-0.453125F * ((float)Direction.offsetX[par1EntityItemFrame.hangingDirection] - 0.25F)), -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.hangingDirection]);
+				} else if (par1EntityItemFrame.hangingDirection == 3) {
+					GL11.glTranslatef((-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.hangingDirection]), -0.18F, -0.453125F * ((float)Direction.offsetZ[par1EntityItemFrame.hangingDirection] - 0.25F));
+				}
+			} else {
+				GL11.glTranslatef(-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.hangingDirection], -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.hangingDirection]);
+			}
+			// Spout End
 			GL11.glRotatef(180.0F + par1EntityItemFrame.rotationYaw, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef((float)(-90 * par1EntityItemFrame.getRotation()), 0.0F, 0.0F, 1.0F);
 
