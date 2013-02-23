@@ -3906,8 +3906,9 @@ public class RenderBlocks {
 			var7 = var10;
 			var8 = var11;
 		}
-
-		return Minecraft.isAmbientOcclusionEnabled() && Block.lightValue[par1Block.blockID] == 0 ? this.renderStandardBlockWithAmbientOcclusion(par1Block, par2, par3, par4, var6, var7, var8) : this.renderStandardBlockWithColorMultiplier(par1Block, par2, par3, par4, var6, var7, var8);
+		// Spout Start
+		return Configuration.ambientOcclusion && Block.lightValue[par1Block.blockID] == 0 ? this.renderStandardBlockWithAmbientOcclusion(par1Block, par2, par3, par4, var6, var7, var8) : this.renderStandardBlockWithColorMultiplier(par1Block, par2, par3, par4, var6, var7, var8);
+		// Spout End
 	}
 
 	/**
@@ -4111,7 +4112,7 @@ public class RenderBlocks {
 				}
 
 				// Spout Start
-				if(org.spoutcraft.client.config.Configuration.isFancyLight() && org.spoutcraft.client.config.Configuration.getSmoothLighting() > 0F) {
+				if(org.spoutcraft.client.config.Configuration.fancyLight && org.spoutcraft.client.config.Configuration.smoothLighting > 0F) {
 					this.aoLightValueScratchXYZNNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNP, this.aoLightValueYNeg);
 					this.aoLightValueScratchXYNN = adjustAmbientOcclusion(this.aoLightValueScratchXYNN, this.aoLightValueYNeg);
 					this.aoLightValueScratchYZNP = adjustAmbientOcclusion(this.aoLightValueScratchYZNP, this.aoLightValueYNeg);
@@ -4219,7 +4220,7 @@ public class RenderBlocks {
 				}
 
 				// Spout Start
-				if(org.spoutcraft.client.config.Configuration.isFancyLight() && org.spoutcraft.client.config.Configuration.getSmoothLighting() > 0F) {
+				if(org.spoutcraft.client.config.Configuration.fancyLight && org.spoutcraft.client.config.Configuration.smoothLighting > 0F) {
 					this.aoLightValueScratchXYZNPP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPP, this.aoLightValueYPos);
 					this.aoLightValueScratchXYNP = adjustAmbientOcclusion(this.aoLightValueScratchXYNP, this.aoLightValueYPos);
 					this.aoLightValueScratchYZPP = adjustAmbientOcclusion(this.aoLightValueScratchYZPP, this.aoLightValueYPos);
@@ -4327,7 +4328,7 @@ public class RenderBlocks {
 				}
 
 				// Spout Start
-				if(org.spoutcraft.client.config.Configuration.isFancyLight() && org.spoutcraft.client.config.Configuration.getSmoothLighting() > 0F) {
+				if(org.spoutcraft.client.config.Configuration.fancyLight && org.spoutcraft.client.config.Configuration.smoothLighting > 0F) {
 					this.aoLightValueScratchXZNN = adjustAmbientOcclusion(this.aoLightValueScratchXZNN, this.aoLightValueZNeg);
 					this.aoLightValueScratchXYZNPN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPN, this.aoLightValueZNeg);
 					this.aoLightValueScratchYZPN = adjustAmbientOcclusion(this.aoLightValueScratchYZPN, this.aoLightValueZNeg);
@@ -4372,7 +4373,7 @@ public class RenderBlocks {
 			this.colorBlueTopRight *= var12;
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 2);
 			// Spout Start
-			if (Configuration.getBetterGrass() != 0) {
+			if (Configuration.betterGrass != 0) {
 				if(var27 == 3) {
 					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 2);
 					if(var27 == 0) {
@@ -4477,7 +4478,7 @@ public class RenderBlocks {
 				}
 
 				// Spout Start
-				if(org.spoutcraft.client.config.Configuration.isFancyLight() && org.spoutcraft.client.config.Configuration.getSmoothLighting() > 0F) {
+				if(org.spoutcraft.client.config.Configuration.fancyLight && org.spoutcraft.client.config.Configuration.smoothLighting > 0F) {
 					this.aoLightValueScratchXZNP = adjustAmbientOcclusion(this.aoLightValueScratchXZNP, this.aoLightValueZPos);
 					this.aoLightValueScratchXYZNPP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPP, this.aoLightValueZPos);
 					this.aoLightValueScratchYZPP = adjustAmbientOcclusion(this.aoLightValueScratchYZPP, this.aoLightValueZPos);
@@ -4523,7 +4524,7 @@ public class RenderBlocks {
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 3);			
 
 			// Spout Start
-			if (Configuration.getBetterGrass() != 0) {
+			if (Configuration.betterGrass != 0) {
 				if(var27 == 3) {
 					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 3);
 					if(var27 == 0) {
@@ -4628,7 +4629,7 @@ public class RenderBlocks {
 				}
 
 				// Spout Start
-				if(org.spoutcraft.client.config.Configuration.isFancyLight() && org.spoutcraft.client.config.Configuration.getSmoothLighting() > 0F) {
+				if(org.spoutcraft.client.config.Configuration.fancyLight && org.spoutcraft.client.config.Configuration.smoothLighting > 0F) {
 					this.aoLightValueScratchXYNN = adjustAmbientOcclusion(this.aoLightValueScratchXYNN, this.aoLightValueXNeg);
 					this.aoLightValueScratchXYZNNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNP, this.aoLightValueXNeg);
 					this.aoLightValueScratchXZNP = adjustAmbientOcclusion(this.aoLightValueScratchXZNP, this.aoLightValueXNeg);
@@ -4673,7 +4674,7 @@ public class RenderBlocks {
 			this.colorBlueTopRight *= var12;
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 4);
 			// Spout Start
-			if (Configuration.getBetterGrass() != 0) {
+			if (Configuration.betterGrass != 0) {
 				if(var27 == 3) {
 					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 4);
 					if(var27 == 0) {
@@ -4778,7 +4779,7 @@ public class RenderBlocks {
 				}
 
 				// Spout Start
-				if(org.spoutcraft.client.config.Configuration.isFancyLight() && org.spoutcraft.client.config.Configuration.getSmoothLighting() > 0F) {
+				if(org.spoutcraft.client.config.Configuration.fancyLight && org.spoutcraft.client.config.Configuration.smoothLighting > 0F) {
 					this.aoLightValueScratchXYPN = adjustAmbientOcclusion(this.aoLightValueScratchXYPN, this.aoLightValueXPos);
 					this.aoLightValueScratchXYZPNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZPNP, this.aoLightValueXPos);
 					this.aoLightValueScratchXZPP = adjustAmbientOcclusion(this.aoLightValueScratchXZPP, this.aoLightValueXPos);
@@ -4823,7 +4824,7 @@ public class RenderBlocks {
 			this.colorBlueTopRight *= var12;
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 5);
 			// Spout Start
-			if (Configuration.getBetterGrass() != 0) {
+			if (Configuration.betterGrass != 0) {
 				if(var27 == 3) {
 					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 5);
 					if(var27 == 0) {
@@ -6795,10 +6796,10 @@ public class RenderBlocks {
 
 	// Spout Start
 	public static int getSideGrassTexture(IBlockAccess world, int x, int y, int z, int blockface) {
-		if (Configuration.getBetterGrass() == 0) {
+		if (Configuration.betterGrass == 0) {
 			return 3;
 		} else {
-			if(Configuration.getBetterGrass() == 2) {
+			if(Configuration.betterGrass == 2) {
 				--y;
 				switch(blockface) {
 				case 2:
@@ -6825,10 +6826,10 @@ public class RenderBlocks {
 	}
 
 	public static int getSideSnowGrassTexture(IBlockAccess world, int x, int y, int z, int blockface) {
-		if (Configuration.getBetterGrass() == 0) {
+		if (Configuration.betterGrass == 0) {
 			return 68;
 		} else {
-			if (Configuration.getBetterGrass() == 2) {
+			if (Configuration.betterGrass == 2) {
 				switch(blockface) {
 				case 2:
 					--z;
@@ -6890,7 +6891,7 @@ public class RenderBlocks {
 	}
 
 	public static boolean isFancyGrass() {
-		return Configuration.isFancyGrass() || Configuration.getBetterGrass() == 2;
+		return Configuration.fancyGrass || Configuration.betterGrass == 2;
 	}
 	// Spout End
 }

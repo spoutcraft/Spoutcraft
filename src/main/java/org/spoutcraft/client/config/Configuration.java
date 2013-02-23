@@ -37,7 +37,7 @@ public class Configuration {
 	private static int advancedOpenGL = 0;
 	private static boolean anaglyph3D = false;
 	private static int autosave = 0;
-	private static int betterGrass = 0;
+	public static int betterGrass = 0;
 	private static boolean fancyBiomeColors = false;
 	private static boolean waterBiomeColors = true;
 	private static float brightnessSlider = 1F;
@@ -45,12 +45,12 @@ public class Configuration {
 	private static boolean fancyClouds = false;
 	private static boolean fancyFog = false;
 	private static boolean fancyGraphics = false;
-	private static boolean fancyGrass = false;
+	public static boolean fancyGrass = false;
 	private static boolean fancyTrees = false;
 	private static boolean fancyWater = false;
 	private static boolean fancyWeather = false;
 	private static boolean farView = false;
-	private static boolean fancyLight = false;
+	public static boolean fancyLight = false;
 	private static boolean fancyParticles = false;
 	private static int fastDebug = 0;
 	private static int guiScale = 0;
@@ -74,7 +74,7 @@ public class Configuration {
 	private static boolean forcestars = false;
 	private static boolean showstars = true;
 	private static boolean smoothFPS = false;
-	private static float smoothLighting = 1F;
+	public static float smoothLighting = 1F;
 	private static int time = 0;
 	private static boolean viewBobbing = false;
 	private static boolean delayedTooltips = true;
@@ -94,7 +94,7 @@ public class Configuration {
 	private static boolean connectedTextures = false;
 	private static boolean advancedOptions = false;
 	private static boolean randomMobTextures = true;
-	private static boolean ambientOcclusion = false;
+	public static boolean ambientOcclusion = false;
 	private static boolean serverTexturePromptsEnabled = true;
 
 	// Config specific
