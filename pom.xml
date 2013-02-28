@@ -16,14 +16,13 @@
 	<!-- Build properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<currentYear>2012</currentYear>
 		<minecraftVersion>1.4.7</minecraftVersion>
 		<lwjglVersion>2.4</lwjglVersion>
 		<mcpVersion>726</mcpVersion>
 		<buildNumber>0</buildNumber>
 	</properties>
 
-	<!-- Company information -->
+	<!-- Organization information -->
 	<organization>
 		<name>Spout LLC</name>
 		<url>http://www.spout.org</url>
@@ -40,9 +39,9 @@
 
 	<!-- Source code access -->
 	<scm>
-		<developerConnection>scm:git:git@github.com:SpoutDev/Spoutcraft.git</developerConnection>
-		<connection>scm:git:git://github.com/SpoutDev/Spoutcraft.git</connection>
-		<url>https://github.com/SpoutDev/Spoutcraft</url>
+		<developerConnection>scm:git:git@github.com:Legacy/Spoutcraft.git</developerConnection>
+		<connection>scm:git:git://github.com/Legacy/Spoutcraft.git</connection>
+		<url>https://github.com/Legacy/Spoutcraft</url>
 	</scm>
 
 	<!-- Build server -->
@@ -54,7 +53,7 @@
 	<!-- Issue tracker -->
 	<issueManagement>
 		<system>jira</system>
-		<url>http://issues.spout.org/browse/SPOUTCRAFT</url>
+		<url>http://issues.spout.org/browse/LEGACY</url>
 	</issueManagement>
 
 	<!-- Dependency repositories -->
@@ -121,7 +120,8 @@
 							<properties>
 								<name>${project.name}</name>
 								<url>${project.organization.url}</url>
-								<copyright>Copyright (c) ${project.inceptionYear}-${currentYear}, ${project.organization.name}</copyright>
+								<inceptionYear>${project.inceptionYear}</inceptionYear>
+								<organization>${project.organization.name}</organization>
 							</properties>
 							<quiet>true</quiet>
 							<encoding>UTF-8</encoding>
@@ -258,7 +258,7 @@
 										<dependency>
 											<groupId>org.yaml</groupId>
 											<artifactId>snakeyaml</artifactId>
-											<version>1.10</version>
+											<version>1.11</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
@@ -907,5 +907,4 @@
 			</build>
 		</profile>
 	</profiles>
-
 </project>
