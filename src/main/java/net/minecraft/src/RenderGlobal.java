@@ -18,6 +18,7 @@ import com.pclewis.mcpatcher.mod.RenderPass;
 import com.pclewis.mcpatcher.mod.SkyRenderer;
 // MCPatcher End
 // Spout Start
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.TileEntityComparator;
@@ -181,8 +182,10 @@ public class RenderGlobal implements IWorldAccess {
 		this.glRenderListBase = GLAllocation.generateDisplayLists(var3 * var3 * var4 * 5);
 		// Spout End
 		this.occlusionEnabled = OpenGlCapsChecker.checkARBOcclusion();
-
-		if (this.occlusionEnabled) {
+		System.out.println("OcclusionEnabled: " + this.occlusionEnabled);
+		// Spout Start
+		if (this.occlusionEnabled && Configuration.ambientOcclusion) {
+		// Spout End
 			this.occlusionResult.clear();
 			this.glOcclusionQueryBase = GLAllocation.createDirectIntBuffer(var3 * var3 * var4);
 			this.glOcclusionQueryBase.clear();
@@ -418,7 +421,9 @@ public class RenderGlobal implements IWorldAccess {
 					for (int var6 = 0; var6 < this.renderChunksDeep; ++var6) {
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4] = new WorldRenderer(this.theWorld, this.tileEntities, var4 * 16, var5 * 16, var6 * 16, this.glRenderListBase + var2);
 
-						if (this.occlusionEnabled) {
+						// Spout Start
+						if (this.occlusionEnabled && Configuration.ambientOcclusion) {
+						// Spout End
 							this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].glOcclusionQuery = this.glOcclusionQueryBase.get(var3);
 						}
 
@@ -666,7 +671,9 @@ public class RenderGlobal implements IWorldAccess {
 		byte var17 = 0;
 		int var34;
 
-		if (this.occlusionEnabled && this.mc.gameSettings.advancedOpengl && !this.mc.gameSettings.anaglyph && par2 == 0) {
+		// Spout Start
+		if (this.occlusionEnabled && Configuration.ambientOcclusion && this.mc.gameSettings.advancedOpengl && !this.mc.gameSettings.anaglyph && par2 == 0) {
+		// Spout End
 			byte var18 = 0;
 			int var19 = 16;
 			this.checkOcclusionQueryResult(var18, var19);
@@ -800,14 +807,18 @@ public class RenderGlobal implements IWorldAccess {
 					++this.renderersSkippingRenderPass;
 				} else if (!this.sortedWorldRenderers[var7].isInFrustum) {
 					++this.renderersBeingClipped;
-				} else if (this.occlusionEnabled && !this.sortedWorldRenderers[var7].isVisible) {
+				// Spout Start
+				} else if (this.occlusionEnabled && Configuration.ambientOcclusion && !this.sortedWorldRenderers[var7].isVisible) {
+				// Spout End
 					++this.renderersBeingOccluded;
 				} else {
 					++this.renderersBeingRendered;
 				}
 			}
 
-			if (!this.sortedWorldRenderers[var7].skipRenderPass[par3] && this.sortedWorldRenderers[var7].isInFrustum && (!this.occlusionEnabled || this.sortedWorldRenderers[var7].isVisible)) {
+			// Spout Start
+			if (!this.sortedWorldRenderers[var7].skipRenderPass[par3] && this.sortedWorldRenderers[var7].isInFrustum && (!this.occlusionEnabled && !Configuration.ambientOcclusion || this.sortedWorldRenderers[var7].isVisible)) {
+			// Spout End
 				int var8 = this.sortedWorldRenderers[var7].getGLCallListForPass(par3);
 
 				if (var8 >= 0) {
