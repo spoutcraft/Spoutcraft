@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -28,7 +28,6 @@ import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextCapabilities;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
@@ -36,7 +35,6 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLContext;
-import org.lwjgl.opengl.SGISGenerateMipmap;
 import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.client.Minecraft;
@@ -45,7 +43,6 @@ import net.minecraft.src.FontRenderer;
 import net.minecraft.src.FoodStats;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiIngame;
-import net.minecraft.src.Item;
 import net.minecraft.src.Material;
 import net.minecraft.src.Potion;
 import net.minecraft.src.RenderHelper;
@@ -90,7 +87,6 @@ import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.api.gui.WidgetAnchor;
 import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.MipMapUtils;
 import org.spoutcraft.client.io.CustomTextureManager;
 
 public class MCRenderDelegate implements RenderDelegate {

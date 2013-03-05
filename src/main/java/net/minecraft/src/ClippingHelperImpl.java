@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.nio.FloatBuffer;
-import org.lwjgl.opengl.GL11;
 
 public class ClippingHelperImpl extends ClippingHelper {
 	private static ClippingHelperImpl instance = new ClippingHelperImpl();

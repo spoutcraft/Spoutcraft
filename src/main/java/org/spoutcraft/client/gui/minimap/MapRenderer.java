@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -23,16 +23,12 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.Tessellator;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.RenderUtil;
-import org.spoutcraft.client.SpoutClient;
 
 public class MapRenderer {
 	/** Direction you're facing */

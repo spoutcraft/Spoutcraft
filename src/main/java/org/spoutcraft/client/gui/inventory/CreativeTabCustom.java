@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,17 +22,12 @@ package org.spoutcraft.client.gui.inventory;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.GuiContainerCreative;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.material.CustomItem;
-import org.spoutcraft.api.material.CustomBlock;
 
 public class CreativeTabCustom extends CreativeTabs{
 	public CreativeTabCustom(int inty, String string) {

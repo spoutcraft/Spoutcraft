@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import net.minecraft.client.Minecraft;
 // MCPatcher Start
 import com.pclewis.mcpatcher.TexturePackAPI;

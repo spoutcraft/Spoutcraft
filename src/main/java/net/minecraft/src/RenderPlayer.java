@@ -7,17 +7,12 @@ import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.player.accessories.AccessoryHandler;
 import org.spoutcraft.client.player.accessories.AccessoryType;
-import org.spoutcraft.client.special.ModelNarrowtux;
 import org.spoutcraft.client.special.VIP;
 // Spout End
 
 public class RenderPlayer extends RenderLiving {
 	// Spout Start - private to public
 	public ModelBiped modelBipedMain;
-	// Spout End
-	// Spout Start - narrowtux model
-	private ModelNarrowtux modelNarrowtux;
-	private float lastScale = 1f;
 	// Spout End
 	private ModelBiped modelArmorChestplate;
 	private ModelBiped modelArmor;

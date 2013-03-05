@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -20,7 +20,6 @@
 package org.spoutcraft.client.gui;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.spoutcraft.api.gui.AbstractListModel;
 import org.spoutcraft.api.gui.ListWidgetItem;

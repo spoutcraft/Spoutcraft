@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -25,9 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import org.lwjgl.opengl.GL11;
-
-import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.UnsafeClass;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;

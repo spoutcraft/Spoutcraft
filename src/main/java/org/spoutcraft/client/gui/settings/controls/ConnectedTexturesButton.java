@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.api.gui.GenericCheckBox;
-import org.spoutcraft.client.config.Configuration;
 import com.pclewis.mcpatcher.TexturePackAPI;
+
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.client.config.Configuration;
 
 public class ConnectedTexturesButton extends AutomatedCheckBox {
 	public ConnectedTexturesButton() {

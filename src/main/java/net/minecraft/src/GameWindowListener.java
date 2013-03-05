@@ -3,7 +3,6 @@ package net.minecraft.src;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 // Spout Start
-import net.minecraft.client.Minecraft;
 import org.spoutcraft.client.SpoutClient;
 // Spout End
 

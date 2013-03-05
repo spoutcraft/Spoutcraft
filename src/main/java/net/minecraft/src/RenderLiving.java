@@ -8,10 +8,7 @@ import org.lwjgl.opengl.GL12;
 import com.pclewis.mcpatcher.mod.MobRandomizer;
 // MCPatcher End
 // Spout Start
-import org.lwjgl.opengl.GL13;
-import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.io.CustomTextureManager;
 // Spout End
 
 public class RenderLiving extends Render {

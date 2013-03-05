@@ -15,7 +15,6 @@ import net.minecraft.src.Block;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.Entity;
 import net.minecraft.src.ICamera;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderItem;
 import net.minecraft.src.Tessellator;
@@ -23,13 +22,11 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityRenderer;
 import net.minecraft.src.World;
 import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.client.item.SpoutItem;
-import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.block.design.GenericBlockDesign;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.CustomTextureManager;
 // Spout End
 
 public class WorldRenderer {

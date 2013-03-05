@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -39,7 +39,6 @@ import org.spoutcraft.api.inventory.MaterialManager;
 import org.spoutcraft.api.io.AddonPacket;
 import org.spoutcraft.api.keyboard.KeyBindingManager;
 import org.spoutcraft.api.player.BiomeManager;
-import org.spoutcraft.api.player.ChatManager;
 import org.spoutcraft.api.player.SkyManager;
 import org.spoutcraft.api.util.Location;
 

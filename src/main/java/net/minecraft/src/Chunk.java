@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Random;
 // Spout Start
 import org.spoutcraft.client.block.SpoutcraftChunk;
-import org.spoutcraft.client.config.Configuration;
 // Spout End
 
 public class Chunk {

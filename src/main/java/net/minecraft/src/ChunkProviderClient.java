@@ -1,15 +1,8 @@
 package net.minecraft.src;
 
-import java.util.ArrayList;
 import java.util.List;
-
 // Spout
-import java.util.Collections;
 import gnu.trove.map.hash.TLongObjectHashMap;
-import net.minecraft.client.Minecraft;
-import org.spoutcraft.client.ChunkComparator;
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.Configuration;
 // Spout End
 
 public class ChunkProviderClient implements IChunkProvider {

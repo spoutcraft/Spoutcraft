@@ -7,7 +7,6 @@ import net.minecraft.server.MinecraftServer;
 // Spout Start
 import java.util.LinkedList;
 import java.util.UUID;
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.entity.CraftEntityFactory;
 // Spout End
 

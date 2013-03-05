@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@ package org.spoutcraft.client.gui.error;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiConnecting;
 import net.minecraft.src.GuiScreen;
-import net.minecraft.src.RenderEngine;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;

@@ -19,7 +19,6 @@ import org.lwjgl.opengl.GL11;
 import com.pclewis.mcpatcher.mod.CustomAnimation;
 import com.pclewis.mcpatcher.mod.MipmapHelper;
 import com.pclewis.mcpatcher.mod.TextureUtils;
-import com.pclewis.mcpatcher.TexturePackAPI;
 import com.pclewis.mcpatcher.mod.TileSize;
 // MCPatcher End
 // Spout Start

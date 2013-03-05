@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -46,7 +46,7 @@ public class ControlsModel extends AbstractListModel {
 		items.clear();
 
 		if (gui.checkVanilla.isChecked()) {
-			// Minecraft items
+			// Minecraft controls
 			int n = 0;
 			for (KeyBinding binding:options.keyBindings) {
 				items.add(new VanillaBindingItem(n, binding, this));
@@ -55,23 +55,23 @@ public class ControlsModel extends AbstractListModel {
 		}
 
 		if (gui.checkSpoutcraft.isChecked()) {
-			// Spoutcraft items
+			// Spoutcraft controls
 			for (KeyBinding binding:options.spoutcraftBindings) {
 				items.add(new SpoutcraftBindingItem(binding, this));
 			}
 		}
 
-		if (gui.checkShortcuts.isChecked()) {
-			// Shortcuts
-			for (Shortcut sh:manager.getAllShortcuts()) {
-				items.add(new ShortcutBindingItem(sh, this));
+		if (gui.checkCustom.isChecked()) {
+			// Custom plugin controls
+			for (org.spoutcraft.api.keyboard.KeyBinding binding:manager.getAllBindings()) {
+				items.add(new KeyBindingItem(binding, this));
 			}
 		}
 
-		if (gui.checkBindings.isChecked()) {
-			// Plugin controls
-			for (org.spoutcraft.api.keyboard.KeyBinding binding:manager.getAllBindings()) {
-				items.add(new KeyBindingItem(binding, this));
+		if (gui.checkShortcuts.isChecked()) {
+			// User shortcuts
+			for (Shortcut sh:manager.getAllShortcuts()) {
+				items.add(new ShortcutBindingItem(sh, this));
 			}
 		}
 

@@ -3,10 +3,7 @@ package net.minecraft.src;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 // Spout Start
-import java.util.List;
-import net.minecraft.client.Minecraft;
 import org.bukkit.ChatColor;
-import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.api.Spoutcraft;
 // Spout End
 

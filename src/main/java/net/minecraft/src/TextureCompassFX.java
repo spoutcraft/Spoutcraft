@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 // MCPatcher Start - Removed unused import
 //import javax.imageio.ImageIO;
 // MCPatcher End

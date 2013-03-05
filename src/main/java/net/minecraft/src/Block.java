@@ -6,7 +6,6 @@ import java.util.Random;
 import com.pclewis.mcpatcher.mod.Colorizer;
 // MCPatcher End
 // Spout Start
-import java.util.ArrayList; 
 import gnu.trove.map.hash.TIntFloatHashMap;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.World;

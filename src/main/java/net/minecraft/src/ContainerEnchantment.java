@@ -2,9 +2,6 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Random;
-// Spout Start
-import java.util.Iterator;
-// Spout End
 
 public class ContainerEnchantment extends Container {
 

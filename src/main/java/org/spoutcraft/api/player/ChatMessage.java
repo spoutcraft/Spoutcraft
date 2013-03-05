@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -19,12 +19,7 @@
  */
 package org.spoutcraft.api.player;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import org.spoutcraft.api.ChatColor;
-import org.spoutcraft.api.Spoutcraft;
 
 public class ChatMessage {
 	private String unparsedMessage = null;
@@ -36,10 +31,10 @@ public class ChatMessage {
 	private int age = 0;
 
 	static final String messageFormats[] = {
-		"^<(.*)>\\s{0,1}(.*)$", //Vanilla format
+		"^<(.*)>\\s{0,1}(.*)$", // Vanilla format
 		"^(.*):\\s{0,1}(.*)$",
-		"^(.*)\\s{0,1}\\[.*\\]: (.*)$", //Format for teh cool admin folks
-		"^\\[(.*)\\] (.*)$", //Bukkit console say command ([Server] hello)
+		"^(.*)\\s{0,1}\\[.*\\]: (.*)$", // Format for teh cool admin folks
+		"^\\[(.*)\\] (.*)$", // Bukkit console say command ([Server] hello)
 	};
 
 	static final Pattern messagePatterns[];

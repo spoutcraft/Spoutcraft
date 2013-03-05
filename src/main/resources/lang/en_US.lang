@@ -248,7 +248,7 @@ key.pickItem=Pick Block
 key.mouseButton=Button %1$s
 key.command=Command
 
-texturePack.openFolder=Open texture pack folder
+texturePack.openFolder=Open Folder
 texturePack.title=Select Texture Pack
 texturePack.folderInfo=(Place texture pack files here)
 

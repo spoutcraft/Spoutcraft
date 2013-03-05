@@ -1,9 +1,6 @@
 package net.minecraft.src;
 
 import java.util.List;
-// Spout Start
-import java.util.Iterator;
-// Spout End
 
 public class EntityLightningBolt extends EntityWeatherEffect {
 

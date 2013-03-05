@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
 // MCPatcher Start
 import com.pclewis.mcpatcher.mod.Colorizer;
 // MCPatcher End
@@ -16,10 +15,8 @@ import com.pclewis.mcpatcher.mod.Colorizer;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.NBTTagCompound;
-
 import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.client.config.Configuration;
-import org.spoutcraft.client.entity.EntityText;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;

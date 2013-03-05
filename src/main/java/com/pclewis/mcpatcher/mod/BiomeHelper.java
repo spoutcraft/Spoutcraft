@@ -4,7 +4,6 @@ import com.pclewis.mcpatcher.MCLogger;
 import com.pclewis.mcpatcher.MCPatcherUtils;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.WorldChunkManager;
 
 abstract class BiomeHelper {
 	private static final MCLogger logger = MCLogger.getLogger(MCPatcherUtils.CUSTOM_COLORS);

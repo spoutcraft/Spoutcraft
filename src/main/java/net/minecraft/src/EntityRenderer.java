@@ -17,7 +17,6 @@ import com.pclewis.mcpatcher.mod.RenderPass;
 // MCPatcher End
 // Spout Start
 import org.lwjgl.util.vector.*;
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
 // Spout End

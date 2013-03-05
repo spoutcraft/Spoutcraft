@@ -4,8 +4,6 @@ import net.minecraft.client.Minecraft;
 
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.server.FavoritesModel;
-import org.spoutcraft.client.gui.server.SpoutServerData;
 // Spout End
 
 class NetClientWebTextures extends GuiScreen {

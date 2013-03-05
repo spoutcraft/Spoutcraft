@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -19,12 +19,10 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
-import org.spoutcraft.client.io.FileUtil;
 
 public class PacketCacheDeleteFile implements SpoutPacket {
 	private String plugin;

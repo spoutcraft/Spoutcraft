@@ -9,7 +9,6 @@ import java.util.Random;
 import com.pclewis.mcpatcher.mod.MobRandomizer;
 // MCPatcher End
 // Spout Start
-import org.spoutcraft.client.entity.CraftLivingEntity;
 import org.spoutcraft.client.entity.EntityData;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.api.entity.EntitySkinType;

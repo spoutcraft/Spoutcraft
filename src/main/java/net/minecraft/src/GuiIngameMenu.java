@@ -3,8 +3,6 @@ package net.minecraft.src;
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMapAgent;
-import org.spoutcraft.client.gui.server.GuiFavorites;
-import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
 import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
 // Spout End
 

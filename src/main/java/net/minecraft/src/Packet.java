@@ -9,10 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-// Spout Start
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.api.material.MaterialData;
-// Spout End
 
 public abstract class Packet {
 

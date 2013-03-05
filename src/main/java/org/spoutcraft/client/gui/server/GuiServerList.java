@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -101,7 +101,7 @@ public class GuiServerList extends GuiAPIDisplay {
 		}
 
 		int top = 5;
-		labelTitle.setY(top + 7).setX(width/2 - mc.fontRenderer.getStringWidth("Public Server List")/2);
+		labelTitle.setY(top + 7).setX(width / 2 - mc.fontRenderer.getStringWidth("Public Server List") / 2);
 		getScreen().attachWidget(spoutcraft, labelTitle);
 
 		buttonRefresh.setX(width - 5 - 100).setY(top).setWidth(100).setHeight(20);

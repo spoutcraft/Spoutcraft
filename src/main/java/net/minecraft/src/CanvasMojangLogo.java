@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.IOException;
 // MCPatcher Start
 //import javax.imageio.ImageIO;
 import com.pclewis.mcpatcher.TexturePackAPI;
