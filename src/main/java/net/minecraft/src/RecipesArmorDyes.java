@@ -1,9 +1,7 @@
 package net.minecraft.src;
 
+import com.prupe.mcpatcher.mod.ColorizeEntity;
 import java.util.ArrayList;
-// MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
-// MCPatcher End
 
 public class RecipesArmorDyes implements IRecipe {
 
@@ -66,6 +64,7 @@ public class RecipesArmorDyes implements IRecipe {
 					}
 
 					var2 = var8.copy();
+					var2.stackSize = 1;
 
 					if (var6.hasColor(var8)) {
 						var9 = var6.getColor(var2);
@@ -84,7 +83,7 @@ public class RecipesArmorDyes implements IRecipe {
 					}
 
 					// MCPatcher Start
-					float[] var14 = Colorizer.armorColors[BlockCloth.getBlockFromDye(var8.getItemDamage())];
+					float[] var14 = ColorizeEntity.armorColors[BlockCloth.getBlockFromDye(var8.getItemDamage())];
 					// MCPatcher End
 					int var16 = (int)(var14[0] * 255.0F);
 					int var15 = (int)(var14[1] * 255.0F);

@@ -3,12 +3,6 @@ package net.minecraft.src;
 public class BlockTrapDoor extends Block {
 	protected BlockTrapDoor(int par1, Material par2Material) {
 		super(par1, par2Material);
-		this.blockIndexInTexture = 84;
-
-		if (par2Material == Material.iron) {
-			++this.blockIndexInTexture;
-		}
-
 		float var3 = 0.5F;
 		float var4 = 1.0F;
 		this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, var4, 0.5F + var3);
@@ -114,7 +108,7 @@ public class BlockTrapDoor extends Block {
 			return true;
 		} else {
 			int var10 = par1World.getBlockMetadata(par2, par3, par4);
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, var10 ^ 4);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, var10 ^ 4, 2);
 			par1World.playAuxSFXAtEntity(par5EntityPlayer, 1003, par2, par3, par4, 0);
 			return true;
 		}
@@ -125,7 +119,7 @@ public class BlockTrapDoor extends Block {
 		boolean var7 = (var6 & 4) > 0;
 
 		if (var7 != par5) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 ^ 4);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 ^ 4, 2);
 			par1World.playAuxSFXAtEntity((EntityPlayer)null, 1003, par2, par3, par4, 0);
 		}
 	}
@@ -157,7 +151,7 @@ public class BlockTrapDoor extends Block {
 			}
 
 			if (!isValidSupportBlock(par1World.getBlockId(var7, par3, var8))) {
-				par1World.setBlockWithNotify(par2, par3, par4, 0);
+				par1World.func_94571_i(par2, par3, par4);
 				this.dropBlockAsItem(par1World, par2, par3, par4, var6, 0);
 			}
 

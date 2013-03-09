@@ -74,7 +74,12 @@ public class Chunk {
 
 	/** The time according to World.worldTime when this chunk was last saved */
 	public long lastSaveTime;
-	public boolean deferRender;
+
+	/**
+	 * Updates to this chunk will not be sent to clients if this is false. This field is set to true the first time the
+	 * chunk is sent to a client, and never set to false.
+	 */
+	public boolean sendUpdates;
 	public int field_82912_p;
 
 	/**
@@ -101,7 +106,7 @@ public class Chunk {
 		this.isModified = false;
 		this.hasEntities = false;
 		this.lastSaveTime = 0L;
-		this.deferRender = false;
+		this.sendUpdates = false;
 		this.field_82912_p = 0;
 		this.queuedLightChecks = 4096;
 		this.field_76653_p = false;
@@ -480,13 +485,6 @@ public class Chunk {
 	}
 
 	/**
-	 * Sets a blockID for a position in the chunk. Args: x, y, z, blockID
-	 */
-	public boolean setBlockID(int par1, int par2, int par3, int par4) {
-		return this.setBlockIDWithMetadata(par1, par2, par3, par4, 0);
-	}
-
-	/**
 	 * Sets a blockID of a position within a chunk with metadata. Args: x, y, z, blockID, metadata
 	 */
 	public boolean setBlockIDWithMetadata(int par1, int par2, int par3, int par4, int par5) {
@@ -527,7 +525,7 @@ public class Chunk {
 			if (var8 != 0) {
 				if (!this.worldObj.isRemote) {
 					Block.blocksList[var8].breakBlock(this.worldObj, var12, par2, var13, var8, var9);
-				} else if (Block.blocksList[var8] instanceof BlockContainer && var8 != par4) {
+				} else if (Block.blocksList[var8] instanceof ITileEntityProvider && var8 != par4) {
 					this.worldObj.removeBlockTileEntity(var12, par2, var13);
 				}
 			}
@@ -558,11 +556,11 @@ public class Chunk {
 						Block.blocksList[par4].onBlockAdded(this.worldObj, var12, par2, var13);
 					}
 
-					if (Block.blocksList[par4] instanceof BlockContainer) {
+					if (Block.blocksList[par4] instanceof ITileEntityProvider) {
 						var14 = this.getChunkBlockTileEntity(par1, par2, par3);
 
 						if (var14 == null) {
-							var14 = ((BlockContainer)Block.blocksList[par4]).createNewTileEntity(this.worldObj);
+							var14 = ((ITileEntityProvider)Block.blocksList[par4]).createNewTileEntity(this.worldObj);
 							this.worldObj.setBlockTileEntity(var12, par2, var13, var14);
 						}
 
@@ -570,7 +568,7 @@ public class Chunk {
 							var14.updateContainingBlockInfo();
 						}
 					}
-				} else if (var8 > 0 && Block.blocksList[var8] instanceof BlockContainer) {
+				} else if (var8 > 0 && Block.blocksList[var8] instanceof ITileEntityProvider) {
 					var14 = this.getChunkBlockTileEntity(par1, par2, par3);
 
 					if (var14 != null) {
@@ -602,7 +600,7 @@ public class Chunk {
 				var5.setExtBlockMetadata(par1, par2 & 15, par3, par4);
 				int var7 = var5.getExtBlockID(par1, par2 & 15, par3);
 
-				if (var7 > 0 && Block.blocksList[var7] instanceof BlockContainer) {
+				if (var7 > 0 && Block.blocksList[var7] instanceof ITileEntityProvider) {
 					TileEntity var8 = this.getChunkBlockTileEntity(par1, par2, par3);
 
 					if (var8 != null) {
@@ -682,7 +680,7 @@ public class Chunk {
 		int var3 = MathHelper.floor_double(par1Entity.posZ / 16.0D);
 
 		if (var2 != this.xPosition || var3 != this.zPosition) {
-			System.out.println("Wrong location! " + par1Entity);
+			this.worldObj.func_98180_V().func_98232_c("Wrong location! " + par1Entity);
 			Thread.dumpStack();
 		}
 
@@ -747,7 +745,7 @@ public class Chunk {
 			}
 
 			if (var5 == null) {
-				var5 = ((BlockContainer)Block.blocksList[var6]).createNewTileEntity(this.worldObj);
+				var5 = ((ITileEntityProvider)Block.blocksList[var6]).createNewTileEntity(this.worldObj);
 				this.worldObj.setBlockTileEntity(this.xPosition * 16 + par1, par2, this.zPosition * 16 + par3, var5);
 			}
 
@@ -786,7 +784,11 @@ public class Chunk {
 		par4TileEntity.yCoord = par2;
 		par4TileEntity.zCoord = this.zPosition * 16 + par3;
 
-		if (this.getBlockID(par1, par2, par3) != 0 && Block.blocksList[this.getBlockID(par1, par2, par3)] instanceof BlockContainer) {
+		if (this.getBlockID(par1, par2, par3) != 0 && Block.blocksList[this.getBlockID(par1, par2, par3)] instanceof ITileEntityProvider) {
+			if (this.chunkTileEntityMap.containsKey(var5)) {
+				((TileEntity)this.chunkTileEntityMap.get(var5)).invalidate();
+			}
+
 			par4TileEntity.validate();
 			this.chunkTileEntityMap.put(var5, par4TileEntity);
 		}
@@ -855,34 +857,36 @@ public class Chunk {
 	 * Fills the given list of all entities that intersect within the given bounding box that aren't the passed entity
 	 * Args: entity, aabb, listToFill
 	 */
-	public void getEntitiesWithinAABBForEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, List par3List) {
-		int var4 = MathHelper.floor_double((par2AxisAlignedBB.minY - 2.0D) / 16.0D);
-		int var5 = MathHelper.floor_double((par2AxisAlignedBB.maxY + 2.0D) / 16.0D);
+	public void getEntitiesWithinAABBForEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, List par3List, IEntitySelector par4IEntitySelector) {
+		int var5 = MathHelper.floor_double((par2AxisAlignedBB.minY - 2.0D) / 16.0D);
+		int var6 = MathHelper.floor_double((par2AxisAlignedBB.maxY + 2.0D) / 16.0D);
 
-		if (var4 < 0) {
-			var4 = 0;
+		if (var5 < 0) {
+			var5 = 0;
+			var6 = Math.max(var5, var6);
 		}
 
-		if (var5 >= this.entityLists.length) {
-			var5 = this.entityLists.length - 1;
+		if (var6 >= this.entityLists.length) {
+			var6 = this.entityLists.length - 1;
+			var5 = Math.min(var5, var6);
 		}
 
-		for (int var6 = var4; var6 <= var5; ++var6) {
-			List var7 = this.entityLists[var6];
+		for (int var7 = var5; var7 <= var6; ++var7) {
+			List var8 = this.entityLists[var7];
 
-			for (int var8 = 0; var8 < var7.size(); ++var8) {
-				Entity var9 = (Entity)var7.get(var8);
+			for (int var9 = 0; var9 < var8.size(); ++var9) {
+				Entity var10 = (Entity)var8.get(var9);
 
-				if (var9 != par1Entity && var9.boundingBox.intersectsWith(par2AxisAlignedBB)) {
-					par3List.add(var9);
-					Entity[] var10 = var9.getParts();
+				if (var10 != par1Entity && var10.boundingBox.intersectsWith(par2AxisAlignedBB) && (par4IEntitySelector == null || par4IEntitySelector.isEntityApplicable(var10))) {
+					par3List.add(var10);
+					Entity[] var11 = var10.getParts();
 
-					if (var10 != null) {
-						for (int var11 = 0; var11 < var10.length; ++var11) {
-							var9 = var10[var11];
+					if (var11 != null) {
+						for (int var12 = 0; var12 < var11.length; ++var12) {
+							var10 = var11[var12];
 
-							if (var9 != par1Entity && var9.boundingBox.intersectsWith(par2AxisAlignedBB)) {
-								par3List.add(var9);
+							if (var10 != par1Entity && var10.boundingBox.intersectsWith(par2AxisAlignedBB) && (par4IEntitySelector == null || par4IEntitySelector.isEntityApplicable(var10))) {
+								par3List.add(var10);
 							}
 						}
 					}
@@ -928,7 +932,7 @@ public class Chunk {
 	 */
 	public boolean needsSaving(boolean par1) {
 		if (par1) {
-			if (this.hasEntities && this.worldObj.getTotalWorldTime() != this.lastSaveTime) {
+			if (this.hasEntities && this.worldObj.getTotalWorldTime() != this.lastSaveTime || this.isModified) {
 				return true;
 			}
 		} else if (this.hasEntities && this.worldObj.getTotalWorldTime() >= this.lastSaveTime + 600L) {

@@ -166,7 +166,7 @@ public class Packet51MapChunk extends Packet {
 		byte[] var7 = temp;
 
 		if (par1) {
-			par0Chunk.deferRender = true;
+			par0Chunk.sendUpdates = true;
 		}
 
 		int var8;
