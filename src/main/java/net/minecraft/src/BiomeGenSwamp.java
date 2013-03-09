@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.Random;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.Colorizer;
 // MCPatcher End
 
 public class BiomeGenSwamp extends BiomeGenBase {

@@ -6,6 +6,7 @@ import java.util.Random;
 import com.prupe.mcpatcher.mod.ColorizeBlock;
 import com.prupe.mcpatcher.mod.Colorizer;
 // MCPatcher End
+
 public class BlockLeaves extends BlockLeavesBase {
 	public static final String[] LEAF_TYPES = new String[] {"oak", "spruce", "birch", "jungle"};
 	public static final String[][] field_94396_b = new String[][] {{"leaves", "leaves_spruce", "leaves", "leaves_jungle"}, {"leaves_opaque", "leaves_spruce_opaque", "leaves_opaque", "leaves_jungle_opaque"}};
@@ -40,9 +41,13 @@ public class BlockLeaves extends BlockLeavesBase {
 		int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
 
 		if ((var5 & 3) == 1) {
+			// MCPatcher Start
 			return ColorizeBlock.colorizeBiomeWithBlending(ColorizerFoliage.getFoliageColorPine(), Colorizer.COLOR_MAP_PINE, par2, par3, par4);
+			// MCPatcher End
 		} else if ((var5 & 3) == 2) {
+			// MCPatcher Start
 			return ColorizeBlock.colorizeBiomeWithBlending(ColorizerFoliage.getFoliageColorBirch(), Colorizer.COLOR_MAP_BIRCH, par2, par3, par4);
+			// MCPatcher End
 		} else {
 			int var6 = 0;
 			int var7 = 0;
