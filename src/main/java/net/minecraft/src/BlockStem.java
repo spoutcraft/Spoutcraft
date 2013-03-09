@@ -1,17 +1,16 @@
 package net.minecraft.src;
 
+import com.prupe.mcpatcher.mod.ColorizeBlock;
 import java.util.Random;
-// MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
-// MCPatcher End
 
 public class BlockStem extends BlockFlower {
 
 	/** Defines if it is a Melon or a Pumpkin that the stem is producing. */
-	private Block fruitType;
+	private final Block fruitType;
+	private Icon field_94369_b;
 
 	protected BlockStem(int par1, Block par2Block) {
-		super(par1, 111);
+		super(par1);
 		this.fruitType = par2Block;
 		this.setTickRandomly(true);
 		float var3 = 0.125F;
@@ -41,7 +40,7 @@ public class BlockStem extends BlockFlower {
 
 				if (var7 < 7) {
 					++var7;
-					par1World.setBlockMetadataWithNotify(par2, par3, par4, var7);
+					par1World.setBlockMetadataWithNotify(par2, par3, par4, var7, 2);
 				} else {
 					if (par1World.getBlockId(par2 - 1, par3, par4) == this.fruitType.blockID) {
 						return;
@@ -82,7 +81,7 @@ public class BlockStem extends BlockFlower {
 					int var11 = par1World.getBlockId(var9, par3 - 1, var10);
 
 					if (par1World.getBlockId(var9, par3, var10) == 0 && (var11 == Block.tilledField.blockID || var11 == Block.dirt.blockID || var11 == Block.grass.blockID)) {
-						par1World.setBlockWithNotify(var9, par3, var10, this.fruitType.blockID);
+						par1World.func_94575_c(var9, par3, var10, this.fruitType.blockID);
 					}
 				}
 			}
@@ -90,7 +89,13 @@ public class BlockStem extends BlockFlower {
 	}
 
 	public void fertilizeStem(World par1World, int par2, int par3, int par4) {
-		par1World.setBlockMetadataWithNotify(par2, par3, par4, 7);
+		int var5 = par1World.getBlockMetadata(par2, par3, par4) + MathHelper.getRandomIntegerInRange(par1World.rand, 2, 5);
+
+		if (var5 > 7) {
+			var5 = 7;
+		}
+
+		par1World.setBlockMetadataWithNotify(par2, par3, par4, var5, 2);
 	}
 
 	private float getGrowthModifier(World par1World, int par2, int par3, int par4) {
@@ -143,7 +148,7 @@ public class BlockStem extends BlockFlower {
 		int var3 = 255 - par1 * 8;
 		int var4 = par1 * 4;
 		// MCPatcher Start
-		return Colorizer.colorizeStem(var2 << 16 | var3 << 8 | var4, par1);
+		return ColorizeBlock.colorizeStem(var2 << 16 | var3 << 8 | var4, par1);
 		// MCPatcher End
 	}
 
@@ -153,13 +158,6 @@ public class BlockStem extends BlockFlower {
 	 */
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
 		return this.getRenderColor(par1IBlockAccess.getBlockMetadata(par2, par3, par4));
-	}
-
-	/**
-	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-	 */
-	public int getBlockTextureFromSideAndMetadata(int par1, int par2) {
-		return this.blockIndexInTexture;
 	}
 
 	/**
@@ -241,5 +239,14 @@ public class BlockStem extends BlockFlower {
 		// MCPatcher Start
 		return this.fruitType == Block.pumpkin ? Item.pumpkinSeeds.itemID : (this.fruitType == Block.melon ? Item.melonSeeds.itemID : 0);
 		// MCPatcher End
+	}
+
+	public void func_94332_a(IconRegister par1IconRegister) {
+		this.field_94336_cN = par1IconRegister.func_94245_a("stem_straight");
+		this.field_94369_b = par1IconRegister.func_94245_a("stem_bent");
+	}
+
+	public Icon func_94368_p() {
+		return this.field_94369_b;
 	}
 }
