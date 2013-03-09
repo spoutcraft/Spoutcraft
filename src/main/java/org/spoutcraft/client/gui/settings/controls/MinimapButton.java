@@ -25,7 +25,6 @@ import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.minimap.GuiMinimapMenu;
-import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
 
 public class MinimapButton extends GenericButton {
 	GuiScreen parent;

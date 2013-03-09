@@ -21,8 +21,6 @@ package org.spoutcraft.client.gui.server;
 
 import net.minecraft.src.GuiScreen;
 
-import org.bukkit.ChatColor;
-
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
@@ -30,11 +28,9 @@ import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericTextField;
 import org.spoutcraft.api.gui.Keyboard;
-import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.TextField;
 import org.spoutcraft.api.gui.GenericListView;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.LinkButton;
 
 public class GuiFavorites extends GuiScreen {
 	private GuiScreen parent;
