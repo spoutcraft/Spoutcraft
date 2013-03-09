@@ -129,11 +129,11 @@ public class WorldRenderer {
 			this.posXMinus = par1 - this.posXClip;
 			this.posYMinus = par2 - this.posYClip;
 			this.posZMinus = par3 - this.posZClip;
-			float var4 = 6.0F;
+			float var4 = 6.0F;			
 			this.rendererBoundingBox = AxisAlignedBB.getBoundingBox((double)((float)par1 - var4), (double)((float)par2 - var4), (double)((float)par3 - var4), (double)((float)(par1 + 16) + var4), (double)((float)(par2 + 16) + var4), (double)((float)(par3 + 16) + var4));
 			// MCPatcher Start
 			GL11.glNewList(this.glRenderList + 4, GL11.GL_COMPILE);
-			// MCPatcher End
+			// MCPatcher End			
 			RenderItem.renderAABB(AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)((float)this.posXClip - var4), (double)((float)this.posYClip - var4), (double)((float)this.posZClip - var4), (double)((float)(this.posXClip + 16) + var4), (double)((float)(this.posYClip + 16) + var4), (double)((float)(this.posZClip + 16) + var4)));
 			GL11.glEndList();
 			this.markDirty();
