@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import net.minecraft.server.MinecraftServer;
 
 // Spout Start
@@ -29,6 +30,7 @@ public abstract class Entity {
 
 	/** The entity we are currently riding */
 	public Entity ridingEntity;
+	public boolean field_98038_p;
 
 	/** Reference to the World object. */
 	public World worldObj;
@@ -199,6 +201,7 @@ public abstract class Entity {
 	public int dimension;
 	protected int field_82152_aq;
 	private boolean invulnerable;
+	private UUID field_96093_i;
 	// Spout Start
 	public boolean partiallyInWater = false;
 	public org.spoutcraft.api.entity.Entity spoutEnty;
@@ -242,6 +245,7 @@ public abstract class Entity {
 		this.addedToChunk = false;
 		this.field_82152_aq = 0;
 		this.invulnerable = false;
+		this.field_96093_i = UUID.randomUUID();
 		this.myEntitySize = EnumEntitySize.SIZE_2;
 		this.worldObj = par1World;
 		this.setPosition(0.0D, 0.0D, 0.0D);
@@ -304,8 +308,13 @@ public abstract class Entity {
 	 * Sets the width and height of the entity. Args: width, height
 	 */
 	protected void setSize(float par1, float par2) {
-		this.width = par1;
-		this.height = par2;
+		if (par1 != this.width || par2 != this.height) {
+			this.width = par1;
+			this.height = par2;
+			this.boundingBox.maxX = this.boundingBox.minX + (double)this.width;
+			this.boundingBox.maxZ = this.boundingBox.minZ + (double)this.width;
+			this.boundingBox.maxY = this.boundingBox.minY + (double)this.height;
+		}
 		float var3 = par1 % 2.0F;
 
 		if ((double)var3 < 0.375D) {
@@ -722,13 +731,7 @@ public abstract class Entity {
 					par1 = var36;
 					par3 = var25;
 					par5 = var27;
-					this.boundingBox.setBB(var29);
-				} else {
-					double var40 = this.boundingBox.minY - (double)((int)this.boundingBox.minY);
-
-					if (var40 > 0.0D) {
-						this.ySize = (float)((double)this.ySize + var40 + 0.01D);
-					}
+					this.boundingBox.setBB(var29);				
 				}
 			}
 
@@ -766,7 +769,7 @@ public abstract class Entity {
 				int var32 = this.worldObj.getBlockId(var37, var30, var31);
 
 				if (var32 == 0) {
-					int var33 = this.worldObj.func_85175_e(var37, var30 - 1, var31);
+					int var33 = this.worldObj.blockGetRenderType(var37, var30 - 1, var31);
 
 					if (var33 == 11 || var33 == 32 || var33 == 21) {
 						var32 = this.worldObj.getBlockId(var37, var30 - 1, var31);
@@ -997,9 +1000,11 @@ public abstract class Entity {
 			float var8 = BlockFluid.getFluidHeightPercent(this.worldObj.getBlockMetadata(var4, var5, var6)) - 0.11111111F;
 			float var9 = (float)(var5 + 1) - var8;
 			return var2 < (double)var9;
+		} else {
+			return false;
+			// Spout End	
 		}
-		return false;
-		// Spout End
+		
 	}
 
 	public float getEyeHeight() {
@@ -1261,13 +1266,25 @@ public abstract class Entity {
 		return null;
 	}
 
+	public boolean func_98035_c(NBTTagCompound par1NBTTagCompound) {
+		String var2 = this.getEntityString();
+
+		if (!this.isDead && var2 != null) {
+			par1NBTTagCompound.setString("id", var2);
+			this.writeToNBT(par1NBTTagCompound);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * adds the ID of this entity to the NBT given
 	 */
 	public boolean addEntityID(NBTTagCompound par1NBTTagCompound) {
 		String var2 = this.getEntityString();
 
-		if (!this.isDead && var2 != null) {
+		if (!this.isDead && var2 != null && this.riddenByEntity == null) {
 			par1NBTTagCompound.setString("id", var2);
 			this.writeToNBT(par1NBTTagCompound);
 			return true;
@@ -1295,7 +1312,17 @@ public abstract class Entity {
 			// Spout End
 			par1NBTTagCompound.setBoolean("Invulnerable", this.invulnerable);
 			par1NBTTagCompound.setInteger("PortalCooldown", this.timeUntilPortal);
+			par1NBTTagCompound.setLong("UUIDMost", this.field_96093_i.getMostSignificantBits());
+			par1NBTTagCompound.setLong("UUIDLeast", this.field_96093_i.getLeastSignificantBits());
 			this.writeEntityToNBT(par1NBTTagCompound);
+			
+			if (this.ridingEntity != null) {
+				NBTTagCompound var2 = new NBTTagCompound("Riding");
+
+				if (this.ridingEntity.func_98035_c(var2)) {
+					par1NBTTagCompound.setTag("Riding", var2);
+				}
+			}
 		} catch (Throwable var5) {
 			CrashReport var3 = CrashReport.makeCrashReport(var5, "Saving entity NBT");
 			CrashReportCategory var4 = var3.makeCategory("Entity being saved");
@@ -1340,6 +1367,9 @@ public abstract class Entity {
 			this.dimension = par1NBTTagCompound.getInteger("Dimension");
 			this.invulnerable = par1NBTTagCompound.getBoolean("Invulnerable");
 			this.timeUntilPortal = par1NBTTagCompound.getInteger("PortalCooldown");
+			if (par1NBTTagCompound.hasKey("UUIDMost") && par1NBTTagCompound.hasKey("UUIDLeast")) {
+				this.field_96093_i = new UUID(par1NBTTagCompound.getLong("UUIDMost"), par1NBTTagCompound.getLong("UUIDLeast"));
+			}
 			this.setPosition(this.posX, this.posY, this.posZ);
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 			// Spout Start
@@ -1539,13 +1569,15 @@ public abstract class Entity {
 	}
 
 	public void updateRiderPosition() {
-		if (!(this.riddenByEntity instanceof EntityPlayer) || !((EntityPlayer)this.riddenByEntity).func_71066_bF()) {
-			this.riddenByEntity.lastTickPosX = this.lastTickPosX;
-			this.riddenByEntity.lastTickPosY = this.lastTickPosY + this.getMountedYOffset() + this.riddenByEntity.getYOffset();
-			this.riddenByEntity.lastTickPosZ = this.lastTickPosZ;
-		}
+		if (this.riddenByEntity != null) {
+			if (!(this.riddenByEntity instanceof EntityPlayer) || !((EntityPlayer)this.riddenByEntity).func_71066_bF()) {
+				this.riddenByEntity.lastTickPosX = this.lastTickPosX;
+				this.riddenByEntity.lastTickPosY = this.lastTickPosY + this.getMountedYOffset() + this.riddenByEntity.getYOffset();
+				this.riddenByEntity.lastTickPosZ = this.lastTickPosZ;
+			}
 
-		this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
+			this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
+		}
 	}
 
 	/**
@@ -1575,18 +1607,10 @@ public abstract class Entity {
 				this.ridingEntity.riddenByEntity = null;
 			}
 
-			this.ridingEntity = null;
-		} else if (this.ridingEntity == par1Entity) {
-			this.unmountEntity(par1Entity);
-			this.ridingEntity.riddenByEntity = null;
-			this.ridingEntity = null;
+			this.ridingEntity = null;		
 		} else {
 			if (this.ridingEntity != null) {
 				this.ridingEntity.riddenByEntity = null;
-			}
-
-			if (par1Entity.riddenByEntity != null) {
-				par1Entity.riddenByEntity.ridingEntity = null;
 			}
 
 			this.ridingEntity = par1Entity;
@@ -1598,10 +1622,16 @@ public abstract class Entity {
 	 * Called when a player unounts an entity.
 	 */
 	public void unmountEntity(Entity par1Entity) {
-		double var3 = par1Entity.posX;
-		double var5 = par1Entity.boundingBox.minY + (double)par1Entity.height;
-		double var7 = par1Entity.posZ;
+		double var3 = this.posX;
+		double var5 = this.posY;
+		double var7 = this.posZ;
 
+		if (par1Entity != null) {
+			var3 = par1Entity.posX;
+			var5 = par1Entity.boundingBox.minY + (double)par1Entity.height;
+			var7 = par1Entity.posZ;
+		}
+		
 		for (double var9 = -1.5D; var9 < 2.0D; ++var9) {
 			for (double var11 = -1.5D; var11 < 2.0D; ++var11) {
 				if (var9 != 0.0D || var11 != 0.0D) {
@@ -1675,7 +1705,7 @@ public abstract class Entity {
 			double var3 = this.prevPosZ - this.posZ;
 
 			if (!this.worldObj.isRemote && !this.inPortal) {
-				this.field_82152_aq = Direction.func_82372_a(var1, var3);
+				this.field_82152_aq = Direction.getMovementDirection(var1, var3);
 			}
 
 			this.inPortal = true;
@@ -1761,6 +1791,10 @@ public abstract class Entity {
 
 	public boolean getHasActivePotion() {
 		return this.getFlag(5);
+	}
+	
+	public boolean func_98034_c(EntityPlayer par1EntityPlayer) {
+		return this.getHasActivePotion();
 	}
 
 	public void setHasActivePotion(boolean par1) {
@@ -1937,14 +1971,14 @@ public abstract class Entity {
 		return this == par1Entity;
 	}
 
-	public float setRotationYawHead() {
+	public float getRotationYawHead() {
 		return 0.0F;
 	}
 
 	/**
 	 * Sets the head's yaw rotation of the entity.
 	 */
-	public void setHeadRotationYaw(float par1) {}
+	public void setRotationYawHead(float par1) {}
 
 	/**
 	 * If returns false, the item will not inflict any damage against entities.
@@ -1996,7 +2030,7 @@ public abstract class Entity {
 			WorldServer var4 = var2.worldServerForDimension(var3);
 			WorldServer var5 = var2.worldServerForDimension(par1);
 			this.dimension = par1;
-			this.worldObj.setEntityDead(this);
+			this.worldObj.removeEntity(this);
 			this.isDead = false;
 			this.worldObj.theProfiler.startSection("reposition");
 			var2.getConfigurationManager().transferEntityToWorld(this, var3, var4, var5);
@@ -2016,8 +2050,12 @@ public abstract class Entity {
 		}
 	}
 
-	public float func_82146_a(Explosion par1Explosion, Block par2Block, int par3, int par4, int par5) {
-		return par2Block.getExplosionResistance(this);
+	public float func_82146_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, Block par6Block) {
+		return par6Block.getExplosionResistance(this);
+	}
+
+	public boolean func_96091_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, int par6, float par7) {
+		return true;
 	}
 
 	public int func_82143_as() {
@@ -2038,10 +2076,10 @@ public abstract class Entity {
 	public void func_85029_a(CrashReportCategory par1CrashReportCategory) {
 		par1CrashReportCategory.addCrashSectionCallable("Entity Type", new CallableEntityType(this));
 		par1CrashReportCategory.addCrashSection("Entity ID", Integer.valueOf(this.entityId));
-		par1CrashReportCategory.addCrashSection("Name", this.getEntityName());
-		par1CrashReportCategory.addCrashSection("Exact location", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)}));
-		par1CrashReportCategory.addCrashSection("Block location", CrashReportCategory.func_85071_a(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
-		par1CrashReportCategory.addCrashSection("Momentum", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.motionX), Double.valueOf(this.motionY), Double.valueOf(this.motionZ)}));
+		par1CrashReportCategory.addCrashSectionCallable("Entity Name", new CallableEntityName(this));
+		par1CrashReportCategory.addCrashSection("Entity\'s Exact location", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)}));
+		par1CrashReportCategory.addCrashSection("Entity\'s Block location", CrashReportCategory.func_85071_a(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
+		par1CrashReportCategory.addCrashSection("Entity\'s Momentum", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.motionX), Double.valueOf(this.motionY), Double.valueOf(this.motionZ)}));
 	}
 
 	/**
@@ -2049,5 +2087,13 @@ public abstract class Entity {
 	 */
 	public boolean canRenderOnFire() {
 		return this.isBurning();
+	}
+	
+	public boolean func_96092_aw() {
+		return true;
+	}
+
+	public String func_96090_ax() {
+		return this.getEntityName();
 	}
 }
