@@ -51,7 +51,7 @@ class ThreadDownloadImage extends Thread {
 				// Spout Start
 				BufferedImage image = ImageIO.read(var1.getInputStream());
 				if (image != null) {
-					this.imageData.image = this.buffer.parseUserSkin(image);
+				this.imageData.image = this.buffer.parseUserSkin(image);
 				} else {
 					//System.out.println("No image data found for " + location);
 				}

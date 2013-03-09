@@ -2,12 +2,14 @@ package net.minecraft.src;
 
 import java.util.Random;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeBlock;
 // MCPatcher End
 
 public abstract class BlockFluid extends Block {
+	private Icon[] field_94425_a;
+
 	protected BlockFluid(int par1, Material par2Material) {
-		super(par1, (par2Material == Material.lava ? 14 : 12) * 16 + 13, par2Material);
+		super(par1, par2Material);
 		float var3 = 0.0F;
 		float var4 = 0.0F;
 		this.setBlockBounds(0.0F + var4, 0.0F + var3, 0.0F + var4, 1.0F + var4, 1.0F + var3, 1.0F + var4);
@@ -37,7 +39,7 @@ public abstract class BlockFluid extends Block {
 			for (int var8 = -1; var8 <= 1; ++var8) {
 				for (int var9 = -1; var9 <= 1; ++var9) {
 					// MCPatcher Start
-					int var10 = Colorizer.colorizeWater(par1IBlockAccess, par2 + var9, par4 + var8);
+					int var10 = ColorizeBlock.colorizeWater(par1IBlockAccess, par2 + var9, par4 + var8);
 					// MCPatcher End
 					var5 += (var10 & 16711680) >> 16;
 					var6 += (var10 & 65280) >> 8;
@@ -61,10 +63,10 @@ public abstract class BlockFluid extends Block {
 	}
 
 	/**
-	 * Returns the block texture based on the side being looked at.  Args: side
+	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
-	public int getBlockTextureFromSide(int par1) {
-		return par1 != 0 && par1 != 1 ? this.blockIndexInTexture + 1 : this.blockIndexInTexture;
+	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
+		return par1 != 0 && par1 != 1 ? this.field_94425_a[1] : this.field_94425_a[0];
 	}
 
 	/**
@@ -264,8 +266,8 @@ public abstract class BlockFluid extends Block {
 	/**
 	 * How many world ticks before ticking
 	 */
-	public int tickRate() {
-		return this.blockMaterial == Material.water ? 5 : (this.blockMaterial == Material.lava ? 30 : 0);
+	public int tickRate(World par1World) {
+		return this.blockMaterial == Material.water ? 5 : (this.blockMaterial == Material.lava ? (par1World.provider.hasNoSky ? 10 : 30) : 0);
 	}
 
 	/**
@@ -425,11 +427,11 @@ public abstract class BlockFluid extends Block {
 		Vec3 var5 = null;
 
 		if (par4Material == Material.water) {
-			var5 = ((BlockFluid)Block.waterMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
+			var5 = Block.waterMoving.getFlowVector(par0IBlockAccess, par1, par2, par3);
 		}
 
 		if (par4Material == Material.lava) {
-			var5 = ((BlockFluid)Block.lavaMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
+			var5 = Block.lavaMoving.getFlowVector(par0IBlockAccess, par1, par2, par3);
 		}
 
 		return var5.xCoord == 0.0D && var5.zCoord == 0.0D ? -1000.0D : Math.atan2(var5.zCoord, var5.xCoord) - (Math.PI / 2D);
@@ -482,9 +484,9 @@ public abstract class BlockFluid extends Block {
 					int var6 = par1World.getBlockMetadata(par2, par3, par4);
 
 					if (var6 == 0) {
-						par1World.setBlockWithNotify(par2, par3, par4, Block.obsidian.blockID);
+						par1World.func_94575_c(par2, par3, par4, Block.obsidian.blockID);
 					} else if (var6 <= 4) {
-						par1World.setBlockWithNotify(par2, par3, par4, Block.cobblestone.blockID);
+						par1World.func_94575_c(par2, par3, par4, Block.cobblestone.blockID);
 					}
 
 					this.triggerLavaMixEffects(par1World, par2, par3, par4);
@@ -502,5 +504,17 @@ public abstract class BlockFluid extends Block {
 		for (int var5 = 0; var5 < 8; ++var5) {
 			par1World.spawnParticle("largesmoke", (double)par2 + Math.random(), (double)par3 + 1.2D, (double)par4 + Math.random(), 0.0D, 0.0D, 0.0D);
 		}
+	}
+
+	public void func_94332_a(IconRegister par1IconRegister) {
+		if (this.blockMaterial == Material.lava) {
+			this.field_94425_a = new Icon[] {par1IconRegister.func_94245_a("lava"), par1IconRegister.func_94245_a("lava_flow")};
+		} else {
+			this.field_94425_a = new Icon[] {par1IconRegister.func_94245_a("water"), par1IconRegister.func_94245_a("water_flow")};
+		}
+	}
+
+	public static Icon func_94424_b(String par0Str) {
+		return par0Str == "water" ? Block.waterMoving.field_94425_a[0] : (par0Str == "water_flow" ? Block.waterMoving.field_94425_a[1] : (par0Str == "lava" ? Block.lavaMoving.field_94425_a[0] : (par0Str == "lava_flow" ? Block.lavaMoving.field_94425_a[1] : null)));
 	}
 }

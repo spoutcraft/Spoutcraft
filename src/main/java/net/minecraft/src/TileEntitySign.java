@@ -10,7 +10,9 @@ public class TileEntitySign extends TileEntity {
 	 * really used when the > < are going to be visible.
 	 */
 	public int lineBeingEdited = -1;
-	public int columnBeingEdited; // Spout
+	// Spout Start
+	public int columnBeingEdited;
+	// Spout End
 	private boolean isEditable = true;
 
 	// Spout Start

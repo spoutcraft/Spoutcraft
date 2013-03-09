@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeEntity;
+import com.prupe.mcpatcher.mod.Colorizer;
 // MCPatcher End
 
 public class EntityAuraFX extends EntityFX {
@@ -38,9 +39,9 @@ public class EntityAuraFX extends EntityFX {
 		}
 	}
 
-	// MCPatcher
+	// MCPatcher Start
 	public EntityAuraFX colorize() {
-		if (Colorizer.computeMyceliumParticleColor()) {
+		if (ColorizeEntity.computeMyceliumParticleColor()) {
 			this.particleRed = Colorizer.setColor[0];
 			this.particleGreen = Colorizer.setColor[1];
 			this.particleBlue = Colorizer.setColor[2];
@@ -48,5 +49,5 @@ public class EntityAuraFX extends EntityFX {
 
 		return this;
 	}
-	// MCPatcher
+	// MCPatcher End
 }

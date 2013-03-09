@@ -5,9 +5,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-// MCPatcher Start
+// Spout Start - Unused imports
+//import java.io.IOException;
 //import javax.imageio.ImageIO;
-import com.pclewis.mcpatcher.TexturePackAPI;
+// Spout End
+// MCPatcher Start
+import com.prupe.mcpatcher.TexturePackAPI;
 // MCPatcher End
 
 class CanvasMojangLogo extends Canvas {

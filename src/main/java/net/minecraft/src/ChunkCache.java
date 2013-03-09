@@ -328,9 +328,9 @@ public class ChunkCache implements IBlockAccess {
 	/**
 	 * Is this block powering in the specified direction Args: x, y, z, direction
 	 */
-	public boolean isBlockProvidingPowerTo(int par1, int par2, int par3, int par4) {
+	public int isBlockProvidingPowerTo(int par1, int par2, int par3, int par4) {
 		int var5 = this.getBlockId(par1, par2, par3);
-		return var5 == 0 ? false : Block.blocksList[var5].isProvidingStrongPower(this, par1, par2, par3, par4);
+		return var5 == 0 ? 0 : Block.blocksList[var5].isProvidingStrongPower(this, par1, par2, par3, par4);
 	}
 
 	// Spout Start

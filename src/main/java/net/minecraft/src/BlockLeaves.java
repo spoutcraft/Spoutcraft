@@ -2,22 +2,20 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Random;
-
-import com.pclewis.mcpatcher.mod.Colorizer; // Spout
+// MCPatcher Start
+import com.prupe.mcpatcher.mod.ColorizeBlock;
+import com.prupe.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public class BlockLeaves extends BlockLeavesBase {
-
-	/**
-	 * The base index in terrain.png corresponding to the fancy version of the leaf texture. This is stored so we can
-	 * switch the displayed version between fancy and fast graphics (fast is this index + 1).
-	 */
-	private int baseIndexInPNG;
 	public static final String[] LEAF_TYPES = new String[] {"oak", "spruce", "birch", "jungle"};
+	public static final String[][] field_94396_b = new String[][] {{"leaves", "leaves_spruce", "leaves", "leaves_jungle"}, {"leaves_opaque", "leaves_spruce_opaque", "leaves_opaque", "leaves_jungle_opaque"}};
+	private int field_94394_cP;
+	private Icon[][] field_94395_cQ = new Icon[2][];
 	int[] adjacentTreeBlocks;
 
-	protected BlockLeaves(int par1, int par2) {
-		super(par1, par2, Material.leaves, false);
-		this.baseIndexInPNG = par2;
+	protected BlockLeaves(int par1) {
+		super(par1, Material.leaves, false);
 		this.setTickRandomly(true);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
@@ -43,9 +41,13 @@ public class BlockLeaves extends BlockLeavesBase {
 		int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
 
 		if ((var5 & 3) == 1) {
-			return Colorizer.colorizeBiomeWithBlending(ColorizerFoliage.getFoliageColorPine(), Colorizer.COLOR_MAP_PINE, par2, par3, par4); // MCPatcher
+			// MCPatcher Start
+			return ColorizeBlock.colorizeBiomeWithBlending(ColorizerFoliage.getFoliageColorPine(), Colorizer.COLOR_MAP_PINE, par2, par3, par4);
+			// MCPatcher End
 		} else if ((var5 & 3) == 2) {
-			return Colorizer.colorizeBiomeWithBlending(ColorizerFoliage.getFoliageColorBirch(), Colorizer.COLOR_MAP_BIRCH, par2, par3, par4); // MCPatcher
+			// MCPatcher Start
+			return ColorizeBlock.colorizeBiomeWithBlending(ColorizerFoliage.getFoliageColorBirch(), Colorizer.COLOR_MAP_BIRCH, par2, par3, par4);
+			// MCPatcher End
 		} else {
 			int var6 = 0;
 			int var7 = 0;
@@ -79,7 +81,7 @@ public class BlockLeaves extends BlockLeavesBase {
 
 						if (var12 == Block.leaves.blockID) {
 							int var13 = par1World.getBlockMetadata(par2 + var9, par3 + var10, par4 + var11);
-							par1World.setBlockMetadata(par2 + var9, par3 + var10, par4 + var11, var13 | 8);
+							par1World.setBlockMetadataWithNotify(par2 + var9, par3 + var10, par4 + var11, var13 | 8, 4);
 						}
 					}
 				}
@@ -166,7 +168,7 @@ public class BlockLeaves extends BlockLeavesBase {
 				var12 = this.adjacentTreeBlocks[var11 * var10 + var11 * var9 + var11];
 
 				if (var12 >= 0) {
-					par1World.setBlockMetadata(par2, par3, par4, var6 & -9);
+					par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 & -9, 4);
 				} else {
 					this.removeLeaves(par1World, par2, par3, par4);
 				}
@@ -188,7 +190,7 @@ public class BlockLeaves extends BlockLeavesBase {
 
 	private void removeLeaves(World par1World, int par2, int par3, int par4) {
 		this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-		par1World.setBlockWithNotify(par2, par3, par4, 0);
+		par1World.func_94571_i(par2, par3, par4);
 	}
 
 	/**
@@ -210,10 +212,18 @@ public class BlockLeaves extends BlockLeavesBase {
 	 */
 	public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7) {
 		if (!par1World.isRemote) {
-			byte var8 = 20;
+			int var8 = 20;
 
 			if ((par5 & 3) == 3) {
 				var8 = 40;
+			}
+
+			if (par7 > 0) {
+				var8 -= 2 << par7;
+
+				if (var8 < 10) {
+					var8 = 10;
+				}
 			}
 
 			if (par1World.rand.nextInt(var8) == 0) {
@@ -221,7 +231,17 @@ public class BlockLeaves extends BlockLeavesBase {
 				this.dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(var9, 1, this.damageDropped(par5)));
 			}
 
-			if ((par5 & 3) == 0 && par1World.rand.nextInt(200) == 0) {
+			var8 = 200;
+
+			if (par7 > 0) {
+				var8 -= 10 << par7;
+
+				if (var8 < 40) {
+					var8 = 40;
+				}
+			}
+
+			if ((par5 & 3) == 0 && par1World.rand.nextInt(var8) == 0) {
 				this.dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(Item.appleRed, 1, 0));
 			}
 		}
@@ -258,8 +278,8 @@ public class BlockLeaves extends BlockLeavesBase {
 	/**
 	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
-	public int getBlockTextureFromSideAndMetadata(int par1, int par2) {
-		return (par2 & 3) == 1 ? this.blockIndexInTexture + 80 : ((par2 & 3) == 3 ? this.blockIndexInTexture + 144 : this.blockIndexInTexture);
+	public Icon getBlockTextureFromSideAndMetadata(int par1, int par2) {
+		return (par2 & 3) == 1 ? this.field_94395_cQ[this.field_94394_cP][1] : ((par2 & 3) == 3 ? this.field_94395_cQ[this.field_94394_cP][3] : this.field_94395_cQ[this.field_94394_cP][0]);
 	}
 
 	/**
@@ -267,7 +287,7 @@ public class BlockLeaves extends BlockLeavesBase {
 	 */
 	public void setGraphicsLevel(boolean par1) {
 		this.graphicsLevel = par1;
-		this.blockIndexInTexture = this.baseIndexInPNG + (par1 ? 0 : 1);
+		this.field_94394_cP = par1 ? 0 : 1;
 	}
 
 	/**
@@ -286,5 +306,15 @@ public class BlockLeaves extends BlockLeavesBase {
 	 */
 	protected ItemStack createStackedBlock(int par1) {
 		return new ItemStack(this.blockID, 1, par1 & 3);
+	}
+
+	public void func_94332_a(IconRegister par1IconRegister) {
+		for (int var2 = 0; var2 < field_94396_b.length; ++var2) {
+			this.field_94395_cQ[var2] = new Icon[field_94396_b[var2].length];
+
+			for (int var3 = 0; var3 < field_94396_b[var2].length; ++var3) {
+				this.field_94395_cQ[var2][var3] = par1IconRegister.func_94245_a(field_94396_b[var2][var3]);
+			}
+		}
 	}
 }

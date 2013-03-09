@@ -116,4 +116,8 @@ public class ContainerWorkbench extends Container {
 
 		return var3;
 	}
+
+	public boolean func_94530_a(ItemStack par1ItemStack, Slot par2Slot) {
+		return par2Slot.inventory != this.craftResult && super.func_94530_a(par1ItemStack, par2Slot);
+	}
 }

@@ -6,7 +6,7 @@
 	<name>Spoutcraft</name>
 	<groupId>org.spoutcraft</groupId>
 	<artifactId>spoutcraft</artifactId>
-	<version>1.4.7-SNAPSHOT</version>
+	<version>1.5-SNAPSHOT</version>
 	<url>http://www.spout.org</url>
 	<inceptionYear>2011</inceptionYear>
 	<description>Spoutcraft is a modified Minecraft client, which is accessible via the Spoutcraft Launcher, that boosts increased FPS, HD textures/fonts,
@@ -16,9 +16,9 @@
 	<!-- Build properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<minecraftVersion>1.4.7</minecraftVersion>
+		<minecraftVersion>1.5</minecraftVersion>
 		<lwjglVersion>2.4</lwjglVersion>
-		<mcpVersion>726</mcpVersion>
+		<mcpVersion>742</mcpVersion>
 		<buildNumber>0</buildNumber>
 	</properties>
 
@@ -170,7 +170,8 @@
 										}}
 									</runIf>
 									<targetPath>${project.basedir}</targetPath>
-									<file>http://mcp.ocean-labs.de/files/mcp${mcpVersion}.zip</file>
+									<!--<file>http://mcp.ocean-labs.de/files/mcp${mcpVersion}.zip</file>-->
+									<file>http://get.spout.org/tool/mcp${mcpVersion}.zip</file>
 									<unpack>true</unpack>
 									<useTrueZipForUnpack>false</useTrueZipForUnpack>
 									<preservePath>true</preservePath>
@@ -195,7 +196,8 @@
 									</runIf>
 									<targetPath>${project.basedir}/jars/bin</targetPath>
 									<destFileName>minecraft.jar</destFileName>
-									<file>http://s3.amazonaws.com/MinecraftDownload/minecraft.jar</file>
+									<!--<file>http://s3.amazonaws.com/MinecraftDownload/minecraft.jar</file>-->
+									<file>http://assets.minecraft.net/1_5/minecraft.jar</file>
 								</resource>
 								<!-- Download remaining dependencies -->
 								<resource>

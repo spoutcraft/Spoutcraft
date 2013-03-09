@@ -42,8 +42,8 @@ public class GuiScreen extends Gui {
 	/** The height of the screen object. */
 	public int height;
 
-	/** A list of all the controls added to this container. */
-	protected List controlList = new ArrayList();
+	/** A list of all the buttons in this container. */
+	protected List buttonList = new ArrayList();
 	public boolean allowUserInput = false;
 
 	/** The FontRenderer used by GuiScreen */
@@ -124,8 +124,8 @@ public class GuiScreen extends Gui {
 	 * Draws the screen and all the components in it.
 	 */
 	public void drawScreen(int par1, int par2, float par3) {
-		for (int var4 = 0; var4 < this.controlList.size(); ++var4) {
-			GuiButton var5 = (GuiButton)this.controlList.get(var4);
+		for (int var4 = 0; var4 < this.buttonList.size(); ++var4) {
+			GuiButton var5 = (GuiButton)this.buttonList.get(var4);
 			var5.drawButton(this.mc, par1, par2);
 		}
 	}
@@ -138,7 +138,7 @@ public class GuiScreen extends Gui {
 			this.mc.displayGuiScreen((GuiScreen)null);
 			// Spout Start
 			if (mc.currentScreen == null) {
-				this.mc.setIngameFocus();
+			this.mc.setIngameFocus();
 			}
 			// Spout End
 		}
@@ -259,16 +259,17 @@ public class GuiScreen extends Gui {
 				}
 			}
 		}
-		if (openCombobox != null)
+		if (openCombobox != null) {
 			openCombobox.closeList();
+		}
 
 		SpoutClient.disableSandbox();
 	}
 
 	private void handleClickOnSlot(Slot slot, int button) {
-		System.out.println("handleClickOnSlot: "+slot+", "+button);
+		System.out.println("handleClickOnSlot: " + slot + ", " + button);
 		try {
-			if(mc.thePlayer == null) {
+			if (mc.thePlayer == null) {
 				return;
 			}
 			PacketSlotClick packet = new PacketSlotClick(slot, button,Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
@@ -280,9 +281,9 @@ public class GuiScreen extends Gui {
 			}
 			ItemStack stackInSlot = slot.getItem();
 			if ((stackOnCursor == null || stackOnCursor.getTypeId() == 0) && stackInSlot.getTypeId() == 0) {
-				return; //Nothing to do
+				return; // Nothing to do
 			}
-			if (stackOnCursor.getTypeId() == 0 && stackInSlot.getTypeId() != 0 && button == 1) { //Split item
+			if (stackOnCursor.getTypeId() == 0 && stackInSlot.getTypeId() != 0 && button == 1) { // Split item
 				int amountSlot = stackInSlot.getAmount() / 2;
 				int amountCursor = stackInSlot.getAmount() - amountSlot;
 				if (stackInSlot.getAmount() == 1) {
@@ -325,24 +326,24 @@ public class GuiScreen extends Gui {
 				boolean success = slot.onItemPut(toPut);
 				if (success) {
 					stackOnCursor.setAmount(stackOnCursor.getAmount() - putAmount);
-					if(stackOnCursor.getAmount() == 0) {
+					if (stackOnCursor.getAmount() == 0) {
 						stackOnCursor = new ItemStack(0);
 					}
 					ItemStack put = toPut.clone();
 					put.setAmount(amount);
 					slot.setItem(put);
 				}
-			} else if (stackOnCursor == null || stackOnCursor.getTypeId() == 0) { //Take item or shift click
+			} else if (stackOnCursor == null || stackOnCursor.getTypeId() == 0) { // Take item or shift click
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 					slot.onItemShiftClicked();
-				} else { //Take item
+				} else { // Take item
 					boolean success = slot.onItemTake(stackInSlot);
 					if (success) {
 						stackOnCursor = stackInSlot;
 						slot.setItem(new ItemStack(0));
 					}
 				}
-			} else if (stackOnCursor.getTypeId() != stackInSlot.getTypeId() || stackOnCursor.getDurability() != stackInSlot.getDurability()) { //Exchange slot stack and cursor stack
+			} else if (stackOnCursor.getTypeId() != stackInSlot.getTypeId() || stackOnCursor.getDurability() != stackInSlot.getDurability()) { // Exchange slot stack and cursor stack
 				boolean success = slot.onItemExchange(stackInSlot, stackOnCursor.clone());
 				if (success) {
 					slot.setItem(stackOnCursor.clone());
@@ -376,12 +377,12 @@ public class GuiScreen extends Gui {
 	}
 
 	// Already in sandbox, in mouseClickedPre
-	private boolean handleClickOnListWidget(ListWidget lw, int mouseX,
-			int mouseY) {
+	private boolean handleClickOnListWidget(ListWidget lw, int mouseX, int mouseY) {
 		int x = (int) (mouseX - lw.getActualX());
 		int y = (int) (mouseY - lw.getActualY());
-		if (x < 5)
+		if (x < 5) {
 			return false;
+		}
 		int scroll = lw.getScrollPosition(Orientation.VERTICAL);
 		y += scroll;
 		y -= 5;
@@ -421,8 +422,7 @@ public class GuiScreen extends Gui {
 	}
 
 	// Already in sandbox, in mouseClickedPre
-	private boolean handleClickOnScrollable(Scrollable lw, int mouseX,
-			int mouseY) {
+	private boolean handleClickOnScrollable(Scrollable lw, int mouseX, int mouseY) {
 		int x = (int) (mouseX - lw.getActualX());
 		int y = (int) (mouseY - lw.getActualY());
 		int scrollY = lw.getScrollPosition(Orientation.VERTICAL);
@@ -451,7 +451,7 @@ public class GuiScreen extends Gui {
 		return false;
 	}
 
-	// Note: Already in sandbox, in mouseClickedPre
+	// Already in sandbox, in mouseClickedPre
 	private void handleButtonClick(Button control) {
 		if (control instanceof CheckBox) {
 			CheckBox check = (CheckBox) control;
@@ -490,8 +490,8 @@ public class GuiScreen extends Gui {
 	 */
 	protected void mouseClicked(int par1, int par2, int par3) {
 		if (par3 == 0) {
-			for (int var4 = 0; var4 < this.controlList.size(); ++var4) {
-				GuiButton var5 = (GuiButton)this.controlList.get(var4);
+			for (int var4 = 0; var4 < this.buttonList.size(); ++var4) {
+				GuiButton var5 = (GuiButton)this.buttonList.get(var4);
 
 				if (var5.mousePressed(this.mc, par1, par2)) {
 					this.selectedButton = var5;
@@ -549,8 +549,7 @@ public class GuiScreen extends Gui {
 	}
 
 	protected boolean shouldShowTooltip() {
-		return !Configuration.isDelayedTooltips()
-				|| System.currentTimeMillis() - TOOLTIP_DELAY > lastMouseMove;
+		return !Configuration.isDelayedTooltips() || System.currentTimeMillis() - TOOLTIP_DELAY > lastMouseMove;
 	}
 	// Spout End
 
@@ -581,7 +580,7 @@ public class GuiScreen extends Gui {
 		this.fontRenderer = par1Minecraft.fontRenderer;
 		this.width = par2;
 		this.height = par3;
-		this.controlList.clear();
+		this.buttonList.clear();
 		// Spout Start
 		SpoutClient.enableSandbox();
 		if (!(this instanceof CustomScreen) && screen != null && !firstrun) {
@@ -717,8 +716,9 @@ public class GuiScreen extends Gui {
 					TextField tf = (TextField) widget;
 					// Handle tabbing get all textfields of this screen and start looking for the next bigger tab-index
 					if (tab) {
-						if (tf.isFocus())
+						if (tf.isFocus()) {
 							focusedTF = tf;
+						}
 						tabIndexMap.put(tf.getTabIndex(), tf);
 					// Pass typed key to text processor
 					} else if (tf.isEnabled() && tf.isFocus()) {
@@ -790,7 +790,7 @@ public class GuiScreen extends Gui {
 				Integer index = tabIndexMap.higherKey(focusedTF.getTabIndex());
 				if (index == null) {
 					index = tabIndexMap.ceilingKey(0);
-			}
+				}
 				if (index != null) {
 					focusedTF.setFocus(false);
 					tabIndexMap.get(index).setFocus(true);
@@ -817,12 +817,12 @@ public class GuiScreen extends Gui {
 	/**
 	 * Called from the main game loop to update the screen.
 	 */
+	// Spout Start
 	public void updateScreen() {
-		// Spout Start
 		updateTicks++;
 		MCRenderDelegate.shouldRenderCursor = updateTicks / 6 % 2 == 0;
-		// Spout End
 	}
+	// Spout End
 
 	/**
 	 * Called when the screen is unloaded. Used to disable keyboard repeat events
@@ -851,7 +851,7 @@ public class GuiScreen extends Gui {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_FOG);
 		Tessellator var2 = Tessellator.instance;
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/background.png"));
+		this.mc.renderEngine.func_98187_b("/gui/background.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var3 = 32.0F;
 		var2.startDrawingQuads();
@@ -904,7 +904,7 @@ public class GuiScreen extends Gui {
 						tooltip = widget.getTooltip();
 						//tooltipWidget = widget;
 						// No return here, when a widget that is over it comes next, tooltip will be overwritten.
-					} else if(widget.getTooltip() == null && widget.isVisible()) {
+					} else if (widget.getTooltip() == null && widget.isVisible()) {
 						return;
 					}
 				}

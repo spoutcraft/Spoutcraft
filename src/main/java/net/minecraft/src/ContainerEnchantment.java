@@ -6,7 +6,7 @@ import java.util.Random;
 public class ContainerEnchantment extends Container {
 
 	/** SlotEnchantmentTable object with ItemStack to be enchanted */
-	public IInventory tableInventory = new SlotEnchantmentTable(this, "Enchant", 1);
+	public IInventory tableInventory = new SlotEnchantmentTable(this, "Enchant", true, 1);
 
 	/** current world (for bookshelf counting) */
 	private World worldPointer;
@@ -151,7 +151,7 @@ public class ContainerEnchantment extends Container {
 					par1EntityPlayer.addExperienceLevel(-this.enchantLevels[par2]);
 
 					if (var5) {
-						var3.itemID = Item.field_92105_bW.itemID;
+						var3.itemID = Item.enchantedBook.itemID;
 					}
 
 					int var6 = var5 ? this.rand.nextInt(var4.size()) : -1;
@@ -161,7 +161,7 @@ public class ContainerEnchantment extends Container {
 
 						if (!var5 || var7 == var6) {
 							if (var5) {
-								Item.field_92105_bW.func_92115_a(var3, var8);
+								Item.enchantedBook.func_92115_a(var3, var8);
 							} else {
 								var3.addEnchantment(var8.enchantmentobj, var8.enchantmentLevel);
 							}

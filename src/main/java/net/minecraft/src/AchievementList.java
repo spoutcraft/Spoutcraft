@@ -33,7 +33,7 @@ public class AchievementList {
 	public static Achievement buildPickaxe = (new Achievement(3, "buildPickaxe", 4, 2, Item.pickaxeWood, buildWorkBench)).registerAchievement();
 
 	/** Is the 'hot topic' achievement. */
-	public static Achievement buildFurnace = (new Achievement(4, "buildFurnace", 3, 4, Block.stoneOvenActive, buildPickaxe)).registerAchievement();
+	public static Achievement buildFurnace = (new Achievement(4, "buildFurnace", 3, 4, Block.furnaceBurning, buildPickaxe)).registerAchievement();
 
 	/** Is the 'acquire hardware' achievement. */
 	public static Achievement acquireIron = (new Achievement(5, "acquireIron", 1, 4, Item.ingotIron, buildFurnace)).registerAchievement();

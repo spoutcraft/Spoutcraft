@@ -132,12 +132,10 @@ public class TileEntityRenderer {
 		TileEntitySpecialRenderer var9 = this.getSpecialRendererForEntity(par1TileEntity);
 
 		if (var9 != null) {
-			// Spout Start
 			try {
-			// Spout End
-			var9.renderTileEntityAt(par1TileEntity, par2, par4, par6, par8);
+				var9.renderTileEntityAt(par1TileEntity, par2, par4, par6, par8);
 			// Spout Start
-			} catch (ClassCastException ignore) { }
+				} catch (ClassCastException ignore) { }
 			// Spout End
 		}
 	}

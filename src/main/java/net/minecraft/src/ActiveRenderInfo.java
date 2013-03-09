@@ -46,7 +46,6 @@ public class ActiveRenderInfo {
 	 * The Y component (scaled along the X axis) of the entity's pitch rotation
 	 */
 	public static float rotationXY;
-
 	// Spout Start
 	public static FloatBuffer modelMatrix;
 	public static FloatBuffer projectionMatrix;

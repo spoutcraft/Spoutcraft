@@ -23,6 +23,7 @@ public abstract class Packet {
 
 	/** List of the server's packet IDs. */
 	private static Set serverPacketIdList = new HashSet();
+	protected ILogAgent field_98193_m;
 
 	/** the system time in milliseconds when this packet was created. */
 	public final long creationTimeMillis = System.currentTimeMillis();
@@ -66,13 +67,13 @@ public abstract class Packet {
 	/**
 	 * Returns a new instance of the specified Packet class.
 	 */
-	public static Packet getNewPacket(int par0) {
+	public static Packet getNewPacket(ILogAgent par0ILogAgent, int par1) {
 		try {
-			Class var1 = (Class)packetIdToClassMap.lookup(par0);
-			return var1 == null ? null : (Packet)var1.newInstance();
-		} catch (Exception var2) {
-			var2.printStackTrace();
-			System.out.println("Skipping packet with id " + par0);
+			Class var2 = (Class)packetIdToClassMap.lookup(par1);
+			return var2 == null ? null : (Packet)var2.newInstance();
+		} catch (Exception var3) {
+			var3.printStackTrace();
+			par0ILogAgent.func_98232_c("Skipping packet with id " + par1);
 			return null;
 		}
 	}
@@ -95,7 +96,7 @@ public abstract class Packet {
 			throw new IOException("Key was smaller than nothing!  Weird key!");
 		} else {
 			byte[] var2 = new byte[var1];
-			par0DataInputStream.read(var2);
+			par0DataInputStream.readFully(var2);
 			return var2;
 		}
 	}
@@ -110,46 +111,48 @@ public abstract class Packet {
 	/**
 	 * Read a packet, prefixed by its ID, from the data stream.
 	 */
-	public static Packet readPacket(DataInputStream par0DataInputStream, boolean par1, Socket par2Socket) throws IOException {
-		boolean var3 = false;
-		Packet var4 = null;
-		int var5 = par2Socket.getSoTimeout();
-		int var8;
+	public static Packet readPacket(ILogAgent par0ILogAgent, DataInputStream par1DataInputStream, boolean par2, Socket par3Socket) throws IOException {
+		boolean var4 = false;
+		Packet var5 = null;
+		int var6 = par3Socket.getSoTimeout();
+		int var9;
 
 		try {
-			var8 = par0DataInputStream.read();
+			var9 = par1DataInputStream.read();
 
-			if (var8 == -1) {
+			if (var9 == -1) {
 				return null;
 			}
 
-			if (par1 && !serverPacketIdList.contains(Integer.valueOf(var8)) || !par1 && !clientPacketIdList.contains(Integer.valueOf(var8))) {
-				throw new IOException("Bad packet id " + var8);
+			if (par2 && !serverPacketIdList.contains(Integer.valueOf(var9)) || !par2 && !clientPacketIdList.contains(Integer.valueOf(var9))) {
+				throw new IOException("Bad packet id " + var9);
 			}
 
-			var4 = getNewPacket(var8);
+			var5 = getNewPacket(par0ILogAgent, var9);
 
-			if (var4 == null) {
-				throw new IOException("Bad packet id " + var8);
+			if (var5 == null) {
+				throw new IOException("Bad packet id " + var9);
 			}
 
-			if (var4 instanceof Packet254ServerPing) {
-				par2Socket.setSoTimeout(1500);
+			var5.field_98193_m = par0ILogAgent;
+
+			if (var5 instanceof Packet254ServerPing) {
+				par3Socket.setSoTimeout(1500);
 			}
 
-			var4.readPacketData(par0DataInputStream);
+			var5.readPacketData(par1DataInputStream);
 			++receivedID;
-			receivedSize += (long)var4.getPacketSize();
-		} catch (EOFException var7) {
-			System.out.println("Reached end of stream");
+			receivedSize += (long)var5.getPacketSize();
+		} catch (EOFException var8) {
+			par0ILogAgent.func_98232_c("Reached end of stream");
 			return null;
 		}
 
-		PacketCount.countPacket(var8, (long)var4.getPacketSize());
+		PacketCount.countPacket(var9, (long)var5.getPacketSize());
 		++receivedID;
-		receivedSize += (long)var4.getPacketSize();
-		par2Socket.setSoTimeout(var5);
-		return var4;
+		receivedSize += (long)var5.getPacketSize();
+		par3Socket.setSoTimeout(var6);
+		return var5;
 	}
 
 	/**
@@ -330,9 +333,6 @@ public abstract class Packet {
 		addIdClassMapping(18, true, true, Packet18Animation.class);
 		addIdClassMapping(19, false, true, Packet19EntityAction.class);
 		addIdClassMapping(20, true, false, Packet20NamedEntitySpawn.class);
-		// Spout Start
-		//addIdClassMapping(21, true, false, Packet21PickupSpawn.class);
-		// Spout End
 		addIdClassMapping(22, true, false, Packet22Collect.class);
 		addIdClassMapping(23, true, false, Packet23VehicleSpawn.class);
 		addIdClassMapping(24, true, false, Packet24MobSpawn.class);
@@ -361,6 +361,7 @@ public abstract class Packet {
 		addIdClassMapping(60, true, false, Packet60Explosion.class);
 		addIdClassMapping(61, true, false, Packet61DoorChange.class);
 		addIdClassMapping(62, true, false, Packet62LevelSound.class);
+		addIdClassMapping(63, true, false, Packet63WorldParticles.class);
 		addIdClassMapping(70, true, false, Packet70GameEvent.class);
 		addIdClassMapping(71, true, false, Packet71Weather.class);
 		addIdClassMapping(100, true, false, Packet100OpenWindow.class);
@@ -381,6 +382,10 @@ public abstract class Packet {
 		addIdClassMapping(203, true, true, Packet203AutoComplete.class);
 		addIdClassMapping(204, false, true, Packet204ClientInfo.class);
 		addIdClassMapping(205, false, true, Packet205ClientCommand.class);
+		addIdClassMapping(206, true, false, Packet206SetObjective.class);
+		addIdClassMapping(207, true, false, Packet207SetScore.class);
+		addIdClassMapping(208, true, false, Packet208SetDisplayObjective.class);
+		addIdClassMapping(209, true, false, Packet209SetPlayerTeam.class);
 		addIdClassMapping(250, true, true, Packet250CustomPayload.class);
 		addIdClassMapping(252, true, true, Packet252SharedKey.class);
 		addIdClassMapping(253, true, false, Packet253ServerAuthData.class);
