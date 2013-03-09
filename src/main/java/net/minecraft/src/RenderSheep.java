@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 // Spout Start
-import com.pclewis.mcpatcher.mod.MobRandomizer;
+import com.prupe.mcpatcher.mod.MobRandomizer;
 import org.spoutcraft.client.config.Configuration;
 // Spout End
 
@@ -16,7 +16,7 @@ public class RenderSheep extends RenderLiving {
 		if (par2 == 0 && !par1EntitySheep.getSheared()) {
 			// Spout Start
 			if (Configuration.isRandomMobTextures()) {
-				this.loadTexture(MobRandomizer.randomTexture((Object)par1EntitySheep, "/mob/sheep_fur.png"));
+			this.loadTexture(MobRandomizer.randomTexture((Object)par1EntitySheep, "/mob/sheep_fur.png"));
 			} else {
 				loadTexture(par1EntitySheep.getCustomTexture(org.spoutcraft.api.entity.EntitySkinType.SHEEP_FUR, "/mob/sheep_fur.png"));
 			}

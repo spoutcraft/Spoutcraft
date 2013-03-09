@@ -3,7 +3,9 @@ package net.minecraft.src;
 public class Slot {
 
 	/** The index of the slot in the inventory. */
-	public final int slotIndex; // Spout private -> public
+	// Spout Start - private to public
+	public final int slotIndex;
+	// Spout End
 
 	/** The inventory we want to extract a slot from. */
 	public final IInventory inventory;
@@ -101,8 +103,8 @@ public class Slot {
 	/**
 	 * Returns the icon index on items.png that is used as background image of the slot.
 	 */
-	public int getBackgroundIconIndex() {
-		return -1;
+	public Icon getBackgroundIconIndex() {
+		return null;
 	}
 
 	/**

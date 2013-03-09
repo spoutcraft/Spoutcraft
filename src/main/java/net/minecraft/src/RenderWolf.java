@@ -2,8 +2,8 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
-import com.pclewis.mcpatcher.mod.MobRandomizer;
+import com.prupe.mcpatcher.mod.ColorizeEntity;
+import com.prupe.mcpatcher.mod.MobRandomizer;
 // MCPatcher End
 
 public class RenderWolf extends RenderLiving {
@@ -31,7 +31,7 @@ public class RenderWolf extends RenderLiving {
 			var4 = 1.0F;
 			int var5 = par1EntityWolf.getCollarColor();
 			// MCPatcher Start
-			GL11.glColor3f(var4 * Colorizer.collarColors[var5][0], var4 * Colorizer.collarColors[var5][1], var4 * Colorizer.collarColors[var5][2]);
+			GL11.glColor3f(var4 * ColorizeEntity.collarColors[var5][0], var4 * ColorizeEntity.collarColors[var5][1], var4 * ColorizeEntity.collarColors[var5][2]);
 			// MCPatcher End
 			return 1;
 		} else {

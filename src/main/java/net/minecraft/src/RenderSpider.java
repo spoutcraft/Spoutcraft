@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.MobRandomizer;
+import com.prupe.mcpatcher.mod.MobRandomizer;
 // MCPatcher End
 // Spout Start
 import org.spoutcraft.client.config.Configuration;
@@ -27,9 +27,9 @@ public class RenderSpider extends RenderLiving {
 		} else {
 			// Spout Start
 			if (Configuration.isRandomMobTextures()) {
-				// MCPatcher Start
+			// MCPatcher Start
 			this.loadTexture(MobRandomizer.randomTexture((EntityLiving)par1EntitySpider, "/mob/spider_eyes.png"));
-				// MCPatcher End
+			// MCPatcher End
 			} else {
 				loadTexture(par1EntitySpider.getCustomTexture(org.spoutcraft.api.entity.EntitySkinType.SPIDER_EYES, "/mob/spider_eyes.png"));
 			}

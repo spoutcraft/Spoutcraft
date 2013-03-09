@@ -82,4 +82,12 @@ class ContainerCreative extends Container {
 
 		return null;
 	}
+
+	public boolean func_94530_a(ItemStack par1ItemStack, Slot par2Slot) {
+		return par2Slot.yDisplayPosition > 90;
+	}
+
+	public boolean func_94531_b(Slot par1Slot) {
+		return par1Slot.inventory instanceof InventoryPlayer || par1Slot.yDisplayPosition > 90 && par1Slot.xDisplayPosition <= 162;
+	}
 }

@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
 // Spout End
@@ -25,7 +24,6 @@ class NetClientWebTextures extends GuiScreen {
 		if (this.mc.getServerData() != null) {
 			this.mc.getServerData().setAcceptsTextures(par1);
 			ServerList.func_78852_b(this.mc.getServerData());
-
 			// Spout Start
 			SpoutClient.getInstance().getServerManager().getFavorites().save();
 			// Spout End
