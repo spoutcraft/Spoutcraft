@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
 import java.util.List;
 // Spout
 import gnu.trove.map.hash.TLongObjectHashMap;
@@ -95,10 +96,9 @@ public class ChunkProviderClient implements IChunkProvider {
 	}
 
 	/**
-	 * Unloads the 100 oldest chunks from memory, due to a bug with chunkSet.add() never being called it thinks the list is
-	 * always empty and will not remove any chunks.
+	 * Unloads chunks that are marked to be unloaded. This is not guaranteed to unload every such chunk.
 	 */
-	public boolean unload100OldestChunks() {
+	public boolean unloadQueuedChunks() {
 		return false;
 	}
 
