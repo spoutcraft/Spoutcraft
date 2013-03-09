@@ -214,8 +214,8 @@ public class BlockTorch extends Block {
 		if (c.spoutChunk.getCustomBlockId(par2, par3, par4) > 0) {
 			return;
 		}
-		int var6 = par1World.getBlockMetadata(par2, par3, par4);
 		// Spout End
+		int var6 = par1World.getBlockMetadata(par2, par3, par4);
 		double var7 = (double)((float)par2 + 0.5F);
 		double var9 = (double)((float)par3 + 0.7F);
 		double var11 = (double)((float)par4 + 0.5F);

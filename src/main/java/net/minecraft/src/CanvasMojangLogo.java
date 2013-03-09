@@ -5,11 +5,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-// Spout Start - Unused import
+// Spout Start - Unused imports
 //import java.io.IOException;
+//import javax.imageio.ImageIO;
 // Spout End
 // MCPatcher Start
-//import javax.imageio.ImageIO;
 import com.prupe.mcpatcher.TexturePackAPI;
 // MCPatcher End
 

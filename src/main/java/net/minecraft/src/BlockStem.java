@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.mod.ColorizeBlock;
 import java.util.Random;
+// MCPatcher Start
+import com.prupe.mcpatcher.mod.ColorizeBlock;
+// MCPatcher End
 
 public class BlockStem extends BlockFlower {
 
@@ -236,9 +238,7 @@ public class BlockStem extends BlockFlower {
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public int idPicked(World par1World, int par2, int par3, int par4) {
-		// MCPatcher Start
 		return this.fruitType == Block.pumpkin ? Item.pumpkinSeeds.itemID : (this.fruitType == Block.melon ? Item.melonSeeds.itemID : 0);
-		// MCPatcher End
 	}
 
 	public void func_94332_a(IconRegister par1IconRegister) {
