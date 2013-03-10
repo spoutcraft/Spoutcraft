@@ -116,7 +116,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			--this.sprintToggleTimer;
 		}
 
-		if (this.mc.playerController.func_78747_a()) {
+		if (this.mc.playerController.enableEverythingIsScrewedUpMode()) {
 			this.posX = this.posZ = 0.5D;
 			this.posX = 0.0D;
 			this.posZ = 0.0D;
@@ -325,6 +325,14 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiChest(this.inventory, par1IInventory));
 	}
 
+	public void func_94064_a(TileEntityHopper par1TileEntityHopper) {
+		this.mc.displayGuiScreen(new GuiHopper(this.inventory, par1TileEntityHopper));
+	}
+
+	public void func_96125_a(EntityMinecartHopper par1EntityMinecartHopper) {
+		this.mc.displayGuiScreen(new GuiHopper(this.inventory, par1EntityMinecartHopper));
+	}
+
 	/**
 	 * Displays the crafting GUI for a workbench.
 	 */
@@ -332,8 +340,8 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiCrafting(this.inventory, this.worldObj, par1, par2, par3));
 	}
 
-	public void displayGUIEnchantment(int par1, int par2, int par3) {
-		this.mc.displayGuiScreen(new GuiEnchantment(this.inventory, this.worldObj, par1, par2, par3));
+	public void displayGUIEnchantment(int par1, int par2, int par3, String par4Str) {
+		this.mc.displayGuiScreen(new GuiEnchantment(this.inventory, this.worldObj, par1, par2, par3, par4Str));
 	}
 
 	/**
@@ -371,8 +379,8 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiDispenser(this.inventory, par1TileEntityDispenser));
 	}
 
-	public void displayGUIMerchant(IMerchant par1IMerchant) {
-		this.mc.displayGuiScreen(new GuiMerchant(this.inventory, par1IMerchant, this.worldObj));
+	public void displayGUIMerchant(IMerchant par1IMerchant, String par2Str) {
+		this.mc.displayGuiScreen(new GuiMerchant(this.inventory, par1IMerchant, this.worldObj, par2Str));
 	}
 
 	/**
@@ -545,7 +553,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 
 	/**
-	 * Return the coordinates for this player as ChunkCoordinates.
+	 * Return the position for this command sender.
 	 */
 	public ChunkCoordinates getPlayerCoordinates() {
 		return new ChunkCoordinates(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));

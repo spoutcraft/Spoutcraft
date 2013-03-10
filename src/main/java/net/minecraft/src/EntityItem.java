@@ -44,7 +44,7 @@ public class EntityItem extends Entity {
 
 	public EntityItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack) {
 		this(par1World, par2, par4, par6);
-		this.func_92058_a(par8ItemStack);
+		this.setEntityItemStack(par8ItemStack);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class EntityItem extends Entity {
 			}
 
 			if (!this.worldObj.isRemote) {
-				this.func_85054_d();
+				this.searchForOtherItemsNearby();
 			}
 		}
 
@@ -139,7 +139,10 @@ public class EntityItem extends Entity {
 		}
 	}
 
-	private void func_85054_d() {
+	/**
+	 * Looks for other itemstacks nearby and tries to stack them together
+	 */
+	private void searchForOtherItemsNearby() {
 		Iterator var1 = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
 
 		while (var1.hasNext()) {
@@ -177,7 +180,7 @@ public class EntityItem extends Entity {
 				var3.stackSize += var2.stackSize;
 				par1EntityItem.delayBeforeCanPickup = Math.max(par1EntityItem.delayBeforeCanPickup, this.delayBeforeCanPickup);
 				par1EntityItem.age = Math.min(par1EntityItem.age, this.age);
-				par1EntityItem.func_92058_a(var3);
+				par1EntityItem.setEntityItemStack(var3);
 				this.setDead();
 				return true;
 			}
@@ -186,7 +189,11 @@ public class EntityItem extends Entity {
 		}
 	}
 
-	public void func_70288_d() {
+	/**
+	 * sets the age of the item so that it'll despawn one minute after it has been dropped (instead of five). Used when
+	 * items are dropped from players in creative mode
+	 */
+	public void setAgeToCreativeDespawnTime() {
 		this.age = 4800;
 	}
 
@@ -247,7 +254,7 @@ public class EntityItem extends Entity {
 		this.health = par1NBTTagCompound.getShort("Health") & 255;
 		this.age = par1NBTTagCompound.getShort("Age");
 		NBTTagCompound var2 = par1NBTTagCompound.getCompoundTag("Item");
-		this.func_92058_a(ItemStack.loadItemStackFromNBT(var2));
+		this.setEntityItemStack(ItemStack.loadItemStackFromNBT(var2));
 
 		// Spout Start - item instead of func_92059_d
 		if (this.item() == null) {
@@ -316,7 +323,7 @@ public class EntityItem extends Entity {
 		super.travelToDimension(par1);
 
 		if (!this.worldObj.isRemote) {
-			this.func_85054_d();
+			this.searchForOtherItemsNearby();
 		}
 	}
 
@@ -326,7 +333,10 @@ public class EntityItem extends Entity {
 		ItemStack var1 = this.getDataWatcher().getWatchableObjectItemStack(10);
 
 		if (var1 == null) {
-			System.out.println("Item entity " + this.entityId + " has no item?!");
+			if (this.worldObj != null) {
+				this.worldObj.func_98180_V().func_98232_c("Item entity " + this.entityId + " has no item?!");
+			}
+
 			return new ItemStack(Block.stone);
 		} else {
 			return var1;
@@ -339,8 +349,8 @@ public class EntityItem extends Entity {
 	}
 	// Spout End
 
-	public void func_92058_a(ItemStack par1) {
-		this.getDataWatcher().updateObject(10, par1);
-		this.getDataWatcher().func_82708_h(10);
+	public void setEntityItemStack(ItemStack par1ItemStack) {
+		this.getDataWatcher().updateObject(10, par1ItemStack);
+		this.getDataWatcher().setObjectWatched(10);
 	}
 }

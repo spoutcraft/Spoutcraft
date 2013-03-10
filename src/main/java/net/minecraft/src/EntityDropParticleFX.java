@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeBlock;
+import com.prupe.mcpatcher.mod.ColorizeEntity;
+import com.prupe.mcpatcher.mod.Colorizer;
 // MCPatcher End
 
 public class EntityDropParticleFX extends EntityFX {
@@ -18,10 +20,10 @@ public class EntityDropParticleFX extends EntityFX {
 
 		if (par8Material == Material.water) {
 			// MCPatcher Start
-			if (Colorizer.computeWaterColor(this.posX, this.posY, this.posZ)) {
-				this.particleRed = Colorizer.waterColor[0];
-				this.particleGreen = Colorizer.waterColor[1];
-				this.particleBlue = Colorizer.waterColor[2];
+			if (ColorizeBlock.computeWaterColor(this.posX, this.posY, this.posZ)) {
+				this.particleRed = ColorizeBlock.waterColor[0];
+				this.particleGreen = ColorizeBlock.waterColor[1];
+				this.particleBlue = ColorizeBlock.waterColor[2];
 			} else {
 				this.particleRed = 0.2F;
 				this.particleGreen = 0.3F;
@@ -64,7 +66,7 @@ public class EntityDropParticleFX extends EntityFX {
 
 		// MCPatcher Start
 		if (this.materialType != Material.water) {
-			if (Colorizer.computeLavaDropColor(40 - this.bobTimer)) {
+			if (ColorizeEntity.computeLavaDropColor(40 - this.bobTimer)) {
 				this.particleRed = Colorizer.setColor[0];
 				this.particleGreen = Colorizer.setColor[1];
 				this.particleBlue = Colorizer.setColor[2];

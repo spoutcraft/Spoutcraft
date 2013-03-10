@@ -1,17 +1,17 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeBlock;
 // MCPatcher End
 
 public class EntityBubbleFX extends EntityFX {
 	public EntityBubbleFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
 		super(par1World, par2, par4, par6, par8, par10, par12);
 		// MCPatcher Start
-		if (Colorizer.computeWaterColor(this.posX, this.posY, this.posZ)) {
-			this.particleRed = Colorizer.waterColor[0];
-			this.particleGreen = Colorizer.waterColor[1];
-			this.particleBlue = Colorizer.waterColor[2];
+		if (ColorizeBlock.computeWaterColor(this.posX, this.posY, this.posZ)) {
+			this.particleRed = ColorizeBlock.waterColor[0];
+			this.particleGreen = ColorizeBlock.waterColor[1];
+			this.particleBlue = ColorizeBlock.waterColor[2];
 		} else {
 			this.particleRed = 1.0F;
 			this.particleGreen = 1.0F;

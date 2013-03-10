@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeEntity;
 // MCPatcher End
 
 public class EntityPortalFX extends EntityFX {
@@ -22,14 +22,14 @@ public class EntityPortalFX extends EntityFX {
 		this.portalParticleScale = this.particleScale = this.rand.nextFloat() * 0.2F + 0.5F;
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F * var14;
 		// MCPatcher Start
-		this.particleGreen *= Colorizer.portalColor[1];
-		this.particleRed *= Colorizer.portalColor[0];
+		this.particleGreen *= ColorizeEntity.portalColor[1];
+		this.particleRed *= ColorizeEntity.portalColor[0];
 		// MCPatcher End
 		this.particleMaxAge = (int)(Math.random() * 10.0D) + 40;
 		this.noClip = true;
 		this.setParticleTextureIndex((int)(Math.random() * 8.0D));
 		// MCPatcher Start
-		this.particleBlue = Colorizer.portalColor[2];
+		this.particleBlue = ColorizeEntity.portalColor[2];
 		// MCPatcher End
 	}
 
