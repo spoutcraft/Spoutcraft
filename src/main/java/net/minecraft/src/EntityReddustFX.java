@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeBlock;
+import com.prupe.mcpatcher.mod.Colorizer;
 // MCPatcher End
 
 public class EntityReddustFX extends EntityFX {
@@ -21,7 +22,7 @@ public class EntityReddustFX extends EntityFX {
 			par9 = 1.0F;
 
 			// MCPatcher Start
-			if (Colorizer.computeRedstoneWireColor(15)) { 
+			if (ColorizeBlock.computeRedstoneWireColor(15)) {
 				par9 = Colorizer.setColor[0];
 				par10 = Colorizer.setColor[1];
 				par11 = Colorizer.setColor[2];
