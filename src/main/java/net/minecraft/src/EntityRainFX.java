@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeBlock;
 // MCPatcher End
 
 public class EntityRainFX extends EntityFX {
@@ -12,10 +12,10 @@ public class EntityRainFX extends EntityFX {
 		this.motionZ *= 0.30000001192092896D;
 
 		// MCPatcher Start
-		if (Colorizer.computeWaterColor(this.posX, this.posY, this.posZ)) {
-			this.particleRed = Colorizer.waterColor[0];
-			this.particleGreen = Colorizer.waterColor[1];
-			this.particleBlue = Colorizer.waterColor[2];
+		if (ColorizeBlock.computeWaterColor(this.posX, this.posY, this.posZ)) {
+			this.particleRed = ColorizeBlock.waterColor[0];
+			this.particleGreen = ColorizeBlock.waterColor[1];
+			this.particleBlue = ColorizeBlock.waterColor[2];
 		} else {
 			this.particleRed = 0.2F;
 			this.particleGreen = 0.3F;

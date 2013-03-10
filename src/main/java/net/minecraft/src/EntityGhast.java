@@ -15,7 +15,9 @@ public class EntityGhast extends EntityFlying implements IMob {
 	private int aggroCooldown = 0;
 	public int prevAttackCounter = 0;
 	public int attackCounter = 0;
-	private int field_92014_j = 1;
+
+	/** The explosion radius of spawned fireballs. */
+	private int explosionStrength = 1;
 
 	public EntityGhast(World par1World) {
 		super(par1World);
@@ -124,7 +126,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 				if (this.attackCounter == 20) {
 					this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
 					EntityLargeFireball var17 = new EntityLargeFireball(this.worldObj, this, var11, var13, var15);
-					var17.field_92057_e = this.field_92014_j;
+					var17.field_92057_e = this.explosionStrength;
 					double var18 = 4.0D;
 					Vec3 var20 = this.getLook(1.0F);
 					var17.posX = this.posX + var20.xCoord * var18;

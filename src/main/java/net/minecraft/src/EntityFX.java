@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 public class EntityFX extends Entity {
-	private int particleTextureIndex;
+	protected int field_94054_b;
+	protected int field_94055_c;
+	private Icon particleTextureIndex;
 	protected float particleTextureJitterX;
 	protected float particleTextureJitterY;
 	// Spout Start - protected to public
@@ -43,6 +45,7 @@ public class EntityFX extends Entity {
 		this.particleAge = 0;
 		this.particleMaxAge = 0;
 		this.particleAlpha = 1.0F;
+		this.particleTextureIndex = null;
 		this.setSize(0.2F, 0.2F);
 		this.yOffset = this.height / 2.0F;
 		this.setPosition(par2, par4, par6);
@@ -142,11 +145,19 @@ public class EntityFX extends Entity {
 	}
 
 	public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7) {
-		float var8 = (float)(this.particleTextureIndex % 16) / 16.0F;
+		float var8 = (float)this.field_94054_b / 16.0F;
 		float var9 = var8 + 0.0624375F;
-		float var10 = (float)(this.particleTextureIndex / 16) / 16.0F;
+		float var10 = (float)this.field_94055_c / 16.0F;
 		float var11 = var10 + 0.0624375F;
 		float var12 = 0.1F * this.particleScale;
+
+		if (this.particleTextureIndex != null) {
+			var8 = this.particleTextureIndex.func_94209_e();
+			var9 = this.particleTextureIndex.func_94212_f();
+			var10 = this.particleTextureIndex.func_94206_g();
+			var11 = this.particleTextureIndex.func_94210_h();
+		}
+
 		float var13 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)par2 - interpPosX);
 		float var14 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)par2 - interpPosY);
 		float var15 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)par2 - interpPosZ);
@@ -172,15 +183,32 @@ public class EntityFX extends Entity {
 	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {}
 
+	public void func_94052_a(RenderEngine par1RenderEngine, Icon par2Icon) {
+		if (this.getFXLayer() == 1) {
+			this.particleTextureIndex = par2Icon;
+		} else {
+			if (this.getFXLayer() != 2) {
+				throw new RuntimeException("Invalid call to Particle.setTex, use coordinate methods");
+			}
+
+			this.particleTextureIndex = par2Icon;
+		}
+	}
+
 	/**
 	 * Public method to set private field particleTextureIndex.
 	 */
 	public void setParticleTextureIndex(int par1) {
-		this.particleTextureIndex = par1;
+		if (this.getFXLayer() != 0) {
+			throw new RuntimeException("Invalid call to Particle.setMiscTex");
+		} else {
+			this.field_94054_b = par1 % 16;
+			this.field_94055_c = par1 / 16;
+		}
 	}
 
-	public int getParticleTextureIndex() {
-		return this.particleTextureIndex;
+	public void func_94053_h() {
+		++this.field_94054_b;
 	}
 
 	/**
