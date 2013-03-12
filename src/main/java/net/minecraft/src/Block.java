@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeBlock;
 // MCPatcher End
 // Spout Start
 import gnu.trove.map.hash.TIntFloatHashMap;
