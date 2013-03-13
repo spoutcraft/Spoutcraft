@@ -1,10 +1,5 @@
 package net.minecraft.client;
 
-// MCPatcher Start
-import com.prupe.mcpatcher.MCPatcherUtils;
-import com.prupe.mcpatcher.TexturePackChangeHandler;
-// MCPatcher End
-
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -133,10 +128,8 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 // MCPatcher Start
-import net.minecraft.src.World;
-import com.pclewis.mcpatcher.MCPatcherUtils;
-import com.pclewis.mcpatcher.TexturePackAPI;
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.MCPatcherUtils;
+import com.prupe.mcpatcher.TexturePackChangeHandler;
 // MCPatcher End
 // Spout Start
 import java.text.SimpleDateFormat;

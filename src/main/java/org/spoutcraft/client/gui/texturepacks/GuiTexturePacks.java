@@ -23,7 +23,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 
-import com.pclewis.mcpatcher.mod.TextureUtils;
+
 import org.apache.commons.io.FileUtils;
 
 import net.minecraft.client.Minecraft;
@@ -31,6 +31,7 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.ITexturePack;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.TexturePackCustom;
+import net.minecraft.src.TexturePackList;
 
 import org.bukkit.ChatColor;
 
@@ -114,7 +115,7 @@ public class GuiTexturePacks extends GuiScreen {
 
 		if (!instancesCreated) {
 			int selected;
-			selected = model.getTextures().indexOf(TextureUtils.getSelectedTexturePack());
+			selected = model.getTextures().indexOf(TexturePackList.getSelectedTexturePack());
 			view.setSelection(selected);
 		}
 
@@ -140,7 +141,7 @@ public class GuiTexturePacks extends GuiScreen {
 		}
 		if (btn.equals(buttonSelect) && view.getSelectedRow() != -1) {
 			TexturePackItem item = model.getItem(view.getSelectedRow());
-			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
+			boolean current = item.getPack() == TexturePackList.getSelectedTexturePack();
 			if (!current) {
 				item.select();
 				updateButtons();
@@ -155,7 +156,7 @@ public class GuiTexturePacks extends GuiScreen {
 		try {
 			StringTranslate t = StringTranslate.getInstance();
 			TexturePackItem item = model.getItem(view.getSelectedRow());
-			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
+			boolean current = item.getPack() == TexturePackList.getSelectedTexturePack();
 			buttonSelect.setEnabled(true);
 			if (current) {
 				buttonSelect.setText(t.translateKey("spout.texturepack.preview.button", "Preview"));

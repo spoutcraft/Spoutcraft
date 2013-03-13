@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,6 +10,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.imageio.ImageIO;
+
 import net.minecraft.client.Minecraft;
 // MCPatcher Start
 import com.prupe.mcpatcher.TexturePackAPI;
@@ -266,4 +272,31 @@ public class TexturePackList {
 		return (TexturePackImplementation)defaultTexturePack;
 	}
 	// MCPatcher End
+	
+	// Spout Start
+	public static int getTileSize() {
+		return getTileSize(getSelectedTexturePack());
+	}
+	
+	public static int getTileSize(TexturePackImplementation var0) {
+		int var1 = 0;
+		Iterator var2 = expectedColumns.entrySet().iterator();
+		while (var2.hasNext()) {
+			Entry var3 = (Entry)var2.next();
+			InputStream var4 = null;
+			try {
+				var4 = getResourceAsStream(var0, (String)var3.getKey());
+				if (var4 != null) {
+					BufferedImage var5 = ImageIO.read(var4);
+					int var6 = var5.getWidth() / ((Integer)var3.getValue()).intValue();
+					var1 = Math.max(var1, var6);
+				}
+			} catch (Exception var10) {
+			} finally {
+				MCPatcherUtils.close(var4);
+			}
+		}	
+		return var1 > 0 ? var1 : 16;
+	}
+	// Spout End
 }

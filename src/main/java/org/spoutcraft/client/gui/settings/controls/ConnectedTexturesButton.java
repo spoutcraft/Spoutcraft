@@ -21,7 +21,7 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import com.pclewis.mcpatcher.TexturePackAPI;
+import com.prupe.mcpatcher.TexturePackAPI;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;

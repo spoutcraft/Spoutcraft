@@ -30,10 +30,10 @@ import java.net.URLConnection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.Sys;
-import com.pclewis.mcpatcher.mod.TileSize;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.TexturePackList;
 
 import org.bukkit.ChatColor;
 
@@ -131,8 +131,8 @@ public class GuiUnexpectedError extends GuiScreen {
 			builder.append("-----------------------------------").append("\n");
 
 			builder.append("Minecraft Information:\n");
-			//builder.append("    Texture Pack: ").append(TextureUtils.getTexturePackName(TextureUtils.getSelectedTexturePack())).append("\n");
-			builder.append("    Texture Pack Res: ").append(TileSize.int_size + "x").append("\n");
+			builder.append("    Texture Pack: ").append(TexturePackList.getTexturePackName(TexturePackList.getSelectedTexturePack())).append("\n");
+			//builder.append("    Texture Pack Res: ").append(TileSize.int_size + "x").append("\n");			
 			builder.append("    LWJGL Version: ").append(Sys.getVersion()).append("\n");
 
 			builder.append("System Information:\n");

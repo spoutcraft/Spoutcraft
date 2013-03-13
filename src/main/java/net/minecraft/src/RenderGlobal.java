@@ -13,9 +13,9 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
-import com.pclewis.mcpatcher.mod.RenderPass;
-import com.pclewis.mcpatcher.mod.SkyRenderer;
+import com.prupe.mcpatcher.mod.ColorizeWorld;
+import com.prupe.mcpatcher.mod.RenderPass;
+import com.prupe.mcpatcher.mod.SkyRenderer;
 // MCPatcher End
 // Spout Start
 import org.spoutcraft.client.config.Configuration;

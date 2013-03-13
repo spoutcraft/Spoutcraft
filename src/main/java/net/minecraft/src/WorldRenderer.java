@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import org.lwjgl.opengl.GL11;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.CTMUtils;
-import com.pclewis.mcpatcher.mod.RenderPass;
+import com.prupe.mcpatcher.mod.CTMUtils;
+import com.prupe.mcpatcher.mod.RenderPass;
 // MCPatcher End
 // Spout Start
 import net.minecraft.client.Minecraft;
