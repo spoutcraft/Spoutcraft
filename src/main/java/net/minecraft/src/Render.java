@@ -25,8 +25,7 @@ public abstract class Render {
 	 * loads the specified texture
 	 */
 	protected void loadTexture(String par1Str) {
-		RenderEngine var2 = this.renderManager.renderEngine;
-		var2.bindTexture(var2.getTexture(par1Str));
+		this.renderManager.renderEngine.func_98187_b(par1Str);
 	}
 
 	/**
@@ -39,7 +38,8 @@ public abstract class Render {
 		int var4 = var3.getTextureForDownloadableImage(par1Str, par2Str);
 
 		if (var4 >= 0) {
-			var3.bindTexture(var4);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var4);
+			var3.func_98185_a();
 			return true;
 		} else {
 			return false;
@@ -51,64 +51,61 @@ public abstract class Render {
 	 */
 	private void renderEntityOnFire(Entity par1Entity, double par2, double par4, double par6, float par8) {
 		GL11.glDisable(GL11.GL_LIGHTING);
-		int var9 = Block.fire.blockIndexInTexture;
-		int var10 = (var9 & 15) << 4;
-		int var11 = var9 & 240;
-		float var12 = (float)var10 / 256.0F;
-		float var13 = ((float)var10 + 15.99F) / 256.0F;
-		float var14 = (float)var11 / 256.0F;
-		float var15 = ((float)var11 + 15.99F) / 256.0F;
+		Icon var9 = Block.fire.func_94438_c(0);
+		Icon var10 = Block.fire.func_94438_c(1);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)par2, (float)par4, (float)par6);
-		float var16 = par1Entity.width * 1.4F;
-		GL11.glScalef(var16, var16, var16);
+		float var11 = par1Entity.width * 1.4F;
+		GL11.glScalef(var11, var11, var11);
 		this.loadTexture("/terrain.png");
-		Tessellator var17 = Tessellator.instance;
-		float var18 = 0.5F;
-		float var19 = 0.0F;
-		float var20 = par1Entity.height / var16;
-		float var21 = (float)(par1Entity.posY - par1Entity.boundingBox.minY);
+		Tessellator var12 = Tessellator.instance;
+		float var13 = 0.5F;
+		float var14 = 0.0F;
+		float var15 = par1Entity.height / var11;
+		float var16 = (float)(par1Entity.posY - par1Entity.boundingBox.minY);
 		GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-		GL11.glTranslatef(0.0F, 0.0F, -0.3F + (float)((int)var20) * 0.02F);
+		GL11.glTranslatef(0.0F, 0.0F, -0.3F + (float)((int)var15) * 0.02F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		float var22 = 0.0F;
-		int var23 = 0;
-		var17.startDrawingQuads();
+		float var17 = 0.0F;
+		int var18 = 0;
+		var12.startDrawingQuads();
 
-		while (var20 > 0.0F) {
-			if (var23 % 2 == 0) {
-				var12 = (float)var10 / 256.0F;
-				var13 = ((float)var10 + 15.99F) / 256.0F;
-				var14 = (float)var11 / 256.0F;
-				var15 = ((float)var11 + 15.99F) / 256.0F;
+		while (var15 > 0.0F) {
+			Icon var19;
+
+			if (var18 % 2 == 0) {
+				var19 = var9;
 			} else {
-				var12 = (float)var10 / 256.0F;
-				var13 = ((float)var10 + 15.99F) / 256.0F;
-				var14 = (float)(var11 + 16) / 256.0F;
-				var15 = ((float)(var11 + 16) + 15.99F) / 256.0F;
+				var19 = var10;
 			}
 
-			if (var23 / 2 % 2 == 0) {
-				float var24 = var13;
-				var13 = var12;
-				var12 = var24;
+			float var20 = var19.func_94209_e();
+			float var21 = var19.func_94206_g();
+			float var22 = var19.func_94212_f();
+			float var23 = var19.func_94210_h();
+
+			if (var18 / 2 % 2 == 0) {
+				float var24 = var22;
+				var22 = var20;
+				var20 = var24;
 			}
 
-			var17.addVertexWithUV((double)(var18 - var19), (double)(0.0F - var21), (double)var22, (double)var13, (double)var15);
-			var17.addVertexWithUV((double)(-var18 - var19), (double)(0.0F - var21), (double)var22, (double)var12, (double)var15);
-			var17.addVertexWithUV((double)(-var18 - var19), (double)(1.4F - var21), (double)var22, (double)var12, (double)var14);
-			var17.addVertexWithUV((double)(var18 - var19), (double)(1.4F - var21), (double)var22, (double)var13, (double)var14);
-			var20 -= 0.45F;
-			var21 -= 0.45F;
-			var18 *= 0.9F;
-			var22 += 0.03F;
-			++var23;
+			var12.addVertexWithUV((double)(var13 - var14), (double)(0.0F - var16), (double)var17, (double)var22, (double)var23);
+			var12.addVertexWithUV((double)(-var13 - var14), (double)(0.0F - var16), (double)var17, (double)var20, (double)var23);
+			var12.addVertexWithUV((double)(-var13 - var14), (double)(1.4F - var16), (double)var17, (double)var20, (double)var21);
+			var12.addVertexWithUV((double)(var13 - var14), (double)(1.4F - var16), (double)var17, (double)var22, (double)var21);
+			var15 -= 0.45F;
+			var16 -= 0.45F;
+			var13 *= 0.9F;
+			var17 += 0.03F;
+			++var18;
 		}
 
-		var17.draw();
+		var12.draw();
 		GL11.glPopMatrix();
 		GL11.glEnable(GL11.GL_LIGHTING);
 	}
+
 
 	/**
 	 * Renders the entity shadows at the position, shadow alpha and partialTickTime. Args: entity, x, y, z, shadowAlpha,
@@ -117,49 +114,48 @@ public abstract class Render {
 	private void renderShadow(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		RenderEngine var10 = this.renderManager.renderEngine;
-		var10.bindTexture(var10.getTexture("%clamp%/misc/shadow.png"));
-		World var11 = this.getWorldFromRenderManager();
+		this.renderManager.renderEngine.func_98187_b("%clamp%/misc/shadow.png");
+		World var10 = this.getWorldFromRenderManager();
 		GL11.glDepthMask(false);
-		float var12 = this.shadowSize;
+		float var11 = this.shadowSize;
 
 		if (par1Entity instanceof EntityLiving) {
-			EntityLiving var13 = (EntityLiving)par1Entity;
-			var12 *= var13.getRenderSizeModifier();
+			EntityLiving var12 = (EntityLiving)par1Entity;
+			var11 *= var12.getRenderSizeModifier();
 
-			if (var13.isChild()) {
-				var12 *= 0.5F;
+			if (var12.isChild()) {
+				var11 *= 0.5F;
 			}
 		}
 
-		double var36 = par1Entity.lastTickPosX + (par1Entity.posX - par1Entity.lastTickPosX) * (double)par9;
-		double var15 = par1Entity.lastTickPosY + (par1Entity.posY - par1Entity.lastTickPosY) * (double)par9 + (double)par1Entity.getShadowSize();
-		double var17 = par1Entity.lastTickPosZ + (par1Entity.posZ - par1Entity.lastTickPosZ) * (double)par9;
-		int var19 = MathHelper.floor_double(var36 - (double)var12);
-		int var20 = MathHelper.floor_double(var36 + (double)var12);
-		int var21 = MathHelper.floor_double(var15 - (double)var12);
-		int var22 = MathHelper.floor_double(var15);
-		int var23 = MathHelper.floor_double(var17 - (double)var12);
-		int var24 = MathHelper.floor_double(var17 + (double)var12);
-		double var25 = par2 - var36;
-		double var27 = par4 - var15;
-		double var29 = par6 - var17;
-		Tessellator var31 = Tessellator.instance;
-		var31.startDrawingQuads();
+		double var35 = par1Entity.lastTickPosX + (par1Entity.posX - par1Entity.lastTickPosX) * (double)par9;
+		double var14 = par1Entity.lastTickPosY + (par1Entity.posY - par1Entity.lastTickPosY) * (double)par9 + (double)par1Entity.getShadowSize();
+		double var16 = par1Entity.lastTickPosZ + (par1Entity.posZ - par1Entity.lastTickPosZ) * (double)par9;
+		int var18 = MathHelper.floor_double(var35 - (double)var11);
+		int var19 = MathHelper.floor_double(var35 + (double)var11);
+		int var20 = MathHelper.floor_double(var14 - (double)var11);
+		int var21 = MathHelper.floor_double(var14);
+		int var22 = MathHelper.floor_double(var16 - (double)var11);
+		int var23 = MathHelper.floor_double(var16 + (double)var11);
+		double var24 = par2 - var35;
+		double var26 = par4 - var14;
+		double var28 = par6 - var16;
+		Tessellator var30 = Tessellator.instance;
+		var30.startDrawingQuads();
 
-		for (int var32 = var19; var32 <= var20; ++var32) {
-			for (int var33 = var21; var33 <= var22; ++var33) {
-				for (int var34 = var23; var34 <= var24; ++var34) {
-					int var35 = var11.getBlockId(var32, var33 - 1, var34);
+		for (int var31 = var18; var31 <= var19; ++var31) {
+			for (int var32 = var20; var32 <= var21; ++var32) {
+				for (int var33 = var22; var33 <= var23; ++var33) {
+					int var34 = var10.getBlockId(var31, var32 - 1, var33);
 
-					if (var35 > 0 && var11.getBlockLightValue(var32, var33, var34) > 3) {
-						this.renderShadowOnBlock(Block.blocksList[var35], par2, par4 + (double)par1Entity.getShadowSize(), par6, var32, var33, var34, par8, var12, var25, var27 + (double)par1Entity.getShadowSize(), var29);
+					if (var34 > 0 && var10.getBlockLightValue(var31, var32, var33) > 3) {
+						this.renderShadowOnBlock(Block.blocksList[var34], par2, par4 + (double)par1Entity.getShadowSize(), par6, var31, var32, var33, par8, var11, var24, var26 + (double)par1Entity.getShadowSize(), var28);
 					}
 				}
 			}
 		}
 
-		var31.draw();
+		var30.draw();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glDepthMask(true);
@@ -314,4 +310,6 @@ public abstract class Render {
 	public FontRenderer getFontRendererFromRenderManager() {
 		return this.renderManager.getFontRenderer();
 	}
+	
+	public void func_94143_a(IconRegister par1IconRegister) {}
 }
