@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+// MCPatcher Start
 import com.prupe.mcpatcher.mod.ColorizeEntity;
+// MCPatcher End
 
 public class ItemArmor extends Item {
 
@@ -90,7 +92,9 @@ public class ItemArmor extends Item {
 			NBTTagCompound var2 = par1ItemStack.getTagCompound();
 
 			if (var2 == null) {
+				// MCPatcher Start
 				return ColorizeEntity.undyedLeatherColor;
+				// MCPatcher End
 			} else {
 				NBTTagCompound var3 = var2.getCompoundTag("display");
 				// MCPatcher Start

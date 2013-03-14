@@ -36,7 +36,7 @@ public class MinecraftApplet extends Applet {
 		if (this.getParameter("username") != null && this.getParameter("sessionid") != null) {
 			this.mc.session = new Session(this.getParameter("username"), this.getParameter("sessionid"));
 			// Spout Start
-			System.out.println("Setting user: " + this.mc.session.username); // + ", " + this.mc.session.sessionId);
+			System.out.println("Setting user: " + this.mc.session.username);
 			// Spout End
 		} else {
 			this.mc.session = new Session("Player", "");

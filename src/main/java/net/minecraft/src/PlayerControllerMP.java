@@ -164,7 +164,6 @@ public class PlayerControllerMP {
 					this.currentblockZ = par3;
 					this.field_85183_f = this.mc.thePlayer.getHeldItem();
 					this.curBlockDamageMP = 0.0F;
-					this.prevBlockDamageMP = 0.0F;
 					this.stepSoundTickCounter = 0.0F;
 					this.mc.theWorld.destroyBlockInWorldPartially(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
 				}

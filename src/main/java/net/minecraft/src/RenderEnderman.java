@@ -1,9 +1,11 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.mod.MobRandomizer;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+// MCPatcher Start
+import com.prupe.mcpatcher.mod.MobRandomizer;
+// MCPatcher End
 // Spout Start
 import org.spoutcraft.client.config.Configuration;
 // Spout End
@@ -73,7 +75,7 @@ public class RenderEnderman extends RenderLiving {
 		} else {
 			// Spout Start
 			if (Configuration.isRandomMobTextures()) {
-				this.loadTexture(MobRandomizer.randomTexture((EntityLiving)par1EntityEnderman, "/mob/enderman_eyes.png"));
+			this.loadTexture(MobRandomizer.randomTexture((EntityLiving)par1EntityEnderman, "/mob/enderman_eyes.png"));
 			} else {
 				loadTexture(par1EntityEnderman.getCustomTexture(org.spoutcraft.api.entity.EntitySkinType.ENDERMAN_EYES, "/mob/enderman_eyes.png"));
 			}

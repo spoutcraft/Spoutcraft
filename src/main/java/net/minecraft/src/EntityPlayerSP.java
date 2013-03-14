@@ -176,7 +176,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			boolean var1 = this.movementInput.jump;
 			float var2 = 0.8F;
 			boolean var3 = this.movementInput.moveForward >= var2;
-			// Spout Start - Kept parameter
+			// Spout Start - Keep parameter
 			this.movementInput.updatePlayerMoveState(this);
 			// Spout End
 

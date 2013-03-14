@@ -38,7 +38,7 @@ public class RenderItemFrame extends Render {
 		float var3 = 0.0625F;
 		float var4 = 0.75F;
 		float var5 = var4 / 2.0F;
-		GL11.glPushMatrix();		
+		GL11.glPushMatrix();
 		this.renderBlocksInstance.overrideBlockBounds(0.0D, (double)(0.5F - var5 + 0.0625F), (double)(0.5F - var5 + 0.0625F), (double)(var3 * 0.5F), (double)(0.5F + var5 - 0.0625F), (double)(0.5F + var5 - 0.0625F));
 		this.renderBlocksInstance.setOverrideBlockTexture(this.field_94147_f);
 		this.renderBlocksInstance.renderBlockAsItem(var2, 0, 1.0F);
@@ -77,7 +77,7 @@ public class RenderItemFrame extends Render {
 			// Spout Start
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderManager.renderEngine.getTexture("/terrain.png"));
 			GL11.glPushMatrix();
-			
+
 			if (var2.itemID == 318 && (MaterialData.getCustomBlock(var2.getItemDamage()) instanceof org.spoutcraft.api.material.Block)) {
 				if (par1EntityItemFrame.hangingDirection == 0) {
 					GL11.glTranslatef((-0.453125F * ((float)Direction.offsetX[par1EntityItemFrame.hangingDirection] + 0.25F)), -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.hangingDirection]);
@@ -89,7 +89,7 @@ public class RenderItemFrame extends Render {
 					GL11.glTranslatef((-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.hangingDirection]), -0.18F, -0.453125F * ((float)Direction.offsetZ[par1EntityItemFrame.hangingDirection] - 0.25F));
 				}
 			} else {
-				GL11.glTranslatef(-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.hangingDirection], -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.hangingDirection]);
+			GL11.glTranslatef(-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.hangingDirection], -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.hangingDirection]);
 			}
 			// Spout End
 			GL11.glRotatef(180.0F + par1EntityItemFrame.rotationYaw, 0.0F, 1.0F, 0.0F);
@@ -130,26 +130,26 @@ public class RenderItemFrame extends Render {
 					this.renderManager.itemRenderer.mapItemRenderer.renderMap((EntityPlayer)null, this.renderManager.renderEngine, var6);
 				}
 			} else {
-				TextureCompass var9;
+				TextureCompass var10;
 
 				if (var3.getEntityItem().getItem() == Item.compass) {
-					var9 = TextureCompass.field_94243_h;
-					double var10 = var9.field_94244_i;
-					double var7 = var9.field_94242_j;
-					var9.field_94244_i = 0.0D;
-					var9.field_94242_j = 0.0D;
-					var9.func_94241_a(par1EntityItemFrame.worldObj, par1EntityItemFrame.posX, par1EntityItemFrame.posZ, (double)MathHelper.wrapAngleTo180_float((float)(180 + par1EntityItemFrame.hangingDirection * 90)), false, true);
-					var9.field_94244_i = var10;
-					var9.field_94242_j = var7;
+					var10 = TextureCompass.field_94243_h;
+					double var9 = var10.field_94244_i;
+					double var7 = var10.field_94242_j;
+					var10.field_94244_i = 0.0D;
+					var10.field_94242_j = 0.0D;
+					var10.func_94241_a(par1EntityItemFrame.worldObj, par1EntityItemFrame.posX, par1EntityItemFrame.posZ, (double)MathHelper.wrapAngleTo180_float((float)(180 + par1EntityItemFrame.hangingDirection * 90)), false, true);
+					var10.field_94244_i = var9;
+					var10.field_94242_j = var7;
 				}
 
 				RenderItem.field_82407_g = true;
 				RenderManager.instance.renderEntityWithPosYaw(var3, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
 				RenderItem.field_82407_g = false;
-								
+
 				if (var3.getEntityItem().getItem() == Item.compass) {
-					var9 = TextureCompass.field_94243_h;
-					var9.func_94219_l();
+					var10 = TextureCompass.field_94243_h;
+					var10.func_94219_l();
 				}
 			}
 

@@ -69,8 +69,8 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		// Spout Start
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		// Spout End
 		byte var13 = 0;
+		// Spout End
 
 		for (int var14 = 0; var14 < par1TileEntitySign.signText.length; ++var14) {
 			String var15 = par1TileEntitySign.signText[var14];

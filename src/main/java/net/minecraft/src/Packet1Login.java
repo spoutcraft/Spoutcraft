@@ -3,8 +3,9 @@ package net.minecraft.src;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import org.spoutcraft.client.DataMiningThread; // Spout
+// Spout Start
+import org.spoutcraft.client.DataMiningThread;
+// Spout End
 
 public class Packet1Login extends Packet {
 

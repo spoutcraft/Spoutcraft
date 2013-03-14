@@ -13,7 +13,7 @@ import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public class GuiContainerCreative extends InventoryEffectRenderer {
-	private static InventoryBasic inventory = new InventoryBasic("tmp", 45);
+	private static InventoryBasic inventory = new InventoryBasic("tmp", true, 45);
 
 	/** Currently selected creative inventory tab index. */
 	private static int selectedTabIndex = CreativeTabs.tabBlock.getTabIndex();
@@ -62,34 +62,34 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		boolean var5 = par4 == 1;
 		par4 = par2 == -999 && par4 == 0 ? 4 : par4;
 		ItemStack var7;
-		InventoryPlayer var11;
+		InventoryPlayer var10;
 
 		if (par1Slot == null && selectedTabIndex != CreativeTabs.tabInventory.getTabIndex() && par4 != 5) {
-			var11 = this.mc.thePlayer.inventory;
+			var10 = this.mc.thePlayer.inventory;
 
-			if (var11.getItemStack() != null) {
+			if (var10.getItemStack() != null) {
 				if (par3 == 0) {
-					this.mc.thePlayer.dropPlayerItem(var11.getItemStack());
-					this.mc.playerController.func_78752_a(var11.getItemStack());
-					var11.setItemStack((ItemStack)null);
+					this.mc.thePlayer.dropPlayerItem(var10.getItemStack());
+					this.mc.playerController.func_78752_a(var10.getItemStack());
+					var10.setItemStack((ItemStack)null);
 				}
 
 				if (par3 == 1) {
-					var7 = var11.getItemStack().splitStack(1);
+					var7 = var10.getItemStack().splitStack(1);
 					this.mc.thePlayer.dropPlayerItem(var7);
 					this.mc.playerController.func_78752_a(var7);
 
-					if (var11.getItemStack().stackSize == 0) {
-						var11.setItemStack((ItemStack)null);
+					if (var10.getItemStack().stackSize == 0) {
+						var10.setItemStack((ItemStack)null);
 					}
 				}
 			}
 		} else {
-			int var10;
+			int var11;
 
 			if (par1Slot == this.field_74235_v && var5) {
-				for (var10 = 0; var10 < this.mc.thePlayer.inventoryContainer.getInventory().size(); ++var10) {
-					this.mc.playerController.sendSlotPacket((ItemStack)null, var10);
+				for (var11 = 0; var11 < this.mc.thePlayer.inventoryContainer.getInventory().size(); ++var11) {
+					this.mc.playerController.sendSlotPacket((ItemStack)null, var11);
 				}
 			} else {
 				ItemStack var6;
@@ -110,8 +110,8 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 						this.mc.thePlayer.inventoryContainer.detectAndSendChanges();
 					}
 				} else if (par4 != 5 && par1Slot.inventory == inventory) {
-					var11 = this.mc.thePlayer.inventory;
-					var7 = var11.getItemStack();
+					var10 = this.mc.thePlayer.inventory;
+					var7 = var10.getItemStack();
 					ItemStack var8 = par1Slot.getStack();
 					ItemStack var9;
 
@@ -127,10 +127,10 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 					}
 
 					if (par4 == 3) {
-						if (var11.getItemStack() == null && par1Slot.getHasStack()) {
+						if (var10.getItemStack() == null && par1Slot.getHasStack()) {
 							var9 = par1Slot.getStack().copy();
 							var9.stackSize = var9.getMaxStackSize();
-							var11.setItemStack(var9);
+							var10.setItemStack(var9);
 						}
 
 						return;
@@ -155,26 +155,26 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 								++var7.stackSize;
 							}
 						} else if (var7.stackSize <= 1) {
-							var11.setItemStack((ItemStack)null);
+							var10.setItemStack((ItemStack)null);
 						} else {
 							--var7.stackSize;
 						}
 					} else if (var8 != null && var7 == null) {
-						var11.setItemStack(ItemStack.copyItemStack(var8));
-						var7 = var11.getItemStack();
+						var10.setItemStack(ItemStack.copyItemStack(var8));
+						var7 = var10.getItemStack();
 
 						if (var5) {
 							var7.stackSize = var7.getMaxStackSize();
 						}
 					} else {
-						var11.setItemStack((ItemStack)null);
+						var10.setItemStack((ItemStack)null);
 					}
 				} else {
 					this.inventorySlots.slotClick(par1Slot == null ? par2 : par1Slot.slotNumber, par3, par4, this.mc.thePlayer);
 
 					if (Container.func_94532_c(par3) == 2) {
-						for (var10 = 0; var10 < 9; ++var10) {
-							this.mc.playerController.sendSlotPacket(this.inventorySlots.getSlot(45 + var10).getStack(), 36 + var10);
+						for (var11 = 0; var11 < 9; ++var11) {
+							this.mc.playerController.sendSlotPacket(this.inventorySlots.getSlot(45 + var11).getStack(), 36 + var11);
 						}
 					} else if (par1Slot != null) {
 						var6 = this.inventorySlots.getSlot(par1Slot.slotNumber).getStack();
@@ -544,10 +544,8 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderHelper.enableGUIStandardItemLighting();
-		//int var4 = this.mc.renderEngine.getTexture("/gui/allitems.png");
 		int var4 = this.mc.renderEngine.func_98187_b("/gui/allitems.png");
 		CreativeTabs var5 = CreativeTabs.creativeTabArray[selectedTabIndex];
-		//int var6 = this.mc.renderEngine.getTexture("/gui/creative_inv/" + var5.getBackgroundImageName());
 		int var6 = this.mc.renderEngine.func_98187_b("/gui/creative_inv/" + var4.getBackgroundImageName());
 		CreativeTabs[] var7 = CreativeTabs.creativeTabArray;
 		int var8 = var7.length;
@@ -588,10 +586,10 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		}
 		// Spout End
 
-		this.renderCreativeTab(var5);
+		this.renderCreativeTab(var4);
 
-		if (var5 == CreativeTabs.tabInventory) {
-			GuiInventory.func_74223_a(this.mc, this.guiLeft + 43, this.guiTop + 45, 20, (float)(this.guiLeft + 43 - par2), (float)(this.guiTop + 45 - 30 - par3));
+		if (var4 == CreativeTabs.tabInventory) {
+			GuiInventory.drawPlayerOnGui(this.mc, this.guiLeft + 43, this.guiTop + 45, 20, (float)(this.guiLeft + 43 - par2), (float)(this.guiTop + 45 - 30 - par3));
 		}
 	}
 
@@ -769,7 +767,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		// Bypass stupidity
 		ItemStack var10;
-		if(MaterialData.getCustomItems().length == 0) {
+		if (MaterialData.getCustomItems().length == 0) {
 			var10 = new ItemStack(Item.flint);
 		} else {
 			CustomItem cItem = MaterialData.getCustomItems()[0];

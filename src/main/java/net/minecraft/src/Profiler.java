@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 // Spout Start
 import net.minecraft.client.Minecraft;
 // Spout End

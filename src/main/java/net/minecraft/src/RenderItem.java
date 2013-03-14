@@ -47,7 +47,9 @@ public class RenderItem extends Render {
 		ItemStack var10 = par1EntityItem.getEntityItem();
 
 		if (var10.getItem() != null) {
-			// GL11.glPushMatrix(); // Spout Removed.
+			// Spout Start - Removed
+			//GL11.glPushMatrix();
+			// Spout End
 			float var11 = MathHelper.sin(((float)par1EntityItem.age + par9) / 10.0F + par1EntityItem.hoverStart) * 0.1F + 0.1F;
 			float var12 = (((float)par1EntityItem.age + par9) / 20.0F + par1EntityItem.hoverStart) * (180F / (float)Math.PI);
 			byte var13 = 1;
@@ -205,8 +207,8 @@ public class RenderItem extends Render {
 					}
 				}
 
-				GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-				GL11.glPopMatrix();
+			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+			GL11.glPopMatrix();
 			}
 		}
 	}
@@ -251,29 +253,31 @@ public class RenderItem extends Render {
 			var17 = 0.021875F;
 			ItemStack var18 = par1EntityItem.getEntityItem();
 			int var19 = var18.stackSize;
-			byte var24;
+			byte var27;
 
 			if (var19 < 2) {
-				var24 = 1;
+				var27 = 1;
 			} else if (var19 < 16) {
-				var24 = 2;
+				var27 = 2;
 			} else if (var19 < 32) {
-				var24 = 3;
+				var27 = 3;
 			} else {
-				var24 = 4;
+				var27 = 4;
 			}
 
-			GL11.glTranslatef(-var14, -var15, -((var16 + var17) * (float)var24 / 2.0F));
+			GL11.glTranslatef(-var14, -var15, -((var16 + var17) * (float)var27 / 2.0F));
 
-			for (int var20 = 0; var20 < var24; ++var20) {
+			for (int var20 = 0; var20 < var27; ++var20) {
 				GL11.glTranslatef(0.0F, 0.0F, var16 + var17);
 
 				// Spout Removed
-				/* if (Block.blocksList[var18.itemID] != null) {
+				/*
+				if (Block.blocksList[var18.itemID] != null) {
 					this.loadTexture("/terrain.png");
 				} else {
 					this.loadTexture("/gui/items.png");
-				} */
+				}
+				*/
 				// Spout End
 
 				GL11.glColor4f(par5, par6, par7, 1.0F);
@@ -309,17 +313,17 @@ public class RenderItem extends Render {
 					GL11.glDepthFunc(GL11.GL_LEQUAL);
 				}
 			}
-			
+
 			GL11.glPopMatrix();
 		} else {
-			for (int var25 = 0; var25 < par3; ++var25) {
+			for (int var26 = 0; var26 < par3; ++var26) {
 				GL11.glPushMatrix();
 
-				if (var25 > 0) {
+				if (var26 > 0) {
 					var17 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
-					float var27 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
-					float var26 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
-					GL11.glTranslatef(var17, var27, var26);
+					float var24 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
+					float var25 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
+					GL11.glTranslatef(var17, var24, var25);
 				}
 
 				if (!field_82407_g) {
@@ -349,7 +353,7 @@ public class RenderItem extends Render {
 		int var10;
 		float var12;
 		float var13;
-		float var16;
+		float var18;
 
 		// Spout Start
 		boolean custom = false;
@@ -392,13 +396,13 @@ public class RenderItem extends Render {
 			GL11.glScalef(1.0F, 1.0F, -1.0F);
 			GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			int var18 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);
-			var16 = (float)(var18 >> 16 & 255) / 255.0F;
-			var12 = (float)(var18 >> 8 & 255) / 255.0F;
-			var13 = (float)(var18 & 255) / 255.0F;
+			int var16 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);
+			var18 = (float)(var16 >> 16 & 255) / 255.0F;
+			var12 = (float)(var16 >> 8 & 255) / 255.0F;
+			var13 = (float)(var16 & 255) / 255.0F;
 
 			if (this.field_77024_a) {
-				GL11.glColor4f(var16, var12, var13, 1.0F);
+				GL11.glColor4f(var18, var12, var13, 1.0F);
 			}
 
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
@@ -443,11 +447,11 @@ public class RenderItem extends Render {
 
 				var9 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);
 				float var17 = (float)(var9 >> 16 & 255) / 255.0F;
-				var16 = (float)(var9 >> 8 & 255) / 255.0F;
+				var18 = (float)(var9 >> 8 & 255) / 255.0F;
 				var12 = (float)(var9 & 255) / 255.0F;
 
 				if (this.field_77024_a) {
-					GL11.glColor4f(var17, var16, var12, 1.0F);
+					GL11.glColor4f(var17, var18, var12, 1.0F);
 				}
 
 				// Spout Start
@@ -533,7 +537,7 @@ public class RenderItem extends Render {
 		this.func_94148_a(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5, (String)null);
 	}
 
-	public void func_94148_a(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5, String par6Str) {		
+	public void func_94148_a(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5, String par6Str) {
 		if (par3ItemStack != null) {
 			if (par3ItemStack.stackSize > 1 || par6Str != null) {
 				String var7 = par6Str == null ? String.valueOf(par3ItemStack.stackSize) : par6Str;
@@ -563,18 +567,19 @@ public class RenderItem extends Render {
 				}
 			}
 			boolean override = max > 0 && amnt > 0 && amnt < max;
+			// Spout End
 			if (par3ItemStack.isItemDamaged()) {
 				int var12 = (int)Math.round(13.0D - (double)par3ItemStack.getItemDamageForDisplay() * 13.0D / (double)par3ItemStack.getMaxDamage());
 				int var8 = (int)Math.round(255.0D - (double)par3ItemStack.getItemDamageForDisplay() * 255.0D / (double)par3ItemStack.getMaxDamage());
-				// Spout End
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
+				Tessellator var9 = Tessellator.instance;
 				int var10 = 255 - var8 << 16 | var8 << 8;
 				int var11 = (255 - var8) / 4 << 16 | 16128;
 				this.renderQuad(var9, par4 + 2, par5 + 13, 13, 2, 0);
 				this.renderQuad(var9, par4 + 2, par5 + 13, 12, 1, var11);
-				this.renderQuad(var9, par4 + 2, par5 + 13, var12, 1, var10);			
+				this.renderQuad(var9, par4 + 2, par5 + 13, var12, 1, var10);
 				GL11.glEnable(GL11.GL_TEXTURE_2D);
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -584,7 +589,7 @@ public class RenderItem extends Render {
 	}
 
 	/**
-	 * Adds a quad to the tesselator at the specified position with the set width and height and color. Args: tessellator,
+	 * Adds a quad to the tesselator at the specified position with the set width and height and color.  Args: tessellator,
 	 * x, y, width, height, color
 	 */
 	private void renderQuad(Tessellator par1Tessellator, int par2, int par3, int par4, int par5, int par6) {

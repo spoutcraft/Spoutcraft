@@ -29,10 +29,10 @@ import java.util.LinkedList;
 import org.spoutcraft.api.entity.LivingEntity;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
+import org.spoutcraft.client.gui.precache.GuiPrecache;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.util.NetworkUtils;
-import org.spoutcraft.client.gui.precache.GuiPrecache;
 // Spout End
 
 public class NetClientHandler extends NetHandler {
@@ -192,7 +192,7 @@ public class NetClientHandler extends NetHandler {
 		this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
 		}
 		//this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache());
-		System.out.println("[Spoutcraft Cache Manager] - Starting: "+ System.currentTimeMillis());
+		System.out.println("Starting cache manager... " + System.currentTimeMillis());
 		// Spout End
 		this.mc.thePlayer.entityId = par1Packet1Login.clientEntityId;
 		this.currentServerMaxPlayers = par1Packet1Login.maxPlayers;

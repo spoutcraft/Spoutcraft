@@ -495,9 +495,9 @@ public class RenderEngine {
 		if (par1InputStream == null) {
 			return null;
 		} else {
-			BufferedImage var2 = ImageIO.read(par1InputStream);
-			par1InputStream.close();
-			return var2;
+		BufferedImage var2 = ImageIO.read(par1InputStream);
+		par1InputStream.close();
+		return var2;
 		}
 	}
 
@@ -515,5 +515,5 @@ public class RenderEngine {
 			default:
 				return this.field_94155_m.func_96455_e();
 		}
-	}	
+	}
 }

@@ -135,8 +135,8 @@ public class TileEntityRenderer {
 			try {
 				var9.renderTileEntityAt(par1TileEntity, par2, par4, par6, par8);
 			// Spout Start
-				} catch (ClassCastException ignore) {
-				}
+			} catch (ClassCastException ignore) {
+			}
 			// Spout End
 		}
 	}

@@ -13,9 +13,9 @@ import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.addon.ServerAddon;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.packet.PacketClientAddons;
 import org.spoutcraft.client.packet.PacketFullVersion;
 import org.spoutcraft.client.packet.PacketRenderDistance;
-import org.spoutcraft.client.packet.PacketClientAddons;
 // Spout End
 
 public class Packet18Animation extends Packet {
@@ -23,8 +23,10 @@ public class Packet18Animation extends Packet {
 	/** The entity ID, in this case it's the player ID. */
 	public int entityId;
 	public int animate;
+	// Spout Start
 	Minecraft mc = SpoutClient.getHandle();
-	
+	// Spout End
+
 	public Packet18Animation() {}
 
 	public Packet18Animation(Entity par1Entity, int par2) {

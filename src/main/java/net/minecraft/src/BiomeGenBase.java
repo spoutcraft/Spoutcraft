@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeWorld;
 // MCPatcher End
 
 public abstract class BiomeGenBase {
@@ -210,26 +210,10 @@ public abstract class BiomeGenBase {
 		return this;
 	}
 
-	// MCPatcher Start
-	protected BiomeGenBase setEnableSnow(boolean bool) {
-		enableSnow = bool;
-		return this;
-	}
-
-	protected BiomeGenBase setEnableRain(boolean bool) {
-		enableRain = bool;
-		return this;
-	}
-
-	protected String getBiomeName() {
-		return biomeName;
-	}
-	// MCPatcher End
-
 	protected BiomeGenBase setBiomeName(String par1Str) {
 		this.biomeName = par1Str;
 		// MCPatcher Start
-		Colorizer.setupBiome(this);
+		ColorizeWorld.setupBiome(this);
 		// MCPatcher End
 		return this;
 	}

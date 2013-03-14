@@ -80,7 +80,7 @@ public class ChunkProviderClient implements IChunkProvider {
 	 * Will return back a chunk, if it doesn't exist and its not a MP client it will generates all the blocks for the
 	 * specified chunk from the map seed and chunk seed
 	 */
-	// Spout Start
+	// Spout Start - public
 	public Chunk provideChunk(int var1, int var2) {
 		Chunk var3 = (Chunk)this.chunkMapping.get(ChunkCoordIntPair.chunkXZ2Int(var1, var2));
 	// Spout End

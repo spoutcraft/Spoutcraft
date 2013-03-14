@@ -310,7 +310,7 @@ public class RenderManager {
 	public FontRenderer getFontRenderer() {
 		return this.fontRenderer;
 	}
-	
+
 	public void func_94178_a(IconRegister par1IconRegister) {
 		Iterator var2 = this.entityRenderMap.values().iterator();
 
