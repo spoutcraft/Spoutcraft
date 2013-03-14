@@ -12,7 +12,6 @@ import org.spoutcraft.client.inventory.InventoryUtil;
 // Spout Start - Removed final
 public class ItemStack {
 // Spout End
-
 	/** Size of the stack. */
 	public int stackSize;
 
@@ -292,11 +291,12 @@ public class ItemStack {
 
 					this.itemDamage = 0;
 
-				// Spout Start
-				if (stackSize == 0 && Configuration.isReplaceTools()) {
-					InventoryUtil.replaceItem(this.itemID, -1);
+					// Spout Start
+					if (stackSize == 0 && Configuration.isReplaceTools()) {
+						InventoryUtil.replaceItem(this.itemID, -1);
+					}
+					// Spout End
 				}
-				// Spout End
 			}
 		}
 	}
@@ -542,12 +542,12 @@ public class ItemStack {
 		var4.addInformation(this, par1EntityPlayer, var3, par2);
 
 		if (this.hasTagCompound()) {
-			NBTTagList var10 = this.getEnchantmentTagList();
+			NBTTagList var13 = this.getEnchantmentTagList();
 
-			if (var10 != null) {
-				for (int var7 = 0; var7 < var10.tagCount(); ++var7) {
-					short var8 = ((NBTTagCompound)var10.tagAt(var7)).getShort("id");
-					short var9 = ((NBTTagCompound)var10.tagAt(var7)).getShort("lvl");
+			if (var13 != null) {
+				for (int var7 = 0; var7 < var13.tagCount(); ++var7) {
+					short var8 = ((NBTTagCompound)var13.tagAt(var7)).getShort("id");
+					short var9 = ((NBTTagCompound)var13.tagAt(var7)).getShort("lvl");
 
 					if (Enchantment.enchantmentsList[var8] != null) {
 						var3.add(Enchantment.enchantmentsList[var8].getTranslatedName(var9));
@@ -570,8 +570,8 @@ public class ItemStack {
 					NBTTagList var12 = var11.getTagList("Lore");
 
 					if (var12.tagCount() > 0) {
-						for (int var13 = 0; var13 < var12.tagCount(); ++var13) {
-							var3.add(EnumChatFormatting.DARK_PURPLE + "" + EnumChatFormatting.ITALIC + ((NBTTagString)var12.tagAt(var13)).data);
+						for (int var10 = 0; var10 < var12.tagCount(); ++var10) {
+							var3.add(EnumChatFormatting.DARK_PURPLE + "" + EnumChatFormatting.ITALIC + ((NBTTagString)var12.tagAt(var10)).data);
 						}
 					}
 				}

@@ -389,9 +389,9 @@ public abstract class BlockFluid extends Block {
 			}
 		}
 
-		double var21;
-		double var23;
 		double var22;
+		double var23;
+		double var21;
 
 		if (this.blockMaterial == Material.lava && par1World.getBlockMaterial(par2, par3 + 1, par4) == Material.air && !par1World.isBlockOpaqueCube(par2, par3 + 1, par4)) {
 			if (par5Random.nextInt(100) == 0) {

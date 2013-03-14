@@ -6,9 +6,9 @@ import java.util.Random;
 import com.prupe.mcpatcher.mod.ColorizeBlock;
 // MCPatcher End
 // Spout Start
-import gnu.trove.map.hash.TIntFloatHashMap;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.World;
+import gnu.trove.map.hash.TIntFloatHashMap;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.api.entity.ActivePlayer;
 import org.spoutcraft.api.material.CustomBlock;
@@ -16,7 +16,6 @@ import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.util.FastLocation;
 import org.spoutcraft.api.util.FixedLocation;
 // Spout End
-
 
 public class Block {
 
@@ -53,7 +52,7 @@ public class Block {
 
 	/** Amount of light emitted */
 	public static final int[] lightValue = new int[4096];
-	
+
 	/**
 	 * Flag if block ID should use the brightest neighbor light value as its own
 	 */
@@ -298,17 +297,17 @@ public class Block {
 	 * Determines how much velocity is maintained while moving on top of this block
 	 */
 	public float slipperiness;
-	
+
 	/** The unlocalized name of this block. */
 	private String unlocalizedName;
 	protected Icon field_94336_cN;
-	
+
 	private String blockName;
 	// Spout Start
 	public static short[] customIds = null;
 	// Spout End
 
-	protected Block(int par1, Material par2Material) {		
+	protected Block(int par1, Material par2Material) {
 		this.stepSound = soundPowderFootstep;
 		this.blockParticleGravity = 1.0F;
 		this.slipperiness = 0.6F;
@@ -326,7 +325,7 @@ public class Block {
 		}
 	}
 
-		/**
+	/**
 	 * This method is called on a block after all other blocks gets already created. You can use it to reference and
 	 * configure something on the block that needs the others ones.
 	 */
@@ -368,7 +367,7 @@ public class Block {
 	}
 
 	public static boolean isNormalCube(int par0) {
-		Block var1 = blocksList[par0];		
+		Block var1 = blocksList[par0];
 		return var1 == null ? false : var1.blockMaterial.isOpaque() && var1.renderAsNormalBlock() && !var1.canProvidePower();
 	}
 
@@ -546,12 +545,11 @@ public class Block {
 		}
 	}
 
-
 	/**
 	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
 	 * cleared to be reused)
 	 */
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {		
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
 		return AxisAlignedBB.getAABBPool().getAABB((double)par2 + this.minX, (double)par3 + this.minY, (double)par4 + this.minZ, (double)par2 + this.maxX, (double)par3 + this.maxY, (double)par4 + this.maxZ);
 	}
 
@@ -635,7 +633,7 @@ public class Block {
 	 */
 	// TODO: This should be combined into one method.
 	public float getPlayerRelativeBlockHardness(EntityPlayer par1EntityPlayer, World par2World, int par3, int par4, int par5) {
-		float var6 = this.getBlockHardness(par2World, par3, par4, par5);		
+		float var6 = this.getBlockHardness(par2World, par3, par4, par5);
 		return var6 < 0.0F ? 0.0F : (!par1EntityPlayer.canHarvestBlock(this) ? par1EntityPlayer.getCurrentPlayerStrVsBlock(this, false) / var6 / 100.0F : par1EntityPlayer.getCurrentPlayerStrVsBlock(this, true) / var6 / 30.0F);
 	}
 
@@ -667,8 +665,8 @@ public class Block {
 			}
 		}
 		return this.blockHardness < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? 1.0F / this.blockHardness / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0F);
-	// Spout End
 	}
+	// Spout End
 
 	/**
 	 * Drops the specified block items
@@ -866,7 +864,7 @@ public class Block {
 	/**
 	 * Called upon the block being destroyed by an explosion
 	 */
-	public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4) {}
+	public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4, Explosion par5Explosion) {}
 
 	/**
 	 * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
@@ -878,7 +876,7 @@ public class Block {
 	public boolean func_94331_a(World par1World, int par2, int par3, int par4, int par5, ItemStack par6ItemStack) {
 		return this.canPlaceBlockOnSide(par1World, par2, par3, par4, par5);
 	}
-	
+
 	/**
 	 * checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
 	 */
@@ -1092,7 +1090,7 @@ public class Block {
 	/**
 	 * Called when the block is placed in the world.
 	 */
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving) {}
+	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack) {}
 
 	/**
 	 * Called after a block is placed
@@ -1124,7 +1122,6 @@ public class Block {
 	public String func_94330_A() {
 		return this.unlocalizedName;
 	}
-
 
 	/**
 	 * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile entity

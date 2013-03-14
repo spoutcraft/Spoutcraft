@@ -1,8 +1,8 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 // Spout Start
+import net.minecraft.client.Minecraft;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.player.accessories.AccessoryHandler;
@@ -28,7 +28,7 @@ public class RenderPlayer extends RenderLiving {
 	protected void func_98191_a(EntityPlayer par1EntityPlayer) {
 		this.loadDownloadableImageTexture(par1EntityPlayer.skinUrl, par1EntityPlayer.getTexture());
 	}
-	
+
 	/**
 	 * Set the specified armor model as the player model. Args: player, armorSlot, partialTick
 	 */
@@ -140,7 +140,7 @@ public class RenderPlayer extends RenderLiving {
 			var14 -= 0.125D;
 		}
 		// Spout Start - VIP
-		if(!AccessoryHandler.isHandled(par1EntityPlayer.username)) {
+		if (!AccessoryHandler.isHandled(par1EntityPlayer.username)) {
 			AccessoryHandler.addVIPAccessoriesFor(par1EntityPlayer);
 		}
 
@@ -153,7 +153,7 @@ public class RenderPlayer extends RenderLiving {
 			super.doRenderLiving(par1EntityPlayer, par2, var14, par6, par8, par9);
 			GL11.glPopMatrix();
 		} else {
-			super.doRenderLiving(par1EntityPlayer, par2, var14, par6, par8, par9);
+		super.doRenderLiving(par1EntityPlayer, par2, var14, par6, par8, par9);
 		}
 		// Spout End
 		this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow = this.modelBipedMain.aimedBow = false;
@@ -161,6 +161,7 @@ public class RenderPlayer extends RenderLiving {
 		this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight = this.modelBipedMain.heldItemRight = 0;
 	}
 
+	// Spout Start
 	/**
 	 * Used to render a player's name above their head
 	 */
@@ -173,7 +174,6 @@ public class RenderPlayer extends RenderLiving {
 				float var12 = par1EntityPlayer.isSneaking() ? 32.0F : 64.0F;
 
 				if (var10 < (double)(var12 * var12)) {
-					// Spout Start
 					String title = null;
 					VIP vip = par1EntityPlayer.vip;				
 					if (vip != null) {
@@ -245,7 +245,6 @@ public class RenderPlayer extends RenderLiving {
 								GL11.glDisable(GL11.GL_BLEND);
 								GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 								GL11.glPopMatrix();
-								// Spout End
 							}
 						}
 					}
@@ -253,6 +252,7 @@ public class RenderPlayer extends RenderLiving {
 			}
 		}
 	}
+	// Spout End
 
 	/**
 	 * Method for adding special render rules
@@ -293,24 +293,26 @@ public class RenderPlayer extends RenderLiving {
 			GL11.glPopMatrix();
 		}
 
+		// Spout Start
 		if (!par1EntityPlayer.getHasActivePotion()){
-			AccessoryHandler.renderAllAccessories(par1EntityPlayer, 0.0625F, par2); // Spout
+			AccessoryHandler.renderAllAccessories(par1EntityPlayer, 0.0625F, par2);
 		}
+		// Spout End
 
-		float var7;
 		float var8;
+		float var7;
 
 		if (par1EntityPlayer.username.equals("deadmau5") && this.loadDownloadableImageTexture(par1EntityPlayer.skinUrl, (String)null)) {
-			for (int var20 = 0; var20 < 2; ++var20) {
-				float var25 = par1EntityPlayer.prevRotationYaw + (par1EntityPlayer.rotationYaw - par1EntityPlayer.prevRotationYaw) * par2 - (par1EntityPlayer.prevRenderYawOffset + (par1EntityPlayer.renderYawOffset - par1EntityPlayer.prevRenderYawOffset) * par2);
+			for (int var23 = 0; var23 < 2; ++var23) {
+				float var26 = par1EntityPlayer.prevRotationYaw + (par1EntityPlayer.rotationYaw - par1EntityPlayer.prevRotationYaw) * par2 - (par1EntityPlayer.prevRenderYawOffset + (par1EntityPlayer.renderYawOffset - par1EntityPlayer.prevRenderYawOffset) * par2);
 				var7 = par1EntityPlayer.prevRotationPitch + (par1EntityPlayer.rotationPitch - par1EntityPlayer.prevRotationPitch) * par2;
 				GL11.glPushMatrix();
-				GL11.glRotatef(var25, 0.0F, 1.0F, 0.0F);
+				GL11.glRotatef(var26, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(var7, 1.0F, 0.0F, 0.0F);
-				GL11.glTranslatef(0.375F * (float)(var20 * 2 - 1), 0.0F, 0.0F);
+				GL11.glTranslatef(0.375F * (float)(var23 * 2 - 1), 0.0F, 0.0F);
 				GL11.glTranslatef(0.0F, -0.375F, 0.0F);
 				GL11.glRotatef(-var7, 1.0F, 0.0F, 0.0F);
-				GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
+				GL11.glRotatef(-var26, 0.0F, 1.0F, 0.0F);
 				var8 = 1.3333334F;
 				GL11.glScalef(var8, var8, var8);
 				this.modelBipedMain.renderEars(0.0625F);
@@ -323,13 +325,13 @@ public class RenderPlayer extends RenderLiving {
 		if (this.loadDownloadableImageTexture(par1EntityPlayer.cloakUrl, (String)null) && !par1EntityPlayer.getHasActivePotion() && !par1EntityPlayer.getHideCape()) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-			double var22 = par1EntityPlayer.field_71091_bM + (par1EntityPlayer.field_71094_bP - par1EntityPlayer.field_71091_bM) * (double)par2 - (par1EntityPlayer.prevPosX + (par1EntityPlayer.posX - par1EntityPlayer.prevPosX) * (double)par2);
-			double var24 = par1EntityPlayer.field_71096_bN + (par1EntityPlayer.field_71095_bQ - par1EntityPlayer.field_71096_bN) * (double)par2 - (par1EntityPlayer.prevPosY + (par1EntityPlayer.posY - par1EntityPlayer.prevPosY) * (double)par2);
+			double var24 = par1EntityPlayer.field_71091_bM + (par1EntityPlayer.field_71094_bP - par1EntityPlayer.field_71091_bM) * (double)par2 - (par1EntityPlayer.prevPosX + (par1EntityPlayer.posX - par1EntityPlayer.prevPosX) * (double)par2);
+			double var28 = par1EntityPlayer.field_71096_bN + (par1EntityPlayer.field_71095_bQ - par1EntityPlayer.field_71096_bN) * (double)par2 - (par1EntityPlayer.prevPosY + (par1EntityPlayer.posY - par1EntityPlayer.prevPosY) * (double)par2);
 			double var9 = par1EntityPlayer.field_71097_bO + (par1EntityPlayer.field_71085_bR - par1EntityPlayer.field_71097_bO) * (double)par2 - (par1EntityPlayer.prevPosZ + (par1EntityPlayer.posZ - par1EntityPlayer.prevPosZ) * (double)par2);
 			var11 = par1EntityPlayer.prevRenderYawOffset + (par1EntityPlayer.renderYawOffset - par1EntityPlayer.prevRenderYawOffset) * par2;
 			double var12 = (double)MathHelper.sin(var11 * (float)Math.PI / 180.0F);
 			double var14 = (double)(-MathHelper.cos(var11 * (float)Math.PI / 180.0F));
-			float var16 = (float)var24 * 10.0F;
+			float var16 = (float)var28 * 10.0F;
 
 			if (var16 < -6.0F) {
 				var16 = -6.0F;
@@ -339,8 +341,8 @@ public class RenderPlayer extends RenderLiving {
 				var16 = 32.0F;
 			}
 
-			float var17 = (float)(var22 * var12 + var9 * var14) * 100.0F;
-			float var18 = (float)(var22 * var14 - var9 * var12) * 100.0F;
+			float var17 = (float)(var24 * var12 + var9 * var14) * 100.0F;
+			float var18 = (float)(var24 * var14 - var9 * var12) * 100.0F;
 
 			if (var17 < 0.0F) {
 				var17 = 0.0F;
@@ -361,31 +363,31 @@ public class RenderPlayer extends RenderLiving {
 			GL11.glPopMatrix();
 		}
 
-		ItemStack var21 = par1EntityPlayer.inventory.getCurrentItem();
+		ItemStack var25 = par1EntityPlayer.inventory.getCurrentItem();
 
-		if (var21 != null) {
+		if (var25 != null) {
 			GL11.glPushMatrix();
 			this.modelBipedMain.bipedRightArm.postRender(0.0625F);
 			GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
 
 			if (par1EntityPlayer.fishEntity != null) {
-				var21 = new ItemStack(Item.stick);
+				var25 = new ItemStack(Item.stick);
 			}
 
-			EnumAction var23 = null;
+			EnumAction var27 = null;
 
 			if (par1EntityPlayer.getItemInUseCount() > 0) {
-				var23 = var21.getItemUseAction();
+				var27 = var25.getItemUseAction();
 			}
 
-			if (var21.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var21.itemID].getRenderType())) {
+			if (var25.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var25.itemID].getRenderType())) {
 				var7 = 0.5F;
 				GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
 				var7 *= 0.75F;
 				GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glScalef(-var7, -var7, var7);
-			} else if (var21.itemID == Item.bow.itemID) {
+			} else if (var25.itemID == Item.bow.itemID) {
 				var7 = 0.625F;
 				GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
 				GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
@@ -393,16 +395,16 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 				// Spout Start
-			} else if (Item.itemsList[var21.itemID].isFull3D() || var21.itemID == Item.flint.itemID && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) {
+			} else if (Item.itemsList[var25.itemID].isFull3D() || var25.itemID == Item.flint.itemID && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) {
 				// Spout End
 				var7 = 0.625F;
 
-				if (Item.itemsList[var21.itemID].shouldRotateAroundWhenRendering()) {
+				if (Item.itemsList[var25.itemID].shouldRotateAroundWhenRendering()) {
 					GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 					GL11.glTranslatef(0.0F, -0.125F, 0.0F);
 				}
 
-				if (par1EntityPlayer.getItemInUseCount() > 0 && var23 == EnumAction.block) {
+				if (par1EntityPlayer.getItemInUseCount() > 0 && var27 == EnumAction.block) {
 					GL11.glTranslatef(0.05F, 0.0F, -0.1F);
 					GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
 					GL11.glRotatef(-10.0F, 1.0F, 0.0F, 0.0F);
@@ -423,25 +425,25 @@ public class RenderPlayer extends RenderLiving {
 			}
 
 			float var10;
-			int var27;
-			float var28;
+			int var21;
+			float var22;
 
-			if (var21.getItem().requiresMultipleRenderPasses()) {
-				for (var27 = 0; var27 <= 1; ++var27) {
-					int var26 = var21.getItem().getColorFromItemStack(var21, var27);
-					var28 = (float)(var26 >> 16 & 255) / 255.0F;
-					var10 = (float)(var26 >> 8 & 255) / 255.0F;
-					var11 = (float)(var26 & 255) / 255.0F;
-					GL11.glColor4f(var28, var10, var11, 1.0F);
-					this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var21, var27);
+			if (var25.getItem().requiresMultipleRenderPasses()) {
+				for (var21 = 0; var21 <= 1; ++var21) {
+					int var20 = var25.getItem().getColorFromItemStack(var25, var21);
+					var22 = (float)(var20 >> 16 & 255) / 255.0F;
+					var10 = (float)(var20 >> 8 & 255) / 255.0F;
+					var11 = (float)(var20 & 255) / 255.0F;
+					GL11.glColor4f(var22, var10, var11, 1.0F);
+					this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var25, var21);
 				}
 			} else {
-				var27 = var21.getItem().getColorFromItemStack(var21, 0);
-				var8 = (float)(var27 >> 16 & 255) / 255.0F;
-				var28 = (float)(var27 >> 8 & 255) / 255.0F;
-				var10 = (float)(var27 & 255) / 255.0F;
-				GL11.glColor4f(var8, var28, var10, 1.0F);
-				this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var21, 0);
+				var21 = var25.getItem().getColorFromItemStack(var25, 0);
+				var8 = (float)(var21 >> 16 & 255) / 255.0F;
+				var22 = (float)(var21 >> 8 & 255) / 255.0F;
+				var10 = (float)(var21 & 255) / 255.0F;
+				GL11.glColor4f(var8, var22, var10, 1.0F);
+				this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var25, 0);
 			}
 
 			GL11.glPopMatrix();
@@ -474,7 +476,7 @@ public class RenderPlayer extends RenderLiving {
 		super.func_96449_a(par1EntityPlayer, par2, par4, par6, par8Str, par9, par10);
 	}
 
-	public void renderFirstPersonArm(EntityPlayer par1EntityPlayer) {		
+	public void renderFirstPersonArm(EntityPlayer par1EntityPlayer) {
 		float var2 = 1.0F;
 		GL11.glColor3f(var2, var2, var2);
 		this.modelBipedMain.onGround = 0.0F;
@@ -508,6 +510,7 @@ public class RenderPlayer extends RenderLiving {
 
 	protected void func_96449_a(EntityLiving par1EntityLiving, double par2, double par4, double par6, String par8Str, float par9, double par10) {
 		this.func_96450_a((EntityPlayer)par1EntityLiving, par2, par4, par6, par8Str, par9, par10);
+	}
 
 	/**
 	 * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args: entityLiving,
@@ -546,7 +549,7 @@ public class RenderPlayer extends RenderLiving {
 	protected void func_98190_a(EntityLiving par1EntityLiving) {
 		this.func_98191_a((EntityPlayer)par1EntityLiving);
 	}
-	
+
 	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
 		this.renderPlayer((EntityPlayer)par1EntityLiving, par2, par4, par6, par8, par9);
 	}
