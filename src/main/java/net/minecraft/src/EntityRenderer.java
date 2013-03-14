@@ -293,7 +293,7 @@ public class EntityRenderer {
 
 				if (this.pointedEntity != null && (var11 < var4 || this.mc.objectMouseOver == null)) {
 					this.mc.objectMouseOver = new MovingObjectPosition(this.pointedEntity);
-					
+
 					if (this.pointedEntity instanceof EntityLiving) {
 						this.mc.field_96291_i = (EntityLiving)this.pointedEntity;
 					}
@@ -310,7 +310,6 @@ public class EntityRenderer {
 		this.fovMultiplierTemp = var1.getFOVMultiplier();
 		this.fovModifierHandPrev = this.fovModifierHand;
 		this.fovModifierHand += (this.fovMultiplierTemp - this.fovModifierHand) * 0.5F;
-		
 
 		if (this.fovModifierHand > 1.5F) {
 			this.fovModifierHand = 1.5F;

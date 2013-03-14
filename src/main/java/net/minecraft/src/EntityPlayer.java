@@ -1,8 +1,8 @@
 package net.minecraft.src;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Collection;
 // Spout Start
 import java.util.Map.Entry;
 import net.minecraft.client.Minecraft;
@@ -40,7 +40,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public float prevCameraYaw;
 	public float cameraYaw;
 	public String username;
+	// Spout Start
 	public String playerCloakUrl;
+	// Spout End
 
 	/**
 	 * Used by EntityPlayer to prevent too many xp orbs from getting absorbed at once.
@@ -423,7 +425,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			super.mountEntity(par1Entity);
 		}
 	}
-	
+
 	/**
 	 * Handles updating while being ridden by an entity
 	 */
@@ -845,15 +847,12 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		}
 	}
 
-	/**
-	 * Reduces damage, depending on potions
-	 */
 	public boolean func_96122_a(EntityPlayer par1EntityPlayer) {
 		ScorePlayerTeam var2 = this.func_96124_cp();
 		ScorePlayerTeam var3 = par1EntityPlayer.func_96124_cp();
 		return var2 != var3 ? true : (var2 != null ? var2.func_96665_g() : true);
 	}
-	
+
 	/**
 	 * Called when the player attack or gets attacked, it's alert all wolves in the area that are owned by the player to
 	 * join the attack or defend the player.
@@ -1084,7 +1083,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 					}
 
 					ItemStack var9 = this.getCurrentEquippedItem();
-
 					Object var10 = par1Entity;
 
 					if (par1Entity instanceof EntityDragonPart) {
@@ -1097,7 +1095,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 					if (var9 != null && var10 instanceof EntityLiving) {
 						var9.hitEntity((EntityLiving)var10, this);
-
 
 						if (var9.stackSize <= 0) {
 							this.destroyCurrentEquippedItem();
@@ -1190,9 +1187,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		this.yOffset = 0.2F;
 
 		if (this.worldObj.blockExists(par1, par2, par3)) {
-			int var9 = this.worldObj.getBlockMetadata(par1, par2, par3);
-			int var5 = BlockBed.getDirection(var9);
-			float var10 = 0.5F;
+			int var10 = this.worldObj.getBlockMetadata(par1, par2, par3);
+			int var5 = BlockBed.getDirection(var10);
+			float var9 = 0.5F;
 			float var7 = 0.5F;
 
 			switch (var5) {
@@ -1201,7 +1198,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 					break;
 
 				case 1:
-					var10 = 0.1F;
+					var9 = 0.1F;
 					break;
 
 				case 2:
@@ -1209,11 +1206,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 					break;
 
 				case 3:
-					var10 = 0.9F;
+					var9 = 0.9F;
 			}
 
 			this.func_71013_b(var5);
-			this.setPosition((double)((float)par1 + var10), (double)((float)par2 + 0.9375F), (double)((float)par3 + var7));
+			this.setPosition((double)((float)par1 + var9), (double)((float)par2 + 0.9375F), (double)((float)par3 + var7));
 		} else {
 			this.setPosition((double)((float)par1 + 0.5F), (double)((float)par2 + 0.9375F), (double)((float)par3 + 0.5F));
 		}
@@ -1755,7 +1752,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public String getEntityName() {
 		return this.username;
 	}
-	
+
 	public boolean func_94062_bN() {
 		return super.func_94062_bN();
 	}
@@ -1794,7 +1791,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	}
 	// Spout Start - Added back handle key press
 	public void handleKeyPress(int i, boolean keyReleased) {
-
 	}
 
 	public boolean isTreadingWater() {
@@ -1896,7 +1892,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			return var2 == null || par1EntityPlayer == null || par1EntityPlayer.func_96124_cp() != var2 || !var2.func_98297_h();
 		}
 	}
-	
+
 	public ItemStack[] getLastActiveItems() {
 		return this.inventory.armorInventory;
 	}
@@ -1904,7 +1900,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public boolean getHideCape() {
 		return this.getHideCape(1);
 	}
-	
+
 	public boolean func_96092_aw() {
 		return !this.capabilities.isFlying;
 	}

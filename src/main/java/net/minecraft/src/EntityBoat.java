@@ -362,11 +362,11 @@ public class EntityBoat extends Entity {
 
 			if (!this.worldObj.isRemote) {
 				List var16 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-				int var26;
+				int var27;
 
 				if (var16 != null && !var16.isEmpty()) {
-					for (var26 = 0; var26 < var16.size(); ++var26) {
-						Entity var18 = (Entity)var16.get(var26);
+					for (var27 = 0; var27 < var16.size(); ++var27) {
+						Entity var18 = (Entity)var16.get(var27);
 
 						if (var18 != this.riddenByEntity && var18.canBePushed() && var18 instanceof EntityBoat) {
 							var18.applyEntityCollision(this);
@@ -374,19 +374,19 @@ public class EntityBoat extends Entity {
 					}
 				}
 
-				for (var26 = 0; var26 < 4; ++var26) {
-					int var27 = MathHelper.floor_double(this.posX + ((double)(var26 % 2) - 0.5D) * 0.8D);
-					int var19 = MathHelper.floor_double(this.posZ + ((double)(var26 / 2) - 0.5D) * 0.8D);
+				for (var27 = 0; var27 < 4; ++var27) {
+					int var26 = MathHelper.floor_double(this.posX + ((double)(var27 % 2) - 0.5D) * 0.8D);
+					int var19 = MathHelper.floor_double(this.posZ + ((double)(var27 / 2) - 0.5D) * 0.8D);
 
 					for (int var20 = 0; var20 < 2; ++var20) {
 						int var21 = MathHelper.floor_double(this.posY) + var20;
-						int var22 = this.worldObj.getBlockId(var27, var21, var19);
+						int var22 = this.worldObj.getBlockId(var26, var21, var19);
 						int var23 = this.worldObj.getBlockMetadata(var28, var21, var19);
 
 						if (var22 == Block.snow.blockID) {
-							this.worldObj.func_94571_i(var27, var21, var19);
+							this.worldObj.func_94571_i(var26, var21, var19);
 						} else if (var22 == Block.waterlily.blockID) {
-							this.worldObj.func_94578_a(var27, var21, var19, true);
+							this.worldObj.func_94578_a(var26, var21, var19, true);
 						}
 					}
 				}

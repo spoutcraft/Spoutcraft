@@ -3,7 +3,6 @@ package net.minecraft.src;
 public class EntityFX extends Entity {
 	protected int field_94054_b;
 	protected int field_94055_c;
-	private Icon particleTextureIndex;
 	protected float particleTextureJitterX;
 	protected float particleTextureJitterY;
 	// Spout Start - protected to public
@@ -34,6 +33,7 @@ public class EntityFX extends Entity {
 
 	/** Particle alpha */
 	protected float particleAlpha;
+	protected Icon particleTextureIndex;
 	public static double interpPosX;
 	public static double interpPosY;
 	public static double interpPosZ;

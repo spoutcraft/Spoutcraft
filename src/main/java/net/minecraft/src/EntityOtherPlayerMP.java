@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.special.Resources;
 // Spout End
+
 public class EntityOtherPlayerMP extends EntityPlayer {
 	private boolean isItemInUse = false;
 	private int otherPlayerMPPosRotationIncrements;

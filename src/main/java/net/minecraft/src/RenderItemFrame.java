@@ -1,17 +1,18 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-
+// Spout Start
 import org.spoutcraft.api.material.MaterialData;
+// Spout End
 
 public class RenderItemFrame extends Render {
 	private final RenderBlocks renderBlocksInstance = new RenderBlocks();
 	private Icon field_94147_f;
-	
+
 	public void func_94143_a(IconRegister par1IconRegister) {
 		this.field_94147_f = par1IconRegister.func_94245_a("itemframe_back");
 	}
-	
+
 	public void func_82404_a(EntityItemFrame par1EntityItemFrame, double par2, double par4, double par6, float par8, float par9) {
 		GL11.glPushMatrix();
 		float var10 = (float)(par1EntityItemFrame.posX - par2) - 0.5F;

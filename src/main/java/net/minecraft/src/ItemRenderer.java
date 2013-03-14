@@ -5,17 +5,16 @@ import net.minecraft.src.Tessellator;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-// Spout Start
-import java.util.Random;
-import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.api.block.design.BlockDesign;
-import org.spoutcraft.api.material.MaterialData;
-//Spout End
 //MCPatcher Start
 import com.prupe.mcpatcher.mod.ColorizeBlock;
 //MCPatcher End
-
+// Spout Start
+import java.util.Random;
+import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.api.block.design.BlockDesign;
+import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.io.CustomTextureManager;
+//Spout End
 
 public class ItemRenderer {
 

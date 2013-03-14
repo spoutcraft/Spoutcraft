@@ -8,11 +8,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // Spout Start
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.api.gui.InGameHUD;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.ZanMinimap;
-import org.spoutcraft.api.gui.InGameHUD;
 // Spout End
 
 public class GuiIngame extends Gui {

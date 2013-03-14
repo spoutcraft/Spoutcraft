@@ -137,6 +137,14 @@ import java.util.Date;
 import java.lang.reflect.Field;
 import net.minecraft.src.EntityPlayer;
 import org.bukkit.ChatColor;
+import org.spoutcraft.api.addon.AddonLoadOrder;
+import org.spoutcraft.api.entity.Player;
+import org.spoutcraft.api.event.screen.ScreenCloseEvent;
+import org.spoutcraft.api.event.screen.ScreenEvent;
+import org.spoutcraft.api.event.screen.ScreenOpenEvent;
+import org.spoutcraft.api.gui.PopupScreen;
+import org.spoutcraft.api.gui.Screen;
+import org.spoutcraft.api.gui.ScreenType;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
 import org.spoutcraft.client.config.Configuration;
@@ -150,14 +158,6 @@ import org.spoutcraft.client.packet.PacketScreenAction;
 import org.spoutcraft.client.packet.ScreenAction;
 import org.spoutcraft.client.packet.SpoutPacket;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
-import org.spoutcraft.api.addon.AddonLoadOrder;
-import org.spoutcraft.api.entity.Player;
-import org.spoutcraft.api.event.screen.ScreenCloseEvent;
-import org.spoutcraft.api.event.screen.ScreenEvent;
-import org.spoutcraft.api.event.screen.ScreenOpenEvent;
-import org.spoutcraft.api.gui.PopupScreen;
-import org.spoutcraft.api.gui.Screen;
-import org.spoutcraft.api.gui.ScreenType;
 // Spout End
 
 public abstract class Minecraft implements Runnable, IPlayerUsage {

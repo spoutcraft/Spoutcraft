@@ -83,12 +83,12 @@ public class TexturePackList {
 	public boolean setTexturePack(ITexturePack par1ITexturePack) {
 		if (par1ITexturePack == this.selectedTexturePack) {
 			// Spout Start
-			System.out.println("TexturePackList: Returned same texturePack.");
+			System.out.println("TexturePackList: Returned same texture pack");
 			// Spout End
 			return false;
 		} else {
 			// Spout Start
-			System.out.println("TexturePackList: Different Texturepack Selected..");
+			System.out.println("TexturePackList: Different texture pack selected");
 			// Spout End
 			this.isDownloading = false;
 			this.selectedTexturePack = par1ITexturePack;
@@ -272,12 +272,12 @@ public class TexturePackList {
 		return (TexturePackImplementation)defaultTexturePack;
 	}
 	// MCPatcher End
-	
+
 	// Spout Start
 	public static int getTileSize() {
 		return getTileSize(getSelectedTexturePack());
 	}
-	
+
 	public static int getTileSize(TexturePackImplementation var0) {
 		int var1 = 0;
 		Iterator var2 = expectedColumns.entrySet().iterator();

@@ -1,19 +1,19 @@
 package net.minecraft.src;
 
-// MCPatcher Start
-import com.prupe.mcpatcher.mod.MobRandomizer$ExtraInfo;
-// MCPatcher End
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+// MCPatcher Start
+import com.prupe.mcpatcher.mod.MobRandomizer$ExtraInfo;
+// MCPatcher End
 // Spout Start
-import org.spoutcraft.client.entity.EntityData;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.api.entity.EntitySkinType;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.entity.EntityData;
+import org.spoutcraft.client.io.CustomTextureManager;
 // Spout End
 
 public abstract class EntityLiving extends Entity {

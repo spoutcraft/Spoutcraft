@@ -15,11 +15,11 @@ import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 // Spout Start
-import de.cuina.fireandfuel.CodecJLayerMP3;
 import thedudeguy.paulscode.sound.codecs.CodecJOrbis;
+import de.cuina.fireandfuel.CodecJLayerMP3;
+import org.spoutcraft.api.sound.Music;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.*;
-import org.spoutcraft.api.sound.Music;
 // Spout End
 
 public class SoundManager {

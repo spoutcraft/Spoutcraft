@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -397,7 +396,7 @@ public abstract class GuiContainer extends GuiScreen {
 			ItemStack var19 = this.theSlot.getStack();
 			this.drawItemStackTooltip(var19, par1 - var4 + 8, par2 - var5 + 8);
 		}
-		
+
 		GL11.glPopMatrix();
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -405,12 +404,11 @@ public abstract class GuiContainer extends GuiScreen {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 	}
 
-	private void drawItemStack(ItemStack par1ItemStack, int par2, int par3) {		
+	private void drawItemStack(ItemStack par1ItemStack, int par2, int par3, String par4Str) {
 		GL11.glTranslatef(0.0F, 0.0F, 32.0F);
 		this.zLevel = 200.0F;
 		itemRenderer.zLevel = 200.0F;
 		itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3);
-		//itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3 - (this.draggedStack == null ? 0 : 8));
 		itemRenderer.func_94148_a(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3 - (this.draggedStack == null ? 0 : 8), par4Str);
 		this.zLevel = 0.0F;
 		itemRenderer.zLevel = 0.0F;
@@ -427,8 +425,8 @@ public abstract class GuiContainer extends GuiScreen {
 
 		if (!var4.isEmpty()) {
 			int var5 = 0;
-			int var6;
 			int var7;
+			int var6;
 
 			for (var6 = 0; var6 < var4.size(); ++var6) {
 				var7 = this.fontRenderer.getStringWidth((String)var4.get(var6));
@@ -571,11 +569,12 @@ public abstract class GuiContainer extends GuiScreen {
 			} else {
 				this.field_94077_p.remove(par1Slot);
 				this.func_94066_g();
-			}		
+			}
 		}
 
 		this.zLevel = 100.0F;
 		itemRenderer.zLevel = 100.0F;
+
 		if (var4 == null) {
 			Icon var9 = par1Slot.getBackgroundIconIndex();
 
@@ -626,7 +625,7 @@ public abstract class GuiContainer extends GuiScreen {
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns the slot at the given coordinates or null if there is none.
 	 */
@@ -675,7 +674,7 @@ public abstract class GuiContainer extends GuiScreen {
 					}
 				}
 				if (!isSpoutSlot) {
-					var9 = -999;
+				var11 = -999;
 				}
 				// Spout End
 			}
@@ -731,7 +730,7 @@ public abstract class GuiContainer extends GuiScreen {
 		this.field_94072_H = var5;
 		this.field_94070_G = var6;
 		this.field_94073_I = par3;
-	}		
+	}
 
 	protected void func_85041_a(int par1, int par2, int par3, long par4) {
 		Slot var6 = this.getSlotAtPosition(par1, par2);

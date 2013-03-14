@@ -18,14 +18,13 @@ import com.prupe.mcpatcher.mod.RenderPass;
 import com.prupe.mcpatcher.mod.SkyRenderer;
 // MCPatcher End
 // Spout Start
-import org.spoutcraft.client.config.Configuration;
+import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.TileEntityComparator;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
-import org.spoutcraft.api.gui.Color;
 // Spout End
 
 public class RenderGlobal implements IWorldAccess {

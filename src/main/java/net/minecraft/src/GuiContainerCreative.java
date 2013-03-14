@@ -8,8 +8,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // Spout Start
-import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.material.CustomItem;
+import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public class GuiContainerCreative extends InventoryEffectRenderer {

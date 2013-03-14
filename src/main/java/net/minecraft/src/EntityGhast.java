@@ -249,7 +249,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("ExplosionPower", this.field_92014_j);
+		par1NBTTagCompound.setInteger("ExplosionPower", this.explosionStrength);
 	}
 
 	/**
@@ -259,7 +259,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 		super.readEntityFromNBT(par1NBTTagCompound);
 
 		if (par1NBTTagCompound.hasKey("ExplosionPower")) {
-			this.field_92014_j = par1NBTTagCompound.getInteger("ExplosionPower");
+			this.explosionStrength = par1NBTTagCompound.getInteger("ExplosionPower");
 		}
 	}
 }

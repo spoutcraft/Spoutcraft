@@ -114,9 +114,7 @@ public class Tessellator {
 	private int normal;
 
 	/** The static instance of the Tessellator. */
-	// MCPatcher Start	
 	public static final Tessellator instance = new Tessellator(2097152);
-	// MCPatcher End
 
 	/** Whether this tessellator is currently in draw mode. */
 	// MCPatcher Start - private to public
@@ -169,7 +167,9 @@ public class Tessellator {
 	 * Draws the data set up in this tessellator and resets the state to prepare for new drawing.
 	 */
 	public int draw() {
+		// MCPatcher Start
 		int var1 = TessellatorUtils.drawChildren(0, this);
+		// MCPatcher End
 		if (!this.isDrawing) {
 			throw new IllegalStateException("Not tesselating!");
 		} else {
@@ -285,12 +285,14 @@ public class Tessellator {
 	/**
 	 * Clears the tessellator state in preparation for new drawing.
 	 */
-	// MCPatcher Start
+	// MCPatcher Start - private to public
 	public void reset() {
+	// MCPatcher End
 		this.vertexCount = 0;
 		this.byteBuffer.clear();
 		this.rawBufferIndex = 0;
 		this.addedVertices = 0;
+		// MCPatcher Start
 		TessellatorUtils.resetChildren(this);
 		// MCPatcher End
 	}

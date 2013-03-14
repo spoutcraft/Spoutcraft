@@ -11,10 +11,6 @@ import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public class EntityItem extends Entity {
-	// Spout Start - item instead of func_92059_d
-	/** The item stack of this EntityItem. */
-	public ItemStack item;
-	// Spout End
 
 	/**
 	 * The age of this EntityItem (used to animate it up and down as well as expire it)
@@ -159,10 +155,8 @@ public class EntityItem extends Entity {
 		if (par1EntityItem == this) {
 			return false;
 		} else if (par1EntityItem.isEntityAlive() && this.isEntityAlive()) {
-			// Spout Start - item instead of func_92059_d
-			ItemStack var2 = this.item();
-			ItemStack var3 = par1EntityItem.item();
-			// Spout End
+			ItemStack var2 = this.getEntityItem();
+			ItemStack var3 = par1EntityItem.getEntityItem();
 
 			if (var3.getItem() != var2.getItem()) {
 				return false;
@@ -217,9 +211,7 @@ public class EntityItem extends Entity {
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
 		if (this.isEntityInvulnerable()) {
 			return false;
-		// Spout Start - item instead of func_92059_d
-		} else if (this.item() != null && this.item().itemID == Item.netherStar.itemID && par1DamageSource == DamageSource.explosion) {		
-		// Spout End
+		} else if (this.getEntityItem() != null && this.getEntityItem().itemID == Item.netherStar.itemID && par1DamageSource.func_94541_c()) {
 			return false;
 		} else {
 			this.setBeenAttacked();
@@ -240,10 +232,8 @@ public class EntityItem extends Entity {
 		par1NBTTagCompound.setShort("Health", (short)((byte)this.health));
 		par1NBTTagCompound.setShort("Age", (short)this.age);
 
-		// Spout Start - item instead of func_92059_d
-		if (this.item() != null) {
-			par1NBTTagCompound.setCompoundTag("Item", this.item().writeToNBT(new NBTTagCompound()));
-		// Spout End
+		if (this.getEntityItem() != null) {
+			par1NBTTagCompound.setCompoundTag("Item", this.getEntityItem().writeToNBT(new NBTTagCompound()));
 		}
 	}
 
@@ -256,9 +246,7 @@ public class EntityItem extends Entity {
 		NBTTagCompound var2 = par1NBTTagCompound.getCompoundTag("Item");
 		this.setEntityItemStack(ItemStack.loadItemStackFromNBT(var2));
 
-		// Spout Start - item instead of func_92059_d
-		if (this.item() == null) {
-		// Spout End
+		if (this.getEntityItem() == null) {
 			this.setDead();
 		}
 	}
@@ -268,9 +256,7 @@ public class EntityItem extends Entity {
 	 */
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
 		if (!this.worldObj.isRemote) {
-			// Spout Start - item instead of func_92059_d
-			ItemStack var2 = this.item();
-			// Spout End
+			ItemStack var2 = this.getEntityItem();
 			int var3 = var2.stackSize;
 
 			if (this.delayBeforeCanPickup == 0 && par1EntityPlayer.inventory.addItemStackToInventory(var2)) {
@@ -304,9 +290,7 @@ public class EntityItem extends Entity {
 	 * Gets the username of the entity.
 	 */
 	public String getEntityName() {
-		// Spout Start - item instead of func_92059_d
-		return StatCollector.translateToLocal("item." + this.item().getItemName());
-		// Spout End
+		return StatCollector.translateToLocal("item." + this.getEntityItem().getItemName());
 	}
 
 	/**
@@ -327,9 +311,11 @@ public class EntityItem extends Entity {
 		}
 	}
 
-	// Spout Start - item instead of func_92059_d
-	public ItemStack item() {
-	// Spout End
+	/**
+	 * Returns the ItemStack corresponding to the Entity (Note: if no item exists, will log an error but still return an
+	 * ItemStack containing Block.stone)
+	 */
+	public ItemStack getEntityItem() {
 		ItemStack var1 = this.getDataWatcher().getWatchableObjectItemStack(10);
 
 		if (var1 == null) {
@@ -343,12 +329,9 @@ public class EntityItem extends Entity {
 		}
 	}
 
-	// Spout Start - Hack for half mcp mappings change.
-	public ItemStack func_92059_d() {
-		return item();
-	}
-	// Spout End
-
+	/**
+	 * Sets the ItemStack for this entity
+	 */
 	public void setEntityItemStack(ItemStack par1ItemStack) {
 		this.getDataWatcher().updateObject(10, par1ItemStack);
 		this.getDataWatcher().setObjectWatched(10);

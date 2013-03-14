@@ -82,7 +82,7 @@ public class EntityTNTPrimed extends Entity {
 	private void explode() {
 		float var1 = 4.0F;
 		// Spout Start
-		this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, yield, false, incendiary);
+		this.worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, yield, false, incendiary);
 		// Spout End
 	}
 

@@ -13,14 +13,14 @@ import com.prupe.mcpatcher.mod.ColorizeWorld;
 import com.prupe.mcpatcher.mod.Colorizer;
 // MCPatcher End
 // Spout Start
-import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.NBTTagCompound;
-import org.spoutcraft.client.SpoutcraftWorld;
-import org.spoutcraft.client.config.Configuration;
+import gnu.trove.map.hash.TIntObjectHashMap;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.SpoutcraftWorld;
+import org.spoutcraft.client.config.Configuration;
 // Spout End
 
 public abstract class World implements IBlockAccess {

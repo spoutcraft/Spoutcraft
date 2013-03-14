@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
-// MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeItem;
-// MCPatcher End
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+// MCPatcher Start
+import com.prupe.mcpatcher.mod.ColorizeItem;
+// MCPatcher End
 
 public class EntityList {
 

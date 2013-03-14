@@ -14,20 +14,20 @@ import org.lwjgl.opengl.GL11;
 // Spout Start
 import java.util.IdentityHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
-import org.spoutcraft.client.ScheduledTextFieldUpdate;
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.Configuration;
-import org.spoutcraft.client.gui.*;
-import org.spoutcraft.client.packet.*;
 import org.spoutcraft.api.entity.Player;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.api.gui.*;
 import org.spoutcraft.api.gui.GenericComboBox.ComboBoxView;
-import org.spoutcraft.api.inventory.ItemStack;
-import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.api.gui.Slot;
+import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.client.ScheduledTextFieldUpdate;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.Configuration;
+import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+import org.spoutcraft.client.gui.*;
+import org.spoutcraft.client.packet.*;
 // Spout End
 
 public class GuiScreen extends Gui {

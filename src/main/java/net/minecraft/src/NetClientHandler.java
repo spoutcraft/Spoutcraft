@@ -26,13 +26,13 @@ import org.lwjgl.input.Keyboard;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
+import org.spoutcraft.api.entity.LivingEntity;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.client.gui.precache.GuiPrecache;
-import org.spoutcraft.api.entity.LivingEntity;
 // Spout End
 
 public class NetClientHandler extends NetHandler {

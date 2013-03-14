@@ -3,14 +3,14 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 // Spout Start
 import org.bukkit.ChatColor;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.special.Resources;
-import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.util.FixedLocation;
 // Spout End
 
 public class EntityPlayerSP extends EntityPlayer {
@@ -49,6 +49,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		super(par2World);
 		this.mc = par1Minecraft;
 		this.dimension = par4;
+
 		if (par3Session != null && par3Session.username != null && par3Session.username.length() > 0) {
 			// Spout Start
 			this.skinUrl = "http://cdn.spout.org/game/vanilla/skin/" + ChatColor.stripColor(par3Session.username) + ".png";

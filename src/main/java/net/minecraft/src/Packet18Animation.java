@@ -3,22 +3,19 @@ package net.minecraft.src;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
 // Spout Start
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import net.minecraft.client.Minecraft;
-
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.addon.ServerAddon;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketFullVersion;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.packet.PacketClientAddons;
-import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.addon.ServerAddon;
 // Spout End
 
 public class Packet18Animation extends Packet {
@@ -72,7 +69,7 @@ public class Packet18Animation extends Packet {
 				this.mc.displayGuiScreen(null, false);
 				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache());
 			}
-		} else {						
+		} else {
 			par1NetHandler.handleAnimation(this);
 		}
 		// Spout End

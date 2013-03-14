@@ -144,10 +144,10 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 			++this.ticksInAir;
 		}
 
-		Vec3 var16 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+		Vec3 var17 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 		Vec3 var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-		MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var16, var2);
-		var16 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+		MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var17, var2);
+		var17 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 		var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 		if (var3 != null) {
@@ -166,10 +166,10 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 				if (var10.canBeCollidedWith() && (var10 != var8 || this.ticksInAir >= 5)) {
 					float var11 = 0.3F;
 					AxisAlignedBB var12 = var10.boundingBox.expand((double)var11, (double)var11, (double)var11);
-					MovingObjectPosition var13 = var12.calculateIntercept(var16, var2);
+					MovingObjectPosition var13 = var12.calculateIntercept(var17, var2);
 
 					if (var13 != null) {
-						double var14 = var16.distanceTo(var13.hitVec);
+						double var14 = var17.distanceTo(var13.hitVec);
 
 						if (var14 < var6 || var6 == 0.0D) {
 							var4 = var10;
@@ -195,10 +195,10 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 		this.posX += this.motionX;
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
-		float var17 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+		float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
-		for (this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var17) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
+		for (this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var16) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
 			;
 		}
 
@@ -216,22 +216,22 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 
 		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-		float var18 = 0.99F;
-		float var19 = this.getGravityVelocity();
+		float var19 = 0.99F;
+		float var20 = this.getGravityVelocity();
 
 		if (this.isInWater()) {
 			for (int var7 = 0; var7 < 4; ++var7) {
-				float var20 = 0.25F;
-				this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var20, this.posY - this.motionY * (double)var20, this.posZ - this.motionZ * (double)var20, this.motionX, this.motionY, this.motionZ);
+				float var18 = 0.25F;
+				this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var18, this.posY - this.motionY * (double)var18, this.posZ - this.motionZ * (double)var18, this.motionX, this.motionY, this.motionZ);
 			}
 
-			var18 = 0.8F;
+			var19 = 0.8F;
 		}
 
-		this.motionX *= (double)var18;
-		this.motionY *= (double)var18;
-		this.motionZ *= (double)var18;
-		this.motionY -= (double)var19;
+		this.motionX *= (double)var19;
+		this.motionY *= (double)var19;
+		this.motionZ *= (double)var19;
+		this.motionY -= (double)var20;
 		this.setPosition(this.posX, this.posY, this.posZ);
 	}
 

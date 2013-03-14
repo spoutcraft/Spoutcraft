@@ -2,9 +2,9 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 // Spout Start
+import org.spoutcraft.api.gui.ScreenType;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketKeyPress;
-import org.spoutcraft.api.gui.ScreenType;
 // Spout End
 
 public class EntityClientPlayerMP extends EntityPlayerSP {
@@ -100,8 +100,8 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		double var11 = (double)(this.rotationPitch - this.oldRotationPitch);
 		// Spout Start - Send more updates while airborne.
 		boolean var13 = var3 * var3 + var5 * var5 + var7 * var7 > 9.0E-4D || this.field_71168_co >= (this.isAirBorne ? 4 : 20);
-		boolean var14 = var9 != 0.0D || var11 != 0.0D;
 		// Spout End
+		boolean var14 = var9 != 0.0D || var11 != 0.0D;
 
 		if (this.ridingEntity != null) {
 			this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));

@@ -9,12 +9,12 @@ import com.prupe.mcpatcher.mod.ColorizeBlock;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.World;
 import gnu.trove.map.hash.TIntFloatHashMap;
-import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.api.entity.ActivePlayer;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.util.FastLocation;
 import org.spoutcraft.api.util.FixedLocation;
+import org.spoutcraft.client.block.SpoutcraftChunk;
 // Spout End
 
 public class Block {

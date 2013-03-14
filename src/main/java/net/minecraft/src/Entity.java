@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import net.minecraft.server.MinecraftServer;
-
 // Spout Start
 import java.util.LinkedList;
 import java.util.UUID;
@@ -151,7 +150,7 @@ public abstract class Entity {
 	 * The amount of ticks you have to stand inside of fire before be set on fire
 	 */
 	public int fireResistance;
-	// Spout Start
+	// Spout Start - private to public
 	public int fire;
 	// Spout End
 
@@ -315,6 +314,7 @@ public abstract class Entity {
 			this.boundingBox.maxZ = this.boundingBox.minZ + (double)this.width;
 			this.boundingBox.maxY = this.boundingBox.minY + (double)this.height;
 		}
+
 		float var3 = par1 % 2.0F;
 
 		if ((double)var3 < 0.375D) {
@@ -393,7 +393,6 @@ public abstract class Entity {
 		// Spout Start
 		partiallyInWater = isInsideOfMaterial(Material.water, -1);
 		// Spout End
-		// TODO: Is this needed? //++this.ticksExisted;
 		this.prevDistanceWalkedModified = this.distanceWalkedModified;
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -634,7 +633,7 @@ public abstract class Entity {
 				par1 = 0.0D;
 			}
 
-			boolean var34 = this.onGround || var15 != par3 && var15 < 0.0D;
+			boolean var36 = this.onGround || var15 != par3 && var15 < 0.0D;
 			int var23;
 
 			for (var23 = 0; var23 < var35.size(); ++var23) {
@@ -661,13 +660,13 @@ public abstract class Entity {
 				par1 = 0.0D;
 			}
 
+			int var30;
 			double var25;
 			double var27;
-			int var30;
-			double var36;
+			double var37;
 
-			if (this.stepHeight > 0.0F && var34 && (var20 || this.ySize < 0.05F) && (var13 != par1 || var17 != par5)) {
-				var36 = par1;
+			if (this.stepHeight > 0.0F && var36 && (var20 || this.ySize < 0.05F) && (var13 != par1 || var17 != par5)) {
+				var37 = par1;
 				var25 = par3;
 				var27 = par5;
 				par1 = var13;
@@ -727,11 +726,11 @@ public abstract class Entity {
 					this.boundingBox.offset(0.0D, par3, 0.0D);
 				}
 
-				if (var36 * var36 + var27 * var27 >= par1 * par1 + par5 * par5) {
-					par1 = var36;
+				if (var37 * var37 + var27 * var27 >= par1 * par1 + par5 * par5) {
+					par1 = var37;
 					par3 = var25;
 					par5 = var27;
-					this.boundingBox.setBB(var29);				
+					this.boundingBox.setBB(var29);
 				}
 			}
 
@@ -758,21 +757,21 @@ public abstract class Entity {
 				this.motionZ = 0.0D;
 			}
 
-			var36 = this.posX - var7;
+			var37 = this.posX - var7;
 			var25 = this.posY - var9;
 			var27 = this.posZ - var11;
 
 			if (this.canTriggerWalking() && !var20 && this.ridingEntity == null) {
-				int var37 = MathHelper.floor_double(this.posX);
+				int var39 = MathHelper.floor_double(this.posX);
 				var30 = MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset);
 				int var31 = MathHelper.floor_double(this.posZ);
-				int var32 = this.worldObj.getBlockId(var37, var30, var31);
+				int var32 = this.worldObj.getBlockId(var39, var30, var31);
 
 				if (var32 == 0) {
-					int var33 = this.worldObj.blockGetRenderType(var37, var30 - 1, var31);
+					int var33 = this.worldObj.blockGetRenderType(var39, var30 - 1, var31);
 
 					if (var33 == 11 || var33 == 32 || var33 == 21) {
-						var32 = this.worldObj.getBlockId(var37, var30 - 1, var31);
+						var32 = this.worldObj.getBlockId(var39, var30 - 1, var31);
 					}
 				}
 
@@ -780,24 +779,24 @@ public abstract class Entity {
 					var25 = 0.0D;
 				}
 
-				this.distanceWalkedModified = (float)((double)this.distanceWalkedModified + (double)MathHelper.sqrt_double(var36 * var36 + var27 * var27) * 0.6D);
-				this.field_82151_R = (float)((double)this.field_82151_R + (double)MathHelper.sqrt_double(var36 * var36 + var25 * var25 + var27 * var27) * 0.6D);
+				this.distanceWalkedModified = (float)((double)this.distanceWalkedModified + (double)MathHelper.sqrt_double(var37 * var37 + var27 * var27) * 0.6D);
+				this.field_82151_R = (float)((double)this.field_82151_R + (double)MathHelper.sqrt_double(var37 * var37 + var25 * var25 + var27 * var27) * 0.6D);
 
 				if (this.field_82151_R > (float)this.nextStepDistance && var32 > 0) {
 					this.nextStepDistance = (int)this.field_82151_R + 1;
 
 					if (this.isInWater()) {
-						float var39 = MathHelper.sqrt_double(this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY + this.motionZ * this.motionZ * 0.20000000298023224D) * 0.35F;
+						float var34 = MathHelper.sqrt_double(this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY + this.motionZ * this.motionZ * 0.20000000298023224D) * 0.35F;
 
-						if (var39 > 1.0F) {
-							var39 = 1.0F;
+						if (var34 > 1.0F) {
+							var34 = 1.0F;
 						}
 
-						this.playSound("liquid.swim", var39, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+						this.playSound("liquid.swim", var34, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
 					}
 
-					this.playStepSound(var37, var30, var31, var32);
-					Block.blocksList[var32].onEntityWalking(this.worldObj, var37, var30, var31, this);
+					this.playStepSound(var39, var30, var31, var32);
+					Block.blocksList[var32].onEntityWalking(this.worldObj, var39, var30, var31, this);
 				}
 			}
 
@@ -951,9 +950,9 @@ public abstract class Entity {
 
 				this.playSound("liquid.splash", var1, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
 				float var2 = (float)MathHelper.floor_double(this.boundingBox.minY);
-				int var3;
 				float var4;
 				float var5;
+				int var3;
 
 				for (var3 = 0; (float)var3 < 1.0F + this.width * 20.0F; ++var3) {
 					var4 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
@@ -1002,9 +1001,7 @@ public abstract class Entity {
 			return var2 < (double)var9;
 		} else {
 			return false;
-			// Spout End	
 		}
-		
 	}
 
 	public float getEyeHeight() {
@@ -1277,7 +1274,7 @@ public abstract class Entity {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * adds the ID of this entity to the NBT given
 	 */
@@ -1315,7 +1312,7 @@ public abstract class Entity {
 			par1NBTTagCompound.setLong("UUIDMost", this.field_96093_i.getMostSignificantBits());
 			par1NBTTagCompound.setLong("UUIDLeast", this.field_96093_i.getLeastSignificantBits());
 			this.writeEntityToNBT(par1NBTTagCompound);
-			
+
 			if (this.ridingEntity != null) {
 				NBTTagCompound var2 = new NBTTagCompound("Riding");
 
@@ -1337,11 +1334,11 @@ public abstract class Entity {
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
 		try {
 			NBTTagList var2 = par1NBTTagCompound.getTagList("Pos");
-			NBTTagList var6 = par1NBTTagCompound.getTagList("Motion");
-			NBTTagList var7 = par1NBTTagCompound.getTagList("Rotation");
-			this.motionX = ((NBTTagDouble)var6.tagAt(0)).data;
-			this.motionY = ((NBTTagDouble)var6.tagAt(1)).data;
-			this.motionZ = ((NBTTagDouble)var6.tagAt(2)).data;
+			NBTTagList var7 = par1NBTTagCompound.getTagList("Motion");
+			NBTTagList var6 = par1NBTTagCompound.getTagList("Rotation");
+			this.motionX = ((NBTTagDouble)var7.tagAt(0)).data;
+			this.motionY = ((NBTTagDouble)var7.tagAt(1)).data;
+			this.motionZ = ((NBTTagDouble)var7.tagAt(2)).data;
 
 			if (Math.abs(this.motionX) > 10.0D) {
 				this.motionX = 0.0D;
@@ -1358,8 +1355,8 @@ public abstract class Entity {
 			this.prevPosX = this.lastTickPosX = this.posX = ((NBTTagDouble)var2.tagAt(0)).data;
 			this.prevPosY = this.lastTickPosY = this.posY = ((NBTTagDouble)var2.tagAt(1)).data;
 			this.prevPosZ = this.lastTickPosZ = this.posZ = ((NBTTagDouble)var2.tagAt(2)).data;
-			this.prevRotationYaw = this.rotationYaw = ((NBTTagFloat)var7.tagAt(0)).data;
-			this.prevRotationPitch = this.rotationPitch = ((NBTTagFloat)var7.tagAt(1)).data;
+			this.prevRotationYaw = this.rotationYaw = ((NBTTagFloat)var6.tagAt(0)).data;
+			this.prevRotationPitch = this.rotationPitch = ((NBTTagFloat)var6.tagAt(1)).data;
 			this.fallDistance = par1NBTTagCompound.getFloat("FallDistance");
 			this.fire = par1NBTTagCompound.getShort("Fire");
 			this.setAir(par1NBTTagCompound.getShort("Air"));
@@ -1367,9 +1364,11 @@ public abstract class Entity {
 			this.dimension = par1NBTTagCompound.getInteger("Dimension");
 			this.invulnerable = par1NBTTagCompound.getBoolean("Invulnerable");
 			this.timeUntilPortal = par1NBTTagCompound.getInteger("PortalCooldown");
+
 			if (par1NBTTagCompound.hasKey("UUIDMost") && par1NBTTagCompound.hasKey("UUIDLeast")) {
 				this.field_96093_i = new UUID(par1NBTTagCompound.getLong("UUIDMost"), par1NBTTagCompound.getLong("UUIDLeast"));
 			}
+
 			this.setPosition(this.posX, this.posY, this.posZ);
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 			// Spout Start
@@ -1607,7 +1606,7 @@ public abstract class Entity {
 				this.ridingEntity.riddenByEntity = null;
 			}
 
-			this.ridingEntity = null;		
+			this.ridingEntity = null;
 		} else {
 			if (this.ridingEntity != null) {
 				this.ridingEntity.riddenByEntity = null;
@@ -1631,7 +1630,7 @@ public abstract class Entity {
 			var5 = par1Entity.boundingBox.minY + (double)par1Entity.height;
 			var7 = par1Entity.posZ;
 		}
-		
+
 		for (double var9 = -1.5D; var9 < 2.0D; ++var9) {
 			for (double var11 = -1.5D; var11 < 2.0D; ++var11) {
 				if (var9 != 0.0D || var11 != 0.0D) {
@@ -1792,7 +1791,7 @@ public abstract class Entity {
 	public boolean getHasActivePotion() {
 		return this.getFlag(5);
 	}
-	
+
 	public boolean func_98034_c(EntityPlayer par1EntityPlayer) {
 		return this.getHasActivePotion();
 	}
@@ -2088,7 +2087,7 @@ public abstract class Entity {
 	public boolean canRenderOnFire() {
 		return this.isBurning();
 	}
-	
+
 	public boolean func_96092_aw() {
 		return true;
 	}
