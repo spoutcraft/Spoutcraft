@@ -176,8 +176,8 @@ public class TcpConnection implements INetworkManager {
 
 		try {
 			Packet var2;
-			int var10001;
 			int[] var10000;
+			int var10001;
 
 			if (this.field_74468_e == 0 || !this.dataPackets.isEmpty() && System.currentTimeMillis() - ((Packet)this.dataPackets.get(0)).creationTimeMillis >= (long)this.field_74468_e) {
 				var2 = this.func_74460_a(false);

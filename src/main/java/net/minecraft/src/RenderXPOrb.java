@@ -33,11 +33,11 @@ public class RenderXPOrb extends Render {
 		int var21 = var19 / 65536;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var20 / 1.0F, (float)var21 / 1.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		float var26 = 255.0F;
-		float var27 = ((float)par1EntityXPOrb.xpColor + par9) / 2.0F;
-		var21 = (int)((MathHelper.sin(var27 + 0.0F) + 1.0F) * 0.5F * var26);
-		int var22 = (int)var26;
-		int var23 = (int)((MathHelper.sin(var27 + 4.1887903F) + 1.0F) * 0.1F * var26);
+		float var27 = 255.0F;
+		float var26 = ((float)par1EntityXPOrb.xpColor + par9) / 2.0F;
+		var21 = (int)((MathHelper.sin(var26 + 0.0F) + 1.0F) * 0.5F * var27);
+		int var22 = (int)var27;
+		int var23 = (int)((MathHelper.sin(var26 + 4.1887903F) + 1.0F) * 0.1F * var27);
 		int var24 = var21 << 16 | var22 << 8 | var23;
 		GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);

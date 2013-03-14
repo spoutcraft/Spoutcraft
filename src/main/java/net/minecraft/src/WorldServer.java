@@ -242,10 +242,10 @@ public class WorldServer extends World {
 			this.theProfiler.endStartSection("tickChunk");
 			var7.updateSkylight();
 			this.theProfiler.endStartSection("thunder");
-			int var8;
-			int var9;
 			int var10;
 			int var11;
+			int var8;
+			int var9;
 
 			if (this.rand.nextInt(100000) == 0 && this.isRaining() && this.isThundering()) {
 				this.updateLCG = this.updateLCG * 3 + 1013904223;
@@ -295,22 +295,22 @@ public class WorldServer extends World {
 			var9 = var19.length;
 
 			for (var10 = 0; var10 < var9; ++var10) {
-				ExtendedBlockStorage var21 = var19[var10];
+				ExtendedBlockStorage var20 = var19[var10];
 
-				if (var21 != null && var21.getNeedsRandomTick()) {
-					for (int var20 = 0; var20 < 3; ++var20) {
+				if (var20 != null && var20.getNeedsRandomTick()) {
+					for (int var21 = 0; var21 < 3; ++var21) {
 						this.updateLCG = this.updateLCG * 3 + 1013904223;
 						var13 = this.updateLCG >> 2;
 						int var14 = var13 & 15;
 						int var15 = var13 >> 8 & 15;
 						int var16 = var13 >> 16 & 15;
-						int var17 = var21.getExtBlockID(var14, var16, var15);
+						int var17 = var20.getExtBlockID(var14, var16, var15);
 						++var2;
 						Block var18 = Block.blocksList[var17];
 
 						if (var18 != null && var18.getTickRandomly()) {
 							++var1;
-							var18.updateTick(this, var14 + var5, var16 + var21.getYLocation(), var15 + var6, this.rand);
+							var18.updateTick(this, var14 + var5, var16 + var20.getYLocation(), var15 + var6, this.rand);
 						}
 					}
 				}
@@ -324,7 +324,7 @@ public class WorldServer extends World {
 		NextTickListEntry var5 = new NextTickListEntry(par1, par2, par3, par4);
 		return this.field_94579_S.contains(var5);
 	}
-	
+
 	/**
 	 * Schedules a tick to a block with a delay (Most commonly the tick rate)
 	 */
@@ -514,6 +514,7 @@ public class WorldServer extends World {
 
 		return var3;
 	}
+
 	/**
 	 * Will update the entity in the world if the chunk the entity is in is currently loaded or its forced to update. Args:
 	 * entity, forceUpdate
@@ -681,7 +682,7 @@ public class WorldServer extends World {
 	 */
 	protected void saveLevel() throws MinecraftException {
 		this.checkSessionLock();
-		this.saveHandler.saveWorldInfoWithPlayer(this.worldInfo, this.mcServer.getConfigurationManager().getHostPlayerData());		
+		this.saveHandler.saveWorldInfoWithPlayer(this.worldInfo, this.mcServer.getConfigurationManager().getHostPlayerData());
 		this.mapStorage.saveAllData();
 	}
 
@@ -818,7 +819,7 @@ public class WorldServer extends World {
 	 */
 	private boolean onBlockEventReceived(BlockEventData par1BlockEventData) {
 		int var2 = this.getBlockId(par1BlockEventData.getX(), par1BlockEventData.getY(), par1BlockEventData.getZ());
-		return var2 == par1BlockEventData.getBlockID() ? Block.blocksList[var2].onBlockEventReceived(this, par1BlockEventData.getX(), par1BlockEventData.getY(), par1BlockEventData.getZ(), par1BlockEventData.getEventID(), par1BlockEventData.getEventParameter()) : false;		
+		return var2 == par1BlockEventData.getBlockID() ? Block.blocksList[var2].onBlockEventReceived(this, par1BlockEventData.getX(), par1BlockEventData.getY(), par1BlockEventData.getZ(), par1BlockEventData.getEventID(), par1BlockEventData.getEventParameter()) : false;
 	}
 
 	/**

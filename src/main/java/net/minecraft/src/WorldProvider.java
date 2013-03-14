@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
+// MCPatcher Start
 import com.prupe.mcpatcher.mod.ColorizeWorld;
 import com.prupe.mcpatcher.mod.Colorizer;
+// MCPatcher End
 
 public abstract class WorldProvider {
 

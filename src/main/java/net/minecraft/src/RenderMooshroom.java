@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+// MCPatcher Start
 import com.prupe.mcpatcher.mod.MobOverlay;
+// MCPatcher End
 import org.lwjgl.opengl.GL11;
 
 public class RenderMooshroom extends RenderLiving {

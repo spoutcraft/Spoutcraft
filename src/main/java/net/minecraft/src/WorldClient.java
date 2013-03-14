@@ -148,8 +148,7 @@ public class WorldClient extends World {
 	}
 
 	/**
-	 * Dismounts the entity (and anything riding the entity), sets the dead flag, and removes the player entity from the
-	 * player entity list. Called by the playerLoggedOut function.
+	 * Schedule the entity for removal during the next tick. Marks the entity dead in anticipation.
 	 */
 	public void removeEntity(Entity par1Entity) {
 		super.removeEntity(par1Entity);
@@ -306,8 +305,8 @@ public class WorldClient extends World {
 	public void removeAllEntities() {
 		this.loadedEntityList.removeAll(this.unloadedEntityList);
 		int var1;
-		Entity var2;
 		int var3;
+		Entity var2;
 		int var4;
 
 		for (var1 = 0; var1 < this.unloadedEntityList.size(); ++var1) {
@@ -387,7 +386,7 @@ public class WorldClient extends World {
 	public void func_92088_a(double par1, double par3, double par5, double par7, double par9, double par11, NBTTagCompound par13NBTTagCompound) {
 		this.mc.effectRenderer.addEffect(new EntityFireworkStarterFX(this, par1, par3, par5, par7, par9, par11, this.mc.effectRenderer, par13NBTTagCompound));
 	}
-	
+
 	public void func_96443_a(Scoreboard par1Scoreboard) {
 		this.field_96442_D = par1Scoreboard;
 	}
