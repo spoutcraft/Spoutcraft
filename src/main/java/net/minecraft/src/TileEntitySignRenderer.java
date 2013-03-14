@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
+// MCPatcher Start - Unused import
+//import com.prupe.mcpatcher.mod.ColorizeWorld;
+// MCPatcher End
 // Spout Start
 import net.minecraft.client.Minecraft;
 import org.spoutcraft.client.config.Configuration;

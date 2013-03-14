@@ -381,8 +381,8 @@ public class Chunk {
 			this.heightMap[par3 << 4 | par1] = var5;
 			int var6 = this.xPosition * 16 + par1;
 			int var7 = this.zPosition * 16 + par3;
+			int var13;
 			int var8;
-			int var12;
 
 			if (!this.worldObj.provider.hasNoSky) {
 				ExtendedBlockStorage var9;
@@ -411,13 +411,13 @@ public class Chunk {
 
 				while (var5 > 0 && var8 > 0) {
 					--var5;
-					var12 = this.getBlockLightOpacity(par1, var5, par3);
+					var13 = this.getBlockLightOpacity(par1, var5, par3);
 
-					if (var12 == 0) {
-						var12 = 1;
+					if (var13 == 0) {
+						var13 = 1;
 					}
 
-					var8 -= var12;
+					var8 -= var13;
 
 					if (var8 < 0) {
 						var8 = 0;
@@ -432,12 +432,12 @@ public class Chunk {
 			}
 
 			var8 = this.heightMap[par3 << 4 | par1];
-			var12 = var4;
-			int var13 = var8;
+			var13 = var4;
+			int var12 = var8;
 
 			if (var8 < var4) {
-				var12 = var8;
-				var13 = var4;
+				var13 = var8;
+				var12 = var4;
 			}
 
 			if (var8 < this.field_82912_p) {
@@ -445,11 +445,11 @@ public class Chunk {
 			}
 
 			if (!this.worldObj.provider.hasNoSky) {
-				this.updateSkylightNeighborHeight(var6 - 1, var7, var12, var13);
-				this.updateSkylightNeighborHeight(var6 + 1, var7, var12, var13);
-				this.updateSkylightNeighborHeight(var6, var7 - 1, var12, var13);
-				this.updateSkylightNeighborHeight(var6, var7 + 1, var12, var13);
-				this.updateSkylightNeighborHeight(var6, var7, var12, var13);
+				this.updateSkylightNeighborHeight(var6 - 1, var7, var13, var12);
+				this.updateSkylightNeighborHeight(var6 + 1, var7, var13, var12);
+				this.updateSkylightNeighborHeight(var6, var7 - 1, var13, var12);
+				this.updateSkylightNeighborHeight(var6, var7 + 1, var13, var12);
+				this.updateSkylightNeighborHeight(var6, var7, var13, var12);
 			}
 
 			this.isModified = true;
@@ -1121,11 +1121,11 @@ public class Chunk {
 		}
 
 		this.generateHeightMap();
-		Iterator var10 = this.chunkTileEntityMap.values().iterator();
+		Iterator var11 = this.chunkTileEntityMap.values().iterator();
 
-		while (var10.hasNext()) {
-			TileEntity var11 = (TileEntity)var10.next();
-			var11.updateContainingBlockInfo();
+		while (var11.hasNext()) {
+			TileEntity var10 = (TileEntity)var11.next();
+			var10.updateContainingBlockInfo();
 		}
 	}
 

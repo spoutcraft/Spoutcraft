@@ -170,8 +170,7 @@
 										}}
 									</runIf>
 									<targetPath>${project.basedir}</targetPath>
-									<!--<file>http://mcp.ocean-labs.de/files/mcp${mcpVersion}.zip</file>-->
-									<file>http://get.spout.org/tool/mcp${mcpVersion}.zip</file>
+									<file>http://mcp.ocean-labs.de/files/mcp${mcpVersion}.zip</file>
 									<unpack>true</unpack>
 									<useTrueZipForUnpack>false</useTrueZipForUnpack>
 									<preservePath>true</preservePath>
@@ -196,7 +195,6 @@
 									</runIf>
 									<targetPath>${project.basedir}/jars/bin</targetPath>
 									<destFileName>minecraft.jar</destFileName>
-									<!--<file>http://s3.amazonaws.com/MinecraftDownload/minecraft.jar</file>-->
 									<file>http://assets.minecraft.net/1_5/minecraft.jar</file>
 								</resource>
 								<!-- Download remaining dependencies -->
@@ -231,12 +229,6 @@
 											<groupId>dnsjava</groupId>
 											<artifactId>dnsjava</artifactId>
 											<version>2.1.1</version>
-											<stripVersion>true</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>com.google.guava</groupId>
-											<artifactId>guava</artifactId>
-											<version>13.0.1</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>

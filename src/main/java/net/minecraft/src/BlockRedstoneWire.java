@@ -26,7 +26,7 @@ public class BlockRedstoneWire extends Block {
 		super(par1, Material.circuits);
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
 	}
-	
+
 	/**
 	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
 	 * cleared to be reused)
@@ -355,7 +355,6 @@ public class BlockRedstoneWire extends Block {
 		}
 	}
 
-
 	/**
 	 * Can this block provide power. Only wire currently seems to have this change based on its state.
 	 */
@@ -451,7 +450,7 @@ public class BlockRedstoneWire extends Block {
 	public int idPicked(World par1World, int par2, int par3, int par4) {
 		return Item.redstone.itemID;
 	}
-	
+
 	public void func_94332_a(IconRegister par1IconRegister) {
 		this.field_94413_c = par1IconRegister.func_94245_a("redstoneDust_cross");
 		this.field_94410_cO = par1IconRegister.func_94245_a("redstoneDust_line");
