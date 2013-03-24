@@ -194,7 +194,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	 * viewpoint mid-render.
 	 */
 	public EntityLiving renderViewEntity;
-	public EntityLiving field_96291_i;
+	public EntityLiving pointedEntityLiving;
 	public EffectRenderer effectRenderer;
 	public Session session;
 	public String minecraftUri;
@@ -328,7 +328,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		StatList.nopInit();
 		// MCPatcher Start
 		MCPatcherUtils.setMinecraft(this);
-		MCPatcherUtils.setVersions("1.5", "3.0.2");
+		MCPatcherUtils.setVersions("1.5.1", "3.0.3");
 		// MCPatcher End
 		this.fullscreen = false;
 		this.hasCrashed = false;
@@ -339,7 +339,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		this.isGamePaused = false;
 		this.currentScreen = null;
 		this.leftClickCounter = 0;
-		this.guiAchievement = new GuiAchievement(this);
 		this.skipRenderWorld = false;
 		this.objectMouseOver = null;
 		this.sndManager = new SoundManager();
@@ -368,7 +367,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		this.displayHeight = par4;
 		this.fullscreen = par5;
 		theMinecraft = this;
-		TextureManager.func_94263_a();
+		TextureManager.init();
+		this.guiAchievement = new GuiAchievement(this);
 
 		// Spout Start
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
@@ -441,8 +441,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
 		}
 
-		Display.setTitle("Minecraft Minecraft 1.5");
-		System.out.println("LWJGL Version: " + Sys.getVersion());
+		Display.setTitle("Minecraft Minecraft 1.5.1");
+		this.getLogAgent().logInfo("LWJGL Version: " + Sys.getVersion()); 
 
 		try {
 			Display.create((new PixelFormat()).withDepthBits(24));
@@ -506,7 +506,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		this.renderGlobal = new RenderGlobal(this, this.renderEngine);
 		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mod.CTMUtils", "reset");
 		TexturePackChangeHandler.beforeChange1();
-		this.renderEngine.func_94152_c();
+		this.renderEngine.refreshTextureMaps();
 		TexturePackChangeHandler.afterChange1();
 		GL11.glViewport(0, 0, this.displayWidth, this.displayHeight);
 		this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
@@ -554,8 +554,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_FOG);
 		Tessellator var2 = Tessellator.instance;
-		this.renderEngine.func_98187_b("/title/mojang.png");
-		//GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture("/title/mojang.png")); // TODO: I need to de-obfuscate this.
+		this.renderEngine.bindTexture("/title/mojang.png");
 		var2.startDrawingQuads();
 		var2.setColorOpaque_I(16777215);
 		var2.addVertexWithUV(0.0D, (double)this.displayHeight, 0.0D, 0.0D, 0.0D);
@@ -820,7 +819,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 				;
 			}
 
-			System.out.println("Stopping!");
+			this.getLogAgent().logInfo("Stopping!"); 
 
 			try {
 				this.loadWorld((WorldClient)null);
@@ -1525,7 +1524,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			this.playerController.updateController();
 		}
 
-		this.renderEngine.func_98187_b("/terrain.png");
+		this.renderEngine.bindTexture("/terrain.png");
 		this.mcProfiler.endStartSection("textures");
 
 		if (!this.isGamePaused) {
@@ -1893,7 +1892,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	 * Forces a reload of the sound manager and all the resources. Called in game by holding 'F3' and pressing 'S'.
 	 */
 	private void forceReload() {
-		System.out.println("FORCING RELOAD!");
+		this.getLogAgent().logInfo("FORCING RELOAD!");
 		// Spout Start
 		CustomTextureManager.resetTextures(); // TODO: This may need an update. 
 		// Spout End
@@ -2244,7 +2243,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 
 		while (var19.hasNext()) {
 			String var14 = (String)var19.next();
-			getMinecraft().func_98033_al().func_98233_a(var14);
+			getMinecraft().getLogAgent()().logInfo(var14);
 		}
 
 		var18.start();
@@ -2335,9 +2334,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 					} else if (var11.func_94087_l() == 1) {
 						var2 = Item.minecartCrate.itemID;
 					} else if (var11.func_94087_l() == 3) {
-						var2 = Item.field_94582_cb.itemID;
+						var2 = Item.tntMinecart.itemID;
 					} else if (var11.func_94087_l() == 5) {
-						var2 = Item.field_96600_cc.itemID;
+						var2 = Item.hopperMinecart.itemID;
 					} else {
 						var2 = Item.minecartEmpty.itemID;
 					}
@@ -2521,7 +2520,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		return this.fullscreen;
 	}
 
-	public ILogAgent func_98033_al() {
+	public ILogAgent getLogAgent() {
 		return this.field_94139_O;
 	}
 
