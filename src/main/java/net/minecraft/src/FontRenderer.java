@@ -18,7 +18,6 @@ public class FontRenderer {
 
 	/** Array of width of all the characters in default.png */
 	private int[] charWidth = new int[256];
-	public int fontTextureName = 0;
 
 	/** the height in pixels of default text */
 	// Spout Start - Smaller text
