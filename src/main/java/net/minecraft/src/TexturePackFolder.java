@@ -27,7 +27,7 @@ public class TexturePackFolder extends TexturePackImplementation {
 		return var2.exists() && var2.isFile();
 	}
 
-	public boolean func_94180_h() {
+	public boolean isCompatible() {
 		File var1 = new File(this.texturePackFile, "textures/");
 		boolean var2 = var1.exists() && var1.isDirectory();
 		boolean var3 = this.func_98140_c("terrain.png") || this.func_98140_c("gui/items.png");
