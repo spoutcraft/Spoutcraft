@@ -94,7 +94,7 @@ public class BlockRedstoneWire extends Block {
 		byte var9 = 0;
 		int var15 = this.getMaxCurrentStrength(par1World, par5, par6, par7, var9);
 		this.wiresProvidePower = false;
-		int var10 = par1World.func_94572_D(par2, par3, par4);
+		int var10 = par1World.getStrongestIndirectPower(par2, par3, par4); 
 		this.wiresProvidePower = true;
 
 		if (var10 > 0 && var10 > var15 - 1) {
@@ -289,7 +289,7 @@ public class BlockRedstoneWire extends Block {
 				this.updateAndPropagateCurrentStrength(par1World, par2, par3, par4);
 			} else {
 				this.dropBlockAsItem(par1World, par2, par3, par4, 0, 0);
-				par1World.func_94571_i(par2, par3, par4);
+				par1World.setBlockToAir(par2, par3, par4);
 			}
 
 			super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
@@ -451,12 +451,16 @@ public class BlockRedstoneWire extends Block {
 		return Item.redstone.itemID;
 	}
 
-	public void func_94332_a(IconRegister par1IconRegister) {
-		this.field_94413_c = par1IconRegister.func_94245_a("redstoneDust_cross");
-		this.field_94410_cO = par1IconRegister.func_94245_a("redstoneDust_line");
-		this.field_94411_cP = par1IconRegister.func_94245_a("redstoneDust_cross_overlay");
-		this.field_94412_cQ = par1IconRegister.func_94245_a("redstoneDust_line_overlay");
-		this.field_94336_cN = this.field_94413_c;
+	/**
+	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This is
+	 * the only chance you get to register icons.
+	 */
+	public void registerIcons(IconRegister par1IconRegister) {
+	    this.field_94413_c = par1IconRegister.registerIcon("redstoneDust_cross");
+	    this.field_94410_cO = par1IconRegister.registerIcon("redstoneDust_line");
+	    this.field_94411_cP = par1IconRegister.registerIcon("redstoneDust_cross_overlay");
+	    this.field_94412_cQ = par1IconRegister.registerIcon("redstoneDust_line_overlay");
+	    this.blockIcon = this.field_94413_c; 
 	}
 
 	public static Icon func_94409_b(String par0Str) {

@@ -9,7 +9,7 @@ public class BlockStem extends BlockFlower {
 
 	/** Defines if it is a Melon or a Pumpkin that the stem is producing. */
 	private final Block fruitType;
-	private Icon field_94369_b;
+	private Icon theIcon;
 
 	protected BlockStem(int par1, Block par2Block) {
 		super(par1);
@@ -83,7 +83,7 @@ public class BlockStem extends BlockFlower {
 					int var11 = par1World.getBlockId(var9, par3 - 1, var10);
 
 					if (par1World.getBlockId(var9, par3, var10) == 0 && (var11 == Block.tilledField.blockID || var11 == Block.dirt.blockID || var11 == Block.grass.blockID)) {
-						par1World.func_94575_c(var9, par3, var10, this.fruitType.blockID);
+						par1World.setBlock(var9, par3, var10, this.fruitType.blockID);
 					}
 				}
 			}
@@ -241,12 +241,16 @@ public class BlockStem extends BlockFlower {
 		return this.fruitType == Block.pumpkin ? Item.pumpkinSeeds.itemID : (this.fruitType == Block.melon ? Item.melonSeeds.itemID : 0);
 	}
 
-	public void func_94332_a(IconRegister par1IconRegister) {
-		this.field_94336_cN = par1IconRegister.func_94245_a("stem_straight");
-		this.field_94369_b = par1IconRegister.func_94245_a("stem_bent");
+	/**
+	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This is
+	 * the only chance you get to register icons.
+	 */
+	public void registerIcons(IconRegister par1IconRegister) {
+	    this.blockIcon = par1IconRegister.registerIcon("stem_straight");
+	    this.theIcon = par1IconRegister.registerIcon("stem_bent"); 
 	}
 
 	public Icon func_94368_p() {
-		return this.field_94369_b;
+		return this.theIcon;
 	}
 }

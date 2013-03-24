@@ -16,7 +16,7 @@ public class BlockPane extends Block {
 	 */
 	private final boolean canDropItself;
 	private final String field_94402_c;
-	private Icon field_94401_cO;
+	private Icon theIcon;
 
 	protected BlockPane(int par1, String par2Str, String par3Str, Material par4Material, boolean par5) {
 		super(par1, par4Material);
@@ -150,7 +150,7 @@ public class BlockPane extends Block {
 	 * Returns the texture index of the thin side of the pane.
 	 */
 	public Icon getSideTextureIndex() {
-		return this.field_94401_cO;
+		return this.theIcon;
 	}
 
 	/**
@@ -178,8 +178,12 @@ public class BlockPane extends Block {
 		return new ItemStack(this.blockID, 1, par1);
 	}
 
-	public void func_94332_a(IconRegister par1IconRegister) {
-		this.field_94336_cN = par1IconRegister.func_94245_a(this.field_94402_c);
-		this.field_94401_cO = par1IconRegister.func_94245_a(this.sideTextureIndex);
+	/**
+	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This is
+	 * the only chance you get to register icons.
+	 */
+	public void registerIcons(IconRegister par1IconRegister) {
+	    this.blockIcon = par1IconRegister.registerIcon(this.field_94402_c);
+	    this.theIcon = par1IconRegister.registerIcon(this.sideTextureIndex); 
 	}
 }
