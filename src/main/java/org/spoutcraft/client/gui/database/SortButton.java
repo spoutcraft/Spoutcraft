@@ -24,7 +24,6 @@ import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.src.FontRenderer;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericRadioButton;
 import org.spoutcraft.api.gui.RadioButton;
@@ -55,7 +54,7 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		if (isSelected() && !firstClick) {
 			topdown = !topdown;
 		}

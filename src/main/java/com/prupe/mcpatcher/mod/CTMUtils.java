@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
 import com.prupe.mcpatcher.mod.CTMUtils$1;
 import com.prupe.mcpatcher.mod.CTMUtils$2;
@@ -24,7 +23,6 @@ import net.minecraft.src.Texture;
 import net.minecraft.src.TextureMap;
 
 public class CTMUtils {
-	private static final MCLogger logger = MCLogger.getLogger("Connected Textures", "CTM");
 	private static final boolean enableStandard = Config.getBoolean("Connected Textures", "standard", true);
 	private static final boolean enableNonStandard = Config.getBoolean("Connected Textures", "nonStandard", true);
 	private static final boolean enableGrass = Config.getBoolean("Connected Textures", "grass", false);
@@ -120,7 +118,6 @@ public class CTMUtils {
 			registerIconsCalled = true;
 
 			if (!changeHandlerCalled) {
-				logger.severe("beforeChange was not called, invoking directly", new Object[0]);
 				changeHandler.beforeChange();
 			}
 
@@ -135,8 +132,6 @@ public class CTMUtils {
 					var4 += var7.func_94275_d() * var7.func_94276_e();
 				}
 			}
-
-			logger.fine("begin registerIcons(%s): %.1fMB used, %d items to go", new Object[] {var2, Float.valueOf((float)(4 * var4) / 1048576.0F), Integer.valueOf(overridesToRegister.size())});
 
 			if (var2.equals("terrain")) {
 				terrainMap = var0;
@@ -165,13 +160,11 @@ public class CTMUtils {
 						float var9 = (float)(4 * var4) / 1048576.0F;
 
 						if (splitTextures > 0) {
-							logger.info("%s map is nearly full (%.1fMB), starting a new one", new Object[] {var2, Float.valueOf(var9)});
 							var4 -= var8.getTotalTextureSize();
 							break;
 						}
 
 						if (!var10) {
-							logger.warning("%s map is nearly full (%.1fMB), crash may be imminent", new Object[] {var2, Float.valueOf(var9)});
 							var10 = true;
 						}
 					}
@@ -181,11 +174,7 @@ public class CTMUtils {
 					var11 = true;
 				}
 			}
-
-			logger.fine("end registerIcons(%s): %.1fMB used, %d items to go", new Object[] {var2, Float.valueOf((float)(4 * var4) / 1048576.0F), Integer.valueOf(overridesToRegister.size())});
-
 			if (var10 || !var11 && !var2.equals("terrain")) {
-				logger.warning("clearing all remaining items", new Object[0]);
 				overridesToRegister.clear();
 			}
 		}
@@ -199,20 +188,16 @@ public class CTMUtils {
 		} else {
 			var3 = var0 + var1 + var2;
 		}
-
-		logger.finer("getOverridePath(%s, %s, %s) -> %s", new Object[] {var0, var1, var2, var3});
 		return var3;
 	}
 
 	public static String getOverrideTextureName(String var0) {
 		if (overrideTextureName == null) {
 			if (var0.matches("^\\d+$")) {
-				logger.warning("no override set for %s", new Object[] {var0});
 			}
 
 			return var0;
 		} else {
-			logger.finer("getOverrideTextureName(%s) -> %s", new Object[] {var0, overrideTextureName});
 			return overrideTextureName;
 		}
 	}
@@ -305,8 +290,6 @@ public class CTMUtils {
 	}
 
 	private static ITileOverride[] registerOverride(ITileOverride[] var0, ITileOverride var1, String var2) {
-		logger.fine("using %s for %s", new Object[] {var1.toString(), var2});
-
 		if (var0 == null) {
 			return new ITileOverride[] {var1};
 		} else {
@@ -367,10 +350,6 @@ public class CTMUtils {
 		return registerIconsCalled;
 	}
 
-	static MCLogger access$1100() {
-		return logger;
-	}
-
 	static int access$1200() {
 		return maxRecursion;
 	}
@@ -383,7 +362,6 @@ public class CTMUtils {
 		}
 
 		int var0 = Minecraft.getGLMaximumTextureSize();
-		logger.config("max texture size is %dx%d", new Object[] {Integer.valueOf(var0), Integer.valueOf(var0)});
 		MAX_CTM_TEXTURE_SIZE = var0 * var0 * 7 / 8;
 		changeHandler = new CTMUtils$1("Connected Textures", 2);
 		TexturePackChangeHandler.register(changeHandler);

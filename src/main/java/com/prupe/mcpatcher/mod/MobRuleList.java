@@ -1,6 +1,5 @@
 package com.prupe.mcpatcher.mod;
 
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.mod.MobRuleList$MobRuleEntry;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 class MobRuleList {
-	private static final MCLogger logger = MCLogger.getLogger("Random Mobs");
 	public static final String ALTERNATIVES_REGEX = "_(eyes|overlay|tame|angry|collar|fur|invul)\\.properties$";
 	private static final HashMap allRules = new HashMap();
 	private final String baseSkin;
@@ -33,17 +31,12 @@ class MobRuleList {
 					this.entries = null;
 					return;
 				} else {
-					logger.fine("found %d variations for %s", new Object[] {Integer.valueOf(this.skinCount), var1});
 					String var8 = var1.replace(".png", ".properties");
 					var3 = var8.replaceFirst("_(eyes|overlay|tame|angry|collar|fur|invul)\\.properties$", ".properties");
 					Properties var4 = TexturePackAPI.getProperties(var8);
 
 					if (var4 == null && !var8.equals(var3)) {
 						var4 = TexturePackAPI.getProperties(var3);
-
-						if (var4 != null) {
-							logger.fine("using %s for %s", new Object[] {var3, var1});
-						}
 					}
 
 					ArrayList var5 = new ArrayList();
@@ -59,7 +52,6 @@ class MobRuleList {
 									break;
 								}
 							} else {
-								logger.fine("  %s", new Object[] {var7.toString()});
 								var5.add(var7);
 							}
 

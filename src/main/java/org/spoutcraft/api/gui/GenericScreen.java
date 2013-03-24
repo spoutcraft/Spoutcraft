@@ -29,22 +29,20 @@ import org.lwjgl.opengl.GL11;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.UnsafeClass;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 
 @UnsafeClass
 public abstract class GenericScreen extends GenericWidget implements Screen {
-	protected HashMap<Widget, Addon> widgets = new HashMap<Widget, Addon>();
+	protected HashMap<Widget, String> widgets = new HashMap<Widget, String>();
 	protected int playerId;
 	protected boolean bgvis;
 	protected int mouseX = -1, mouseY = -1;
-	private Addon spoutcraft;
+	private String spoutcraft = "Spoutcraft";
 
 	public GenericScreen() {
 		screenWidth = Spoutcraft.getClient().getRenderDelegate().getScreenWidth();
 		screenHeight = Spoutcraft.getClient().getRenderDelegate().getScreenHeight();
-		spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 	}
 
 	public GenericScreen(int playerId) {
@@ -87,7 +85,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		return attachWidget(null, widget);
 	}
 
-	public Screen attachWidget(Addon addon, Widget widget) {
+	public Screen attachWidget(String addon, Widget widget) {
 		if (addon == null) {
 			addon = spoutcraft;
 		}
@@ -97,7 +95,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		return this;
 	}
 
-	public Screen attachWidgets(Addon addon, Widget ...widgets) {
+	public Screen attachWidgets(String addon, Widget ...widgets) {
 		for (Widget widget:widgets) {
 			attachWidget(addon, widget);
 		}
@@ -110,7 +108,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		return this;
 	}
 
-	public Screen removeWidgets(Addon addon) {
+	public Screen removeWidgets(String addon) {
 		for (Widget i : getAttachedWidgets()) {
 			if (widgets.get(i) != null && widgets.get(i).equals(addon)) {
 				removeWidget(i);
@@ -138,7 +136,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 
 	public boolean updateWidget(Widget widget) {
 		if (widgets.containsKey(widget)) {
-			Addon addon = widgets.get(widget);
+			String addon = widgets.get(widget);
 			widgets.remove(widget);
 			widgets.put(widget, addon);
 			widget.setScreen(this);

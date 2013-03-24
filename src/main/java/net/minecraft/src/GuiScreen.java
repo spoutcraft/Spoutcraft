@@ -14,10 +14,6 @@ import org.lwjgl.opengl.GL11;
 // Spout Start
 import java.util.IdentityHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
-import org.spoutcraft.api.entity.Player;
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.api.event.screen.SliderDragEvent;
-import org.spoutcraft.api.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.api.gui.*;
 import org.spoutcraft.api.gui.GenericComboBox.ComboBoxView;
 import org.spoutcraft.api.gui.Slot;
@@ -69,14 +65,6 @@ public class GuiScreen extends Gui {
 	private long lastClick = 0;
 	protected static RenderItem ourItemRenderer = new RenderItem();
 	private boolean firstrun = true;
-
-	public Player getPlayer() {
-		if (this.mc.thePlayer != null) {
-			return (Player) this.mc.thePlayer.spoutEnty;
-		}
-		return null;
-	}
-
 	protected IdentityHashMap<TextField, ScheduledTextFieldUpdate> scheduledTextFieldUpdates = new IdentityHashMap<TextField, ScheduledTextFieldUpdate>();
 
 	/**
@@ -146,14 +134,12 @@ public class GuiScreen extends Gui {
 
 	// Spout Start
 	public final void update(Screen screen) {
-		SpoutClient.enableSandbox();
 		if (this.screen != null) {
 			for (Widget w : this.screen.getAttachedWidgets()) {
 				screen.attachWidget(w.getAddon(), w);
 			}
 		}
 		this.screen = screen;
-		SpoutClient.disableSandbox();
 	}
 	// Spout End
 
@@ -181,7 +167,6 @@ public class GuiScreen extends Gui {
 		if (getScreen() == null) {
 			return;
 		}
-		SpoutClient.enableSandbox();
 		screen.setMouseX(mouseX);
 		screen.setMouseY(mouseY);
 
@@ -262,8 +247,6 @@ public class GuiScreen extends Gui {
 		if (openCombobox != null) {
 			openCombobox.closeList();
 		}
-
-		SpoutClient.disableSandbox();
 	}
 
 	private void handleClickOnSlot(Slot slot, int button) {
@@ -363,20 +346,9 @@ public class GuiScreen extends Gui {
 	}
 
 	private void playSoundFX(String sound, float f, float f1) {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
-		try {
-			this.mc.sndManager.playSoundFX(sound, 1.0F, 1.0F);
-		} finally {
-			if (wasSandboxed) {
-				SpoutClient.enableSandbox();
-			}
-		}
+		this.mc.sndManager.playSoundFX(sound, 1.0F, 1.0F);
 	}
 
-	// Already in sandbox, in mouseClickedPre
 	private boolean handleClickOnListWidget(ListWidget lw, int mouseX, int mouseY) {
 		int x = (int) (mouseX - lw.getActualX());
 		int y = (int) (mouseY - lw.getActualY());
@@ -421,7 +393,6 @@ public class GuiScreen extends Gui {
 		return false;
 	}
 
-	// Already in sandbox, in mouseClickedPre
 	private boolean handleClickOnScrollable(Scrollable lw, int mouseX, int mouseY) {
 		int x = (int) (mouseX - lw.getActualX());
 		int y = (int) (mouseY - lw.getActualY());
@@ -451,7 +422,6 @@ public class GuiScreen extends Gui {
 		return false;
 	}
 
-	// Already in sandbox, in mouseClickedPre
 	private void handleButtonClick(Button control) {
 		if (control instanceof CheckBox) {
 			CheckBox check = (CheckBox) control;
@@ -463,9 +433,7 @@ public class GuiScreen extends Gui {
 		}
 		this.buttonClicked((Button) control);
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
-		ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
-		((Button) control).onButtonClick(event);
-		SpoutClient.getInstance().getAddonManager().callEvent(event);
+		((Button) control).onButtonClick();
 		if (control instanceof GenericComboBox) {
 			PacketComboBox packet = new PacketComboBox((GenericComboBox) control);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
@@ -508,7 +476,6 @@ public class GuiScreen extends Gui {
 		if (getScreen() == null) {
 			return;
 		}
-		SpoutClient.enableSandbox();
 		screen.setMouseX(mouseX);
 		screen.setMouseY(mouseY);
 		for (Widget widget : screen.getAttachedWidgets(true)) {
@@ -522,9 +489,7 @@ public class GuiScreen extends Gui {
 						if (control instanceof Slider && ((Slider) control).isDragging()) {
 							((Slider) control).setDragging(false);
 							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, ((Slider) control).getSliderPosition()));
-							SliderDragEvent event = SliderDragEvent.getInstance(getPlayer(), screen, (Slider) control, ((Slider) control).getSliderPosition());
-							((Slider) control).onSliderDrag(event);
-							SpoutClient.getInstance().getAddonManager().callEvent(event);
+							((Slider) control).onSliderDrag(((Slider) control).getSliderPosition(), ((Slider) control).getSliderPosition());
 						}
 					}
 				}
@@ -545,7 +510,6 @@ public class GuiScreen extends Gui {
 				holding = null;
 			}
 		}
-		SpoutClient.disableSandbox();
 	}
 
 	protected boolean shouldShowTooltip() {
@@ -582,16 +546,13 @@ public class GuiScreen extends Gui {
 		this.height = par3;
 		this.buttonList.clear();
 		// Spout Start
-		SpoutClient.enableSandbox();
 		if (!(this instanceof CustomScreen) && screen != null && !firstrun) {
 			for (Widget w : screen.getAttachedWidgets()) {
 				screen.removeWidget(w);
 			}
 		}
 		firstrun = false;
-		SpoutClient.disableSandbox();
-		bg = (GenericGradient) new GenericGradient().setHeight(this.height)
-				.setWidth(this.width);
+		bg = (GenericGradient) new GenericGradient().setHeight(this.height).setWidth(this.width);
 		// Spout End
 		this.initGui();
 	}
@@ -647,13 +608,11 @@ public class GuiScreen extends Gui {
 			y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 			this.mouseMovedOrUpPre(x, y, Mouse.getEventButton());
 		}
-		SpoutClient.enableSandbox();
 		int scroll = Mouse.getEventDWheel();
 		if (scroll != 0) {
 			scroll *= 7;
 			handleScroll(x, y, scroll);
 		}
-		SpoutClient.disableSandbox();
 	}
 
 
@@ -689,8 +648,6 @@ public class GuiScreen extends Gui {
 		if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
 			Keyboard.enableRepeatEvents(false);
 		} else if (getScreen() != null) {
-			SpoutClient.enableSandbox();
-
 			boolean tab = Keyboard.getEventKey() == Keyboard.KEY_TAB;
 			TextField focusedTF = null;
 			ConcurrentSkipListMap<Integer, TextField> tabIndexMap = tab ? new ConcurrentSkipListMap<Integer, TextField>() : null;
@@ -723,13 +680,7 @@ public class GuiScreen extends Gui {
 					// Pass typed key to text processor
 					} else if (tf.isEnabled() && tf.isFocus()) {
 						if (tf.getTextProcessor().handleInput(Keyboard.getEventCharacter(), Keyboard.getEventKey())) {
-							TextFieldChangeEvent event = TextFieldChangeEvent.getInstance(getPlayer(), screen, tf, tf.getText());
-							tf.onTextFieldChange(event);
-							SpoutClient.getInstance().getAddonManager().callEvent(event);
-
-							// Disable the sandbox for this thread
-							SpoutClient.disableSandbox();
-
+							tf.onTextFieldChange();
 							ScheduledTextFieldUpdate updateThread = null;
 							if (scheduledTextFieldUpdates.containsKey(tf)) {
 								updateThread = scheduledTextFieldUpdates.get(tf);
@@ -743,9 +694,6 @@ public class GuiScreen extends Gui {
 								scheduledTextFieldUpdates.put(tf, updateThread);
 								updateThread.start();
 							}
-
-							// Re-enable the sandbox
-							SpoutClient.enableSandbox();
 						}
 						handled = true;
 						break;
@@ -797,8 +745,6 @@ public class GuiScreen extends Gui {
 					handled = true;
 				}
 			}
-
-			SpoutClient.disableSandbox();
 		}
 		if (!handled) {
 			// Start of vanilla code - got wrapped with this if
@@ -878,13 +824,10 @@ public class GuiScreen extends Gui {
 			return;
 		}
 		// Draw ALL the widgets!
-		SpoutClient.enableSandbox();
 		screen.render();
 		if (shouldShowTooltip()) {
 			drawTooltips(x, y);
 		}
-
-		SpoutClient.disableSandbox();
 	}
 
 	// Note: already inside of the sandbox
@@ -892,7 +835,7 @@ public class GuiScreen extends Gui {
 		// Draw the tooltip!
 		String tooltip = "";
 		// Widget tooltipWidget = null;
-		priority: for (RenderPriority priority : RenderPriority.values()) {
+		for (RenderPriority priority : RenderPriority.values()) {
 			for (Widget widget : screen.getAttachedWidgets(true)) { // We need ALL the tooltips now
 				if (widget.getPriority() == priority) {
 					if (widget.isVisible() && isInBoundingRect(widget, x, y) && widget.getTooltip() != null && !widget.getTooltip().equals("")) {
@@ -916,10 +859,9 @@ public class GuiScreen extends Gui {
 		}
 	}
 
-	// Already inside of the sandbox
 	public void drawTooltip(String tooltip, int x, int y) {
 		GL11.glPushMatrix();
-		String lines[] = this.fontRenderer.wrapFormattedStringToWidth(tooltip,(width-22)).split("\n");	// Meow- Autowrap tooltips to reported screen width
+		String lines[] = this.fontRenderer.wrapFormattedStringToWidth(tooltip,(width-22)).split("\n");	//Autowrap tooltips to reported screen width
 		int tooltipWidth = 0;
 		int tooltipHeight = 8 * lines.length + 3;
 		for (String line : lines) {
@@ -984,24 +926,13 @@ public class GuiScreen extends Gui {
 			GL11.glPopMatrix();
 	}
 
-	// This is used too many places, so we will make sure it's sandboxed
 	public boolean isInBoundingRect(Widget widget, int x, int y) {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (!wasSandboxed) {
-			SpoutClient.enableSandbox();
-		}
-
 		int left = (int) widget.getActualX();
 		int top = (int) widget.getActualY();
 		int height = (int) widget.getHeight();
 		int width = (int) widget.getWidth();
 		int right = left + width;
 		int bottom = top + height;
-
-		if (!wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
-
 		if (left <= x && x < right && top <= y && y < bottom) {
 			return true;
 		}

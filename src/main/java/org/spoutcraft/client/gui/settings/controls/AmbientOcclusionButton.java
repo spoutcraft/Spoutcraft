@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;
 
 public class AmbientOcclusionButton extends AutomatedCheckBox {
@@ -32,7 +31,7 @@ public class AmbientOcclusionButton extends AutomatedCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setAmbientOcclusion(!Configuration.isAmbientOcclusion());
 		Configuration.write();
 

@@ -38,8 +38,6 @@ import net.minecraft.src.TexturePackList;
 import org.bukkit.ChatColor;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericButton;
@@ -61,17 +59,16 @@ public class GuiUnexpectedError extends GuiScreen {
 	}
 
 	public void initGui() {
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 
 		GenericScrollArea screen = new GenericScrollArea();
 		screen.setHeight(height - 16 - 24).setWidth(width).setY(16 + 24).setX(0);
-		getScreen().attachWidget(spoutcraft, screen);
+		getScreen().attachWidget("Spoutcraft", screen);
 
 		GenericLabel label = new GenericLabel("Oh noes! An error has occurred!");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(16);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
-		getScreen().attachWidget(spoutcraft, label);
+		getScreen().attachWidget("Spoutcraft", label);
 
 		int top = 60;
 		Color grey = new Color(0.80F, 0.80F, 0.80F, 0.65F);
@@ -79,7 +76,7 @@ public class GuiUnexpectedError extends GuiScreen {
 		hastebinLink = new GenericLabel("Generating hastie...");
 		hastebinLink.setX(95).setY(top);
 		hastebinLink.setTextColor(grey);
-		screen.attachWidget(spoutcraft, hastebinLink);
+		screen.attachWidget("Spoutcraft", hastebinLink);
 		generateHastie();
 
 		Button button = new CopyErrorURL(this).setText("Copy Link");
@@ -87,7 +84,7 @@ public class GuiUnexpectedError extends GuiScreen {
 		button.setX((int) (hastebinLink.getWidth() + hastebinLink.getX() + 10.0));
 		button.setY(top-5);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 
 		top += 25;
 
@@ -96,14 +93,14 @@ public class GuiUnexpectedError extends GuiScreen {
 		button.setX((int) (width / 2 - button.getWidth() - button.getWidth() / 2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 
 		button = new IgnoreErrorButton().setText("Ignore");
 		button.setHeight(20).setWidth(70);
 		button.setX((int) (width / 2 + button.getWidth() / 2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		top += 30;
 	}
 
@@ -131,7 +128,7 @@ public class GuiUnexpectedError extends GuiScreen {
 			builder.append("-----------------------------------").append("\n");
 
 			builder.append("Minecraft Information:\n");
-			builder.append("    Texture Pack: ").append(TexturePackList.getTexturePackName(TexturePackList.getSelectedTexturePack())).append("\n");
+			builder.append("    Texture Pack: ").append(Minecraft.theMinecraft.texturePackList.getSelectedTexturePack().getTexturePackFileName()).append("\n");
 			//builder.append("    Texture Pack Res: ").append(TileSize.int_size + "x").append("\n");			
 			builder.append("    LWJGL Version: ").append(Sys.getVersion()).append("\n");
 
@@ -185,33 +182,29 @@ class CopyErrorURL extends GenericButton {
 		this.error = error;
 	}
 
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		error.copyErrorToClipboard();
 	}
 }
 
 class IgnoreErrorButton extends GenericButton {
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 }
 
 class ReportErrorButton extends GenericButton {
-	public void onButtonClick(ButtonClickEvent event) {
-		SpoutClient.disableSandbox();
+	public void onButtonClick() {
 		try {
 			URL url = new URL("http://spout.in/issues");
 			Desktop.getDesktop().browse(url.toURI());
-		} catch (Exception e) {
-		} finally {
-			SpoutClient.enableSandbox();
-		}
+		} catch (Exception e) { }
 		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 }
 
 class ExitGameButton extends GenericButton {
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Minecraft.theMinecraft.shutdownMinecraftApplet();
 	}
 }

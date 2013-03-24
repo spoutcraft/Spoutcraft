@@ -1,11 +1,9 @@
 package com.prupe.mcpatcher.mod;
 
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 
 final class ColorMap {
-	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
 	private static final int COLORMAP_SIZE = 256;
 	private static final float COLORMAP_SCALE = 255.0F;
 	private int[] map;
@@ -33,11 +31,9 @@ final class ColorMap {
 
 			if (this.map != null) {
 				if (this.map.length != 65536) {
-					logger.error("%s must be %dx%d", new Object[] {var2, Integer.valueOf(256), Integer.valueOf(256)});
 					this.map = null;
 				} else {
 					this.mapDefault = this.colorize(16777215, 0.5D, 1.0D);
-					logger.fine("using %s, default color %06x", new Object[] {var2, Integer.valueOf(this.mapDefault)});
 				}
 			}
 		}

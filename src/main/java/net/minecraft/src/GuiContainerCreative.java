@@ -544,21 +544,17 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderHelper.enableGUIStandardItemLighting();
-		int var4 = this.mc.renderEngine.func_98187_b("/gui/allitems.png");
-		CreativeTabs var5 = CreativeTabs.creativeTabArray[selectedTabIndex];
-		int var6 = this.mc.renderEngine.func_98187_b("/gui/creative_inv/" + var4.getBackgroundImageName());
-		CreativeTabs[] var7 = CreativeTabs.creativeTabArray;
-		int var8 = var7.length;
-		int var9;
+		CreativeTabs var4 = CreativeTabs.creativeTabArray[selectedTabIndex];
+		CreativeTabs[] var5 = CreativeTabs.creativeTabArray;
+		int var6 = var5.length;
+		int var7;
 
-		// Spout Start - Don't render the last one, we handle that
-		for (var9 = 0; var9 < var8 - 1; ++var9) {
-		// Spout End
-			CreativeTabs var10 = var7[var9];
-			this.mc.renderEngine.bindTexture(var4);
+		for (var7 = 0; var7 < var6 - 1; ++var7) { //Spout don't render the last tab
+			CreativeTabs var8 = var5[var7];
+			this.mc.renderEngine.func_98187_b("/gui/allitems.png");
 
-			if (var10.getTabIndex() != selectedTabIndex) {
-				this.renderCreativeTab(var10);
+			if (var8.getTabIndex() != selectedTabIndex) {
+				this.renderCreativeTab(var8);
 			}
 		}
 
@@ -566,17 +562,17 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		renderInInventory(true);
 		// Spout End
 
-		this.mc.renderEngine.bindTexture(var6);
+		this.mc.renderEngine.func_98187_b("/gui/creative_inv/" + var4.getBackgroundImageName());
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		this.searchField.drawTextBox();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		int var11 = this.guiLeft + 175;
-		var8 = this.guiTop + 18;
-		var9 = var8 + 112;
-		this.mc.renderEngine.bindTexture(var4);
+		int var9 = this.guiLeft + 175;
+		var6 = this.guiTop + 18;
+		var7 = var6 + 112;
+		this.mc.renderEngine.func_98187_b("/gui/allitems.png");
 
-		if (var5.shouldHidePlayerInventory()) {
-			this.drawTexturedModalRect(var11, var8 + (int)((float)(var9 - var8 - 17) * this.currentScroll), 232 + (this.needsScrollBars() ? 0 : 12), 0, 12, 15);
+		if (var4.shouldHidePlayerInventory()) {
+			this.drawTexturedModalRect(var9, var6 + (int)((float)(var7 - var6 - 17) * this.currentScroll), 232 + (this.needsScrollBars() ? 0 : 12), 0, 12, 15);
 		}
 
 		// Spout Start

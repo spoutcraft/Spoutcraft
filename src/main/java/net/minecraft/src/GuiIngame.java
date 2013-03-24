@@ -106,10 +106,6 @@ public class GuiIngame extends Gui {
 		int var17;
 
 		this.renderBossHealth();
-
-		// Better safe than sorry
-		SpoutClient.enableSandbox();
-
 		// Toggle visibility if needed
 		if (needsUpdate && mainScreen.getHealthBar().isVisible() == mc.playerController.isInCreativeMode()) {
 			mainScreen.toggleSurvivalHUD(!mc.playerController.isInCreativeMode());
@@ -135,8 +131,6 @@ public class GuiIngame extends Gui {
 		// Exp Bar Begin
 		mainScreen.getExpBar().render();
 		// Exp Bar End
-
-		SpoutClient.disableSandbox();
 
 		map.onRenderTick();
 
@@ -172,9 +166,7 @@ public class GuiIngame extends Gui {
 			GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
 		}
 
-		SpoutClient.enableSandbox();
 		mainScreen.render();
-		SpoutClient.disableSandbox();
 		if (this.mc.gameSettings.showDebugInfo) {
 			this.mc.mcProfiler.startSection("debug");
 			GL11.glPushMatrix();

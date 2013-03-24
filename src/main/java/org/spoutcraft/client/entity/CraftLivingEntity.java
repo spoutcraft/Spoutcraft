@@ -19,23 +19,14 @@
  */
 package org.spoutcraft.client.entity;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 
-import org.spoutcraft.api.block.Block;
-import org.spoutcraft.api.entity.Entity;
 import org.spoutcraft.api.entity.EntitySkinType;
-import org.spoutcraft.api.entity.LivingEntity;
-import org.spoutcraft.api.util.BlockIterator;
 import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.api.util.MutableLocation;
 
-public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+public class CraftLivingEntity extends CraftEntity {
 	public CraftLivingEntity(EntityLiving living) {
 		super(living);
 	}
@@ -64,46 +55,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	}
 
 	public FixedLocation getEyeLocation() {
-		return new MutableLocation(getWorld(), handle.posX, handle.posY + getEyeHeight(), handle.posZ);
-	}
-
-	private List<Block> getLineOfSight(HashSet<Byte> transparent, int maxDistance, int maxLength) {
-		if (maxDistance > 120) {
-			maxDistance = 120;
-		}
-		ArrayList<Block> blocks = new ArrayList<Block>();
-		Iterator<Block> itr = new BlockIterator(this, maxDistance);
-		while (itr.hasNext()) {
-			Block block = itr.next();
-			blocks.add(block);
-			if (maxLength != 0 && blocks.size() > maxLength) {
-				blocks.remove(0);
-			}
-			int id = block.getTypeId();
-			if (transparent == null) {
-				if (id != 0) {
-					break;
-				}
-			} else {
-				if (!transparent.contains((byte) id)) {
-					break;
-				}
-			}
-		}
-		return blocks;
-	}
-
-	public List<Block> getLineOfSight(HashSet<Byte> transparent, int maxDistance) {
-		return getLineOfSight(transparent, maxDistance, 0);
-	}
-
-	public Block getTargetBlock(HashSet<Byte> transparent, int maxDistance) {
-		List<Block> blocks = getLineOfSight(transparent, maxDistance, 1);
-		return blocks.get(0);
-	}
-
-	public List<Block> getLastTwoTargetBlocks(HashSet<Byte> transparent, int maxDistance) {
-		return getLineOfSight(transparent, maxDistance, 2);
+		return new MutableLocation(handle.posX, handle.posY + getEyeHeight(), handle.posZ);
 	}
 
 	public boolean isInsideVehicle() {
@@ -144,12 +96,12 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 		getEntityLiving().damageEntity(net.minecraft.src.DamageSource.generic, amount);
 	}
 
-	public void damage(int amount, Entity source) {
+	public void damage(int amount, CraftEntity source) {
 		net.minecraft.src.DamageSource reason = net.minecraft.src.DamageSource.generic;
 
-		if (source instanceof org.spoutcraft.api.entity.HumanEntity) {
+		if (source instanceof CraftHumanEntity) {
 			reason = net.minecraft.src.DamageSource.causePlayerDamage(((CraftHumanEntity)source).getMCPlayer());
-		} else if (source instanceof LivingEntity) {
+		} else if (source instanceof CraftLivingEntity) {
 			reason = net.minecraft.src.DamageSource.causeMobDamage(((CraftLivingEntity)source).getEntityLiving());
 		}
 

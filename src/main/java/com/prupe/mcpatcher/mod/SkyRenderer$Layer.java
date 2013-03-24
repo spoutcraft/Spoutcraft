@@ -125,11 +125,6 @@ class SkyRenderer$Layer {
 						this.a = (Math.sin(var11) - Math.sin(var5)) / var13;
 						this.b = (Math.cos(var5) - Math.cos(var11)) / var13;
 						this.c = (Math.cos(var11) * Math.sin(var5) - Math.cos(var5) * Math.sin(var11)) / var13;
-						SkyRenderer.access$400().finer("%s.properties: y = %f cos x + %f sin x + %f", new Object[] {this.prefix, Double.valueOf(this.a), Double.valueOf(this.b), Double.valueOf(this.c)});
-						SkyRenderer.access$400().finer("  at %f: %f", new Object[] {Double.valueOf(var5), Double.valueOf(this.f(var5))});
-						SkyRenderer.access$400().finer("  at %f: %f", new Object[] {Double.valueOf(var7), Double.valueOf(this.f(var7))});
-						SkyRenderer.access$400().finer("  at %f: %f", new Object[] {Double.valueOf(var9), Double.valueOf(this.f(var9))});
-						SkyRenderer.access$400().finer("  at %f: %f", new Object[] {Double.valueOf(var11), Double.valueOf(this.f(var11))});
 						return true;
 					}
 				}
@@ -138,7 +133,6 @@ class SkyRenderer$Layer {
 	}
 
 	private boolean addError(String var1, Object ... var2) {
-		SkyRenderer.access$400().error(this.prefix + ".properties: " + var1, var2);
 		this.valid = false;
 		return false;
 	}

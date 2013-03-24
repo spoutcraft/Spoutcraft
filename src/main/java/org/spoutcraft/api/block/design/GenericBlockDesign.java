@@ -25,14 +25,12 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.World;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.entity.Item;
 import org.spoutcraft.api.gui.MinecraftTessellator;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.material.Block;
 import org.spoutcraft.api.packet.PacketUtil;
 import org.spoutcraft.api.util.MutableIntegerVector;
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class GenericBlockDesign implements BlockDesign {
 	protected boolean reset = false;
@@ -72,7 +70,7 @@ public class GenericBlockDesign implements BlockDesign {
 	public GenericBlockDesign() {
 	}
 
-	public GenericBlockDesign(float lowXBound, float lowYBound, float lowZBound, float highXBound, float highYBound, float highZBound, String textureURL, Addon textureAddon, float[][] xPos, float[][] yPos, float[][] zPos, float[][] textXPos, float[][] textYPos, int renderPass) {
+	public GenericBlockDesign(float lowXBound, float lowYBound, float lowZBound, float highXBound, float highYBound, float highZBound, String textureURL, String textureAddon, float[][] xPos, float[][] yPos, float[][] zPos, float[][] textXPos, float[][] textYPos, int renderPass) {
 		this.lowXBound = lowXBound;
 		this.lowYBound = lowYBound;
 		this.lowZBound = lowZBound;
@@ -82,7 +80,7 @@ public class GenericBlockDesign implements BlockDesign {
 		this.highZBound = highZBound;
 
 		this.textureURL = textureURL;
-		this.textureAddon = textureAddon.getDescription().getName();
+		this.textureAddon = textureAddon;
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.zPos = zPos;
@@ -231,8 +229,8 @@ public class GenericBlockDesign implements BlockDesign {
 
 	private final static String resetString = "[reset]";
 
-	public BlockDesign setTexture(Addon addon, String textureURL) {
-		this.textureAddon = addon.getDescription().getName();
+	public BlockDesign setTexture(String addon, String textureURL) {
+		this.textureAddon = addon;
 		this.textureURL = textureURL;
 		return this;
 	}
@@ -311,7 +309,7 @@ public class GenericBlockDesign implements BlockDesign {
 		return blockVector;
 	}
 
-	public BlockDesign setTexture(Addon addon, Texture texture) {
+	public BlockDesign setTexture(String addon, Texture texture) {
 		this.texture = texture;
 		return setTexture(addon, texture.getTexture());
 	}
@@ -329,7 +327,7 @@ public class GenericBlockDesign implements BlockDesign {
 	}
 
 	public boolean renderBlock(Block block, int x, int y, int z) {
-		World world = Spoutcraft.getWorld();
+		SpoutcraftWorld world = Spoutcraft.getWorld();
 		if (block != null) {
 			boolean enclosed = true;
 			enclosed &= world.isOpaque(x, y + 1, z);
@@ -396,10 +394,10 @@ public class GenericBlockDesign implements BlockDesign {
 		return true;
 	}
 
-	public boolean renderItemstack(Item item, float x, float y, float depth, float rotation, float scale, Random rand) {
+	public boolean renderItemstack(net.minecraft.src.ItemStack item, float x, float y, float depth, float rotation, float scale, Random rand) {
 		int items = 1;
 		if (item != null) {
-			int amt = item.getItemStack().getAmount();
+			int amt = item.stackSize;
 			if (amt > 1) {
 				items = 2;
 			}

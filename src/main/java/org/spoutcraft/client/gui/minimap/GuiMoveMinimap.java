@@ -24,7 +24,6 @@ import org.lwjgl.input.Mouse;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericButton;
@@ -66,8 +65,7 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 		float scale = MinimapConfig.getInstance().getSizeAdjust();
 		sliderScale.setSliderPosition(scale / 4);
 
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		getScreen().attachWidgets(spoutcraft, title, minimapDrag, buttonDone, buttonReset, sliderScale);
+		getScreen().attachWidgets("Spoutcraft", title, minimapDrag, buttonDone, buttonReset, sliderScale);
 	}
 
 	@Override

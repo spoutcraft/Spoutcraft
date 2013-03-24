@@ -2,7 +2,6 @@ package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.BlendMethod;
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import java.util.Properties;
@@ -15,7 +14,6 @@ public class FireworksHelper {
 	private static final int LIT_LAYER = 3;
 	private static final int EXTRA_LAYER = 4;
 	private static final String PARTICLES_PROPERTIES = "/particles.properties";
-	private static final MCLogger logger = MCLogger.getLogger("Better Skies");
 	private static final boolean enable = Config.getBoolean("Better Skies", "brightenFireworks", true);
 	private static BlendMethod blendMethod;
 
@@ -39,13 +37,5 @@ public class FireworksHelper {
 		Properties var0 = TexturePackAPI.getProperties("/particles.properties");
 		String var1 = MCPatcherUtils.getStringProperty(var0, "blend.4", "add");
 		blendMethod = BlendMethod.parse(var1);
-
-		if (blendMethod == null) {
-			logger.error("%s: unknown blend method %s", new Object[] {"/particles.properties", var1});
-		} else if (enable) {
-			logger.config("using %s blending for fireworks particles", new Object[] {blendMethod});
-		} else {
-			logger.config("using default blending for fireworks particles", new Object[0]);
-		}
 	}
 }

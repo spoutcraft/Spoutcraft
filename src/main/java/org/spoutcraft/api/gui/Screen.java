@@ -23,7 +23,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.spoutcraft.api.UnsafeClass;
-import org.spoutcraft.api.addon.Addon;
 
 @UnsafeClass
 public interface Screen extends Widget {
@@ -73,7 +72,7 @@ public interface Screen extends Widget {
 	 * @param Addon that created this widget
 	 * @return screen
 	 */
-	public Screen attachWidget(Addon addon, Widget widget);
+	public Screen attachWidget(String addon, Widget widget);
 
 	/**
 	 * Attaches an array of widgets to this screen
@@ -82,7 +81,7 @@ public interface Screen extends Widget {
 	 * @param widgets to attach
 	 * @return screen
 	 */
-	public Screen attachWidgets(Addon addon, Widget ...widgets);
+	public Screen attachWidgets(String addon, Widget ...widgets);
 
 	/**
 	 * Removes a widget from this screen

@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
@@ -10,7 +9,6 @@ import java.util.Properties;
 import net.minecraft.src.Potion;
 
 public class Colorizer {
-	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
 	private static final String COLOR_PROPERTIES = "/color.properties";
 	private static Properties properties;
 	static final boolean useWaterColors = Config.getBoolean("Custom Colors", "water", true);
@@ -56,7 +54,6 @@ public class Colorizer {
 
 	private static void reloadColorProperties() {
 		if (TexturePackAPI.getProperties("/color.properties", properties)) {
-			logger.finer("reloading %s", new Object[] {"/color.properties"});
 		}
 	}
 
@@ -69,7 +66,6 @@ public class Colorizer {
 	}
 
 	static boolean loadIntColor(String var0, int[] var1, int var2) {
-		logger.config("%s=%06x", new Object[] {var0, Integer.valueOf(var1[var2])});
 		String var3 = properties.getProperty(var0, "");
 
 		if (!var3.equals("")) {
@@ -85,13 +81,11 @@ public class Colorizer {
 	}
 
 	static int loadIntColor(String var0, int var1) {
-		logger.config("%s=%06x", new Object[] {var0, Integer.valueOf(var1)});
 		return MCPatcherUtils.getIntProperty(properties, var0, var1);
 	}
 
 	static void loadFloatColor(String var0, float[] var1) {
 		int var2 = float3ToInt(var1);
-		logger.config("%s=%06x", new Object[] {var0, Integer.valueOf(var2)});
 		intToFloat3(MCPatcherUtils.getIntProperty(properties, var0, var2), var1);
 	}
 

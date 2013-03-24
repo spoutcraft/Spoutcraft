@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
 
 public class FieldOfViewSlider extends GenericSlider {
@@ -32,8 +31,8 @@ public class FieldOfViewSlider extends GenericSlider {
 	}
 
 	@Override
-	public void onSliderDrag(SliderDragEvent event) {
-		Minecraft.theMinecraft.gameSettings.fovSetting = event.getNewPosition();
+	public void onSliderDrag(float old, float newPos) {
+		Minecraft.theMinecraft.gameSettings.fovSetting = newPos;
 		Minecraft.theMinecraft.gameSettings.saveOptions();
 	}
 

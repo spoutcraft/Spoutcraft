@@ -683,9 +683,6 @@ public class GameSettings {
 	 * Saves the options to the options file.
 	 */
 	public void saveOptions() {
-		// Spout Start
-		boolean oldLock = SpoutClient.disableSandbox();
-		// Spout End
 		try {
 			PrintWriter var1 = new PrintWriter(new FileWriter(this.optionsFile));
 			var1.println("music:" + this.musicVolume);
@@ -743,12 +740,7 @@ public class GameSettings {
 		} catch (Exception var3) {
 			this.mc.func_98033_al().func_98236_b("Failed to save options");
 			var3.printStackTrace();
-		// Spout Start
-		} finally {
-			SpoutClient.enableSandbox(oldLock);
-		// Spout End
 		}
-
 		this.sendSettingsToServer();
 	}
 

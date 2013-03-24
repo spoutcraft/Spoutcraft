@@ -34,7 +34,6 @@ import org.yaml.snakeyaml.Yaml;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
@@ -83,16 +82,14 @@ public class GuiNewAbout extends GuiSpoutScreen {
 		textureSpoutcraft = new ClientTexture("/res/logo/spoutcraft.png");
 		textureMinecraft = new ClientTexture("/res/logo/minecraft.png");
 
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		getScreen().attachWidgets(spoutcraft, title, buttonDone, scroll, labelMinecraftVersion, labelSpoutcraftVersion, textureMinecraft, textureSpoutcraft);
+		getScreen().attachWidgets("Spoutcraft", title, buttonDone, scroll, labelMinecraftVersion, labelSpoutcraftVersion, textureMinecraft, textureSpoutcraft);
 
 		load();
 	}
 
 	@SuppressWarnings("unchecked")
 	public void load() {
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		scroll.removeWidgets(spoutcraft);
+		scroll.removeWidgets("Spoutcraft");
 		try {
 			if (root.containsKey("options")) {
 				HashMap<String, Object> options = (HashMap<String, Object>) root
@@ -131,7 +128,7 @@ public class GuiNewAbout extends GuiSpoutScreen {
 							continue;
 						}
 						sectionObject.init(this, title, section.get(sectionType));
-						scroll.attachWidgets(spoutcraft, sectionObject
+						scroll.attachWidgets("Spoutcraft", sectionObject
 								.getWidgets().toArray(new Widget[0]));
 						sections.add(sectionObject);
 					}

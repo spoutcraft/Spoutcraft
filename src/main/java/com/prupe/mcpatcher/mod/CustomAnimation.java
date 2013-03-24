@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
@@ -17,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 public class CustomAnimation {
-	private static final MCLogger logger = MCLogger.getLogger("Custom Animations", "Animation");
 	private static final boolean enable = Config.getBoolean("Extended HD", "animations", true);
 	private static final ArrayList animations = new ArrayList();
 	private final String propertiesName;
@@ -70,14 +68,12 @@ public class CustomAnimation {
 			animations.add(var0);
 
 			if (var0.mipmapLevel == 0) {
-				logger.fine("new %s", new Object[] {var0});
 			}
 		}
 	}
 
 	private static void newStrip(String var0, Properties var1, String var2, String var3, BufferedImage var4, int var5, int var6, int var7, int var8) {
 		if (var4 == null) {
-			logger.error("%s: image %s not found in texture pack", new Object[] {var0, var3});
 		} else if (!var2.equals("/terrain.png") && !var2.equals("/gui/items.png")) {
 			if (var5 >= 0 && var6 >= 0 && var7 > 0 && var8 > 0) {
 				TexturePackAPI.bindTexture(var2);
@@ -121,16 +117,12 @@ public class CustomAnimation {
 							var8 >>= 1;
 						}
 					} else {
-						logger.error("%s: %s dimensions %dx%d do not match %dx%d", new Object[] {var0, var3, Integer.valueOf(var12), Integer.valueOf(var13), Integer.valueOf(var7), Integer.valueOf(var8)});
 					}
 				} else {
-					logger.error("%s: %s dimensions x=%d,y=%d,w=%d,h=%d exceed %s size %dx%d", new Object[] {var0, var3, Integer.valueOf(var5), Integer.valueOf(var6), Integer.valueOf(var7), Integer.valueOf(var8), var2, Integer.valueOf(var9), Integer.valueOf(var10)});
 				}
 			} else {
-				logger.error("%s: %s has invalid dimensions x=%d,y=%d,w=%d,h=%d", new Object[] {var0, var3, Integer.valueOf(var5), Integer.valueOf(var6), Integer.valueOf(var7), Integer.valueOf(var8)});
 			}
 		} else {
-			logger.error("%s: animations cannot have a target of %s", new Object[] {var2});
 		}
 	}
 
@@ -170,7 +162,6 @@ public class CustomAnimation {
 					int var2 = GL11.glGetError();
 
 					if (var2 != 0) {
-						logger.severe("%s: %s", new Object[] {this, GLU.gluErrorString(var2)});
 						this.error = true;
 					} else {
 						this.currentDelay = this.getDelay();
@@ -199,7 +190,6 @@ public class CustomAnimation {
 			return var0;
 		} else {
 			int var2 = var0.getHeight() * var1 / var0.getWidth();
-			logger.finer("resizing to %dx%d", new Object[] {Integer.valueOf(var1), Integer.valueOf(var2)});
 			BufferedImage var3 = new BufferedImage(var1, var2, 2);
 			Graphics2D var4 = var3.createGraphics();
 			var4.drawImage(var0, 0, 0, var1, var2, (ImageObserver)null);
@@ -294,10 +284,6 @@ public class CustomAnimation {
 
 	static boolean access$100() {
 		return enable;
-	}
-
-	static MCLogger access$200() {
-		return logger;
 	}
 
 	static String access$300(CustomAnimation var0) {

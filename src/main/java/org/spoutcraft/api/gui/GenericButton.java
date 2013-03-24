@@ -23,7 +23,6 @@ import java.io.IOException;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.UnsafeClass;
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 
@@ -139,7 +138,7 @@ public class GenericButton extends GenericControl implements Button {
 		return ((Button)super.copy()).setDisabledText(getDisabledText()).setText(getText()).setAuto(isAuto()).setTextColor(getTextColor()).setHoverColor(getHoverColor());
 	}
 
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 	}
 
 	public Label setScale(float scale) {

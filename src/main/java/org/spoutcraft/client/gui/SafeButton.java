@@ -20,7 +20,6 @@
 package org.spoutcraft.client.gui;
 
 import org.spoutcraft.api.ChatColor;
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
 
 public abstract class SafeButton extends GenericButton {
@@ -55,7 +54,7 @@ public abstract class SafeButton extends GenericButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		if (currentThread != null) {
 			currentThread.interrupt();
 			currentThread = null;

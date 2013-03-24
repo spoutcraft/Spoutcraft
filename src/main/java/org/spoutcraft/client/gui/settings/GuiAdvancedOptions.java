@@ -26,7 +26,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.*;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
@@ -110,19 +109,18 @@ public class GuiAdvancedOptions extends GuiScreen {
 	}
 
 	public void initGui() {
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		Control control;
 
 		GenericScrollArea screen = new GenericScrollArea();
 		scrollArea = screen;
 		screen.setHeight(height - 24 - 30).setWidth(width).setY(24).setX(0);
-		getScreen().attachWidget(spoutcraft, screen);
+		getScreen().attachWidget("Spoutcraft", screen);
 
 		GenericLabel label = new GenericLabel("Game Settings");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(10);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
-		getScreen().attachWidget(spoutcraft, label);
+		getScreen().attachWidget("Spoutcraft", label);
 
 		int left = (int)(width / 2  - 155);
 		int right = (int)(width / 2 + 5);
@@ -130,20 +128,20 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		control = new ResetButton(parent).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
-		getScreen().attachWidget(spoutcraft, control);
+		getScreen().attachWidget("Spoutcraft", control);
 
 		switchToSimpleCheck = new GenericCheckBox("Advanced");
 		switchToSimpleCheck.setChecked(true);
 		switchToSimpleCheck.setAlign(WidgetAnchor.CENTER_CENTER);
 		switchToSimpleCheck.setX(5).setY(3).setWidth(100).setHeight(20);
 		switchToSimpleCheck.setPriority(RenderPriority.Low);
-		getScreen().attachWidget(spoutcraft, switchToSimpleCheck);
+		getScreen().attachWidget("Spoutcraft", switchToSimpleCheck);
 
 		doneButton = new GenericButton("Done");
 		doneButton.setAlign(WidgetAnchor.CENTER_CENTER);
 		doneButton.setX(right).setY(height - 25);
 		doneButton.setHeight(20).setWidth(150);
-		getScreen().attachWidget(spoutcraft, doneButton);
+		getScreen().attachWidget("Spoutcraft", doneButton);
 
 		int top = 5;
 
@@ -154,59 +152,59 @@ public class GuiAdvancedOptions extends GuiScreen {
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
+		screen.attachWidget("Spoutcraft", label);
 		top += 11;
 
 		Gradient linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
+		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 
 		control = new MusicSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new SoundEffectsSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new FieldOfViewSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new SensitivitySlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new InvertMouseButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new DifficultyButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new ControlsButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new LanguagesButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new ChatButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new MinimapButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
 
@@ -215,14 +213,14 @@ public class GuiAdvancedOptions extends GuiScreen {
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
+		screen.attachWidget("Spoutcraft", label);
 		top += 11;
 
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
+		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 
 		// TODO Clean up references to Spoutworth and remove message
@@ -230,7 +228,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		message.setWidth(150).setHeight(20).setX(left).setY(top);
 
 		if (Configuration.isAutomatePerformance()) {
-			screen.attachWidget(spoutcraft, message);
+			screen.attachWidget("Spoutcraft", message);
 
 			//top += 47;
 		}
@@ -239,13 +237,13 @@ public class GuiAdvancedOptions extends GuiScreen {
 		button = (RadioButton) new FavorPerformanceButton("Favor Performance", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(left).setY(top);
 		button.setTooltip("Spoutcraft will attempt to provide smooth framerates, potentially at the cost of appearance.");
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		button.setSelected(Configuration.isAutomatePerformance() && Configuration.getAutomateMode() == 0);
 
 		button = (RadioButton) new OptimalGameplayButton("Balanced Gameplay", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(right).setY(top);
 		button.setTooltip("Spoutcraft will attempt to provide reasonable framerates and appearance.");
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		button.setSelected(Configuration.isAutomatePerformance() && Configuration.getAutomateMode() == 1);
 
 		top += 22;
@@ -253,13 +251,13 @@ public class GuiAdvancedOptions extends GuiScreen {
 		button = (RadioButton) new FavorAppearanceButton("Favor Appearance", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(left).setY(top);
 		button.setTooltip("Spoutcraft will attempt to provide the best appearance, but potentially at the cost of framerates.");
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		button.setSelected(Configuration.isAutomatePerformance() && Configuration.getAutomateMode() == 2);
 
 		button = (RadioButton) new ManualSelectionButton("Manual Selection", message, parent).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(right).setY(top);
 		button.setTooltip("Disable automatic performance settings and adjust the settings manually.");
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		button.setSelected(!Configuration.isAutomatePerformance());
 
 		top += 22;
@@ -268,72 +266,72 @@ public class GuiAdvancedOptions extends GuiScreen {
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
+		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 
 		ArrayList<CheckBox> graphicCheckboxes = new ArrayList<CheckBox>();
 
 		control = new FancyGraphicsButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX((int) (width / 2 - size / 2) - 75/2).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		UUID fancyGraphics = control.getId();
 		top+=20;
 
 		control = new FancyGrassButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		graphicCheckboxes.add((CheckBox) control);
 
 		control = new FancyCloudsButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		graphicCheckboxes.add((CheckBox) control);
 
 		top += 22;
 
 		control = new BiomeColorsButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		graphicCheckboxes.add((CheckBox) control);
 
 		control = new FancyFogButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		graphicCheckboxes.add((CheckBox) control);
 
 		top += 22;
 
 		control = new FancyWaterButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		graphicCheckboxes.add((CheckBox) control);
 
 		control = new FancyTreesButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		graphicCheckboxes.add((CheckBox) control);
 
 		top += 22;
 
 		control = new FancyLightingButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		graphicCheckboxes.add((CheckBox) control);
 
 		control = new FancyWeatherButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		graphicCheckboxes.add((CheckBox) control);
 
 		top += 22;
 
 		control = new SmoothFPSButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new FancyParticlesButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		graphicCheckboxes.add((CheckBox) control);
 
 		((FancyGraphicsButton)screen.getWidget(fancyGraphics)).setLinkedButtons(graphicCheckboxes);
@@ -342,31 +340,31 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		control = new ConnectedTexturesButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new ServerLightButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
 
 		control = new RandomMobTextureButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new AmbientOcclusionButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
 
 		control = new RenderDistanceButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new BetterGrassButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		top += 5;
@@ -376,42 +374,42 @@ public class GuiAdvancedOptions extends GuiScreen {
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
+		screen.attachWidget("Spoutcraft", label);
 		top += 11;
 
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
+		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 
 		control = new ChunkRenderSpeed().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new FarViewButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
 
 		control = new PerformanceButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new AutosaveButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new AdvancedOpenGLButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new SignDistanceButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
 
@@ -422,99 +420,99 @@ public class GuiAdvancedOptions extends GuiScreen {
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
+		screen.attachWidget("Spoutcraft", label);
 		top += 11;
 
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
+		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 
 		control = new TimeButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new FastDebugInfoButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new SkyToggleButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new WeatherToggleButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new StarsToggleButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new ClearWaterToggleButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new ViewBobbingButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new VoidFogButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new DelayedTooltipCheckbox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new WaterBiomeColorsButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
 
 		control = new Anaglyph3DButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new ServerTexturesButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
 
 		control = new SmoothLightingSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new BrightnessSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
 
 		control = new MipMapSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new FlightSpeedSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
 
 		control = new HotbarQuickKeysButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new GuiScaleButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
 
@@ -525,23 +523,23 @@ public class GuiAdvancedOptions extends GuiScreen {
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
+		screen.attachWidget("Spoutcraft", label);
 		top += 11;
 
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
+		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 
 		control = new ReplaceToolsButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new ReplaceBlocksButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		top += 5;
@@ -551,40 +549,40 @@ public class GuiAdvancedOptions extends GuiScreen {
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
+		screen.attachWidget("Spoutcraft", label);
 		top += 11;
 
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
+		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 
 		control = new ResizeScreenshotButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		label = new GenericLabel("Size:");
 		label.setWidth(150).setHeight(20).setX(right-7).setY(top + 6);
-		screen.attachWidget(spoutcraft, label);
+		screen.attachWidget("Spoutcraft", label);
 
 		control = new ResizeScreenshotWidthField();
 		control.setWidth(35).setHeight(15).setX(right+20).setY(top + 2);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		label = new GenericLabel("X");
 		label.setWidth(150).setHeight(20).setX(right+63).setY(top + 6);
-		screen.attachWidget(spoutcraft, label);
+		screen.attachWidget("Spoutcraft", label);
 
 		control = new ResizeScreenshotHeightField();
 		control.setWidth(35).setHeight(15).setX(right+75).setY(top + 2);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new SnooperButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(center).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 		top += 5;
 	}

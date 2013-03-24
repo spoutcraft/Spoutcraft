@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.server;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericButton;
@@ -50,33 +49,31 @@ public class GuiFavorites extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		Addon spoutcraft = SpoutClient.getInstance().getAddonManager().getAddon("spoutcraft");
-
 		labelTitle = new GenericLabel("Favorite Servers");
 		labelTitle.setY(12).setX(width / 2 - mc.fontRenderer.getStringWidth(labelTitle.getText()) / 2);
 		labelTitle.setHeight(15).setWidth(mc.fontRenderer.getStringWidth(labelTitle.getText()) / 2);
-		getScreen().attachWidget(spoutcraft, labelTitle);
+		getScreen().attachWidget("Spoutcraft", labelTitle);
 
 		buttonMoveUp = new GenericButton("/\\");
 		buttonMoveUp.setTooltip("Move Item Up");
 		buttonMoveUp.setX(5).setY(5);
 		buttonMoveUp.setHeight(20).setWidth(20);
-		getScreen().attachWidget(spoutcraft, buttonMoveUp);
+		getScreen().attachWidget("Spoutcraft", buttonMoveUp);
 
 		buttonMoveDown = new GenericButton("\\/");
 		buttonMoveDown.setTooltip("Move Item Down");
 		buttonMoveDown.setX(25).setY(5);
 		buttonMoveDown.setHeight(20).setWidth(20);
-		getScreen().attachWidget(spoutcraft, buttonMoveDown);
+		getScreen().attachWidget("Spoutcraft", buttonMoveDown);
 
 		buttonRefresh = new GenericButton("Refresh");
 		buttonRefresh.setHeight(20).setWidth(100).setX(width - 105).setY(5);
-		getScreen().attachWidget(spoutcraft, buttonRefresh);
+		getScreen().attachWidget("Spoutcraft", buttonRefresh);
 
 		int viewheight = height - 110;
 		view = new GenericListView(model);
 		view.setX(5).setY(30).setWidth(width - 10).setHeight(viewheight);
-		getScreen().attachWidget(spoutcraft, view);
+		getScreen().attachWidget("Spoutcraft", view);
 
 		int top = (int) (view.getY() + view.getHeight() + 5);
 
@@ -94,40 +91,40 @@ public class GuiFavorites extends GuiScreen {
 		textQuickJoin.setX(left + 2).setY(top + 2).setHeight(16).setWidth(cellWidth * 2 + 5 - 4);
 		textQuickJoin.setMaximumCharacters(0);
 		textQuickJoin.setText(text);
-		getScreen().attachWidget(spoutcraft, textQuickJoin);
+		getScreen().attachWidget("Spoutcraft", textQuickJoin);
 
 		buttonQuickJoin = new GenericButton("Quick Join");
 		buttonQuickJoin.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonQuickJoin);
+		getScreen().attachWidget("Spoutcraft", buttonQuickJoin);
 
 		top += 25;
 
 		buttonJoin = new GenericButton("Join Server");
 		buttonJoin.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonJoin);
+		getScreen().attachWidget("Spoutcraft", buttonJoin);
 
 		buttonAdd = new GenericButton("Add Favorite");
 		buttonAdd.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonAdd);
+		getScreen().attachWidget("Spoutcraft", buttonAdd);
 
 		buttonEdit = new GenericButton("Edit");
 		buttonEdit.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonEdit);
+		getScreen().attachWidget("Spoutcraft", buttonEdit);
 
 		top += 25;
 
 		buttonDelete = new DeleteFavoriteButton(this);
 		buttonDelete.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonDelete);
+		getScreen().attachWidget("Spoutcraft", buttonDelete);
 
 		buttonServerList = new GenericButton("Server List");
 		buttonServerList.setX(center).setY(top).setWidth(cellWidth)
 				.setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonServerList);
+		getScreen().attachWidget("Spoutcraft", buttonServerList);
 
 		buttonMainMenu = new GenericButton("Main Menu");
 		buttonMainMenu.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonMainMenu);
+		getScreen().attachWidget("Spoutcraft", buttonMainMenu);
 		refresh();
 		updateButtons();
 	}

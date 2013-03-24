@@ -23,7 +23,6 @@ import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.ChatColor;
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.CheckBox;
 import org.spoutcraft.api.gui.GenericButton;
@@ -66,7 +65,6 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater {
 	}
 
 	protected void createInstances() {
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		labelTitle = new GenericLabel("Controls");
 		buttonDone = new GenericButton("Done");
 		buttonAdd = new GenericButton("Add Shortcut");
@@ -87,20 +85,20 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater {
 		checkShortcuts = new ControlsCheckBox(this, SHORTCUTS_COLOR + "Shortcuts");
 		search = new ControlsSearch(this);
 
-		filter.attachWidget(spoutcraft, checkVanilla);
-		filter.attachWidget(spoutcraft, checkSpoutcraft);
-		filter.attachWidget(spoutcraft, checkCustom);
-		filter.attachWidget(spoutcraft, checkShortcuts);
+		filter.attachWidget("Spoutcraft", checkVanilla);
+		filter.attachWidget("Spoutcraft", checkSpoutcraft);
+		filter.attachWidget("Spoutcraft", checkCustom);
+		filter.attachWidget("Spoutcraft", checkShortcuts);
 
-		getScreen().attachWidget(spoutcraft, search);
-		getScreen().attachWidget(spoutcraft, labelTitle);
-		getScreen().attachWidget(spoutcraft, filter);
-		getScreen().attachWidget(spoutcraft, view);
-		getScreen().attachWidget(spoutcraft, buttonAdd);
-		getScreen().attachWidget(spoutcraft, buttonEdit);
-		getScreen().attachWidget(spoutcraft, buttonRemove);
-		getScreen().attachWidget(spoutcraft, buttonDone);
-		getScreen().attachWidget(spoutcraft, labelDescription);
+		getScreen().attachWidget("Spoutcraft", search);
+		getScreen().attachWidget("Spoutcraft", labelTitle);
+		getScreen().attachWidget("Spoutcraft", filter);
+		getScreen().attachWidget("Spoutcraft", view);
+		getScreen().attachWidget("Spoutcraft", buttonAdd);
+		getScreen().attachWidget("Spoutcraft", buttonEdit);
+		getScreen().attachWidget("Spoutcraft", buttonRemove);
+		getScreen().attachWidget("Spoutcraft", buttonDone);
+		getScreen().attachWidget("Spoutcraft", labelDescription);
 		updateButtons();
 		model.refresh();
 	}

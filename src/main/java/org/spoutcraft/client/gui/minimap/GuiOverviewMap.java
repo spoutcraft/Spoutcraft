@@ -23,7 +23,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.input.Mouse;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.Control;
@@ -61,8 +60,6 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 
 	@Override
 	protected void createInstances() {
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-
 		title = new GenericLabel("Overview Map");
 		noRenderLabel = new GenericLabel("The overview map will not work until the minimap is enabled.");
 		minimapEnabled = MinimapConfig.getInstance().isEnabled();
@@ -79,9 +76,9 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		map.scrollTo(map.getPlayerPosition(), false, 0);
 
 		if (minimapEnabled == false) {
-			getScreen().attachWidgets(spoutcraft, noRenderLabel, buttonDone);
+			getScreen().attachWidgets("Spoutcraft", noRenderLabel, buttonDone);
 		} else {
-			getScreen().attachWidgets(spoutcraft, map, title, buttonDone, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave, buttonDeathpoints);
+			getScreen().attachWidgets("Spoutcraft", map, title, buttonDone, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave, buttonDeathpoints);
 		}
 
 		hoverMenu = new GenericScrollArea();
@@ -92,10 +89,10 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		buttonFocus = new GenericButton("Set Focus");
 		buttonFocus.setTooltip("If a waypoint is in focus, the direction\nto it will be drawn on the minimap.");
 		buttonCloseMenu = new GenericButton("Close");
-		hoverMenu.attachWidgets(spoutcraft, buttonFocus, buttonWaypoint, buttonCloseMenu, menuTitle);
+		hoverMenu.attachWidgets("Spoutcraft", buttonFocus, buttonWaypoint, buttonCloseMenu, menuTitle);
 
 		setMenuVisible(false);
-		getScreen().attachWidget(spoutcraft, hoverMenu);
+		getScreen().attachWidget("Spoutcraft", hoverMenu);
 	}
 
 	@Override
@@ -173,15 +170,13 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		}
 		if (btn == buttonSave) {
 			if (map.saveToDesktop()) {
-				Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 				Label label = new FadingLabel("Saved to Desktop!", 500).setTextColor(new Color(0x7FFF00));
 				label.setGeometry(width / 2 - Spoutcraft.getMinecraftFont().getTextWidth(label.getText()) / 2, height / 2, 100, 12);
-				getScreen().attachWidgets(spoutcraft, label);
+				getScreen().attachWidgets("Spoutcraft", label);
 			} else {
-				Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 				Label label = new FadingLabel("Failed to save Minimap!", 500).setTextColor(new Color(0xEE0000));
 				label.setGeometry(width / 2 - Spoutcraft.getMinecraftFont().getTextWidth(label.getText()) / 2, height / 2, 100, 12);
-				getScreen().attachWidgets(spoutcraft, label);
+				getScreen().attachWidgets("Spoutcraft", label);
 			}
 		}
 		if (btn == buttonDeathpoints) {

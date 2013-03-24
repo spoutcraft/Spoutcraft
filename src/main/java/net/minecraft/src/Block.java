@@ -9,7 +9,8 @@ import com.prupe.mcpatcher.mod.ColorizeBlock;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.World;
 import gnu.trove.map.hash.TIntFloatHashMap;
-import org.spoutcraft.api.entity.ActivePlayer;
+
+import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.util.FastLocation;
@@ -644,27 +645,20 @@ public class Block {
 	 */
 	public float getPlayerRelativeBlockHardness(EntityPlayer entityhuman) {
 		if (entityhuman instanceof EntityPlayerSP) {
-			ActivePlayer player = (ActivePlayer) entityhuman.spoutEnty;
-			FixedLocation target = player.getLastClickedLocation();
+			FixedLocation target = Spoutcraft.getActivePlayer().getLastClickedLocation();
 			if (target != null) {
-
-				org.spoutcraft.api.material.Block b = target.getBlock().getType();
-				if (b instanceof CustomBlock) {
-					return b.getHardness() < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? 1.0F / b.getHardness() / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this) / b.getHardness() / 30.0F);
-				}
-
 				int x = (int) target.getX();
 				int y = (int) target.getY();
 				int z = (int) target.getZ();
-				int index = ((x & 0xF) << player.getWorld().getXBitShifts()) | ((z & 0xF) << player.getWorld().getZBitShifts()) | (y & (player.getWorld().getMaxHeight() - 1));
-				SpoutcraftChunk chunk = (SpoutcraftChunk) target.getWorld().getChunkAt(target);
-				TIntFloatHashMap hardnessOverrides = chunk.hardnessOverrides;
-				if (hardnessOverrides.containsKey(index)) {
-					return hardnessOverrides.get(index);
+				SpoutcraftChunk chunk = Spoutcraft.getChunkAt(x, y, z);
+				short customId = chunk.getCustomBlockId(x, y, z);
+				if (customId > 0) {
+					CustomBlock b = MaterialData.getCustomBlock(customId);
+					return b.getHardness() < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? entityhuman.getCurrentPlayerStrVsBlock(this, false) / b.getHardness() / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this, true) / b.getHardness() / 30.0F);
 				}
 			}
 		}
-		return this.blockHardness < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? 1.0F / this.blockHardness / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0F);
+		return this.blockHardness < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? entityhuman.getCurrentPlayerStrVsBlock(this, false) / this.blockHardness / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this, true) / this.blockHardness / 30.0F);
 	}
 	// Spout End
 
@@ -917,7 +911,7 @@ public class Block {
 	// Spout Start
 	public void onBlockClicked(World var1, int var2, int var3, int var4, EntityPlayer var5) {
 		if (var5 instanceof EntityPlayerSP) {
-			FixedLocation location = new FastLocation(var2, var3, var4, 0, 0, var1.world);
+			FixedLocation location = new FastLocation(var2, var3, var4, 0, 0);
 			((EntityPlayerSP)var5).lastClickLocation = location;
 		}
 	}

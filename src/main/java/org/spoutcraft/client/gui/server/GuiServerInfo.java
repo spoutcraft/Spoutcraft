@@ -34,7 +34,6 @@ import org.yaml.snakeyaml.Yaml;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericButton;
@@ -79,48 +78,47 @@ public class GuiServerInfo extends GuiSpoutScreen {
 	@Override
 	protected void createInstances() {
 		labels.clear();
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		buttonDone = new GenericButton("Done");
-		getScreen().attachWidget(spoutcraft, buttonDone);
+		getScreen().attachWidget("Spoutcraft", buttonDone);
 
 		buttonRefresh = new GenericButton();
-		getScreen().attachWidget(spoutcraft, buttonRefresh);
+		getScreen().attachWidget("Spoutcraft", buttonRefresh);
 
 		buttonAddFavorite = new GenericButton("Add Favorite");
-		getScreen().attachWidget(spoutcraft, buttonAddFavorite);
+		getScreen().attachWidget("Spoutcraft", buttonAddFavorite);
 
 		buttonJoin = new GenericButton("Join");
-		getScreen().attachWidget(spoutcraft, buttonJoin);
+		getScreen().attachWidget("Spoutcraft", buttonJoin);
 
 		content = new GenericScrollArea();
 		content.setScrollBarPolicy(Orientation.HORIZONTAL, ScrollBarPolicy.SHOW_NEVER);
 
-		getScreen().attachWidget(spoutcraft, content);
+		getScreen().attachWidget("Spoutcraft", content);
 
 		labelTitle = new GenericLabel(item.getTitle());
-		getScreen().attachWidget(spoutcraft, labelTitle);
+		getScreen().attachWidget("Spoutcraft", labelTitle);
 
 		buttonOpenBrowser = new GenericButton("More Info...");
-		getScreen().attachWidget(spoutcraft, buttonOpenBrowser);
+		getScreen().attachWidget("Spoutcraft", buttonOpenBrowser);
 
 		labelCategoryLabel = new GenericLabel("Category");
-		content.attachWidget(spoutcraft, labelCategoryLabel);
+		content.attachWidget("Spoutcraft", labelCategoryLabel);
 		labels.add(labelCategoryLabel);
 
 		labelCategory = new GenericLabel("...");
 		labelCategory.setTextColor(new Color(0xffaaaaaa));
-		content.attachWidget(spoutcraft, labelCategory);
+		content.attachWidget("Spoutcraft", labelCategory);
 
 		labelMCVersionLabel = new GenericLabel("Minecraft Version");
-		content.attachWidget(spoutcraft, labelMCVersionLabel);
+		content.attachWidget("Spoutcraft", labelMCVersionLabel);
 		labels.add(labelMCVersionLabel);
 
 		labelMCVersion = new GenericLabel("...");
 		labelMCVersion.setTextColor(new Color(0xffaaaaaa));
-		content.attachWidget(spoutcraft, labelMCVersion);
+		content.attachWidget("Spoutcraft", labelMCVersion);
 
 		labelAccessLabel = new GenericLabel("Access Type");
-		content.attachWidget(spoutcraft, labelAccessLabel);
+		content.attachWidget("Spoutcraft", labelAccessLabel);
 		labels.add(labelAccessLabel);
 
 		String access = "Open";
@@ -137,53 +135,53 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		}
 		labelAccess = new GenericLabel(access);
 		labelAccess.setTextColor(new Color(0xffaaaaaa));
-		content.attachWidget(spoutcraft, labelAccess);
+		content.attachWidget("Spoutcraft", labelAccess);
 
 		labelAddress = new GenericLabel(item.getIp() + (item.getPort() != ServerItem.DEFAULT_PORT ? item.getPort() : ""));
 		labelAddress.setTextColor(new Color(0xffaaaaaa));
-		content.attachWidget(spoutcraft, labelAddress);
+		content.attachWidget("Spoutcraft", labelAddress);
 
 		labelAddressLabel = new GenericLabel("Address");
-		content.attachWidget(spoutcraft, labelAddressLabel);
+		content.attachWidget("Spoutcraft", labelAddressLabel);
 		labels.add(labelAddressLabel);
 
 		labelMotd = new GenericLabel(item.getMotd());
-		content.attachWidget(spoutcraft, labelMotd);
+		content.attachWidget("Spoutcraft", labelMotd);
 		labelMotd.setTextColor(new Color(0xffaaaaaa));
 
 		labelMotdLabel = new GenericLabel("MOTD");
-		content.attachWidget(spoutcraft, labelMotdLabel);
+		content.attachWidget("Spoutcraft", labelMotdLabel);
 		labels.add(labelMotdLabel);
 
 		labelDescription = new GenericLabel("...");
-		content.attachWidget(spoutcraft, labelDescription);
+		content.attachWidget("Spoutcraft", labelDescription);
 		labelDescription.setTextColor(new Color(0xffaaaaaa));
 		labelDescription.setWrapLines(true);
 
 		labelPlayersLabel = new GenericLabel("Players");
-		content.attachWidget(spoutcraft, labelPlayersLabel);
+		content.attachWidget("Spoutcraft", labelPlayersLabel);
 		labels.add(labelPlayersLabel);
 
 		labelPlayers = new GenericLabel();
 		labelPlayers.setTextColor(new Color(0xffaaaaaa));
-		content.attachWidget(spoutcraft, labelPlayers);
+		content.attachWidget("Spoutcraft", labelPlayers);
 
 		linkForum = new LinkButton("Go to Forum", "");
-		getScreen().attachWidget(spoutcraft, linkForum);
+		getScreen().attachWidget("Spoutcraft", linkForum);
 		linkSite = new LinkButton("Go to Website", "");
-		getScreen().attachWidget(spoutcraft, linkSite);
+		getScreen().attachWidget("Spoutcraft", linkSite);
 
 		labelSpoutcraftLabel = new GenericLabel("Spoutcraft");
-		content.attachWidget(spoutcraft, labelSpoutcraftLabel);
+		content.attachWidget("Spoutcraft", labelSpoutcraftLabel);
 		labels.add(labelSpoutcraftLabel);
 
 		labelSpoutcraft = new GenericLabel("...");
 		labelSpoutcraft.setTextColor(new Color(0xffaaaaaa));
-		content.attachWidget(spoutcraft, labelSpoutcraft);
+		content.attachWidget("Spoutcraft", labelSpoutcraft);
 		textureIcon = new GenericTexture("http://cdn.spout.org/server/thumb/" + item.getDatabaseId() + ".png");
 		textureIcon.setFinishDelegate(new ImageUpdate());
 		textureIcon.setWidth(48).setHeight(48);
-		content.attachWidget(spoutcraft, textureIcon);
+		content.attachWidget("Spoutcraft", textureIcon);
 
 		for (GenericLabel lbl:labels) {
 			labelWidth = (int) Math.max(labelWidth, lbl.getTextWidth());
@@ -206,8 +204,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		textureGalleryImage.setFinishDelegate(new ImageUpdate());
 		labelGalleryTitle = new GenericLabel("Gallery");
 		((GenericLabel) labelGalleryImageDesc).setWrapLines(true);
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		content.attachWidgets(spoutcraft, labelGalleryImageTitle, labelGalleryImageDesc, textureGalleryImage, buttonGalleryPrev, buttonGalleryNext, labelGalleryTitle);
+		content.attachWidgets("Spoutcraft", labelGalleryImageTitle, labelGalleryImageDesc, textureGalleryImage, buttonGalleryPrev, buttonGalleryNext, labelGalleryTitle);
 		layoutWidgets();
 		setGalleryImage(0);
 	}

@@ -19,8 +19,6 @@
  */
 package org.spoutcraft.api.util;
 
-import org.spoutcraft.api.World;
-
 public interface Location extends Vector, FixedLocation {
 	/**
 	 * Sets the yaw of this location
@@ -37,12 +35,4 @@ public interface Location extends Vector, FixedLocation {
 	 * @return this location
 	 */
 	public Location setPitch(double pitch);
-
-	/**
-	 * Sets the world of this location
-	 *
-	 * @param world New world
-	 * @return this location
-	 */
-	public Location setWorld(World world);
 }

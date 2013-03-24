@@ -22,7 +22,6 @@ package org.spoutcraft.client.gui.settings.controls;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.ScreenChatOptions;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.client.SpoutClient;
 
@@ -35,7 +34,7 @@ public class ChatButton extends GenericButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		ScreenChatOptions chatSettings = new ScreenChatOptions(parent, SpoutClient.getHandle().gameSettings);
 		SpoutClient.getHandle().displayGuiScreen(chatSettings);
 	}

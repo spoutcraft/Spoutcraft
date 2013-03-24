@@ -95,9 +95,6 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 
 	public void refreshAPIData(final String url, final int page, final boolean clear) {
 		currentUrl = url;
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) SpoutClient.disableSandbox();
-
 		if (currentLoader != null && currentLoader.isAlive()) {
 			currentLoader.interrupt();
 			System.out.println("Stopped previous loading");
@@ -150,9 +147,6 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 			}
 		};
 		currentLoader.start();
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
-		}
 	}
 
 	public void clear() {

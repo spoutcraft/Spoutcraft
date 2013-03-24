@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import java.awt.Graphics2D;
@@ -31,7 +30,6 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
 
 public class MipmapHelper {
-	private static final MCLogger logger = MCLogger.getLogger("Mipmap");
 	private static final String MIPMAP_PROPERTIES = "/mipmap.properties";
 	private static final boolean mipmapSupported = GLContext.getCapabilities().OpenGL12;
 	static final boolean mipmapEnabled = Config.getBoolean("Extended HD", "mipmap", false);
@@ -82,7 +80,6 @@ public class MipmapHelper {
 		var5.position(0);
 
 		if (byteBufferAllocation == 1 && !var5.isDirect()) {
-			logger.finer("creating %d direct byte buffer for texture %s", new Object[] {Integer.valueOf(var5.capacity()), var1.func_94280_f()});
 			ByteBuffer var6 = ByteBuffer.allocateDirect(var5.capacity()).order(var5.order());
 			var6.put(var5).flip();
 			var5 = var6;
@@ -96,7 +93,6 @@ public class MipmapHelper {
 
 		if (var4 && !flippedTextureLogged) {
 			flippedTextureLogged = true;
-			logger.warning("copySubTexture(%s, %s, %d, %d, %s): flipped texture not yet supported", new Object[] {var0.func_94280_f(), var1.func_94280_f(), Integer.valueOf(var2), Integer.valueOf(var3), Boolean.valueOf(var4)});
 		}
 
 		int var9 = 0;
@@ -135,10 +131,6 @@ public class MipmapHelper {
 			long var9 = System.currentTimeMillis();
 			setupTextureMipmaps(var0, var8, var2, var5, var3, var4);
 			long var11 = System.currentTimeMillis();
-
-			if (var8.size() > 1) {
-				logger.finer("%s: generate %dms, setup %dms, total %dms", new Object[] {var5, Long.valueOf(var9 - var6), Long.valueOf(var11 - var9), Long.valueOf(var11 - var6)});
-			}
 		}
 	}
 
@@ -154,7 +146,6 @@ public class MipmapHelper {
 			int var5 = var0.getHeight();
 
 			if (getCustomMipmaps(var2, var1, var4, var5)) {
-				logger.fine("using %d custom mipmaps for %s", new Object[] {Integer.valueOf(var2.size() - 1), var1});
 				return var2;
 			} else {
 				int var6 = getMipmapLevels(var0.getWidth(), var0.getHeight(), 2);
@@ -169,7 +160,6 @@ public class MipmapHelper {
 
 					return var2;
 				} else {
-					logger.fine("generating %d mipmaps for %s, alpha=%s", new Object[] {Integer.valueOf(var6), var1, Boolean.valueOf(var3 >= 2)});
 					var0 = convertToARGB(var0);
 					var2.set(0, var0);
 					int var7 = 1 << bgColorFix;
@@ -186,7 +176,6 @@ public class MipmapHelper {
 						long var12 = System.currentTimeMillis();
 						setBackgroundColor(var0, var11);
 						long var14 = System.currentTimeMillis();
-						logger.finer("bg fix: scaling %dms, setbg %dms", new Object[] {Long.valueOf(var12 - var9), Long.valueOf(var14 - var12)});
 					}
 
 					BufferedImage var17 = var0;
@@ -243,10 +232,6 @@ public class MipmapHelper {
 				BufferedImage var7 = (BufferedImage)var1.get(currentLevel);
 				var0.func_98184_a(var7, var2, var4, var5);
 				checkGLError("setupTexture %s#%d", new Object[] {var3, Integer.valueOf(currentLevel)});
-
-				if (currentLevel > 0) {
-					logger.finest("%s mipmap level %d (%dx%d)", new Object[] {var3, Integer.valueOf(currentLevel), Integer.valueOf(var7.getWidth()), Integer.valueOf(var7.getHeight())});
-				}
 			}
 		} catch (Throwable var11) {
 			var11.printStackTrace();
@@ -279,8 +264,6 @@ public class MipmapHelper {
 						} else if (!var4.equals("basic") && !var4.equals("opaque")) {
 							if (var4.equals("alpha")) {
 								mipmapType.put(var3, Integer.valueOf(2));
-							} else {
-								logger.error("%s: unknown value \'%s\' for %s", new Object[] {"/mipmap.properties", var4, var3});
 							}
 						} else {
 							mipmapType.put(var3, Integer.valueOf(1));
@@ -309,7 +292,6 @@ public class MipmapHelper {
 				int var9 = var7.getHeight();
 
 				if (var8 != var2 || var9 != var3) {
-					logger.error("%s has wrong size %dx%d (expecting %dx%d)", new Object[] {var6, Integer.valueOf(var8), Integer.valueOf(var9), Integer.valueOf(var2), Integer.valueOf(var3)});
 					break;
 				}
 
@@ -339,13 +321,10 @@ public class MipmapHelper {
 						int var5 = var3.get(var4) >>> 24;
 
 						if (var5 > 26 && var5 < 229) {
-							logger.finer("%s alpha transparency? yes, by pixel search", new Object[] {var0});
 							mipmapType.put(var0, Integer.valueOf(2));
 							return 2;
 						}
 					}
-
-					logger.finer("%s alpha transparency? no, by pixel search", new Object[] {var0});
 					mipmapType.put(var0, Integer.valueOf(1));
 					return 1;
 				}
@@ -372,14 +351,11 @@ public class MipmapHelper {
 			mipmapType.put(var0, Integer.valueOf(var1));
 
 			if (var2) {
-				logger.finer("force %s -> %d (reloading)", new Object[] {var0, Integer.valueOf(var1)});
 				int var3 = TexturePackAPI.getTextureIfLoaded(var0);
 
 				if (var3 >= 0) {
 					setupTexture(MCPatcherUtils.getMinecraft().renderEngine, TexturePackAPI.getImage(var0), var3, false, false, var0);
 				}
-			} else {
-				logger.finer("force %s -> %d", new Object[] {var0, Integer.valueOf(var1)});
 			}
 		}
 	}
@@ -438,7 +414,6 @@ public class MipmapHelper {
 		} else {
 			int var1 = var0.getWidth();
 			int var2 = var0.getHeight();
-			logger.fine("converting %dx%d image to ARGB", new Object[] {Integer.valueOf(var1), Integer.valueOf(var2)});
 			BufferedImage var3 = getPooledImage(var1, var2, 0);
 			Graphics2D var4 = var3.createGraphics();
 			Arrays.fill(getARGBAsIntBuffer(var3).array(), 0);
@@ -614,9 +589,5 @@ public class MipmapHelper {
 		if (lodSupported) {
 			lodBias = Config.getInt("Extended HD", "lodBias", 0);
 		}
-
-		logger.config("mipmap: supported=%s, enabled=%s, level=%d", new Object[] {Boolean.valueOf(mipmapSupported), Boolean.valueOf(mipmapEnabled), Integer.valueOf(maxMipmapLevel)});
-		logger.config("anisotropic: supported=%s, level=%d, max=%d", new Object[] {Boolean.valueOf(anisoSupported), Integer.valueOf(anisoLevel), Integer.valueOf(anisoMax)});
-		logger.config("lod bias: supported=%s, bias=%d", new Object[] {Boolean.valueOf(lodSupported), Integer.valueOf(lodBias)});
 	}
 }

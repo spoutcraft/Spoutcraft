@@ -20,7 +20,6 @@
 package org.spoutcraft.api.gui;
 
 import org.spoutcraft.api.UnsafeClass;
-import org.spoutcraft.api.event.screen.SliderDragEvent;
 
 @UnsafeClass
 public interface Slider extends Control, Label {
@@ -51,12 +50,5 @@ public interface Slider extends Control, Label {
 
 	public Slider setAlign(WidgetAnchor align);
 
-	/**
-	 * Fires when this slider is dragged on the screen.
-	 *
-	 * This event is also sent to the screen listener, afterwards.
-	 *
-	 * @param event
-	 */
-	public void onSliderDrag(SliderDragEvent event);
+	public void onSliderDrag(float oldPos, float newPos);
 }

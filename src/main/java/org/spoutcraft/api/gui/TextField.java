@@ -20,7 +20,6 @@
 package org.spoutcraft.api.gui;
 
 import org.spoutcraft.api.UnsafeClass;
-import org.spoutcraft.api.event.screen.TextFieldChangeEvent;
 
 @UnsafeClass
 public interface TextField extends Control {
@@ -166,7 +165,7 @@ public interface TextField extends Control {
 	 * This event will also be sent to the screen listener
 	 * @param event
 	 */
-	public void onTextFieldChange(TextFieldChangeEvent event);
+	public void onTextFieldChange();
 
 	/**
 	 * Fires when the user presses Enter.

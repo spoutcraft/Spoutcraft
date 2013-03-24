@@ -30,7 +30,6 @@ import net.minecraft.src.Item;
 
 import org.spoutcraft.api.util.map.TIntPairFloatHashMap;
 import org.spoutcraft.api.util.map.TIntPairObjectHashMap;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.api.inventory.MaterialManager;
 import org.spoutcraft.api.inventory.Recipe;
@@ -183,15 +182,10 @@ public class SimpleMaterialManager implements MaterialManager {
 		}
 	}
 
-	public void setItemTexture(Material item, Addon addon, String texture) {
+	public void setItemTexture(Material item, String addon, String texture) {
 		int id = item.getRawId();
 		int data = item.getRawData();
-		String addonName;
-		if (addon == null) {
-			addonName = null;
-		} else {
-			addonName = addon.getDescription().getName();
-		}
+		String addonName = addon;
 		customTextures.put(id, data, texture);
 		if (addonName == null) {
 			customTexturesPlugin.remove(id, data);

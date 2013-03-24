@@ -23,7 +23,6 @@ import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;
 
 public class FancyGrassButton extends AutomatedCheckBox {
@@ -36,7 +35,7 @@ public class FancyGrassButton extends AutomatedCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setFancyGrass(!Configuration.isFancyGrass());
 		Configuration.write();
 		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;

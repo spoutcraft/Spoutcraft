@@ -21,8 +21,6 @@ package org.spoutcraft.client.gui.database;
 
 import java.util.Random;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
-
 public class RandomButton extends SortButton {
 	Random rand = new Random();
 	long seed = rand.nextLong();
@@ -33,9 +31,9 @@ public class RandomButton extends SortButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		seed = rand.nextLong();
-		super.onButtonClick(event);
+		super.onButtonClick();
 	}
 
 	@Override

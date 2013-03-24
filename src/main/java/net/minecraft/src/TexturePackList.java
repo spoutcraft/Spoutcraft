@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 // MCPatcher Start
 import com.prupe.mcpatcher.TexturePackAPI;
 // MCPatcher End
+import com.prupe.mcpatcher.TexturePackChangeHandler;
 
 public class TexturePackList {
 
@@ -95,7 +96,7 @@ public class TexturePackList {
 			this.mc.gameSettings.skin = par1ITexturePack.getTexturePackFileName();
 			this.mc.gameSettings.saveOptions();
 			// MCPatcher Start
-			TexturePackAPI.ChangeHandler.checkForTexturePackChange();
+			TexturePackChangeHandler.scheduleTexturePackRefresh();
 			// MCPatcher End
 			return true;
 		}
@@ -251,7 +252,7 @@ public class TexturePackList {
 		return par0TexturePackList.generateTexturePackID(par1File);
 	}
 
-	static ITexturePack func_98143_h() {
+	public static ITexturePack func_98143_h() { //Spout protected -> public
 		return defaultTexturePack;
 	}
 
@@ -274,12 +275,10 @@ public class TexturePackList {
 	// MCPatcher End
 
 	// Spout Start
-	public static int getTileSize() {
-		return getTileSize(getSelectedTexturePack());
-	}
-
 	public static int getTileSize(TexturePackImplementation var0) {
-		int var1 = 0;
+		//TODO broken
+		return 16;
+		/*int var1 = 0;
 		Iterator var2 = expectedColumns.entrySet().iterator();
 		while (var2.hasNext()) {
 			Entry var3 = (Entry)var2.next();
@@ -296,7 +295,7 @@ public class TexturePackList {
 				MCPatcherUtils.close(var4);
 			}
 		}	
-		return var1 > 0 ? var1 : 16;
+		return var1 > 0 ? var1 : 16; */
 	}
 	// Spout End
 }

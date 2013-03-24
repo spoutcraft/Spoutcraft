@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
 
 public class InvertMouseButton extends GenericCheckBox {
@@ -32,7 +31,7 @@ public class InvertMouseButton extends GenericCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Minecraft.theMinecraft.gameSettings.invertMouse = !Minecraft.theMinecraft.gameSettings.invertMouse;
 		Minecraft.theMinecraft.gameSettings.saveOptions();
 	}

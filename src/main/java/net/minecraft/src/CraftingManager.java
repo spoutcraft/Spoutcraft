@@ -142,7 +142,7 @@ public class CraftingManager {
 		System.out.println(this.recipes.size() + " recipes");
 	}
 
-	ShapedRecipes addRecipe(ItemStack par1ItemStack, Object ... par2ArrayOfObj) {
+	public ShapedRecipes addRecipe(ItemStack par1ItemStack, Object ... par2ArrayOfObj) {
 		String var3 = "";
 		int var4 = 0;
 		int var5 = 0;
@@ -200,7 +200,7 @@ public class CraftingManager {
 		return var17;
 	}
 
-	void addShapelessRecipe(ItemStack par1ItemStack, Object ... par2ArrayOfObj) {
+	public void addShapelessRecipe(ItemStack par1ItemStack, Object ... par2ArrayOfObj) {
 		ArrayList var3 = new ArrayList();
 		Object[] var4 = par2ArrayOfObj;
 		int var5 = par2ArrayOfObj.length;

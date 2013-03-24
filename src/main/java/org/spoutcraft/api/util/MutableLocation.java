@@ -22,17 +22,12 @@ package org.spoutcraft.api.util;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import org.spoutcraft.api.World;
-import org.spoutcraft.api.block.Block;
-
 public class MutableLocation extends MutableVector implements Location {
 	private double pitch;
 	private double yaw;
-	private World world;
 
 	public MutableLocation() {
 		pitch = yaw = 0D;
-		world = null;
 	}
 
 	/**
@@ -43,8 +38,8 @@ public class MutableLocation extends MutableVector implements Location {
 	 * @param y The y-coordinate of this new location
 	 * @param z The z-coordinate of this new location
 	 */
-	public MutableLocation(final World world, final double x, final double y, final double z) {
-		this(world, x, y, z, 0, 0);
+	public MutableLocation(final double x, final double y, final double z) {
+		this(x, y, z, 0, 0);
 	}
 
 	/**
@@ -57,8 +52,7 @@ public class MutableLocation extends MutableVector implements Location {
 	 * @param yaw The absolute rotation on the x-plane, in degrees
 	 * @param pitch The absolute rotation on the y-plane, in degrees
 	 */
-	public MutableLocation(final World world, final double x, final double y, final double z, final double yaw, final double pitch) {
-		this.world = world;
+	public MutableLocation(final double x, final double y, final double z, final double yaw, final double pitch) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -74,10 +68,6 @@ public class MutableLocation extends MutableVector implements Location {
 		return pitch;
 	}
 
-	public World getWorld() {
-		return world;
-	}
-
 	public Location setYaw(double yaw) {
 		this.yaw = yaw;
 		return this;
@@ -85,11 +75,6 @@ public class MutableLocation extends MutableVector implements Location {
 
 	public Location setPitch(double pitch) {
 		this.pitch = pitch;
-		return this;
-	}
-
-	public Location setWorld(World world) {
-		this.world = world;
 		return this;
 	}
 
@@ -109,22 +94,18 @@ public class MutableLocation extends MutableVector implements Location {
 		return vector;
 	}
 
-	public Block getBlock() {
-		return world.getBlockAt(this);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Location) {
 			Location other = (Location) obj;
-			return (new EqualsBuilder()).append(getX(), other.getX()).append(getY(), other.getY()).append(getZ(), other.getZ()).append(getYaw(), other.getYaw()).append(getPitch(), other.getPitch()).append(getWorld(), other.getWorld()).isEquals();
+			return (new EqualsBuilder()).append(getX(), other.getX()).append(getY(), other.getY()).append(getZ(), other.getZ()).append(getYaw(), other.getYaw()).append(getPitch(), other.getPitch()).isEquals();
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return (new HashCodeBuilder()).append(getX()).append(getY()).append(getZ()).append(getYaw()).append(getPitch()).append(getWorld()).toHashCode();
+		return (new HashCodeBuilder()).append(getX()).append(getY()).append(getZ()).append(getYaw()).append(getPitch()).toHashCode();
 	}
 
 	public Vector toVector() {

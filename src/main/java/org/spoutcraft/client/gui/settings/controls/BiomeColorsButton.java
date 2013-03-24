@@ -23,7 +23,6 @@ import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;
 
 public class BiomeColorsButton extends AutomatedCheckBox {
@@ -36,7 +35,7 @@ public class BiomeColorsButton extends AutomatedCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setFancyBiomeColors(!Configuration.isFancyBiomeColors());
 		Configuration.write();
 		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;

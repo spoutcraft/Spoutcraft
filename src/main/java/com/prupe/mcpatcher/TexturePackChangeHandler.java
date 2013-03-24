@@ -15,7 +15,6 @@ import net.minecraft.src.TexturePackCustom;
 import net.minecraft.src.TexturePackList;
 
 public abstract class TexturePackChangeHandler {
-	private static final MCLogger logger = MCLogger.getLogger("Texture Pack");
 	private static final ArrayList handlers = new ArrayList();
 	private static boolean changing;
 	private static long startTime;
@@ -57,23 +56,19 @@ public abstract class TexturePackChangeHandler {
 		if (var0 != null) {
 			if (TexturePackAPI.getTexturePack() != null) {
 				try {
-					logger.info("initializing %s...", new Object[] {var0.name});
 					var0.initialize();
 				} catch (Throwable var2) {
 					var2.printStackTrace();
-					logger.severe("%s initialization failed", new Object[] {var0.name});
 				}
 			}
 
 			handlers.add(var0);
-			logger.fine("registered texture pack handler %s, priority %d", new Object[] {var0.name, Integer.valueOf(var0.order)});
 			Collections.sort(handlers, new TexturePackChangeHandler$1());
 		}
 	}
 
 	public static void earlyInitialize(String var0, String var1) {
 		try {
-			logger.fine("calling %s.%s", new Object[] {var0, var1});
 			Class.forName(var0).getDeclaredMethod(var1, new Class[0]).invoke((Object)null, new Object[0]);
 		} catch (Throwable var3) {
 			;
@@ -90,11 +85,9 @@ public abstract class TexturePackChangeHandler {
 				var1.updateNeeded = false;
 
 				try {
-					logger.info("refreshing %s...", new Object[] {var1.name});
 					var1.refresh();
 				} catch (Throwable var3) {
 					var3.printStackTrace();
-					logger.severe("%s refresh failed", new Object[] {var1.name});
 				}
 			}
 		}
@@ -107,9 +100,7 @@ public abstract class TexturePackChangeHandler {
 	}
 
 	public static void beforeChange1() {
-		if (changing) {
-			logger.warning("recursive call to TexturePackChangeHandler detected", new Object[0]);
-		} else {
+		if (!changing) {
 			changing = true;
 			startTime = System.currentTimeMillis();
 			Runtime var0 = Runtime.getRuntime();
@@ -120,11 +111,9 @@ public abstract class TexturePackChangeHandler {
 				TexturePackChangeHandler var2 = (TexturePackChangeHandler)var1.next();
 
 				try {
-					logger.info("refreshing %s (pre)...", new Object[] {var2.name});
 					var2.beforeChange();
 				} catch (Throwable var4) {
 					var4.printStackTrace();
-					logger.severe("%s.beforeChange failed", new Object[] {var2.name});
 				}
 			}
 		}
@@ -137,11 +126,9 @@ public abstract class TexturePackChangeHandler {
 			TexturePackChangeHandler var1 = (TexturePackChangeHandler)var0.next();
 
 			try {
-				logger.info("refreshing %s (post)...", new Object[] {var1.name});
 				var1.afterChange();
 			} catch (Throwable var5) {
 				var5.printStackTrace();
-				logger.severe("%s.afterChange failed", new Object[] {var1.name});
 			}
 		}
 
@@ -149,7 +136,6 @@ public abstract class TexturePackChangeHandler {
 		long var6 = System.currentTimeMillis() - startTime;
 		Runtime var2 = Runtime.getRuntime();
 		long var3 = var2.totalMemory() - var2.freeMemory() - startMem;
-		logger.info("done (%.3fs elapsed, mem usage %+.1fMB)\n", new Object[] {Double.valueOf((double)var6 / 1000.0D), Double.valueOf((double)var3 / 1048576.0D)});
 		changing = false;
 	}
 
@@ -183,7 +169,6 @@ public abstract class TexturePackChangeHandler {
 						var0.origZip = var0.texturePackZipFile;
 						var0.texturePackZipFile = var3;
 						var3 = null;
-						logger.fine("copied %s to %s, lastModified = %d", new Object[] {var0.texturePackFile.getPath(), var0.tmpFile.getPath(), Long.valueOf(var0.lastModified)});
 						return true;
 					}
 
@@ -208,7 +193,6 @@ public abstract class TexturePackChangeHandler {
 			var0.texturePackZipFile = var0.origZip;
 			var0.origZip = null;
 			var0.tmpFile.delete();
-			logger.fine("deleted %s", new Object[] {var0.tmpFile.getPath()});
 			var0.tmpFile = null;
 		}
 	}
@@ -224,7 +208,6 @@ public abstract class TexturePackChangeHandler {
 				long var4 = var1.texturePackFile.lastModified();
 
 				if (var4 != var1.lastModified && var4 != 0L && var1.lastModified != 0L) {
-					logger.finer("%s lastModified changed from %d to %d", new Object[] {var1.texturePackFile.getName(), Long.valueOf(var1.lastModified), Long.valueOf(var4)});
 					ZipFile var6 = null;
 					label66: {
 						boolean var8;

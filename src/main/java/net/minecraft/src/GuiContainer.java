@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.ScreenType;
@@ -103,7 +102,6 @@ public abstract class GuiContainer extends GuiScreen {
 
 		// Spout Start		
 		if (Spoutcraft.hasPermission("spout.plugin.sortinventory")) {
-			Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 			orderByAlphabet = new GenericButton("A-Z");
 			orderById = new GenericButton("Id");
 			orderByAlphabet.setTooltip("Will sort the inventory contents by their name");
@@ -125,7 +123,7 @@ public abstract class GuiContainer extends GuiScreen {
 			
 			IInventory inv = inventorySlots.getIInventory();
 			if (inv != null && inventorySlots.isSortableInventory()) {
-				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById);
+				getScreen().attachWidgets("Spoutcraft", orderByAlphabet, orderById);
 			}
 		}
 		// Spout End
@@ -375,7 +373,7 @@ public abstract class GuiContainer extends GuiScreen {
 				}
 			}
 
-			this.drawItemStack(var16, par1 - var4 - var18, par2 - var5 - var9);
+			this.drawItemStack(var16, par1 - var4 - var18, par2 - var5 - var9, var10);
 		}
 
 		if (this.returningStack != null) {
@@ -386,6 +384,7 @@ public abstract class GuiContainer extends GuiScreen {
 				this.returningStack = null;
 			}
 
+			var9 = this.returningStackDestSlot.xDisplayPosition - this.field_85049_r;
 			int var20 = this.returningStackDestSlot.yDisplayPosition - this.field_85048_s;
 			int var11 = this.field_85049_r + (int)((float)var9 * var17);
 			int var12 = this.field_85048_s + (int)((float)var20 * var17);

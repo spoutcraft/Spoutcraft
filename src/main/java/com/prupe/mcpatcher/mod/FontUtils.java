@@ -1,6 +1,5 @@
 package com.prupe.mcpatcher.mod;
 
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackAPI;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
@@ -9,7 +8,6 @@ import java.util.Map.Entry;
 import net.minecraft.src.FontRenderer;
 
 public class FontUtils {
-	private static final MCLogger logger = MCLogger.getLogger("HD Font");
 	private static final int ROWS = 16;
 	private static final int COLS = 16;
 	public static final char[] AVERAGE_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123467890".toCharArray();
@@ -46,10 +44,6 @@ public class FontUtils {
 						int var17 = var3[var14 + var16 * var6];
 
 						if (isOpaque(var17)) {
-							if (printThis(var10)) {
-								logger.finer("\'%c\' pixel (%d, %d) = %08x, colIdx = %d", new Object[] {Character.valueOf((char)var10), Integer.valueOf(var14), Integer.valueOf(var16), Integer.valueOf(var17), Integer.valueOf(var13)});
-							}
-
 							var5[var10] = 128.0F * (float)(var13 + 1) / (float)var6 + 1.0F;
 							break;
 						}
@@ -85,10 +79,6 @@ public class FontUtils {
 
 		for (var11 = 0; var11 < var4.length; ++var11) {
 			var4[var11] = Math.round(var5[var11]);
-
-			if (printThis(var11)) {
-				logger.finer("charWidth[\'%c\'] = %f", new Object[] {Character.valueOf((char)var11), Float.valueOf(var5[var11])});
-			}
 		}
 
 		return var5;
@@ -150,10 +140,6 @@ public class FontUtils {
 		return (var0 >> 24 & 240) > 0;
 	}
 
-	private static boolean printThis(int var0) {
-		return "ABCDEF abcdef".indexOf(var0) >= 0;
-	}
-
 	private static float defaultSpaceWidth(float[] var0) {
 		if (TexturePackAPI.isDefaultTexturePack()) {
 			return 4.0F;
@@ -185,7 +171,6 @@ public class FontUtils {
 		Properties var4 = TexturePackAPI.getProperties(var3);
 
 		if (var4 != null) {
-			logger.fine("reading character widths from %s", new Object[] {var3});
 			Iterator var5 = var4.entrySet().iterator();
 
 			while (var5.hasNext()) {
@@ -199,7 +184,6 @@ public class FontUtils {
 						float var10 = Float.parseFloat(var8);
 
 						if (var9 >= 0 && var9 < var1.length) {
-							logger.finer("setting charWidthf[%d] to %f", new Object[] {Integer.valueOf(var9), Float.valueOf(var10)});
 							var1[var9] = var10;
 							var2[var9] = true;
 						}

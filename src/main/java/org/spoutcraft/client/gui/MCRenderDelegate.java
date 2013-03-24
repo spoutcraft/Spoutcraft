@@ -392,7 +392,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(GenericTexture texture) {
-		String addon = texture.getAddon().getDescription().getName();
+		String addon = texture.getAddon();
 		String url = texture.getUrl();
 		org.newdawn.slick.opengl.Texture textureBinding;
 		if (texture.isLocal()) {
@@ -407,12 +407,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				texture.setOriginalHeight(textureBinding.getImageHeight());
 			}
 			if (texture.getFinishDelegate() != null) {
-				boolean oldLock = SpoutClient.enableSandbox();
-				try {
-					texture.getFinishDelegate().run();
-				} finally {
-					SpoutClient.enableSandbox(oldLock);
-				}
+				texture.getFinishDelegate().run();
 				texture.setFinishDelegate(null);
 			}
 

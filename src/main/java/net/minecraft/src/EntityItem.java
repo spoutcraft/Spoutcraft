@@ -6,6 +6,8 @@ import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+
+import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 // Spout End
@@ -108,7 +110,7 @@ public class EntityItem extends Entity {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
-					short customId = worldObj.world.getChunkAt(x, y, z).getCustomBlockId(x, y, z);
+					short customId = Spoutcraft.getChunkAt(x, y, z).getCustomBlockId(x, y, z);
 					if (customId > 0) {
 						CustomBlock block = MaterialData.getCustomBlock(customId);
 						if (block != null) {

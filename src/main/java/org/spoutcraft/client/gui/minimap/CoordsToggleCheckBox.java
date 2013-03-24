@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
 import org.spoutcraft.client.SpoutClient;
 
@@ -40,7 +39,7 @@ public class CoordsToggleCheckBox extends GenericCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		MinimapConfig.getInstance().setCoords(isChecked());
 	}
 }

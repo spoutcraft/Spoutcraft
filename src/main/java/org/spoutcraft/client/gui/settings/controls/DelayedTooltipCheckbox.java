@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
 import org.spoutcraft.client.config.Configuration;
 
@@ -31,7 +30,7 @@ public class DelayedTooltipCheckbox extends GenericCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setDelayedTooltips(!Configuration.isDelayedTooltips());
 		Configuration.write();
 	}

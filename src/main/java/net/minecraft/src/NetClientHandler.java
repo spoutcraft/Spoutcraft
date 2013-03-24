@@ -26,7 +26,6 @@ import org.lwjgl.input.Keyboard;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
-import org.spoutcraft.api.entity.LivingEntity;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.precache.GuiPrecache;
@@ -75,22 +74,27 @@ public class NetClientHandler extends NetHandler {
 	// Spout End
 
 	public NetClientHandler(Minecraft par1Minecraft, String par2Str, int par3) throws IOException {
-		this.mc = par1Minecraft;
-
-		// Spout Start
-		InetSocketAddress address = NetworkUtils.resolve(par2Str, par3);
-		if (address.isUnresolved()) {
-			throw new UnknownHostException(address.getHostName());
-		}
-		this.netManager = new TcpConnection(new Socket(address.getAddress(), address.getPort()), "Client", this);
-
-		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = par2Str;
-		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = par3;
-
-		ClientPlayer.getInstance().resetMainScreen();
-		SpoutClient.getInstance().setSpoutActive(false);
-		// Spout End
+		this(par1Minecraft, par2Str, par3, null); //Spout
 	}
+
+    public NetClientHandler(Minecraft par1Minecraft, String par2Str, int par3, GuiScreen par4GuiScreen) throws IOException
+    {
+        this.mc = par1Minecraft;
+        this.field_98183_l = par4GuiScreen;
+        // Spout Start
+ 		InetSocketAddress address = NetworkUtils.resolve(par2Str, par3);
+ 		if (address.isUnresolved()) {
+ 			throw new UnknownHostException(address.getHostName());
+ 		}
+ 		this.netManager = new TcpConnection(par1Minecraft.func_98033_al(), new Socket(address.getAddress(), address.getPort()), "Client", this);
+
+ 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = par2Str;
+ 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = par3;
+
+ 		ClientPlayer.getInstance().resetMainScreen();
+ 		SpoutClient.getInstance().setSpoutActive(false);
+ 		// Spout End
+    }
 
 	public NetClientHandler(Minecraft par1Minecraft, IntegratedServer par2IntegratedServer) throws IOException {
 		this.mc = par1Minecraft;
@@ -388,7 +392,7 @@ public class NetClientHandler extends NetHandler {
 		}
 		// Spout Start - Set the entity's title
 		if (var10.worldObj.customTitles.containsKey(var10.entityId)) {
-			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEnty).setTitle(var10.worldObj.customTitles.get(var10.entityId));
+			((org.spoutcraft.client.entity.CraftLivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEnty).setTitle(var10.worldObj.customTitles.get(var10.entityId));
 		}
 		// Spout End
 	}
@@ -579,7 +583,7 @@ public class NetClientHandler extends NetHandler {
 		this.netManager.networkShutdown("disconnect.kicked", new Object[0]);
 		this.disconnected = true;
 		this.mc.loadWorld((WorldClient)null);
-		this.mc.displayGuiScreen(new GuiDisconnected("disconnect.disconnected", "disconnect.genericReason", new Object[] {reason}));
+		this.mc.displayGuiScreen(new GuiDisconnected(null, "disconnect.disconnected", "disconnect.genericReason", new Object[] {reason}));
 	}
 
 	public void handleKickDisconnect(Packet255KickDisconnect par1Packet255KickDisconnect) {
@@ -596,7 +600,7 @@ public class NetClientHandler extends NetHandler {
 			if (par1Str != null && par1Str.toLowerCase().contains("endofstream")) {
 				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost());
 			} else if (par2ArrayOfObj == null || par2ArrayOfObj.length == 0 || !(par2ArrayOfObj[0] instanceof String)) {
-				this.mc.displayGuiScreen(new GuiDisconnected("disconnect.lost", par1Str, par2ArrayOfObj));
+				this.mc.displayGuiScreen(new GuiDisconnected(null, "disconnect.lost", par1Str, par2ArrayOfObj));
 			} else if (((String)par2ArrayOfObj[0]).toLowerCase().contains("connection reset")) {
 				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost());
 			} else if (((String)par2ArrayOfObj[0]).toLowerCase().contains("connection refused")) {
@@ -604,7 +608,7 @@ public class NetClientHandler extends NetHandler {
 			} else if (((String)par2ArrayOfObj[0]).toLowerCase().contains("overflow")) {
 				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost("The server is currently experiencing heavy traffic. Try again later."));
 			} else {
-				this.mc.displayGuiScreen(new GuiDisconnected("disconnect.lost", par1Str, par2ArrayOfObj));
+				this.mc.displayGuiScreen(new GuiDisconnected(null, "disconnect.lost", par1Str, par2ArrayOfObj));
 			}
 			// Spout End
 		}
@@ -729,7 +733,7 @@ public class NetClientHandler extends NetHandler {
 		}
 		// Spout Start - Set the entity's title
 		if (var10.worldObj.customTitles.containsKey(var10.entityId)) {
-			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEnty).setTitle(var10.worldObj.customTitles.get(var10.entityId));
+			((org.spoutcraft.client.entity.CraftLivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEnty).setTitle(var10.worldObj.customTitles.get(var10.entityId));
 		}
 		// Spout End
 	}

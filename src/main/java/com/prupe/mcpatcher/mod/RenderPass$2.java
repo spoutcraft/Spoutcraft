@@ -24,7 +24,6 @@ final class RenderPass$2 extends TexturePackChangeHandler {
 			RenderPass.access$402(BlendMethod.parse(var2));
 
 			if (RenderPass.access$400() == null) {
-				RenderPass.access$600().error("%s: unknown blend method \'%s\'", new Object[] {"/renderpass.properties", var2});
 				RenderPass.access$402(BlendMethod.ALPHA);
 			}
 

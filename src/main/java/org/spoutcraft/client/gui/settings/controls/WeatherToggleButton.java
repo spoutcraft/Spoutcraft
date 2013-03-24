@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
@@ -41,7 +40,7 @@ public class WeatherToggleButton extends GenericCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setWeather(!Configuration.isWeather());
 		Configuration.write();
 	}

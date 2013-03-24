@@ -37,7 +37,6 @@ class SkyRenderer$WorldEntry {
 					return;
 				}
 			} else if (var3.valid) {
-				SkyRenderer.access$400().fine("loaded %s.properties", new Object[] {var2});
 				this.skies.add(var3);
 				this.textures.add(SkyRenderer$Layer.access$300(var3));
 			}
@@ -56,7 +55,6 @@ class SkyRenderer$WorldEntry {
 			SkyRenderer$Layer var5 = new SkyRenderer$Layer(var3, var4);
 
 			if (var5.valid) {
-				SkyRenderer.access$400().fine("using %s.properties (%s) for the %s", new Object[] {var3, SkyRenderer$Layer.access$300(var5), var1});
 				this.objects.put(var2, var5);
 			}
 		}

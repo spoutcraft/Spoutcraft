@@ -1,6 +1,5 @@
 package com.prupe.mcpatcher.mod;
 
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
 import com.prupe.mcpatcher.mod.MobRandomizer$1;
 import com.prupe.mcpatcher.mod.MobRandomizer$ExtraInfo;
@@ -8,7 +7,6 @@ import java.util.LinkedHashMap;
 import net.minecraft.src.EntityLiving;
 
 public class MobRandomizer {
-	private static final MCLogger logger = MCLogger.getLogger("Random Mobs");
 	private static final LinkedHashMap cache = new LinkedHashMap();
 
 	public static String randomTexture(EntityLiving var0) {
@@ -25,7 +23,6 @@ public class MobRandomizer {
 				MobRuleList var5 = MobRuleList.get(var1);
 				var3 = var5.getSkin(MobRandomizer$ExtraInfo.access$100(var4), MobRandomizer$ExtraInfo.access$200(var4), MobRandomizer$ExtraInfo.access$300(var4), MobRandomizer$ExtraInfo.access$400(var4), MobRandomizer$ExtraInfo.access$500(var4));
 				cache.put(var2, var3);
-				logger.finer("entity %s using %s (cache: %d)", new Object[] {var0, var3, Integer.valueOf(cache.size())});
 
 				if (cache.size() > 250) {
 					while (cache.size() > 200) {
@@ -46,10 +43,6 @@ public class MobRandomizer {
 
 	static LinkedHashMap access$000() {
 		return cache;
-	}
-
-	static MCLogger access$600() {
-		return logger;
 	}
 
 	static {

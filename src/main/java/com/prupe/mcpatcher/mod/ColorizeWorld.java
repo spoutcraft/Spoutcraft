@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,7 +13,6 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.World;
 
 public class ColorizeWorld {
-	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
 	private static final int fogBlendRadius = Config.getInt("Custom Colors", "fogBlendRadius", 7);
 	private static final float fogBlendScale = (float)Math.pow((double)(2 * fogBlendRadius + 1), -2.0D);
 	private static final String TEXT_KEY = "text.";
@@ -124,7 +122,6 @@ public class ColorizeWorld {
 				BiomeGenBase var2 = (BiomeGenBase)var1.next();
 				int var3 = ColorMap.getX((double)var2.temperature, (double)var2.rainfall);
 				int var4 = ColorMap.getY((double)var2.temperature, (double)var2.rainfall);
-				logger.finer("setupBiome #%d \"%s\" %06x (%d,%d)", new Object[] {Integer.valueOf(var2.biomeID), var2.biomeName, Integer.valueOf(var2.waterColorMultiplier), Integer.valueOf(var3), Integer.valueOf(var4)});
 			}
 		}
 	}

@@ -2,7 +2,6 @@ package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.BlendMethod;
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.mod.FancyDial$Layer;
@@ -31,7 +30,6 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
 
 public class FancyDial {
-	private static final MCLogger logger = MCLogger.getLogger("Custom Animations", "Animation");
 	private static final String ITEMS_PNG = "/gui/items.png";
 	private static final boolean fboSupported = GLContext.getCapabilities().GL_EXT_framebuffer_object;
 	private static final boolean gl13Supported = GLContext.getCapabilities().OpenGL13;
@@ -65,7 +63,6 @@ public class FancyDial {
 					Properties var2 = TexturePackAPI.getProperties("/misc/" + var1 + ".properties");
 
 					if (var2 != null) {
-						logger.fine("found custom %s", new Object[] {var1});
 						setupInfo.put(var0, var2);
 					}
 				}
@@ -75,7 +72,6 @@ public class FancyDial {
 
 	public static boolean update(TextureStitched var0) {
 		if (!initialized) {
-			logger.finer("deferring %s update until initialization finishes", new Object[] {var0.func_94215_i()});
 			return false;
 		} else {
 			FancyDial var1 = (FancyDial)instances.get(var0);
@@ -94,7 +90,6 @@ public class FancyDial {
 
 	static void updateAll() {
 		if (!initialized) {
-			logger.finer("deferring %s update until initialization finishes", new Object[] {FancyDial.class.getSimpleName()});
 		} else {
 			if (!setupInfo.isEmpty()) {
 				ArrayList var0 = new ArrayList();
@@ -120,7 +115,6 @@ public class FancyDial {
 	}
 
 	static void refresh() {
-		logger.finer("FancyDial.refresh", new Object[0]);
 		Iterator var0 = instances.values().iterator();
 
 		while (var0.hasNext()) {
@@ -168,21 +162,13 @@ public class FancyDial {
 		BufferedImage var5 = TexturePackAPI.getImage(var4);
 
 		if (var5 == null) {
-			logger.error("could not get %s", new Object[] {var4});
 		} else {
 			this.needExtraUpdate = var5.getHeight() % var5.getWidth() != 0 || var5.getHeight() / var5.getWidth() <= 1;
-
-			if (this.needExtraUpdate) {
-				logger.fine("%s needs direct .update() call", new Object[] {this.name});
-			}
-
 			TexturePackAPI.bindTexture("/gui/items.png");
 			int var6 = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 
 			if (var6 < 0) {
-				logger.severe("could not get items texture", new Object[0]);
 			} else {
-				logger.fine("setting up %s", new Object[] {this});
 				int var7 = 0;
 
 				while (true) {
@@ -191,7 +177,6 @@ public class FancyDial {
 					if (var8 == null) {
 						if (var7 > 0) {
 							if (this.layers.size() < 2) {
-								logger.error("custom %s needs at least two layers defined", new Object[] {this.name});
 								return;
 							}
 
@@ -199,7 +184,6 @@ public class FancyDial {
 							this.frameBuffer = EXTFramebufferObject.glGenFramebuffersEXT();
 
 							if (this.frameBuffer < 0) {
-								logger.severe("could not get framebuffer object", new Object[0]);
 								return;
 							}
 
@@ -209,7 +193,6 @@ public class FancyDial {
 							var7 = GL11.glGetError();
 
 							if (var7 != 0) {
-								logger.severe("%s during %s setup", new Object[] {GLU.gluErrorString(var7), this.name});
 								return;
 							}
 
@@ -219,7 +202,6 @@ public class FancyDial {
 					} else {
 						this.layers.add(var8);
 						this.debug |= var8.debug;
-						logger.fine("  new %s", new Object[] {var8});
 					}
 
 					++var7;
@@ -258,14 +240,6 @@ public class FancyDial {
 				var1 = false;
 			}
 
-			if (var1) {
-				logger.info("", new Object[0]);
-				logger.info("scaleX  %+f", new Object[] {Float.valueOf(this.scaleXDelta)});
-				logger.info("scaleY  %+f", new Object[] {Float.valueOf(this.scaleYDelta)});
-				logger.info("offsetX %+f", new Object[] {Float.valueOf(this.offsetXDelta)});
-				logger.info("offsetY %+f", new Object[] {Float.valueOf(this.offsetYDelta)});
-			}
-
 			if (this.outputFrames > 0) {
 				try {
 					int var2 = getIconWidth(this.icon);
@@ -276,8 +250,6 @@ public class FancyDial {
 					int[] var7 = new int[var2 * var3];
 					EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
 					File var8 = MCPatcherUtils.getMinecraftPath(new String[] {"custom_" + this.name + ".png"});
-					logger.info("generating %d %s frames", new Object[] {Integer.valueOf(this.outputFrames), this.name});
-
 					for (int var9 = 0; var9 < this.outputFrames; ++var9) {
 						this.render((double)var9 * (360.0D / (double)this.outputFrames), false);
 						var5.position(0);
@@ -292,7 +264,6 @@ public class FancyDial {
 					}
 
 					ImageIO.write(var4, "png", var8);
-					logger.info("wrote %dx%d %s", new Object[] {Integer.valueOf(var4.getWidth()), Integer.valueOf(var4.getHeight()), var8.getPath()});
 				} catch (Throwable var14) {
 					var14.printStackTrace();
 				} finally {
@@ -406,7 +377,6 @@ public class FancyDial {
 		int var17 = GL11.glGetError();
 
 		if (var17 != 0) {
-			logger.severe("%s during %s update", new Object[] {GLU.gluErrorString(var17), this.icon.func_94215_i()});
 			this.ok = false;
 		}
 
@@ -476,7 +446,6 @@ public class FancyDial {
 		if (var4.equals("")) {
 			return null;
 		} else if (!TexturePackAPI.hasResource(var4)) {
-			logger.error("%s: could not read %s", new Object[] {var1, var4});
 			return null;
 		} else {
 			float var5 = MCPatcherUtils.getFloatProperty(var2, "scaleX" + var3, 1.0F);
@@ -489,7 +458,6 @@ public class FancyDial {
 			BlendMethod var12 = BlendMethod.parse(var11);
 
 			if (var12 == null) {
-				logger.error("%s: unknown blend method %s", new Object[] {var11});
 				return null;
 			} else {
 				boolean var13 = MCPatcherUtils.getBooleanProperty(var2, "debug" + var3, false);
@@ -499,8 +467,6 @@ public class FancyDial {
 	}
 
 	static {
-		logger.config("fbo: supported=%s", new Object[] {Boolean.valueOf(fboSupported)});
-		logger.config("GL13: supported=%s, enabled=%s", new Object[] {Boolean.valueOf(gl13Supported), Boolean.valueOf(useGL13)});
 		GL11.glNewList(drawList, GL11.GL_COMPILE);
 		drawBox();
 		GL11.glEndList();

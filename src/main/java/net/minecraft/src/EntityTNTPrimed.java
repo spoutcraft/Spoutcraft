@@ -5,10 +5,6 @@ public class EntityTNTPrimed extends Entity {
 	/** How long the fuse is */
 	public int fuse;
 	private EntityLiving field_94084_b;
-	// Spout Start
-	public float yield = 4F;
-	public boolean incendiary = true;
-	// Spout End
 
 	public EntityTNTPrimed(World par1World) {
 		super(par1World);
@@ -81,9 +77,7 @@ public class EntityTNTPrimed extends Entity {
 
 	private void explode() {
 		float var1 = 4.0F;
-		// Spout Start
-		this.worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, yield, false, incendiary);
-		// Spout End
+		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, var1, true);
 	}
 
 	/**

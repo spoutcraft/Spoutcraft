@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.spoutcraft.api.UnsafeClass;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.api.property.PropertyInterface;
@@ -74,14 +73,14 @@ public interface Widget extends PropertyInterface{
 	 * Gets the plugin that attached this widget to the screen, or null if this screen is unattached.
 	 * @return plugin that attached this widget to the screen
 	 */
-	public Addon getAddon();
+	public String getAddon();
 
 	/**
 	 * Internal use only.
 	 * @param plugin
 	 * @return this
 	 */
-	public Widget setAddon(Addon addon);
+	public Widget setAddon(String addon);
 
 	/**
 	 * Gets the render priority for this widget. Highest priorities render first (in the background), the lowest priorities render on top (in the foreground).
@@ -153,7 +152,7 @@ public interface Widget extends PropertyInterface{
 	 * @param plugin this is attached to
 	 * @return widget
 	 */
-	public Widget setScreen(Addon addon, Screen screen);
+	public Widget setScreen(String addon, Screen screen);
 
 	/**
 	 * Gets the x coordinate of this widget. Widgets (and screens) render from the top left corner the screen. 0,0 represents the top left corner.

@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.BlendMethod;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
 import com.prupe.mcpatcher.mod.RenderPass$1;
 import com.prupe.mcpatcher.mod.RenderPass$2;
@@ -13,7 +12,6 @@ import net.minecraft.src.RenderGlobal;
 import org.lwjgl.opengl.GL11;
 
 public class RenderPass {
-	private static final MCLogger logger = MCLogger.getLogger("Better Glass");
 	private static final String RENDERPASS_PROPERTIES = "/renderpass.properties";
 	private static final int[] baseRenderPass = new int[Block.blocksList.length];
 	private static final int[] extraRenderPass = new int[Block.blocksList.length];
@@ -138,10 +136,6 @@ public class RenderPass {
 
 	static BlendMethod access$400() {
 		return blendMethod;
-	}
-
-	static MCLogger access$600() {
-		return logger;
 	}
 
 	static {

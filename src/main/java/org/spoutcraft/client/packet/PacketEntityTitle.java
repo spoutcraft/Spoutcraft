@@ -25,11 +25,11 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 
-import org.spoutcraft.api.entity.LivingEntity;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.SpoutcraftWorld;
+import org.spoutcraft.client.entity.CraftLivingEntity;
 
 public class PacketEntityTitle implements SpoutPacket {
 	public String title;
@@ -55,7 +55,7 @@ public class PacketEntityTitle implements SpoutPacket {
 	public void run(int id) {
 		Entity e = SpoutClient.getInstance().getEntityFromId(entityId);
 		if (e != null && e instanceof EntityLiving) {
-			LivingEntity living = (LivingEntity)e.spoutEnty;
+			CraftLivingEntity living = (CraftLivingEntity)e.spoutEnty;
 			// Check to see if this title is our username, if so, use defaults
 			if (e instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer)e;

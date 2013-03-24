@@ -1,6 +1,5 @@
 package com.prupe.mcpatcher.mod;
 
-import com.prupe.mcpatcher.MCLogger;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import net.minecraft.src.Tessellator;
 import net.minecraft.src.TextureMap;
 
 public class TessellatorUtils {
-	private static final MCLogger logger = MCLogger.getLogger("Connected Textures", "CTM");
 	private static final Integer MAGIC_VALUE = Integer.valueOf(305419896);
 	private static final Map textureMapNames = new WeakHashMap();
 	private static final Map iconMap = new HashMap();
@@ -34,7 +32,6 @@ public class TessellatorUtils {
 					var4 = var2.toString();
 				}
 
-				logger.fine("new Tessellator for texture map %s gl texture %d", new Object[] {var4, Integer.valueOf(var2.func_94246_d().func_94282_c())});
 				var3 = new Tessellator(2097152);
 				copyFields(var0, var3, true);
 				var3.textureMap = var2;
@@ -93,7 +90,6 @@ public class TessellatorUtils {
 					var9.setAccessible(true);
 
 					if (var10 != Integer.TYPE || !MAGIC_VALUE.equals(var9.get(var0))) {
-						logger.finest("copy %s %s %s", new Object[] {Modifier.toString(var9.getModifiers()), var9.getType().toString(), var9.getName()});
 						var5.add(var9);
 					}
 				}
@@ -125,11 +121,6 @@ public class TessellatorUtils {
 
 			try {
 				Object var7 = var6.get(var0);
-
-				if (var2) {
-					logger.finest("copy %s %s %s = %s", new Object[] {Modifier.toString(var6.getModifiers()), var6.getType(), var6.getName(), var7});
-				}
-
 				var6.set(var1, var7);
 			} catch (IllegalAccessException var8) {
 				var8.printStackTrace();

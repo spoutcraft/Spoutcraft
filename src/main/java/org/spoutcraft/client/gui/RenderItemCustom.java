@@ -35,7 +35,18 @@ public class RenderItemCustom extends RenderItem {
 	}
 
 	@Override
-	public void renderTexturedQuad(int var1, int var2, int var3, int var4, int var5, int var6) {
+	public void renderTexturedQuads(int par1, int par2, Icon par3Icon, int par4, int par5) {
+		Tessellator var6 = Tessellator.instance;
+		var6.startDrawingQuads();
+		var6.addVertexWithUV((double)(par1 + 0), (double)(par2 + par5) * height, (double)this.zLevel, (double)par3Icon.func_94209_e(), (double)par3Icon.func_94210_h());
+		var6.addVertexWithUV((double)(par1 + par4) * height, (double)(par2 + par5), (double)this.zLevel, (double)par3Icon.func_94212_f(), (double)par3Icon.func_94210_h());
+		var6.addVertexWithUV((double)(par1 + par4) * height, (double)(par2 + 0), (double)this.zLevel, (double)par3Icon.func_94212_f(), (double)par3Icon.func_94206_g());
+		var6.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)this.zLevel, (double)par3Icon.func_94209_e(), (double)par3Icon.func_94206_g());
+		var6.draw();
+	}
+
+	/*
+	public void renderTexturedQuads(int var1, int var2, int var3, int var4, int var5, int var6) {
 		float var7 = 0.0F;
 		float var8 = 0.00390625F;
 		float var9 = 0.00390625F;
@@ -47,4 +58,5 @@ public class RenderItemCustom extends RenderItem {
 		var10.addVertexWithUV(var1, var2, var7, (float)(var3 * var8), (float)(var4 * var9));
 		var10.draw();
 	}
+	*/
 }

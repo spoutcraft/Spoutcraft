@@ -20,35 +20,31 @@
 package org.spoutcraft.api;
 
 import java.io.File;
-import java.util.List;
 import java.util.logging.Logger;
 
+import net.minecraft.src.Chunk;
+
 import org.spoutcraft.api.Client.Mode;
-import org.spoutcraft.api.addon.AddonManager;
-import org.spoutcraft.api.addon.AddonStore;
-import org.spoutcraft.api.command.AddonCommand;
-import org.spoutcraft.api.command.CommandSender;
-import org.spoutcraft.api.entity.ActivePlayer;
-import org.spoutcraft.api.entity.CameraEntity;
-import org.spoutcraft.api.entity.Player;
 import org.spoutcraft.api.gui.MinecraftFont;
 import org.spoutcraft.api.gui.MinecraftTessellator;
 import org.spoutcraft.api.gui.RenderDelegate;
 import org.spoutcraft.api.gui.WidgetManager;
 import org.spoutcraft.api.inventory.MaterialManager;
-import org.spoutcraft.api.io.AddonPacket;
 import org.spoutcraft.api.keyboard.KeyBindingManager;
 import org.spoutcraft.api.player.BiomeManager;
 import org.spoutcraft.api.player.SkyManager;
-import org.spoutcraft.api.util.Location;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.SpoutcraftWorld;
+import org.spoutcraft.client.block.SpoutcraftChunk;
+import org.spoutcraft.client.player.ClientPlayer;
 
 public final class Spoutcraft {
-	private static Client client = null;
+	private static SpoutClient client = null;
 
 	private Spoutcraft() {
 	}
 
-	public static void setClient(Client argClient) {
+	public static void setClient(SpoutClient argClient) {
 		if (client != null) {
 			throw new UnsupportedOperationException("Cannot redefine singleton Client");
 		}
@@ -61,10 +57,6 @@ public final class Spoutcraft {
 	 */
 	public static Client getClient() {
 		return client;
-	}
-
-	public static World getWorld() {
-		return client.getWorld();
 	}
 
 	/**
@@ -94,27 +86,11 @@ public final class Spoutcraft {
 	}
 
 	/**
-	 * Gets the addon manager for interfacing with addons
-	 * @return
-	 */
-	public static AddonManager getAddonManager() {
-		return client.getAddonManager();
-	}
-
-	/**
 	 * Gets a logger that will print logs to the users .spoutcraft/logs folder, or terminal if it is active
 	 * @return logger
 	 */
 	public static Logger getLogger() {
 		return client.getLogger();
-	}
-
-	public static AddonCommand getAddonCommand(String name) {
-		return client.getAddonCommand(name);
-	}
-
-	public static boolean dispatchCommand(CommandSender sender, String commandLine) {
-		return client.dispatchCommand(sender, commandLine);
 	}
 
 	public static File getUpdateFolder() {
@@ -143,10 +119,6 @@ public final class Spoutcraft {
 
 	public static MinecraftTessellator getTessellator() {
 		return client.getRenderDelegate().getTessellator();
-	}
-
-	public static ActivePlayer getActivePlayer() {
-		return client.getActivePlayer();
 	}
 
 	public static BiomeManager getBiomeManager() {
@@ -193,80 +165,31 @@ public final class Spoutcraft {
 		return client.getTick();
 	}
 
-	public static CameraEntity getCamera() {
-		return client.getCamera();
-	}
-
-	public static void setCamera(Location loc) {
-		client.setCamera(loc);
-	}
-
-	public static void detachCamera(boolean detach) {
-		client.detachCamera(detach);
-	}
-
-	public static boolean isCameraDetached() {
-		return client.isCameraDetached();
-	}
-
-	public static void send(AddonPacket packet) {
-		client.send(packet);
-	}
-
-	/**
-	 * Gets a list of all Players
-	 *
-	 * @return An array of Players
-	 */
-	public static Player[] getPlayers() {
-		return client.getPlayers();
-	}
-
-	/**
-	 * Gets a player object by the given username
-	 *
-	 * This method may not return objects for offline players
-	 *
-	 * @param name Name to look up
-	 * @return Player if it was found, otherwise null
-	 */
-	public static Player getPlayer(String name) {
-		return client.getPlayer(name);
-	}
-
-	/**
-	 * Gets the player with the exact given name, case insensitive
-	 *
-	 * @param name Exact name of the player to retrieve
-	 * @return Player object or null if not found
-	 */
-	public static Player getPlayerExact(String name) {
-		return client.getPlayerExact(name);
-	}
-
-	/**
-	 * Attempts to match any players with the given name, and returns a list
-	 * of all possibly matches
-	 *
-	 * This list is not sorted in any particular order. If an exact match is found,
-	 * the returned list will only contain a single result.
-	 *
-	 * @param name Name to match
-	 * @return List of all possible players
-	 */
-	public static List<Player> matchPlayer(String name) {
-		return client.matchPlayer(name);
-	}
-
-	public static AddonStore getAddonStore() {
-		return client.getAddonStore();
-	}
-
 	public static WidgetManager getWidgetManager() {
 		return client.getWidgetManager();
 	}
 
 	public static boolean hasPermission(String permission) {
 		return client.hasPermission(permission);
+	}
+
+	public static SpoutcraftChunk getChunkAt(int x, int y, int z) {
+		return getChunk(x / 16, z / 16);
+	}
+
+	public static SpoutcraftChunk getChunk(int chunkX, int chunkZ) {
+		Chunk chunk = client.getRawWorld().getChunkFromChunkCoords(chunkX, chunkZ);
+		if (chunk != null) {
+			return chunk.spoutChunk;
+		}
+		return null;
+	}
+
+	public static SpoutcraftWorld getWorld() {
+		return SpoutClient.getInstance().getRawWorld().world;
+	}
+
+	public static ClientPlayer getActivePlayer() {
+		return ClientPlayer.getInstance();
 	}
 }

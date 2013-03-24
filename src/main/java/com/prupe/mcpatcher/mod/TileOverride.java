@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.mod.TileOverrideImpl$CTM;
@@ -36,7 +35,6 @@ import net.minecraft.src.TextureManager;
 import net.minecraft.src.TextureMap;
 
 abstract class TileOverride implements ITileOverride {
-	private static final MCLogger logger = MCLogger.getLogger("Connected Textures", "CTM");
 	private static final boolean debugTextures = Config.getBoolean("Connected Textures", "debugTextures", false);
 	static final int BOTTOM_FACE = 0;
 	static final int TOP_FACE = 1;
@@ -108,7 +106,6 @@ abstract class TileOverride implements ITileOverride {
 								var3 = new TileOverrideImpl$Vertical(var0, var1);
 							} else if (!var2.equals("sandstone") && !var2.equals("top")) {
 								if (!var2.equals("repeat") && !var2.equals("pattern")) {
-									logger.error("%s: unknown method \"%s\"", new Object[] {var0, var2});
 								} else {
 									var3 = new TileOverrideImpl$Repeat(var0, var1);
 								}
@@ -469,7 +466,6 @@ abstract class TileOverride implements ITileOverride {
 				this.icons[var4] = var1.func_94245_a(var5);
 				TessellatorUtils.registerIcon(var1, this.icons[var4]);
 				String var9 = var6.size() > 1 ? ", " + var6.size() + " frames" : "";
-				logger.finer("%s -> icon: %dx%d%s", new Object[] {var5, Integer.valueOf(var7.func_94275_d()), Integer.valueOf(var7.func_94276_e()), var9});
 			}
 		}
 
@@ -509,17 +505,11 @@ abstract class TileOverride implements ITileOverride {
 	}
 
 	final void error(String var1, Object ... var2) {
-		if (this.propertiesFile != null) {
-			logger.error(this.propertiesFile + ": " + var1, var2);
-		}
-
 		this.disabled = true;
 	}
 
 	final void warn(String var1, Object ... var2) {
-		if (this.propertiesFile != null) {
-			logger.warning(this.propertiesFile + ": " + var1, var2);
-		}
+
 	}
 
 	public final boolean isDisabled() {
@@ -741,12 +731,6 @@ abstract class TileOverride implements ITileOverride {
 			getBiomeNameAt = var0.getDeclaredMethod("getBiomeNameAt", new Class[] {Integer.TYPE, Integer.TYPE, Integer.TYPE});
 		} catch (Throwable var2) {
 			;
-		}
-
-		if (getBiomeNameAt == null) {
-			logger.warning("biome integration failed", new Object[0]);
-		} else {
-			logger.fine("biome integration active", new Object[0]);
 		}
 
 		try {

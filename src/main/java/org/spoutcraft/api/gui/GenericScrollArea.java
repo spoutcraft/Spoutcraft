@@ -29,13 +29,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.UnsafeClass;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 
 @UnsafeClass
 public class GenericScrollArea extends GenericScrollable implements ScrollArea {
-	protected Map<Widget, Addon> widgets = new ConcurrentHashMap<Widget, Addon>();
+	protected Map<Widget, String> widgets = new ConcurrentHashMap<Widget, String>();
 	protected int playerId;
 	protected boolean bgvis;
 	protected int mouseX = -1, mouseY = -1;
@@ -76,7 +75,7 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 		return attachWidget(null, widget);
 	}
 
-	public Screen attachWidget(Addon addon, Widget widget) {
+	public Screen attachWidget(String addon, Widget widget) {
 		widgets.put(widget, addon);
 		widget.setAddon(addon);
 		widget.setAnchor(WidgetAnchor.TOP_LEFT);
@@ -85,7 +84,7 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 		return this;
 	}
 
-	public Screen attachWidgets(Addon addon, Widget ...widgets) {
+	public Screen attachWidgets(String addon, Widget ...widgets) {
 		for (Widget widget:widgets) {
 			this.widgets.put(widget, addon);
 			widget.setAddon(addon);
@@ -114,7 +113,7 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 		return this;
 	}
 
-	public Screen removeWidgets(Addon addon) {
+	public Screen removeWidgets(String addon) {
 		for (Widget i : getAttachedWidgets()) {
 			if (widgets.get(i) != null && widgets.get(i).equals(addon)) {
 				removeWidget(i);
@@ -143,7 +142,7 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 
 	public boolean updateWidget(Widget widget) {
 		if (widgets.containsKey(widget)) {
-			Addon addon = widgets.get(widget);
+			String addon = widgets.get(widget);
 			widgets.remove(widget);
 			widgets.put(widget, addon);
 			widget.setScreen(this);

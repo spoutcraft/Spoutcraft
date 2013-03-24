@@ -83,7 +83,7 @@ public class RenderItem extends Render {
 						textureURI = design != null ? design.getTexureURL() : null;
 					}
 					if (textureURI != null) {
-						Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
+						Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon(), textureURI);
 						if (texture != null) {
 							GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 							custom = true;
@@ -95,7 +95,7 @@ public class RenderItem extends Render {
 
 			if (design != null && custom) {
 				//GL11.glScalef(0.25F, 0.25F, 0.25F);
-				design.renderItemstack((org.spoutcraft.api.entity.Item)par1EntityItem.spoutEnty, (float)par2, (float)(par4 + var11), (float)par6, var12, 0.25F, random);
+				design.renderItemstack(par1EntityItem.getEntityItem(), (float)par2, (float)(par4 + var11), (float)par6, var12, 0.25F, random);
 			} else {
 				GL11.glPushMatrix(); // the push from above
 				if (!custom) {
@@ -232,12 +232,12 @@ public class RenderItem extends Render {
 		float var15 = 0.25F;
 		float var17;
 		// Spout Start
-		if (customTexture) {
+		/*if (customTexture) {
 			var9 = 0F;
 			var10 = 1F;
 			var11 = 1F;
 			var12 = 0F;
-		}
+		}*/
 		// Spout End
 
 		if (this.renderManager.options.fancyGraphics) {
@@ -350,7 +350,6 @@ public class RenderItem extends Render {
 		int var6 = par3ItemStack.itemID;
 		int var7 = par3ItemStack.getItemDamage();
 		Icon var8 = par3ItemStack.getIconIndex();
-		int var10;
 		float var12;
 		float var13;
 		float var18;
@@ -368,7 +367,7 @@ public class RenderItem extends Render {
 					textureURI = design != null ? design.getTexureURL() : null;
 				}
 				if (textureURI != null) {
-					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
+					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon(), textureURI);
 					if (texture != null) {
 						GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 						custom = true;
@@ -387,7 +386,7 @@ public class RenderItem extends Render {
 		if (design != null && custom) {
 			design.renderItemOnHUD((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
 		} else if (var6 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
-			par2RenderEngine.bindTexture(par2RenderEngine.func_98187_b("/terrain.png"));
+			par2RenderEngine.func_98187_b("/terrain.png");
 			Block var15 = Block.blocksList[var6];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
@@ -416,7 +415,7 @@ public class RenderItem extends Render {
 			if (Item.itemsList[var6].requiresMultipleRenderPasses()) {
 				GL11.glDisable(GL11.GL_LIGHTING);
 				if (!custom) {
-					par2RenderEngine.bindTexture(par2RenderEngine.func_98187_b("/gui/items.png"));
+					par2RenderEngine.func_98187_b("/gui/items.png");
 				}
 
 				for (var9 = 0; var9 <= 1; ++var9) {
@@ -430,7 +429,7 @@ public class RenderItem extends Render {
 						GL11.glColor4f(var12, var13, var14, 1.0F);
 					}
 
-					this.renderTexturedQuad(par4, par5, var10, 16, 16);
+					this.renderTexturedQuads(par4, par5, var10, 16, 16);
 				}
 
 				GL11.glEnable(GL11.GL_LIGHTING);
@@ -438,10 +437,10 @@ public class RenderItem extends Render {
 				GL11.glDisable(GL11.GL_LIGHTING);
 
 				if (var6 < 256) {
-					par2RenderEngine.bindTexture(par2RenderEngine.func_98187_b("/terrain.png"));
+					par2RenderEngine.func_98187_b("/terrain.png");
 				} else {
 					if (!custom) {
-						par2RenderEngine.bindTexture(par2RenderEngine.func_98187_b("/gui/items.png"));
+						par2RenderEngine.func_98187_b("/gui/items.png");
 					}
 				}
 
@@ -464,7 +463,7 @@ public class RenderItem extends Render {
 				tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 0), (double)0, 0, 1);
 				tes.draw();
 				} else					
-					this.renderTexturedQuad(par4, par5, var8, 16, 16);
+					this.renderTexturedQuads(par4, par5, var8, 16, 16);
 				// Spout End
 				GL11.glEnable(GL11.GL_LIGHTING);
 			}
@@ -484,7 +483,7 @@ public class RenderItem extends Render {
 				GL11.glDepthFunc(GL11.GL_GREATER);
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDepthMask(false);
-				par2RenderEngine.func_98187_b(par2RenderEngine.func_98187_b("%blur%/misc/glint.png"));
+				par2RenderEngine.func_98187_b("%blur%/misc/glint.png");
 				this.zLevel -= 50.0F;
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);

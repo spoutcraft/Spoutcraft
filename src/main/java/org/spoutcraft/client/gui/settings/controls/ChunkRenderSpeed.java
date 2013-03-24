@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;
 
 public class ChunkRenderSpeed extends AutomatedButton {
@@ -28,7 +27,7 @@ public class ChunkRenderSpeed extends AutomatedButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setChunkRenderPasses(Configuration.getChunkRenderPasses() * 2);
 		if (Configuration.getChunkRenderPasses() > 16) {
 			Configuration.setChunkRenderPasses(1);

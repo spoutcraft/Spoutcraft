@@ -22,18 +22,16 @@ package org.spoutcraft.api.block.design;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.spoutcraft.api.addon.Addon;
-
 public class Texture {
 	public String texture;
-	public Addon addon;
+	public String addon;
 	public int width;
 	public int height;
 	public int spriteSize;
 
 	public List<SubTexture> subTextures;
 
-	public Texture(Addon addon, String texture, int width, int height, int spriteSize) {
+	public Texture(String addon, String texture, int width, int height, int spriteSize) {
 		this.texture = texture;
 		this.addon = addon;
 		this.width = width;
@@ -73,7 +71,7 @@ public class Texture {
 		return height;
 	}
 
-	public Addon getAddon() {
+	public String getAddon() {
 		return addon;
 	}
 }

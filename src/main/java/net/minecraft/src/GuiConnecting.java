@@ -14,6 +14,10 @@ public class GuiConnecting extends GuiScreen {
 	private boolean cancelled = false;
 	private final GuiScreen field_98098_c;
 
+	public GuiConnecting(Minecraft par2Minecraft, ServerData par3ServerData) {
+		this(null, par2Minecraft, par3ServerData);
+	}
+
 	public GuiConnecting(GuiScreen par1GuiScreen, Minecraft par2Minecraft, ServerData par3ServerData) {
 		this.mc = par2Minecraft;
 		this.field_98098_c = par1GuiScreen;
@@ -21,6 +25,10 @@ public class GuiConnecting extends GuiScreen {
 		par2Minecraft.loadWorld((WorldClient)null);
 		par2Minecraft.setServerData(par3ServerData);
 		this.spawnNewServerThread(var4.getIP(), var4.getPort());
+	}
+
+	public GuiConnecting(Minecraft par2Minecraft, String par3Str, int par4) {
+		this(null, par2Minecraft, par3Str, par4);
 	}
 
 	public GuiConnecting(GuiScreen par1GuiScreen, Minecraft par2Minecraft, String par3Str, int par4) {

@@ -26,7 +26,6 @@ import net.minecraft.src.TexturePackFolder;
 import net.minecraft.src.TexturePackList;
 
 public class TexturePackAPI {
-	private static final MCLogger logger = MCLogger.getLogger("Texture Pack");
 	public static TexturePackAPI instance = new TexturePackAPI();
 	public static boolean enableTextureBorder;
 	private static final ArrayList textureMapFields = new ArrayList();
@@ -262,7 +261,6 @@ public class TexturePackAPI {
 		int var1 = getTextureIfLoaded(var0);
 
 		if (var1 >= 0) {
-			logger.finest("unloading texture %s", new Object[] {var0});
 			RenderEngine var2 = MCPatcherUtils.getMinecraft().renderEngine;
 			var2.deleteTexture(var1);
 			Iterator var3 = textureMapFields.iterator();
@@ -322,7 +320,6 @@ public class TexturePackAPI {
 		int var3 = var1.length;
 
 		if (var3 > var2) {
-			logger.finest("resizing gl buffer from 0x%x to 0x%x", new Object[] {Integer.valueOf(var2), Integer.valueOf(var3)});
 			var0 = ByteBuffer.allocateDirect(4 * var3).order(var0.order()).asIntBuffer();
 		}
 
@@ -354,7 +351,6 @@ public class TexturePackAPI {
 			try {
 				var3 = ImageIO.read(var2);
 			} catch (IOException var8) {
-				logger.error("could not read %s", new Object[] {var1});
 				var8.printStackTrace();
 			} finally {
 				MCPatcherUtils.close((Closeable)var2);
@@ -377,7 +373,6 @@ public class TexturePackAPI {
 				var2.load(var3);
 				var4 = true;
 			} catch (IOException var8) {
-				logger.error("could not read %s", new Object[0]);
 				var8.printStackTrace();
 				return false;
 			} finally {

@@ -77,7 +77,7 @@ public class Item {
 	public static ItemArmor legsGold = (ItemArmor)(new ItemArmor(60, EnumArmorMaterial.GOLD, 4, 2)).setUnlocalizedName("leggingsGold");
 	public static ItemArmor bootsGold = (ItemArmor)(new ItemArmor(61, EnumArmorMaterial.GOLD, 4, 3)).setUnlocalizedName("bootsGold");
 	// Spout Start - Changed to SpoutItemBlock
-	public static Item flint = (new SpoutItem(62)).setIconCoord(6, 0).setItemName("flint").setCreativeTab(CreativeTabs.tabMaterials);
+	public static Item flint = (new SpoutItem(62)).setUnlocalizedName("flint").setCreativeTab(CreativeTabs.tabMaterials);
 	// Spout End
 	public static Item porkRaw = (new ItemFood(63, 3, 0.3F, true)).setUnlocalizedName("porkchopRaw");
 	public static Item porkCooked = (new ItemFood(64, 8, 0.8F, true)).setUnlocalizedName("porkchopCooked");
@@ -118,7 +118,8 @@ public class Item {
 	public static Item bed = (new ItemBed(99)).setMaxStackSize(1).setUnlocalizedName("bed");
 	public static Item redstoneRepeater = (new ItemReed(100, Block.redstoneRepeaterIdle)).setUnlocalizedName("diode").setCreativeTab(CreativeTabs.tabRedstone);
 	public static Item cookie = (new ItemFood(101, 2, 0.1F, false)).setUnlocalizedName("cookie");
-	
+	public static ItemMap map = (ItemMap)(new ItemMap(102)).setUnlocalizedName("map");
+
 	/**
 	 * Item introduced on 1.7 version, is a shear to cut leaves (you can keep the block) or get wool from sheeps.
 	 */

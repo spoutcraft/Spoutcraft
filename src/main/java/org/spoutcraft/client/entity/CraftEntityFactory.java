@@ -21,11 +21,10 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.*;
 
-import org.spoutcraft.api.entity.Entity;
 import org.spoutcraft.client.player.ClientPlayer;
 
 public class CraftEntityFactory {
-	public static Entity getCraftEntity(net.minecraft.src.Entity aThis) {
+	public static CraftEntity getCraftEntity(net.minecraft.src.Entity aThis) {
 		if (aThis instanceof EntityPlayerSP) {
 			return ClientPlayer.getInstance();
 		}

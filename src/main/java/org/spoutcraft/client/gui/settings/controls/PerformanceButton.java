@@ -23,7 +23,6 @@ import org.lwjgl.opengl.Display;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;
 
 public class PerformanceButton extends AutomatedButton {
@@ -43,7 +42,7 @@ public class PerformanceButton extends AutomatedButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setPerformance(Configuration.getPerformance() + 1);
 		Configuration.setPerformance(Configuration.getPerformance() & 3);
 		Configuration.write();

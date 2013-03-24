@@ -71,7 +71,6 @@ public final class MobRandomizer$ExtraInfo {
 					var2.references.remove(var1);
 
 					if (var2.references.isEmpty()) {
-						MobRandomizer.access$600().finest("removing unused ref %d", new Object[] {Integer.valueOf(var2.entityId)});
 						allInfo.remove(Integer.valueOf(var2.entityId));
 					}
 				}
@@ -107,7 +106,6 @@ public final class MobRandomizer$ExtraInfo {
 				WeakReference var8 = new WeakReference(var0, refQueue);
 				var1.references.add(var8);
 				allRefs.put(var8, var1);
-				MobRandomizer.access$600().finest("added ref #%d for %d (%d entities)", new Object[] {Integer.valueOf(var1.references.size()), Integer.valueOf(var0.entityId), Integer.valueOf(allInfo.size())});
 			}
 
 			var1.setBiome();
@@ -192,12 +190,6 @@ public final class MobRandomizer$ExtraInfo {
 			getBiomeNameAt = var0.getDeclaredMethod("getBiomeNameAt", new Class[] {Integer.TYPE, Integer.TYPE, Integer.TYPE});
 		} catch (Throwable var1) {
 			;
-		}
-
-		if (getBiomeNameAt == null) {
-			MobRandomizer.access$600().warning("biome integration failed", new Object[0]);
-		} else {
-			MobRandomizer.access$600().fine("biome integration active", new Object[0]);
 		}
 	}
 }

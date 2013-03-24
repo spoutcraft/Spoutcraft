@@ -22,10 +22,12 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityRenderer;
 import net.minecraft.src.World;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.block.design.GenericBlockDesign;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.io.CustomTextureManager;
 // Spout End
 
@@ -182,8 +184,9 @@ public class WorldRenderer {
 				hitTextures.add("/terrain.png");
 				hitTexturesPlugins.add("");
 
-				short[] customBlockIds = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockIds();
-				byte[] customBlockData = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockData();
+				SpoutcraftChunk sChunk = Spoutcraft.getChunkAt(posX, posY, posZ);
+				short[] customBlockIds = sChunk.getCustomBlockIds();
+				byte[] customBlockData = sChunk.getCustomBlockData();
 				blockRenderer.customIds = customBlockIds;
 
 				for (int renderPass = 0; renderPass < limit; ++renderPass) {
@@ -223,11 +226,11 @@ public class WorldRenderer {
 							}
 						}
 
-						if (tessellator.texture != texture){
-							tessellator.draw();
-							tessellator.texture = texture;
-							tessellator.startDrawingQuads();
-						}
+						//if (tessellator.texture != texture){
+							//tessellator.draw();
+							//tessellator.texture = texture;
+							//tessellator.startDrawingQuads();
+						//}
 
 						float[] oldBounds = new float[6];
 
@@ -325,7 +328,7 @@ public class WorldRenderer {
 
 					if (drawBlock) {
 						tessellator.draw();
-						tessellator.texture = 0;
+						//tessellator.texture = 0;
 						GL11.glPopMatrix();
 						GL11.glEndList();
 						game.renderEngine.bindTexture(defaultTexture);

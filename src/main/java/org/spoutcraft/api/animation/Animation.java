@@ -23,9 +23,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.event.animation.AnimationPauseEvent;
-import org.spoutcraft.api.event.animation.AnimationStartEvent;
-import org.spoutcraft.api.event.animation.AnimationStopEvent;
 
 public class Animation {
 	public enum Direction {
@@ -113,7 +110,6 @@ public class Animation {
 	}
 
 	public void start() {
-		Spoutcraft.getAddonManager().callEvent(new AnimationStartEvent(this));
 		this.state = State.RUNNING;
 		switch (direction) {
 			case FORWARD:
@@ -127,13 +123,11 @@ public class Animation {
 	}
 
 	public void pause() {
-		Spoutcraft.getAddonManager().callEvent(new AnimationPauseEvent(this));
 		this.state = State.PAUSED;
 		animator.cancel();
 	}
 
 	public void resume() {
-		Spoutcraft.getAddonManager().callEvent(new AnimationStartEvent(this));
 		if (this.state == State.PAUSED) {
 			this.state = State.RUNNING;
 			timer.schedule(animator, delay, delay);
@@ -141,7 +135,6 @@ public class Animation {
 	}
 
 	public void stop() {
-		Spoutcraft.getAddonManager().callEvent(new AnimationStopEvent(this));
 		this.state = State.STOPPED;
 		switch (direction) {
 			case FORWARD:

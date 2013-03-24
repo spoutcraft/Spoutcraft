@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericRadioButton;
 import org.spoutcraft.api.gui.Label;
@@ -33,7 +32,7 @@ public class OptimalGameplayButton extends GenericRadioButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setAutomatePerformance(true);
 		Configuration.setAutomateMode(1);
 		Configuration.write();

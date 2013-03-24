@@ -63,7 +63,7 @@ public class ItemRenderer {
 					textureURI = design != null ? design.getTexureURL() : null;
 				}
 				if (textureURI != null) {
-					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
+					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon(), textureURI);
 					if (texture != null) {
 						GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 						custom = true;
@@ -89,6 +89,12 @@ public class ItemRenderer {
 			this.renderBlocksInstance.renderBlockAsItem(Block.blocksList[par2ItemStack.itemID], par2ItemStack.getItemDamage(), 1.0F);			
 		} else {
 			Tessellator var5 = Tessellator.instance;
+			 Icon var4 = par1EntityLiving.getItemIcon(par2ItemStack, par3);
+            if (var4 == null) {
+                GL11.glPopMatrix();
+                return;
+            }
+
 			float var6 = var4.func_94209_e();
 			float var7 = var4.func_94212_f();
 			float var8 = var4.func_94206_g();

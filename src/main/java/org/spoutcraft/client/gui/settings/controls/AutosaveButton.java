@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;
 
 public class AutosaveButton extends AutomatedButton {
@@ -43,7 +42,7 @@ public class AutosaveButton extends AutomatedButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setAutosave(Configuration.getAutosave() + 1);
 		if (Configuration.getAutosave() > 5) {
 			Configuration.setAutosave(0);

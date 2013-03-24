@@ -22,8 +22,6 @@ package org.spoutcraft.client.gui.server;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
@@ -71,7 +69,6 @@ public class GuiAddFavorite extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		int top = height / 2 - 101/2;
 		int left = width / 2 - 250 / 2;
 
@@ -79,18 +76,18 @@ public class GuiAddFavorite extends GuiScreen {
 
 		labelTitle = new GenericLabel("Server Name");
 		labelTitle.setHeight(11).setWidth(250).setX(left).setY(top);
-		getScreen().attachWidget(spoutcraft, labelTitle);
+		getScreen().attachWidget("Spoutcraft", labelTitle);
 		top+=13;
 
 		textTitle = new TabField();
 		textTitle.setMaximumCharacters(0).setWidth(250).setHeight(20).setX(left).setY(top);
 		textTitle.setText(item.getTitle());
-		getScreen().attachWidget(spoutcraft, textTitle);
+		getScreen().attachWidget("Spoutcraft", textTitle);
 		top+=25;
 
 		labelIp = new GenericLabel("Server Address");
 		labelIp.setHeight(11).setWidth(250).setX(left).setY(top);
-		getScreen().attachWidget(spoutcraft, labelIp);
+		getScreen().attachWidget("Spoutcraft", labelIp);
 		top+=13;
 
 		textIp = new TabField();
@@ -98,28 +95,28 @@ public class GuiAddFavorite extends GuiScreen {
 		textIp.setWidth(250);
 		textIp.setHeight(20);
 		textIp.setX(left).setY(top);
-		getScreen().attachWidget(spoutcraft, textIp);
+		getScreen().attachWidget("Spoutcraft", textIp);
 		textIp.setText(item.getIp() + (item.getPort() != ServerItem.DEFAULT_PORT ? ":" + item.getPort() : ""));
 		top+=25;
 
 		buttonClear = new GenericButton("Clear");
 		buttonClear.setWidth(100).setHeight(20).setX(textIp.getX()).setY(top);
-		getScreen().attachWidget(spoutcraft, buttonClear);
+		getScreen().attachWidget("Spoutcraft", buttonClear);
 
 		buttonDone = new GenericButton("Done");
 		buttonDone.setWidth(200).setHeight(20).setX(width - 205).setY(height - 25);
-		getScreen().attachWidget(spoutcraft, buttonDone);
+		getScreen().attachWidget("Spoutcraft", buttonDone);
 
 		buttonCancel = new GenericButton("Cancel");
 		buttonCancel.setWidth(200).setHeight(20).setX(width - 205 - 205).setY(height - 25);
-		getScreen().attachWidget(spoutcraft, buttonCancel);
+		getScreen().attachWidget("Spoutcraft", buttonCancel);
 
 		updateButtons();
 	}
 
 	private class TabField extends GenericTextField {
 		@Override
-		public void onTextFieldChange(TextFieldChangeEvent event) {
+		public void onTextFieldChange() {
 			updateButtons();
 		}
 

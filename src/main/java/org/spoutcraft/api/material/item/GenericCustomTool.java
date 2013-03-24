@@ -23,7 +23,6 @@ import java.io.IOException;
 
 import gnu.trove.map.hash.TObjectFloatHashMap;
 
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.api.material.Block;
@@ -39,7 +38,7 @@ public class GenericCustomTool extends GenericCustomItem implements Tool{
 		super();
 	}
 
-	public GenericCustomTool(Addon addon, String name, String texture) {
+	public GenericCustomTool(String addon, String name, String texture) {
 		super(addon, name, texture);
 	}
 

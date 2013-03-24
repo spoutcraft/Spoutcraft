@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
 
+import com.prupe.mcpatcher.mod.FireworksHelper;
+
 public class EffectRenderer {
 
 	/** Reference to the World object. */

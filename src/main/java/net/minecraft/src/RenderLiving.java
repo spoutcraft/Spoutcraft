@@ -372,6 +372,14 @@ public class RenderLiving extends Render {
 		// Spout End
 	}
 
+    protected void func_96449_a(EntityLiving par1EntityLiving, double par2, double par4, double par6, String par8Str, float par9, double par10) {
+        if (par1EntityLiving.isPlayerSleeping()) {
+            this.renderLivingLabel(par1EntityLiving, par8Str, par2, par4 - 1.5D, par6, 64);
+        } else {
+            this.renderLivingLabel(par1EntityLiving, par8Str, par2, par4, par6, 64);
+        }
+    }
+
 	/**
 	 * Draws the debug or playername text above a living
 	 */

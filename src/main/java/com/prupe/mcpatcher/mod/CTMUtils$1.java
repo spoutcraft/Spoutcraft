@@ -75,7 +75,6 @@ final class CTMUtils$1 extends TexturePackChangeHandler {
 				var2.func_94247_b();
 
 				if (!CTMUtils.access$900()) {
-					CTMUtils.access$1100().severe("CTMUtils.registerIcons was never called!  Possible conflict in TextureMap.class", new Object[0]);
 					break;
 				}
 

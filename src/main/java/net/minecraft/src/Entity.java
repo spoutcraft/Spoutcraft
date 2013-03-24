@@ -203,7 +203,7 @@ public abstract class Entity {
 	private UUID field_96093_i;
 	// Spout Start
 	public boolean partiallyInWater = false;
-	public org.spoutcraft.api.entity.Entity spoutEnty;
+	public org.spoutcraft.client.entity.CraftEntity spoutEnty;
 	public UUID uniqueId = UUID.randomUUID();
 	public boolean wasOnGround;
 	public boolean clientonly = false;

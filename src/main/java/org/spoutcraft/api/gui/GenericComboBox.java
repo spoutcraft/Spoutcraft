@@ -27,8 +27,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.io.SpoutInputStream;
 
 public class GenericComboBox extends GenericButton implements ComboBox {
@@ -131,9 +129,9 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		setOpen(!isOpen());
-		super.onButtonClick(event);
+		super.onButtonClick();
 	}
 
 	public ComboBox setSelection(int row) {
@@ -142,7 +140,7 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	}
 
 	@Override
-	public Widget setScreen(Addon addon, Screen screen) {
+	public Widget setScreen(String addon, Screen screen) {
 		super.setScreen(addon, screen);
 		if (screen == null) {
 			return this;

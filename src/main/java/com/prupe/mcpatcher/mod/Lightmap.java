@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import java.awt.image.BufferedImage;
@@ -10,7 +9,6 @@ import net.minecraft.src.EntityRenderer;
 import net.minecraft.src.World;
 
 public final class Lightmap {
-	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
 	private static final String LIGHTMAP_FORMAT = "/environment/lightmap%d.png";
 	private static final int LIGHTMAP_SIZE = 16;
 	private static final int HEIGHT_WITHOUT_NIGHTVISION = 32;
@@ -67,10 +65,6 @@ public final class Lightmap {
 		this.origMap = new int[this.width * var3];
 		var2.getRGB(0, 0, this.width, var3, this.origMap, 0, this.width);
 		this.valid = var3 == 32 || var3 == 64;
-
-		if (!this.valid) {
-			logger.error("%s must be exactly %d or %d pixels high", new Object[] {var1, Integer.valueOf(32), Integer.valueOf(64)});
-		}
 	}
 
 	private boolean compute(EntityRenderer var1, World var2, float var3) {

@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
@@ -49,7 +48,7 @@ public class TimeButton extends GenericButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setTime(Configuration.getTime() + 1);
 		if (Configuration.getTime() > 2) {
 			Configuration.setTime(0);

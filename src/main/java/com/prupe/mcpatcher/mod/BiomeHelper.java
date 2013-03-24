@@ -1,12 +1,10 @@
 package com.prupe.mcpatcher.mod;
 
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import java.lang.reflect.Method;
 import net.minecraft.src.BiomeGenBase;
 
 class BiomeHelper {
-	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
 	private static Method getWaterColorMultiplier;
 	private static BiomeGenBase lastBiome;
 	private static int lastI;
@@ -60,7 +58,6 @@ class BiomeHelper {
 		try {
 			getWaterColorMultiplier = BiomeGenBase.class.getDeclaredMethod("getWaterColorMultiplier", new Class[0]);
 			getWaterColorMultiplier.setAccessible(true);
-			logger.config("forge getWaterColorMultiplier detected", new Object[0]);
 		} catch (NoSuchMethodException var1) {
 			;
 		}

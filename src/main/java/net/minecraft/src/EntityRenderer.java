@@ -1031,7 +1031,7 @@ public class EntityRenderer {
 			this.setupFog(1, par1);
 
 			// MCPatcher Start
-			if (RenderPass.setAmbientOcclusion(this.mc.gameSettings.ambientOcclusion)) {
+			if (RenderPass.setAmbientOcclusion(this.mc.gameSettings.ambientOcclusion >= 2)) {
 			// MCPatcher End
 				GL11.glShadeModel(GL11.GL_SMOOTH);
 			}
@@ -1105,7 +1105,7 @@ public class EntityRenderer {
 				this.mc.mcProfiler.endStartSection("water");
 
 				// Spout End
-				if (RenderPass.setAmbientOcclusion(this.mc.gameSettings.ambientOcclusion)) {
+				if (RenderPass.setAmbientOcclusion(this.mc.gameSettings.ambientOcclusion >= 2)) {
 				// Spout Start
 					GL11.glShadeModel(GL11.GL_SMOOTH);
 				}

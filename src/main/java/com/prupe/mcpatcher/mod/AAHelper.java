@@ -1,13 +1,11 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackAPI;
 import java.awt.image.BufferedImage;
 import org.lwjgl.opengl.PixelFormat;
 
 public class AAHelper {
-	private static final MCLogger logger = MCLogger.getLogger("Mipmap");
 	private static final int BORDER_COLOR = 0;
 	private static final int aaSamples = Config.getInt("Extended HD", "antiAliasing", 1);
 	public static int border;
@@ -18,7 +16,6 @@ public class AAHelper {
 
 	public static PixelFormat setupPixelFormat(PixelFormat var0) {
 		if (aaSamples > 1) {
-			logger.config("setting AA samples to %d", new Object[] {Integer.valueOf(aaSamples)});
 			return var0.withSamples(aaSamples);
 		} else {
 			return var0;
@@ -41,10 +38,8 @@ public class AAHelper {
 			setupBorder(var1, var3, var4);
 
 			if (border <= 0) {
-				logger.finer("no border around %s", new Object[] {var0});
 				return var1;
 			} else {
-				logger.finer("adding %d pixel border around %s", new Object[] {Integer.valueOf(border), var0});
 				int var6 = var3 + 2 * border;
 				int var7 = var4 + 2 * border;
 				BufferedImage var8 = new BufferedImage(var6, var5 * var7, 2);

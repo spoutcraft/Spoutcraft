@@ -1080,7 +1080,7 @@ public class RenderGlobal implements IWorldAccess {
 			} else {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture(CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl())));
 			}
-			int var26 = this.theWorld.getMoonPhase(par1);
+			int var26 = this.theWorld.getMoonPhase();
 			int var27 = var26 % 4;
 			int var28 = var26 / 4 % 2;
 			float var16 = (float)(var27 + 0) / 4.0F;
@@ -1560,7 +1560,6 @@ public class RenderGlobal implements IWorldAccess {
 
 		if (!this.damagedBlocks.isEmpty()) {
 			this.renderEngine.func_98187_b("/terrain.png");
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var10);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
 			GL11.glPushMatrix();
 			GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -1909,7 +1908,7 @@ public class RenderGlobal implements IWorldAccess {
 						String[] var28 = par1Str.split("_", 3);
 						int var25 = Integer.parseInt(var28[1]);
 						int var26 = Integer.parseInt(var28[2]);
-						var21 = (new EntityDiggingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Block.blocksList[var25], 0, var26)).applyRenderColor(var26);
+						 var21 = (new EntityDiggingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Block.blocksList[var25], 0, var26, this.renderEngine)).applyRenderColor(var26);
 					}
 
 					if (var21 != null) {

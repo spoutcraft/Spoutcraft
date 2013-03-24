@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;
 
 public class SignDistanceButton extends AutomatedButton {
@@ -33,7 +32,7 @@ public class SignDistanceButton extends AutomatedButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		if (Configuration.getSignDistance() < 128) {
 			Configuration.setSignDistance(Configuration.getSignDistance() * 2);
 		} else if (Configuration.getSignDistance() == 128) {

@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.api.block.design;
 
-import org.spoutcraft.api.addon.Addon;
 
 public class GenericCubeBlockDesign extends GenericBlockDesign {
 	/**
@@ -29,7 +28,7 @@ public class GenericCubeBlockDesign extends GenericBlockDesign {
 	 * @param texture to use
 	 * @param textureId[6] Array of faces, give Id's for SubTexture locations
 	 */
-	public GenericCubeBlockDesign(Addon addon, Texture texture, int[] textureId) {
+	public GenericCubeBlockDesign(String addon, Texture texture, int[] textureId) {
 		if (textureId.length != 6) {
 			throw new IllegalArgumentException("Invalid textureId Array length: " + textureId.length + ". Should be 6");
 		}
@@ -92,7 +91,7 @@ public class GenericCubeBlockDesign extends GenericBlockDesign {
 	 * @param texture to use
 	 * @param textureId to get the SubTexture to use
 	 */
-	public GenericCubeBlockDesign(Addon addon, Texture texture, int textureId) {
+	public GenericCubeBlockDesign(String addon, Texture texture, int textureId) {
 		this(addon, texture, getIdMap(textureId));
 	}
 
@@ -103,7 +102,7 @@ public class GenericCubeBlockDesign extends GenericBlockDesign {
 	 * @param texture url to use - must be square
 	 * @param textureSize size of the width/height of the texture in pixels
 	 */
-	public GenericCubeBlockDesign(Addon addon, String texture, int textureSize) {
+	public GenericCubeBlockDesign(String addon, String texture, int textureSize) {
 		this(addon, new Texture(addon, texture, textureSize, textureSize, textureSize), 0);
 	}
 

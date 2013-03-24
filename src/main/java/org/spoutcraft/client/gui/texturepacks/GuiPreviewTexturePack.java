@@ -26,8 +26,6 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Item;
 import net.minecraft.src.StringTranslate;
 
-import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericItemWidget;
@@ -56,11 +54,10 @@ public class GuiPreviewTexturePack extends GuiSpoutScreen {
 	protected void createInstances() {
 		StringTranslate t = StringTranslate.getInstance();
 
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		buttonDone = new GenericButton(t.translateKey("gui.done", "Done"));
 		scroll = new GenericScrollArea();
 		title = new GenericLabel(t.translateKey("spout.texturepack.preview.title", "Texture Pack Preview"));
-		getScreen().attachWidgets(spoutcraft, scroll, buttonDone, title);
+		getScreen().attachWidgets("Spoutcraft", scroll, buttonDone, title);
 
 		for (Item item : Item.itemsList) {
 			if (item == null) {
@@ -69,7 +66,7 @@ public class GuiPreviewTexturePack extends GuiSpoutScreen {
 			GenericItemWidget icon = new GenericItemWidget(new ItemStack(item.itemID));
 			previewIcons.add(icon);
 		}
-		scroll.attachWidgets(spoutcraft, previewIcons.toArray(new Widget[0]));
+		scroll.attachWidgets("Spoutcraft", previewIcons.toArray(new Widget[0]));
 	}
 
 	@Override

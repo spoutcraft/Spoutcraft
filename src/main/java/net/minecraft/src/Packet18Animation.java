@@ -10,10 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.addon.ServerAddon;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.packet.PacketClientAddons;
 import org.spoutcraft.client.packet.PacketFullVersion;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 // Spout End
@@ -60,12 +57,6 @@ public class Packet18Animation extends Packet {
 			((NetClientHandler) par1NetHandler).addToSendQueue(this);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance));
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketFullVersion(SpoutClient.getClientVersion()));
-			List<Addon> addons = new ArrayList<Addon>(Arrays.asList(SpoutClient.getInstance().getAddonManager().getAddons()));
-			for (Iterator<Addon> i = addons.iterator(); i.hasNext(); ) {
-				Addon a = i.next();
-				if(!Spoutcraft.getAddonStore().isEnabled(a) || (a instanceof ServerAddon)) i.remove();
-			}
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketClientAddons(addons.toArray(new Addon[0])));
 			System.out.println("Detected SpoutPlugin enabled server.");
 			if (this.mc.currentScreen instanceof GuiDownloadTerrain) { 
 				this.mc.displayGuiScreen(null, false);

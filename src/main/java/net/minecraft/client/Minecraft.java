@@ -138,11 +138,6 @@ import java.util.Date;
 import java.lang.reflect.Field;
 import net.minecraft.src.EntityPlayer;
 import org.bukkit.ChatColor;
-import org.spoutcraft.api.addon.AddonLoadOrder;
-import org.spoutcraft.api.entity.Player;
-import org.spoutcraft.api.event.screen.ScreenCloseEvent;
-import org.spoutcraft.api.event.screen.ScreenEvent;
-import org.spoutcraft.api.event.screen.ScreenOpenEvent;
 import org.spoutcraft.api.gui.PopupScreen;
 import org.spoutcraft.api.gui.Screen;
 import org.spoutcraft.api.gui.ScreenType;
@@ -539,11 +534,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		if (this.gameSettings.fullScreen && !this.fullscreen) {
 			this.toggleFullscreen();
 		}
-
-		// Spout Start
-		SpoutClient.getInstance().loadAddons();
-		SpoutClient.getInstance().enableAddons(AddonLoadOrder.GAMESTART);
-		// Spout End
 	}
 
 	/**
@@ -700,31 +690,23 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 
 		if (notify && thePlayer != null && theWorld != null) {
 			// Screen closed
-			ScreenEvent event = null;
 			SpoutPacket packet = null;
 			Screen widget = null;
 			if (this.currentScreen != null && screen == null) {
 				packet = new PacketScreenAction(ScreenAction.Close, ScreenUtil.getType(this.currentScreen));
-				event = ScreenCloseEvent.getInstance((Player) thePlayer.spoutEnty, currentScreen.getScreen(), display);
 				widget = currentScreen.getScreen();
 			}
 			// Screen opened
 			if (screen != null && this.currentScreen == null) {
 				packet = new PacketScreenAction(ScreenAction.Open, display);
-				event = ScreenOpenEvent.getInstance((Player) thePlayer.spoutEnty, screen.getScreen(), display);
 				widget = screen.getScreen();
 			}
 			// Screen swapped
 			if (screen != null && this.currentScreen != null) { // Hopefully just a submenu
 				packet = new PacketScreenAction(ScreenAction.Open, display);
-				event = ScreenOpenEvent.getInstance((Player) thePlayer.spoutEnty, screen.getScreen(), display);
 				widget = screen.getScreen();
 			}
 			boolean cancel = false;
-			if (event != null) {
-				SpoutClient.getInstance().getAddonManager().callEvent(event);
-				cancel = event.isCancelled();
-			}
 			if (!cancel && packet != null) {
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
 				if (widget instanceof PopupScreen) {
@@ -736,50 +718,37 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			}
 		}
 		// Spout End
-		if (!(this.currentScreen instanceof GuiErrorScreen)) {
-			if (this.currentScreen != null) {
-				this.currentScreen.onGuiClosed();
-			}
+		if (this.currentScreen != null) {
+			this.currentScreen.onGuiClosed();
+		}
 
-			this.statFileWriter.syncStats();
+		this.statFileWriter.syncStats();
 
+		// Spout Start
+		if (theWorld == null && thePlayer == null && this.ingameGUI != null) {
+		// Spout End
+			this.ingameGUI.getChatGUI().clearChatMessages();
+		}
+
+		// Spout Start
+		if (previousScreen != null || screen != null) {
+			previousScreen = this.currentScreen;
+		}
+
+		this.currentScreen = screen;
+
+		if (screen != null) {
+		// Spout End
+			this.setIngameNotInFocus();
+			ScaledResolution var2 = new ScaledResolution(this.gameSettings, this.displayWidth, this.displayHeight);
+			int var3 = var2.getScaledWidth();
+			int var4 = var2.getScaledHeight();
 			// Spout Start
-			boolean wasSandboxed = SpoutClient.isSandboxed();
-			if (wasSandboxed) {
-				SpoutClient.disableSandbox();
-			}
-			this.statFileWriter.syncStats();
-			if (wasSandboxed) {
-				SpoutClient.enableSandbox();
+			screen.setWorldAndResolution(this, var3, var4);
 			// Spout End
-			}
-
-			// Spout Start
-			if (theWorld == null && thePlayer == null && this.ingameGUI != null) {
-			// Spout End
-				this.ingameGUI.getChatGUI().func_73761_a();
-			}
-
-			// Spout Start
-			if (previousScreen != null || screen != null) {
-				previousScreen = this.currentScreen;
-			}
-
-			this.currentScreen = screen;
-
-			if (screen != null) {
-			// Spout End
-				this.setIngameNotInFocus();
-				ScaledResolution var2 = new ScaledResolution(this.gameSettings, this.displayWidth, this.displayHeight);
-				int var3 = var2.getScaledWidth();
-				int var4 = var2.getScaledHeight();
-				// Spout Start
-				screen.setWorldAndResolution(this, var3, var4);
-				// Spout End
-				this.skipRenderWorld = false;
-			} else {
-				this.setIngameFocus();
-			}
+			this.skipRenderWorld = false;
+		} else {
+			this.setIngameFocus();
 		}
 	}
 
@@ -838,9 +807,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		if (shutdown) {
 			return;
 		}
-		SpoutClient.getInstance().disableAddons();
 		shutdown = true;
-		SpoutClient.disableSandbox();
 		// Spout End
 		try {
 			this.statFileWriter.syncStats();
@@ -916,15 +883,10 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 					// Try to handle errors gracefuly
 					try {
 						t.printStackTrace();
-						if (SpoutClient.isSandboxed()) {
-							SpoutClient.disableSandbox();
-						}
 						this.theWorld = null;
 						this.loadWorld((WorldClient) null);
-
 						this.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiUnexpectedError(t));
 					} catch (Throwable failed) {
-						SpoutClient.disableSandbox();
 						failed.printStackTrace();
 						throw new RuntimeException(t);
 					}
@@ -2007,11 +1969,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	 * par2Str is displayed on the loading screen to the user unloads the current world first
 	 */
 	public void loadWorld(WorldClient par1WorldClient, String par2Str) {
-		// Spout Start
-		if (par1WorldClient != null) {
-			SpoutClient.getInstance().enableAddons(AddonLoadOrder.PREWORLD);
-		}
-		// Spout End
 		this.statFileWriter.syncStats();
 
 		if (par1WorldClient == null) {
@@ -2074,7 +2031,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			this.renderViewEntity = this.thePlayer;
 			// Spout Start
 			SpoutClient.getInstance().onWorldEnter();
-			SpoutClient.getInstance().enableAddons(AddonLoadOrder.POSTWORLD);
 			// Spout End
 		} else {
 			this.saveLoader.flushCache();
@@ -2086,7 +2042,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			}
 			renderEngine.refreshTextures();
 			SpoutClient.getInstance().onWorldExit();
-			SpoutClient.getInstance().disableAddons();
 			SpoutClient.getInstance().clearPermissions();
 			// Spout End
 		}

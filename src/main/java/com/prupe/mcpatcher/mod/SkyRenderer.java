@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
@@ -14,7 +13,6 @@ import net.minecraft.src.Tessellator;
 import net.minecraft.src.World;
 
 public class SkyRenderer {
-	private static final MCLogger logger = MCLogger.getLogger("Better Skies");
 	private static final boolean enable = Config.getBoolean("Better Skies", "skybox", true);
 	private static RenderEngine renderEngine;
 	private static double worldTime;
@@ -88,10 +86,6 @@ public class SkyRenderer {
 
 	static SkyRenderer$WorldEntry access$200(int var0) {
 		return getWorldEntry(var0);
-	}
-
-	static MCLogger access$400() {
-		return logger;
 	}
 
 	static float access$500() {

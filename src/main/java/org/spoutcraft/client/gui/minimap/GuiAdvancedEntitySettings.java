@@ -27,7 +27,6 @@ import java.util.Map.Entry;
 import net.minecraft.src.Entity;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
@@ -51,22 +50,18 @@ public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
 		title = new GenericLabel("Filter Mobs");
 		buttonDone = new GenericButton("Done");
 		scroll = new GenericScrollArea();
-
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-
 		for (Entry<Class<? extends Entity>, String> e : WatchedEntity.mobFaceTextures.entrySet()) {
 			EntityVisibilityCheckbox ch = new EntityVisibilityCheckbox(e.getKey(), e.getValue());
-			scroll.attachWidget(spoutcraft, ch);
+			scroll.attachWidget("Spoutcraft", ch);
 			checks.add(ch);
 		}
 		Collections.sort(checks, new Comparator<EntityVisibilityCheckbox>() {
-			@Override
 			public int compare(EntityVisibilityCheckbox o1, EntityVisibilityCheckbox o2) {
 				return o1.getText().compareTo(o2.getText());
 			}
 		});
 
-		getScreen().attachWidgets(spoutcraft, buttonDone, title, scroll);
+		getScreen().attachWidgets("Spoutcraft", buttonDone, title, scroll);
 	}
 
 	@Override

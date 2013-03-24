@@ -15,13 +15,6 @@ public class EntityBoat extends Entity {
 	private double velocityY;
 	private double velocityZ;
 
-	// Spout Start
-	public double maxSpeed = 0.4D;
-	public double occupiedDeceleration = 0.2D;
-	public double unoccupiedDeceleration = -1;
-	public boolean landBoats = false;
-	// Spout Ends
-
 	public EntityBoat(World par1World) {
 		super(par1World);
 		this.field_70279_a = true;
@@ -272,21 +265,7 @@ public class EntityBoat extends Entity {
 			if (this.riddenByEntity != null) {
 				this.motionX += this.riddenByEntity.motionX * this.field_70276_b;
 				this.motionZ += this.riddenByEntity.motionZ * this.field_70276_b;
-			// Spout Start
-			} else if (unoccupiedDeceleration >= 0) {
-				this.motionX *= unoccupiedDeceleration;
-				this.motionZ *= unoccupiedDeceleration;
-				// Kill lingering speed
-				if (motionX <= 0.00001) {
-					motionX = 0;
-				}
-				if (motionZ <= 0.00001) {
-					motionZ = 0;
-				}
 			}
-
-			var24 = this.maxSpeed;
-			// Spout End
 
 			var6 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
@@ -362,11 +341,11 @@ public class EntityBoat extends Entity {
 
 			if (!this.worldObj.isRemote) {
 				List var16 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-				int var27;
+				int var26;
 
 				if (var16 != null && !var16.isEmpty()) {
-					for (var27 = 0; var27 < var16.size(); ++var27) {
-						Entity var18 = (Entity)var16.get(var27);
+					for (var26 = 0; var26 < var16.size(); ++var26) {
+						Entity var18 = (Entity)var16.get(var26);
 
 						if (var18 != this.riddenByEntity && var18.canBePushed() && var18 instanceof EntityBoat) {
 							var18.applyEntityCollision(this);
@@ -374,27 +353,23 @@ public class EntityBoat extends Entity {
 					}
 				}
 
-				for (var27 = 0; var27 < 4; ++var27) {
-					int var26 = MathHelper.floor_double(this.posX + ((double)(var27 % 2) - 0.5D) * 0.8D);
-					int var19 = MathHelper.floor_double(this.posZ + ((double)(var27 / 2) - 0.5D) * 0.8D);
+				for (var26 = 0; var26 < 4; ++var26) {
+					int var27 = MathHelper.floor_double(this.posX + ((double)(var26 % 2) - 0.5D) * 0.8D);
+					int var19 = MathHelper.floor_double(this.posZ + ((double)(var26 / 2) - 0.5D) * 0.8D);
 
 					for (int var20 = 0; var20 < 2; ++var20) {
 						int var21 = MathHelper.floor_double(this.posY) + var20;
-						int var22 = this.worldObj.getBlockId(var26, var21, var19);
-						int var23 = this.worldObj.getBlockMetadata(var28, var21, var19);
+						int var22 = this.worldObj.getBlockId(var27, var21, var19);
 
 						if (var22 == Block.snow.blockID) {
-							this.worldObj.func_94571_i(var26, var21, var19);
+							this.worldObj.func_94571_i(var27, var21, var19);
 						} else if (var22 == Block.waterlily.blockID) {
-							this.worldObj.func_94578_a(var26, var21, var19, true);
+							this.worldObj.func_94578_a(var27, var21, var19, true);
 						}
 					}
 				}
 
 				if (this.riddenByEntity != null && this.riddenByEntity.isDead) {
-					// Spout Start
-					riddenByEntity.ridingEntity = null;
-					// Spout End
 					this.riddenByEntity = null;
 				}
 			}

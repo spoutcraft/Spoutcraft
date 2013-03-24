@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.MobRandomizer$ExtraInfo;
+import org.spoutcraft.api.Spoutcraft;
 // MCPatcher End
 // Spout Start
 import org.spoutcraft.api.entity.EntitySkinType;
@@ -1242,8 +1242,7 @@ public abstract class EntityLiving extends Entity {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
-					org.spoutcraft.api.World world = this.worldObj.world;
-					org.spoutcraft.api.block.Chunk chunk = world.getChunkAt(x, y, z);
+					org.spoutcraft.client.block.SpoutcraftChunk chunk = Spoutcraft.getChunkAt(x, y, z);
 					short customId = chunk.getCustomBlockId(x, y, z);
 					if (customId > 0) {
 						CustomBlock block = MaterialData.getCustomBlock(customId);
@@ -1289,7 +1288,7 @@ public abstract class EntityLiving extends Entity {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
-					short customId = worldObj.world.getChunkAt(x, y, z).getCustomBlockId(x, y, z);
+					short customId = Spoutcraft.getChunkAt(x, y, z).getCustomBlockId(x, y, z);
 					if (customId > 0) {
 						CustomBlock block = MaterialData.getCustomBlock(customId);
 						if (block != null) {
@@ -1384,7 +1383,7 @@ public abstract class EntityLiving extends Entity {
 	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		// MCPatcher Start
-		MobRandomizer$ExtraInfo.writeToNBT(this, par1NBTTagCompound);
+		com.prupe.mcpatcher.mod.MobRandomizer$ExtraInfo.writeToNBT(this, par1NBTTagCompound);
 		// MCPatcher End
 		if (this.health < -32768) {
 			this.health = -32768;
@@ -1439,7 +1438,7 @@ public abstract class EntityLiving extends Entity {
 	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		// MCPatcher Start
-		MobRandomizer$ExtraInfo.readFromNBT(this, par1NBTTagCompound);
+		com.prupe.mcpatcher.mod.MobRandomizer$ExtraInfo.readFromNBT(this, par1NBTTagCompound);
 		// MCPatcher End
 		this.health = par1NBTTagCompound.getShort("Health");
 
@@ -1607,8 +1606,8 @@ public abstract class EntityLiving extends Entity {
 				EntityItem var4 = (EntityItem)var12.next();
 
 				// Spout Start - item instead of func_92059_d
-				if (!var4.isDead && var4.item() != null) {
-					ItemStack var13 = var4.item();
+				if (!var4.isDead && var4.getEntityItem()!= null) {
+					ItemStack var13 = var4.getEntityItem();
 				// Spout End
 					int var6 = func_82159_b(var13);
 
@@ -2585,4 +2584,52 @@ public abstract class EntityLiving extends Entity {
 		return getData().getTextureToRender();
 	}
 	// Spout End
+
+	public EntityLiving func_94060_bK() {
+		return (EntityLiving)(this.field_94063_bt.func_94550_c() != null ? this.field_94063_bt.func_94550_c() : (this.attackingPlayer != null ? this.attackingPlayer : (this.entityLivingToAttack != null ? this.entityLivingToAttack : null)));
+	}
+
+	/**
+	 * Gets the username of the entity.
+	 */
+	public String getEntityName() {
+		return this.func_94056_bM() ? this.func_94057_bL() : super.getEntityName();
+	}
+
+	public void func_94058_c(String par1Str) {
+		this.dataWatcher.updateObject(5, par1Str);
+	}
+
+	public String func_94057_bL() {
+		return this.dataWatcher.getWatchableObjectString(5);
+	}
+
+	public boolean func_94056_bM() {
+		return this.dataWatcher.getWatchableObjectString(5).length() > 0;
+	}
+
+	public void func_94061_f(boolean par1) {
+		this.dataWatcher.updateObject(6, Byte.valueOf((byte)(par1 ? 1 : 0)));
+	}
+
+	public boolean func_94062_bN() {
+		return this.dataWatcher.getWatchableObjectByte(6) == 1;
+	}
+
+	public boolean func_94059_bO() {
+		return this.func_94062_bN();
+	}
+
+	public void func_96120_a(int par1, float par2) {
+		this.equipmentDropChances[par1] = par2;
+	}
+
+	public boolean func_98052_bS() {
+		return this.canPickUpLoot;
+	}
+
+	public void func_98053_h(boolean par1) {
+		this.canPickUpLoot = par1;
+	}
+
 }

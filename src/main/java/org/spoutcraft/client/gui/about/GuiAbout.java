@@ -63,8 +63,8 @@ public class GuiAbout extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		this.controlList.clear();
-		controlList.add(new GuiButton(1, this.width / 2 - 50, this.height - 25, 100, 20, "Main Menu"));
+		this.buttonList.clear();
+		buttonList.add(new GuiButton(1, this.width / 2 - 50, this.height - 25, 100, 20, "Main Menu"));
 	}
 
 	@Override
@@ -383,9 +383,9 @@ public class GuiAbout extends GuiScreen {
 		drawString(this.fontRenderer, version, (int)(this.width - 45) - fontRenderer.getStringWidth(version) + fontRenderer.getStringWidth("0"), this.height - 20, 0xffffff);
 		drawString(this.fontRenderer, "Licensed under LGPLv3", (int)(this.width - 129), this.height - 10, 0x808080);
 
-		((GuiButton)this.controlList.get(0)).xPosition = this.width / 2 - 50;
-		((GuiButton)this.controlList.get(0)).yPosition = this.height - 25;
-		((GuiButton)this.controlList.get(0)).drawButton(this.mc, x, y);
+		((GuiButton)this.buttonList.get(0)).xPosition = this.width / 2 - 50;
+		((GuiButton)this.buttonList.get(0)).yPosition = this.height - 25;
+		((GuiButton)this.buttonList.get(0)).drawButton(this.mc, x, y);
 		//super.drawScreen(x, x, z);
 
 		// Shadow magic

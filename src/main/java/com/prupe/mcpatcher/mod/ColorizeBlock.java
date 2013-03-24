@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import java.util.Arrays;
@@ -15,7 +14,6 @@ import net.minecraft.src.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 public class ColorizeBlock {
-	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
 	private static final String REDSTONE_COLORS = "/misc/redstonecolor.png";
 	private static final String STEM_COLORS = "/misc/stemcolor.png";
 	private static final String PALETTE_BLOCK_KEY = "palette.block.";
@@ -113,8 +111,6 @@ public class ColorizeBlock {
 								default:
 									continue;
 							}
-
-							logger.finer("using %s for block %s, default color %06x", new Object[] {var3, var9, Integer.valueOf(var5.colorize())});
 						}
 					}
 				}

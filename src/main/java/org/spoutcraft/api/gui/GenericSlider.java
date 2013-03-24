@@ -23,7 +23,6 @@ import java.io.IOException;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.UnsafeClass;
-import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 
@@ -99,12 +98,13 @@ public class GenericSlider extends GenericControl implements Slider {
 		return this;
 	}
 
+	public void onSliderDrag(float oldPos, float newPos) {
+		
+	}
+
 	@Override
 	public Slider copy() {
 		return ((Slider)super.copy()).setSliderPosition(getSliderPosition());
-	}
-
-	public void onSliderDrag(SliderDragEvent event) {
 	}
 
 	public String getText() {

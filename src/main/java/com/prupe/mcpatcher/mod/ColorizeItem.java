@@ -1,6 +1,5 @@
 package com.prupe.mcpatcher.mod;
 
-import com.prupe.mcpatcher.MCLogger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,7 +10,6 @@ import net.minecraft.src.MapColor;
 import net.minecraft.src.Potion;
 
 public class ColorizeItem {
-	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
 	private static final Map entityNamesByID = new HashMap();
 	private static final Map spawnerEggShellColors = new HashMap();
 	private static final Map spawnerEggSpotColors = new HashMap();
@@ -65,8 +63,6 @@ public class ColorizeItem {
 	}
 
 	public static void setupSpawnerEgg(String var0, int var1, int var2, int var3) {
-		logger.config("egg.shell.%s=%06x", new Object[] {var0, Integer.valueOf(var2)});
-		logger.config("egg.spots.%s=%06x", new Object[] {var0, Integer.valueOf(var3)});
 		entityNamesByID.put(Integer.valueOf(var1), var0);
 	}
 

@@ -84,8 +84,8 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 	}
 
 	public void run(int PlayerId) {
-		Spoutcraft.getWorld().getChunkAt(x, y, z).setCustomBlockId(x, y, z, blockId);
-		Spoutcraft.getWorld().getChunkAt(x, y, z).setCustomBlockData(x, y, z, data);
+		Spoutcraft.getChunkAt(x, y, z).setCustomBlockId(x, y, z, blockId);
+		Spoutcraft.getChunkAt(x, y, z).setCustomBlockData(x, y, z, data);
 	}
 
 	public PacketType getPacketType() {

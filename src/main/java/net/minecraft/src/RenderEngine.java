@@ -1,36 +1,24 @@
 package net.minecraft.src;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageInputStream;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-// MCPatcher Start
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
 import com.prupe.mcpatcher.mod.CTMUtils;
 import com.prupe.mcpatcher.mod.CustomAnimation;
 import com.prupe.mcpatcher.mod.MipmapHelper;
-// MCPatcher End
-// Spout Start
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.IntBuffer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
-// Spout End
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class RenderEngine {
 	private HashMap textureMap = new HashMap();
@@ -41,14 +29,8 @@ public class RenderEngine {
 	/** A mapping from GL texture names (integers) to BufferedImage instances */
 	private IntHashMap textureNameToImageMap = new IntHashMap();
 
-	/** An IntBuffer storing 1 int used as scratch space in RenderEngine */
-	private IntBuffer singleIntBuffer = GLAllocation.createDirectIntBuffer(1);
-
 	/** Stores the image data for the texture. */
 	private IntBuffer imageData = GLAllocation.createDirectIntBuffer(4194304);
-	// Spout Start - private to public
-	public List textureList = new ArrayList();
-	// Spout End
 
 	/** A mapping from image URLs to ThreadDownloadImageData instances */
 	private Map urlToImageDataMap = new HashMap();
@@ -56,33 +38,26 @@ public class RenderEngine {
 	/** Reference to the GameSettings object */
 	private GameSettings options;
 
-	/** Flag set when a texture should not be repeated */
-	public boolean clampTexture = false;
-
-	/** Flag set when a texture should use blurry resizing */
-	public boolean blurTexture = false;
-
 	/** Texture pack */
-	// Spout Start - private to public
-	public TexturePackList texturePack;
-	// Spout End
+	public TexturePackList texturePack; //Spout private -> public
 
 	/** Missing texture image */
 	private BufferedImage missingTextureImage = new BufferedImage(64, 64, 2);
-	// Spout Start
-	public ITexturePack oldPack = null;
-	// Spout End
-	
 	private final TextureMap field_94154_l;
 	private final TextureMap field_94155_m;
 	private int field_94153_n;
-
+	
+	//Spout start
+	public ITexturePack oldPack = null;
+	//Spout end
 
 	public RenderEngine(TexturePackList par1TexturePackList, GameSettings par2GameSettings) {
 		this.texturePack = par1TexturePackList;
 		this.options = par2GameSettings;
 		Graphics var3 = this.missingTextureImage.getGraphics();
 		var3.setColor(Color.WHITE);
+		var3.fillRect(0, 0, 64, 64);
+		var3.setColor(Color.BLACK);
 		int var4 = 10;
 		int var5 = 0;
 
@@ -101,58 +76,40 @@ public class RenderEngine {
 		this.field_94155_m = new TextureMap(1, "items", "textures/items/", this.missingTextureImage);
 	}
 
-
-	// Spout Start - Don't use MCPatchers version
 	public int[] getTextureContents(String par1Str) {
 		ITexturePack var2 = this.texturePack.getSelectedTexturePack();
-		int[] var3 = (int[])this.textureContentsMap.get(par1Str);
+		int[] var3 = (int[]) this.textureContentsMap.get(par1Str);
+
 		if (var3 != null) {
 			return var3;
 		} else {
 			try {
-				int[] var7;
-				if (par1Str.startsWith("##")) {				
-					var7 = this.getImageContentsAndAllocate(this.unwrapImageByColumns(getResourceAsBufferedImage(this, var2, par1Str.substring(2))));
-				} else if (par1Str.startsWith("%clamp%")) {
-					this.clampTexture = true;
-					var7 = this.getImageContentsAndAllocate(getResourceAsBufferedImage(this, var2, par1Str.substring(7)));
-					this.clampTexture = false;
-				} else if (par1Str.startsWith("%blur%")) {
-					this.blurTexture = true;
-					this.clampTexture = true;
-					var7 = this.getImageContentsAndAllocate(getResourceAsBufferedImage(this, var2, par1Str.substring(6)));
-					this.clampTexture = false;
-					this.blurTexture = false;
+				InputStream var7 = var2.getResourceAsStream(par1Str);
+				int[] var4;
+
+				if (var7 == null) {
+					var4 = this.getImageContentsAndAllocate(this.missingTextureImage);
 				} else {
-					InputStream var8 = var2.getResourceAsStream(par1Str);
-					if (var8 == null) {
-						var7 = this.getImageContentsAndAllocate(this.missingTextureImage);
-					} else {
-						var7 = this.getImageContentsAndAllocate(this.readTextureImage(var8));
-					}
+					var4 = this.getImageContentsAndAllocate(this.readTextureImage(var7));
 				}
 
-				this.textureContentsMap.put(par1Str, var7);
-				return var7;
-			} catch (IOException var5) {
-				var5.printStackTrace();
-				int[] var4 = this.getImageContentsAndAllocate(this.missingTextureImage);
 				this.textureContentsMap.put(par1Str, var4);
 				return var4;
+			} catch (IOException var6) {
+				var6.printStackTrace();
+				int[] var5 = this.getImageContentsAndAllocate(this.missingTextureImage);
+				this.textureContentsMap.put(par1Str, var5);
+				return var5;
 			}
 		}
 	}
-	// Spout End
 
 	private int[] getImageContentsAndAllocate(BufferedImage par1BufferedImage) {
 		return this.getImageContents(par1BufferedImage, new int[par1BufferedImage.getWidth() * par1BufferedImage.getHeight()]);
 	}
 
 	private int[] getImageContents(BufferedImage par1BufferedImage, int[] par2ArrayOfInteger) {
-		// MCPatcher Start
 		if (par1BufferedImage == null) {
-			return par2ArrayOfInteger;
-		} else if (par1BufferedImage == null) {
 			return par2ArrayOfInteger;
 		} else {
 			int var3 = par1BufferedImage.getWidth();
@@ -160,27 +117,24 @@ public class RenderEngine {
 			par1BufferedImage.getRGB(0, 0, var3, var4, par2ArrayOfInteger, 0, var3);
 			return par2ArrayOfInteger;
 		}
-		// MCPatcher End
 	}
 
 	public void func_98187_b(String par1Str) {
 		this.bindTexture(this.getTexture(par1Str));
 	}
-	
+
 	public void bindTexture(int par1) {
 		if (par1 != this.field_94153_n) {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1);
 			this.field_94153_n = par1;
 		}
 	}
-	
+
 	public void func_98185_a() {
 		this.field_94153_n = -1;
-	}	
-	
-	
-	// Spout Start - Don't use MCPatchers Version
-	public int getTexture(String par1Str) {
+	}
+
+	public int getTexture(String par1Str) { //Spout private -> public
 		if (par1Str.equals("/terrain.png")) {
 			this.field_94154_l.func_94246_d().func_94277_a(0);
 			return this.field_94154_l.func_94246_d().func_94282_c();
@@ -188,18 +142,18 @@ public class RenderEngine {
 			this.field_94155_m.func_94246_d().func_94277_a(0);
 			return this.field_94155_m.func_94246_d().func_94282_c();
 		} else {
-			Integer var2 = (Integer)this.textureMap.get(par1Str);
+			Integer var2 = (Integer) this.textureMap.get(par1Str);
 
 			if (var2 != null) {
 				return var2.intValue();
 			} else {
-				String var8 = par1Str;
+				String var9 = par1Str;
 
 				try {
 					int var3 = GLAllocation.generateTextureNames();
-					boolean var9 = par1Str.startsWith("%blur%");
+					boolean var10 = par1Str.startsWith("%blur%");
 
-					if (var9) {
+					if (var10) {
 						par1Str = par1Str.substring(6);
 					}
 
@@ -209,18 +163,17 @@ public class RenderEngine {
 						par1Str = par1Str.substring(7);
 					}
 
-					InputStream var6 = this.texturePack.getSelectedTexturePack().getResourceAsStream(par1Str);
+					BufferedImage var7 = TexturePackAPI.getImage(par1Str);
 
-					if (var6 == null) {
-						MipmapHelper.setupTexture(this, this.missingTextureImage, var3, var9, var5, par1Str);
-					} else {
-						MipmapHelper.setupTexture(this, this.readTextureImage(var6), var3, var9, var5, par1Str);
+					if (var7 == null) {
+						var7 = this.missingTextureImage;
 					}
 
-					this.textureMap.put(var8, Integer.valueOf(var3));
+					MipmapHelper.setupTexture(this, var7, var3, var10, var5, par1Str);
+					this.textureMap.put(var9, Integer.valueOf(var3));
 					return var3;
-				} catch (Exception var7) {
-					var7.printStackTrace();
+				} catch (Exception var8) {
+					var8.printStackTrace();
 					int var4 = GLAllocation.generateTextureNames();
 					this.setupTexture(this.missingTextureImage, var4);
 					this.textureMap.put(par1Str, Integer.valueOf(var4));
@@ -230,11 +183,9 @@ public class RenderEngine {
 		}
 	}
 
-	// Spout End
-
 	/**
-	 * Takes an image with multiple 16-pixel-wide columns and creates a new 16-pixel-wide image where the columns are
-	 * stacked vertically
+	 * Copy the supplied image onto a newly-allocated OpenGL texture, returning
+	 * the allocated texture name
 	 */
 	public int allocateAndSetupTexture(BufferedImage par1BufferedImage) {
 		int var2 = GLAllocation.generateTextureNames();
@@ -242,7 +193,7 @@ public class RenderEngine {
 		this.textureNameToImageMap.addKey(var2, par1BufferedImage);
 		return var2;
 	}
-	
+
 	/**
 	 * Copy the supplied image onto the specified OpenGL texture
 	 */
@@ -320,7 +271,7 @@ public class RenderEngine {
 		this.imageData = TexturePackAPI.getIntBuffer(this.imageData, par1ArrayOfInteger);
 		GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, par2, par3, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, this.imageData);
 	}
-	
+
 	/**
 	 * Deletes a single GL texture
 	 */
@@ -330,11 +281,14 @@ public class RenderEngine {
 	}
 
 	/**
-	 * Takes a URL of a downloadable image and the name of the local image to be used as a fallback.  If the image has been
-	 * downloaded, returns the GL texture of the downloaded image, otherwise returns the GL texture of the fallback image.
+	 * Takes a URL of a downloadable image and the name of the local image to be
+	 * used as a fallback. If the image has been downloaded, returns the GL
+	 * texture of the downloaded image, otherwise returns the GL texture of the
+	 * fallback image.
 	 */
 	public int getTextureForDownloadableImage(String par1Str, String par2Str) {
-		ThreadDownloadImageData var3 = (ThreadDownloadImageData)this.urlToImageDataMap.get(par1Str);
+		ThreadDownloadImageData var3 = (ThreadDownloadImageData) this.urlToImageDataMap.get(par1Str);
+
 		if (var3 != null && var3.image != null && !var3.textureSetupComplete) {
 			if (var3.textureName < 0) {
 				var3.textureName = this.allocateAndSetupTexture(var3.image);
@@ -356,11 +310,12 @@ public class RenderEngine {
 	}
 
 	/**
-	 * Return a ThreadDownloadImageData instance for the given URL.  If it does not already exist, it is created and uses
-	 * the passed ImageBuffer.  If it does, its reference count is incremented.
+	 * Return a ThreadDownloadImageData instance for the given URL. If it does
+	 * not already exist, it is created and uses the passed ImageBuffer. If it
+	 * does, its reference count is incremented.
 	 */
 	public ThreadDownloadImageData obtainImageData(String par1Str, IImageBuffer par2IImageBuffer) {
-		ThreadDownloadImageData var3 = (ThreadDownloadImageData)this.urlToImageDataMap.get(par1Str);
+		ThreadDownloadImageData var3 = (ThreadDownloadImageData) this.urlToImageDataMap.get(par1Str);
 
 		if (var3 == null) {
 			this.urlToImageDataMap.put(par1Str, new ThreadDownloadImageData(par1Str, par2IImageBuffer));
@@ -372,10 +327,11 @@ public class RenderEngine {
 	}
 
 	/**
-	 * Decrements the reference count for a given URL, deleting the image data if the reference count hits 0
+	 * Decrements the reference count for a given URL, deleting the image data
+	 * if the reference count hits 0
 	 */
 	public void releaseImageData(String par1Str) {
-		ThreadDownloadImageData var2 = (ThreadDownloadImageData)this.urlToImageDataMap.get(par1Str);
+		ThreadDownloadImageData var2 = (ThreadDownloadImageData) this.urlToImageDataMap.get(par1Str);
 
 		if (var2 != null) {
 			--var2.referenceCount;
@@ -414,7 +370,8 @@ public class RenderEngine {
 	}
 
 	/**
-	 * Call setupTexture on all currently-loaded textures again to account for changes in rendering options
+	 * Call setupTexture on all currently-loaded textures again to account for
+	 * changes in rendering options
 	 */
 	public void refreshTextures() {
 		TexturePackChangeHandler.beforeChange1();
@@ -424,109 +381,73 @@ public class RenderEngine {
 		BufferedImage var4;
 
 		while (var2.hasNext()) {
-			int var3 = ((Integer)var2.next()).intValue();
-			var4 = (BufferedImage)this.textureNameToImageMap.lookup(var3);
+			int var3 = ((Integer) var2.next()).intValue();
+			var4 = (BufferedImage) this.textureNameToImageMap.lookup(var3);
 			this.setupTexture(var4, var3);
 		}
 
-		ThreadDownloadImageData var8;
+		ThreadDownloadImageData var10;
 
-		for (var2 = this.urlToImageDataMap.values().iterator(); var2.hasNext(); var8.textureSetupComplete = false) {
-			var8 = (ThreadDownloadImageData)var2.next();
+		for (var2 = this.urlToImageDataMap.values().iterator(); var2.hasNext(); var10.textureSetupComplete = false) {
+			var10 = (ThreadDownloadImageData) var2.next();
 		}
 
 		var2 = this.textureMap.keySet().iterator();
-		String var9;
+		String var11;
 
 		while (var2.hasNext()) {
-			var9 = (String)var2.next();
+			var11 = (String) var2.next();
 
 			try {
-				// Spout Start - Dont use MCPatchers Version
-				if (var9.startsWith("##")) {
-					var4 = this.unwrapImageByColumns(getResourceAsBufferedImage(this, var1, var9.substring(2)));
-				} else if (var9.startsWith("%clamp%")) {
-					this.clampTexture = true;
-					var4 = getResourceAsBufferedImage(this, var1, var9.substring(7));
-				} else if (var9.startsWith("%blur%")) {
-					this.blurTexture = true;
-					var4 = getResourceAsBufferedImage(this, var1, var9.substring(6));
-				} else if (var9.startsWith("%blurclamp%")) {
-					this.blurTexture = true;
-					this.clampTexture = true;
-					var4 = getResourceAsBufferedImage(this, var1, var9.substring(11));
-				} else {
-					var4 = getResourceAsBufferedImage(this, var1, var9);
-				}
-				if (var4 == null) {
-					var2.remove();
-					continue;
-				}
-				// MCPatcher End
+				int var12 = ((Integer) this.textureMap.get(var11)).intValue();
+				boolean var6 = var11.startsWith("%blur%");
 
-				int var5 = ((Integer)this.textureMap.get(var9)).intValue();
-				this.setupTexture(var4, var5);
-				this.blurTexture = false;
-				this.clampTexture = false;
-			} catch (IOException var7) {
-				// MCPatcher Start - Gracefully handle errors
-				var2.remove();
-				// var7.printStackTrace();
-				// MCPatcher End
+				if (var6) {
+					var11 = var11.substring(6);
+				}
+
+				boolean var7 = var11.startsWith("%clamp%");
+
+				if (var7) {
+					var11 = var11.substring(7);
+				}
+
+				BufferedImage var5 = TexturePackAPI.getImage(this, var1, var11);
+				MipmapHelper.setupTexture(this, var5, var12, var6, var7, var11);
+			} catch (Exception var9) {
+				var9.printStackTrace();
 			}
 		}
 
 		var2 = this.textureContentsMap.keySet().iterator();
 
 		while (var2.hasNext()) {
-			var9 = (String)var2.next();
+			var11 = (String) var2.next();
 
 			try {
-				// Spout Start - Don't use MCPatchers Version
-				if (var9.startsWith("##")) {
-					var4 = this.unwrapImageByColumns(getResourceAsBufferedImage(this, var1, var9.substring(2)));
-				} else if (var9.startsWith("%clamp%")) {
-					this.clampTexture = true;
-					var4 = getResourceAsBufferedImage(this, var1, var9.substring(7));
-				} else if (var9.startsWith("%blur%")) {
-					this.blurTexture = true;
-					var4 = getResourceAsBufferedImage(this, var1, var9.substring(6));
-				} else {
-					var4 = getResourceAsBufferedImage(this, var1, var9);
-				}
-				if (var4 == null) {
-					var2.remove();
-					continue;
-				}
-				// Spout End
-
-				this.getImageContents(var4, (int[])this.textureContentsMap.get(var9));
-				this.blurTexture = false;
-				this.clampTexture = false;
-			} catch (IOException var6) {
-				// MCPatcher Start - Gracefully handle errors
-				var2.remove();
-				//var6.printStackTrace();
-				// MCPatcher End
+				var4 = TexturePackAPI.getImage(this, var1, var11);
+				this.getImageContents(var4, (int[]) this.textureContentsMap.get(var11));
+			} catch (Exception var8) {
+				var8.printStackTrace();
 			}
 		}
+
 		Minecraft.getMinecraft().fontRenderer.func_98304_a();
 		Minecraft.getMinecraft().standardGalacticFontRenderer.func_98304_a();
 		TexturePackChangeHandler.afterChange1();
 	}
 
-
-
 	/**
-	 * Returns a BufferedImage read off the provided input stream.  Args: inputStream
+	 * Returns a BufferedImage read off the provided input stream. Args:
+	 * inputStream
 	 */
 	private BufferedImage readTextureImage(InputStream par1InputStream) throws IOException {
 		if (par1InputStream == null) {
 			return null;
 		} else {
-		BufferedImage var2 = ImageIO.read(par1InputStream);
-		par1InputStream.close();
-		return var2;
+			BufferedImage var2 = ImageIO.read(par1InputStream);
+			par1InputStream.close();
+			return var2;
 		}
 	}
 
@@ -547,189 +468,4 @@ public class RenderEngine {
 				return this.field_94155_m.func_96455_e();
 		}
 	}
-	
-	// Spout Start
-		public static BufferedImage getResourceAsBufferedImage(String var0) throws IOException {
-			return getResourceAsBufferedImage(getSelectedTexturePack(), var0);
-		}
-
-		public static BufferedImage getResourceAsBufferedImage(Object var0, String var1) throws IOException {
-			return getResourceAsBufferedImage(var1);
-		}
-
-		public static BufferedImage getResourceAsBufferedImage(Object var0, Object var1, String var2) throws IOException {
-			return getResourceAsBufferedImage(var2);
-		}
-		
-		public static int getTileSize() {
-			return getTileSize(getSelectedTexturePack());
-		}
-		
-		public static int getTileSize(TexturePackImplementation var0) {
-			int var1 = 0;
-			Iterator var2 = expectedColumns.entrySet().iterator();
-			while (var2.hasNext()) {
-				Entry var3 = (Entry)var2.next();
-				InputStream var4 = null;
-				try {
-					var4 = getResourceAsStream(var0, (String)var3.getKey());
-					if (var4 != null) {
-						BufferedImage var5 = ImageIO.read(var4);
-						int var6 = var5.getWidth() / ((Integer)var3.getValue()).intValue();
-						var1 = Math.max(var1, var6);
-					}
-				} catch (Exception var10) {
-				} finally {
-					MCPatcherUtils.close(var4);
-				}
-			}	
-			return var1 > 0 ? var1 : 16;
-		}
-
-		public static InputStream getResourceAsStream(TexturePackImplementation var0, String var1) {
-			InputStream var2 = null;
-
-			if (oldCreativeGui && var1.equals("/gui/allitems.png")) {
-				var2 = getResourceAsStream(var0, "/gui/allitemsx.png");
-
-				if (var2 != null) {
-					return var2;
-				}
-			}
-
-			if (var0 != null) {
-				try {
-					var2 = var0.getResourceAsStream(var1);
-				} catch (Exception var4) {
-					var4.printStackTrace();
-				}
-			}
-
-			if (var2 == null) {
-				var2 = TextureUtils.class.getResourceAsStream(var1);
-			}
-
-			if (var2 == null && var1.startsWith("/anim/custom_")) {
-				var2 = getResourceAsStream(var0, var1.substring(5));
-			}
-
-			if (var2 == null && isRequiredResource(var1)) {
-				var2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(var1);
-			}
-
-			return var2;
-		}
-
-		public static BufferedImage getResourceAsBufferedImage(TexturePackImplementation var0, String texture) throws IOException {
-			BufferedImage image = null;
-			boolean var3 = false;
-
-			if (useTextureCache && var0 == lastTexturePack) {
-				image = (BufferedImage)cache.get(texture);
-
-				if (image != null) {
-					var3 = true;
-				}
-			}
-
-			if (image == null) {
-				InputStream var4 = getResourceAsStream(var0, texture);
-
-				if (var4 != null) {
-					try {
-						image = ImageIO.read(var4);
-					} finally {
-						MCPatcherUtils.close(var4);
-					}
-				}
-			}
-
-			if (image == null) {
-				// Search local files (downloaded texture)
-				FileImageInputStream imageStream = null;
-				try {
-					File test = new File(texture);
-					if (test.exists()) {
-						imageStream = new FileImageInputStream(test);
-						image = ImageIO.read(imageStream);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				finally {
-					if (imageStream != null) {
-						try {
-							imageStream.close();
-						} catch (Exception e) { }
-					}
-				}
-			}
-
-			if (image == null) {
-				if (isRequiredResource(texture)) {
-					throw new IOException(texture + " image is null");
-				} else {
-					return null;
-				}
-			} else {
-				if (useTextureCache && !var3 && var0 != lastTexturePack) {
-					cache.clear();
-				}
-
-				if (!var3) {
-					Integer var11;
-
-					if (isCustomTerrainItemResource(texture)) {
-						var11 = Integer.valueOf(1);
-					} else {
-						var11 = (Integer)expectedColumns.get(texture);
-					}
-
-					if (var11 != null && image.getWidth() != var11.intValue() * TileSize.int_size) {
-						image = resizeImage(image, var11.intValue() * TileSize.int_size);
-					}
-
-					if (useTextureCache) {
-						lastTexturePack = var0;
-						cache.put(texture, image);
-					}
-
-					if (texture.matches("^/mob/.*_eyes\\d*\\.png$")) {
-						int var5 = 0;
-
-						for (int var6 = 0; var6 < image.getWidth(); ++var6) {
-							for (int var7 = 0; var7 < image.getHeight(); ++var7) {
-								int var8 = image.getRGB(var6, var7);
-
-								if ((var8 & -16777216) == 0 && var8 != 0) {
-									image.setRGB(var6, var7, 0);
-									++var5;
-								}
-							}
-						}
-					}
-				}
-
-				return image;
-			}
-		}
-
-		public static InputStream getResourceAsStream(String var0) {
-			return getResourceAsStream(getSelectedTexturePack(), var0);
-		}
-		
-		public static boolean isRequiredResource(String var0) {
-			return var0.equals("/terrain.png") || var0.equals("/gui/items.png");
-		}
-		
-		public static TexturePackImplementation getSelectedTexturePack() {
-			Minecraft var0 = MCPatcherUtils.getMinecraft();
-			return (TexturePackImplementation) (var0 == null ? null : (var0.texturePackList == null ? null : var0.texturePackList.getSelectedTexturePack()));
-		}
-
-		public static String getTexturePackName(TexturePackImplementation var0) {
-			return var0 == null ? "Default" : var0.texturePackFileName;
-		}
-
-		// Spout End
 }

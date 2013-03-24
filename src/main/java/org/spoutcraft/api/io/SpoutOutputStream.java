@@ -23,7 +23,6 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
-import org.spoutcraft.api.block.Block;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.api.material.Material;
@@ -35,22 +34,14 @@ public class SpoutOutputStream extends OutputStream{
 	public SpoutOutputStream() {
 	}
 
-	public void writeBlock(Block block) {
-		this.writeInt(block.getX());
-		this.writeInt(block.getY());
-		this.writeInt(block.getZ());
-		this.writeLong(block.getWorld().getUID().getLeastSignificantBits());
-		this.writeLong(block.getWorld().getUID().getMostSignificantBits());
-	}
-
 	public void writeLocation(Location location) {
 		this.writeDouble(location.getX());
 		this.writeDouble(location.getY());
 		this.writeDouble(location.getZ());
 		this.writeFloat((float) location.getPitch());
 		this.writeFloat((float) location.getYaw());
-		this.writeLong(location.getWorld().getUID().getLeastSignificantBits());
-		this.writeLong(location.getWorld().getUID().getMostSignificantBits());
+		this.writeLong(0);
+		this.writeLong(0);
 	}
 
 	public void writeVector(Vector vector) {

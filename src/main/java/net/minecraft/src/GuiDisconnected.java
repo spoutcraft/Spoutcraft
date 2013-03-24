@@ -24,7 +24,7 @@ public class GuiDisconnected extends GuiScreen {
 		this.errorDetail = par3Str;
 		this.field_74247_c = par4ArrayOfObj;
 		// Spout Start
-		org.spoutcraft.client.ReconnectManager.detectKick(par1Str, par2Str, par3ArrayOfObj);
+		org.spoutcraft.client.ReconnectManager.detectKick(par2Str, par3Str, par4ArrayOfObj);
 		// Spout End
 	}
 

@@ -395,7 +395,7 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 				// Spout Start
-			} else if (Item.itemsList[var25.itemID].isFull3D() || var25.itemID == Item.flint.itemID && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) {
+			} else if (Item.itemsList[var25.itemID].isFull3D() || var25.itemID == Item.flint.itemID && MaterialData.getCustomItem(var25.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) {
 				// Spout End
 				var7 = 0.625F;
 
