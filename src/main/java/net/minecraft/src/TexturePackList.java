@@ -122,7 +122,7 @@ public class TexturePackList {
 		HashMap var3 = new HashMap();
 		GuiProgress var4 = new GuiProgress();
 		var3.put("X-Minecraft-Username", this.mc.session.username);
-		var3.put("X-Minecraft-Version", "1.5");
+		var3.put("X-Minecraft-Version", "1.5.1");
 		var3.put("X-Minecraft-Supported-Resolutions", "16");
 		this.isDownloading = true;
 		this.mc.displayGuiScreen(var4);
@@ -233,7 +233,7 @@ public class TexturePackList {
 		}
 	}
 
-	static boolean func_77301_a(TexturePackList par0TexturePackList) {
+	static boolean isDownloading(TexturePackList par0TexturePackList) {
 		return par0TexturePackList.isDownloading;
 	}
 

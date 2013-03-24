@@ -163,9 +163,9 @@ public abstract class TexturePackImplementation implements ITexturePack {
 			}
 
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.thumbnailTextureName);
-			par1RenderEngine.func_98185_a();
+			par1RenderEngine.resetBoundTexture();
 		} else {
-			par1RenderEngine.func_98187_b("/gui/unknown_pack.png");
+			par1RenderEngine.bindTexture("/gui/unknown_pack.png");
 		}
 	}
 

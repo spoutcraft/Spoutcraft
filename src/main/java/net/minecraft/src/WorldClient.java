@@ -225,7 +225,7 @@ public class WorldClient extends World {
 
 	public boolean setBlockAndMetadataAndInvalidate(int par1, int par2, int par3, int par4, int par5) {
 		this.invalidateBlockReceiveRegion(par1, par2, par3, par1, par2, par3);
-		return super.setBlockAndMetadataWithNotify(par1, par2, par3, par4, par5, 3);
+		return super.setBlock(par1, par2, par3, par4, par5, 3);
 	}
 
 	/**
@@ -305,8 +305,8 @@ public class WorldClient extends World {
 	public void removeAllEntities() {
 		this.loadedEntityList.removeAll(this.unloadedEntityList);
 		int var1;
-		int var3;
 		Entity var2;
+		int var3;
 		int var4;
 
 		for (var1 = 0; var1 < this.unloadedEntityList.size(); ++var1) {
@@ -388,7 +388,7 @@ public class WorldClient extends World {
 	}
 
 	public void func_96443_a(Scoreboard par1Scoreboard) {
-		this.field_96442_D = par1Scoreboard;
+		this.worldScoreboard = par1Scoreboard;
 	}
 
 	static Set getEntityList(WorldClient par0WorldClient) {
