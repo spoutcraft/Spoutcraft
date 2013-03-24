@@ -31,7 +31,7 @@ public class TessellatorUtils {
 				if (var4 == null) {
 					var4 = var2.toString();
 				}
-
+				
 				var3 = new Tessellator(2097152);
 				copyFields(var0, var3, true);
 				var3.textureMap = var2;
@@ -52,7 +52,7 @@ public class TessellatorUtils {
 
 	static void registerIcon(TextureMap var0, Icon var1) {
 		iconMap.put(var1, var0);
-		iconsByName.put(var1.func_94215_i(), var1);
+		iconsByName.put(var1.getIconName(), var1);
 	}
 
 	static Icon getIconByName(String var0) {
@@ -121,6 +121,7 @@ public class TessellatorUtils {
 
 			try {
 				Object var7 = var6.get(var0);
+
 				var6.set(var1, var7);
 			} catch (IllegalAccessException var8) {
 				var8.printStackTrace();

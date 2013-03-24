@@ -100,21 +100,19 @@ public abstract class TexturePackChangeHandler {
 	}
 
 	public static void beforeChange1() {
-		if (!changing) {
-			changing = true;
-			startTime = System.currentTimeMillis();
-			Runtime var0 = Runtime.getRuntime();
-			startMem = var0.totalMemory() - var0.freeMemory();
-			Iterator var1 = handlers.iterator();
+		changing = true;
+		startTime = System.currentTimeMillis();
+		Runtime var0 = Runtime.getRuntime();
+		startMem = var0.totalMemory() - var0.freeMemory();
+		Iterator var1 = handlers.iterator();
 
-			while (var1.hasNext()) {
-				TexturePackChangeHandler var2 = (TexturePackChangeHandler)var1.next();
+		while (var1.hasNext()) {
+			TexturePackChangeHandler var2 = (TexturePackChangeHandler)var1.next();
 
-				try {
-					var2.beforeChange();
-				} catch (Throwable var4) {
-					var4.printStackTrace();
-				}
+			try {
+				var2.beforeChange();
+			} catch (Throwable var4) {
+				var4.printStackTrace();
 			}
 		}
 	}
@@ -163,8 +161,8 @@ public abstract class TexturePackChangeHandler {
 					int var11 = var1.read(var4);
 
 					if (var11 <= 0) {
-						MCPatcherUtils.close((Closeable)var1);
-						MCPatcherUtils.close((Closeable)var2);
+						MCPatcherUtils.close(var1);
+						MCPatcherUtils.close(var2);
 						var3 = new ZipFile(var0.tmpFile);
 						var0.origZip = var0.texturePackZipFile;
 						var0.texturePackZipFile = var3;

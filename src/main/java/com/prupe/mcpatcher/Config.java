@@ -172,14 +172,6 @@ public class Config {
 		}
 	}
 
-	static void setLogLevel(String var0, Level var1) {
-		instance.setLogLevel1(var0, var1);
-	}
-
-	static Level getLogLevel(String var0) {
-		return instance.getLogLevel1(var0);
-	}
-
 	static boolean load(File var0) {
 		instance = null;
 

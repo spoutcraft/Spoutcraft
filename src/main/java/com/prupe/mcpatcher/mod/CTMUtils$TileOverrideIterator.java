@@ -22,12 +22,12 @@ abstract class CTMUtils$TileOverrideIterator implements Iterator {
 		this.block = var1;
 		this.currentIcon = var2;
 		this.blockOverrides = CTMUtils.access$200()[var1.blockID];
-		this.iconOverrides = (ITileOverride[])CTMUtils.access$300().get(this.currentIcon.func_94215_i());
+		this.iconOverrides = (ITileOverride[])CTMUtils.access$300().get(this.currentIcon.getIconName());
 	}
 
 	private void resetForNextPass() {
 		this.blockOverrides = null;
-		this.iconOverrides = (ITileOverride[])CTMUtils.access$300().get(this.currentIcon.func_94215_i());
+		this.iconOverrides = (ITileOverride[])CTMUtils.access$300().get(this.currentIcon.getIconName());
 		this.blockPos = 0;
 		this.iconPos = 0;
 		this.foundNext = false;
@@ -81,7 +81,7 @@ abstract class CTMUtils$TileOverrideIterator implements Iterator {
 	}
 
 	ITileOverride go() {
-		for (int var1 = 0; var1 < CTMUtils.access$1200(); ++var1) {
+		for (int var1 = 0; var1 < CTMUtils.access$1400(); ++var1) {
 			ITileOverride var2;
 			Icon var3;
 

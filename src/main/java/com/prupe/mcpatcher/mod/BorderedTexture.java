@@ -5,59 +5,81 @@ import net.minecraft.src.Texture;
 import net.minecraft.src.TextureStitched;
 
 public class BorderedTexture extends TextureStitched {
-	private float normalizedX0;
-	private float normalizedX1;
-	private float normalizedY0;
-	private float normalizedY1;
-	private float normalizedWidth;
-	private float normalizedHeight;
+	private float minU;
+	private float maxU;
+	private float minV;
+	private float maxV;
+	private float scaledWidth;
+	private float scaledHeight;
+	private int border;
 
 	public BorderedTexture(String var1) {
 		super(var1);
 	}
 
-	public void func_94218_a(Texture var1, List var2, int var3, int var4, int var5, int var6, boolean var7) {
-		super.func_94218_a(var1, var2, var3, var4, var5, var6, var7);
-		int var8 = var2 != null && !var2.isEmpty() ? ((Texture)var2.get(0)).border : 0;
-		var3 += var8;
-		var4 += var8;
-		var5 -= 2 * var8;
-		var6 -= 2 * var8;
-		this.normalizedX0 = (float)var3 / (float)var1.func_94275_d();
-		this.normalizedX1 = (float)(var3 + var5) / (float)var1.func_94275_d();
-		this.normalizedY0 = (float)var4 / (float)var1.func_94276_e();
-		this.normalizedY1 = (float)(var4 + var6) / (float)var1.func_94276_e();
-		this.normalizedWidth = this.normalizedX1 - this.normalizedX0;
-		this.normalizedHeight = this.normalizedY1 - this.normalizedY0;
-		this.normalizedX1 = minusEpsilon(this.normalizedX1);
-		this.normalizedY1 = minusEpsilon(this.normalizedY1);
+	public void init(Texture var1, List var2, int var3, int var4, int var5, int var6, boolean var7) {
+		super.init(var1, var2, var3, var4, var5, var6, var7);
+		this.border = var2 != null && !var2.isEmpty() ? ((Texture)var2.get(0)).border : 0;
+
+		if (this.border > 0) {
+			var3 += this.border;
+			var4 += this.border;
+			var5 -= 2 * this.border;
+			var6 -= 2 * this.border;
+			this.minU = (float)var3 / (float)var1.getWidth();
+			this.maxU = (float)(var3 + var5) / (float)var1.getWidth();
+			this.minV = (float)var4 / (float)var1.getHeight();
+			this.maxV = (float)(var4 + var6) / (float)var1.getHeight();
+		} else {
+			this.minU = super.getMinU();
+			this.maxU = super.getMaxU();
+			this.minV = super.getMinV();
+			this.maxV = super.getMaxV();
+		}
+
+		this.scaledWidth = (this.maxU - this.minU) / 16.0F;
+		this.scaledHeight = (this.maxV - this.minV) / 16.0F;
 	}
 
-	public float func_94209_e() {
-		return this.normalizedX0;
+	/**
+	 * Returns the minimum U coordinate to use when rendering with this icon.
+	 */
+	public float getMinU() {
+		return this.minU;
 	}
 
-	public float func_94212_f() {
-		return this.normalizedX1;
+	/**
+	 * Returns the maximum U coordinate to use when rendering with this icon.
+	 */
+	public float getMaxU() {
+		return this.maxU;
 	}
 
-	public float func_94214_a(double var1) {
-		return minusEpsilon(this.normalizedX0 + (float)var1 / 16.0F * this.normalizedWidth);
+	/**
+	 * Gets a U coordinate on the icon. 0 returns uMin and 16 returns uMax. Other arguments return in-between values.
+	 */
+	public float getInterpolatedU(double var1) {
+		return this.border > 0 ? this.minU + (float)var1 * this.scaledWidth : super.getInterpolatedU(var1);
 	}
 
-	public float func_94206_g() {
-		return this.normalizedY0;
+	/**
+	 * Returns the minimum V coordinate to use when rendering with this icon.
+	 */
+	public float getMinV() {
+		return this.minV;
 	}
 
-	public float func_94210_h() {
-		return this.normalizedY1;
+	/**
+	 * Returns the maximum V coordinate to use when rendering with this icon.
+	 */
+	public float getMaxV() {
+		return this.maxV;
 	}
 
-	public float func_94207_b(double var1) {
-		return minusEpsilon(this.normalizedY0 + (float)var1 / 16.0F * this.normalizedHeight);
-	}
-
-	private static float minusEpsilon(float var0) {
-		return var0 > 0.0F ? Float.intBitsToFloat(Float.floatToRawIntBits(var0) - 1) : var0;
+	/**
+	 * Gets a V coordinate on the icon. 0 returns vMin and 16 returns vMax. Other arguments return in-between values.
+	 */
+	public float getInterpolatedV(double var1) {
+		return this.border > 0 ? this.minV + (float)var1 * this.scaledHeight : super.getInterpolatedV(var1);
 	}
 }

@@ -27,6 +27,7 @@ public class MCPatcherUtils {
 	public static final String CONNECTED_TEXTURES = "Connected Textures";
 	public static final String BETTER_SKIES = "Better Skies";
 	public static final String BETTER_GLASS = "Better Glass";
+	public static final String CUSTOM_ITEM_TEXTURES = "Custom Item Textures";
 	public static final String GLSL_SHADERS = "GLSL Shaders";
 	public static final String CUSTOM_ANIMATIONS = "Custom Animations";
 	public static final String MIPMAP = "Mipmap";
@@ -62,22 +63,24 @@ public class MCPatcherUtils {
 	public static final String TILE_OVERRIDE_INTERFACE = "com.prupe.mcpatcher.mod.ITileOverride";
 	public static final String TILE_OVERRIDE_CLASS = "com.prupe.mcpatcher.mod.TileOverride";
 	public static final String TILE_OVERRIDE_IMPL_CLASS = "com.prupe.mcpatcher.mod.TileOverrideImpl";
+	public static final String TILE_LOADER_CLASS = "com.prupe.mcpatcher.mod.TileLoader";
 	public static final String GLASS_PANE_RENDERER_CLASS = "com.prupe.mcpatcher.mod.GlassPaneRenderer";
 	public static final String RENDER_PASS_CLASS = "com.prupe.mcpatcher.mod.RenderPass";
 	public static final String RENDER_PASS_API_CLASS = "com.prupe.mcpatcher.mod.RenderPassAPI";
 	public static final String SKY_RENDERER_CLASS = "com.prupe.mcpatcher.mod.SkyRenderer";
 	public static final String FIREWORKS_HELPER_CLASS = "com.prupe.mcpatcher.mod.FireworksHelper";
+	public static final String CIT_UTILS_CLASS = "com.prupe.mcpatcher.mod.CITUtils";
 	public static final String SHADERS_CLASS = "com.prupe.mcpatcher.mod.Shaders";
 
 	static File getDefaultGameDir() {
 		String var0 = System.getProperty("os.name").toLowerCase();
 		String var1 = null;
-		String var2 = ".spoutcraft";
+		String var2 = ".minecraft";
 
 		if (var0.contains("win")) {
 			var1 = System.getenv("APPDATA");
 		} else if (var0.contains("mac")) {
-			var2 = "Library/Application Support/spoutcraft";
+			var2 = "Library/Application Support/minecraft";
 		}
 
 		if (var1 == null) {
@@ -94,7 +97,7 @@ public class MCPatcherUtils {
 			minecraftDir = null;
 		}
 
-		return Config.load(minecraftDir);
+		return true;
 	}
 
 	public static File getMinecraftPath(String ... var0) {
@@ -115,7 +118,7 @@ public class MCPatcherUtils {
 	}
 
 	public static String getStringProperty(Properties var0, String var1, String var2) {
-		return var0 == null ? var2 : var0.getProperty(var1, var2);
+		return var0 == null ? var2 : var0.getProperty(var1, var2).trim();
 	}
 
 	public static int getIntProperty(Properties var0, String var1, int var2) {

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
 import net.minecraft.src.RenderEngine;
@@ -31,6 +32,8 @@ import org.lwjgl.util.glu.GLU;
 
 public class MipmapHelper {
 	private static final String MIPMAP_PROPERTIES = "/mipmap.properties";
+	private static final int MIN_ALPHA = 26;
+	private static final int MAX_ALPHA = 229;
 	private static final boolean mipmapSupported = GLContext.getCapabilities().OpenGL12;
 	static final boolean mipmapEnabled = Config.getBoolean("Extended HD", "mipmap", false);
 	static final int maxMipmapLevel = Config.getInt("Extended HD", "maxMipmapLevel", 3);
@@ -42,33 +45,41 @@ public class MipmapHelper {
 	private static final int anisoMax;
 	private static final boolean lodSupported;
 	private static int lodBias;
-	private static final HashMap imagePool = new HashMap();
-	private static final HashMap bufferPool = new HashMap();
+	private static final Map imagePool = new HashMap();
+	private static final Map bufferPool = new HashMap();
 	private static int bgColorFix = 4;
 	public static int currentLevel;
-	private static final HashMap mipmapType = new HashMap();
-	private static final int MIPMAP_NONE = 0;
-	private static final int MIPMAP_BASIC = 1;
-	private static final int MIPMAP_ALPHA = 2;
+	private static final Map mipmapType = new HashMap();
 	private static Texture currentTexture;
+	private static boolean enableTransparencyFix = true;
 	private static boolean flippedTextureLogged;
 
 	public static void setupTexture(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, ByteBuffer var8, Texture var9) {
-		int[] var10 = var6 == 6408 ? new int[] {3, 0, 1, 2}: new int[] {3, 2, 1, 0};
-		BufferedImage var11 = new BufferedImage(var3, var4, 2);
-		byte[] var12 = new byte[4 * var3 * var4];
-		int[] var13 = new int[var3 * var4];
-		var8.position(0);
-		var8.get(var12, 0, var12.length);
+		if (!useMipmapsForTexture(var9.getTextureName())) {
+			GL11.glTexImage2D(var0, var1, var2, var3, var4, var5, var6, var7, getDirectByteBuffer(var8, true));
+		} else {
+			int[] var10 = var6 == 6408 ? new int[] {3, 0, 1, 2}: new int[] {3, 2, 1, 0};
+			BufferedImage var11 = getPooledImage(var3, var4, 0);
+			byte[] var12 = new byte[4 * var3 * var4];
+			int[] var13 = new int[var3 * var4];
+			var8.position(0);
+			var8.get(var12, 0, var12.length);
 
-		for (int var14 = 0; var14 < var12.length; var14 += 4) {
-			var13[var14 / 4] = (var12[var14 + var10[0]] & 255) << 24 | (var12[var14 + var10[1]] & 255) << 16 | (var12[var14 + var10[2]] & 255) << 8 | var12[var14 + var10[3]] & 255;
+			for (int var14 = 0; var14 < var12.length; var14 += 4) {
+				var13[var14 / 4] = (var12[var14 + var10[0]] & 255) << 24 | (var12[var14 + var10[1]] & 255) << 16 | (var12[var14 + var10[2]] & 255) << 8 | var12[var14 + var10[3]] & 255;
+			}
+
+			var11.setRGB(0, 0, var3, var4, var13, 0, var3);
+
+			try {
+				currentTexture = var9;
+				enableTransparencyFix = false;
+				setupTexture(MCPatcherUtils.getMinecraft().renderEngine, var11, var9.getGlTextureId(), false, false, var9.getTextureName());
+			} finally {
+				enableTransparencyFix = true;
+				currentTexture = null;
+			}
 		}
-
-		var11.setRGB(0, 0, var3, var4, var13, 0, var3);
-		currentTexture = var9;
-		setupTexture(MCPatcherUtils.getMinecraft().renderEngine, var11, var9.func_94282_c(), false, false, var9.func_94280_f());
-		currentTexture = null;
 	}
 
 	public static ByteBuffer allocateByteBuffer(int var0) {
@@ -76,20 +87,17 @@ public class MipmapHelper {
 	}
 
 	public static void copySubTexture(Texture var0, Texture var1, int var2, int var3, boolean var4) {
-		ByteBuffer var5 = var1.func_94273_h();
+		ByteBuffer var5 = var1.getTextureData();
 		var5.position(0);
 
 		if (byteBufferAllocation == 1 && !var5.isDirect()) {
-			ByteBuffer var6 = ByteBuffer.allocateDirect(var5.capacity()).order(var5.order());
-			var6.put(var5).flip();
-			var5 = var6;
-			var1.field_94302_r = var6;
+			var1.textureData = var5 = getDirectByteBuffer(var5, false);
 		}
 
-		TexturePackAPI.bindTexture(var0.func_94282_c());
-		int var11 = var0.field_94296_l ? getMipmapLevels() : 0;
-		int var7 = var1.func_94275_d();
-		int var8 = var1.func_94276_e();
+		TexturePackAPI.bindTexture(var0.getGlTextureId());
+		int var6 = var0.mipmapActive ? getMipmapLevels() : 0;
+		int var7 = var1.getWidth();
+		int var8 = var1.getHeight();
 
 		if (var4 && !flippedTextureLogged) {
 			flippedTextureLogged = true;
@@ -107,9 +115,9 @@ public class MipmapHelper {
 			}
 
 			GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, var9, var2, var3, var7, var8, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, var5);
-			checkGLError("%s -> %s: glTexSubImage2D(%d, %d, %d, %d, %d)", new Object[] {var1.func_94280_f(), var0.func_94280_f(), Integer.valueOf(var9), Integer.valueOf(var2), Integer.valueOf(var3), Integer.valueOf(var7), Integer.valueOf(var8)});
+			checkGLError("%s -> %s: glTexSubImage2D(%d, %d, %d, %d, %d)", new Object[] {var1.getTextureName(), var0.getTextureName(), Integer.valueOf(var9), Integer.valueOf(var2), Integer.valueOf(var3), Integer.valueOf(var7), Integer.valueOf(var8)});
 
-			if (var9 >= var11) {
+			if (var9 >= var6) {
 				return;
 			}
 
@@ -137,66 +145,92 @@ public class MipmapHelper {
 	private static ArrayList getMipmapsForTexture(BufferedImage var0, String var1) {
 		ArrayList var2 = new ArrayList();
 		var2.add(var0);
-		int var3 = getMipmapType(var1, var2);
 
-		if (var3 < 1) {
+		if (!useMipmapsForTexture(var1)) {
 			return var2;
 		} else {
-			int var4 = var0.getWidth();
-			int var5 = var0.getHeight();
+			int var3 = var0.getWidth();
+			int var4 = var0.getHeight();
 
-			if (getCustomMipmaps(var2, var1, var4, var5)) {
+			if (getCustomMipmaps(var2, var1, var3, var4)) {
 				return var2;
 			} else {
-				int var6 = getMipmapLevels(var0.getWidth(), var0.getHeight(), 2);
+				int var5 = getMipmapLevels(var0.getWidth(), var0.getHeight(), 2);
 
-				if (var6 <= 0) {
-					GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LEVEL, var6);
-					byte var16 = 0;
-
-					if (var1 != null) {
-						mipmapType.put(var1, Integer.valueOf(var16));
-					}
-
+				if (var5 <= 0) {
+					GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LEVEL, var5);
 					return var2;
 				} else {
 					var0 = convertToARGB(var0);
 					var2.set(0, var0);
-					int var7 = 1 << bgColorFix;
-					int var8 = gcd(var4, var5);
+					int var6 = 1 << bgColorFix;
+					int var7 = gcd(var3, var4);
 
-					if (bgColorFix > 0 && var8 % var7 == 0 && (var8 / var7 & var8 / var7 - 1) == 0) {
-						long var9 = System.currentTimeMillis();
-						BufferedImage var11;
+					if (enableTransparencyFix && bgColorFix > 0 && var7 % var6 == 0 && (var7 / var6 & var7 / var6 - 1) == 0) {
+						long var8 = System.currentTimeMillis();
+						BufferedImage var10;
 
-						for (var11 = (BufferedImage)var2.get(var2.size() - 1); gcd(var11.getWidth(), var11.getHeight()) > var7; var11 = scaleHalf(var11)) {
+						for (var10 = (BufferedImage)var2.get(var2.size() - 1); gcd(var10.getWidth(), var10.getHeight()) > var6; var10 = scaleHalf(var10)) {
 							;
 						}
 
-						long var12 = System.currentTimeMillis();
-						setBackgroundColor(var0, var11);
-						long var14 = System.currentTimeMillis();
+						long var11 = System.currentTimeMillis();
+						setBackgroundColor(var0, var10);
+						long var13 = System.currentTimeMillis();
 					}
 
-					BufferedImage var17 = var0;
-
-					for (int var10 = 0; var10 < var6; ++var10) {
-						var17 = scaleHalf(var17);
-
-						if (var3 >= 2) {
-							var0 = var17;
-						} else {
-							var0 = getPooledImage(var17.getWidth(), var17.getHeight(), 1);
-							var17.copyData(var0.getRaster());
-							resetOnOffTransparency(var0);
-						}
-
+					for (int var15 = 0; var15 < var5; ++var15) {
+						var0 = scaleHalf(var0);
 						var2.add(var0);
 					}
 
 					return var2;
 				}
 			}
+		}
+	}
+
+	static BufferedImage fixTransparency(String var0, BufferedImage var1) {
+		if (var1 == null) {
+			return var1;
+		} else {
+			long var2 = System.currentTimeMillis();
+			var1 = convertToARGB(var1);
+			int var4 = var1.getWidth();
+			int var5 = var1.getHeight();
+			IntBuffer var6 = getARGBAsIntBuffer(var1);
+			IntBuffer var7 = var6;
+			label33:
+
+			while (var4 % 2 == 0 && var5 % 2 == 0) {
+				int var8 = 0;
+
+				while (true) {
+					if (var8 >= var7.limit()) {
+						break label33;
+					}
+
+					if (var7.get(var8) >>> 24 == 0) {
+						IntBuffer var9 = getPooledBuffer(var4 * var5).asIntBuffer();
+						scaleHalf(var7, var4, var5, var9, 8);
+						var7 = var9;
+						var4 >>= 1;
+						var5 >>= 1;
+						break;
+					}
+
+					++var8;
+				}
+			}
+
+			long var12 = System.currentTimeMillis();
+
+			if (var7 != var6) {
+				setBackgroundColor(var6, var1.getWidth(), var1.getHeight(), var7, var1.getWidth() / var4);
+			}
+
+			long var10 = System.currentTimeMillis();
+			return var1;
 		}
 	}
 
@@ -211,9 +245,9 @@ public class MipmapHelper {
 					GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LEVEL, var6);
 
 					if (currentTexture != null) {
-						currentTexture.field_94296_l = true;
-						currentTexture.field_94288_g = 9986;
-						currentTexture.field_94301_i = 9728;
+						currentTexture.mipmapActive = true;
+						currentTexture.textureFormat = 9986;
+						currentTexture.textureMinFilter = 9728;
 					}
 
 					checkGLError("set GL_TEXTURE_MAX_LEVEL = %d", new Object[] {Integer.valueOf(var6)});
@@ -230,7 +264,7 @@ public class MipmapHelper {
 				}
 
 				BufferedImage var7 = (BufferedImage)var1.get(currentLevel);
-				var0.func_98184_a(var7, var2, var4, var5);
+				var0.setupTextureExt(var7, var2, var4, var5);
 				checkGLError("setupTexture %s#%d", new Object[] {var3, Integer.valueOf(currentLevel)});
 			}
 		} catch (Throwable var11) {
@@ -243,8 +277,8 @@ public class MipmapHelper {
 	static void reset() {
 		bgColorFix = 4;
 		mipmapType.clear();
-		forceMipmapType("terrain", 1);
-		forceMipmapType("items", 0);
+		mipmapType.put("terrain", Boolean.valueOf(true));
+		mipmapType.put("items", Boolean.valueOf(false));
 		Properties var0 = TexturePackAPI.getProperties("/mipmap.properties");
 
 		if (var0 != null) {
@@ -256,18 +290,10 @@ public class MipmapHelper {
 
 				if (var2.getKey() instanceof String && var2.getValue() instanceof String) {
 					String var3 = ((String)var2.getKey()).trim();
-					String var4 = ((String)var2.getValue()).trim().toLowerCase();
+					boolean var4 = Boolean.parseBoolean(((String)var2.getValue()).trim().toLowerCase());
 
 					if (var3.startsWith("/")) {
-						if (var4.equals("none")) {
-							mipmapType.put(var3, Integer.valueOf(0));
-						} else if (!var4.equals("basic") && !var4.equals("opaque")) {
-							if (var4.equals("alpha")) {
-								mipmapType.put(var3, Integer.valueOf(2));
-							}
-						} else {
-							mipmapType.put(var3, Integer.valueOf(1));
-						}
+						mipmapType.put(var3, Boolean.valueOf(var4));
 					}
 				}
 			}
@@ -303,61 +329,8 @@ public class MipmapHelper {
 		return var4;
 	}
 
-	private static int getMipmapType(String var0, ArrayList var1) {
-		BufferedImage var2 = var1 == null ? null : (BufferedImage)var1.get(0);
-
-		if (useMipmap && var0 != null) {
-			if (mipmapType.containsKey(var0)) {
-				return ((Integer)mipmapType.get(var0)).intValue();
-			} else if (!var0.startsWith("%") && !var0.startsWith("##") && !var0.startsWith("/achievement/") && !var0.startsWith("/environment/") && !var0.startsWith("/font/") && !var0.startsWith("/gui/") && !var0.startsWith("/misc/") && !var0.startsWith("/terrain/") && !var0.startsWith("/title/") && !var0.contains("item")) {
-				if (var2 == null) {
-					return 1;
-				} else {
-					var2 = convertToARGB(var2);
-					var1.set(0, var2);
-					IntBuffer var3 = getARGBAsIntBuffer(var2);
-
-					for (int var4 = 0; var4 < var3.limit(); ++var4) {
-						int var5 = var3.get(var4) >>> 24;
-
-						if (var5 > 26 && var5 < 229) {
-							mipmapType.put(var0, Integer.valueOf(2));
-							return 2;
-						}
-					}
-					mipmapType.put(var0, Integer.valueOf(1));
-					return 1;
-				}
-			} else {
-				return 0;
-			}
-		} else {
-			return 0;
-		}
-	}
-
-	static void forceMipmapType(String var0, int var1) {
-		if (useMipmap) {
-			boolean var2 = false;
-
-			if (mipmapType.containsKey(var0)) {
-				var2 = ((Integer)mipmapType.get(var0)).intValue() != var1;
-
-				if (!var2) {
-					return;
-				}
-			}
-
-			mipmapType.put(var0, Integer.valueOf(var1));
-
-			if (var2) {
-				int var3 = TexturePackAPI.getTextureIfLoaded(var0);
-
-				if (var3 >= 0) {
-					setupTexture(MCPatcherUtils.getMinecraft().renderEngine, TexturePackAPI.getImage(var0), var3, false, false, var0);
-				}
-			}
-		}
+	private static boolean useMipmapsForTexture(String var0) {
+		return useMipmap && var0 != null ? (mipmapType.containsKey(var0) ? ((Boolean)mipmapType.get(var0)).booleanValue() : !var0.startsWith("%") && !var0.startsWith("##") && !var0.startsWith("/achievement/") && !var0.startsWith("/environment/") && !var0.startsWith("/font/") && !var0.startsWith("/gui/") && !var0.startsWith("/misc/") && !var0.startsWith("/terrain/") && !var0.startsWith("/title/") && !var0.contains("item")) : false;
 	}
 
 	static int getMipmapLevels() {
@@ -402,8 +375,21 @@ public class MipmapHelper {
 			bufferPool.put(Integer.valueOf(var0), new SoftReference(var2));
 		}
 
+		var2.order(ByteOrder.BIG_ENDIAN);
 		var2.position(0);
 		return var2;
+	}
+
+	private static ByteBuffer getDirectByteBuffer(ByteBuffer var0, boolean var1) {
+		if (var0.isDirect()) {
+			return var0;
+		} else {
+			ByteBuffer var2 = var1 ? getPooledBuffer(var0.capacity()) : ByteBuffer.allocateDirect(var0.capacity());
+			var2.order(var0.order());
+			var2.put(var0);
+			var2.flip();
+			return var2;
+		}
 	}
 
 	private static BufferedImage convertToARGB(BufferedImage var0) {
@@ -444,30 +430,19 @@ public class MipmapHelper {
 		int var4 = var2 / var1.getWidth();
 		IntBuffer var5 = getARGBAsIntBuffer(var0);
 		IntBuffer var6 = getARGBAsIntBuffer(var1);
-
-		for (int var7 = 0; var7 < var2; ++var7) {
-			for (int var8 = 0; var8 < var3; ++var8) {
-				int var9 = var2 * var8 + var7;
-				int var10 = var5.get(var9);
-
-				if ((var10 & -16777216) == 0) {
-					var10 = var6.get(var8 / var4 * (var2 / var4) + var7 / var4);
-					var5.put(var9, var10 & 16777215);
-				}
-			}
-		}
+		setBackgroundColor(var5, var2, var3, var6, var4);
 	}
 
-	private static void resetOnOffTransparency(BufferedImage var0) {
-		IntBuffer var1 = getARGBAsIntBuffer(var0);
+	private static void setBackgroundColor(IntBuffer var0, int var1, int var2, IntBuffer var3, int var4) {
+		for (int var5 = 0; var5 < var1; ++var5) {
+			for (int var6 = 0; var6 < var2; ++var6) {
+				int var7 = var1 * var6 + var5;
+				int var8 = var0.get(var7);
 
-		for (int var2 = 0; var2 < var1.limit(); ++var2) {
-			int var3 = var1.get(var2);
-
-			if (var3 >>> 24 < 127) {
-				var1.put(var2, var3 & 16777215);
-			} else {
-				var1.put(var2, var3 | -16777216);
+				if ((var8 & -16777216) == 0) {
+					var8 = var3.get(var6 / var4 * (var1 / var4) + var5 / var4);
+					var0.put(var7, var8 & 16777215);
+				}
 			}
 		}
 	}

@@ -125,10 +125,10 @@ public class GlassPaneRenderer {
 	private static void setupTileCoords(int var0) {
 		Icon var1 = icons[var0];
 		tessellator = CTMUtils.getTessellator(icons[var0]);
-		u0 = (double)var1.func_94209_e();
-		uM = (double)var1.func_94214_a(8.0D);
-		u1 = (double)var1.func_94212_f();
-		v0 = (double)var1.func_94206_g();
-		v1 = (double)var1.func_94210_h();
+		u0 = (double)var1.getMinU();
+		uM = (double)var1.getInterpolatedU(8.0D);
+		u1 = (double)var1.getMaxU();
+		v0 = (double)var1.getMinV();
+		v1 = (double)var1.getMaxV();
 	}
 }

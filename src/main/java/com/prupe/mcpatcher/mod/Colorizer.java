@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
 import com.prupe.mcpatcher.mod.Colorizer$1;
@@ -53,8 +52,7 @@ public class Colorizer {
 	}
 
 	private static void reloadColorProperties() {
-		if (TexturePackAPI.getProperties("/color.properties", properties)) {
-		}
+		TexturePackAPI.getProperties("/color.properties", properties);		
 	}
 
 	static String getStringKey(String[] var0, int var1) {
@@ -81,12 +79,22 @@ public class Colorizer {
 	}
 
 	static int loadIntColor(String var0, int var1) {
-		return MCPatcherUtils.getIntProperty(properties, var0, var1);
+		String var2 = properties.getProperty(var0, "");
+
+		if (!var2.equals("")) {
+			try {
+				return Integer.parseInt(var2, 16);
+			} catch (NumberFormatException var4) {
+				;
+			}
+		}
+
+		return var1;
 	}
 
 	static void loadFloatColor(String var0, float[] var1) {
 		int var2 = float3ToInt(var1);
-		intToFloat3(MCPatcherUtils.getIntProperty(properties, var0, var2), var1);
+		intToFloat3(loadIntColor(var0, var2), var1);
 	}
 
 	static void intToFloat3(int var0, float[] var1, int var2) {

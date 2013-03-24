@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import org.lwjgl.opengl.PixelFormat;
 
 public class AAHelper {
-	private static final int BORDER_COLOR = 0;
+	private static final int debugColor = Config.getBoolean("Extended HD", "debugBorder", false) ? -16776961 : 0;
 	private static final int aaSamples = Config.getInt("Extended HD", "antiAliasing", 1);
 	public static int border;
 
@@ -24,6 +24,7 @@ public class AAHelper {
 
 	public static BufferedImage addBorder(String var0, BufferedImage var1, boolean var2) {
 		if (var1 != null && TexturePackAPI.enableTextureBorder) {
+			var1 = MipmapHelper.fixTransparency(var0, var1);
 			int var3 = var1.getWidth();
 			int var4 = var1.getHeight();
 			int var5;
@@ -75,6 +76,8 @@ public class AAHelper {
 		} else {
 			border = 2;
 		}
+
+		border = Math.min(border, Math.min(var1, var2));
 	}
 
 	private static void copyRegion(BufferedImage var0, int var1, int var2, BufferedImage var3, int var4, int var5, int var6, int var7, boolean var8, boolean var9) {
@@ -96,5 +99,19 @@ public class AAHelper {
 		}
 	}
 
-	private static void addDebugOutline(BufferedImage var0, int var1, int var2, int var3) {}
+	private static void addDebugOutline(BufferedImage var0, int var1, int var2, int var3) {
+		if (debugColor != 0) {
+			int var4;
+
+			for (var4 = 0; var4 < var2; ++var4) {
+				var0.setRGB(var4 + border, var1 + border, debugColor);
+				var0.setRGB(var4 + border, var1 + var3 + border, debugColor);
+			}
+
+			for (var4 = 0; var4 < var3; ++var4) {
+				var0.setRGB(border, var1 + var4 + border, debugColor);
+				var0.setRGB(var3 + border, var1 + var4 + border, debugColor);
+			}
+		}
+	}
 }

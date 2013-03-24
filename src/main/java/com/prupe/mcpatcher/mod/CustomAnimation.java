@@ -36,6 +36,7 @@ public class CustomAnimation {
 	private boolean error;
 
 	public static void updateAll() {
+		FancyDial.updateAll();
 		Iterator var0 = animations.iterator();
 
 		while (var0.hasNext()) {
@@ -43,7 +44,7 @@ public class CustomAnimation {
 			var1.update();
 		}
 
-		FancyDial.updateAll();
+		FancyDial.postUpdateAll();
 	}
 
 	static void addStrip(String var0) {
@@ -66,15 +67,11 @@ public class CustomAnimation {
 	private static void add(CustomAnimation var0) {
 		if (var0 != null) {
 			animations.add(var0);
-
-			if (var0.mipmapLevel == 0) {
-			}
 		}
 	}
 
 	private static void newStrip(String var0, Properties var1, String var2, String var3, BufferedImage var4, int var5, int var6, int var7, int var8) {
-		if (var4 == null) {
-		} else if (!var2.equals("/terrain.png") && !var2.equals("/gui/items.png")) {
+		if (!var2.equals("/terrain.png") && !var2.equals("/gui/items.png")) {
 			if (var5 >= 0 && var6 >= 0 && var7 > 0 && var8 > 0) {
 				TexturePackAPI.bindTexture(var2);
 				int var9 = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
@@ -116,13 +113,9 @@ public class CustomAnimation {
 							var7 >>= 1;
 							var8 >>= 1;
 						}
-					} else {
 					}
-				} else {
 				}
-			} else {
 			}
-		} else {
 		}
 	}
 

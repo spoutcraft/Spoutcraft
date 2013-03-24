@@ -6,8 +6,8 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;
 
 final class TileOverrideImpl$Top extends TileOverride {
-	TileOverrideImpl$Top(String var1, Properties var2) {
-		super(var1, var2);
+	TileOverrideImpl$Top(String var1, Properties var2, TileLoader var3) {
+		super(var1, var2, var3);
 	}
 
 	String getMethod() {

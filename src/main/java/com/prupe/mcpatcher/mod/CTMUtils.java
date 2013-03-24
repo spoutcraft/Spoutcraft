@@ -42,14 +42,15 @@ public class CTMUtils {
 	private static final ITileOverride[][] blockOverrides = new ITileOverride[Block.blocksList.length][];
 	private static final Map tileOverrides = new HashMap();
 	private static final List overridesToRegister = new ArrayList();
+	private static TileOverrideImpl$BetterGrass betterGrass;
 	private static final TexturePackChangeHandler changeHandler;
 	private static boolean changeHandlerCalled;
 	private static boolean registerIconsCalled;
 	static boolean active;
 	static TextureMap terrainMap;
-	private static BufferedImage missingTextureImage = TileOverride.generateDebugTexture("missing", 64, 64, false);
+	private static BufferedImage missingTextureImage = TileLoader.generateDebugTexture("missing", 64, 64, false);
 	private static List ctmMaps = new ArrayList();
-	static String overrideTextureName;
+	private static TileLoader tileLoader;
 	static ITileOverride lastOverride;
 
 	public static void start() {
@@ -85,11 +86,11 @@ public class CTMUtils {
 	}
 
 	public static Icon getTile(RenderBlocks var0, Block var1, int var2, int var3, Tessellator var4) {
-		return getTile(var0, var1, var2, var3, var0.func_94165_a(var1, var2, var3), var4);
+		return getTile(var0, var1, var2, var3, var0.getBlockIconFromSideAndMetadata(var1, var2, var3), var4);
 	}
 
 	public static Icon getTile(RenderBlocks var0, Block var1, int var2, Tessellator var3) {
-		return getTile(var0, var1, var2, 0, var0.func_94173_a(var1, var2), var3);
+		return getTile(var0, var1, var2, 0, var0.getBlockIconFromSide(var1, var2), var3);
 	}
 
 	private static Icon getTile(RenderBlocks var0, Block var1, int var2, int var3, Icon var4, Tessellator var5) {
@@ -113,6 +114,7 @@ public class CTMUtils {
 
 	public static void registerIcons(TextureMap var0, Stitcher var1, String var2, Map var3) {
 		TessellatorUtils.registerTextureMap(var0, var2);
+		CITUtils.registerIcons(var0, var1, var2, var3);
 
 		if (var2 != null && (var2.equals("terrain") || var2.matches("ctm\\d+"))) {
 			registerIconsCalled = true;
@@ -129,7 +131,7 @@ public class CTMUtils {
 
 				if (var6 != null && var6.size() > 0) {
 					Texture var7 = (Texture)var6.get(0);
-					var4 += var7.func_94275_d() * var7.func_94276_e();
+					var4 += var7.getWidth() * var7.getHeight();
 				}
 			}
 
@@ -137,7 +139,8 @@ public class CTMUtils {
 				terrainMap = var0;
 
 				if (enableGrass) {
-					registerOverride(new TileOverrideImpl$BetterGrass(var0, 2, "grass"));
+					betterGrass = new TileOverrideImpl$BetterGrass(var0, 2, "grass");
+					registerOverride(betterGrass);
 					registerOverride(new TileOverrideImpl$BetterGrass(var0, 110, "mycel"));
 				}
 
@@ -174,31 +177,10 @@ public class CTMUtils {
 					var11 = true;
 				}
 			}
+
 			if (var10 || !var11 && !var2.equals("terrain")) {
 				overridesToRegister.clear();
 			}
-		}
-	}
-
-	public static String getOverridePath(String var0, String var1, String var2) {
-		String var3;
-
-		if (var1.startsWith("/")) {
-			var3 = var1.substring(1).replaceFirst("\\.[^.]+$", "") + var2;
-		} else {
-			var3 = var0 + var1 + var2;
-		}
-		return var3;
-	}
-
-	public static String getOverrideTextureName(String var0) {
-		if (overrideTextureName == null) {
-			if (var0.matches("^\\d+$")) {
-			}
-
-			return var0;
-		} else {
-			return overrideTextureName;
 		}
 	}
 
@@ -207,7 +189,7 @@ public class CTMUtils {
 
 		while (var0.hasNext()) {
 			TextureMap var1 = (TextureMap)var0.next();
-			var1.func_94248_c();
+			var1.updateAnimations();
 		}
 	}
 
@@ -219,6 +201,10 @@ public class CTMUtils {
 		Tessellator.instance.textureMap = null;
 		lastOverride = null;
 		active = false;
+	}
+
+	public static boolean isBetterGrass(IBlockAccess var0, Block var1, int var2, int var3, int var4, int var5) {
+		return betterGrass != null && betterGrass.isBetterGrass(var0, var1, var2, var3, var4, var5);
 	}
 
 	private static boolean checkBlock(RenderBlocks var0, Block var1) {
@@ -267,7 +253,7 @@ public class CTMUtils {
 					var3 = "";
 
 					if (var2 >= 0 && var2 < Block.blocksList.length && Block.blocksList[var2] != null) {
-						var3 = Block.blocksList[var2].func_94330_A();
+						var3 = Block.blocksList[var2].getUnlocalizedName2();
 
 						if (var3 == null) {
 							var3 = "";
@@ -321,36 +307,50 @@ public class CTMUtils {
 		return overridesToRegister;
 	}
 
-	static boolean access$500() {
+	static TileLoader access$502(TileLoader var0) {
+		tileLoader = var0;
+		return var0;
+	}
+
+	static TileOverrideImpl$BetterGrass access$702(TileOverrideImpl$BetterGrass var0) {
+		betterGrass = var0;
+		return var0;
+	}
+
+	static boolean access$800() {
 		return enableStandard;
 	}
 
-	static boolean access$600() {
+	static boolean access$900() {
 		return enableNonStandard;
 	}
 
-	static void access$700(ITileOverride var0) {
+	static TileLoader access$500() {
+		return tileLoader;
+	}
+
+	static void access$1000(ITileOverride var0) {
 		registerOverride(var0);
 	}
 
-	static int access$800() {
+	static int access$1100() {
 		return splitTextures;
 	}
 
-	static boolean access$902(boolean var0) {
+	static boolean access$1202(boolean var0) {
 		registerIconsCalled = var0;
 		return var0;
 	}
 
-	static BufferedImage access$1000() {
+	static BufferedImage access$1300() {
 		return missingTextureImage;
 	}
 
-	static boolean access$900() {
+	static boolean access$1200() {
 		return registerIconsCalled;
 	}
 
-	static int access$1200() {
+	static int access$1400() {
 		return maxRecursion;
 	}
 

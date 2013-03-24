@@ -1,6 +1,5 @@
 package com.prupe.mcpatcher.mod;
 
-import com.prupe.mcpatcher.Config;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.mod.TileOverrideImpl$CTM;
@@ -10,14 +9,10 @@ import com.prupe.mcpatcher.mod.TileOverrideImpl$Random1;
 import com.prupe.mcpatcher.mod.TileOverrideImpl$Repeat;
 import com.prupe.mcpatcher.mod.TileOverrideImpl$Top;
 import com.prupe.mcpatcher.mod.TileOverrideImpl$Vertical;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -28,14 +23,10 @@ import java.util.regex.Pattern;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;
-import net.minecraft.src.StitchHolder;
 import net.minecraft.src.Stitcher;
-import net.minecraft.src.Texture;
-import net.minecraft.src.TextureManager;
 import net.minecraft.src.TextureMap;
 
 abstract class TileOverride implements ITileOverride {
-	private static final boolean debugTextures = Config.getBoolean("Connected Textures", "debugTextures", false);
 	static final int BOTTOM_FACE = 0;
 	static final int TOP_FACE = 1;
 	static final int NORTH_FACE = 2;
@@ -66,6 +57,7 @@ abstract class TileOverride implements ITileOverride {
 	private final String texturesDirectory;
 	private final String propertiesName;
 	private final String directoryName;
+	private final TileLoader tileLoader;
 	private final int renderPass;
 	private final Set matchBlocks;
 	private final Set matchTiles;
@@ -77,168 +69,164 @@ abstract class TileOverride implements ITileOverride {
 	private final int minHeight;
 	private final int maxHeight;
 	private final List tileNames = new ArrayList();
-	private final Map tileTextures = new HashMap();
-	private int totalTextureSize;
 	protected Icon[] icons;
 	private boolean disabled;
 	private int[] reorient;
 	private int rotateUV;
 	protected boolean rotateTop;
 
-	static TileOverride create(String var0) {
+	static TileOverride create(String var0, TileLoader var1) {
 		if (var0 == null) {
 			return null;
 		} else {
-			Properties var1 = TexturePackAPI.getProperties(var0);
+			Properties var2 = TexturePackAPI.getProperties(var0);
 
-			if (var1 == null) {
+			if (var2 == null) {
 				return null;
 			} else {
-				String var2 = var1.getProperty("method", "default").trim().toLowerCase();
-				Object var3 = null;
+				String var3 = var2.getProperty("method", "default").trim().toLowerCase();
+				Object var4 = null;
 
-				if (!var2.equals("default") && !var2.equals("glass") && !var2.equals("ctm")) {
-					if (var2.equals("random")) {
-						var3 = new TileOverrideImpl$Random1(var0, var1);
-					} else if (!var2.equals("fixed") && !var2.equals("static")) {
-						if (!var2.equals("bookshelf") && !var2.equals("horizontal")) {
-							if (var2.equals("vertical")) {
-								var3 = new TileOverrideImpl$Vertical(var0, var1);
-							} else if (!var2.equals("sandstone") && !var2.equals("top")) {
-								if (!var2.equals("repeat") && !var2.equals("pattern")) {
-								} else {
-									var3 = new TileOverrideImpl$Repeat(var0, var1);
-								}
+				if (!var3.equals("default") && !var3.equals("glass") && !var3.equals("ctm")) {
+					if (var3.equals("random")) {
+						var4 = new TileOverrideImpl$Random1(var0, var2, var1);
+					} else if (!var3.equals("fixed") && !var3.equals("static")) {
+						if (!var3.equals("bookshelf") && !var3.equals("horizontal")) {
+							if (var3.equals("vertical")) {
+								var4 = new TileOverrideImpl$Vertical(var0, var2, var1);
+							} else if (!var3.equals("sandstone") && !var3.equals("top")) {
+								var4 = new TileOverrideImpl$Repeat(var0, var2, var1);
 							} else {
-								var3 = new TileOverrideImpl$Top(var0, var1);
+								var4 = new TileOverrideImpl$Top(var0, var2, var1);
 							}
 						} else {
-							var3 = new TileOverrideImpl$Horizontal(var0, var1);
+							var4 = new TileOverrideImpl$Horizontal(var0, var2, var1);
 						}
 					} else {
-						var3 = new TileOverrideImpl$Fixed(var0, var1);
+						var4 = new TileOverrideImpl$Fixed(var0, var2, var1);
 					}
 				} else {
-					var3 = new TileOverrideImpl$CTM(var0, var1);
+					var4 = new TileOverrideImpl$CTM(var0, var2, var1);
 				}
 
-				if (var3 != null && !((TileOverride)var3).disabled) {
-					String var4 = ((TileOverride)var3).checkTileMap();
+				if (var4 != null && !((TileOverride)var4).disabled) {
+					String var5 = ((TileOverride)var4).checkTileMap();
 
-					if (var4 != null) {
-						((TileOverride)var3).error("invalid %s tile map: %s", new Object[] {((TileOverride)var3).getMethod(), var4});
+					if (var5 != null) {
+						((TileOverride)var4).error("invalid %s tile map: %s", new Object[] {((TileOverride)var4).getMethod(), var5});
 					}
 				}
 
-				return (TileOverride)(var3 != null && !((TileOverride)var3).disabled ? var3 : null);
+				return (TileOverride)(var4 != null && !((TileOverride)var4).disabled ? var4 : null);
 			}
 		}
 	}
 
-	protected TileOverride(String var1, Properties var2) {
+	protected TileOverride(String var1, Properties var2, TileLoader var3) {
 		this.propertiesFile = var1;
 		this.texturesDirectory = var1.replaceFirst("/[^/]*$", "");
 		this.directoryName = this.texturesDirectory.replaceAll(".*/", "");
 		this.propertiesName = var1.replaceFirst(".*/", "").replaceFirst("\\.properties$", "");
+		this.tileLoader = var3;
 
 		try {
 			TexturePackAPI.enableTextureBorder = true;
 			this.loadIcons(var2);
 
-			if (this.tileTextures.isEmpty()) {
+			if (this.tileNames.isEmpty()) {
 				this.error("no images found in %s/", new Object[] {this.texturesDirectory});
 			}
 		} finally {
 			TexturePackAPI.enableTextureBorder = false;
 		}
 
-		String[] var3 = new String[Block.blocksList.length];
-		int var4;
+		String[] var4 = new String[Block.blocksList.length];
+		int var5;
 
-		for (var4 = 0; var4 < Block.blocksList.length; ++var4) {
-			Block var5 = Block.blocksList[var4];
+		for (var5 = 0; var5 < Block.blocksList.length; ++var5) {
+			Block var6 = Block.blocksList[var5];
 
-			if (var5 != null) {
-				var3[var4] = var5.func_94330_A();
+			if (var6 != null) {
+				var4[var5] = var6.getUnlocalizedName2();
 			}
 		}
 
-		this.matchBlocks = this.getIDList(var2, "matchBlocks", "block", var3);
+		this.matchBlocks = this.getIDList(var2, "matchBlocks", "block", var4);
 		this.matchTiles = this.getIDList(var2, "matchTiles");
 
 		if (this.matchBlocks.isEmpty() && this.matchTiles.isEmpty()) {
 			this.matchTiles.add(this.propertiesName);
 		}
 
-		var4 = 0;
-		String[] var12 = var2.getProperty("faces", "all").trim().toLowerCase().split("\\s+");
-		int var6 = var12.length;
-		int var7;
-		String var8;
+		var5 = 0;
+		String[] var14 = var2.getProperty("faces", "all").trim().toLowerCase().split("\\s+");
+		int var7 = var14.length;
+		int var8;
+		String var9;
 
-		for (var7 = 0; var7 < var6; ++var7) {
-			var8 = var12[var7];
+		for (var8 = 0; var8 < var7; ++var8) {
+			var9 = var14[var8];
 
-			if (var8.equals("bottom")) {
-				var4 |= 1;
-			} else if (var8.equals("top")) {
-				var4 |= 2;
-			} else if (var8.equals("north")) {
-				var4 |= 4;
-			} else if (var8.equals("south")) {
-				var4 |= 8;
-			} else if (var8.equals("east")) {
-				var4 |= 32;
-			} else if (var8.equals("west")) {
-				var4 |= 16;
-			} else if (!var8.equals("side") && !var8.equals("sides")) {
-				if (var8.equals("all")) {
-					var4 = -1;
+			if (var9.equals("bottom")) {
+				var5 |= 1;
+			} else if (var9.equals("top")) {
+				var5 |= 2;
+			} else if (var9.equals("north")) {
+				var5 |= 4;
+			} else if (var9.equals("south")) {
+				var5 |= 8;
+			} else if (var9.equals("east")) {
+				var5 |= 32;
+			} else if (var9.equals("west")) {
+				var5 |= 16;
+			} else if (!var9.equals("side") && !var9.equals("sides")) {
+				if (var9.equals("all")) {
+					var5 = -1;
 				}
 			} else {
-				var4 |= 60;
+				var5 |= 60;
 			}
 		}
 
-		this.faces = var4;
+		this.faces = var5;
 		int var13 = 0;
 		int[] var15 = MCPatcherUtils.parseIntegerList(var2.getProperty("metadata", "0-31"), 0, 31);
-		var7 = var15.length;
+		var8 = var15.length;
 
-		for (int var17 = 0; var17 < var7; ++var17) {
-			int var9 = var15[var17];
-			var13 |= 1 << var9;
+		for (int var17 = 0; var17 < var8; ++var17) {
+			int var10 = var15[var17];
+			var13 |= 1 << var10;
 		}
 
 		this.metadata = var13;
-		String var14 = var2.getProperty("connect", "").trim().toLowerCase();
+		String var16 = var2.getProperty("connect", "").trim().toLowerCase();
 
-		if (var14.equals("")) {
+		if (var16.equals("")) {
 			this.connectType = this.matchTiles.isEmpty() ? 0 : 1;
-		} else if (var14.equals("block")) {
+		} else if (var16.equals("block")) {
 			this.connectType = 0;
-		} else if (var14.equals("tile")) {
+		} else if (var16.equals("tile")) {
 			this.connectType = 1;
-		} else if (var14.equals("material")) {
+		} else if (var16.equals("material")) {
 			this.connectType = 2;
 		} else {
-			this.error("invalid connect type %s", new Object[] {var14});
+			this.error("invalid connect type %s", new Object[] {var16});
 			this.connectType = 0;
 		}
 
 		this.innerSeams = MCPatcherUtils.getBooleanProperty(var2, "innerSeams", false);
-		HashSet var16 = new HashSet();
-		var8 = var2.getProperty("biomes", "").trim().toLowerCase();
+		HashSet var18 = new HashSet();
+		var9 = var2.getProperty("biomes", "").trim().toLowerCase();
 
-		if (!var8.equals("")) {
-			Collections.addAll(var16, var8.split("\\s+"));
+		if (!var9.equals("")) {
+			Collections.addAll(var18, var9.split("\\s+"));
 		}
 
-		if (var16.isEmpty()) {
-			var16 = null;
+		if (var18.isEmpty()) {
+			var18 = null;
 		}
 
-		this.biomes = var16;
+		this.biomes = var18;
 		this.minHeight = MCPatcherUtils.getIntProperty(var2, "minHeight", -1);
 		this.maxHeight = MCPatcherUtils.getIntProperty(var2, "maxHeight", Integer.MAX_VALUE);
 		this.renderPass = MCPatcherUtils.getIntProperty(var2, "renderPass", -1);
@@ -250,97 +238,51 @@ abstract class TileOverride implements ITileOverride {
 		}
 	}
 
-	private boolean addIcon(String var1, boolean var2) {
-		if (!var1.toLowerCase().endsWith(".png")) {
-			var1 = var1 + ".png";
-		}
-
-		if (this.tileTextures.containsKey(var1)) {
-			this.tileNames.add(var1);
-			return true;
-		} else {
-			Object var3;
-
-			try {
-				CTMUtils.overrideTextureName = var1;
-				boolean var10;
-
-				if (!debugTextures && TexturePackAPI.hasResource(var1)) {
-					var3 = TextureManager.func_94267_b().func_94266_e(var1.replaceFirst("^/", ""));
-
-					if (var3 == null || ((List)var3).isEmpty()) {
-						var10 = false;
-						return var10;
-					}
-				} else {
-					if (!var2) {
-						var10 = false;
-						return var10;
-					}
-
-					BufferedImage var4 = generateDebugTexture(var1, 64, 64, this.renderPass > 2);
-					Texture var5 = TextureManager.func_94267_b().func_94261_a(var1, 2, var4.getWidth(), var4.getHeight(), 10496, 6408, 9728, 9728, false, var4);
-
-					if (var5 == null) {
-						boolean var6 = false;
-						return var6;
-					}
-
-					var3 = new ArrayList();
-					((List)var3).add(var5);
-				}
-			} finally {
-				CTMUtils.overrideTextureName = null;
-			}
-
-			this.tileNames.add(var1);
-			this.tileTextures.put(var1, var3);
-			Texture var11 = (Texture)((List)var3).get(0);
-			this.totalTextureSize += var11.func_94275_d() * var11.func_94276_e();
-			return true;
-		}
+	private boolean addIcon(String var1) {
+		return this.tileLoader.preload(var1, this.tileNames, this.renderPass > 2);
 	}
 
 	private void loadIcons(Properties var1) {
 		this.tileNames.clear();
-		this.tileTextures.clear();
 		String var2 = var1.getProperty("tiles", "").trim();
 
 		if (var2.equals("")) {
-			for (int var3 = 0; this.addIcon(this.texturesDirectory + "/" + var3 + ".png", false); ++var3) {
-				;
+			int var3 = 0;
+
+			while (true) {
+				String var4 = this.texturesDirectory + "/" + var3 + ".png";
+
+				if (!TexturePackAPI.hasResource(var4) || !this.addIcon(var4)) {
+					break;
+				}
+
+				++var3;
 			}
 		} else {
 			Pattern var14 = Pattern.compile("(\\d+)-(\\d+)");
-			String[] var4 = var2.split("\\s+");
-			int var5 = var4.length;
+			String[] var15 = var2.split("\\s+");
+			int var5 = var15.length;
 
 			for (int var6 = 0; var6 < var5; ++var6) {
-				String var7 = var4[var6];
+				String var7 = var15[var6];
 				Matcher var8 = var14.matcher(var7);
 
 				if (!var7.equals("")) {
-					if (var8.matches()) {
-						try {
-							int var9 = Integer.parseInt(var8.group(1));
-							int var10 = Integer.parseInt(var8.group(2));
+					if (!var7.equals("null") && !var7.equals("none") && !var7.equals("default")) {
+						if (var8.matches()) {
+							try {
+								int var9 = Integer.parseInt(var8.group(1));
+								int var10 = Integer.parseInt(var8.group(2));
 
-							for (int var11 = var9; var11 <= var10; ++var11) {
-								String var12 = this.texturesDirectory + "/" + var11 + ".png";
-
-								if (!this.addIcon(var12, true)) {
-									this.warn("could not find %s", new Object[] {var12});
+								for (int var11 = var9; var11 <= var10; ++var11) {
+									String var12 = this.texturesDirectory + "/" + var11 + ".png";
 								}
+							} catch (NumberFormatException var13) {
+								var13.printStackTrace();
 							}
-						} catch (NumberFormatException var13) {
-							var13.printStackTrace();
 						}
-					} else if (var7.startsWith("/")) {
-						if (!this.addIcon(var7, true)) {
-							this.warn("could not find image %s", new Object[] {var7});
-						}
-					} else if (!this.addIcon(this.texturesDirectory + "/" + var7, true)) {
-						this.warn("could not find image %s in %s", new Object[] {var7, this.texturesDirectory});
+					} else {
+						this.tileNames.add((Object)null);
 					}
 				}
 			}
@@ -366,8 +308,6 @@ abstract class TileOverride implements ITileOverride {
 
 						if (var11 >= 0 && var11 < var4.length) {
 							var5.add(Integer.valueOf(var11));
-						} else {
-							this.warn("%s value %d is out of range", new Object[] {var2, Integer.valueOf(var11)});
 						}
 					} catch (NumberFormatException var13) {
 						var13.printStackTrace();
@@ -379,8 +319,6 @@ abstract class TileOverride implements ITileOverride {
 							continue label53;
 						}
 					}
-
-					this.warn("unknown %s value %s", new Object[] {var2, var10});
 				}
 			}
 		}
@@ -432,7 +370,7 @@ abstract class TileOverride implements ITileOverride {
 	}
 
 	protected int getNumberOfTiles() {
-		return this.tileTextures == null ? 0 : this.tileTextures.size();
+		return this.tileNames.size();
 	}
 
 	String checkTileMap() {
@@ -448,68 +386,15 @@ abstract class TileOverride implements ITileOverride {
 	}
 
 	public final int getTotalTextureSize() {
-		return this.totalTextureSize;
+		return this.tileLoader.getTextureSize(this.tileNames);
 	}
 
 	public final void registerIcons(TextureMap var1, Stitcher var2, Map var3) {
-		this.icons = new Icon[this.tileNames.size()];
-
-		for (int var4 = 0; var4 < this.tileNames.size(); ++var4) {
-			String var5 = (String)this.tileNames.get(var4);
-			List var6 = (List)this.tileTextures.get(var5);
-
-			if (var6 != null) {
-				Texture var7 = (Texture)var6.get(0);
-				StitchHolder var8 = new StitchHolder(var7);
-				var2.func_94312_a(var8);
-				var3.put(var8, var6);
-				this.icons[var4] = var1.func_94245_a(var5);
-				TessellatorUtils.registerIcon(var1, this.icons[var4]);
-				String var9 = var6.size() > 1 ? ", " + var6.size() + " frames" : "";
-			}
-		}
-
-		this.tileNames.clear();
-		this.tileTextures.clear();
-	}
-
-	static BufferedImage generateDebugTexture(String var0, int var1, int var2, boolean var3) {
-		BufferedImage var4 = new BufferedImage(var1, var2, 2);
-		Graphics var5 = var4.getGraphics();
-		var5.setColor(var3 ? new Color(0, 255, 255, 128) : Color.WHITE);
-		var5.fillRect(0, 0, var1, var2);
-		var5.setColor(var3 ? Color.RED : Color.BLACK);
-		int var6 = 10;
-
-		if (var3) {
-			var6 += var2 / 2;
-		}
-
-		int var7 = var1 / 8;
-
-		if (var7 <= 0) {
-			return var4;
-		} else {
-			while (var0.length() % var7 != 0) {
-				var0 = var0 + " ";
-			}
-
-			while (var6 < var2 && !var0.equals("")) {
-				var5.drawString(var0.substring(0, var7), 1, var6);
-				var6 += var5.getFont().getSize();
-				var0 = var0.substring(var7);
-			}
-
-			return var4;
-		}
+		this.icons = this.tileLoader.registerIcons(var1, var2, var3, this.tileNames);
 	}
 
 	final void error(String var1, Object ... var2) {
 		this.disabled = true;
-	}
-
-	final void warn(String var1, Object ... var2) {
-
 	}
 
 	public final boolean isDisabled() {

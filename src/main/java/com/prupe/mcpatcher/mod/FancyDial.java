@@ -7,6 +7,7 @@ import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.mod.FancyDial$Layer;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -31,23 +32,37 @@ import org.lwjgl.util.glu.GLU;
 
 public class FancyDial {
 	private static final String ITEMS_PNG = "/gui/items.png";
+	private static final double ANGLE_UNSET = Double.MAX_VALUE;
 	private static final boolean fboSupported = GLContext.getCapabilities().GL_EXT_framebuffer_object;
 	private static final boolean gl13Supported = GLContext.getCapabilities().OpenGL13;
 	private static final boolean enableCompass = Config.getBoolean("Extended HD", "fancyCompass", true);
 	private static final boolean enableClock = Config.getBoolean("Extended HD", "fancyClock", true);
 	private static final boolean useGL13 = Config.getBoolean("Extended HD", "useGL13", true);
+	private static final boolean useScratchTexture = Config.getBoolean("Extended HD", "useScratchTexture", true);
+	private static final int glAttributes;
 	private static boolean initialized;
+	private static boolean inUpdateAll;
 	private static final int drawList = GL11.glGenLists(1);
+	private static final Field subTexturesField;
 	private static final Map setupInfo = new WeakHashMap();
 	private static final Map instances = new WeakHashMap();
 	private static final HashSet keysDown = new HashSet();
 	private final TextureStitched icon;
 	private final String name;
-	private boolean needExtraUpdate;
-	private boolean ok;
+	private final int x0;
+	private final int y0;
+	private final int width;
+	private final int height;
+	private final boolean needExtraUpdate;
+	private final int itemsTexture;
+	private int scratchTexture;
+	private final ByteBuffer scratchTextureBuffer;
+	private int frameBuffer;
 	private int outputFrames;
+	private boolean ok;
+	private double lastAngle = Double.MAX_VALUE;
+	private boolean skipPostRender;
 	private final List layers = new ArrayList();
-	private int frameBuffer = -1;
 	private boolean debug;
 	private static final float STEP = 0.01F;
 	private float scaleXDelta;
@@ -59,7 +74,7 @@ public class FancyDial {
 		if (fboSupported) {
 			if (!(var0 instanceof TextureCompass) || enableCompass) {
 				if (!(var0 instanceof TextureClock) || enableClock) {
-					String var1 = var0.func_94215_i();
+					String var1 = var0.getIconName();
 					Properties var2 = TexturePackAPI.getProperties("/misc/" + var1 + ".properties");
 
 					if (var2 != null) {
@@ -89,26 +104,40 @@ public class FancyDial {
 	}
 
 	static void updateAll() {
-		if (!initialized) {
-		} else {
-			if (!setupInfo.isEmpty()) {
-				ArrayList var0 = new ArrayList();
-				var0.addAll(setupInfo.keySet());
-				Iterator var1 = var0.iterator();
+		if (!setupInfo.isEmpty()) {
+			ArrayList var0 = new ArrayList();
+			var0.addAll(setupInfo.keySet());
+			Iterator var1 = var0.iterator();
 
-				while (var1.hasNext()) {
-					TextureStitched var2 = (TextureStitched)var1.next();
-					getInstance(var2);
-				}
+			while (var1.hasNext()) {
+				TextureStitched var2 = (TextureStitched)var1.next();
+				getInstance(var2);
 			}
 
+			inUpdateAll = true;
 			Iterator var3 = instances.values().iterator();
 
 			while (var3.hasNext()) {
 				FancyDial var4 = (FancyDial)var3.next();
 
 				if (var4 != null && var4.needExtraUpdate) {
-					var4.icon.func_94219_l();
+					var4.icon.updateAnimation();
+				}
+			}
+
+			inUpdateAll = false;
+		}
+	}
+
+	static void postUpdateAll() {
+		if (initialized) {
+			Iterator var0 = instances.values().iterator();
+
+			while (var0.hasNext()) {
+				FancyDial var1 = (FancyDial)var0.next();
+
+				if (var1 != null) {
+					var1.postRender();
 				}
 			}
 		}
@@ -157,56 +186,61 @@ public class FancyDial {
 
 	private FancyDial(RenderEngine var1, TextureStitched var2, Properties var3) {
 		this.icon = var2;
-		this.name = var2.func_94215_i();
-		String var4 = "/textures/items/" + this.name + ".png";
-		BufferedImage var5 = TexturePackAPI.getImage(var4);
+		this.name = var2.getIconName();
+		this.x0 = var2.getOriginX();
+		this.y0 = var2.getOriginY();
+		this.width = getIconWidth(var2);
+		this.height = getIconHeight(var2);
+		this.needExtraUpdate = !hasAnimation(var2);
 
-		if (var5 == null) {
+		TexturePackAPI.bindTexture("/gui/items.png");
+		this.itemsTexture = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
+		int var4;
+
+		if (useScratchTexture) {
+			BufferedImage var5 = new BufferedImage(this.width, this.height, 2);
+			this.scratchTexture = var1.allocateAndSetupTexture(var5);
+			var4 = this.scratchTexture;
+			this.scratchTextureBuffer = ByteBuffer.allocateDirect(4 * this.width * this.height);
 		} else {
-			this.needExtraUpdate = var5.getHeight() % var5.getWidth() != 0 || var5.getHeight() / var5.getWidth() <= 1;
-			TexturePackAPI.bindTexture("/gui/items.png");
-			int var6 = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
+			this.scratchTexture = -1;
+			this.scratchTextureBuffer = null;
+			var4 = this.itemsTexture;
+		}
+		int var7 = 0;
 
-			if (var6 < 0) {
-			} else {
-				int var7 = 0;
-
-				while (true) {
-					FancyDial$Layer var8 = this.newLayer("/misc/" + this.name + ".properties", var3, "." + var7);
-
-					if (var8 == null) {
-						if (var7 > 0) {
-							if (this.layers.size() < 2) {
-								return;
-							}
-
-							this.outputFrames = MCPatcherUtils.getIntProperty(var3, "outputFrames", 0);
-							this.frameBuffer = EXTFramebufferObject.glGenFramebuffersEXT();
-
-							if (this.frameBuffer < 0) {
-								return;
-							}
-
-							EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
-							EXTFramebufferObject.glFramebufferTexture2DEXT(36160, 36064, 3553, var6, 0);
-							EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
-							var7 = GL11.glGetError();
-
-							if (var7 != 0) {
-								return;
-							}
-
-							this.ok = true;
-							return;
-						}
-					} else {
-						this.layers.add(var8);
-						this.debug |= var8.debug;
+		while (true) {
+			FancyDial$Layer var6 = this.newLayer("/misc/" + this.name + ".properties", var3, "." + var7);
+			if (var6 == null) {
+				if (var7 > 0) {
+					if (this.layers.size() < 2) {
+						return;
 					}
 
-					++var7;
+					this.outputFrames = MCPatcherUtils.getIntProperty(var3, "outputFrames", 0);
+					this.frameBuffer = EXTFramebufferObject.glGenFramebuffersEXT();
+
+					if (this.frameBuffer < 0) {
+						return;
+					}
+
+					EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
+					EXTFramebufferObject.glFramebufferTexture2DEXT(36160, 36064, 3553, var4, 0);
+					EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
+					var7 = GL11.glGetError();
+
+					if (var7 != 0) {
+						return;
+					}
+
+					this.ok = true;
+					return;
 				}
+			} else {
+				this.layers.add(var6);
+				this.debug |= var6.debug;
 			}
+			++var7;
 		}
 	}
 
@@ -240,32 +274,39 @@ public class FancyDial {
 				var1 = false;
 			}
 
+			if (var1) {
+				this.lastAngle = Double.MAX_VALUE;
+			}
+
 			if (this.outputFrames > 0) {
 				try {
-					int var2 = getIconWidth(this.icon);
-					int var3 = getIconHeight(this.icon);
-					BufferedImage var4 = new BufferedImage(var2, this.outputFrames * var3, 2);
-					ByteBuffer var5 = ByteBuffer.allocateDirect(4 * var2 * var3);
-					IntBuffer var6 = var5.asIntBuffer();
-					int[] var7 = new int[var2 * var3];
+					BufferedImage var2 = new BufferedImage(this.width, this.outputFrames * this.height, 2);
+					ByteBuffer var3 = this.scratchTextureBuffer == null ? ByteBuffer.allocateDirect(4 * this.width * this.height) : this.scratchTextureBuffer;
+					IntBuffer var4 = var3.asIntBuffer();
+					int[] var5 = new int[this.width * this.height];
 					EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
-					File var8 = MCPatcherUtils.getMinecraftPath(new String[] {"custom_" + this.name + ".png"});
-					for (int var9 = 0; var9 < this.outputFrames; ++var9) {
-						this.render((double)var9 * (360.0D / (double)this.outputFrames), false);
-						var5.position(0);
-						GL11.glReadPixels(this.icon.func_94211_a(), this.icon.func_94216_b(), var2, var3, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, var5);
-						var6.position(0);
+					File var6 = MCPatcherUtils.getMinecraftPath(new String[] {"custom_" + this.name + ".png"});
 
-						for (int var10 = 0; var10 < var7.length; ++var10) {
-							var7[var10] = Integer.rotateRight(var6.get(var10), 8);
+					for (int var7 = 0; var7 < this.outputFrames; ++var7) {
+						this.render((double)var7 * (360.0D / (double)this.outputFrames), false);
+
+						if (this.scratchTexture < 0) {
+							var3.position(0);
+							GL11.glReadPixels(this.x0, this.y0, this.width, this.height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, var3);
 						}
 
-						var4.setRGB(0, var9 * var3, var2, var3, var7, 0, var2);
+						var4.position(0);
+
+						for (int var8 = 0; var8 < var5.length; ++var8) {
+							var5[var8] = Integer.rotateRight(var4.get(var8), 8);
+						}
+
+						var2.setRGB(0, var7 * this.height, this.width, this.height, var5, 0, this.width);
 					}
 
-					ImageIO.write(var4, "png", var8);
-				} catch (Throwable var14) {
-					var14.printStackTrace();
+					ImageIO.write(var2, "png", var6);
+				} catch (Throwable var12) {
+					var12.printStackTrace();
 				} finally {
 					EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
 				}
@@ -278,109 +319,124 @@ public class FancyDial {
 	}
 
 	private boolean render(double var1, boolean var3) {
-		int var4 = 527702;
+		if (var1 == this.lastAngle) {
+			this.skipPostRender = true;
+			return true;
+		} else {
+			this.skipPostRender = false;
+			this.lastAngle = var1;
+			GL11.glPushAttrib(glAttributes);
 
-		if (gl13Supported && useGL13) {
-			var4 |= 536870912;
-		}
-
-		GL11.glPushAttrib(var4);
-		int var5 = this.icon.func_94211_a();
-		int var6 = this.icon.func_94216_b();
-		int var7 = getIconWidth(this.icon);
-		int var8 = getIconHeight(this.icon);
-		GL11.glViewport(var5, var6, var7, var8);
-		GL11.glEnable(GL11.GL_SCISSOR_TEST);
-		GL11.glScissor(var5, var6, var7, var8);
-
-		if (var3) {
-			EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
-		}
-
-		boolean var9 = false;
-
-		if (GLContext.getCapabilities().OpenGL13) {
-			GL13.glActiveTexture(GL13.GL_TEXTURE1);
-			var9 = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
-
-			if (var9) {
-				GL11.glDisable(GL11.GL_TEXTURE_2D);
+			if (this.scratchTexture >= 0) {
+				GL11.glViewport(0, 0, this.width, this.height);
+			} else {
+				GL11.glViewport(this.x0, this.y0, this.width, this.height);
+				GL11.glEnable(GL11.GL_SCISSOR_TEST);
+				GL11.glScissor(this.x0, this.y0, this.width, this.height);
 			}
 
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		}
-
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glDisable(GL11.GL_LIGHTING);
-
-		if (gl13Supported && useGL13) {
-			GL11.glDisable(GL13.GL_MULTISAMPLE);
-		}
-
-		GL11.glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
-		GL11.glClear(16384);
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glPushMatrix();
-		GL11.glLoadIdentity();
-		GL11.glOrtho(-1.0D, 1.0D, -1.0D, 1.0D, -1.0D, 1.0D);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glPushMatrix();
-		GL11.glLoadIdentity();
-		Iterator var10 = this.layers.iterator();
-
-		while (var10.hasNext()) {
-			FancyDial$Layer var11 = (FancyDial$Layer)var10.next();
-			var11.blendMethod.applyBlending();
-			GL11.glPushMatrix();
-			TexturePackAPI.bindTexture(var11.textureName);
-			float var12 = var11.offsetX;
-			float var13 = var11.offsetY;
-			float var14 = var11.scaleX;
-			float var15 = var11.scaleY;
-
-			if (var11.debug) {
-				var12 += this.offsetXDelta;
-				var13 += this.offsetYDelta;
-				var14 += this.scaleXDelta;
-				var15 += this.scaleYDelta;
+			if (var3) {
+				EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
 			}
 
-			GL11.glTranslatef(var12, var13, 0.0F);
-			GL11.glScalef(var14, var15, 1.0F);
-			float var16 = (float)(var1 * (double)var11.rotationMultiplier + (double)var11.rotationOffset);
-			GL11.glRotatef(var16, 0.0F, 0.0F, 1.0F);
-			GL11.glCallList(drawList);
-			GL11.glPopMatrix();
-		}
+			boolean var4 = false;
 
-		if (var3) {
-			EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
-		}
+			if (GLContext.getCapabilities().OpenGL13) {
+				GL13.glActiveTexture(GL13.GL_TEXTURE1);
+				var4 = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
 
-		GL11.glPopAttrib();
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glPopMatrix();
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glPopMatrix();
+				if (var4) {
+					GL11.glDisable(GL11.GL_TEXTURE_2D);
+				}
 
-		if (var9) {
-			GL13.glActiveTexture(GL13.GL_TEXTURE1);
+				GL13.glActiveTexture(GL13.GL_TEXTURE0);
+			}
+
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glDisable(GL11.GL_LIGHTING);
+
+			if (gl13Supported && useGL13) {
+				GL11.glDisable(GL13.GL_MULTISAMPLE);
+			}
+
+			GL11.glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
+			GL11.glClear(16384);
+			GL11.glMatrixMode(GL11.GL_PROJECTION);
+			GL11.glPushMatrix();
+			GL11.glLoadIdentity();
+			GL11.glOrtho(-1.0D, 1.0D, -1.0D, 1.0D, -1.0D, 1.0D);
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			GL11.glPushMatrix();
+			GL11.glLoadIdentity();
+			Iterator var5 = this.layers.iterator();
+
+			while (var5.hasNext()) {
+				FancyDial$Layer var6 = (FancyDial$Layer)var5.next();
+				var6.blendMethod.applyBlending();
+				GL11.glPushMatrix();
+				TexturePackAPI.bindTexture(var6.textureName);
+				float var7 = var6.offsetX;
+				float var8 = var6.offsetY;
+				float var9 = var6.scaleX;
+				float var10 = var6.scaleY;
+
+				if (var6.debug) {
+					var7 += this.offsetXDelta;
+					var8 += this.offsetYDelta;
+					var9 += this.scaleXDelta;
+					var10 += this.scaleYDelta;
+				}
+
+				GL11.glTranslatef(var7, var8, 0.0F);
+				GL11.glScalef(var9, var10, 1.0F);
+				float var11 = (float)(var1 * (double)var6.rotationMultiplier + (double)var6.rotationOffset);
+				GL11.glRotatef(var11, 0.0F, 0.0F, 1.0F);
+				GL11.glCallList(drawList);
+				GL11.glPopMatrix();
+			}
+
+			if (var3) {
+				EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
+			}
+
+			GL11.glPopAttrib();
+			GL11.glMatrixMode(GL11.GL_PROJECTION);
+			GL11.glPopMatrix();
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			GL11.glPopMatrix();
+
+			if (var4) {
+				GL13.glActiveTexture(GL13.GL_TEXTURE1);
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				GL13.glActiveTexture(GL13.GL_TEXTURE0);
+			}
+
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			int var12 = GL11.glGetError();
+
+			if (var12 != 0) {
+				this.ok = false;
+			} else if (!inUpdateAll) {
+				this.postRender();
+			}
+
+			return this.ok;
 		}
+	}
 
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		int var17 = GL11.glGetError();
-
-		if (var17 != 0) {
-			this.ok = false;
+	private void postRender() {
+		if (this.ok && !this.skipPostRender && this.scratchTexture >= 0) {
+			TexturePackAPI.bindTexture(this.scratchTexture);
+			this.scratchTextureBuffer.position(0);
+			GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.scratchTextureBuffer);
+			this.scratchTextureBuffer.position(0);
+			TexturePackAPI.bindTexture(this.itemsTexture);
+			GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, this.x0, this.y0, this.width, this.height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.scratchTextureBuffer);
 		}
-
-		return this.ok;
 	}
 
 	private static void drawBox() {
@@ -402,12 +458,17 @@ public class FancyDial {
 			this.frameBuffer = -1;
 		}
 
+		if (this.scratchTexture >= 0) {
+			TexturePackAPI.deleteTexture(this.scratchTexture);
+			this.scratchTexture = -1;
+		}
+
 		this.layers.clear();
 		this.ok = false;
 	}
 
 	public String toString() {
-		return String.format("FancyDial{%s, %dx%d @ %d,%d}", new Object[] {this.name, Integer.valueOf(getIconWidth(this.icon)), Integer.valueOf(getIconHeight(this.icon)), Integer.valueOf(this.icon.func_94211_a()), Integer.valueOf(this.icon.func_94216_b())});
+		return String.format("FancyDial{%s, %dx%d @ %d,%d}", new Object[] {this.name, Integer.valueOf(this.width), Integer.valueOf(this.height), Integer.valueOf(this.x0), Integer.valueOf(this.y0)});
 	}
 
 	protected void finalize() throws Throwable {
@@ -416,15 +477,28 @@ public class FancyDial {
 	}
 
 	private static int getIconWidth(Icon var0) {
-		return Math.round((float)var0.func_94213_j() * (var0.func_94212_f() - var0.func_94209_e()));
+		return Math.round((float)var0.getSheetWidth() * (var0.getMaxU() - var0.getMinU()));
 	}
 
 	private static int getIconHeight(Icon var0) {
-		return Math.round((float)var0.func_94208_k() * (var0.func_94210_h() - var0.func_94206_g()));
+		return Math.round((float)var0.getSheetHeight() * (var0.getMaxV() - var0.getMinV()));
+	}
+
+	private static boolean hasAnimation(Icon var0) {
+		if (var0 instanceof TextureStitched && subTexturesField != null) {
+			try {
+				List var1 = (List)subTexturesField.get(var0);
+				return var1 != null && !var1.isEmpty();
+			} catch (Throwable var2) {
+				var2.printStackTrace();
+			}
+		}
+
+		return true;
 	}
 
 	private static double getAngle(Icon var0) {
-		return var0 instanceof TextureCompass ? ((TextureCompass)var0).field_94244_i * 180.0D / Math.PI : (var0 instanceof TextureClock ? ((TextureClock)var0).field_94239_h * 360.0D : 0.0D);
+		return var0 instanceof TextureCompass ? ((TextureCompass)var0).currentAngle * 180.0D / Math.PI : (var0 instanceof TextureClock ? ((TextureClock)var0).field_94239_h * 360.0D : 0.0D);
 	}
 
 	private static boolean tap(int var0) {
@@ -445,28 +519,63 @@ public class FancyDial {
 
 		if (var4.equals("")) {
 			return null;
-		} else if (!TexturePackAPI.hasResource(var4)) {
-			return null;
 		} else {
-			float var5 = MCPatcherUtils.getFloatProperty(var2, "scaleX" + var3, 1.0F);
-			float var6 = MCPatcherUtils.getFloatProperty(var2, "scaleY" + var3, 1.0F);
-			float var7 = MCPatcherUtils.getFloatProperty(var2, "offsetX" + var3, 0.0F);
-			float var8 = MCPatcherUtils.getFloatProperty(var2, "offsetY" + var3, 0.0F);
-			float var9 = MCPatcherUtils.getFloatProperty(var2, "rotationSpeed" + var3, 0.0F);
-			float var10 = MCPatcherUtils.getFloatProperty(var2, "rotationOffset" + var3, 0.0F);
-			String var11 = MCPatcherUtils.getStringProperty(var2, "blend" + var3, "alpha");
-			BlendMethod var12 = BlendMethod.parse(var11);
+			boolean var5 = MCPatcherUtils.getBooleanProperty(var2, "filter", false);
 
-			if (var12 == null) {
+			if (var5 && !var4.startsWith("%blur%")) {
+				var4 = "%blur%" + var4;
+			}
+
+			if (!TexturePackAPI.hasResource(var4)) {
 				return null;
 			} else {
-				boolean var13 = MCPatcherUtils.getBooleanProperty(var2, "debug" + var3, false);
-				return new FancyDial$Layer(this, var4, var5, var6, var7, var8, var9, var10, var12, var13);
+				float var6 = MCPatcherUtils.getFloatProperty(var2, "scaleX" + var3, 1.0F);
+				float var7 = MCPatcherUtils.getFloatProperty(var2, "scaleY" + var3, 1.0F);
+				float var8 = MCPatcherUtils.getFloatProperty(var2, "offsetX" + var3, 0.0F);
+				float var9 = MCPatcherUtils.getFloatProperty(var2, "offsetY" + var3, 0.0F);
+				float var10 = MCPatcherUtils.getFloatProperty(var2, "rotationSpeed" + var3, 0.0F);
+				float var11 = MCPatcherUtils.getFloatProperty(var2, "rotationOffset" + var3, 0.0F);
+				String var12 = MCPatcherUtils.getStringProperty(var2, "blend" + var3, "alpha");
+				BlendMethod var13 = BlendMethod.parse(var12);
+
+				if (var13 == null) {
+					return null;
+				} else {
+					boolean var14 = MCPatcherUtils.getBooleanProperty(var2, "debug" + var3, false);
+					return new FancyDial$Layer(this, var4, var6, var7, var8, var9, var10, var11, var13, var14);
+				}
 			}
 		}
 	}
 
 	static {
+		int var0 = 527702;
+
+		if (gl13Supported && useGL13) {
+			var0 |= 536870912;
+		}
+
+		glAttributes = var0;
+		Field var1 = null;
+
+		try {
+			Field[] var2 = TextureStitched.class.getDeclaredFields();
+			int var3 = var2.length;
+
+			for (int var4 = 0; var4 < var3; ++var4) {
+				Field var5 = var2[var4];
+
+				if (List.class.isAssignableFrom(var5.getType())) {
+					var5.setAccessible(true);
+					var1 = var5;
+					break;
+				}
+			}
+		} catch (Throwable var6) {
+			var6.printStackTrace();
+		}
+
+		subTexturesField = var1;
 		GL11.glNewList(drawList, GL11.GL_COMPILE);
 		drawBox();
 		GL11.glEndList();

@@ -3,6 +3,7 @@ package com.prupe.mcpatcher.mod;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
 import com.prupe.mcpatcher.mod.CTMUtils$1$1;
+import com.prupe.mcpatcher.mod.TileOverrideImpl$BetterGrass;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,7 +27,7 @@ final class CTMUtils$1 extends TexturePackChangeHandler {
 
 			while (var1.hasNext()) {
 				TextureMap var2 = (TextureMap)var1.next();
-				var2.func_94246_d().unloadGLTexture();
+				var2.getTexture().unloadGLTexture();
 			}
 		} catch (Throwable var10) {
 			var10.printStackTrace();
@@ -38,8 +39,11 @@ final class CTMUtils$1 extends TexturePackChangeHandler {
 		Arrays.fill(CTMUtils.access$200(), (Object)null);
 		CTMUtils.access$300().clear();
 		CTMUtils.access$400().clear();
+		CTMUtils.access$502(new TileLoader());
+		CTMUtils.access$702((TileOverrideImpl$BetterGrass)null);
+		CITUtils.refresh();
 
-		if (CTMUtils.access$500() || CTMUtils.access$600()) {
+		if (CTMUtils.access$800() || CTMUtils.access$900()) {
 			ArrayList var11 = new ArrayList();
 			String[] var12 = TexturePackAPI.listDirectories("/ctm");
 			int var3 = var12.length;
@@ -60,7 +64,7 @@ final class CTMUtils$1 extends TexturePackChangeHandler {
 
 			while (var13.hasNext()) {
 				String var14 = (String)var13.next();
-				CTMUtils.access$700(TileOverride.create(var14));
+				CTMUtils.access$1000(TileOverride.create(var14, CTMUtils.access$500()));
 			}
 		}
 	}
@@ -68,13 +72,13 @@ final class CTMUtils$1 extends TexturePackChangeHandler {
 	public void afterChange() {
 		int var1;
 
-		if (CTMUtils.access$800() > 0 && (CTMUtils.access$500() || CTMUtils.access$600())) {
+		if (CTMUtils.access$1100() > 0 && (CTMUtils.access$800() || CTMUtils.access$900())) {
 			for (var1 = 0; !CTMUtils.access$400().isEmpty(); ++var1) {
-				CTMUtils.access$902(false);
-				TextureMap var2 = new TextureMap(2, "ctm" + var1, "not_used", CTMUtils.access$1000());
-				var2.func_94247_b();
+				CTMUtils.access$1202(false);
+				TextureMap var2 = new TextureMap(2, "ctm" + var1, "not_used", CTMUtils.access$1300());
+				var2.refreshTextures();
 
-				if (!CTMUtils.access$900()) {
+				if (!CTMUtils.access$1200()) {
 					break;
 				}
 
@@ -83,6 +87,7 @@ final class CTMUtils$1 extends TexturePackChangeHandler {
 		}
 
 		CTMUtils.access$400().clear();
+		CTMUtils.access$500().finish();
 
 		for (var1 = 0; var1 < CTMUtils.access$200().length; ++var1) {
 			if (CTMUtils.access$200()[var1] != null && Block.blocksList[var1] != null) {

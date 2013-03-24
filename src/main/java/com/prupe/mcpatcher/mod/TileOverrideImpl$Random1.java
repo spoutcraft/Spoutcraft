@@ -16,13 +16,13 @@ final class TileOverrideImpl$Random1 extends TileOverride {
 	private final int symmetry;
 	private final WeightedIndex chooser;
 
-	TileOverrideImpl$Random1(String var1, Properties var2) {
-		super(var1, var2);
-		String var3 = var2.getProperty("symmetry", "none");
+	TileOverrideImpl$Random1(String var1, Properties var2, TileLoader var3) {
+		super(var1, var2, var3);
+		String var4 = var2.getProperty("symmetry", "none");
 
-		if (var3.equals("all")) {
+		if (var4.equals("all")) {
 			this.symmetry = 6;
-		} else if (var3.equals("opposite")) {
+		} else if (var4.equals("opposite")) {
 			this.symmetry = 2;
 		} else {
 			this.symmetry = 1;

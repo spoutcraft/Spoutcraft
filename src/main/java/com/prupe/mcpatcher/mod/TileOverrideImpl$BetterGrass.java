@@ -19,8 +19,8 @@ final class TileOverrideImpl$BetterGrass implements ITileOverride {
 	TileOverrideImpl$BetterGrass(TextureMap var1, int var2, String var3) {
 		this.blockID = var2;
 		this.tileName = var3;
-		this.fullSnowTile = var1.func_94245_a("snow");
-		this.fullTile = var1.func_94245_a(var3 + "_top");
+		this.fullSnowTile = var1.registerIcon("snow");
+		this.fullTile = var1.registerIcon(var3 + "_top");
 	}
 
 	public String toString() {
@@ -64,6 +64,10 @@ final class TileOverrideImpl$BetterGrass implements ITileOverride {
 				return null;
 			}
 		}
+	}
+
+	boolean isBetterGrass(IBlockAccess var1, Block var2, int var3, int var4, int var5, int var6) {
+		return var2.blockID == this.blockID && this.getTile(var1, var2, (Icon)null, var3, var4, var5, var6) == this.fullTile;
 	}
 
 	public Icon getTile(Block var1, Icon var2, int var3, int var4) {

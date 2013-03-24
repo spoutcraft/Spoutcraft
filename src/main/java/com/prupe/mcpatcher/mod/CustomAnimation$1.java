@@ -30,11 +30,7 @@ final class CustomAnimation$1 extends TexturePackChangeHandler {
 
 			for (int var3 = 0; var3 < var2; ++var3) {
 				String var4 = var1[var3];
-
-				if (this.isCustomTerrainItemResource(var4)) {
-				} else {
-					CustomAnimation.addStrip(var4);
-				}
+				CustomAnimation.addStrip(var4);
 			}
 
 			Collections.sort(CustomAnimation.access$000(), new CustomAnimation$1$1(this));
@@ -43,10 +39,9 @@ final class CustomAnimation$1 extends TexturePackChangeHandler {
 
 	private void refreshColorizer(int[] var1, String var2) {
 		BufferedImage var3 = TexturePackAPI.getImage(var2);
-		if (var3 == null) {
-		} else if (var3.getWidth() == 256 && var3.getHeight() == 256) {
+
+		if (var3.getWidth() == 256 && var3.getHeight() == 256) {
 			var3.getRGB(0, 0, 256, 256, var1, 0, 256);
-		} else {
 		}
 	}
 

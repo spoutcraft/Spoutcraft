@@ -246,7 +246,7 @@ public class TexturePackAPI {
 	}
 
 	public static void bindTexture(String var0) {
-		MCPatcherUtils.getMinecraft().renderEngine.func_98187_b(var0);
+		MCPatcherUtils.getMinecraft().renderEngine.bindTexture(var0);
 	}
 
 	public static void bindTexture(int var0) {
@@ -254,7 +254,7 @@ public class TexturePackAPI {
 	}
 
 	public static void clearBoundTexture() {
-		MCPatcherUtils.getMinecraft().renderEngine.func_98185_a();
+		MCPatcherUtils.getMinecraft().renderEngine.resetBoundTexture();
 	}
 
 	public static int unloadTexture(String var0) {
@@ -281,6 +281,12 @@ public class TexturePackAPI {
 		}
 
 		return var1;
+	}
+
+	public static void deleteTexture(int var0) {
+		if (var0 >= 0) {
+			MCPatcherUtils.getMinecraft().renderEngine.deleteTexture(var0);
+		}
 	}
 
 	public static String getTextureName(int var0) {

@@ -11,8 +11,8 @@ final class TileOverrideImpl$Repeat extends TileOverride {
 	private final int height;
 	private final int symmetry;
 
-	TileOverrideImpl$Repeat(String var1, Properties var2) {
-		super(var1, var2);
+	TileOverrideImpl$Repeat(String var1, Properties var2, TileLoader var3) {
+		super(var1, var2, var3);
 		this.width = MCPatcherUtils.getIntProperty(var2, "width", 0);
 		this.height = MCPatcherUtils.getIntProperty(var2, "height", 0);
 
@@ -20,9 +20,9 @@ final class TileOverrideImpl$Repeat extends TileOverride {
 			this.error("invalid width and height (%dx%d)", new Object[] {Integer.valueOf(this.width), Integer.valueOf(this.height)});
 		}
 
-		String var3 = var2.getProperty("symmetry", "none");
+		String var4 = var2.getProperty("symmetry", "none");
 
-		if (var3.equals("opposite")) {
+		if (var4.equals("opposite")) {
 			this.symmetry = -2;
 		} else {
 			this.symmetry = -1;
