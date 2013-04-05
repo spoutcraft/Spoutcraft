@@ -34,6 +34,7 @@ public class RenderManager {
 
 	/** Rendermanager's variable for the player */
 	public EntityLiving livingPlayer;
+	public EntityLiving field_96451_i;
 	public float playerViewY;
 	public float playerViewX;
 
@@ -79,13 +80,13 @@ public class RenderManager {
 		this.entityRenderMap.put(EntityPainting.class, new RenderPainting());
 		this.entityRenderMap.put(EntityItemFrame.class, new RenderItemFrame());
 		this.entityRenderMap.put(EntityArrow.class, new RenderArrow());
-		this.entityRenderMap.put(EntitySnowball.class, new RenderSnowball(Item.snowball.getIconFromDamage(0)));
-		this.entityRenderMap.put(EntityEnderPearl.class, new RenderSnowball(Item.enderPearl.getIconFromDamage(0)));
-		this.entityRenderMap.put(EntityEnderEye.class, new RenderSnowball(Item.eyeOfEnder.getIconFromDamage(0)));
-		this.entityRenderMap.put(EntityEgg.class, new RenderSnowball(Item.egg.getIconFromDamage(0)));
-		this.entityRenderMap.put(EntityPotion.class, new RenderSnowball(154));
-		this.entityRenderMap.put(EntityExpBottle.class, new RenderSnowball(Item.expBottle.getIconFromDamage(0)));
-		this.entityRenderMap.put(EntityFireworkRocket.class, new RenderSnowball(Item.field_92104_bU.getIconFromDamage(0)));
+		this.entityRenderMap.put(EntitySnowball.class, new RenderSnowball(Item.snowball));
+		this.entityRenderMap.put(EntityEnderPearl.class, new RenderSnowball(Item.enderPearl));
+		this.entityRenderMap.put(EntityEnderEye.class, new RenderSnowball(Item.eyeOfEnder));
+		this.entityRenderMap.put(EntityEgg.class, new RenderSnowball(Item.egg));
+		this.entityRenderMap.put(EntityPotion.class, new RenderSnowball(Item.potion, 16384));
+		this.entityRenderMap.put(EntityExpBottle.class, new RenderSnowball(Item.expBottle));
+		this.entityRenderMap.put(EntityFireworkRocket.class, new RenderSnowball(Item.firework));
 		this.entityRenderMap.put(EntityLargeFireball.class, new RenderFireball(2.0F));
 		this.entityRenderMap.put(EntitySmallFireball.class, new RenderFireball(0.5F));
 		this.entityRenderMap.put(EntityWitherSkull.class, new RenderWitherSkull());
@@ -93,6 +94,8 @@ public class RenderManager {
 		this.entityRenderMap.put(EntityXPOrb.class, new RenderXPOrb());
 		this.entityRenderMap.put(EntityTNTPrimed.class, new RenderTNTPrimed());
 		this.entityRenderMap.put(EntityFallingSand.class, new RenderFallingSand());
+		this.entityRenderMap.put(EntityMinecartTNT.class, new RenderTntMinecart());
+		this.entityRenderMap.put(EntityMinecartMobSpawner.class, new RenderMinecartMobSpawner());
 		this.entityRenderMap.put(EntityMinecart.class, new RenderMinecart());
 		this.entityRenderMap.put(EntityBoat.class, new RenderBoat());
 		this.entityRenderMap.put(EntityFishHook.class, new RenderFish());
@@ -128,34 +131,35 @@ public class RenderManager {
 	 * Caches the current frame's active render info, including the current World, RenderEngine, GameSettings and
 	 * FontRenderer settings, as well as interpolated player position, pitch and yaw.
 	 */
-	public void cacheActiveRenderInfo(World par1World, RenderEngine par2RenderEngine, FontRenderer par3FontRenderer, EntityLiving par4EntityLiving, GameSettings par5GameSettings, float par6) {
+	public void cacheActiveRenderInfo(World par1World, RenderEngine par2RenderEngine, FontRenderer par3FontRenderer, EntityLiving par4EntityLiving, EntityLiving par5EntityLiving, GameSettings par6GameSettings, float par7) {
 		this.worldObj = par1World;
 		this.renderEngine = par2RenderEngine;
-		this.options = par5GameSettings;
+		this.options = par6GameSettings;
 		this.livingPlayer = par4EntityLiving;
+		this.field_96451_i = par5EntityLiving;
 		this.fontRenderer = par3FontRenderer;
 
 		if (par4EntityLiving.isPlayerSleeping()) {
-			int var7 = par1World.getBlockId(MathHelper.floor_double(par4EntityLiving.posX), MathHelper.floor_double(par4EntityLiving.posY), MathHelper.floor_double(par4EntityLiving.posZ));
+			int var8 = par1World.getBlockId(MathHelper.floor_double(par4EntityLiving.posX), MathHelper.floor_double(par4EntityLiving.posY), MathHelper.floor_double(par4EntityLiving.posZ));
 
-			if (var7 == Block.bed.blockID) {
-				int var8 = par1World.getBlockMetadata(MathHelper.floor_double(par4EntityLiving.posX), MathHelper.floor_double(par4EntityLiving.posY), MathHelper.floor_double(par4EntityLiving.posZ));
-				int var9 = var8 & 3;
-				this.playerViewY = (float)(var9 * 90 + 180);
+			if (var8 == Block.bed.blockID) {
+				int var9 = par1World.getBlockMetadata(MathHelper.floor_double(par4EntityLiving.posX), MathHelper.floor_double(par4EntityLiving.posY), MathHelper.floor_double(par4EntityLiving.posZ));
+				int var10 = var9 & 3;
+				this.playerViewY = (float)(var10 * 90 + 180);
 				this.playerViewX = 0.0F;
 			}
 		} else {
-			this.playerViewY = par4EntityLiving.prevRotationYaw + (par4EntityLiving.rotationYaw - par4EntityLiving.prevRotationYaw) * par6;
-			this.playerViewX = par4EntityLiving.prevRotationPitch + (par4EntityLiving.rotationPitch - par4EntityLiving.prevRotationPitch) * par6;
+			this.playerViewY = par4EntityLiving.prevRotationYaw + (par4EntityLiving.rotationYaw - par4EntityLiving.prevRotationYaw) * par7;
+			this.playerViewX = par4EntityLiving.prevRotationPitch + (par4EntityLiving.rotationPitch - par4EntityLiving.prevRotationPitch) * par7;
 		}
 
-		if (par5GameSettings.thirdPersonView == 2) {
+		if (par6GameSettings.thirdPersonView == 2) {
 			this.playerViewY += 180.0F;
 		}
 
-		this.viewerPosX = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par6;
-		this.viewerPosY = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par6;
-		this.viewerPosZ = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par6;
+		this.viewerPosX = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par7;
+		this.viewerPosY = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par7;
+		this.viewerPosZ = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par7;
 	}
 
 	/**
@@ -305,5 +309,14 @@ public class RenderManager {
 	 */
 	public FontRenderer getFontRenderer() {
 		return this.fontRenderer;
+	}
+
+	public void updateIcons(IconRegister par1IconRegister) {
+		Iterator var2 = this.entityRenderMap.values().iterator();
+
+		while (var2.hasNext()) {
+			Render var3 = (Render)var2.next();
+			var3.updateIcons(par1IconRegister);
+		}
 	}
 }

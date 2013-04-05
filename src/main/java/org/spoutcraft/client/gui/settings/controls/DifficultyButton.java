@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
 
 public class DifficultyButton extends GenericButton {
@@ -75,7 +74,7 @@ public class DifficultyButton extends GenericButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Minecraft.theMinecraft.gameSettings.difficulty++;
 		if (Minecraft.theMinecraft.gameSettings.difficulty > 3) {
 			Minecraft.theMinecraft.gameSettings.difficulty = 0;

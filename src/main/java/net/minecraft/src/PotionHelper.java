@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeItem;
 // MCpatcher End
 
 public class PotionHelper {
@@ -61,7 +61,7 @@ public class PotionHelper {
 	 */
 	public static int calcPotionLiquidColor(Collection par0Collection) {
 		// MCPatcher Start
-		int var1 = Colorizer.getWaterBottleColor();
+		int var1 = ColorizeItem.getWaterBottleColor();
 		// MCPatcher End
 
 		if (par0Collection != null && !par0Collection.isEmpty()) {

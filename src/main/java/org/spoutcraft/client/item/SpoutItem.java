@@ -26,6 +26,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 
+import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.CustomItem;
 import org.spoutcraft.api.material.Food;
@@ -67,7 +68,7 @@ public class SpoutItem extends Item {
 				if (block == null) {
 					return true;
 				}
-				if (onBlockItemUse(block, player, world, x, y, z, face, xOffset, yOffset, zOffset)) {
+				if (onItemUse(stack, block, player, world, x, y, z, face, xOffset, yOffset, zOffset)) {
 					return true;
 				}
 				return false;
@@ -76,46 +77,67 @@ public class SpoutItem extends Item {
 		return super.onItemUse(stack, player, world, x, y, z, face, xOffset, yOffset, zOffset);
 	}
 
-	// From super class
-	public boolean onBlockItemUse(CustomBlock block, EntityPlayer player, World world, int x, int y, int z, int side, float xOffset, float yOffset, float zOffset) {
-		if (world.getBlockId(x, y, z) == Block.snow.blockID) {
-			side = 0;
-		} else {
+	// From ItemBlock.onItemUse class
+	public boolean onItemUse(ItemStack item, CustomBlock block, EntityPlayer player, World world, int x, int y, int z, int side, float xOffset, float yOffset, float zOffset) {
+		int var11 = world.getBlockId(x, y, z);
+
+		if (var11 == Block.snow.blockID && (world.getBlockMetadata(x, y, z) & 7) < 1) {
+			side = 1;
+		} else if (var11 != Block.vine.blockID && var11 != Block.tallGrass.blockID && var11 != Block.deadBush.blockID) {
 			if (side == 0) {
 				--y;
 			}
+
 			if (side == 1) {
 				++y;
 			}
+
 			if (side == 2) {
 				--z;
 			}
+
 			if (side == 3) {
 				++z;
 			}
+
 			if (side == 4) {
 				--x;
 			}
+
 			if (side == 5) {
 				++x;
 			}
 		}
 
 		int id = block.getBlockId();
-		if (world.canPlaceEntityOnSide(id, x, y, z, false, side, player)) {
-			Block var8 = Block.blocksList[id];
-			if (world.setBlockAndMetadataWithNotify(x, y, z, id, 0)) {
-				Block.blocksList[id].onBlockPlaced(world, x, y, z, side, xOffset, yOffset, zOffset, 0);
-				Block.blocksList[id].onBlockPlacedBy(world, x, y, z, player);
 
-				world.world.getChunkAt(x, y, z).setCustomBlockId(x, y, z, (short) block.getCustomId());
+		if (item.stackSize == 0) {
+			return false;
+		} else if (!player.canPlayerEdit(x, y, z, side, item)) {
+			return false;
+		} else if (y == 255) {
+			return false;
+		} else if (world.canPlaceEntityOnSide(id, x, y, z, false, side, player, item)) {
+			Block var12 = Block.blocksList[id];
+			int var13 = this.getMetadata(item.getItemDamage());
+			int var14 = Block.blocksList[id].onBlockPlaced(world, x, y, z, side, xOffset, yOffset, zOffset, var13);
 
-				world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), var8.stepSound.stepSoundName, (var8.stepSound.getVolume() + 1.0F) / 2.0F, var8.stepSound.getPitch() * 0.8F);
+			if (world.setBlock(x, y, z, id, var14, 3)) {
+				if (world.getBlockId(x, y, z) == id) {
+					Block.blocksList[id].onBlockPlacedBy(world, x, y, z, player, item);
+					Block.blocksList[id].onPostBlockPlaced(world, x, y, z, var14);
+				}
+				Spoutcraft.getChunkAt(world, x, y, z).setCustomBlockId(x, y, z, (short) block.getCustomId());
+
+				world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), var12.stepSound.getPlaceSound(), (var12.stepSound.getVolume() + 1.0F) / 2.0F, var12.stepSound.getPitch() * 0.8F);
+				--item.stackSize;
 			}
 
 			return true;
+		} else {
+			return false;
 		}
-		return false;
+
 	}
 
 	@Override

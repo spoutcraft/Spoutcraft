@@ -1,14 +1,14 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeBlock;
 // MCPatcher End
 
 public class EntitySplashFX extends EntityRainFX {
 	public EntitySplashFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
 		super(par1World, par2, par4, par6);
 		this.particleGravity = 0.04F;
-		this.setParticleTextureIndex(this.getParticleTextureIndex() + 1);
+		this.nextTextureIndexX();
 
 		if (par10 == 0.0D && (par8 != 0.0D || par12 != 0.0D)) {
 			this.motionX = par8;
@@ -17,10 +17,10 @@ public class EntitySplashFX extends EntityRainFX {
 		}
 
 		// MCPatcher Start
-		if (Colorizer.computeWaterColor(this.posX, this.posY, this.posZ)) {
-			this.particleRed = Colorizer.waterColor[0];
-			this.particleGreen = Colorizer.waterColor[1];
-			this.particleBlue = Colorizer.waterColor[2];
+		if (ColorizeBlock.computeWaterColor(this.posX, this.posY, this.posZ)) {
+			this.particleRed = ColorizeBlock.waterColor[0];
+			this.particleGreen = ColorizeBlock.waterColor[1];
+			this.particleBlue = ColorizeBlock.waterColor[2];
 		}
 		// MCPatcher End
 	}

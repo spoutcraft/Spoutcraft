@@ -20,42 +20,21 @@
 package org.spoutcraft.client;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.WorldInfo;
 
-import org.spoutcraft.api.BlockChangeDelegate;
-import org.spoutcraft.api.ChunkSnapshot;
-import org.spoutcraft.api.Effect;
-import org.spoutcraft.api.TreeType;
-import org.spoutcraft.api.World;
-import org.spoutcraft.api.block.Biome;
-import org.spoutcraft.api.block.Block;
-import org.spoutcraft.api.block.Chunk;
-import org.spoutcraft.api.entity.Arrow;
-import org.spoutcraft.api.entity.CreatureType;
-import org.spoutcraft.api.entity.Entity;
-import org.spoutcraft.api.entity.Item;
-import org.spoutcraft.api.entity.LightningStrike;
-import org.spoutcraft.api.entity.LivingEntity;
-import org.spoutcraft.api.entity.Player;
-import org.spoutcraft.api.generator.BlockPopulator;
-import org.spoutcraft.api.generator.ChunkGenerator;
-import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.api.util.FastLocation;
 import org.spoutcraft.api.util.FixedLocation;
-import org.spoutcraft.api.util.MutableLocation;
-import org.spoutcraft.api.util.Vector;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.entity.CraftEntity;
+import org.spoutcraft.client.entity.CraftLivingEntity;
+import org.spoutcraft.client.player.SpoutPlayer;
 
-public class SpoutcraftWorld implements World {
+public class SpoutcraftWorld {
 	private final net.minecraft.src.World handle;
-	private Environment environment;
 
 	public SpoutcraftWorld(net.minecraft.src.World world) {
 		handle = world;
@@ -88,46 +67,12 @@ public class SpoutcraftWorld implements World {
 		return handle.isBlockOpaqueCube(x, y, z);
 	}
 
-	public Block getBlockAt(int x, int y, int z) {
-		return getChunkAt(x >> 4, z >> 4).getBlockAt(x & 0xF, y & (getMaxHeight() - 1), z & 0xF);
-	}
-
-	public Chunk getChunkAt(Block block) {
-		return handle.getChunkFromBlockCoords(block.getX(), block.getZ()).spoutChunk;
-	}
-
-	public Chunk getChunkAt(int x, int y) {
-		return handle.getChunkFromChunkCoords(x, y).spoutChunk;
-	}
-
-	public Chunk getChunkAt(int x, int y, int z) {
-		return handle.getChunkFromBlockCoords(x, z).spoutChunk;
-	}
-
-	public Chunk getChunkAt(FixedLocation location) {
-		return handle.getChunkFromBlockCoords(location.getBlockX(), location.getBlockZ()).spoutChunk;
-	}
-
 	public long getFullTime() {
 		return handle.getWorldTime();
 	}
 
-	public Block getHighestBlockAt(int x, int z) {
-		return getBlockAt(x, getHighestBlockYAt(x, z), z);
-	}
-
 	public int getHighestBlockYAt(int x, int z) {
 		return handle.getFirstUncoveredBlock(x, z);
-	}
-
-	public Chunk[] getLoadedChunks() {
-		Set<SpoutcraftChunk> chunks = SpoutcraftChunk.loadedChunks;
-		Chunk[] loaded = new Chunk[chunks.size()];
-		Iterator<SpoutcraftChunk> j = chunks.iterator();
-		for (int i = 0; i < chunks.size(); i++) {
-			loaded[i] = j.next();
-		}
-		return loaded;
 	}
 
 	public int getMaxHeight() {
@@ -146,7 +91,7 @@ public class SpoutcraftWorld implements World {
 		return handle.getSeed();
 	}
 
-	public boolean isChunkLoaded(Chunk chunk) {
+	public boolean isChunkLoaded(SpoutcraftChunk chunk) {
 		return handle.chunkProvider.chunkExists(chunk.getX(), chunk.getZ());
 	}
 
@@ -154,27 +99,12 @@ public class SpoutcraftWorld implements World {
 		return handle.chunkProvider.chunkExists(x, z);
 	}
 
-	public void loadChunk(Chunk chunk) {
+	public void loadChunk(SpoutcraftChunk chunk) {
 		handle.chunkProvider.loadChunk(chunk.getX(), chunk.getZ());
 	}
 
 	public void loadChunk(int x, int z) {
 		handle.chunkProvider.loadChunk(x, z);
-	}
-
-	public boolean loadChunk(int x, int z, boolean generate) {
-		// TODO ?
-		return false;
-	}
-
-	public boolean refreshChunk(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean regenerateChunk(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public void save() {
@@ -201,10 +131,6 @@ public class SpoutcraftWorld implements World {
 		setFullTime(getFullTime() + margin);
 	}
 
-	public Block getBlockAt(FixedLocation location) {
-		return getChunkAt(location.getBlockX() >> 4, location.getBlockZ() >> 4).getBlockAt(location.getBlockX() & 0xF, location.getBlockY() & 0x7F, location.getBlockZ() & 0xF);
-	}
-
 	public int getBlockTypeIdAt(int x, int y, int z) {
 		return handle.getBlockId(x, y, z);
 	}
@@ -225,82 +151,8 @@ public class SpoutcraftWorld implements World {
 		return getHighestBlockYAt(location.getBlockX(), location.getBlockZ());
 	}
 
-	public Block getHighestBlockAt(FixedLocation location) {
-		return getHighestBlockAt(location.getBlockX(), location.getBlockZ());
-	}
-
-	public boolean unloadChunk(Chunk chunk) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean unloadChunk(int x, int z) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean unloadChunk(int x, int z, boolean save) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean unloadChunk(int x, int z, boolean save, boolean safe) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean unloadChunkRequest(int x, int z) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean unloadChunkRequest(int x, int z, boolean safe) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public Item dropItem(FixedLocation location, ItemStack item) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Item dropItemNaturally(FixedLocation location, ItemStack item) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Arrow spawnArrow(FixedLocation location, Vector velocity, float speed, float spread) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean generateTree(FixedLocation location, TreeType type) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean generateTree(FixedLocation loc, TreeType type, BlockChangeDelegate delegate) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public LivingEntity spawnCreature(FixedLocation loc, CreatureType type) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public LightningStrike strikeLightning(FixedLocation loc) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public LightningStrike strikeLightningEffect(FixedLocation loc) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Entity> getEntities() {
-		ArrayList<Entity> ret = new ArrayList<Entity>();
+	public List<CraftEntity> getEntities() {
+		ArrayList<CraftEntity> ret = new ArrayList<CraftEntity>();
 		for (Object mcentity:handle.loadedEntityList) {
 			if (mcentity instanceof net.minecraft.src.Entity) {
 				ret.add(((net.minecraft.src.Entity)mcentity).spoutEnty);
@@ -309,21 +161,21 @@ public class SpoutcraftWorld implements World {
 		return ret;
 	}
 
-	public List<LivingEntity> getLivingEntities() {
-		ArrayList<LivingEntity> ret = new ArrayList<LivingEntity>();
+	public List<CraftLivingEntity> getLivingEntities() {
+		ArrayList<CraftLivingEntity> ret = new ArrayList<CraftLivingEntity>();
 		for (Object mcentity:handle.loadedEntityList) {
 			if (mcentity instanceof net.minecraft.src.EntityLiving) {
-				ret.add((LivingEntity) ((net.minecraft.src.EntityLiving)mcentity).spoutEnty);
+				ret.add((CraftLivingEntity) ((net.minecraft.src.EntityLiving)mcentity).spoutEnty);
 			}
 		}
 		return ret;
 	}
 
-	public List<Player> getPlayers() {
-		ArrayList<Player> ret = new ArrayList<Player>();
+	public List<SpoutPlayer> getPlayers() {
+		ArrayList<SpoutPlayer> ret = new ArrayList<SpoutPlayer>();
 		for (Object mcentity:handle.loadedEntityList) {
 			if (mcentity instanceof net.minecraft.src.EntityPlayer) {
-				ret.add((Player) ((net.minecraft.src.EntityPlayer)mcentity).spoutEnty);
+				ret.add((SpoutPlayer) ((net.minecraft.src.EntityPlayer)mcentity).spoutEnty);
 			}
 		}
 		return ret;
@@ -339,7 +191,7 @@ public class SpoutcraftWorld implements World {
 
 	public FixedLocation getSpawnLocation() {
 		WorldInfo info = handle.worldInfo;
-		return new FastLocation(info.getSpawnX(), info.getSpawnY(), info.getSpawnZ(), 0, 0, this);
+		return new FastLocation(info.getSpawnX(), info.getSpawnY(), info.getSpawnZ(), 0, 0);
 	}
 
 	public boolean setSpawnLocation(int x, int y, int z) {
@@ -395,94 +247,15 @@ public class SpoutcraftWorld implements World {
 		return createExplosion(loc.getX(), loc.getY(), loc.getZ(), power, setFire);
 	}
 
-	public Environment getEnvironment() {
-		// TODO Get the environments
-		return environment;
-	}
-
-	public ChunkGenerator getGenerator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<BlockPopulator> getPopulators() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T extends Entity> T spawn(FixedLocation location, Class<T> clazz) throws IllegalArgumentException {
-		return (T) CraftEntity.spawn(new MutableLocation(location.getWorld(), location.getX(), location.getY(), location.getZ()), (Class<Entity>) clazz);
-	}
-
-	public void playEffect(FixedLocation location, Effect effect, int data) {
-		// TODO Auto-generated method stub
-	}
-
-	public void playEffect(FixedLocation location, Effect effect, int data, int radius) {
-		// TODO Auto-generated method stub
-	}
-
-	public ChunkSnapshot getEmptyChunkSnapshot(int x, int z, boolean includeBiome, boolean includeBiomeTempRain) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setSpawnFlags(boolean allowMonsters, boolean allowAnimals) {
-		// TODO Auto-generated method stub
-	}
-
-	public Biome getBiome(int x, int z) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public double getTemperature(int x, int z) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public double getHumidity(int x, int z) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int getSeaLevel() {
-		return getMaxHeight() / 4;
-	}
-
-	public boolean getKeepSpawnInMemory() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void setKeepSpawnInMemory(boolean keepLoaded) {
-		// TODO Auto-generated method stub
-	}
-
-	public boolean isAutoSave() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void setAutoSave(boolean value) {
-		// TODO Auto-generated method stub
-	}
-
 	public boolean isMultiplayerWorld() {
 		return Minecraft.theMinecraft.isMultiplayerWorld();
 	}
 
-	public Entity getEntityFromId(int id) {
+	public CraftEntity getEntityFromId(int id) {
 		net.minecraft.src.Entity e = SpoutClient.getInstance().getEntityFromId(id);
 		if (e != null) {
 			return e.spoutEnty;
 		}
 		return null;
-	}
-
-	public Entity getEntityFromUUID(UUID id) {
-		// TODO ?
-		throw new UnsupportedOperationException("Not yet implemented!");
 	}
 }

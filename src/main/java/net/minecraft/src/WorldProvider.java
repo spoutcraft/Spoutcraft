@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeWorld;
+import com.prupe.mcpatcher.mod.Colorizer;
 // MCPatcher End
 
 public abstract class WorldProvider {
@@ -104,7 +105,7 @@ public abstract class WorldProvider {
 		return var5;
 	}
 
-	public int getMoonPhase(long par1, float par3) {
+	public int getMoonPhase(long par1) {
 		return (int)(par1 / 24000L) % 8;
 	}
 
@@ -156,7 +157,7 @@ public abstract class WorldProvider {
 		float var5;
 		float var6;
 
-		if (Colorizer.computeFogColor(Colorizer.COLOR_MAP_FOG0)) {
+		if (ColorizeWorld.computeFogColor(Colorizer.COLOR_MAP_FOG0)) {
 			var4 = Colorizer.setColor[0];
 			var5 = Colorizer.setColor[1];
 			var6 = Colorizer.setColor[2];

@@ -48,23 +48,17 @@ public class CustomTextureManager {
 	}
 
 	public static void downloadTexture(String plugin, String url, boolean ignoreEnding) {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		SpoutClient.disableSandbox();
-		try {
-			String fileName = FileUtil.getFileName(url);
-			if (!ignoreEnding && !FileUtil.isImageFile(fileName)) {
-				System.out.println("Rejecting download of invalid texture: " + fileName);
-			} else if (!isTextureDownloading(url) && !isTextureDownloaded(plugin, url)) {
-				File dir = FileUtil.getTempDir();
-				if (plugin != null) {
-					dir = new File(FileUtil.getCacheDir(), plugin);
-					dir.mkdir();
-				}
-				Download download = new Download(fileName, dir, url, null);
-				FileDownloadThread.getInstance().addToDownloadQueue(download);
+		String fileName = FileUtil.getFileName(url);
+		if (!ignoreEnding && !FileUtil.isImageFile(fileName)) {
+			System.out.println("Rejecting download of invalid texture: " + fileName);
+		} else if (!isTextureDownloading(url) && !isTextureDownloaded(plugin, url)) {
+			File dir = FileUtil.getTempDir();
+			if (plugin != null) {
+				dir = new File(FileUtil.getCacheDir(), plugin);
+				dir.mkdir();
 			}
-		} finally {
-			SpoutClient.enableSandbox(wasSandboxed);
+			Download download = new Download(fileName, dir, url, null);
+			FileDownloadThread.getInstance().addToDownloadQueue(download);
 		}
 	}
 
@@ -77,120 +71,90 @@ public class CustomTextureManager {
 	}
 
 	public static boolean isTextureDownloaded(String url) {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		SpoutClient.disableSandbox();
-		try {
-			return getTextureFile(null, url).exists();
-		} finally {
-			SpoutClient.enableSandbox(wasSandboxed);
-		}
+		return getTextureFile(null, url).exists();
 	}
 
 	public static boolean isTextureDownloaded(String addon, String url) {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		SpoutClient.disableSandbox();
-		try {
-			return getTextureFile(addon, url).exists();
-		} finally {
-			SpoutClient.enableSandbox(wasSandboxed);
-		}
+		return getTextureFile(addon, url).exists();
 	}
 
 	public static File getTextureFile(String plugin, String url) {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		SpoutClient.disableSandbox();
-		try {
-			String fileName = FileUtil.getFileName(url);
-			File cache = cacheTextureFiles.get(plugin + File.separator + fileName);
-			if (cache != null) {
-				return cache;
-			}
-			if (plugin != null) {
-				File file = FileUtil.findFile(plugin, fileName);
-				if (file != null) {
-					cacheTextureFiles.put(plugin + File.separator + fileName, file);
-					return file;
-				}
-			}
-			return new File(FileUtil.getTempDir(), fileName);
-		} finally {
-			SpoutClient.enableSandbox(wasSandboxed);
+		String fileName = FileUtil.getFileName(url);
+		File cache = cacheTextureFiles.get(plugin + File.separator + fileName);
+		if (cache != null) {
+			return cache;
 		}
+		if (plugin != null) {
+			File file = FileUtil.findFile(plugin, fileName);
+			if (file != null) {
+				cacheTextureFiles.put(plugin + File.separator + fileName, file);
+				return file;
+			}
+		}
+		return new File(FileUtil.getTempDir(), fileName);
 	}
 
 	public static Texture getTextureFromPath(String path) {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		SpoutClient.disableSandbox();
-		try {
-			if (textures.containsKey(path)) {
-				return textures.get(path);
-			}
-			Texture texture = null;
-			try {
-				FileInputStream stream = new FileInputStream(path);
-				if (stream.available() > 0) {
-					texture = TextureLoader.getTexture(path.toLowerCase().endsWith(".png") ? "PNG" : "JPG", stream, true,  GL11.GL_NEAREST);
-				}
-				stream.close();
-			} catch (IOException e) {
-			}
-
-			if (texture != null) {
-				textures.put(path, texture);
-			}
-			return texture;
-		} finally {
-			SpoutClient.enableSandbox(wasSandboxed);
+		if (textures.containsKey(path)) {
+			return textures.get(path);
 		}
+		Texture texture = null;
+		try {
+			FileInputStream stream = new FileInputStream(path);
+			if (stream.available() > 0) {
+				texture = TextureLoader.getTexture(path.toLowerCase().endsWith(".png") ? "PNG" : "JPG", stream, true,  GL11.GL_NEAREST);
+			}
+			stream.close();
+		} catch (IOException e) {
+		}
+
+		if (texture != null) {
+			textures.put(path, texture);
+		}
+		return texture;
 	}
 
 	public static Texture getTextureFromJar(String path) {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		SpoutClient.disableSandbox();
-		try {
-			if (textures.containsKey(path)) {
-				return textures.get(path);
-			}
-
-			Texture texture = null;
-			// Check inside jar
-			try {
-				InputStream stream = Minecraft.class.getResourceAsStream(path);
-				texture = TextureLoader.getTexture(path.toLowerCase().endsWith(".png") ? "PNG" : "JPG", stream, true,  GL11.GL_NEAREST);
-				stream.close();
-			} catch (Exception e) { }
-			// Check MCP/Eclipse Path
-			if (texture == null) {
-				String pathToJar;
-				File jar = new File(CustomTextureManager.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-				try {
-					pathToJar = jar.getCanonicalPath();
-				} catch (IOException e1) {
-					pathToJar = jar.getAbsolutePath();
-				}
-				try {
-					pathToJar = URLDecoder.decode(pathToJar, "UTF-8");
-				} catch (java.io.UnsupportedEncodingException ignore) { }
-
-				File relative = new File(pathToJar + "/../../src/main/resources" + path.substring(4));
-
-				try {
-					pathToJar = relative.getCanonicalPath();
-				} catch (IOException e) {
-					pathToJar = relative.getAbsolutePath();
-				}
-
-				texture = getTextureFromPath(pathToJar);
-			}
-
-			if (texture != null) {
-				textures.put(path, texture);
-			}
-
-			return texture;
-		} finally {
-			SpoutClient.enableSandbox(wasSandboxed);
+		if (textures.containsKey(path)) {
+			return textures.get(path);
 		}
+
+		Texture texture = null;
+		// Check inside jar
+		try {
+			InputStream stream = Minecraft.class.getResourceAsStream(path);
+			texture = TextureLoader.getTexture(path.toLowerCase().endsWith(".png") ? "PNG" : "JPG", stream, true,  GL11.GL_NEAREST);
+			stream.close();
+		} catch (Exception e) { }
+		// Check MCP/Eclipse Path
+		if (texture == null) {
+			String pathToJar;
+			File jar = new File(CustomTextureManager.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+			try {
+				pathToJar = jar.getCanonicalPath();
+			} catch (IOException e1) {
+				pathToJar = jar.getAbsolutePath();
+			}
+			try {
+				pathToJar = URLDecoder.decode(pathToJar, "UTF-8");
+			} catch (java.io.UnsupportedEncodingException ignore) { }
+
+			File relative = new File(pathToJar + "/../../src/main/resources" + path.substring(4));
+
+			try {
+				pathToJar = relative.getCanonicalPath();
+			} catch (IOException e) {
+				pathToJar = relative.getAbsolutePath();
+			}
+
+			texture = getTextureFromPath(pathToJar);
+		}
+
+		if (texture != null) {
+			textures.put(path, texture);
+		}
+
+		return texture;
 	}
 
 	public static void resetTextures() {
@@ -212,18 +176,12 @@ public class CustomTextureManager {
 	}
 
 	public static Texture getTextureFromUrl(String plugin, String url) {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		SpoutClient.disableSandbox();
+		File texture = getTextureFile(plugin, url);
 		try {
-			File texture = getTextureFile(plugin, url);
-			try {
-				return getTextureFromPath(texture.getCanonicalPath());
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
-		} finally {
-			SpoutClient.enableSandbox(wasSandboxed);
+			return getTextureFromPath(texture.getCanonicalPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 
@@ -235,18 +193,11 @@ public class CustomTextureManager {
 		if (!isTextureDownloaded(plugin, url)) {
 			return null;
 		}
-
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		SpoutClient.disableSandbox();
+		File download = new File(FileUtil.getTempDir(), FileUtil.getFileName(url));
 		try {
-			File download = new File(FileUtil.getTempDir(), FileUtil.getFileName(url));
-			try {
-				return download.getCanonicalPath();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} finally {
-			SpoutClient.enableSandbox(wasSandboxed);
+			return download.getCanonicalPath();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

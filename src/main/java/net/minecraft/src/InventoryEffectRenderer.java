@@ -45,40 +45,39 @@ public abstract class InventoryEffectRenderer extends GuiContainer {
 		Collection var4 = this.mc.thePlayer.getActivePotionEffects();
 
 		if (!var4.isEmpty()) {
-			int var5 = this.mc.renderEngine.getTexture("/gui/inventory.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(GL11.GL_LIGHTING);
-			int var6 = 33;
+			int var5 = 33;
 
 			if (var4.size() > 5) {
-				var6 = 132 / (var4.size() - 1);
+				var5 = 132 / (var4.size() - 1);
 			}
 
-			for (Iterator var7 = this.mc.thePlayer.getActivePotionEffects().iterator(); var7.hasNext(); var2 += var6) {
-				PotionEffect var8 = (PotionEffect)var7.next();
-				Potion var9 = Potion.potionTypes[var8.getPotionID()];
+			for (Iterator var6 = this.mc.thePlayer.getActivePotionEffects().iterator(); var6.hasNext(); var2 += var5) {
+				PotionEffect var7 = (PotionEffect)var6.next();
+				Potion var8 = Potion.potionTypes[var7.getPotionID()];
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				this.mc.renderEngine.bindTexture(var5);
+				this.mc.renderEngine.bindTexture("/gui/inventory.png");
 				this.drawTexturedModalRect(var1, var2, 0, 166, 140, 32);
 
-				if (var9.hasStatusIcon()) {
-					int var10 = var9.getStatusIconIndex();
-					this.drawTexturedModalRect(var1 + 6, var2 + 7, 0 + var10 % 8 * 18, 198 + var10 / 8 * 18, 18, 18);
+				if (var8.hasStatusIcon()) {
+					int var9 = var8.getStatusIconIndex();
+					this.drawTexturedModalRect(var1 + 6, var2 + 7, 0 + var9 % 8 * 18, 198 + var9 / 8 * 18, 18, 18);
 				}
 
-				String var12 = StatCollector.translateToLocal(var9.getName());
+				String var11 = StatCollector.translateToLocal(var8.getName());
 
-				if (var8.getAmplifier() == 1) {
-					var12 = var12 + " II";
-				} else if (var8.getAmplifier() == 2) {
-					var12 = var12 + " III";
-				} else if (var8.getAmplifier() == 3) {
-					var12 = var12 + " IV";
+				if (var7.getAmplifier() == 1) {
+					var11 = var11 + " II";
+				} else if (var7.getAmplifier() == 2) {
+					var11 = var11 + " III";
+				} else if (var7.getAmplifier() == 3) {
+					var11 = var11 + " IV";
 				}
 
-				this.fontRenderer.drawStringWithShadow(var12, var1 + 10 + 18, var2 + 6, 16777215);
-				String var11 = Potion.getDurationString(var8);
-				this.fontRenderer.drawStringWithShadow(var11, var1 + 10 + 18, var2 + 6 + 10, 8355711);
+				this.fontRenderer.drawStringWithShadow(var11, var1 + 10 + 18, var2 + 6, 16777215);
+				String var10 = Potion.getDurationString(var7);
+				this.fontRenderer.drawStringWithShadow(var10, var1 + 10 + 18, var2 + 6 + 10, 8355711);
 			}
 		}
 	}

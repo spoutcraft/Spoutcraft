@@ -22,7 +22,6 @@ package org.spoutcraft.client.gui.settings.controls;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ScaledResolution;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
@@ -47,7 +46,7 @@ public class GuiScaleButton extends GenericButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		int guiScale = Configuration.getGuiScale();
 		guiScale += 1;
 		guiScale &= 3;

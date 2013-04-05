@@ -24,7 +24,6 @@ import java.util.UUID;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.UnsafeClass;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.api.property.Property;
@@ -43,7 +42,7 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 	protected UUID id = UUID.randomUUID();
 	protected String tooltip = "";
 	protected WidgetAnchor anchor = WidgetAnchor.TOP_LEFT;
-	protected Addon addon = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
+	protected String addon = "Spoutcraft";
 	// Client side layout
 	protected Container container = null;
 	protected boolean fixed = false;
@@ -111,7 +110,7 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		setVisible(input.readBoolean());
 		setPriority(RenderPriority.getRenderPriorityFromId(input.readInt()));
 		setTooltip(input.readString());
-		setAddon(Spoutcraft.getAddonManager().getOrCreateAddon(input.readString()));
+		setAddon(input.readString());
 		setAddon(addon);
 		animType = WidgetAnim.getAnimationFromId(input.read());
 		animFlags = (byte) input.read();
@@ -129,7 +128,7 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		output.writeBoolean(isVisible());
 		output.writeInt(priority.getId());
 		output.writeString(getTooltip());
-		output.writeString(getAddon().getDescription().getName());
+		output.writeString(getAddon());
 		output.write(animType.getId());
 		output.write(animFlags);
 		output.writeFloat(animValue);
@@ -137,11 +136,11 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		output.writeShort(animCount);
 	}
 
-	public Addon getAddon() {
+	public String getAddon() {
 		return addon;
 	}
 
-	public Widget setAddon(Addon addon) {
+	public Widget setAddon(String addon) {
 		if (addon != null) {
 			this.addon = addon;
 		}
@@ -166,7 +165,7 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		return this;
 	}
 
-	public Widget setScreen(Addon addon, Screen screen) {
+	public Widget setScreen(String addon, Screen screen) {
 		if (this.screen != null && screen != null && screen != this.screen) {
 			this.screen.removeWidget(this);
 		}

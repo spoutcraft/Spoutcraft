@@ -21,11 +21,6 @@ package org.spoutcraft.api.material.item;
 
 import java.io.IOException;
 
-import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.block.Block;
-import org.spoutcraft.api.block.BlockFace;
-import org.spoutcraft.api.entity.Player;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.api.material.CustomItem;
@@ -35,7 +30,7 @@ import org.spoutcraft.api.util.UniqueItemStringMap;
 public class GenericCustomItem implements CustomItem {
 	private String name;
 	private String fullName;
-	private Addon addon;
+	private String addon;
 	private int customId;
 	public String texture;
 
@@ -45,20 +40,20 @@ public class GenericCustomItem implements CustomItem {
 	public GenericCustomItem() {
 	}
 
-	public GenericCustomItem(Addon addon, String name, int customId) {
+	public GenericCustomItem(String addon, String name, int customId) {
 		this.name = name;
-		this.fullName = addon.getDescription().getName() + name;
+		this.fullName = addon + name;
 		this.customId = customId;
 		this.addon = addon;
 		this.setName(name);
 		MaterialData.addCustomItem(this);
 	}
 
-	public GenericCustomItem(Addon addon, String name) {
-		this(addon, name, UniqueItemStringMap.getId(addon.getDescription().getName() + name));
+	public GenericCustomItem(String addon, String name) {
+		this(addon, name, UniqueItemStringMap.getId(addon + name));
 	}
 
-	public GenericCustomItem(Addon addon, String name, String texture) {
+	public GenericCustomItem(String addon, String name, String texture) {
 		this(addon, name);
 		this.setTexture(texture);
 	}
@@ -81,7 +76,7 @@ public class GenericCustomItem implements CustomItem {
 
 	public void setName(String name) {
 		this.name = name;
-		this.fullName = addon.getDescription().getName() + name;
+		this.fullName = addon + name;
 	}
 
 	public int getCustomId() {
@@ -96,7 +91,7 @@ public class GenericCustomItem implements CustomItem {
 		return getName();
 	}
 
-	public Addon getAddon() {
+	public String getAddon() {
 		return addon;
 	}
 
@@ -109,14 +104,10 @@ public class GenericCustomItem implements CustomItem {
 		return texture;
 	}
 
-	public boolean onItemInteract(Player player, Block block, BlockFace face) {
-		return true;
-	}
-
 	public void readData(SpoutInputStream input) throws IOException {
 		customId = input.readInt();
 		name = input.readString();
-		addon = Spoutcraft.getAddonManager().getOrCreateAddon(input.readString());
+		addon = input.readString();
 		texture = input.readString();
 		setName(name);
 		MaterialData.addCustomItem(this);
@@ -125,7 +116,7 @@ public class GenericCustomItem implements CustomItem {
 	public void writeData(SpoutOutputStream output) throws IOException {
 		output.write(customId);
 		output.writeString(getName());
-		output.writeString(getAddon().getDescription().getName());
+		output.writeString(getAddon());
 		output.writeString(getTexture());
 	}
 

@@ -97,10 +97,10 @@ public abstract class EntityFireball extends Entity {
 				++this.ticksInAir;
 			}
 
-			Vec3 var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			Vec3 var19 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 			Vec3 var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-			var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var19, var2);
+			var19 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 			var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 			if (var3 != null) {
@@ -117,10 +117,10 @@ public abstract class EntityFireball extends Entity {
 				if (var9.canBeCollidedWith() && (!var9.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25)) {
 					float var10 = 0.3F;
 					AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
-					MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
+					MovingObjectPosition var12 = var11.calculateIntercept(var19, var2);
 
 					if (var12 != null) {
-						double var13 = var15.distanceTo(var12.hitVec);
+						double var13 = var19.distanceTo(var12.hitVec);
 
 						if (var13 < var6 || var6 == 0.0D) {
 							var4 = var9;
@@ -141,10 +141,10 @@ public abstract class EntityFireball extends Entity {
 			this.posX += this.motionX;
 			this.posY += this.motionY;
 			this.posZ += this.motionZ;
-			float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			float var17 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.rotationYaw = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) + 90.0F;
 
-			for (this.rotationPitch = (float)(Math.atan2((double)var16, this.motionY) * 180.0D / Math.PI) - 90.0F; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
+			for (this.rotationPitch = (float)(Math.atan2((double)var17, this.motionY) * 180.0D / Math.PI) - 90.0F; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
 				;
 			}
 
@@ -162,23 +162,23 @@ public abstract class EntityFireball extends Entity {
 
 			this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 			this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-			float var17 = this.getMotionFactor();
+			float var18 = this.getMotionFactor();
 
 			if (this.isInWater()) {
-				for (int var19 = 0; var19 < 4; ++var19) {
-					float var18 = 0.25F;
-					this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var18, this.posY - this.motionY * (double)var18, this.posZ - this.motionZ * (double)var18, this.motionX, this.motionY, this.motionZ);
+				for (int var16 = 0; var16 < 4; ++var16) {
+					float var15 = 0.25F;
+					this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var15, this.posY - this.motionY * (double)var15, this.posZ - this.motionZ * (double)var15, this.motionX, this.motionY, this.motionZ);
 				}
 
-				var17 = 0.8F;
+				var18 = 0.8F;
 			}
 
 			this.motionX += this.accelerationX;
 			this.motionY += this.accelerationY;
 			this.motionZ += this.accelerationZ;
-			this.motionX *= (double)var17;
-			this.motionY *= (double)var17;
-			this.motionZ *= (double)var17;
+			this.motionX *= (double)var18;
+			this.motionY *= (double)var18;
+			this.motionZ *= (double)var18;
 			this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
 			this.setPosition(this.posX, this.posY, this.posZ);
 		}

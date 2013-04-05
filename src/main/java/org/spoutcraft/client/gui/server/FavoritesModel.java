@@ -38,9 +38,6 @@ public class FavoritesModel extends ServerModel {
 	}
 
 	public void load() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed)
-			SpoutClient.disableSandbox();
 		try {
 			if (!getFile().exists()) {
 				importVanilla();
@@ -86,18 +83,10 @@ public class FavoritesModel extends ServerModel {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			if (wasSandboxed) {
-				SpoutClient.enableSandbox();
-			}
 		}
 	}
 
 	private void importLegacyTXT() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
 		File favorites = new File(FileUtil.getCacheDir(), "favorites.txt");
 		if (favorites.exists()) {
 			FileReader reader;
@@ -138,9 +127,6 @@ public class FavoritesModel extends ServerModel {
 
 			//favorites.delete(); // TODO Check if that is working first...
 		}
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
-		}
 	}
 
 	private void importVanilla() {
@@ -165,14 +151,7 @@ public class FavoritesModel extends ServerModel {
 			list.add(data);
 		}
 		try {
-			boolean wasSandboxed = SpoutClient.isSandboxed();
-			if (wasSandboxed) {
-				SpoutClient.disableSandbox();
-			}
 			yaml.dump(list, new FileWriter(getFile()));
-			if (wasSandboxed) {
-				SpoutClient.enableSandbox();
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

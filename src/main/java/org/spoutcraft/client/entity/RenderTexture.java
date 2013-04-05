@@ -27,6 +27,7 @@ import net.minecraft.src.RenderHelper;
 import net.minecraft.src.Tessellator;
 
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.SpoutClient;
 
 public class RenderTexture extends RenderEntity {
 	@Override
@@ -44,7 +45,7 @@ public class RenderTexture extends RenderEntity {
 		GL11.glTranslated(x, y, z);
 		GL11.glRotatef(yaw, 0, 1.0F, 0);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, entityT.texture.getTextureID());
+		SpoutClient.getHandle().renderEngine.bindTexture(entityT.texture.getTextureID());
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		double h = entityT.height * 0.014;

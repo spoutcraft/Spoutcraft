@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.minimap.GuiMinimapMenu;
@@ -35,7 +34,7 @@ public class MinimapButton extends GenericButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		SpoutClient.getHandle().displayGuiScreen(new GuiMinimapMenu(parent));
 	}
 }

@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import org.lwjgl.opengl.GL11;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.CTMUtils;
-import com.pclewis.mcpatcher.mod.RenderPass;
+import com.prupe.mcpatcher.mod.CTMUtils;
+import com.prupe.mcpatcher.mod.RenderPass;
 // MCPatcher End
 // Spout Start
 import net.minecraft.client.Minecraft;
@@ -22,10 +22,12 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityRenderer;
 import net.minecraft.src.World;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.block.design.GenericBlockDesign;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.io.CustomTextureManager;
 // Spout End
 
@@ -134,7 +136,7 @@ public class WorldRenderer {
 			// MCPatcher Start
 			GL11.glNewList(this.glRenderList + 4, GL11.GL_COMPILE);
 			// MCPatcher End
-			RenderItem.renderAABB(AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)((float)this.posXClip - var4), (double)((float)this.posYClip - var4), (double)((float)this.posZClip - var4), (double)((float)(this.posXClip + 16) + var4), (double)((float)(this.posYClip + 16) + var4), (double)((float)(this.posZClip + 16) + var4)));
+			RenderItem.renderAABB(AxisAlignedBB.getAABBPool().getAABB((double)((float)this.posXClip - var4), (double)((float)this.posYClip - var4), (double)((float)this.posZClip - var4), (double)((float)(this.posXClip + 16) + var4), (double)((float)(this.posYClip + 16) + var4), (double)((float)(this.posZClip + 16) + var4)));
 			GL11.glEndList();
 			this.markDirty();
 		}
@@ -165,7 +167,7 @@ public class WorldRenderer {
 			HashSet tileRenderers = new HashSet();
 			tileRenderers.addAll(this.tileEntityRenderers);
 			this.tileEntityRenderers.clear();
-			ChunkCache chunkCache = new ChunkCache(this.worldObj, x - 1, y - 1, z - 1, sizeXOffset + 1, sizeYOffset + 1, sizeZOffset + 1);
+			ChunkCache chunkCache = new ChunkCache(this.worldObj, x - 1, y - 1, z - 1, sizeXOffset + 1, sizeYOffset + 1, sizeZOffset + 1, 1);
 
 			if (!chunkCache.extendedLevelsInChunkCache()) {
 				++chunksUpdated;
@@ -182,8 +184,9 @@ public class WorldRenderer {
 				hitTextures.add("/terrain.png");
 				hitTexturesPlugins.add("");
 
-				short[] customBlockIds = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockIds();
-				byte[] customBlockData = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockData();
+				SpoutcraftChunk sChunk = Spoutcraft.getChunkAt(worldObj, posX, posY, posZ);
+				short[] customBlockIds = sChunk.getCustomBlockIds();
+				byte[] customBlockData = sChunk.getCustomBlockData();
 				blockRenderer.customIds = customBlockIds;
 
 				for (int renderPass = 0; renderPass < limit; ++renderPass) {
@@ -278,7 +281,7 @@ public class WorldRenderer {
 												continue;
 											}
 										// Do not render if we are not using the terrain.png and can't find a valid texture for this custom block
-										} else if (currentTexture != 0) {											
+										} else if (currentTexture != 0) {
 											continue;
 										}
 

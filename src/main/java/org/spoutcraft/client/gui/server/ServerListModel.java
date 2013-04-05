@@ -56,10 +56,6 @@ public class ServerListModel extends AbstractAPIModel {
 	}
 
 	private void loadCountries() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
 		new Thread() {
 			public void run() {
 				//long start = System.currentTimeMillis();
@@ -95,9 +91,6 @@ public class ServerListModel extends AbstractAPIModel {
 				}
 			}
 		}.start();
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
-		}
 	}
 
 	public String getDefaultUrl() {

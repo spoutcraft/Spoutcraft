@@ -1,9 +1,12 @@
 package net.minecraft.src;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 public class TexturePackCustom extends TexturePackImplementation {
@@ -16,8 +19,8 @@ public class TexturePackCustom extends TexturePackImplementation {
 	public long lastModified;
 	// MCPatcher End
 
-	public TexturePackCustom(String par1Str, File par2File) {
-		super(par1Str, par2File, par2File.getName());
+	public TexturePackCustom(String par1Str, File par2File, ITexturePack par3ITexturePack) {
+		super(par1Str, par2File, par2File.getName(), par3ITexturePack);
 	}
 
 	/**
@@ -37,35 +40,52 @@ public class TexturePackCustom extends TexturePackImplementation {
 		this.texturePackZipFile = null;
 	}
 
-	/**
-	 * Gives a texture resource as InputStream.
-	 */
-	public InputStream getResourceAsStream(String par1Str) {
+	protected InputStream func_98139_b(String par1Str) throws IOException {
 		this.openTexturePackFile();
+		ZipEntry var2 = this.texturePackZipFile.getEntry(par1Str.substring(1));
 
-		try {
-			ZipEntry var2 = this.texturePackZipFile.getEntry(par1Str.substring(1));
-
-			if (var2 != null) {
-				return this.texturePackZipFile.getInputStream(var2);
-			}
-		} catch (Exception var3) {
-			;
+		if (var2 == null) {
+			throw new FileNotFoundException(par1Str);
+		} else {
+			return this.texturePackZipFile.getInputStream(var2);
 		}
+	}
 
-		return super.getResourceAsStream(par1Str);
+	public boolean func_98140_c(String par1Str) {
+		try {
+			this.openTexturePackFile();
+			return this.texturePackZipFile.getEntry(par1Str.substring(1)) != null;
+		} catch (Exception var3) {
+			return false;
+		}
 	}
 
 	/**
 	 * Open the texture pack's file and initialize texturePackZipFile
 	 */
-	private void openTexturePackFile() {
+	private void openTexturePackFile() throws IOException, ZipException {
 		if (this.texturePackZipFile == null) {
-			try {
-				this.texturePackZipFile = new ZipFile(this.texturePackFile);
-			} catch (IOException var2) {
-				;
-			}
+			this.texturePackZipFile = new ZipFile(this.texturePackFile);
 		}
+	}
+
+	public boolean isCompatible() {
+		try {
+			this.openTexturePackFile();
+			Enumeration var1 = this.texturePackZipFile.entries();
+
+			while (var1.hasMoreElements()) {
+				ZipEntry var2 = (ZipEntry)var1.nextElement();
+
+				if (var2.getName().startsWith("textures/")) {
+					return true;
+				}
+			}
+		} catch (Exception var3) {
+			;
+		}
+
+		boolean var4 = this.func_98140_c("terrain.png") || this.func_98140_c("gui/items.png");
+		return !var4;
 	}
 }

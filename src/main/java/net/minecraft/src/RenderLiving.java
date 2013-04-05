@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.MobRandomizer;
+import com.prupe.mcpatcher.mod.MobRandomizer;
 // MCPatcher End
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
@@ -82,8 +82,8 @@ public class RenderLiving extends Render {
 			GL11.glScalef(-1.0F, -1.0F, 1.0F);
 			this.preRenderCallback(par1EntityLiving, par9);
 			GL11.glTranslatef(0.0F, -24.0F * var14 - 0.0078125F, 0.0F);
-			float var15 = par1EntityLiving.prevLegYaw + (par1EntityLiving.legYaw - par1EntityLiving.prevLegYaw) * par9;
-			float var16 = par1EntityLiving.legSwing - par1EntityLiving.legYaw * (1.0F - par9);
+			float var15 = par1EntityLiving.prevLimbYaw + (par1EntityLiving.limbYaw - par1EntityLiving.prevLimbYaw) * par9;
+			float var16 = par1EntityLiving.limbSwing - par1EntityLiving.limbYaw * (1.0F - par9);
 
 			if (par1EntityLiving.isChild()) {
 				var16 *= 3.0F;
@@ -219,14 +219,29 @@ public class RenderLiving extends Render {
 	 * Renders the model in RenderLiving
 	 */
 	protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7) {
+		this.func_98190_a(par1EntityLiving);
+
 		if (!par1EntityLiving.getHasActivePotion()) {
-			// MCPatcher Start
-			this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, MobRandomizer.randomTexture(par1EntityLiving));
-			// MCPatcher End
 			this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+		} else if (!par1EntityLiving.func_98034_c(Minecraft.getMinecraft().thePlayer)) {
+			GL11.glPushMatrix();
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
+			GL11.glDepthMask(false);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+			this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+			GL11.glPopMatrix();
+			GL11.glDepthMask(true);
 		} else {
 			this.mainModel.setRotationAngles(par2, par3, par4, par5, par6, par7, par1EntityLiving);
 		}
+	}
+
+	protected void func_98190_a(EntityLiving par1EntityLiving) {
+		this.loadTexture(MobRandomizer.randomTexture(par1EntityLiving));
 	}
 
 	/**
@@ -277,7 +292,7 @@ public class RenderLiving extends Render {
 
 			for (int var6 = 0; var6 < var3; ++var6) {
 				GL11.glPushMatrix();
-				ModelRenderer var7 = this.mainModel.func_85181_a(var5);
+				ModelRenderer var7 = this.mainModel.getRandomModelBox(var5);
 				ModelBox var8 = (ModelBox)var7.cubeList.get(var5.nextInt(var7.cubeList.size()));
 				var7.postRender(0.0625F);
 				float var9 = var5.nextFloat();
@@ -357,6 +372,14 @@ public class RenderLiving extends Render {
 		// Spout End
 	}
 
+	protected void func_96449_a(EntityLiving par1EntityLiving, double par2, double par4, double par6, String par8Str, float par9, double par10) {
+		if (par1EntityLiving.isPlayerSleeping()) {
+			this.renderLivingLabel(par1EntityLiving, par8Str, par2, par4 - 1.5D, par6, 64);
+		} else {
+			this.renderLivingLabel(par1EntityLiving, par8Str, par2, par4, par6, 64);
+		}
+	}
+
 	/**
 	 * Draws the debug or playername text above a living
 	 */
@@ -368,7 +391,7 @@ public class RenderLiving extends Render {
 			float var13 = 1.6F;
 			float var14 = 0.016666668F * var13;
 			GL11.glPushMatrix();
-			GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + 2.3F, (float)par7);
+			GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + par1EntityLiving.height + 0.5F, (float)par7);
 			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);

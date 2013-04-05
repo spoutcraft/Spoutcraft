@@ -23,6 +23,7 @@ import java.io.File;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.TexturePackCustom;
+import net.minecraft.src.TexturePackList;
 import net.minecraft.src.WorldRenderer;
 
 import org.spoutcraft.client.SpoutClient;
@@ -36,7 +37,7 @@ public class TexturePackAction implements Runnable {
 	}
 
 	public void run() {
-		TexturePackCustom pack = new TexturePackCustom(texturePackFile.getName().substring(0, texturePackFile.getName().length() - 4), texturePackFile);
+		TexturePackCustom pack = new TexturePackCustom(texturePackFile.getName().substring(0, texturePackFile.getName().length() - 4), texturePackFile, TexturePackList.func_98143_h());
 		Minecraft game = SpoutClient.getHandle();
 		if (game.renderEngine.oldPack == null) {
 			game.renderEngine.oldPack = game.renderEngine.texturePack.selectedTexturePack;

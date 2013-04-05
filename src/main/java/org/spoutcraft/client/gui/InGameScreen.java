@@ -23,7 +23,6 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.*;
 import org.spoutcraft.client.SpoutClient;
 
@@ -49,9 +48,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD {
 		this.exp = new ExpBar();
 		this.playerList = new ServerPlayerList();
 
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-
-		attachWidget(spoutcraft, health).attachWidget(spoutcraft, bubble).attachWidget(spoutcraft, chat).attachWidget(spoutcraft, chatText).attachWidget(spoutcraft, armor).attachWidget(spoutcraft, hunger).attachWidget(spoutcraft, exp).attachWidget(spoutcraft, playerList);
+		attachWidgets("Spoutcraft", health, bubble, chat, chatText, armor, hunger, exp, playerList);
 	}
 
 	public int getVersion() {
@@ -75,7 +72,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD {
 	}
 
 	@Override
-	public InGameScreen attachWidget(Addon addon, Widget widget) {
+	public InGameScreen attachWidget(String addon, Widget widget) {
 		if (canAttachWidget(widget)) {
 			super.attachWidget(addon, widget);
 			return this;

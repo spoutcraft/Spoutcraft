@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 // Spout Start
 import net.minecraft.src.NBTTagList;
 import org.spoutcraft.client.config.Configuration;
@@ -11,7 +12,6 @@ import org.spoutcraft.client.inventory.InventoryUtil;
 // Spout Start - Removed final
 public class ItemStack {
 // Spout End
-
 	/** Size of the stack. */
 	public int stackSize;
 
@@ -64,6 +64,10 @@ public class ItemStack {
 		this.itemID = par1;
 		this.stackSize = par2;
 		this.itemDamage = par3;
+
+		if (this.itemDamage < 0) {
+			this.itemDamage = 0;
+		}
 	}
 
 	public static ItemStack loadItemStackFromNBT(NBTTagCompound par0NBTTagCompound) {
@@ -101,8 +105,12 @@ public class ItemStack {
 	/**
 	 * Returns the icon index of the current stack.
 	 */
-	public int getIconIndex() {
+	public Icon getIconIndex() {
 		return this.getItem().getIconIndex(this);
+	}
+
+	public int getItemSpriteNumber() {
+		return this.getItem().getSpriteNumber();
 	}
 
 	public boolean tryPlaceItemIntoWorld(EntityPlayer par1EntityPlayer, World par2World, int par3, int par4, int par5, int par6, float par7, float par8, float par9) {
@@ -137,7 +145,7 @@ public class ItemStack {
 	}
 
 	public ItemStack onFoodEaten(World par1World, EntityPlayer par2EntityPlayer) {
-		return this.getItem().onFoodEaten(this, par1World, par2EntityPlayer);
+		return this.getItem().onEaten(this, par1World, par2EntityPlayer);
 	}
 
 	/**
@@ -162,6 +170,10 @@ public class ItemStack {
 		this.itemID = par1NBTTagCompound.getShort("id");
 		this.stackSize = par1NBTTagCompound.getByte("Count");
 		this.itemDamage = par1NBTTagCompound.getShort("Damage");
+
+		if (this.itemDamage < 0) {
+			this.itemDamage = 0;
+		}
 
 		if (par1NBTTagCompound.hasKey("tag")) {
 			this.stackTagCompound = par1NBTTagCompound.getCompoundTag("tag");
@@ -219,6 +231,10 @@ public class ItemStack {
 	 */
 	public void setItemDamage(int par1) {
 		this.itemDamage = par1;
+
+		if (this.itemDamage < 0) {
+			this.itemDamage = 0;
+		}
 	}
 
 	/**
@@ -228,17 +244,16 @@ public class ItemStack {
 		return Item.itemsList[this.itemID].getMaxDamage();
 	}
 
-	/**
-	 * Damages the item in the ItemStack
-	 */
-	public void damageItem(int par1, EntityLiving par2EntityLiving) {
-		if (this.isItemStackDamageable()) {
-			if (par1 > 0 && par2EntityLiving instanceof EntityPlayer) {
+	public boolean func_96631_a(int par1, Random par2Random) {
+		if (!this.isItemStackDamageable()) {
+			return false;
+		} else {
+			if (par1 > 0) {
 				int var3 = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, this);
 				int var4 = 0;
 
 				for (int var5 = 0; var3 > 0 && var5 < par1; ++var5) {
-					if (EnchantmentDurability.func_92097_a(this, var3, par2EntityLiving.worldObj.rand)) {
+					if (EnchantmentDurability.func_92097_a(this, var3, par2Random)) {
 						++var4;
 					}
 				}
@@ -246,34 +261,42 @@ public class ItemStack {
 				par1 -= var4;
 
 				if (par1 <= 0) {
-					return;
+					return false;
 				}
 			}
 
-			if (!(par2EntityLiving instanceof EntityPlayer) || !((EntityPlayer)par2EntityLiving).capabilities.isCreativeMode) {
-				this.itemDamage += par1;
-			}
+			this.itemDamage += par1;
+			return this.itemDamage > this.getMaxDamage();
+		}
+	}
 
-			if (this.itemDamage > this.getMaxDamage()) {
-				par2EntityLiving.renderBrokenItemStack(this);
+	/**
+	 * Damages the item in the ItemStack
+	 */
+	public void damageItem(int par1, EntityLiving par2EntityLiving) {
+		if (!(par2EntityLiving instanceof EntityPlayer) || !((EntityPlayer)par2EntityLiving).capabilities.isCreativeMode) {
+			if (this.isItemStackDamageable()) {
+				if (this.func_96631_a(par1, par2EntityLiving.getRNG())) {
+					par2EntityLiving.renderBrokenItemStack(this);
 
-				if (par2EntityLiving instanceof EntityPlayer) {
-					((EntityPlayer)par2EntityLiving).addStat(StatList.objectBreakStats[this.itemID], 1);
+					if (par2EntityLiving instanceof EntityPlayer) {
+						((EntityPlayer)par2EntityLiving).addStat(StatList.objectBreakStats[this.itemID], 1);
+					}
+
+					--this.stackSize;
+
+					if (this.stackSize < 0) {
+						this.stackSize = 0;
+					}
+
+					this.itemDamage = 0;
+
+					// Spout Start
+					if (stackSize == 0 && Configuration.isReplaceTools()) {
+						InventoryUtil.replaceItem(this.itemID, -1);
+					}
+					// Spout End
 				}
-
-				--this.stackSize;
-
-				if (this.stackSize < 0) {
-					this.stackSize = 0;
-				}
-
-				this.itemDamage = 0;
-
-				// Spout Start
-				if (stackSize == 0 && Configuration.isReplaceTools()) {
-					InventoryUtil.replaceItem(this.itemID, -1);
-				}
-				// Spout End
 			}
 		}
 	}
@@ -355,7 +378,7 @@ public class ItemStack {
 	}
 
 	public String getItemName() {
-		return Item.itemsList[this.itemID].getItemNameIS(this);
+		return Item.itemsList[this.itemID].getUnlocalizedName(this);
 	}
 
 	/**
@@ -366,7 +389,7 @@ public class ItemStack {
 	}
 
 	public String toString() {
-		return this.stackSize + "x" + Item.itemsList[this.itemID].getItemName() + "@" + this.itemDamage;
+		return this.stackSize + "x" + Item.itemsList[this.itemID].getUnlocalizedName() + "@" + this.itemDamage;
 	}
 
 	/**
@@ -469,7 +492,7 @@ public class ItemStack {
 	 */
 	public void setItemName(String par1Str) {
 		if (this.stackTagCompound == null) {
-			this.stackTagCompound = new NBTTagCompound();
+			this.stackTagCompound = new NBTTagCompound("tag");
 		}
 
 		if (!this.stackTagCompound.hasKey("display")) {
@@ -495,7 +518,7 @@ public class ItemStack {
 		String var5 = this.getDisplayName();
 
 		if (this.hasDisplayName()) {
-			var5 = "\u00a7o" + var5 + "\u00a7r";
+			var5 = EnumChatFormatting.ITALIC + var5 + EnumChatFormatting.RESET;
 		}
 
 		if (par2) {
@@ -519,12 +542,12 @@ public class ItemStack {
 		var4.addInformation(this, par1EntityPlayer, var3, par2);
 
 		if (this.hasTagCompound()) {
-			NBTTagList var10 = this.getEnchantmentTagList();
+			NBTTagList var13 = this.getEnchantmentTagList();
 
-			if (var10 != null) {
-				for (int var7 = 0; var7 < var10.tagCount(); ++var7) {
-					short var8 = ((NBTTagCompound)var10.tagAt(var7)).getShort("id");
-					short var9 = ((NBTTagCompound)var10.tagAt(var7)).getShort("lvl");
+			if (var13 != null) {
+				for (int var7 = 0; var7 < var13.tagCount(); ++var7) {
+					short var8 = ((NBTTagCompound)var13.tagAt(var7)).getShort("id");
+					short var9 = ((NBTTagCompound)var13.tagAt(var7)).getShort("lvl");
 
 					if (Enchantment.enchantmentsList[var8] != null) {
 						var3.add(Enchantment.enchantmentsList[var8].getTranslatedName(var9));
@@ -539,7 +562,7 @@ public class ItemStack {
 					if (par2) {
 						var3.add("Color: #" + Integer.toHexString(var11.getInteger("color")).toUpperCase());
 					} else {
-						var3.add("\u00a7o" + StatCollector.translateToLocal("item.dyed"));
+						var3.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("item.dyed"));
 					}
 				}
 
@@ -547,8 +570,8 @@ public class ItemStack {
 					NBTTagList var12 = var11.getTagList("Lore");
 
 					if (var12.tagCount() > 0) {
-						for (int var13 = 0; var13 < var12.tagCount(); ++var13) {
-							var3.add("\u00a75\u00a7o" + ((NBTTagString)var12.tagAt(var13)).data);
+						for (int var10 = 0; var10 < var12.tagCount(); ++var10) {
+							var3.add(EnumChatFormatting.DARK_PURPLE + "" + EnumChatFormatting.ITALIC + ((NBTTagString)var12.tagAt(var10)).data);
 						}
 					}
 				}
@@ -648,7 +671,7 @@ public class ItemStack {
 	 */
 	public void setRepairCost(int par1) {
 		if (!this.hasTagCompound()) {
-			this.stackTagCompound = new NBTTagCompound();
+			this.stackTagCompound = new NBTTagCompound("tag");
 		}
 
 		this.stackTagCompound.setInteger("RepairCost", par1);

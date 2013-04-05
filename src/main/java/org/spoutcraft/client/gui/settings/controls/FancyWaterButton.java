@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import java.util.UUID;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;
 
 public class FancyWaterButton extends AutomatedCheckBox {
@@ -34,7 +33,7 @@ public class FancyWaterButton extends AutomatedCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setFancyWater(!Configuration.isFancyWater());
 		Configuration.write();
 		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;

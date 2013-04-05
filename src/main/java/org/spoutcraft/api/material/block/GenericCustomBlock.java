@@ -21,15 +21,8 @@ package org.spoutcraft.api.material.block;
 
 import java.io.IOException;
 
-import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.World;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.block.BlockFace;
 import org.spoutcraft.api.block.design.BlockDesign;
 import org.spoutcraft.api.block.design.GenericBlockDesign;
-import org.spoutcraft.api.entity.Entity;
-import org.spoutcraft.api.entity.LivingEntity;
-import org.spoutcraft.api.entity.Player;
 import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.material.Block;
@@ -44,7 +37,7 @@ public class GenericCustomBlock implements CustomBlock {
 	private String name;
 	private String fullName;
 	private int customId;
-	private Addon addon;
+	private String addon;
 	private CustomItem item;
 	private int blockId;
 	private boolean opaque;
@@ -65,7 +58,7 @@ public class GenericCustomBlock implements CustomBlock {
 	 * @param name of the block
 	 * @param isOpaque true if you want the block solid
 	 */
-	public GenericCustomBlock(Addon addon, String name, boolean isOpaque) {
+	public GenericCustomBlock(String addon, String name, boolean isOpaque) {
 		this(addon, name, isOpaque, new GenericCustomItem(addon, name));
 	}
 
@@ -77,7 +70,7 @@ public class GenericCustomBlock implements CustomBlock {
 	 * @param isOpaque true if you want the block solid
 	 * @param item to use for the block
 	 */
-	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, CustomItem item) {
+	public GenericCustomBlock(String addon, String name, boolean isOpaque, CustomItem item) {
 		opaque = isOpaque;
 		this.blockId = isOpaque ? 1 :20;
 		this.addon = addon;
@@ -97,7 +90,7 @@ public class GenericCustomBlock implements CustomBlock {
 	 * @param isOpaque true if you want the block solid
 	 * @param design to use for the block
 	 */
-	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, BlockDesign design) {
+	public GenericCustomBlock(String addon, String name, boolean isOpaque, BlockDesign design) {
 		this(addon, name, isOpaque);
 		setBlockDesign(design);
 	}
@@ -108,7 +101,7 @@ public class GenericCustomBlock implements CustomBlock {
 	 * @param plugin creating the block
 	 * @param name of the block
 	 */
-	public GenericCustomBlock(Addon addon, String name) {
+	public GenericCustomBlock(String addon, String name) {
 		this(addon, name, true);
 	}
 
@@ -165,7 +158,7 @@ public class GenericCustomBlock implements CustomBlock {
 		return getName();
 	}
 
-	public Addon getAddon() {
+	public String getAddon() {
 		return addon;
 	}
 
@@ -221,45 +214,12 @@ public class GenericCustomBlock implements CustomBlock {
 		return this;
 	}
 
-	public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) {
-	}
-
-	public void onBlockPlace(World world, int x, int y, int z) {
-	}
-
-	public void onBlockPlace(World world, int x, int y, int z, LivingEntity living) {
-	}
-
-	public void onBlockDestroyed(World world, int x, int y, int z) {
-	}
-
-	public void onBlockDestroyed(World world, int x, int y, int z, LivingEntity living) {
-	}
-
-	public boolean onBlockInteract(World world, int x, int y, int z, Player player) {
-		return false;
-	}
-
-	public void onEntityMoveAt(World world, int x, int y, int z, Entity entity) {
-	}
-
-	public void onBlockClicked(World world, int x, int y, int z, Player player) {
-	}
-
-	public boolean isProvidingPowerTo(World world, int x, int y, int z,	BlockFace face) {
-		return false;
-	}
-
-	public boolean isIndirectlyProvidingPowerTo(World world, int x, int y, int z, BlockFace face) {
-		return false;
-	}
-
 	public void readData(SpoutInputStream input) throws IOException {
 		customId = input.readInt();
 		setName(input.readString());
 		String addonName = input.readString();
-		addon = Spoutcraft.getAddonManager().getOrCreateAddon(addonName);
-		fullName = addon.getDescription().getFullName() + "." + getName();
+		addon = addonName;
+		fullName = addonName + "." + getName();
 		opaque = input.readBoolean();
 		setFriction(input.readFloat());
 		setHardness(input.readFloat());

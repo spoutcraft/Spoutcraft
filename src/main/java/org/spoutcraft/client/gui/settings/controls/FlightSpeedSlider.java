@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
@@ -43,8 +42,8 @@ public class FlightSpeedSlider extends GenericSlider {
 	}
 
 	@Override
-	public void onSliderDrag(SliderDragEvent event) {
-		Configuration.setFlightSpeedFactor(event.getNewPosition() * 10);
+	public void onSliderDrag(float old, float newPos) {
+		Configuration.setFlightSpeedFactor(newPos * 10);
 		Configuration.write();
 	}
 }

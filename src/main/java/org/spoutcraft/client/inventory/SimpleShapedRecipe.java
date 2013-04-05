@@ -70,6 +70,6 @@ public class SimpleShapedRecipe extends ShapedRecipe implements SpoutcraftRecipe
 		int id = this.getResult().getTypeId();
 		int amount = this.getResult().getAmount();
 		short durability = this.getResult().getDurability();
-		CraftingManager.getInstance().func_92103_a(new net.minecraft.src.ItemStack(id, amount, durability), data);
+		CraftingManager.getInstance().addRecipe(new net.minecraft.src.ItemStack(id, amount, durability), data);
 	}
 }

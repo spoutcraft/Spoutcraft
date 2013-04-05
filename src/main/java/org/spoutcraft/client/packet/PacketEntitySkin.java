@@ -22,10 +22,10 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.entity.Entity;
 import org.spoutcraft.api.entity.EntitySkinType;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.entity.CraftEntity;
 
 public class PacketEntitySkin implements SpoutPacket {
 	protected String texture = "";
@@ -48,7 +48,7 @@ public class PacketEntitySkin implements SpoutPacket {
 		if (texture.equals("[reset]")) {
 			texture = null;
 		}
-		Entity entity = Spoutcraft.getWorld().getEntityFromId(entityId);
+		CraftEntity entity = Spoutcraft.getWorld().getEntityFromId(entityId);
 		if (entity != null) {
 			entity.setSkin(texture, EntitySkinType.getType(textureId));
 		}

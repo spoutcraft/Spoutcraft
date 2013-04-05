@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
 import org.spoutcraft.client.config.Configuration;
 
@@ -33,7 +32,7 @@ public class ViewBobbingButton extends GenericCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setViewBobbing(!Configuration.isViewBobbing());
 		Minecraft.theMinecraft.gameSettings.viewBobbing = Configuration.isViewBobbing();
 		Configuration.write();

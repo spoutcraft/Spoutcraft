@@ -25,11 +25,9 @@ import java.util.UUID;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 
 public final class KeyBinding extends AbstractBinding implements Serializable {
 	private static final long serialVersionUID = 3241524501740640147L;
-	private transient Addon addon;
 	private String id;
 	private String description;
 	private transient UUID uuid = null;
@@ -39,31 +37,20 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 	public KeyBinding() {
 	}
 
-	public KeyBinding(int key, String name, String id, String description) {
+	public KeyBinding(int key, String addon, String id, String description) {
 		setKey(key);
-		this.addonName = name;
-		this.description = description;
-		this.id = id;
-		this.addon = null;
-	}
-
-	public KeyBinding(int key, Addon addon, String id, String description) {
-		setKey(key);
-		this.addon = addon;
-		this.addonName = addon.getDescription().getName();
+		this.addonName = addon;
+		this.addonName = addon;
 		this.description = description;
 		this.id = id;
 	}
 
-	public Addon getAddon() {
-		if (addon == null) {
-			addon = Spoutcraft.getAddonManager().getAddon(addonName);
-		}
-		return addon;
+	public String getAddon() {
+		return addonName;
 	}
 
-	public void setAddon(Addon addon) {
-		this.addon = addon;
+	public void setAddon(String addon) {
+		this.addonName = addon;
 	}
 
 	public String getId() {
@@ -109,7 +96,7 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return (new HashCodeBuilder()).append(getKey()).append(addon).append(id).append(uuid).toHashCode();
+		return (new HashCodeBuilder()).append(getKey()).append(addonName).append(id).append(uuid).toHashCode();
 	}
 
 	public void takeChanges(KeyBinding binding) {
@@ -119,14 +106,7 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 	}
 
 	public String getAddonName() {
-		if (addon == null) {
-			addon = Spoutcraft.getAddonManager().getAddon(addonName);
-		}
-		if (addon != null) {
-			return addon.getDescription().getName();
-		} else {
-			return addonName;
-		}
+		return addonName;
 	}
 
 	public void setDelegate(BindingExecutionDelegate myDelegate) {

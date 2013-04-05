@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeItem;
 // MCPatcher 
 
 public class Potion {
@@ -190,7 +190,7 @@ public class Potion {
 	public Potion setPotionName(String par1Str) {
 		this.name = par1Str;
 		// MCPatcher Start
-		Colorizer.setupPotion(this);
+		ColorizeItem.setupPotion(this);
 		// MCPatcher End
 		return this;
 	}
@@ -224,8 +224,12 @@ public class Potion {
 	}
 
 	public static String getDurationString(PotionEffect par0PotionEffect) {
-		int var1 = par0PotionEffect.getDuration();
-		return StringUtils.ticksToElapsedTime(var1);
+		if (par0PotionEffect.func_100011_g()) {
+			return "**:**";
+		} else {
+			int var1 = par0PotionEffect.getDuration();
+			return StringUtils.ticksToElapsedTime(var1);
+		}
 	}
 
 	protected Potion setEffectiveness(double par1) {

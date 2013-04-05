@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeBlock;
+import com.prupe.mcpatcher.mod.Colorizer;
 // MCPatcher End
 
 public class ColorizerFoliage {
@@ -30,7 +31,7 @@ public class ColorizerFoliage {
 	 */
 	public static int getFoliageColorPine() {
 		// MCPatcher Start
-		return Colorizer.colorizeBiome(6396257, Colorizer.COLOR_MAP_PINE);
+		return ColorizeBlock.colorizeBiome(6396257, Colorizer.COLOR_MAP_PINE);
 		// MCPatcher End
 	}
 
@@ -39,13 +40,13 @@ public class ColorizerFoliage {
 	 */
 	public static int getFoliageColorBirch() {
 		// MCPatcher Start
-		return Colorizer.colorizeBiome(8431445, Colorizer.COLOR_MAP_BIRCH);
+		return ColorizeBlock.colorizeBiome(8431445, Colorizer.COLOR_MAP_BIRCH);
 		// MCPatcher End
 	}
 
 	public static int getFoliageColorBasic() {
 		// MCPatcher Start
-		return Colorizer.colorizeBiome(4764952, Colorizer.COLOR_MAP_FOLIAGE);
+		return ColorizeBlock.colorizeBiome(4764952, Colorizer.COLOR_MAP_FOLIAGE);
 		// MCPatcher End
 	}
 }

@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.config.MipMapUtils;
@@ -40,8 +39,8 @@ public class MipMapSlider extends GenericSlider {
 	}
 
 	@Override
-	public void onSliderDrag(SliderDragEvent event) {
-		Configuration.setMipmapsPercent(event.getNewPosition());
+	public void onSliderDrag(float old, float newPos) {
+		Configuration.setMipmapsPercent(newPos);
 		Configuration.write();
 		MipMapUtils.update();
 	}

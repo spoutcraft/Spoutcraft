@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,10 +10,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.imageio.ImageIO;
+
 import net.minecraft.client.Minecraft;
 // MCPatcher Start
-import com.pclewis.mcpatcher.TexturePackAPI;
+import com.prupe.mcpatcher.TexturePackAPI;
 // MCPatcher End
+import com.prupe.mcpatcher.TexturePackChangeHandler;
 
 public class TexturePackList {
 
@@ -77,19 +84,19 @@ public class TexturePackList {
 	public boolean setTexturePack(ITexturePack par1ITexturePack) {
 		if (par1ITexturePack == this.selectedTexturePack) {
 			// Spout Start
-			System.out.println("TexturePackList: Returned same texturePack.");
+			System.out.println("TexturePackList: Returned same texture pack");
 			// Spout End
 			return false;
 		} else {
 			// Spout Start
-			System.out.println("TexturePackList: Different Texturepack Selected..");
+			System.out.println("TexturePackList: Different texture pack selected");
 			// Spout End
 			this.isDownloading = false;
 			this.selectedTexturePack = par1ITexturePack;
 			this.mc.gameSettings.skin = par1ITexturePack.getTexturePackFileName();
 			this.mc.gameSettings.saveOptions();
 			// MCPatcher Start
-			TexturePackAPI.ChangeHandler.checkForTexturePackChange();
+			TexturePackChangeHandler.scheduleTexturePackRefresh();
 			// MCPatcher End
 			return true;
 		}
@@ -115,7 +122,7 @@ public class TexturePackList {
 		HashMap var3 = new HashMap();
 		GuiProgress var4 = new GuiProgress();
 		var3.put("X-Minecraft-Username", this.mc.session.username);
-		var3.put("X-Minecraft-Version", "1.4.7");
+		var3.put("X-Minecraft-Version", "1.5.1");
 		var3.put("X-Minecraft-Supported-Resolutions", "16");
 		this.isDownloading = true;
 		this.mc.displayGuiScreen(var4);
@@ -155,7 +162,7 @@ public class TexturePackList {
 				Object var5 = (ITexturePack)this.texturePackCache.get(var4);
 
 				if (var5 == null) {
-					var5 = var3.isDirectory() ? new TexturePackFolder(var4, var3) : new TexturePackCustom(var4, var3);
+					var5 = var3.isDirectory() ? new TexturePackFolder(var4, var3, defaultTexturePack) : new TexturePackCustom(var4, var3, defaultTexturePack);
 					this.texturePackCache.put(var4, var5);
 				}
 
@@ -226,7 +233,7 @@ public class TexturePackList {
 		}
 	}
 
-	static boolean func_77301_a(TexturePackList par0TexturePackList) {
+	static boolean isDownloading(TexturePackList par0TexturePackList) {
 		return par0TexturePackList.isDownloading;
 	}
 
@@ -243,6 +250,10 @@ public class TexturePackList {
 	 */
 	static String generateTexturePackID(TexturePackList par0TexturePackList, File par1File) {
 		return par0TexturePackList.generateTexturePackID(par1File);
+	}
+
+	public static ITexturePack func_98143_h() { //Spout protected -> public
+		return defaultTexturePack;
 	}
 
 	static Minecraft getMinecraft(TexturePackList par0TexturePackList) {
@@ -262,4 +273,29 @@ public class TexturePackList {
 		return (TexturePackImplementation)defaultTexturePack;
 	}
 	// MCPatcher End
+
+	// Spout Start
+	public static int getTileSize(TexturePackImplementation var0) {
+		//TODO broken
+		return 16;
+		/*int var1 = 0;
+		Iterator var2 = expectedColumns.entrySet().iterator();
+		while (var2.hasNext()) {
+			Entry var3 = (Entry)var2.next();
+			InputStream var4 = null;
+			try {
+				var4 = getResourceAsStream(var0, (String)var3.getKey());
+				if (var4 != null) {
+					BufferedImage var5 = ImageIO.read(var4);
+					int var6 = var5.getWidth() / ((Integer)var3.getValue()).intValue();
+					var1 = Math.max(var1, var6);
+				}
+			} catch (Exception var10) {
+			} finally {
+				MCPatcherUtils.close(var4);
+			}
+		}
+		return var1 > 0 ? var1 : 16; */
+	}
+	// Spout End
 }

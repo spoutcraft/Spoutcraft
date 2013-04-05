@@ -2,7 +2,8 @@ package net.minecraft.src;
 
 import java.util.Random;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeBlock;
+import com.prupe.mcpatcher.mod.Colorizer;
 // MCPatcher End
 
 public class BiomeGenSwamp extends BiomeGenBase {
@@ -33,7 +34,7 @@ public class BiomeGenSwamp extends BiomeGenBase {
 		double var1 = (double)this.getFloatTemperature();
 		double var3 = (double)this.getFloatRainfall();
 		// MCPatcher Start
-		return Colorizer.colorizeBiome(((ColorizerGrass.getGrassColor(var1, var3) & 16711422) + 5115470) / 2, Colorizer.COLOR_MAP_SWAMP_GRASS, var1, var3);
+		return ColorizeBlock.colorizeBiome(((ColorizerGrass.getGrassColor(var1, var3) & 16711422) + 5115470) / 2, Colorizer.COLOR_MAP_SWAMP_GRASS, var1, var3);
 		// MCPatcher End
 	}
 
@@ -44,7 +45,7 @@ public class BiomeGenSwamp extends BiomeGenBase {
 		double var1 = (double)this.getFloatTemperature();
 		double var3 = (double)this.getFloatRainfall();
 		// MCPatcher Start
-		return Colorizer.colorizeBiome(((ColorizerFoliage.getFoliageColor(var1, var3) & 16711422) + 5115470) / 2, Colorizer.COLOR_MAP_SWAMP_FOLIAGE, var1, var3);
+		return ColorizeBlock.colorizeBiome(((ColorizerFoliage.getFoliageColor(var1, var3) & 16711422) + 5115470) / 2, Colorizer.COLOR_MAP_SWAMP_FOLIAGE, var1, var3);
 		// MCPatcher End
 	}
 }

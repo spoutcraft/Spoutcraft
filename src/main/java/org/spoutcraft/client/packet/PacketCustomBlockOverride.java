@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketCustomBlockOverride implements SpoutPacket {
 	private int x;
@@ -84,8 +85,8 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 	}
 
 	public void run(int PlayerId) {
-		Spoutcraft.getWorld().getChunkAt(x, y, z).setCustomBlockId(x, y, z, blockId);
-		Spoutcraft.getWorld().getChunkAt(x, y, z).setCustomBlockData(x, y, z, data);
+		Spoutcraft.getChunkAt(SpoutClient.getInstance().getRawWorld(), x, y, z).setCustomBlockId(x, y, z, blockId);
+		Spoutcraft.getChunkAt(SpoutClient.getInstance().getRawWorld(), x, y, z).setCustomBlockData(x, y, z, data);
 	}
 
 	public PacketType getPacketType() {

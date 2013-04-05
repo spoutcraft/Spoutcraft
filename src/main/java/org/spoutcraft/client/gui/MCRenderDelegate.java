@@ -164,7 +164,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	public void render(GenericButton button) {
 		if (button.isVisible()) {
 			FontRenderer font = Minecraft.theMinecraft.fontRenderer;
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, Minecraft.theMinecraft.renderEngine.getTexture("/gui/gui.png"));
+			SpoutClient.getHandle().renderEngine.bindTexture("/gui/gui.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) Math.floor(button.getScreenX()), (float) Math.floor(button.getScreenY()), 0);
 			float width = (float) (button.getWidth() < 200 ? button.getWidth() : 200);
@@ -318,7 +318,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(GenericSlider slider) {
 		if (slider.isVisible()) {
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, Minecraft.theMinecraft.renderEngine.getTexture("/gui/gui.png"));
+			SpoutClient.getHandle().renderEngine.bindTexture("/gui/gui.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			float width = (float) (slider.getWidth() < 200 ? slider.getWidth() : 200);
 			GL11.glTranslatef((float) slider.getScreenX(), (float) slider.getScreenY(), 0);
@@ -392,7 +392,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(GenericTexture texture) {
-		String addon = texture.getAddon().getDescription().getName();
+		String addon = texture.getAddon();
 		String url = texture.getUrl();
 		org.newdawn.slick.opengl.Texture textureBinding;
 		if (texture.isLocal()) {
@@ -407,12 +407,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				texture.setOriginalHeight(textureBinding.getImageHeight());
 			}
 			if (texture.getFinishDelegate() != null) {
-				boolean oldLock = SpoutClient.enableSandbox();
-				try {
-					texture.getFinishDelegate().run();
-				} finally {
-					SpoutClient.enableSandbox(oldLock);
-				}
+				texture.getFinishDelegate().run();
 				texture.setFinishDelegate(null);
 			}
 
@@ -443,7 +438,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glBlendFunc(770, 771);
 		GL11.glDepthMask(false);
 		bindColor(new Color(1.0F, 1.0F, 1.0F));
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
+		SpoutClient.getHandle().renderEngine.bindTexture(textureId);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		double tLeft = 0, tTop = 0, rWidth = bitmap.getWidth(), rHeight = bitmap.getHeight(), tWidth = rWidth, tHeight = rHeight;
@@ -712,7 +707,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 		GL11.glDepthMask(false);
 		bindColor(color);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
+		SpoutClient.getHandle().renderEngine.bindTexture(textureBinding.getTextureID());
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filter);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filter);
 		if (mipmap) {
@@ -829,9 +824,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		// Draw scrollbars
 		if (gs.needsScrollBar(Orientation.HORIZONTAL)) {
-			Minecraft mc = SpoutClient.getHandle();
-			int texture = mc.renderEngine.getTexture("/gui/allitems.png");
-			mc.renderEngine.bindTexture(texture);
+			SpoutClient.getHandle().renderEngine.bindTexture("/gui/allitems.png");
 			double scrollX = 0;
 			double p = (double) scrollLeft / (double) gs.getMaximumScrollPosition(Orientation.HORIZONTAL);
 			scrollX = 3 + p * (gs.getViewportSize(Orientation.HORIZONTAL) - 16.0 - 6);
@@ -840,16 +833,13 @@ public class MCRenderDelegate implements RenderDelegate {
 			RenderUtil.drawTexturedModalRectangle((int) scrollX, (int) (gs.getHeight() - 16), 232, 0, 12, 15, 0f);
 		}
 		if (gs.needsScrollBar(Orientation.VERTICAL)) {
-			Minecraft mc = SpoutClient.getHandle();
-			int texture = mc.renderEngine.getTexture("/gui/allitems.png");
-			mc.renderEngine.bindTexture(texture);
+			SpoutClient.getHandle().renderEngine.bindTexture("/gui/allitems.png");
 			double scrollY = 0;
 			double p = (double) scrollTop / (double) gs.getMaximumScrollPosition(Orientation.VERTICAL);
 			scrollY = 3 + p * (gs.getViewportSize(Orientation.VERTICAL) - 16.0 - 6);
 			RenderUtil.drawGradientRectangle((int) gs.getWidth() - 16, 0, (int) gs.getWidth(), (int) gs.getHeight(), scrollBarColor.toInt(), scrollBarColor2.toInt());
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			RenderUtil.drawTexturedModalRectangle((int) (gs.getWidth() - 16), (int) scrollY, 232, 0, 12, 15, 0f);
-
 			RenderUtil.drawGradientRectangle(0, -1, (int) gs.getWidth(), 5, new Color(0.0F, 0.0F, 0.0F, 1.0F).toInt(), new Color(0.0F, 0.0F, 0.0F, 0.0F).toInt());
 			RenderUtil.drawGradientRectangle(0, (int) gs.getHeight() - 5, (int) gs.getWidth() + 1, (int) gs.getHeight(), new Color(0.0F, 0.0F, 0.0F, 0.0F).toInt(), new Color(0.0F, 0.0F, 0.0F, 1.0F).toInt());
 		}

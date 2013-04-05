@@ -281,7 +281,7 @@ public abstract class GuiSlot {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_FOG);
 		Tessellator var18 = Tessellator.instance;
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/background.png"));
+		this.mc.renderEngine.bindTexture("/gui/background.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var17 = 32.0F;
 		var18.startDrawingQuads();
@@ -415,7 +415,7 @@ public abstract class GuiSlot {
 		GL11.glPushMatrix();
 		// Spout End
 		Tessellator var5 = Tessellator.instance;
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/background.png"));
+		this.mc.renderEngine.bindTexture("/gui/background.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		// Spout Start
 		GL11.glTranslatef(0, 0, -0.1f);

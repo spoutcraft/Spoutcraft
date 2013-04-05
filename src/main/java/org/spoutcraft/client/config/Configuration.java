@@ -164,6 +164,7 @@ public class Configuration {
 	}
 
 	private static void updateMCConfig() {
+		Minecraft.theMinecraft.gameSettings.ambientOcclusion = Configuration.isAmbientOcclusion() ? 2 : 0;
 		Minecraft.theMinecraft.gameSettings.anaglyph = Configuration.isAnaglyph3D();
 		Minecraft.theMinecraft.gameSettings.renderDistance = Configuration.getRenderDistance();
 		Minecraft.theMinecraft.gameSettings.fancyGraphics = Configuration.isFancyGraphics();

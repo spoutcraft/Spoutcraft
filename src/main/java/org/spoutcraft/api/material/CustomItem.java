@@ -19,14 +19,12 @@
  */
 package org.spoutcraft.api.material;
 
-import org.spoutcraft.api.addon.Addon;
-
 public interface CustomItem extends Item {
 	public int getCustomId();
 
 	public String getFullName();
 
-	public Addon getAddon();
+	public String getAddon();
 
 	public CustomItem setTexture(String texture);
 

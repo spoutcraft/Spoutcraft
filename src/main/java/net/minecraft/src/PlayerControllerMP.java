@@ -21,9 +21,6 @@ public class PlayerControllerMP {
 	/** Current block damage (MP) */
 	private float curBlockDamageMP = 0.0F;
 
-	/** Previous block damage (MP) */
-	private float prevBlockDamageMP = 0.0F;
-
 	/**
 	 * Tick counter, when it hits 4 it resets back to 0 and plays the step sound
 	 */
@@ -66,7 +63,13 @@ public class PlayerControllerMP {
 		this.currentGameType.configurePlayerCapabilities(par1EntityPlayer.capabilities);
 	}
 
-	public boolean func_78747_a() {
+	/**
+	 * If modified to return true, the player spins around slowly around (0, 68.5, 0). The GUI is disabled, the view is set
+	 * to first person, and both chat and menu are disabled. Unless the server is modified to ignore illegal stances,
+	 * attempting to enter a world at all will result in an immediate kick due to an illegal stance. Appears to be left-
+	 * over debug, or demo code.
+	 */
+	public boolean enableEverythingIsScrewedUpMode() {
 		return false;
 	}
 
@@ -104,7 +107,7 @@ public class PlayerControllerMP {
 			} else {
 				var5.playAuxSFX(2001, par1, par2, par3, var6.blockID + (var5.getBlockMetadata(par1, par2, par3) << 12));
 				int var7 = var5.getBlockMetadata(par1, par2, par3);
-				boolean var8 = var5.setBlockWithNotify(par1, par2, par3, 0);
+				boolean var8 = var5.setBlockToAir(par1, par2, par3);
 
 				if (var8) {
 					var6.onBlockDestroyedByPlayer(var5, par1, par2, par3, var7);
@@ -150,7 +153,9 @@ public class PlayerControllerMP {
 					Block.blocksList[var5].onBlockClicked(this.mc.theWorld, par1, par2, par3, this.mc.thePlayer);
 				}
 
-				if (var5 > 0 && Block.blocksList[var5].getPlayerRelativeBlockHardness(this.mc.thePlayer) >= 1.0F) { // Spout
+				// Spout Start
+				if (var5 > 0 && Block.blocksList[var5].getPlayerRelativeBlockHardness(this.mc.thePlayer) >= 1.0F) {
+				// Spout End
 					this.onPlayerDestroyBlock(par1, par2, par3, par4);
 				} else {
 					this.isHittingBlock = true;
@@ -159,9 +164,8 @@ public class PlayerControllerMP {
 					this.currentblockZ = par3;
 					this.field_85183_f = this.mc.thePlayer.getHeldItem();
 					this.curBlockDamageMP = 0.0F;
-					this.prevBlockDamageMP = 0.0F;
 					this.stepSoundTickCounter = 0.0F;
-					this.mc.theWorld.cancelDestroyingBlock(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
+					this.mc.theWorld.destroyBlockInWorldPartially(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
 				}
 			}
 		}
@@ -177,7 +181,7 @@ public class PlayerControllerMP {
 
 		this.isHittingBlock = false;
 		this.curBlockDamageMP = 0.0F;
-		this.mc.theWorld.cancelDestroyingBlock(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, -1);
+		this.mc.theWorld.destroyBlockInWorldPartially(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, -1);
 	}
 
 	/**
@@ -202,7 +206,9 @@ public class PlayerControllerMP {
 				}
 
 				Block var6 = Block.blocksList[var5];
-				this.curBlockDamageMP += var6.getPlayerRelativeBlockHardness(this.mc.thePlayer); // Spout
+				// Spout Start
+				this.curBlockDamageMP += var6.getPlayerRelativeBlockHardness(this.mc.thePlayer);
+				// Spout End
 
 				if (this.stepSoundTickCounter % 4.0F == 0.0F && var6 != null) {
 					this.mc.sndManager.playSound(var6.stepSound.getStepSound(), (float)par1 + 0.5F, (float)par2 + 0.5F, (float)par3 + 0.5F, (var6.stepSound.getVolume() + 1.0F) / 8.0F, var6.stepSound.getPitch() * 0.5F);
@@ -215,12 +221,11 @@ public class PlayerControllerMP {
 					this.netClientHandler.addToSendQueue(new Packet14BlockDig(2, par1, par2, par3, par4));
 					this.onPlayerDestroyBlock(par1, par2, par3, par4);
 					this.curBlockDamageMP = 0.0F;
-					this.prevBlockDamageMP = 0.0F;
 					this.stepSoundTickCounter = 0.0F;
 					this.blockHitDelay = 5;
 				}
 
-				this.mc.theWorld.cancelDestroyingBlock(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
+				this.mc.theWorld.destroyBlockInWorldPartially(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
 			} else {
 				this.clickBlock(par1, par2, par3, par4);
 			}
@@ -236,12 +241,18 @@ public class PlayerControllerMP {
 
 	public void updateController() {
 		this.syncCurrentPlayItem();
-		this.prevBlockDamageMP = this.curBlockDamageMP;
 		this.mc.sndManager.playRandomMusicIfReady();
 	}
 
 	private boolean func_85182_a(int par1, int par2, int par3) {
-		return par1 == this.currentBlockX && par2 == this.currentBlockY && par3 == this.currentblockZ && this.field_85183_f == this.mc.thePlayer.getHeldItem();
+		ItemStack var4 = this.mc.thePlayer.getHeldItem();
+		boolean var5 = this.field_85183_f == null && var4 == null;
+
+		if (this.field_85183_f != null && var4 != null) {
+			var5 = var4.itemID == this.field_85183_f.itemID && ItemStack.areItemStackTagsEqual(var4, this.field_85183_f) && (var4.isItemStackDamageable() || var4.getItemDamage() == this.field_85183_f.getItemDamage());
+		}
+
+		return par1 == this.currentBlockX && par2 == this.currentBlockY && par3 == this.currentblockZ && var5;
 	}
 
 	/**
@@ -265,16 +276,20 @@ public class PlayerControllerMP {
 		float var10 = (float)par8Vec3.yCoord - (float)par5;
 		float var11 = (float)par8Vec3.zCoord - (float)par6;
 		boolean var12 = false;
-		int var13 = par2World.getBlockId(par4, par5, par6);
+		int var13;
 
-		if (var13 > 0 && Block.blocksList[var13].onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, var9, var10, var11)) {
-			var12 = true;
+		if (!par1EntityPlayer.isSneaking() || par1EntityPlayer.getHeldItem() == null) {
+			var13 = par2World.getBlockId(par4, par5, par6);
+
+			if (var13 > 0 && Block.blocksList[var13].onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, var9, var10, var11)) {
+				var12 = true;
+			}
 		}
 
 		if (!var12 && par3ItemStack != null && par3ItemStack.getItem() instanceof ItemBlock) {
-			ItemBlock var14 = (ItemBlock)par3ItemStack.getItem();
+			ItemBlock var16 = (ItemBlock)par3ItemStack.getItem();
 
-			if (!var14.canPlaceItemBlockOnSide(par2World, par4, par5, par6, par7, par1EntityPlayer, par3ItemStack)) {
+			if (!var16.canPlaceItemBlockOnSide(par2World, par4, par5, par6, par7, par1EntityPlayer, par3ItemStack)) {
 				return false;
 			}
 		}
@@ -286,12 +301,12 @@ public class PlayerControllerMP {
 		} else if (par3ItemStack == null) {
 			return false;
 		} else if (this.currentGameType.isCreative()) {
-			int var17 = par3ItemStack.getItemDamage();
-			int var15 = par3ItemStack.stackSize;
-			boolean var16 = par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, var9, var10, var11);
-			par3ItemStack.setItemDamage(var17);
-			par3ItemStack.stackSize = var15;
-			return var16;
+			var13 = par3ItemStack.getItemDamage();
+			int var14 = par3ItemStack.stackSize;
+			boolean var15 = par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, var9, var10, var11);
+			par3ItemStack.setItemDamage(var13);
+			par3ItemStack.stackSize = var14;
+			return var15;
 		} else {
 			return par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, var9, var10, var11);
 		}

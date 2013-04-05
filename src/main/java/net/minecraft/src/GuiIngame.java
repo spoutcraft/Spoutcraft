@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
 import java.awt.Color;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
@@ -8,11 +10,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // Spout Start
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.api.gui.InGameHUD;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.ZanMinimap;
-import org.spoutcraft.api.gui.InGameHUD;
 // Spout End
 
 public class GuiIngame extends Gui {
@@ -88,12 +90,12 @@ public class GuiIngame extends Gui {
 		}
 		GL11.glBlendFunc(770, 771);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/gui/gui.png"));
+		this.mc.renderEngine.bindTexture("/gui/gui.png");
 		InventoryPlayer var11 = this.mc.thePlayer.inventory;
 		this.zLevel = -90.0F;
 		this.drawTexturedModalRect(screenWidth / 2 - 91, screenHeight - 22, 0, 0, 182, 22);
 		this.drawTexturedModalRect(screenWidth / 2 - 91 - 1 + var11.currentItem * 20, screenHeight - 22 - 1, 0, 22, 24, 22);
-		GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/gui/icons.png"));
+		this.mc.renderEngine.bindTexture("/gui/icons.png");
 		GL11.glEnable(3042 /* GL_BLEND */);
 		GL11.glBlendFunc(775, 769);
 		this.drawTexturedModalRect(screenWidth / 2 - 7, screenHeight / 2 - 7, 0, 0, 16, 16);
@@ -104,10 +106,6 @@ public class GuiIngame extends Gui {
 		int var17;
 
 		this.renderBossHealth();
-
-		// Better safe than sorry
-		SpoutClient.enableSandbox();
-
 		// Toggle visibility if needed
 		if (needsUpdate && mainScreen.getHealthBar().isVisible() == mc.playerController.isInCreativeMode()) {
 			mainScreen.toggleSurvivalHUD(!mc.playerController.isInCreativeMode());
@@ -133,8 +131,6 @@ public class GuiIngame extends Gui {
 		// Exp Bar Begin
 		mainScreen.getExpBar().render();
 		// Exp Bar End
-
-		SpoutClient.disableSandbox();
 
 		map.onRenderTick();
 
@@ -170,14 +166,12 @@ public class GuiIngame extends Gui {
 			GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
 		}
 
-		SpoutClient.enableSandbox();
 		mainScreen.render();
-		SpoutClient.disableSandbox();
 		if (this.mc.gameSettings.showDebugInfo) {
 			this.mc.mcProfiler.startSection("debug");
 			GL11.glPushMatrix();
 			if (Configuration.getFastDebug() != 2) {
-				font.drawStringWithShadow("Minecraft 1.4.7 (" + this.mc.debug + ")", 2, 2, 16777215);
+				font.drawStringWithShadow("Minecraft 1.5 (" + this.mc.debug + ")", 2, 2, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 				font.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -192,7 +186,7 @@ public class GuiIngame extends Gui {
 				this.drawString(font, var45, screenWidth - font.getStringWidth(var45) - 2, 12, 14737632);
 				int var47 = MathHelper.floor_double(this.mc.thePlayer.posX);
 				int var22 = MathHelper.floor_double(this.mc.thePlayer.posY);
-				int var23 = MathHelper.floor_double(this.mc.thePlayer.posZ);				
+				int var23 = MathHelper.floor_double(this.mc.thePlayer.posZ);
 				if(SpoutClient.getInstance().isCoordsCheat()) {
 					this.drawString(font, String.format("x: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posX), Integer.valueOf(var47), Integer.valueOf(var47 >> 4), Integer.valueOf(var47 & 15)}), 2, 64, 14737632);
 					this.drawString(font, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
@@ -200,7 +194,7 @@ public class GuiIngame extends Gui {
 					int var24 = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 					this.drawString(font, "f: " + var24 + " (" + Direction.directions[var24] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
 				}
-				
+
 				if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var47, var22, var23)) {
 					Chunk var48 = this.mc.theWorld.getChunkFromBlockCoords(var47, var23);
 					this.drawString(font, "lc: " + (var48.getTopFilledSegment() + 15) + " b: " + var48.getBiomeGenForWorldCoords(var47 & 15, var23 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var48.getSavedLightValue(EnumSkyBlock.Block, var47 & 15, var22, var23 & 15) + " sl: " + var48.getSavedLightValue(EnumSkyBlock.Sky, var47 & 15, var22, var23 & 15) + " rl: " + var48.getBlockLightValue(var47 & 15, var22, var23 & 15, 0), 2, 96, 14737632);
@@ -332,6 +326,49 @@ public class GuiIngame extends Gui {
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 	}
 
+	private void func_96136_a(ScoreObjective par1ScoreObjective, int par2, int par3, FontRenderer par4FontRenderer) {
+		Scoreboard var5 = par1ScoreObjective.func_96682_a();
+		Collection var6 = var5.func_96534_i(par1ScoreObjective);
+
+		if (var6.size() <= 15) {
+			int var7 = par4FontRenderer.getStringWidth(par1ScoreObjective.func_96678_d());
+			String var11;
+
+			for (Iterator var8 = var6.iterator(); var8.hasNext(); var7 = Math.max(var7, par4FontRenderer.getStringWidth(var11))) {
+				Score var9 = (Score)var8.next();
+				ScorePlayerTeam var10 = var5.func_96509_i(var9.func_96653_e());
+				var11 = ScorePlayerTeam.func_96667_a(var10, var9.func_96653_e()) + ": " + EnumChatFormatting.RED + var9.func_96652_c();
+			}
+
+			int var22 = var6.size() * par4FontRenderer.FONT_HEIGHT;
+			int var23 = par2 / 2 + var22 / 3;
+			byte var25 = 3;
+			int var24 = par3 - var7 - var25;
+			int var12 = 0;
+			Iterator var13 = var6.iterator();
+
+			while (var13.hasNext()) {
+				Score var14 = (Score)var13.next();
+				++var12;
+				ScorePlayerTeam var15 = var5.func_96509_i(var14.func_96653_e());
+				String var16 = ScorePlayerTeam.func_96667_a(var15, var14.func_96653_e());
+				String var17 = EnumChatFormatting.RED + "" + var14.func_96652_c();
+				int var19 = var23 - var12 * par4FontRenderer.FONT_HEIGHT;
+				int var20 = par3 - var25 + 2;
+				drawRect(var24 - 2, var19, var20, var19 + par4FontRenderer.FONT_HEIGHT, 1342177280);
+				par4FontRenderer.drawString(var16, var24, var19, 553648127);
+				par4FontRenderer.drawString(var17, var20 - par4FontRenderer.getStringWidth(var17), var19, 553648127);
+
+				if (var12 == var6.size()) {
+					String var21 = par1ScoreObjective.func_96678_d();
+					drawRect(var24 - 2, var19 - par4FontRenderer.FONT_HEIGHT - 1, var20, var19 - 1, 1610612736);
+					drawRect(var24 - 2, var19 - 1, var20, var19, 1342177280);
+					par4FontRenderer.drawString(var21, var24 + var7 / 2 - par4FontRenderer.getStringWidth(var21) / 2, var19 - par4FontRenderer.FONT_HEIGHT, 553648127);
+				}
+			}
+		}
+	}
+
 	/**
 	 * Renders dragon's (boss) health on the HUD
 	 */
@@ -355,7 +392,7 @@ public class GuiIngame extends Gui {
 			String var8 = BossStatus.bossName;
 			var1.drawStringWithShadow(var8, var3 / 2 - var1.getStringWidth(var8) / 2, var7 - 10, 16777215);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/icons.png"));
+			this.mc.renderEngine.bindTexture("/gui/icons.png");
 		}
 	}
 
@@ -365,7 +402,7 @@ public class GuiIngame extends Gui {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("%blur%/misc/pumpkinblur.png"));
+		this.mc.renderEngine.bindTexture("%blur%/misc/pumpkinblur.png");
 		Tessellator var3 = Tessellator.instance;
 		var3.startDrawingQuads();
 		var3.addVertexWithUV(0.0D, (double)par2, -90.0D, 0.0D, 1.0D);
@@ -398,7 +435,7 @@ public class GuiIngame extends Gui {
 		GL11.glDepthMask(false);
 		GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_COLOR);
 		GL11.glColor4f(this.prevVignetteBrightness, this.prevVignetteBrightness, this.prevVignetteBrightness, 1.0F);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("%blur%/misc/vignette.png"));
+		this.mc.renderEngine.bindTexture("%blur%/misc/vignette.png");
 		Tessellator var4 = Tessellator.instance;
 		var4.startDrawingQuads();
 		var4.addVertexWithUV(0.0D, (double)par3, -90.0D, 0.0D, 1.0D);
@@ -427,18 +464,19 @@ public class GuiIngame extends Gui {
 		GL11.glDepthMask(false);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, par1);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
-		float var4 = (float)(Block.portal.blockIndexInTexture % 16) / 16.0F;
-		float var5 = (float)(Block.portal.blockIndexInTexture / 16) / 16.0F;
-		float var6 = (float)(Block.portal.blockIndexInTexture % 16 + 1) / 16.0F;
-		float var7 = (float)(Block.portal.blockIndexInTexture / 16 + 1) / 16.0F;
-		Tessellator var8 = Tessellator.instance;
-		var8.startDrawingQuads();
-		var8.addVertexWithUV(0.0D, (double)par3, -90.0D, (double)var4, (double)var7);
-		var8.addVertexWithUV((double)par2, (double)par3, -90.0D, (double)var6, (double)var7);
-		var8.addVertexWithUV((double)par2, 0.0D, -90.0D, (double)var6, (double)var5);
-		var8.addVertexWithUV(0.0D, 0.0D, -90.0D, (double)var4, (double)var5);
-		var8.draw();
+		this.mc.renderEngine.bindTexture("/terrain.png");
+		Icon var4 = Block.portal.getBlockTextureFromSide(1);
+		float var5 = var4.getMinU();
+		float var6 = var4.getMinV();
+		float var7 = var4.getMaxU();
+		float var8 = var4.getMaxV();
+		Tessellator var9 = Tessellator.instance;
+		var9.startDrawingQuads();
+		var9.addVertexWithUV(0.0D, (double)par3, -90.0D, (double)var5, (double)var8);
+		var9.addVertexWithUV((double)par2, (double)par3, -90.0D, (double)var7, (double)var8);
+		var9.addVertexWithUV((double)par2, 0.0D, -90.0D, (double)var7, (double)var6);
+		var9.addVertexWithUV(0.0D, 0.0D, -90.0D, (double)var5, (double)var6);
+		var9.draw();
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);

@@ -42,69 +42,33 @@ public class FileUtil {
 	}
 
 	public static File getCacheDir() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
-
 		File directory = new File(Minecraft.getMinecraftDir(), "cache");
 		if (!directory.exists()) {
 			directory.mkdir();
-		}
-
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
 
 	public static File getConfigDir() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
-
 		File directory = new File(Minecraft.getMinecraftDir(), "config");
 		if (!directory.exists()) {
 			directory.mkdir();
-		}
-
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
 
 	public static File getTempDir() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
-
 		File directory = new File(getCacheDir(), "temp");
 		if (!directory.exists()) {
 			directory.mkdir();
-		}
-
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
 
 	public static File getStatsDir() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
-
 		File directory = new File(Minecraft.getMinecraftDir(), "stats");
 		if (!directory.exists()) {
 			directory.mkdir();
-		}
-
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
@@ -156,36 +120,18 @@ public class FileUtil {
 	}
 
 	public static File getTexturePackDir() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
-
 		File directory = new File(Minecraft.getMinecraftDir(), "texturepacks");
 		if (!directory.exists()) {
 			directory.mkdir();
-		}
-
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
 
 	public static File getSelectedTexturePackZip() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
-
 		String fileName = Minecraft.theMinecraft.renderEngine.texturePack.selectedTexturePack.getTexturePackFileName();
 		File file = new File(getTexturePackDir(), fileName);
 		if (!file.exists()) {
 			file = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), fileName);
-		}
-
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
 		}
 		return file;
 	}

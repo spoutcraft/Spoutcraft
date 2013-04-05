@@ -23,26 +23,20 @@ import java.lang.ref.WeakReference;
 import java.util.HashSet;
 import java.util.Set;
 
-import gnu.trove.map.hash.TIntFloatHashMap;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.block.Block;
-import org.spoutcraft.api.block.Chunk;
-import org.spoutcraft.api.entity.Entity;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
-import org.spoutcraft.client.SpoutcraftWorld;
 
-public class SpoutcraftChunk implements Chunk {
+public class SpoutcraftChunk{
 	public static final Set<SpoutcraftChunk> loadedChunks = new HashSet<SpoutcraftChunk>();
 
 	private WeakReference<net.minecraft.src.Chunk> weakChunk;
 	private net.minecraft.src.World world;
 	private int x;
 	private int z;
-	public final TIntFloatHashMap hardnessOverrides = new TIntFloatHashMap();
 	private short[] customBlockData = null;
 	private byte[] customBlockRotations = null;
 	public SpoutcraftChunk(net.minecraft.src.Chunk chunk) {
@@ -61,68 +55,12 @@ public class SpoutcraftChunk implements Chunk {
 		return c;
 	}
 
-	public Block getBlockAt(int x, int y, int z) {
-		return new SpoutcraftBlock(this,x,y,z);
-	}
-
-	public SpoutcraftWorld getWorld() {
-		return world.world;
-	}
-
 	public int getX() {
 		return x;
 	}
 
 	public int getZ() {
 		return z;
-	}
-
-	public boolean isLoaded() {
-		return getWorld().isChunkLoaded(this);
-	}
-
-	public boolean load() {
-		return getWorld().loadChunk(getX(), getZ(), true);
-	}
-
-	public boolean load(boolean generate) {
-		return getWorld().loadChunk(getX(), getZ(), generate);
-	}
-
-	public boolean unload() {
-		return getWorld().unloadChunk(getX(), getX());
-	}
-
-	public boolean unload(boolean save) {
-		return getWorld().unloadChunk(getX(), getZ(), save);
-	}
-
-	public boolean unload(boolean save, boolean safe) {
-		return getWorld().unloadChunk(getX(), getZ(), save, safe);
-	}
-
-	public byte[] getRawBlockIds() {
-		// TODO Fix
-		return null;
-	}
-
-	public Entity[] getEntities() {
-		int count = 0, index = 0;
-		net.minecraft.src.Chunk chunk = getHandle();
-		for (int i = 0; i < chunk.entityLists.length; i++) {
-			count += chunk.entityLists[i].size();
-		}
-
-		Entity[] entities = new Entity[count];
-		for (int i = 0; i < chunk.entityLists.length; i++) {
-			for (Object obj: chunk.entityLists[i].toArray()) {
-				if (!(obj instanceof net.minecraft.src.Entity)) {
-					continue;
-				}
-				entities[index++] = ((net.minecraft.src.Entity) obj).spoutEnty;
-			}
-		}
-		return entities;
 	}
 
 	public short getCustomBlockId(int x, int y, int z) {

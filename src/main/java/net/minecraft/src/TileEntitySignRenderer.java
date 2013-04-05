@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-
+// MCPatcher Start - Unused import
+//import com.prupe.mcpatcher.mod.ColorizeWorld;
+// MCPatcher End
 // Spout Start
 import net.minecraft.client.Minecraft;
 import org.spoutcraft.client.config.Configuration;
@@ -67,8 +69,8 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		// Spout Start
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		// Spout End
 		byte var13 = 0;
+		// Spout End
 
 		for (int var14 = 0; var14 < par1TileEntitySign.signText.length; ++var14) {
 			String var15 = par1TileEntitySign.signText[var14];
@@ -81,7 +83,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 					before = var15.substring(0, endColumnStart);
 				}
 				String after = "";
-				if(var15.length() - par1TileEntitySign.columnBeingEdited > 0) {
+				if (var15.length() - par1TileEntitySign.columnBeingEdited > 0) {
 					after = var15.substring(par1TileEntitySign.columnBeingEdited, var15.length());
 				}
 				var15 = before + "_" + after;

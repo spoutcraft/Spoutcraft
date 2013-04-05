@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
-
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -11,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.ScreenType;
@@ -66,6 +67,17 @@ public abstract class GuiContainer extends GuiScreen {
 	private ItemStack returningStack = null;
 	private Slot field_92033_y = null;
 	private long field_92032_z = 0L;
+	protected final Set field_94077_p = new HashSet();
+	protected boolean field_94076_q;
+	private int field_94071_C = 0;
+	private int field_94067_D = 0;
+	private boolean field_94068_E = false;
+	private int field_94069_F;
+	private long field_94070_G = 0L;
+	private Slot field_94072_H = null;
+	private int field_94073_I = 0;
+	private boolean field_94074_J;
+	private ItemStack field_94075_K = null;
 
 	// Spout Start
 	private Button orderByAlphabet, orderById;
@@ -76,6 +88,7 @@ public abstract class GuiContainer extends GuiScreen {
 
 	public GuiContainer(Container par1Container) {
 		this.inventorySlots = par1Container;
+		this.field_94068_E = true;
 	}
 
 	/**
@@ -87,31 +100,30 @@ public abstract class GuiContainer extends GuiScreen {
 		this.guiLeft = (this.width - this.xSize) / 2;
 		this.guiTop = (this.height - this.ySize) / 2;
 
-		// Spout Start		
+		// Spout Start
 		if (Spoutcraft.hasPermission("spout.plugin.sortinventory")) {
-			Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 			orderByAlphabet = new GenericButton("A-Z");
 			orderById = new GenericButton("Id");
 			orderByAlphabet.setTooltip("Will sort the inventory contents by their name");
 			orderById.setTooltip("Will sort the inventory contents by their id");
 			ScreenType type = ScreenUtil.getType(this);
-			
+
 			if (type == ScreenType.PLAYER_INVENTORY) {
 				if (!this.mc.thePlayer.getActivePotionEffects().isEmpty()) {
-				orderByAlphabet.setGeometry((guiLeft+146), (guiTop+65), 27, 13);		
-				orderById.setGeometry((guiLeft+176), (guiTop+65), 22, 13);
+					orderByAlphabet.setGeometry((guiLeft+146), (guiTop+65), 27, 13);
+					orderById.setGeometry((guiLeft+176), (guiTop+65), 22, 13);
 				} else {
-					orderByAlphabet.setGeometry((guiLeft+86), (guiTop+65), 27, 13);		
+					orderByAlphabet.setGeometry((guiLeft+86), (guiTop+65), 27, 13);
 					orderById.setGeometry((guiLeft+116), (guiTop+65), 22, 13);
 				}
-			} else if (type == ScreenType.CHEST_INVENTORY) {				
+			} else if (type == ScreenType.CHEST_INVENTORY) {
 				orderByAlphabet.setGeometry((guiLeft+115), (guiTop+3), 27, 12);
 				orderById.setGeometry((guiLeft+145), (guiTop+3), 22, 12);
 			}
-			
+
 			IInventory inv = inventorySlots.getIInventory();
 			if (inv != null && inventorySlots.isSortableInventory()) {
-				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById);
+				getScreen().attachWidgets("Spoutcraft", orderByAlphabet, orderById);
 			}
 		}
 		// Spout End
@@ -127,7 +139,6 @@ public abstract class GuiContainer extends GuiScreen {
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
-
 
 	public void buttonClicked(Button btn) {
 		if (btn == orderByAlphabet || btn == orderById) {
@@ -340,20 +351,28 @@ public abstract class GuiContainer extends GuiScreen {
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
 			}
 		}
-		
+
 		InventoryPlayer var15 = this.mc.thePlayer.inventory;
 		ItemStack var16 = this.draggedStack == null ? var15.getItemStack() : this.draggedStack;
 
 		if (var16 != null) {
 			byte var18 = 8;
 			var9 = this.draggedStack == null ? 8 : 16;
+			String var10 = null;
 
 			if (this.draggedStack != null && this.isRightMouseClick) {
 				var16 = var16.copy();
 				var16.stackSize = MathHelper.ceiling_float_int((float)var16.stackSize / 2.0F);
+			} else if (this.field_94076_q && this.field_94077_p.size() > 1) {
+				var16 = var16.copy();
+				var16.stackSize = this.field_94069_F;
+
+				if (var16.stackSize == 0) {
+					var10 = "" + EnumChatFormatting.YELLOW + "0";
+				}
 			}
 
-			this.drawItemStack(var16, par1 - var4 - var18, par2 - var5 - var9);
+			this.drawItemStack(var16, par1 - var4 - var18, par2 - var5 - var9, var10);
 		}
 
 		if (this.returningStack != null) {
@@ -365,17 +384,17 @@ public abstract class GuiContainer extends GuiScreen {
 			}
 
 			var9 = this.returningStackDestSlot.xDisplayPosition - this.field_85049_r;
-			int var10 = this.returningStackDestSlot.yDisplayPosition - this.field_85048_s;
+			int var20 = this.returningStackDestSlot.yDisplayPosition - this.field_85048_s;
 			int var11 = this.field_85049_r + (int)((float)var9 * var17);
-			int var12 = this.field_85048_s + (int)((float)var10 * var17);
-			this.drawItemStack(this.returningStack, var11, var12);
+			int var12 = this.field_85048_s + (int)((float)var20 * var17);
+			this.drawItemStack(this.returningStack, var11, var12, (String)null);
 		}
-				
+
 		if (var15.getItemStack() == null && this.theSlot != null && this.theSlot.getHasStack()) {
 			ItemStack var19 = this.theSlot.getStack();
 			this.drawItemStackTooltip(var19, par1 - var4 + 8, par2 - var5 + 8);
 		}
-		
+
 		GL11.glPopMatrix();
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -383,12 +402,12 @@ public abstract class GuiContainer extends GuiScreen {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 	}
 
-	private void drawItemStack(ItemStack par1ItemStack, int par2, int par3) {		
+	private void drawItemStack(ItemStack par1ItemStack, int par2, int par3, String par4Str) {
 		GL11.glTranslatef(0.0F, 0.0F, 32.0F);
 		this.zLevel = 200.0F;
 		itemRenderer.zLevel = 200.0F;
 		itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3);
-		itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3 - (this.draggedStack == null ? 0 : 8));
+		itemRenderer.renderItemStack(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3 - (this.draggedStack == null ? 0 : 8), par4Str);
 		this.zLevel = 0.0F;
 		itemRenderer.zLevel = 0.0F;
 	}
@@ -404,8 +423,8 @@ public abstract class GuiContainer extends GuiScreen {
 
 		if (!var4.isEmpty()) {
 			int var5 = 0;
-			int var6;
 			int var7;
+			int var6;
 
 			for (var6 = 0; var6 < var4.size(); ++var6) {
 				var7 = this.fontRenderer.getStringWidth((String)var4.get(var6));
@@ -437,31 +456,31 @@ public abstract class GuiContainer extends GuiScreen {
 			this.drawGradientRect(var6 + var5 + 3, var7 - 3, var6 + var5 + 4, var7 + var9 + 3, var10, var10);
 			int var11 = 1347420415;
 			int var12 = (var11 & 16711422) >> 1 | var11 & -16777216;
-			this.drawGradientRect(var6 - 3, var7 - 3 + 1, var6 - 3 + 1, var7 + var9 + 3 - 1, var11, var12);
-			this.drawGradientRect(var6 + var5 + 2, var7 - 3 + 1, var6 + var5 + 3, var7 + var9 + 3 - 1, var11, var12);
-			this.drawGradientRect(var6 - 3, var7 - 3, var6 + var5 + 3, var7 - 3 + 1, var11, var11);
-			this.drawGradientRect(var6 - 3, var7 + var9 + 2, var6 + var5 + 3, var7 + var9 + 3, var12, var12);
+				this.drawGradientRect(var6 - 3, var7 - 3 + 1, var6 - 3 + 1, var7 + var9 + 3 - 1, var11, var12);
+				this.drawGradientRect(var6 + var5 + 2, var7 - 3 + 1, var6 + var5 + 3, var7 + var9 + 3 - 1, var11, var12);
+				this.drawGradientRect(var6 - 3, var7 - 3, var6 + var5 + 3, var7 - 3 + 1, var11, var11);
+				this.drawGradientRect(var6 - 3, var7 + var9 + 2, var6 + var5 + 3, var7 + var9 + 3, var12, var12);
 
-			for (int var13 = 0; var13 < var4.size(); ++var13) {
-				String var14 = (String)var4.get(var13);
+				for (int var13 = 0; var13 < var4.size(); ++var13) {
+					String var14 = (String)var4.get(var13);
 
-				if (var13 == 0) {
-					var14 = "\u00a7" + Integer.toHexString(par1ItemStack.getRarity().rarityColor) + var14;
-				} else {
-					var14 = "\u00a77" + var14;
+					if (var13 == 0) {
+						var14 = "\u00a7" + Integer.toHexString(par1ItemStack.getRarity().rarityColor) + var14;
+					} else {
+						var14 = EnumChatFormatting.GRAY + var14;
+					}
+
+					this.fontRenderer.drawStringWithShadow(var14, var6, var7, -1);
+
+					if (var13 == 0) {
+						var7 += 2;
+					}
+
+					var7 += 10;
 				}
 
-				this.fontRenderer.drawStringWithShadow(var14, var6, var7, -1);
-
-				if (var13 == 0) {
-					var7 += 2;
-				}
-
-				var7 += 10;
-			}
-
-			this.zLevel = 0.0F;
-			itemRenderer.zLevel = 0.0F;
+				this.zLevel = 0.0F;
+				itemRenderer.zLevel = 0.0F;
 		}
 	}
 
@@ -488,17 +507,17 @@ public abstract class GuiContainer extends GuiScreen {
 		this.drawGradientRect(var5 + var4 + 3, var6 - 3, var5 + var4 + 4, var6 + var8 + 3, var9, var9);
 		int var10 = 1347420415;
 		int var11 = (var10 & 16711422) >> 1 | var10 & -16777216;
-		this.drawGradientRect(var5 - 3, var6 - 3 + 1, var5 - 3 + 1, var6 + var8 + 3 - 1, var10, var11);
-		this.drawGradientRect(var5 + var4 + 2, var6 - 3 + 1, var5 + var4 + 3, var6 + var8 + 3 - 1, var10, var11);
-		this.drawGradientRect(var5 - 3, var6 - 3, var5 + var4 + 3, var6 - 3 + 1, var10, var10);
-		this.drawGradientRect(var5 - 3, var6 + var8 + 2, var5 + var4 + 3, var6 + var8 + 3, var11, var11);
-		this.fontRenderer.drawStringWithShadow(par1Str, var5, var6, -1);
-		this.zLevel = 0.0F;
-		itemRenderer.zLevel = 0.0F;
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		RenderHelper.enableStandardItemLighting();
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+				this.drawGradientRect(var5 - 3, var6 - 3 + 1, var5 - 3 + 1, var6 + var8 + 3 - 1, var10, var11);
+				this.drawGradientRect(var5 + var4 + 2, var6 - 3 + 1, var5 + var4 + 3, var6 + var8 + 3 - 1, var10, var11);
+				this.drawGradientRect(var5 - 3, var6 - 3, var5 + var4 + 3, var6 - 3 + 1, var10, var10);
+				this.drawGradientRect(var5 - 3, var6 + var8 + 2, var5 + var4 + 3, var6 + var8 + 3, var11, var11);
+				this.fontRenderer.drawStringWithShadow(par1Str, var5, var6, -1);
+				this.zLevel = 0.0F;
+				itemRenderer.zLevel = 0.0F;
+				GL11.glEnable(GL11.GL_LIGHTING);
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
+				RenderHelper.enableStandardItemLighting();
+				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 	}
 
 	/**
@@ -518,36 +537,91 @@ public abstract class GuiContainer extends GuiScreen {
 		int var2 = par1Slot.xDisplayPosition;
 		int var3 = par1Slot.yDisplayPosition;
 		ItemStack var4 = par1Slot.getStack();
-		boolean var5 = par1Slot == this.clickedSlot && this.draggedStack != null && !this.isRightMouseClick;
+		boolean var5 = false;
+		boolean var6 = par1Slot == this.clickedSlot && this.draggedStack != null && !this.isRightMouseClick;
+		ItemStack var7 = this.mc.thePlayer.inventory.getItemStack();
+		String var8 = null;
 
 		if (par1Slot == this.clickedSlot && this.draggedStack != null && this.isRightMouseClick && var4 != null) {
 			var4 = var4.copy();
 			var4.stackSize /= 2;
+		} else if (this.field_94076_q && this.field_94077_p.contains(par1Slot) && var7 != null) {
+			if (this.field_94077_p.size() == 1) {
+				return;
+			}
+
+			if (Container.func_94527_a(par1Slot, var7, true) && this.inventorySlots.func_94531_b(par1Slot)) {
+				var4 = var7.copy();
+				var5 = true;
+				Container.func_94525_a(this.field_94077_p, this.field_94071_C, var4, par1Slot.getStack() == null ? 0 : par1Slot.getStack().stackSize);
+
+				if (var4.stackSize > var4.getMaxStackSize()) {
+					var8 = EnumChatFormatting.YELLOW + "" + var4.getMaxStackSize();
+					var4.stackSize = var4.getMaxStackSize();
+				}
+
+				if (var4.stackSize > par1Slot.getSlotStackLimit()) {
+					var8 = EnumChatFormatting.YELLOW + "" + par1Slot.getSlotStackLimit();
+					var4.stackSize = par1Slot.getSlotStackLimit();
+				}
+			} else {
+				this.field_94077_p.remove(par1Slot);
+				this.func_94066_g();
+			}
 		}
 
 		this.zLevel = 100.0F;
 		itemRenderer.zLevel = 100.0F;
 
 		if (var4 == null) {
-			int var6 = par1Slot.getBackgroundIconIndex();
+			Icon var9 = par1Slot.getBackgroundIconIndex();
 
-			if (var6 >= 0) {
+			if (var9 != null) {
 				GL11.glDisable(GL11.GL_LIGHTING);
-				this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/gui/items.png"));
-				this.drawTexturedModalRect(var2, var3, var6 % 16 * 16, var6 / 16 * 16, 16, 16);
+				this.mc.renderEngine.bindTexture("/gui/items.png");
+				this.drawTexturedModelRectFromIcon(var2, var3, var9, 16, 16);
 				GL11.glEnable(GL11.GL_LIGHTING);
-				var5 = true;
+				var6 = true;
 			}
 		}
 
-		if (!var5) {
+		if (!var6) {
+			if (var5) {
+				drawRect(var2, var3, var2 + 16, var3 + 16, -2130706433);
+			}
+
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, var4, var2, var3);
-			itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var4, var2, var3);
+			itemRenderer.renderItemStack(this.fontRenderer, this.mc.renderEngine, var4, var2, var3, var8);
 		}
 
 		itemRenderer.zLevel = 0.0F;
 		this.zLevel = 0.0F;
+	}
+
+	private void func_94066_g() {
+		ItemStack var1 = this.mc.thePlayer.inventory.getItemStack();
+
+		if (var1 != null && this.field_94076_q) {
+			this.field_94069_F = var1.stackSize;
+			ItemStack var4;
+			int var5;
+
+			for (Iterator var2 = this.field_94077_p.iterator(); var2.hasNext(); this.field_94069_F -= var4.stackSize - var5) {
+				Slot var3 = (Slot)var2.next();
+				var4 = var1.copy();
+				var5 = var3.getStack() == null ? 0 : var3.getStack().stackSize;
+				Container.func_94525_a(this.field_94077_p, this.field_94071_C, var4, var5);
+
+				if (var4.stackSize > var4.getMaxStackSize()) {
+					var4.stackSize = var4.getMaxStackSize();
+				}
+
+				if (var4.stackSize > var3.getSlotStackLimit()) {
+					var4.stackSize = var3.getSlotStackLimit();
+				}
+			}
+		}
 	}
 
 	/**

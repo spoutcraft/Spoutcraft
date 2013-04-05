@@ -38,12 +38,13 @@ public class WorldServer extends World {
 	 */
 	private int blockEventCacheIndex = 0;
 	private static final WeightedRandomChestContent[] bonusChestContent = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.stick.itemID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.planks.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Item.axeStone.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.axeWood.itemID, 0, 1, 1, 5), new WeightedRandomChestContent(Item.pickaxeStone.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.pickaxeWood.itemID, 0, 1, 1, 5), new WeightedRandomChestContent(Item.appleRed.itemID, 0, 2, 3, 5), new WeightedRandomChestContent(Item.bread.itemID, 0, 2, 3, 3)};
+	private ArrayList field_94579_S = new ArrayList();
 
 	/** An IntHashMap of entity IDs (integers) to their Entity objects. */
 	private IntHashMap entityIdMap;
 
-	public WorldServer(MinecraftServer par1MinecraftServer, ISaveHandler par2ISaveHandler, String par3Str, int par4, WorldSettings par5WorldSettings, Profiler par6Profiler) {
-		super(par2ISaveHandler, par3Str, par5WorldSettings, WorldProvider.getProviderForDimension(par4), par6Profiler);
+	public WorldServer(MinecraftServer par1MinecraftServer, ISaveHandler par2ISaveHandler, String par3Str, int par4, WorldSettings par5WorldSettings, Profiler par6Profiler, ILogAgent par7ILogAgent) {
+		super(par2ISaveHandler, par3Str, par5WorldSettings, WorldProvider.getProviderForDimension(par4), par6Profiler, par7ILogAgent);
 		this.mcServer = par1MinecraftServer;
 		this.theEntityTracker = new EntityTracker(this);
 		this.thePlayerManager = new PlayerManager(this, par1MinecraftServer.getConfigurationManager().getViewDistance());
@@ -61,6 +62,16 @@ public class WorldServer extends World {
 		}
 
 		this.field_85177_Q = new Teleporter(this);
+		this.worldScoreboard = new ServerScoreboard(par1MinecraftServer);
+		ScoreboardSaveData var8 = (ScoreboardSaveData)this.mapStorage.loadData(ScoreboardSaveData.class, "scoreboard");
+
+		if (var8 == null) {
+			var8 = new ScoreboardSaveData();
+			this.mapStorage.setData("scoreboard", var8);
+		}
+
+		var8.func_96499_a(this.worldScoreboard);
+		((ServerScoreboard)this.worldScoreboard).func_96547_a(var8);
 	}
 
 	/**
@@ -96,14 +107,13 @@ public class WorldServer extends World {
 		}
 
 		this.theProfiler.endStartSection("chunkSource");
-		this.chunkProvider.unload100OldestChunks();
+		this.chunkProvider.unloadQueuedChunks();
 		int var4 = this.calculateSkylightSubtracted(1.0F);
 
 		if (var4 != this.skylightSubtracted) {
 			this.skylightSubtracted = var4;
 		}
 
-		this.sendAndApplyBlockEvents();
 		this.worldInfo.incrementTotalWorldTime(this.worldInfo.getWorldTotalTime() + 1L);
 		this.worldInfo.setWorldTime(this.worldInfo.getWorldTime() + 1L);
 		this.theProfiler.endStartSection("tickPending");
@@ -232,10 +242,10 @@ public class WorldServer extends World {
 			this.theProfiler.endStartSection("tickChunk");
 			var7.updateSkylight();
 			this.theProfiler.endStartSection("thunder");
-			int var8;
-			int var9;
 			int var10;
 			int var11;
+			int var8;
+			int var9;
 
 			if (this.rand.nextInt(100000) == 0 && this.isRaining() && this.isThundering()) {
 				this.updateLCG = this.updateLCG * 3 + 1013904223;
@@ -260,11 +270,11 @@ public class WorldServer extends World {
 				var11 = this.getPrecipitationHeight(var9 + var5, var10 + var6);
 
 				if (this.isBlockFreezableNaturally(var9 + var5, var11 - 1, var10 + var6)) {
-					this.setBlockWithNotify(var9 + var5, var11 - 1, var10 + var6, Block.ice.blockID);
+					this.setBlock(var9 + var5, var11 - 1, var10 + var6, Block.ice.blockID);
 				}
 
 				if (this.isRaining() && this.canSnowAt(var9 + var5, var11, var10 + var6)) {
-					this.setBlockWithNotify(var9 + var5, var11, var10 + var6, Block.snow.blockID);
+					this.setBlock(var9 + var5, var11, var10 + var6, Block.snow.blockID);
 				}
 
 				if (this.isRaining()) {
@@ -311,6 +321,14 @@ public class WorldServer extends World {
 	}
 
 	/**
+	 * Returns true if the given block will receive a scheduled tick in the future. Args: X, Y, Z, blockID
+	 */
+	public boolean isBlockTickScheduled(int par1, int par2, int par3, int par4) {
+		NextTickListEntry var5 = new NextTickListEntry(par1, par2, par3, par4);
+		return this.field_94579_S.contains(var5);
+	}
+
+	/**
 	 * Schedules a tick to a block with a delay (Most commonly the tick rate)
 	 */
 	public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5) {
@@ -319,7 +337,7 @@ public class WorldServer extends World {
 
 	public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6) {
 		NextTickListEntry var7 = new NextTickListEntry(par1, par2, par3, par4);
-		byte var8 = 8;
+		byte var8 = 0;
 
 		if (this.scheduledUpdatesAreImmediate && par4 > 0) {
 			if (Block.blocksList[par4].func_82506_l()) {
@@ -353,16 +371,17 @@ public class WorldServer extends World {
 	/**
 	 * Schedules a block update from the saved information in a chunk. Called when the chunk is loaded.
 	 */
-	public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5) {
-		NextTickListEntry var6 = new NextTickListEntry(par1, par2, par3, par4);
+	public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5, int par6) {
+		NextTickListEntry var7 = new NextTickListEntry(par1, par2, par3, par4);
+		var7.func_82753_a(par6);
 
 		if (par4 > 0) {
-			var6.setScheduledTime((long)par5 + this.worldInfo.getWorldTotalTime());
+			var7.setScheduledTime((long)par5 + this.worldInfo.getWorldTotalTime());
 		}
 
-		if (!this.field_73064_N.contains(var6)) {
-			this.field_73064_N.add(var6);
-			this.pendingTickListEntries.add(var6);
+		if (!this.field_73064_N.contains(var7)) {
+			this.field_73064_N.add(var7);
+			this.pendingTickListEntries.add(var7);
 		}
 	}
 
@@ -401,8 +420,11 @@ public class WorldServer extends World {
 				var2 = 1000;
 			}
 
+			this.theProfiler.startSection("cleaning");
+			NextTickListEntry var4;
+
 			for (int var3 = 0; var3 < var2; ++var3) {
-				NextTickListEntry var4 = (NextTickListEntry)this.pendingTickListEntries.first();
+				var4 = (NextTickListEntry)this.pendingTickListEntries.first();
 
 				if (!par1 && var4.scheduledTime > this.worldInfo.getWorldTotalTime()) {
 					break;
@@ -410,12 +432,22 @@ public class WorldServer extends World {
 
 				this.pendingTickListEntries.remove(var4);
 				this.field_73064_N.remove(var4);
-				byte var5 = 8;
+				this.field_94579_S.add(var4);
+			}
+
+			this.theProfiler.endSection();
+			this.theProfiler.startSection("ticking");
+			Iterator var14 = this.field_94579_S.iterator();
+
+			while (var14.hasNext()) {
+				var4 = (NextTickListEntry)var14.next();
+				var14.remove();
+				byte var5 = 0;
 
 				if (this.checkChunksExist(var4.xCoord - var5, var4.yCoord - var5, var4.zCoord - var5, var4.xCoord + var5, var4.yCoord + var5, var4.zCoord + var5)) {
 					int var6 = this.getBlockId(var4.xCoord, var4.yCoord, var4.zCoord);
 
-					if (var6 == var4.blockID && var6 > 0) {
+					if (var6 > 0 && Block.isAssociatedBlockID(var6, var4.blockID)) {
 						try {
 							Block.blocksList[var6].updateTick(this, var4.xCoord, var4.yCoord, var4.zCoord, this.rand);
 						} catch (Throwable var13) {
@@ -433,9 +465,13 @@ public class WorldServer extends World {
 							throw new ReportedException(var8);
 						}
 					}
+				} else {
+					this.scheduleBlockUpdate(var4.xCoord, var4.yCoord, var4.zCoord, var4.blockID, 0);
 				}
 			}
 
+			this.theProfiler.endSection();
+			this.field_94579_S.clear();
 			return !this.pendingTickListEntries.isEmpty();
 		}
 	}
@@ -443,26 +479,39 @@ public class WorldServer extends World {
 	public List getPendingBlockUpdates(Chunk par1Chunk, boolean par2) {
 		ArrayList var3 = null;
 		ChunkCoordIntPair var4 = par1Chunk.getChunkCoordIntPair();
-		int var5 = var4.chunkXPos << 4;
-		int var6 = var5 + 16;
-		int var7 = var4.chunkZPos << 4;
-		int var8 = var7 + 16;
-		Iterator var9 = this.pendingTickListEntries.iterator();
+		int var5 = (var4.chunkXPos << 4) - 2;
+		int var6 = var5 + 16 + 2;
+		int var7 = (var4.chunkZPos << 4) - 2;
+		int var8 = var7 + 16 + 2;
 
-		while (var9.hasNext()) {
-			NextTickListEntry var10 = (NextTickListEntry)var9.next();
+		for (int var9 = 0; var9 < 2; ++var9) {
+			Iterator var10;
 
-			if (var10.xCoord >= var5 && var10.xCoord < var6 && var10.zCoord >= var7 && var10.zCoord < var8) {
-				if (par2) {
-					this.field_73064_N.remove(var10);
-					var9.remove();
+			if (var9 == 0) {
+				var10 = this.pendingTickListEntries.iterator();
+			} else {
+				var10 = this.field_94579_S.iterator();
+
+				if (!this.field_94579_S.isEmpty()) {
+					System.out.println(this.field_94579_S.size());
 				}
+			}
 
-				if (var3 == null) {
-					var3 = new ArrayList();
+			while (var10.hasNext()) {
+				NextTickListEntry var11 = (NextTickListEntry)var10.next();
+
+				if (var11.xCoord >= var5 && var11.xCoord < var6 && var11.zCoord >= var7 && var11.zCoord < var8) {
+					if (par2) {
+						this.field_73064_N.remove(var11);
+						var10.remove();
+					}
+
+					if (var3 == null) {
+						var3 = new ArrayList();
+					}
+
+					var3.add(var11);
 				}
-
-				var3.add(var10);
 			}
 		}
 
@@ -524,14 +573,7 @@ public class WorldServer extends World {
 	 * Called when checking if a certain block can be mined or not. The 'spawn safe zone' check is located here.
 	 */
 	public boolean canMineBlock(EntityPlayer par1EntityPlayer, int par2, int par3, int par4) {
-		int var5 = MathHelper.abs_int(par2 - this.worldInfo.getSpawnX());
-		int var6 = MathHelper.abs_int(par4 - this.worldInfo.getSpawnZ());
-
-		if (var5 > var6) {
-			var6 = var5;
-		}
-
-		return var6 > 16 || this.mcServer.getConfigurationManager().areCommandsAllowed(par1EntityPlayer.username) || this.mcServer.isSinglePlayer();
+		return !this.mcServer.func_96290_a(this, par2, par3, par4, par1EntityPlayer);
 	}
 
 	protected void initialize(WorldSettings par1WorldSettings) {
@@ -571,7 +613,7 @@ public class WorldServer extends World {
 				var6 = var5.x;
 				var8 = var5.z;
 			} else {
-				System.out.println("Unable to find spawn biome");
+				this.getWorldLogAgent().logWarning("Unable to find spawn biome");
 			}
 
 			int var9 = 0;
@@ -643,7 +685,7 @@ public class WorldServer extends World {
 	 */
 	protected void saveLevel() throws MinecraftException {
 		this.checkSessionLock();
-		this.saveHandler.saveWorldInfoWithPlayer(this.worldInfo, this.mcServer.getConfigurationManager().getTagsFromLastWrite());
+		this.saveHandler.saveWorldInfoWithPlayer(this.worldInfo, this.mcServer.getConfigurationManager().getHostPlayerData());
 		this.mapStorage.saveAllData();
 	}
 
@@ -780,13 +822,7 @@ public class WorldServer extends World {
 	 */
 	private boolean onBlockEventReceived(BlockEventData par1BlockEventData) {
 		int var2 = this.getBlockId(par1BlockEventData.getX(), par1BlockEventData.getY(), par1BlockEventData.getZ());
-
-		if (var2 == par1BlockEventData.getBlockID()) {
-			Block.blocksList[var2].onBlockEventReceived(this, par1BlockEventData.getX(), par1BlockEventData.getY(), par1BlockEventData.getZ(), par1BlockEventData.getEventID(), par1BlockEventData.getEventParameter());
-			return true;
-		} else {
-			return false;
-		}
+		return var2 == par1BlockEventData.getBlockID() ? Block.blocksList[var2].onBlockEventReceived(this, par1BlockEventData.getX(), par1BlockEventData.getY(), par1BlockEventData.getZ(), par1BlockEventData.getEventID(), par1BlockEventData.getEventParameter()) : false;
 	}
 
 	/**
@@ -830,7 +866,7 @@ public class WorldServer extends World {
 		return this.thePlayerManager;
 	}
 
-	public Teleporter func_85176_s() {
+	public Teleporter getDefaultTeleporter() {
 		return this.field_85177_Q;
 	}
 }

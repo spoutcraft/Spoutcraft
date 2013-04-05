@@ -25,6 +25,7 @@ public class GuiEditSign extends GuiScreen {
 
 	/** The number of the line that is being edited. */
 	private int editLine = 0;
+	private GuiButton field_100001_o;
 
 	// Spout Start
 	private int editColumn = 0;
@@ -38,9 +39,9 @@ public class GuiEditSign extends GuiScreen {
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
 	public void initGui() {
-		this.controlList.clear();
+		this.buttonList.clear();
 		Keyboard.enableRepeatEvents(true);
-		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120, "Done"));
+		this.buttonList.add(this.field_100001_o = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120, "Done"));
 		this.entitySign.setEditable(false);
 	}
 
@@ -61,7 +62,7 @@ public class GuiEditSign extends GuiScreen {
 		}
 		// Spout End
 		Keyboard.enableRepeatEvents(false);
-		NetClientHandler var1 = this.mc.getSendQueue();
+		NetClientHandler var1 = this.mc.getNetHandler();
 
 		if (var1 != null) {
 			var1.addToSendQueue(new Packet130UpdateSign(this.entitySign.xCoord, this.entitySign.yCoord, this.entitySign.zCoord, this.entitySign.signText));

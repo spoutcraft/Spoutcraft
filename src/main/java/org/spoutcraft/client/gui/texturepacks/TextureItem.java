@@ -230,14 +230,9 @@ public class TextureItem implements ListWidgetItem {
 	public void download() {
 		if (download == null && !installed) {
 			downloadFail = null;
-			boolean wasSandboxed = SpoutClient.isSandboxed();
-			if (wasSandboxed)
-				SpoutClient.disableSandbox();
 			download = new Download(this);
 			downloads.put(getId(), download);
 			download.start();
-			if (wasSandboxed)
-				SpoutClient.enableSandbox();
 		}
 	}
 

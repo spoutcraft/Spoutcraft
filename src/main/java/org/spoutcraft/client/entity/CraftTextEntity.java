@@ -19,14 +19,13 @@
  */
 package org.spoutcraft.client.entity;
 
-import org.spoutcraft.api.entity.TextEntity;
 import org.spoutcraft.api.util.FixedLocation;
-import org.spoutcraft.client.SpoutcraftWorld;
+import org.spoutcraft.client.SpoutClient;
 
-public class CraftTextEntity extends CraftEntity implements TextEntity {
+public class CraftTextEntity extends CraftEntity{
 	public CraftTextEntity(FixedLocation location) {
 		super(location);
-		handle = new EntityText(((SpoutcraftWorld)location.getWorld()).getHandle());
+		handle = new EntityText(SpoutClient.getInstance().getRawWorld());
 		teleport(location);
 	}
 

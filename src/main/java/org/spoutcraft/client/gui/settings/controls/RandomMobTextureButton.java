@@ -21,9 +21,8 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import com.pclewis.mcpatcher.TexturePackAPI;
+import com.prupe.mcpatcher.TexturePackChangeHandler;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;
 
 public class RandomMobTextureButton extends AutomatedCheckBox {
@@ -34,11 +33,11 @@ public class RandomMobTextureButton extends AutomatedCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setRandomMobTextures(!Configuration.isRandomMobTextures());
 		Configuration.write();
 
-		TexturePackAPI.ChangeHandler.change();
+		TexturePackChangeHandler.scheduleTexturePackRefresh();
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
 		}

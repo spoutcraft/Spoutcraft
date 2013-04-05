@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
 
 public class HeightMapCheckBox extends GenericCheckBox {
@@ -30,7 +29,7 @@ public class HeightMapCheckBox extends GenericCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		MinimapConfig.getInstance().setHeightmap(this.isChecked());
 	}
 }

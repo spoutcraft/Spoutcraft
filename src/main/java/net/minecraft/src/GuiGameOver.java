@@ -17,26 +17,26 @@ public class GuiGameOver extends GuiScreen {
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
 	public void initGui() {
-		this.controlList.clear();
+		this.buttonList.clear();
 
 		if (this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
 			if (this.mc.isIntegratedServerRunning()) {
-				this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 96, StatCollector.translateToLocal("deathScreen.deleteWorld")));
+				this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 96, StatCollector.translateToLocal("deathScreen.deleteWorld")));
 			} else {
-				this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 96, StatCollector.translateToLocal("deathScreen.leaveServer")));
+				this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 96, StatCollector.translateToLocal("deathScreen.leaveServer")));
 			}
 		} else {
-			this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 72, StatCollector.translateToLocal("deathScreen.respawn")));
-			this.controlList.add(new GuiButton(2, this.width / 2 - 100, this.height / 4 + 96, StatCollector.translateToLocal("deathScreen.titleScreen")));
+			this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 72, StatCollector.translateToLocal("deathScreen.respawn")));
+			this.buttonList.add(new GuiButton(2, this.width / 2 - 100, this.height / 4 + 96, StatCollector.translateToLocal("deathScreen.titleScreen")));
 
 			if (this.mc.session == null) {
-				((GuiButton)this.controlList.get(1)).enabled = false;
+				((GuiButton)this.buttonList.get(1)).enabled = false;
 			}
 		}
 
 		GuiButton var2;
 
-		for (Iterator var1 = this.controlList.iterator(); var1.hasNext(); var2.enabled = false) {
+		for (Iterator var1 = this.buttonList.iterator(); var1.hasNext(); var2.enabled = false) {
 			var2 = (GuiButton)var1.next();
 		}
 	}
@@ -81,7 +81,7 @@ public class GuiGameOver extends GuiScreen {
 			this.drawCenteredString(this.fontRenderer, StatCollector.translateToLocal("deathScreen.hardcoreInfo"), this.width / 2, 144, 16777215);
 		}
 
-		this.drawCenteredString(this.fontRenderer, StatCollector.translateToLocal("deathScreen.score") + ": \u00a7e" + this.mc.thePlayer.getScore(), this.width / 2, 100, 16777215);
+		this.drawCenteredString(this.fontRenderer, StatCollector.translateToLocal("deathScreen.score") + ": " + EnumChatFormatting.YELLOW + this.mc.thePlayer.getScore(), this.width / 2, 100, 16777215);
 		super.drawScreen(par1, par2, par3);
 	}
 
@@ -101,7 +101,7 @@ public class GuiGameOver extends GuiScreen {
 		GuiButton var2;
 
 		if (this.cooldownTimer == 20) {
-			for (Iterator var1 = this.controlList.iterator(); var1.hasNext(); var2.enabled = true) {
+			for (Iterator var1 = this.buttonList.iterator(); var1.hasNext(); var2.enabled = true) {
 				var2 = (GuiButton)var1.next();
 			}
 		}

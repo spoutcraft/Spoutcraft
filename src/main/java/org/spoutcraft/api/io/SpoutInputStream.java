@@ -23,8 +23,6 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
-import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.block.Block;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.api.material.Material;
@@ -41,16 +39,6 @@ public class SpoutInputStream extends InputStream{
 	}
 
 	@SuppressWarnings("unused")
-	public Block readBlock() {
-		int x = readInt();
-		int y = readInt();
-		int z = readInt();
-		long lsb = readLong();
-		long msb = readLong();
-		return Spoutcraft.getWorld().getBlockAt(x, y, z);
-	}
-
-	@SuppressWarnings("unused")
 	public Location readLocation() {
 		double x = readDouble();
 		double y = readDouble();
@@ -59,7 +47,7 @@ public class SpoutInputStream extends InputStream{
 		float yaw = readFloat();
 		long lsb = readLong();
 		long msb = readLong();
-		return new MutableLocation(Spoutcraft.getWorld(), x, y, z, yaw, pitch);
+		return new MutableLocation(x, y, z, yaw, pitch);
 	}
 
 	public Vector readVector() {

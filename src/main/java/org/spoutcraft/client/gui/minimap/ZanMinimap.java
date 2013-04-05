@@ -70,7 +70,7 @@ public class ZanMinimap {
 	 * @param mc Minecraft instance to initialize obfhub.game with
 	 */
 	public void onRenderTick() {
-		if (Minecraft.theMinecraft.thePlayer == null || SpoutClient.getInstance().getWorld() == null) {
+		if (Minecraft.theMinecraft.thePlayer == null || SpoutClient.getInstance().getRawWorld() == null) {
 			return;
 		}
 

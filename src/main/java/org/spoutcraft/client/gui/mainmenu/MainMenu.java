@@ -42,7 +42,6 @@ import net.minecraft.src.StringTranslate;
 import org.bukkit.ChatColor;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericButton;
@@ -198,7 +197,6 @@ public class MainMenu extends GuiScreen {
 	}
 
 	public void initGui() {
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		int textWidth;
 
 		StringTranslate translate = StringTranslate.getInstance();
@@ -209,7 +207,7 @@ public class MainMenu extends GuiScreen {
 		multiplayer = new GenericButton(translate.translateKey("menu.multiplayer"));
 		multiplayer.setGeometry(width - 110, height - 130, 100, 20);
 
-		textures = new GenericButton(translate.translateKey("menu.mods"));
+		textures = new GenericButton(translate.translateKey("options.texture.pack"));
 		textures.setGeometry(width - 110, height - 105, 100, 20);
 
 		buildNumber = new GenericLabel(SpoutClient.getClientVersion());
@@ -265,7 +263,7 @@ public class MainMenu extends GuiScreen {
 		debugText.setTextColor(new Color(0xFFE303));
 		debugText.setGeometry(1, 1, 12, 100);
 		debugText.setVisible(false);
-		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, buildNumber, background, splashText, about, options,  logo, quit, animate, debugText);
+		this.getScreen().attachWidgets("Spoutcraft", singleplayer, multiplayer, textures, buildNumber, background, splashText, about, options,  logo, quit, animate, debugText);
 	}
 
 	@Override

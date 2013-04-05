@@ -6,15 +6,13 @@ import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+
+import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public class EntityItem extends Entity {
-	// Spout Start - item instead of func_92059_d
-	/** The item stack of this EntityItem. */
-	public ItemStack item;
-	// Spout End
 
 	/**
 	 * The age of this EntityItem (used to animate it up and down as well as expire it)
@@ -44,7 +42,7 @@ public class EntityItem extends Entity {
 
 	public EntityItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack) {
 		this(par1World, par2, par4, par6);
-		this.func_92058_a(par8ItemStack);
+		this.setEntityItemStack(par8ItemStack);
 	}
 
 	/**
@@ -95,7 +93,7 @@ public class EntityItem extends Entity {
 			}
 
 			if (!this.worldObj.isRemote) {
-				this.func_85054_d();
+				this.searchForOtherItemsNearby();
 			}
 		}
 
@@ -112,7 +110,7 @@ public class EntityItem extends Entity {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
-					short customId = worldObj.world.getChunkAt(x, y, z).getCustomBlockId(x, y, z);
+					short customId = Spoutcraft.getChunkAt(worldObj, x, y, z).getCustomBlockId(x, y, z);
 					if (customId > 0) {
 						CustomBlock block = MaterialData.getCustomBlock(customId);
 						if (block != null) {
@@ -139,7 +137,10 @@ public class EntityItem extends Entity {
 		}
 	}
 
-	private void func_85054_d() {
+	/**
+	 * Looks for other itemstacks nearby and tries to stack them together
+	 */
+	private void searchForOtherItemsNearby() {
 		Iterator var1 = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
 
 		while (var1.hasNext()) {
@@ -156,10 +157,8 @@ public class EntityItem extends Entity {
 		if (par1EntityItem == this) {
 			return false;
 		} else if (par1EntityItem.isEntityAlive() && this.isEntityAlive()) {
-			// Spout Start - item instead of func_92059_d
-			ItemStack var2 = this.item();
-			ItemStack var3 = par1EntityItem.item();
-			// Spout End
+			ItemStack var2 = this.getEntityItem();
+			ItemStack var3 = par1EntityItem.getEntityItem();
 
 			if (var3.getItem() != var2.getItem()) {
 				return false;
@@ -177,7 +176,7 @@ public class EntityItem extends Entity {
 				var3.stackSize += var2.stackSize;
 				par1EntityItem.delayBeforeCanPickup = Math.max(par1EntityItem.delayBeforeCanPickup, this.delayBeforeCanPickup);
 				par1EntityItem.age = Math.min(par1EntityItem.age, this.age);
-				par1EntityItem.func_92058_a(var3);
+				par1EntityItem.setEntityItemStack(var3);
 				this.setDead();
 				return true;
 			}
@@ -186,7 +185,11 @@ public class EntityItem extends Entity {
 		}
 	}
 
-	public void func_70288_d() {
+	/**
+	 * sets the age of the item so that it'll despawn one minute after it has been dropped (instead of five). Used when
+	 * items are dropped from players in creative mode
+	 */
+	public void setAgeToCreativeDespawnTime() {
 		this.age = 4800;
 	}
 
@@ -210,9 +213,7 @@ public class EntityItem extends Entity {
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
 		if (this.isEntityInvulnerable()) {
 			return false;
-		// Spout Start - item instead of func_92059_d
-		} else if (this.item() != null && this.item().itemID == Item.netherStar.itemID && par1DamageSource == DamageSource.explosion) {		
-		// Spout End
+		} else if (this.getEntityItem() != null && this.getEntityItem().itemID == Item.netherStar.itemID && par1DamageSource.isExplosion()) {
 			return false;
 		} else {
 			this.setBeenAttacked();
@@ -233,10 +234,8 @@ public class EntityItem extends Entity {
 		par1NBTTagCompound.setShort("Health", (short)((byte)this.health));
 		par1NBTTagCompound.setShort("Age", (short)this.age);
 
-		// Spout Start - item instead of func_92059_d
-		if (this.item() != null) {
-			par1NBTTagCompound.setCompoundTag("Item", this.item().writeToNBT(new NBTTagCompound()));
-		// Spout End
+		if (this.getEntityItem() != null) {
+			par1NBTTagCompound.setCompoundTag("Item", this.getEntityItem().writeToNBT(new NBTTagCompound()));
 		}
 	}
 
@@ -247,11 +246,9 @@ public class EntityItem extends Entity {
 		this.health = par1NBTTagCompound.getShort("Health") & 255;
 		this.age = par1NBTTagCompound.getShort("Age");
 		NBTTagCompound var2 = par1NBTTagCompound.getCompoundTag("Item");
-		this.func_92058_a(ItemStack.loadItemStackFromNBT(var2));
+		this.setEntityItemStack(ItemStack.loadItemStackFromNBT(var2));
 
-		// Spout Start - item instead of func_92059_d
-		if (this.item() == null) {
-		// Spout End
+		if (this.getEntityItem() == null) {
 			this.setDead();
 		}
 	}
@@ -261,9 +258,7 @@ public class EntityItem extends Entity {
 	 */
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
 		if (!this.worldObj.isRemote) {
-			// Spout Start - item instead of func_92059_d
-			ItemStack var2 = this.item();
-			// Spout End
+			ItemStack var2 = this.getEntityItem();
 			int var3 = var2.stackSize;
 
 			if (this.delayBeforeCanPickup == 0 && par1EntityPlayer.inventory.addItemStackToInventory(var2)) {
@@ -297,9 +292,7 @@ public class EntityItem extends Entity {
 	 * Gets the username of the entity.
 	 */
 	public String getEntityName() {
-		// Spout Start - item instead of func_92059_d
-		return StatCollector.translateToLocal("item." + this.item().getItemName());
-		// Spout End
+		return StatCollector.translateToLocal("item." + this.getEntityItem().getItemName());
 	}
 
 	/**
@@ -316,31 +309,33 @@ public class EntityItem extends Entity {
 		super.travelToDimension(par1);
 
 		if (!this.worldObj.isRemote) {
-			this.func_85054_d();
+			this.searchForOtherItemsNearby();
 		}
 	}
 
-	// Spout Start - item instead of func_92059_d
-	public ItemStack item() {
-	// Spout End
+	/**
+	 * Returns the ItemStack corresponding to the Entity (Note: if no item exists, will log an error but still return an
+	 * ItemStack containing Block.stone)
+	 */
+	public ItemStack getEntityItem() {
 		ItemStack var1 = this.getDataWatcher().getWatchableObjectItemStack(10);
 
 		if (var1 == null) {
-			System.out.println("Item entity " + this.entityId + " has no item?!");
+			if (this.worldObj != null) {
+				this.worldObj.getWorldLogAgent().func_98232_c("Item entity " + this.entityId + " has no item?!");
+			}
+
 			return new ItemStack(Block.stone);
 		} else {
 			return var1;
 		}
 	}
 
-	// Spout Start - Hack for half mcp mappings change.
-	public ItemStack func_92059_d() {
-		return item();
-	}
-	// Spout End
-
-	public void func_92058_a(ItemStack par1) {
-		this.getDataWatcher().updateObject(10, par1);
-		this.getDataWatcher().func_82708_h(10);
+	/**
+	 * Sets the ItemStack for this entity
+	 */
+	public void setEntityItemStack(ItemStack par1ItemStack) {
+		this.getDataWatcher().updateObject(10, par1ItemStack);
+		this.getDataWatcher().setObjectWatched(10);
 	}
 }

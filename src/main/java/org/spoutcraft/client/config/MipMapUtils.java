@@ -34,6 +34,7 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.SpoutClient;
 
 public class MipMapUtils {
 	private static TIntIntHashMap mipmapLevels = new TIntIntHashMap();
@@ -82,7 +83,7 @@ public class MipMapUtils {
 	}
 
 	public static void initalizeTexture(int textureId) {
-		GL11.glBindTexture(3553, textureId);
+		SpoutClient.getHandle().renderEngine.bindTexture(textureId);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
 
 		int textureWidth = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
@@ -130,7 +131,7 @@ public class MipMapUtils {
 		GL11.glPushMatrix();
 		if (MipMapUtils.mode == 3) {
 			MipMapUtils.updateTerrain = Configuration.getMipmapsPercent() > 0F;
-			GL11.glBindTexture(3553, texture);
+			SpoutClient.getHandle().renderEngine.bindTexture(texture);
 			if (Configuration.getMipmapsPercent() > 0F) {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
 			} else {
@@ -142,8 +143,7 @@ public class MipMapUtils {
 
 		if (Configuration.getMipmapsPercent() > 0F) {
 			MipMapUtils.updateTerrain = true;
-
-			GL11.glBindTexture(3553, texture);
+			SpoutClient.getHandle().renderEngine.bindTexture(texture);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
 		}
 		GL11.glPopMatrix();
@@ -188,7 +188,7 @@ public class MipMapUtils {
 
 	public static void onTick(int texture, float targetFade, float currentFade) {
 		GL11.glPushMatrix();
-		GL11.glBindTexture(3553, texture);
+		SpoutClient.getHandle().renderEngine.bindTexture(texture);
 
 		if (targetFade != currentFade) {
 			if (targetFade < currentFade) {

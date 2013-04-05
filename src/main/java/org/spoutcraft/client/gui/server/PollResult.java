@@ -119,13 +119,10 @@ public class PollResult {
 	}
 
 	public void poll() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) SpoutClient.disableSandbox();
 		if (!isPolling()) {
 			currentThread = new PollThread();
 			currentThread.start();
 		}
-		if (wasSandboxed) SpoutClient.enableSandbox();
 	}
 
 	public static PollResult getPoll(String ip, int port, int uid) {
@@ -286,10 +283,6 @@ public class PollResult {
 	 * doesn't have to ping all the servers on its own.
 	 */
 	protected static void sendDCData() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
 		if (send != null) {
 			return;
 		}
@@ -360,8 +353,5 @@ public class PollResult {
 			}
 		};
 		send.start();
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
-		}
 	}
 }

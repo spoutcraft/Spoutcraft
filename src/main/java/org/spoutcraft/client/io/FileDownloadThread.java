@@ -29,8 +29,6 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.spoutcraft.client.SpoutClient;
-
 public class FileDownloadThread extends Thread {
 	private static FileDownloadThread instance = null;
 	private final ConcurrentLinkedQueue<Download> downloads = new ConcurrentLinkedQueue<Download>();
@@ -73,14 +71,11 @@ public class FileDownloadThread extends Thread {
 			Iterator<Runnable> i = actions.iterator();
 			while (i.hasNext()) {
 				Runnable action = i.next();
-				boolean oldLock = SpoutClient.enableSandbox();
 				try {
 					action.run();
 				} catch(Exception e) {
 					System.out.println("Could not run Runnable for download finish:");
 					e.printStackTrace();
-				} finally {
-					SpoutClient.enableSandbox(oldLock);
 				}
 				i.remove();
 			}

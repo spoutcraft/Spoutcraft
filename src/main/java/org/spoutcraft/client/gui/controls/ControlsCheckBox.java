@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.controls;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
 
 public class ControlsCheckBox extends GenericCheckBox {
@@ -32,7 +31,7 @@ public class ControlsCheckBox extends GenericCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		gui.getModel().refresh();
 	}
 }

@@ -23,7 +23,6 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 
-import com.pclewis.mcpatcher.mod.TextureUtils;
 import org.apache.commons.io.FileUtils;
 
 import net.minecraft.client.Minecraft;
@@ -31,11 +30,11 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.ITexturePack;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.TexturePackCustom;
+import net.minecraft.src.TexturePackList;
 
 import org.bukkit.ChatColor;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
@@ -70,25 +69,23 @@ public class GuiTexturePacks extends GuiScreen {
 	}
 
 	public void initGui() {
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-
 		createInstances();
 
 		int top = 10;
 
 		int swidth = mc.fontRenderer.getStringWidth(screenTitle.getText());
 		screenTitle.setY(top).setX(width / 2 - swidth / 2).setHeight(11).setWidth(swidth);
-		getScreen().attachWidget(spoutcraft, screenTitle);
+		getScreen().attachWidget("Spoutcraft", screenTitle);
 
 		swidth = mc.fontRenderer.getStringWidth(loadingTexture.getText());
 		loadingTexture.setVisible(false);
 		loadingTexture.setY(top).setX(width / 2 + swidth).setHeight(11).setWidth(swidth);
-		getScreen().attachWidget(spoutcraft, loadingTexture);
+		getScreen().attachWidget("Spoutcraft", loadingTexture);
 
 		top+=15;
 
 		view.setX(5).setY(top).setWidth(width - 10).setHeight(height - top - 55);
-		getScreen().attachWidget(spoutcraft, view);
+		getScreen().attachWidget("Spoutcraft", view);
 
 		top += 5 + view.getHeight();
 
@@ -99,22 +96,22 @@ public class GuiTexturePacks extends GuiScreen {
 		int right = center + 5 + cellWidth;
 
 		buttonSelect.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonSelect);
+		getScreen().attachWidget("Spoutcraft", buttonSelect);
 
 		buttonDelete.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonDelete);
+		getScreen().attachWidget("Spoutcraft", buttonDelete);
 
 		buttonOpenFolder.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonOpenFolder);
+		getScreen().attachWidget("Spoutcraft", buttonOpenFolder);
 
 		top += 25;
 
 		buttonDone.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonDone);
+		getScreen().attachWidget("Spoutcraft", buttonDone);
 
 		if (!instancesCreated) {
 			int selected;
-			selected = model.getTextures().indexOf(TextureUtils.getSelectedTexturePack());
+			selected = model.getTextures().indexOf(SpoutClient.getHandle().texturePackList.getSelectedTexturePack());
 			view.setSelection(selected);
 		}
 
@@ -140,7 +137,7 @@ public class GuiTexturePacks extends GuiScreen {
 		}
 		if (btn.equals(buttonSelect) && view.getSelectedRow() != -1) {
 			TexturePackItem item = model.getItem(view.getSelectedRow());
-			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
+			boolean current = item.getPack() == SpoutClient.getHandle().texturePackList.getSelectedTexturePack();
 			if (!current) {
 				item.select();
 				updateButtons();
@@ -155,7 +152,7 @@ public class GuiTexturePacks extends GuiScreen {
 		try {
 			StringTranslate t = StringTranslate.getInstance();
 			TexturePackItem item = model.getItem(view.getSelectedRow());
-			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
+			boolean current = item.getPack() == SpoutClient.getHandle().texturePackList.getSelectedTexturePack();
 			buttonSelect.setEnabled(true);
 			if (current) {
 				buttonSelect.setText(t.translateKey("spout.texturepack.preview.button", "Preview"));

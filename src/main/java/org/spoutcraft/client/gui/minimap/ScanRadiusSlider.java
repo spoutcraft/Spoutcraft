@@ -20,7 +20,6 @@
 package org.spoutcraft.client.gui.minimap;
 
 import org.spoutcraft.api.ChatColor;
-import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
 
 public class ScanRadiusSlider extends GenericSlider {
@@ -55,8 +54,8 @@ public class ScanRadiusSlider extends GenericSlider {
 	}
 
 	@Override
-	public void onSliderDrag(SliderDragEvent event) {
-		int newradius = (int) (event.getNewPosition() * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS);
+	public void onSliderDrag(float oldPos, float newPos) {
+		int newradius = (int) (newPos * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS);
 		MinimapConfig.getInstance().setScanRadius(newradius);
 		MinimapConfig.getInstance().save();
 		updateText();

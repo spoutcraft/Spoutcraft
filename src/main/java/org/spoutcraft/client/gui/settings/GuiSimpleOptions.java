@@ -22,7 +22,6 @@ package org.spoutcraft.client.gui.settings;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.CheckBox;
 import org.spoutcraft.api.gui.Color;
@@ -71,18 +70,17 @@ public class GuiSimpleOptions extends GuiScreen {
 	@Override
 	public void initGui() {
 		Control control;
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 
 		GenericScrollArea screen = new GenericScrollArea();
 		scroll = screen;
 		screen.setHeight(height - 24 - 30).setWidth(width).setY(24).setX(0);
-		getScreen().attachWidget(spoutcraft, screen);
+		getScreen().attachWidget("Spoutcraft", screen);
 
 		GenericLabel label = new GenericLabel("Game Settings");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(10);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
-		getScreen().attachWidget(spoutcraft, label);
+		getScreen().attachWidget("Spoutcraft", label);
 
 		int left = (int)(width / 2  - 155);
 		int right = (int)(width / 2 + 5);
@@ -90,19 +88,19 @@ public class GuiSimpleOptions extends GuiScreen {
 
 		control = new ResetButton(parent).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
-		getScreen().attachWidget(spoutcraft, control);
+		getScreen().attachWidget("Spoutcraft", control);
 
 		switchToAdvancedCheck = new GenericCheckBox("Advanced");
 		switchToAdvancedCheck.setChecked(false);
 		switchToAdvancedCheck.setX(5).setY(3).setWidth(100).setHeight(20);
 		switchToAdvancedCheck.setPriority(RenderPriority.Low);
-		getScreen().attachWidget(spoutcraft, switchToAdvancedCheck);
+		getScreen().attachWidget("Spoutcraft", switchToAdvancedCheck);
 
 		doneButton = new GenericButton("Done");
 		doneButton.setAlign(WidgetAnchor.CENTER_CENTER);
 		doneButton.setX(right).setY(height - 25);
 		doneButton.setHeight(20).setWidth(150);
-		getScreen().attachWidget(spoutcraft, doneButton);
+		getScreen().attachWidget("Spoutcraft", doneButton);
 
 		int top = 5;
 
@@ -112,50 +110,50 @@ public class GuiSimpleOptions extends GuiScreen {
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
+		screen.attachWidget("Spoutcraft", label);
 		top += 11;
 
 		Gradient linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
+		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 
 		control = new MusicSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new SoundEffectsSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new FieldOfViewSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new DifficultyButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new ControlsButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new LanguagesButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
 		control = new ChatButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		control = new MinimapButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
+		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
 
@@ -164,14 +162,14 @@ public class GuiSimpleOptions extends GuiScreen {
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
+		screen.attachWidget("Spoutcraft", label);
 		top += 11;
 
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
+		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 
 		// TODO Clean up references to Spoutworth and remove message
@@ -179,7 +177,7 @@ public class GuiSimpleOptions extends GuiScreen {
 		message.setWidth(150).setHeight(20).setX(left).setY(top);
 
 		if (Configuration.isAutomatePerformance()) {
-			screen.attachWidget(spoutcraft, message);
+			screen.attachWidget("Spoutcraft", message);
 
 			//top += 47;
 		}
@@ -188,13 +186,13 @@ public class GuiSimpleOptions extends GuiScreen {
 		button = (RadioButton) new FavorPerformanceButton("Favor Performance", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(left).setY(top);
 		button.setTooltip("Spoutcraft will attempt to provide smooth framerates, potentially at the cost of appearance.");
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		button.setSelected(Configuration.isAutomatePerformance() && Configuration.getAutomateMode() == 0);
 
 		button = (RadioButton) new OptimalGameplayButton("Balanced Gameplay", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(right).setY(top);
 		button.setTooltip("Spoutcraft will attempt to provide reasonable framerates and appearance.");
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		button.setSelected(Configuration.isAutomatePerformance() && Configuration.getAutomateMode() == 1);
 
 		top += 22;
@@ -202,13 +200,13 @@ public class GuiSimpleOptions extends GuiScreen {
 		button = (RadioButton) new FavorAppearanceButton("Favor Appearance", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(left).setY(top);
 		button.setTooltip("Spoutcraft will attempt to provide the best appearance, but potentially at the cost of framerates.");
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		button.setSelected(Configuration.isAutomatePerformance() && Configuration.getAutomateMode() == 2);
 
 		button = (RadioButton) new ManualSelectionButton("Manual Selection", message, parent).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(right).setY(top);
 		button.setTooltip("Disable automatic performance settings and adjust the settings manually.");
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		button.setSelected(!Configuration.isAutomatePerformance());
 
 		top += 22;

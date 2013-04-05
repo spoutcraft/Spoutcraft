@@ -151,7 +151,6 @@ public class ServerItem implements ListWidgetItem {
 		int margin1 = 0;
 		int margin2 = 0;
 
-
 		if (getPing() > 0 && (!isPolling() || showPingWhilePolling)) {
 			if (isShowPing()) {
 				String sping = getPing() + " ms";
@@ -226,7 +225,7 @@ public class ServerItem implements ListWidgetItem {
 			}
 		}
 		if (isShowPing()) {
-			SpoutClient.getHandle().renderEngine.bindTexture(SpoutClient.getHandle().renderEngine.getTexture("/gui/icons.png"));
+			SpoutClient.getHandle().renderEngine.bindTexture("/gui/icons.png");
 			RenderUtil.drawTexturedModalRectangle(x + width - 2 - 10, y + 2, 0 + xOffset * 10, 176 + yOffset * 8, 10, 8, 0f);
 		}
 		if (port != DEFAULT_PORT) {

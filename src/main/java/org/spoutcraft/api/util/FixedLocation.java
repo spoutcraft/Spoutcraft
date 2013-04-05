@@ -19,9 +19,6 @@
  */
 package org.spoutcraft.api.util;
 
-import org.spoutcraft.api.World;
-import org.spoutcraft.api.block.Block;
-
 public interface FixedLocation extends FixedVector {
 	/**
 	 * Gets the yaw of this location
@@ -38,13 +35,6 @@ public interface FixedLocation extends FixedVector {
 	public double getPitch();
 
 	/**
-	 * Gets the world that this location resides in
-	 *
-	 * @return World that contains this location
-	 */
-	public World getWorld();
-
-	/**
 	 * Gets a Vector pointing in the direction that this Location is facing
 	 *
 	 * @return Vector
@@ -56,11 +46,4 @@ public interface FixedLocation extends FixedVector {
 	 * @return vector
 	 */
 	public Vector toVector();
-
-	/**
-	 * Gets the block at this location
-	 *
-	 * @return block
-	 */
-	public Block getBlock();
 }

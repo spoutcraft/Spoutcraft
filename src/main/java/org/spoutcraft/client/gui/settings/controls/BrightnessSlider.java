@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
 import org.spoutcraft.client.config.Configuration;
 
@@ -33,8 +32,8 @@ public class BrightnessSlider extends GenericSlider {
 	}
 
 	@Override
-	public void onSliderDrag(SliderDragEvent event) {
-		Configuration.setBrightnessSlider(event.getNewPosition());
+	public void onSliderDrag(float oldPos, float newPos) {
+		Configuration.setBrightnessSlider(newPos);
 		Configuration.write();
 		Minecraft.theMinecraft.gameSettings.gammaSetting = Configuration.getBrightnessSlider();
 	}

@@ -18,6 +18,7 @@ public class KeyBinding {
 		// Spout Start
 		/*
 		KeyBinding var1 = (KeyBinding)hash.lookup(par0);
+
 		if (var1 != null) {
 			++var1.pressTime;
 		}
@@ -37,6 +38,7 @@ public class KeyBinding {
 		// Spout Start
 		/*
 		KeyBinding var2 = (KeyBinding)hash.lookup(par0);
+
 		if (var2 != null) {
 			var2.pressed = par1;
 		}

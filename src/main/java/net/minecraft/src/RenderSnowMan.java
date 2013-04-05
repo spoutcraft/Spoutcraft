@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.MobOverlay;
+import com.prupe.mcpatcher.mod.MobOverlay;
 // MCPatcher End
 
 public class RenderSnowMan extends RenderLiving {

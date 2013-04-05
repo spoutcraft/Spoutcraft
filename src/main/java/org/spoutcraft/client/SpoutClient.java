@@ -20,13 +20,9 @@
 package org.spoutcraft.client;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.newdawn.slick.util.Log;
@@ -35,47 +31,24 @@ import org.newdawn.slick.util.LogSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
-import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Packet;
 import net.minecraft.src.WorldClient;
 
-import org.bukkit.ChatColor;
-
 import org.spoutcraft.api.Client;
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.World;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.addon.AddonLoadOrder;
-import org.spoutcraft.api.addon.AddonManager;
-import org.spoutcraft.api.addon.ServerAddon;
-import org.spoutcraft.api.addon.SimpleAddonManager;
-import org.spoutcraft.api.addon.SimpleSecurityManager;
-import org.spoutcraft.api.addon.java.JavaAddonLoader;
-import org.spoutcraft.api.command.AddonCommand;
-import org.spoutcraft.api.command.Command;
-import org.spoutcraft.api.command.CommandSender;
-import org.spoutcraft.api.command.SimpleCommandMap;
-import org.spoutcraft.api.entity.ActivePlayer;
-import org.spoutcraft.api.entity.CameraEntity;
-import org.spoutcraft.api.entity.Player;
 import org.spoutcraft.api.gui.Keyboard;
 import org.spoutcraft.api.gui.RenderDelegate;
 import org.spoutcraft.api.gui.WidgetManager;
 import org.spoutcraft.api.inventory.MaterialManager;
-import org.spoutcraft.api.io.AddonPacket;
 import org.spoutcraft.api.keyboard.KeyBindingManager;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.player.BiomeManager;
 import org.spoutcraft.api.player.SkyManager;
 import org.spoutcraft.api.property.PropertyObject;
-import org.spoutcraft.api.util.FixedLocation;
-import org.spoutcraft.client.addon.SimpleAddonStore;
-import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.config.MipMapUtils;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.client.entity.CraftCameraEntity;
 import org.spoutcraft.client.entity.CraftEntity;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.SimpleKeyManager;
@@ -90,7 +63,6 @@ import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.packet.CustomPacket;
-import org.spoutcraft.client.packet.PacketAddonData;
 import org.spoutcraft.client.packet.PacketEntityInformation;
 import org.spoutcraft.client.packet.PacketManager;
 import org.spoutcraft.client.player.ClientPlayer;
@@ -108,12 +80,8 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final MaterialManager materialManager = new SimpleMaterialManager();
 	private final RenderDelegate render = new MCRenderDelegate();
 	private final KeyBindingManager bindingManager = new SimpleKeyBindingManager();
-	private final SimpleCommandMap commandMap = new SimpleCommandMap(this);
-	private final Logger log = new SpoutcraftLogger();
-	private final SimpleAddonManager addonManager;
-	private final SimpleSecurityManager securityManager;
+	private final Logger log = Logger.getLogger(SpoutClient.class.getName());
 	private final ServerManager serverManager = new ServerManager();
-	private final double securityKey;
 	private long tick = 0;
 	private long inWorldTicks = 0;
 	private Thread clipboardThread = null;
@@ -142,25 +110,18 @@ public class SpoutClient extends PropertyObject implements Client {
 	private TexturePacksModel textureModel = new TexturePacksModel();
 	private TexturePacksDatabaseModel textureDatabaseModel = new TexturePacksDatabaseModel();
 	private String addonFolder = Minecraft.getMinecraftDir() + File.separator + "addons";
-	private final ThreadGroup securityThreadGroup;
-	private final SimpleAddonStore addonStore = new SimpleAddonStore();
 	private final WidgetManager widgetManager = new SimpleWidgetManager();
 	private final HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
 	private boolean active = false;
 
 	private SpoutClient() {
 		instance = this;
-		securityKey = (new Random()).nextDouble();
-		securityThreadGroup = new ThreadGroup("Sandboxed Threads");
-		securityManager = new SimpleSecurityManager(securityKey, securityThreadGroup, Thread.currentThread());
 		if (!Thread.currentThread().getName().equals("Minecraft main thread")) {
 			throw new SecurityException("Main thread name mismatch");
 		}
-		addonManager = new SimpleAddonManager(this, commandMap, securityManager, securityKey);
 		//System.setSecurityManager(securityManager);
 
 		((SimpleKeyBindingManager)bindingManager).load();
-		addonStore.load();
 		serverManager.init();
 		Log.setVerbose(false);
 		Log.setLogSystem(new SilencedLogSystem());
@@ -188,7 +149,6 @@ public class SpoutClient extends PropertyObject implements Client {
 		Packet.addIdClassMapping(195, true, true, CustomPacket.class);
 		Configuration.read();
 		Keyboard.setKeyManager(new SimpleKeyManager());
-		CraftEntity.registerTypes();
 		FileUtil.migrateOldFiles();
 	}
 
@@ -198,11 +158,6 @@ public class SpoutClient extends PropertyObject implements Client {
 		if (instance == null) {
 			new SpoutClient();
 			Spoutcraft.setClient(instance);
-
-			// Must be done after construtor
-			ServerAddon addon = new ServerAddon("Spoutcraft", version, null);
-			instance.addonManager.addFakeAddon(addon);
-
 			System.out.println("Available Memory: " + Runtime.getRuntime().maxMemory() / mb + " mb");
 		}
 		return instance;
@@ -210,22 +165,6 @@ public class SpoutClient extends PropertyObject implements Client {
 
 	public static String getClientVersion() {
 		return version;
-	}
-
-	public static boolean enableSandbox() {
-		return getInstance().securityManager.lock(getInstance().securityKey);
-	}
-
-	public static boolean enableSandbox(boolean enable) {
-		return getInstance().securityManager.lock(enable, getInstance().securityKey);
-	}
-
-	public static boolean disableSandbox() {
-		return getInstance().securityManager.unlock(getInstance().securityKey);
-	}
-
-	public static boolean isSandboxed() {
-		return getInstance().securityManager.isLocked();
 	}
 
 	public static boolean hasAvailableRAM() {
@@ -244,7 +183,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		return packetManager;
 	}
 
-	public ActivePlayer getActivePlayer() {
+	public ClientPlayer getActivePlayer() {
 		return player;
 	}
 
@@ -256,18 +195,11 @@ public class SpoutClient extends PropertyObject implements Client {
 		return materialManager;
 	}
 
-	public World getWorld() {
-		if (getHandle() == null || getHandle().thePlayer == null) {
-			return null;
-		}
-		return getHandle().thePlayer.worldObj.world;
-	}
-
 	public net.minecraft.src.World getRawWorld() {
-		if (getHandle() == null || getHandle().thePlayer == null) {
+		if (getHandle() == null) {
 			return null;
 		}
-		return getHandle().thePlayer.worldObj;
+		return getHandle().theWorld;
 	}
 
 	public boolean isSkyCheat() {
@@ -473,9 +405,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		getHandle().mcProfiler.endStartSection("packet_decompression");
 		PacketDecompressionThread.onTick();
 		getHandle().mcProfiler.endStartSection("widgets");
-		enableSandbox();
 		player.getMainScreen().onTick();
-		disableSandbox();
 		getHandle().mcProfiler.endStartSection("mipmapping");
 		MipMapUtils.onTick();
 		getHandle().mcProfiler.endStartSection("special_effects");
@@ -485,12 +415,12 @@ public class SpoutClient extends PropertyObject implements Client {
 		}
 		getHandle().mcProfiler.endStartSection("entity_info");
 		if (isSpoutEnabled()) {
-			LinkedList<org.spoutcraft.api.entity.Entity> processed = new LinkedList<org.spoutcraft.api.entity.Entity>();
+			LinkedList<CraftEntity> processed = new LinkedList<CraftEntity>();
 			Iterator<Entity> i = Entity.toProcess.iterator();
 			while (i.hasNext()) {
 				Entity next = i.next();
 				if (next.spoutEnty != null) {
-					processed.add(next.spoutEnty);
+					processed.add((CraftEntity) next.spoutEnty);
 				}
 			}
 			Entity.toProcess.clear();
@@ -510,11 +440,9 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public void onWorldExit() {
-		disableSandbox();
 		FileUtil.deleteTempDirectory();
 		CustomTextureManager.resetTextures();
 		CRCManager.clear();
-		SpoutcraftChunk.loadedChunks.clear();
 		if (clipboardThread != null) {
 			clipboardThread.interrupt();
 			clipboardThread = null;
@@ -542,7 +470,6 @@ public class SpoutClient extends PropertyObject implements Client {
 			clipboardThread.interrupt();
 			clipboardThread = null;
 		}
-		SpoutcraftChunk.loadedChunks.clear();
 		PacketDecompressionThread.startThread();
 		MipMapUtils.initializeMipMaps();
 		MipMapUtils.update();
@@ -575,29 +502,6 @@ public class SpoutClient extends PropertyObject implements Client {
 		return world.getEntityByID(id);
 	}
 
-	public boolean dispatchCommand(CommandSender sender, String commandLine) {
-		if (commandMap.dispatch(sender, commandLine)) {
-			return true;
-		}
-		sender.sendMessage("Unknown command. Type \"help\" for help.");
-
-		return false;
-	}
-
-	public AddonCommand getAddonCommand(String name) {
-		Command command = commandMap.getCommand(name);
-
-		if (command instanceof AddonCommand) {
-			return (AddonCommand) command;
-		} else {
-			return null;
-		}
-	}
-
-	public AddonManager getAddonManager() {
-		return addonManager;
-	}
-
 	public Logger getLogger() {
 		return log;
 	}
@@ -624,80 +528,6 @@ public class SpoutClient extends PropertyObject implements Client {
 
 	public String getVersion() {
 		return version;
-	}
-
-	public CameraEntity getCamera() {
-		if (!isCameraDetached())
-			return null;
-
-		return (CameraEntity)getHandle().renderViewEntity.spoutEnty;
-	}
-
-	public void setCamera(FixedLocation pos) {
-		EntityLiving cam = SpoutClient.getHandle().renderViewEntity;
-		if (!(cam.spoutEnty instanceof CameraEntity))
-			return;
-
-		((CameraEntity)cam.spoutEnty).teleport(pos);
-	}
-
-	public void detachCamera(boolean detach) {
-		if (detach) {
-			if (getHandle().renderViewEntity.spoutEnty instanceof CameraEntity) {
-				setCamera(getActivePlayer().getLocation());
-				return;
-			}
-			getHandle().renderViewEntity = (new CraftCameraEntity(getActivePlayer().getLocation())).getHandle();
-		} else {
-			if (getHandle().renderViewEntity.spoutEnty instanceof CameraEntity) {
-				getHandle().renderViewEntity.spoutEnty.remove();
-				getHandle().renderViewEntity = getHandle().thePlayer;
-			}
-		}
-	}
-
-	public boolean isCameraDetached() {
-		return getHandle().renderViewEntity.spoutEnty instanceof CameraEntity;
-	}
-
-	public void enableAddons(AddonLoadOrder load) {
-		Addon[] addons = addonManager.getAddons();
-
-		for (Addon addon : addons) {
-			if (!addon.isEnabled() && addon.getDescription().getLoad() == load) {
-				loadAddon(addon);
-			}
-		}
-	}
-
-	private void loadAddon(Addon addon) {
-		try {
-			addonManager.enableAddon(addon);
-		} catch (Throwable ex) {
-			Logger.getLogger(SpoutClient.class.getName()).log(Level.SEVERE, ex.getMessage() + " loading " + addon.getDescription().getFullName() + " (Is it up to date?)", ex);
-		}
-	}
-
-	public void disableAddons() {
-		addonManager.disableAddons();
-	}
-
-	public void loadAddons() {
-		addonManager.registerInterface(JavaAddonLoader.class);
-
-		File addonDir = new File(addonFolder);
-		if (addonDir.exists()) {
-			Addon[] addons = addonManager.loadAddons(addonDir);
-			for (Addon addon : addons) {
-				try {
-					addon.onLoad();
-				} catch (Throwable ex) {
-					Logger.getLogger(SpoutClient.class.getName()).log(Level.SEVERE, ex.getMessage() + " initializing " + addon.getDescription().getFullName() + " (Is it up to date?)", ex);
-				}
-			}
-		} else {
-			addonDir.mkdir();
-		}
 	}
 
 	public KeyBindingManager getKeyBindingManager() {
@@ -736,85 +566,12 @@ public class SpoutClient extends PropertyObject implements Client {
 		return instance.serverManager;
 	}
 
-	public void send(AddonPacket packet) {
-		getPacketManager().sendSpoutPacket(new PacketAddonData(packet));
-	}
-
 	public TexturePacksModel getTexturePacksModel() {
 		return textureModel;
 	}
 
 	public TexturePacksDatabaseModel getTexturePacksDatabaseModel() {
 		return textureDatabaseModel;
-	}
-
-	public Player[] getPlayers() {
-		if (getWorld() == null) {
-			return new Player[0];
-		}
-		List<Player> playerList = getWorld().getPlayers();
-		Player[] players = new Player[playerList.size()];
-		for (int i = 0; i < playerList.size(); i++) {
-			players[i] = playerList.get(i);
-		}
-		return players;
-	}
-
-	public Player getPlayer(String name) {
-		Player[] players = getPlayers();
-
-		Player found = null;
-		String lowerName = name.toLowerCase();
-		int delta = Integer.MAX_VALUE;
-		for (Player player : players) {
-			if (ChatColor.stripColor(player.getName()).toLowerCase().startsWith(lowerName)) {
-				int curDelta = player.getName().length() - lowerName.length();
-				if (curDelta < delta) {
-					found = player;
-					delta = curDelta;
-				}
-				if (curDelta == 0) {
-					break;
-				}
-			}
-		}
-		return found;
-	}
-
-	public Player getPlayerExact(String name) {
-		String lname = name.toLowerCase();
-
-		for (Player player : getPlayers()) {
-			if (ChatColor.stripColor(player.getName()).equalsIgnoreCase(lname)) {
-				return player;
-			}
-		}
-		return null;
-	}
-
-	public List<Player> matchPlayer(String partialName) {
-		List<Player> matchedPlayers = new ArrayList<Player>();
-
-		for (Player iterPlayer : this.getPlayers()) {
-			String iterPlayerName = ChatColor.stripColor(iterPlayer.getName());
-
-			if (partialName.equalsIgnoreCase(iterPlayerName)) {
-				// Exact match
-				matchedPlayers.clear();
-				matchedPlayers.add(iterPlayer);
-				break;
-			}
-			if (iterPlayerName.toLowerCase().indexOf(partialName.toLowerCase()) != -1) {
-				// Partial match
-				matchedPlayers.add(iterPlayer);
-			}
-		}
-
-		return matchedPlayers;
-	}
-
-	public SimpleAddonStore getAddonStore() {
-		return addonStore;
 	}
 
 	public WidgetManager getWidgetManager() {

@@ -1,9 +1,11 @@
 package net.minecraft.src;
 
+import net.minecraft.client.Minecraft;
 // Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.special.Resources;
 // Spout End
+
 public class EntityOtherPlayerMP extends EntityPlayer {
 	private boolean isItemInUse = false;
 	private int otherPlayerMPPosRotationIncrements;
@@ -81,7 +83,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	public void onUpdate() {
 		this.field_71082_cx = 0.0F;
 		super.onUpdate();
-		this.prevLegYaw = this.legYaw;
+		this.prevLimbYaw = this.limbYaw;
 		double var1 = this.posX - this.prevPosX;
 		double var3 = this.posZ - this.prevPosZ;
 		float var5 = MathHelper.sqrt_double(var1 * var1 + var3 * var3) * 4.0F;
@@ -90,8 +92,8 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 			var5 = 1.0F;
 		}
 
-		this.legYaw += (var5 - this.legYaw) * 0.4F;
-		this.legSwing += this.legYaw;
+		this.limbYaw += (var5 - this.limbYaw) * 0.4F;
+		this.limbSwing += this.limbYaw;
 
 		if (!this.isItemInUse && this.isEating() && this.inventory.mainInventory[this.inventory.currentItem] != null) {
 			ItemStack var6 = this.inventory.mainInventory[this.inventory.currentItem];
@@ -185,7 +187,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	}
 
 	/**
-	 * Return the coordinates for this player as ChunkCoordinates.
+	 * Return the position for this command sender.
 	 */
 	public ChunkCoordinates getPlayerCoordinates() {
 		return new ChunkCoordinates(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));

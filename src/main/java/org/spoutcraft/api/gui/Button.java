@@ -20,7 +20,6 @@
 package org.spoutcraft.api.gui;
 
 import org.spoutcraft.api.UnsafeClass;
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 
 @UnsafeClass
 public interface Button extends Control, Label {
@@ -64,10 +63,6 @@ public interface Button extends Control, Label {
 
 	/**
 	 * Fires when this button is clicked on the screen.
-	 *
-	 * This event is also sent to the screen listener, afterwards.
-	 *
-	 * @param event
 	 */
-	public void onButtonClick(ButtonClickEvent event);
+	public void onButtonClick();
 }

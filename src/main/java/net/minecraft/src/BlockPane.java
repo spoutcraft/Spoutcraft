@@ -8,18 +8,21 @@ public class BlockPane extends Block {
 	/**
 	 * Holds the texture index of the side of the pane (the thin lateral side)
 	 */
-	private int sideTextureIndex;
+	private final String sideTextureIndex;
 
 	/**
 	 * If this field is true, the pane block drops itself when destroyed (like the iron fences), otherwise, it's just
 	 * destroyed (like glass panes)
 	 */
 	private final boolean canDropItself;
+	private final String field_94402_c;
+	private Icon theIcon;
 
-	protected BlockPane(int par1, int par2, int par3, Material par4Material, boolean par5) {
-		super(par1, par2, par4Material);
-		this.sideTextureIndex = par3;
+	protected BlockPane(int par1, String par2Str, String par3Str, Material par4Material, boolean par5) {
+		super(par1, par4Material);
+		this.sideTextureIndex = par3Str;
 		this.canDropItself = par5;
+		this.field_94402_c = par2Str;
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
@@ -62,9 +65,10 @@ public class BlockPane extends Block {
 	}
 
 	/**
-	 * if the specified block is in the given AABB, add its collision bounding box to the given list
+	 * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the mask.)
+	 * Parameters: World, X, Y, Z, mask, list, colliding entity
 	 */
-	public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {
+	public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {
 		boolean var8 = this.canThisPaneConnectToThisBlockID(par1World.getBlockId(par2, par3, par4 - 1));
 		boolean var9 = this.canThisPaneConnectToThisBlockID(par1World.getBlockId(par2, par3, par4 + 1));
 		boolean var10 = this.canThisPaneConnectToThisBlockID(par1World.getBlockId(par2 - 1, par3, par4));
@@ -73,27 +77,27 @@ public class BlockPane extends Block {
 		if ((!var10 || !var11) && (var10 || var11 || var8 || var9)) {
 			if (var10 && !var11) {
 				this.setBlockBounds(0.0F, 0.0F, 0.4375F, 0.5F, 1.0F, 0.5625F);
-				super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+				super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
 			} else if (!var10 && var11) {
 				this.setBlockBounds(0.5F, 0.0F, 0.4375F, 1.0F, 1.0F, 0.5625F);
-				super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+				super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
 			}
 		} else {
 			this.setBlockBounds(0.0F, 0.0F, 0.4375F, 1.0F, 1.0F, 0.5625F);
-			super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+			super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
 		}
 
 		if ((!var8 || !var9) && (var10 || var11 || var8 || var9)) {
 			if (var8 && !var9) {
 				this.setBlockBounds(0.4375F, 0.0F, 0.0F, 0.5625F, 1.0F, 0.5F);
-				super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+				super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
 			} else if (!var8 && var9) {
 				this.setBlockBounds(0.4375F, 0.0F, 0.5F, 0.5625F, 1.0F, 1.0F);
-				super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+				super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
 			}
 		} else {
 			this.setBlockBounds(0.4375F, 0.0F, 0.0F, 0.5625F, 1.0F, 1.0F);
-			super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+			super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
 		}
 	}
 
@@ -145,8 +149,8 @@ public class BlockPane extends Block {
 	/**
 	 * Returns the texture index of the thin side of the pane.
 	 */
-	public int getSideTextureIndex() {
-		return this.sideTextureIndex;
+	public Icon getSideTextureIndex() {
+		return this.theIcon;
 	}
 
 	/**
@@ -172,5 +176,14 @@ public class BlockPane extends Block {
 	 */
 	protected ItemStack createStackedBlock(int par1) {
 		return new ItemStack(this.blockID, 1, par1);
+	}
+
+	/**
+	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This is
+	 * the only chance you get to register icons.
+	 */
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.blockIcon = par1IconRegister.registerIcon(this.field_94402_c);
+		this.theIcon = par1IconRegister.registerIcon(this.sideTextureIndex); 
 	}
 }

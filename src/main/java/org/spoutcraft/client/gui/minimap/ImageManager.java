@@ -24,6 +24,7 @@ import java.awt.image.BufferedImage;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
+import org.spoutcraft.client.SpoutClient;
 
 public class ImageManager {
 	protected final BufferedImage image;
@@ -72,7 +73,7 @@ public class ImageManager {
 				hasGLImage = true;
 				hasChanged = false;
 			} else if (glImage > 0) {
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, glImage);
+				SpoutClient.getHandle().renderEngine.bindTexture(glImage);
 			}
 		}
 	}

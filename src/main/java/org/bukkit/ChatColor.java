@@ -184,7 +184,7 @@ public enum ChatColor {
 		return STRIP_COLOR_PATTERN.matcher(input).replaceAll("");
 	}
 
-	 /**
+	/**
 	 * Gets the color represented by the specified color code
 	 *
 	 * @param code Code to check

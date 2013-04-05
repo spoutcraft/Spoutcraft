@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeWorld;
 // MCPatcher End
 
 public class WorldProviderEnd extends WorldProvider {
@@ -58,7 +58,7 @@ public class WorldProviderEnd extends WorldProvider {
 		float var10000 = var5 * (var4 * 0.0F + 0.15F);
 		var10000 = var6 * (var4 * 0.0F + 0.15F);
 		var10000 = var7 * (var4 * 0.0F + 0.15F);
-		return this.worldObj.getWorldVec3Pool().getVecFromPool((double)Colorizer.endFogColor[0], (double)Colorizer.endFogColor[1], (double)Colorizer.endFogColor[2]);
+		return this.worldObj.getWorldVec3Pool().getVecFromPool((double)ColorizeWorld.endFogColor[0], (double)ColorizeWorld.endFogColor[1], (double)ColorizeWorld.endFogColor[2]);
 		// MCPatcher End
 	}
 

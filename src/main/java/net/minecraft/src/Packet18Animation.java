@@ -3,22 +3,16 @@ package net.minecraft.src;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
 // Spout Start
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import net.minecraft.client.Minecraft;
-
+import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketFullVersion;
 import org.spoutcraft.client.packet.PacketRenderDistance;
-import org.spoutcraft.client.packet.PacketClientAddons;
-import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.addon.ServerAddon;
 // Spout End
 
 public class Packet18Animation extends Packet {
@@ -26,8 +20,10 @@ public class Packet18Animation extends Packet {
 	/** The entity ID, in this case it's the player ID. */
 	public int entityId;
 	public int animate;
+	// Spout Start
 	Minecraft mc = SpoutClient.getHandle();
-	
+	// Spout End
+
 	public Packet18Animation() {}
 
 	public Packet18Animation(Entity par1Entity, int par2) {
@@ -61,18 +57,12 @@ public class Packet18Animation extends Packet {
 			((NetClientHandler) par1NetHandler).addToSendQueue(this);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance));
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketFullVersion(SpoutClient.getClientVersion()));
-			List<Addon> addons = new ArrayList<Addon>(Arrays.asList(SpoutClient.getInstance().getAddonManager().getAddons()));
-			for (Iterator<Addon> i = addons.iterator(); i.hasNext(); ) {
-				Addon a = i.next();
-				if(!Spoutcraft.getAddonStore().isEnabled(a) || (a instanceof ServerAddon)) i.remove();
-			}
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketClientAddons(addons.toArray(new Addon[0])));
 			System.out.println("Detected SpoutPlugin enabled server.");
 			if (this.mc.currentScreen instanceof GuiDownloadTerrain) { 
 				this.mc.displayGuiScreen(null, false);
 				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache());
 			}
-		} else {						
+		} else {
 			par1NetHandler.handleAnimation(this);
 		}
 		// Spout End

@@ -5,11 +5,14 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
+import java.util.Map;
+import java.util.WeakHashMap;
 import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.SuperTessellator;
+import com.prupe.mcpatcher.mod.TessellatorUtils;
+import org.spoutcraft.client.SpoutClient;
 // MCPatcher End
 
 public class Tessellator {
@@ -112,9 +115,7 @@ public class Tessellator {
 	private int normal;
 
 	/** The static instance of the Tessellator. */
-	// MCPatcher Start
-	public static final Tessellator instance = new SuperTessellator(2097152);
-	// MCPatcher End
+	public static final Tessellator instance = new Tessellator(2097152);
 
 	/** Whether this tessellator is currently in draw mode. */
 	// MCPatcher Start - private to public
@@ -138,8 +139,10 @@ public class Tessellator {
 
 	/** The size of the buffers used (in integers). */
 	// MCPatcher Start - private to public
+	public int texture; //Spout Keep this in.
 	public int bufferSize;
-	public int texture;
+	public TextureMap textureMap;
+	public Map children;
 
 	public Tessellator(int par1) {
 	// MCPatcher End
@@ -157,7 +160,8 @@ public class Tessellator {
 		}
 
 		// MCPatcher Start
-		this.texture = -1;
+		this.children = new WeakHashMap();
+		TessellatorUtils.haveBufferSize = true;
 		// MCPatcher End
 	}
 
@@ -165,17 +169,22 @@ public class Tessellator {
 	 * Draws the data set up in this tessellator and resets the state to prepare for new drawing.
 	 */
 	public int draw() {
+		// MCPatcher Start
+		int var1 = TessellatorUtils.drawChildren(0, this);
+		// MCPatcher End
 		if (!this.isDrawing) {
 			throw new IllegalStateException("Not tesselating!");
 		} else {
 			this.isDrawing = false;
 
 			if (this.vertexCount > 0) {
-				// MCPatcher Start
-				if (this.texture >= 0) {
+				// MCPatcher && Spout Start
+				if (this.textureMap != null && SpoutClient.getHandle().renderEngine.boundTexture <= 0) {
+					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.textureMap.getTexture().getGlTextureId());
+				} else if (this.texture > 0) {
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture);
 				}
-				// MCPatcher End
+				// MCPatcher && Spout End
 
 				this.intBuffer.clear();
 				this.intBuffer.put(this.rawBuffer, 0, this.rawBufferIndex);
@@ -271,7 +280,7 @@ public class Tessellator {
 				}
 			}
 
-			int var1 = this.rawBufferIndex * 4;
+			var1 = this.rawBufferIndex * 4;
 			this.reset();
 			return var1;
 		}
@@ -287,6 +296,9 @@ public class Tessellator {
 		this.byteBuffer.clear();
 		this.rawBufferIndex = 0;
 		this.addedVertices = 0;
+		// MCPatcher Start
+		TessellatorUtils.resetChildren(this);
+		// MCPatcher End
 	}
 
 	/**
@@ -311,6 +323,9 @@ public class Tessellator {
 			this.hasTexture = false;
 			this.hasBrightness = false;
 			this.isColorDisabled = false;
+			// MCPatcher Start
+			TessellatorUtils.startDrawingChildren(this, par1);
+			// MCPatcher End
 		}
 	}
 

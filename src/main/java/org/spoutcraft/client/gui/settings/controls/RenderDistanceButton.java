@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.player.RenderDistance;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
@@ -38,7 +37,7 @@ public class RenderDistanceButton extends AutomatedButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		if (SpoutClient.getInstance().getActivePlayer() != null) {
 			distance = SpoutClient.getInstance().getActivePlayer().getNextRenderDistance();
 			Configuration.setRenderDistance(distance.getValue());

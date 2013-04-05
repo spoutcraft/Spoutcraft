@@ -6,7 +6,7 @@
 	<name>Spoutcraft</name>
 	<groupId>org.spoutcraft</groupId>
 	<artifactId>spoutcraft</artifactId>
-	<version>1.4.7-SNAPSHOT</version>
+	<version>1.5.1-SNAPSHOT</version>
 	<url>http://www.spout.org</url>
 	<inceptionYear>2011</inceptionYear>
 	<description>Spoutcraft is a modified Minecraft client, which is accessible via the Spoutcraft Launcher, that boosts increased FPS, HD textures/fonts,
@@ -16,9 +16,10 @@
 	<!-- Build properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<minecraftVersion>1.4.7</minecraftVersion>
+		<minecraftVersion>1.5.1</minecraftVersion>
+		<minecraft_Version>1_5_1</minecraft_Version>
 		<lwjglVersion>2.4</lwjglVersion>
-		<mcpVersion>726</mcpVersion>
+		<mcpVersion>744</mcpVersion>
 		<buildNumber>0</buildNumber>
 	</properties>
 
@@ -195,7 +196,7 @@
 									</runIf>
 									<targetPath>${project.basedir}/jars/bin</targetPath>
 									<destFileName>minecraft.jar</destFileName>
-									<file>http://s3.amazonaws.com/MinecraftDownload/minecraft.jar</file>
+									<file>http://assets.minecraft.net/${minecraft_Version}/minecraft.jar</file>
 								</resource>
 								<!-- Download remaining dependencies -->
 								<resource>
@@ -229,12 +230,6 @@
 											<groupId>dnsjava</groupId>
 											<artifactId>dnsjava</artifactId>
 											<version>2.1.1</version>
-											<stripVersion>true</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>com.google.guava</groupId>
-											<artifactId>guava</artifactId>
-											<version>13.0.1</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
@@ -611,6 +606,44 @@
 									</pluginExecutionFilter>
 									<action>
 										<execute/>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.github.goldin
+										</groupId>
+										<artifactId>
+											copy-maven-plugin
+										</artifactId>
+										<versionRange>
+											[0.2.5,)
+										</versionRange>
+										<goals>
+											<goal>copy</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											exec-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.2.1,)
+										</versionRange>
+										<goals>
+											<goal>exec</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

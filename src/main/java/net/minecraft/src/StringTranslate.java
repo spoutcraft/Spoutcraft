@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
@@ -19,12 +21,13 @@ public class StringTranslate {
 	 */
 	private Properties translateTable = new Properties();
 	private TreeMap languageList;
+	private TreeMap field_94521_d = new TreeMap();
 	private String currentLanguage;
 	private boolean isUnicode;
 
 	public StringTranslate(String par1Str) {
 		this.loadLanguageList();
-		this.setLanguage(par1Str);
+		this.setLanguage(par1Str, false);
 	}
 
 	/**
@@ -41,7 +44,7 @@ public class StringTranslate {
 			BufferedReader var2 = new BufferedReader(new InputStreamReader(StringTranslate.class.getResourceAsStream("/lang/languages.txt"), "UTF-8"));
 
 			for (String var3 = var2.readLine(); var3 != null; var3 = var2.readLine()) {
-				String[] var4 = var3.split("=");
+				String[] var4 = var3.trim().split("=");
 
 				if (var4 != null && var4.length == 2) {
 					var1.put(var4[0], var4[1]);
@@ -63,7 +66,13 @@ public class StringTranslate {
 	}
 
 	private void loadLanguage(Properties par1Properties, String par2Str) throws IOException {
-		BufferedReader var3 = new BufferedReader(new InputStreamReader(StringTranslate.class.getResourceAsStream("/lang/" + par2Str + ".lang"), "UTF-8"));
+		BufferedReader var3 = null;
+
+		if (this.field_94521_d.containsKey(par2Str)) {
+			var3 = new BufferedReader(new FileReader((File)this.field_94521_d.get(par2Str)));
+		} else {
+			var3 = new BufferedReader(new InputStreamReader(StringTranslate.class.getResourceAsStream("/lang/" + par2Str + ".lang"), "UTF-8"));
+		}
 
 		for (String var4 = var3.readLine(); var4 != null; var4 = var3.readLine()) {
 			var4 = var4.trim();
@@ -76,7 +85,6 @@ public class StringTranslate {
 				}
 			}
 		}
-
 		// Spout Start
 		this.loadSpoutLanguage(par1Properties, par2Str);
 		// Spout End
@@ -112,14 +120,14 @@ public class StringTranslate {
 	}
 	// Spout End
 
-	public void setLanguage(String par1Str) {
-		if (!par1Str.equals(this.currentLanguage)) {
-			Properties var2 = new Properties();
+	public synchronized void setLanguage(String par1Str, boolean par2) {
+		if (par2 || !par1Str.equals(this.currentLanguage)) {
+			Properties var3 = new Properties();
 
 			try {
-				this.loadLanguage(var2, "en_US");
+				this.loadLanguage(var3, "en_US");
 			// Spout Start - IOException to Exception
-			} catch (Exception var8) {
+			} catch (Exception var9) {
 			// Spout End
 				;
 			}
@@ -128,18 +136,18 @@ public class StringTranslate {
 
 			if (!"en_US".equals(par1Str)) {
 				try {
-					this.loadLanguage(var2, par1Str);
-					Enumeration var3 = var2.propertyNames();
+					this.loadLanguage(var3, par1Str);
+					Enumeration var4 = var3.propertyNames();
 
-					while (var3.hasMoreElements() && !this.isUnicode) {
-						Object var4 = var3.nextElement();
-						Object var5 = var2.get(var4);
+					while (var4.hasMoreElements() && !this.isUnicode) {
+						Object var5 = var4.nextElement();
+						Object var6 = var3.get(var5);
 
-						if (var5 != null) {
-							String var6 = var5.toString();
+						if (var6 != null) {
+							String var7 = var6.toString();
 
-							for (int var7 = 0; var7 < var6.length(); ++var7) {
-								if (var6.charAt(var7) >= 256) {
+							for (int var8 = 0; var8 < var7.length(); ++var8) {
+								if (var7.charAt(var8) >= 256) {
 									this.isUnicode = true;
 									break;
 								}
@@ -155,7 +163,7 @@ public class StringTranslate {
 			}
 
 			this.currentLanguage = par1Str;
-			this.translateTable = var2;
+			this.translateTable = var3;
 		}
 	}
 
@@ -170,7 +178,7 @@ public class StringTranslate {
 	/**
 	 * Translate a key to current language.
 	 */
-	public String translateKey(String par1Str) {
+	public synchronized String translateKey(String par1Str) {
 		return this.translateTable.getProperty(par1Str, par1Str);
 	}
 
@@ -192,7 +200,7 @@ public class StringTranslate {
 	/**
 	 * Translate a key to current language applying String.format()
 	 */
-	public String translateKeyFormat(String par1Str, Object ... par2ArrayOfObj) {
+	public synchronized String translateKeyFormat(String par1Str, Object ... par2ArrayOfObj) {
 		String var3 = this.translateTable.getProperty(par1Str, par1Str);
 
 		try {
@@ -202,14 +210,32 @@ public class StringTranslate {
 		}
 	}
 
+	public synchronized boolean func_94520_b(String par1Str) {
+		return this.translateTable.containsKey(par1Str);
+	}
+
 	/**
 	 * Translate a key with a extra '.name' at end added, is used by blocks and items.
 	 */
-	public String translateNamedKey(String par1Str) {
+	public synchronized String translateNamedKey(String par1Str) {
 		return this.translateTable.getProperty(par1Str + ".name", "");
 	}
 
 	public static boolean isBidirectional(String par0Str) {
 		return "ar_SA".equals(par0Str) || "he_IL".equals(par0Str);
+	}
+
+	public synchronized void func_94519_a(String par1Str, File par2File) {
+		int var3 = par1Str.indexOf(46);
+
+		if (var3 > 0) {
+			par1Str = par1Str.substring(0, var3);
+		}
+
+		this.field_94521_d.put(par1Str, par2File);
+
+		if (par1Str.contains(this.currentLanguage)) {
+			this.setLanguage(this.currentLanguage, true);
+		}
 	}
 }

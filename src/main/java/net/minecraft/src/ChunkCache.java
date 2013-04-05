@@ -15,25 +15,34 @@ public class ChunkCache implements IBlockAccess {
 	/** Reference to the World object. */
 	private World worldObj;
 
-	public ChunkCache(World par1World, int par2, int par3, int par4, int par5, int par6, int par7) {
+	public ChunkCache(World par1World, int par2, int par3, int par4, int par5, int par6, int par7, int par8) {
 		this.worldObj = par1World;
-		this.chunkX = par2 >> 4;
-		this.chunkZ = par4 >> 4;
-		int var8 = par5 >> 4;
-		int var9 = par7 >> 4;
-		this.chunkArray = new Chunk[var8 - this.chunkX + 1][var9 - this.chunkZ + 1];
+		this.chunkX = par2 - par8 >> 4;
+		this.chunkZ = par4 - par8 >> 4;
+		int var9 = par5 + par8 >> 4;
+		int var10 = par7 + par8 >> 4;
+		this.chunkArray = new Chunk[var9 - this.chunkX + 1][var10 - this.chunkZ + 1];
 		this.hasExtendedLevels = true;
+		int var11;
+		int var12;
+		Chunk var13;
 
-		for (int var10 = this.chunkX; var10 <= var8; ++var10) {
-			for (int var11 = this.chunkZ; var11 <= var9; ++var11) {
-				Chunk var12 = par1World.getChunkFromChunkCoords(var10, var11);
+		for (var11 = this.chunkX; var11 <= var9; ++var11) {
+			for (var12 = this.chunkZ; var12 <= var10; ++var12) {
+				var13 = par1World.getChunkFromChunkCoords(var11, var12);
 
-				if (var12 != null) {
-					this.chunkArray[var10 - this.chunkX][var11 - this.chunkZ] = var12;
+				if (var13 != null) {
+					this.chunkArray[var11 - this.chunkX][var12 - this.chunkZ] = var13;
+				}
+			}
+		}
 
-					if (!var12.getAreLevelsEmpty(par3, par6)) {
-						this.hasExtendedLevels = false;
-					}
+		for (var11 = par2 >> 4; var11 <= par5 >> 4; ++var11) {
+			for (var12 = par4 >> 4; var12 <= par7 >> 4; ++var12) {
+				var13 = this.chunkArray[var11 - this.chunkX][var12 - this.chunkZ];
+
+				if (var13 != null && !var13.getAreLevelsEmpty(par3, par6)) {
+					this.hasExtendedLevels = false;
 				}
 			}
 		}
@@ -126,7 +135,7 @@ public class ChunkCache implements IBlockAccess {
 			if (par4) {
 				var5 = this.getBlockId(par1, par2, par3);
 
-				if (var5 == Block.stoneSingleSlab.blockID || var5 == Block.woodSingleSlab.blockID || var5 == Block.tilledField.blockID || var5 == Block.stairCompactPlanks.blockID || var5 == Block.stairCompactCobblestone.blockID) {
+				 if (var5 == Block.stoneSingleSlab.blockID || var5 == Block.woodSingleSlab.blockID || var5 == Block.tilledField.blockID || var5 == Block.stairsWoodOak.blockID || var5 == Block.stairsCobblestone.blockID) { 
 					var6 = this.getLightValueExt(par1, par2 + 1, par3, false);
 					int var7 = this.getLightValueExt(par1 + 1, par2, par3, false);
 					int var8 = this.getLightValueExt(par1 - 1, par2, par3, false);
@@ -224,7 +233,7 @@ public class ChunkCache implements IBlockAccess {
 	 */
 	public boolean doesBlockHaveSolidTopSurface(int par1, int par2, int par3) {
 		Block var4 = Block.blocksList[this.getBlockId(par1, par2, par3)];
-		return var4 == null ? false : (var4.blockMaterial.isOpaque() && var4.renderAsNormalBlock() ? true : (var4 instanceof BlockStairs ? (this.getBlockMetadata(par1, par2, par3) & 4) == 4 : (var4 instanceof BlockHalfSlab ? (this.getBlockMetadata(par1, par2, par3) & 8) == 8 : false)));
+		return this.worldObj.func_102026_a(var4, this.getBlockMetadata(par1, par2, par3)); 
 	}
 
 	/**
@@ -328,9 +337,9 @@ public class ChunkCache implements IBlockAccess {
 	/**
 	 * Is this block powering in the specified direction Args: x, y, z, direction
 	 */
-	public boolean isBlockProvidingPowerTo(int par1, int par2, int par3, int par4) {
+	public int isBlockProvidingPowerTo(int par1, int par2, int par3, int par4) {
 		int var5 = this.getBlockId(par1, par2, par3);
-		return var5 == 0 ? false : Block.blocksList[var5].isProvidingStrongPower(this, par1, par2, par3, par4);
+		return var5 == 0 ? 0 : Block.blocksList[var5].isProvidingStrongPower(this, par1, par2, par3, par4);
 	}
 
 	// Spout Start

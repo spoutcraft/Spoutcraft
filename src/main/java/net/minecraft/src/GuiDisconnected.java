@@ -15,14 +15,16 @@ public class GuiDisconnected extends GuiScreen {
 	private String errorDetail;
 	private Object[] field_74247_c;
 	private List field_74245_d;
+	private final GuiScreen field_98095_n;
 
-	public GuiDisconnected(String par1Str, String par2Str, Object ... par3ArrayOfObj) {
-		StringTranslate var4 = StringTranslate.getInstance();
-		this.errorMessage = var4.translateKey(par1Str);
-		this.errorDetail = par2Str;
-		this.field_74247_c = par3ArrayOfObj;
+	public GuiDisconnected(GuiScreen par1GuiScreen, String par2Str, String par3Str, Object ... par4ArrayOfObj) {
+		StringTranslate var5 = StringTranslate.getInstance();
+		this.field_98095_n = par1GuiScreen;
+		this.errorMessage = var5.translateKey(par2Str);
+		this.errorDetail = par3Str;
+		this.field_74247_c = par4ArrayOfObj;
 		// Spout Start
-		org.spoutcraft.client.ReconnectManager.detectKick(par1Str, par2Str, par3ArrayOfObj);
+		org.spoutcraft.client.ReconnectManager.detectKick(par2Str, par3Str, par4ArrayOfObj);
 		// Spout End
 	}
 
@@ -36,9 +38,9 @@ public class GuiDisconnected extends GuiScreen {
 	 */
 	public void initGui() {
 		StringTranslate var1 = StringTranslate.getInstance();
-		this.controlList.clear();
+		this.buttonList.clear();
 		// Spout Start
-		controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120 + 12, "Back to " + SpoutClient.getInstance().getServerManager().getJoinedFromName()));
+		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, "Back to " + SpoutClient.getInstance().getServerManager().getJoinedFromName()));
 		// Spout End
 		if (this.field_74247_c != null) {
 			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(var1.translateKeyFormat(this.errorDetail, this.field_74247_c), this.width - 50);

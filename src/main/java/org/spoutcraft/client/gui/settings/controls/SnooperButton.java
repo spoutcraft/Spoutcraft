@@ -22,7 +22,6 @@ package org.spoutcraft.client.gui.settings.controls;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiSnooper;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.client.SpoutClient;
 
@@ -35,7 +34,7 @@ public class SnooperButton extends GenericButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		GuiSnooper snooperSettings = new GuiSnooper(parent, SpoutClient.getHandle().gameSettings);
 		SpoutClient.getHandle().displayGuiScreen(snooperSettings);
 	}

@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.pclewis.mcpatcher.mod.TextureUtils;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.FontRenderer;
@@ -185,7 +184,7 @@ class TexturePackSizeThread extends Thread {
 
 	@Override
 	public void run() {
-		item.tileSize = TextureUtils.getTileSize(texturePack);
+		item.tileSize = TexturePackList.getTileSize(texturePack);
 		synchronized(TexturePackItem.texturePackSize) {
 			TexturePackItem.texturePackSize.put(getName(), item.tileSize);
 		}

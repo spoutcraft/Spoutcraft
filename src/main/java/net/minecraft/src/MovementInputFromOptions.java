@@ -1,21 +1,29 @@
 package net.minecraft.src;
 
 public class MovementInputFromOptions extends MovementInput {
-	public GameSettings gameSettings; // Spout private -> public
+	// Spout Start - private to public
+	public GameSettings gameSettings;
+	// Spout End
 
 	public MovementInputFromOptions(GameSettings par1GameSettings) {
 		this.gameSettings = par1GameSettings;
 	}
 
-	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) { // Spout - kept parameter
+	// Spout Start - Keep parameter
+	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) {
+	// Spout End
 		this.moveStrafe = 0.0F;
 		this.moveForward = 0.0F;
 
-		if (this.gameSettings.keyBindForward.pressed || par1EntityPlayer.autoforwardToggle) { // Spout
+		// Spout Start - Forward toggle
+		if (this.gameSettings.keyBindForward.pressed || par1EntityPlayer.autoforwardToggle) {
+		// Spout End
 			++this.moveForward;
 		}
 
-		if (this.gameSettings.keyBindBack.pressed || par1EntityPlayer.autoBackwardToggle) { // Spout
+		// Spout Start - Forward toggle
+		if (this.gameSettings.keyBindBack.pressed || par1EntityPlayer.autoBackwardToggle) {
+		// Spout End
 			--this.moveForward;
 		}
 
@@ -29,10 +37,11 @@ public class MovementInputFromOptions extends MovementInput {
 		// Spout Start
 		this.flyingDown = this.gameSettings.keyFlyDown.pressed;
 		this.flyingUp = this.gameSettings.keyFlyUp.pressed;
-		if (par1EntityPlayer.capabilities.isFlying){
+		if (par1EntityPlayer.capabilities.isFlying) {
 			this.moveStrafe = 0.0F;
 			this.moveForward = 0.0F;
-			if (this.gameSettings.keyFlyForward.pressed || par1EntityPlayer.autoforwardToggle) { // Spout
+
+			if (this.gameSettings.keyFlyForward.pressed || par1EntityPlayer.autoforwardToggle) {
 				++this.moveForward;
 			}
 
@@ -51,7 +60,9 @@ public class MovementInputFromOptions extends MovementInput {
 		// Spout End
 
 		this.jump = this.gameSettings.keyBindJump.pressed;
-		this.sneak = this.gameSettings.keyBindSneak.pressed || par1EntityPlayer.sneakToggle; // Spout
+		// Spout Start - Sneak toggle
+		this.sneak = this.gameSettings.keyBindSneak.pressed || par1EntityPlayer.sneakToggle;
+		// Spout End
 
 		if (this.sneak) {
 			this.moveStrafe = (float)((double)this.moveStrafe * 0.3D);

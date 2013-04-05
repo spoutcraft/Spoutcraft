@@ -27,8 +27,6 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericButton;
@@ -57,17 +55,15 @@ public class GuiConnectionLost extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-
 		GenericScrollArea screen = new GenericScrollArea();
 		screen.setHeight(height - 16 - 24).setWidth(width).setY(16 + 24).setX(0);
-		getScreen().attachWidget(spoutcraft, screen);
+		getScreen().attachWidget("Spoutcraft", screen);
 
 		GenericLabel label = new GenericLabel("Connection Lost!");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(16);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
-		getScreen().attachWidget(spoutcraft, label);
+		getScreen().attachWidget("Spoutcraft", label);
 
 		int top = 5;
 		Color grey = new Color(0.80F, 0.80F, 0.80F, 0.65F);
@@ -76,12 +72,12 @@ public class GuiConnectionLost extends GuiScreen {
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
+		screen.attachWidget("Spoutcraft", label);
 
 		LocalTexture texture = new LocalTexture();
 		texture.setUrl("/res/misc/disconnected.png").setX((int) (width / 2 - 64)).setY(top);
 		texture.setHeight(128).setWidth(128);
-		screen.attachWidget(spoutcraft, texture);
+		screen.attachWidget("Spoutcraft", texture);
 
 		top += 116;
 
@@ -91,7 +87,7 @@ public class GuiConnectionLost extends GuiScreen {
 		button.setX((int) (width / 2 - button.getWidth() / 2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		top += 26;
 
 		button = new ReturnToServerList().setText("Return to " + SpoutClient.getInstance().getServerManager().getJoinedFromName());
@@ -99,7 +95,7 @@ public class GuiConnectionLost extends GuiScreen {
 		button.setX((int) (width / 2 - button.getWidth() / 2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		top += 26;
 
 		button = new ReturnToMainMenu().setText("Return to Main Menu");
@@ -107,7 +103,7 @@ public class GuiConnectionLost extends GuiScreen {
 		button.setX((int) (width / 2 - button.getWidth() / 2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
-		screen.attachWidget(spoutcraft, button);
+		screen.attachWidget("Spoutcraft", button);
 		top += 26;
 	}
 
@@ -118,19 +114,19 @@ public class GuiConnectionLost extends GuiScreen {
 }
 
 class ReconnectButton extends GenericButton {
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Minecraft.theMinecraft.displayGuiScreen(new GuiConnecting(Minecraft.theMinecraft, GuiConnectionLost.lastServerIp, GuiConnectionLost.lastServerPort));
 	}
 }
 
 class ReturnToMainMenu extends GenericButton {
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 }
 
 class ReturnToServerList extends GenericButton {
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Minecraft.theMinecraft.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom());
 	}
 }

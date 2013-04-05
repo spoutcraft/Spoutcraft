@@ -82,7 +82,7 @@ public class ItemInWorldManager {
 				var5 = (int)(var4 * 10.0F);
 
 				if (var5 != this.durabilityRemainingOnBlock) {
-					this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, this.posX, this.posY, this.posZ, var5);
+					this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, this.posX, this.posY, this.posZ, var5);
 					this.durabilityRemainingOnBlock = var5;
 				}
 
@@ -96,7 +96,7 @@ public class ItemInWorldManager {
 			Block var6 = Block.blocksList[var1];
 
 			if (var6 == null) {
-				this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, -1);
+				this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, -1);
 				this.durabilityRemainingOnBlock = -1;
 				this.isDestroyingBlock = false;
 			} else {
@@ -107,7 +107,7 @@ public class ItemInWorldManager {
 				var5 = (int)(var4 * 10.0F);
 
 				if (var5 != this.durabilityRemainingOnBlock) {
-					this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, var5);
+					this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, var5);
 					this.durabilityRemainingOnBlock = var5;
 				}
 			}
@@ -115,7 +115,7 @@ public class ItemInWorldManager {
 	}
 
 	/**
-	 * if not creative, it calls cancelDestroyingBlock untill the block is broken first. par4 is the specific side.
+	 * if not creative, it calls destroyBlockInWorldPartially untill the block is broken first. par4 is the specific side.
 	 * tryHarvestBlock can also be the result of this call
 	 */
 	public void onBlockClicked(int par1, int par2, int par3, int par4) {
@@ -125,7 +125,7 @@ public class ItemInWorldManager {
 					this.tryHarvestBlock(par1, par2, par3);
 				}
 			} else {
-				this.theWorld.extinguishFire(this.thisPlayerMP, par1, par2, par3, par4);
+				this.theWorld.extinguishFire((EntityPlayer)null, par1, par2, par3, par4);
 				this.initialDamage = this.curblockDamage;
 				float var5 = 1.0F;
 				int var6 = this.theWorld.getBlockId(par1, par2, par3);
@@ -145,7 +145,7 @@ public class ItemInWorldManager {
 					this.partiallyDestroyedBlockY = par2;
 					this.partiallyDestroyedBlockZ = par3;
 					int var7 = (int)(var5 * 10.0F);
-					this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, par1, par2, par3, var7);
+					this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, par1, par2, par3, var7);
 					this.durabilityRemainingOnBlock = var7;
 				}
 			}
@@ -165,7 +165,7 @@ public class ItemInWorldManager {
 
 				if (var7 >= 0.7F) {
 					this.isDestroyingBlock = false;
-					this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, par1, par2, par3, -1);
+					this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, par1, par2, par3, -1);
 					this.tryHarvestBlock(par1, par2, par3);
 				} else if (!this.receivedFinishDiggingPacket) {
 					this.isDestroyingBlock = false;
@@ -190,7 +190,7 @@ public class ItemInWorldManager {
 	 */
 	public void cancelDestroyingBlock(int par1, int par2, int par3) {
 		this.isDestroyingBlock = false;
-		this.theWorld.cancelDestroyingBlock(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, -1);
+		this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, -1);
 	}
 
 	/**
@@ -204,7 +204,7 @@ public class ItemInWorldManager {
 			var4.onBlockHarvested(this.theWorld, par1, par2, par3, var5, this.thisPlayerMP);
 		}
 
-		boolean var6 = this.theWorld.setBlockWithNotify(par1, par2, par3, 0);
+		boolean var6 = this.theWorld.setBlockToAir(par1, par2, par3);
 
 		if (var4 != null && var6) {
 			var4.onBlockDestroyedByPlayer(this.theWorld, par1, par2, par3, var5);

@@ -23,7 +23,6 @@ import net.minecraft.src.GuiScreen;
 import org.bukkit.ChatColor;
 
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.WidgetAnchor;
 
@@ -32,12 +31,11 @@ public class GuiPrecache extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		statusText = new GenericLabel();
 		statusText.setAnchor(WidgetAnchor.CENTER_CENTER);
 		statusText.setAlign(WidgetAnchor.CENTER_CENTER);
 		statusText.setText(ChatColor.BLUE + "Spoutcraft" + "\n" + " " + "\n" + ChatColor.WHITE + "Loading terrain and custom resources" + "\n" + "\n" + ChatColor.MAGIC + "ShowMagic");
-		getScreen().attachWidgets(spoutcraft, statusText);
+		getScreen().attachWidgets("Spoutcraft", statusText);
 	}
 
 	@Override

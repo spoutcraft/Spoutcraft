@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.api.material;
 
-import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.block.design.BlockDesign;
 
 public interface CustomBlock extends Block {
@@ -27,7 +26,7 @@ public interface CustomBlock extends Block {
 
 	public String getFullName();
 
-	public Addon getAddon();
+	public String getAddon();
 
 	public CustomItem getBlockItem();
 

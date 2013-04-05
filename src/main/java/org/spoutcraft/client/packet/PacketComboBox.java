@@ -22,7 +22,6 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.spoutcraft.api.entity.ActivePlayer;
 import org.spoutcraft.api.gui.GenericComboBox;
 import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.api.io.SpoutInputStream;
@@ -62,9 +61,8 @@ public class PacketComboBox implements SpoutPacket {
 	}
 
 	public void run(int playerId) {
-		ActivePlayer player = SpoutClient.getInstance().getActivePlayer();
-		if (player.getMainScreen().getActivePopup() != null) {
-			Widget w = player.getMainScreen().getActivePopup().getWidget(uuid);
+		if (SpoutClient.getInstance().getActivePlayer().getMainScreen().getActivePopup() != null) {
+			Widget w = SpoutClient.getInstance().getActivePlayer().getMainScreen().getActivePopup().getWidget(uuid);
 			if (w != null && w instanceof GenericComboBox) {
 				box = (GenericComboBox) w;
 				box.setOpen(open);

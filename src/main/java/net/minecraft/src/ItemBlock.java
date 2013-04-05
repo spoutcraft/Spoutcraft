@@ -1,19 +1,18 @@
 package net.minecraft.src;
 
+//Spout Start
+import com.prupe.mcpatcher.mod.ColorizeBlock;
+//Spout end
 import java.util.List;
-// MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
-// MCPatcher End
 
 public class ItemBlock extends Item {
-
 	/** The block ID of the Block associated with this ItemBlock */
 	private int blockID;
+	private Icon field_94588_b;
 
 	public ItemBlock(int par1) {
 		super(par1);
 		this.blockID = par1 + 256;
-		this.setIconIndex(Block.blocksList[par1 + 256].getBlockTextureFromSide(2));
 	}
 
 	/**
@@ -24,13 +23,28 @@ public class ItemBlock extends Item {
 	}
 
 	/**
-	 * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
+	 * Returns 0 for /terrain.png, 1 for /gui/items.png
+	 */
+	public int getSpriteNumber() {
+		return Block.blocksList[this.blockID].func_94327_t_() != null ? 1 : 0;
+	}
+
+	/**
+	 * Gets an icon index based on an item's damage value
+	 */
+	public Icon getIconFromDamage(int par1) {
+		return this.field_94588_b != null ? this.field_94588_b : Block.blocksList[this.blockID].getBlockTextureFromSide(1);
+	}
+
+	/**
+	 * Callback for item usage. If the item does something special on right
+	 * clicking, he will have one of those. Return True if something happen and
+	 * false if it don't. This is for ITEMS, not BLOCKS
 	 */
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
 		int var11 = par3World.getBlockId(par4, par5, par6);
 
-		if (var11 == Block.snow.blockID) {
+		if (var11 == Block.snow.blockID && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1) {
 			par7 = 1;
 		} else if (var11 != Block.vine.blockID && var11 != Block.tallGrass.blockID && var11 != Block.deadBush.blockID) {
 			if (par7 == 0) {
@@ -64,18 +78,18 @@ public class ItemBlock extends Item {
 			return false;
 		} else if (par5 == 255 && Block.blocksList[this.blockID].blockMaterial.isSolid()) {
 			return false;
-		} else if (par3World.canPlaceEntityOnSide(this.blockID, par4, par5, par6, false, par7, par2EntityPlayer)) {
+		} else if (par3World.canPlaceEntityOnSide(this.blockID, par4, par5, par6, false, par7, par2EntityPlayer, par1ItemStack)) {
 			Block var12 = Block.blocksList[this.blockID];
 			int var13 = this.getMetadata(par1ItemStack.getItemDamage());
 			int var14 = Block.blocksList[this.blockID].onBlockPlaced(par3World, par4, par5, par6, par7, par8, par9, par10, var13);
 
-			if (par3World.setBlockAndMetadataWithNotify(par4, par5, par6, this.blockID, var14)) {
+			if (par3World.setBlock(par4, par5, par6, this.blockID, var14, 3)) {
 				if (par3World.getBlockId(par4, par5, par6) == this.blockID) {
-					Block.blocksList[this.blockID].onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer);
+					Block.blocksList[this.blockID].onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer, par1ItemStack);
 					Block.blocksList[this.blockID].onPostBlockPlaced(par3World, par4, par5, par6, var14);
 				}
 
-				par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), var12.stepSound.getPlaceSound(), (var12.stepSound.getVolume() + 1.0F) / 2.0F, var12.stepSound.getPitch() * 0.8F);
+				par3World.playSoundEffect((double) ((float) par4 + 0.5F), (double) ((float) par5 + 0.5F), (double) ((float) par6 + 0.5F), var12.stepSound.getPlaceSound(), (var12.stepSound.getVolume() + 1.0F) / 2.0F, var12.stepSound.getPitch() * 0.8F);
 				--par1ItemStack.stackSize;
 			}
 
@@ -86,7 +100,8 @@ public class ItemBlock extends Item {
 	}
 
 	/**
-	 * Returns true if the given ItemBlock can be placed on the given side of the given block position.
+	 * Returns true if the given ItemBlock can be placed on the given side of
+	 * the given block position.
 	 */
 	public boolean canPlaceItemBlockOnSide(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer, ItemStack par7ItemStack) {
 		int var8 = par1World.getBlockId(par2, par3, par4);
@@ -119,15 +134,23 @@ public class ItemBlock extends Item {
 			}
 		}
 
-		return par1World.canPlaceEntityOnSide(this.getBlockID(), par2, par3, par4, false, par5, (Entity)null);
+		return par1World.canPlaceEntityOnSide(this.getBlockID(), par2, par3, par4, false, par5, (Entity) null, par7ItemStack);
 	}
 
-	public String getItemNameIS(ItemStack par1ItemStack) {
-		return Block.blocksList[this.blockID].getBlockName();
+	/**
+	 * Returns the unlocalized name of this item. This version accepts an
+	 * ItemStack so different stacks can have different names based on their
+	 * damage or NBT.
+	 */
+	public String getUnlocalizedName(ItemStack par1ItemStack) {
+		return Block.blocksList[this.blockID].getUnlocalizedName();
 	}
 
-	public String getItemName() {
-		return Block.blocksList[this.blockID].getBlockName();
+	/**
+	 * Returns the unlocalized name of this item.
+	 */
+	public String getUnlocalizedName() {
+		return Block.blocksList[this.blockID].getUnlocalizedName();
 	}
 
 	/**
@@ -138,24 +161,24 @@ public class ItemBlock extends Item {
 	}
 
 	/**
-	 * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
+	 * returns a list of items with the same ID, but different meta (eg: dye
+	 * returns 16 items)
 	 */
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
 		Block.blocksList[this.blockID].getSubBlocks(par1, par2CreativeTabs, par3List);
 	}
 
-	// Spout Start - Fix metadata for double slabs
-	public int getMetadata(int damage) {
-		if (blockID == Block.stoneDoubleSlab.blockID){
-			return damage;
-		}
-		return super.getMetadata(damage);
-	}
-	// Spout End
+	public void updateIcons(IconRegister par1IconRegister) {
+		String var2 = Block.blocksList[this.blockID].func_94327_t_();
 
-	// MCPatcher Start
-	public int getColorFromItemStack(ItemStack var1, int var2) {
-		return Colorizer.getItemColorFromDamage(super.getColorFromItemStack(var1, var2), this.blockID, var2);
+		if (var2 != null) {
+			this.field_94588_b = par1IconRegister.registerIcon(var2);
+		}
 	}
-	// MCPatcher End
+
+	//Spout MCPatcher start
+	public int getColorFromItemStack(ItemStack var1, int var2) {
+		return ColorizeBlock.getItemColorFromDamage(super.getColorFromItemStack(var1, var2), this.blockID, var2);
+	}
+	//Spout MCPatcher end
 }

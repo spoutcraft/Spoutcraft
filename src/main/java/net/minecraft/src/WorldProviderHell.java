@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.mod.ColorizeWorld;
 // MCPatcher End
 // Spout Start
 import org.spoutcraft.api.gui.Color;
@@ -29,7 +29,9 @@ public class WorldProviderHell extends WorldProvider {
 		if (fogColor != null) {
 			return Vec3.createVectorHelper(fogColor.getRedF(), fogColor.getGreenF(), fogColor.getBlueF());
 		} else {
-			return Vec3.createVectorHelper((double)Colorizer.netherFogColor[0], (double)Colorizer.netherFogColor[1], (double)Colorizer.netherFogColor[2]);
+		// MCPatcher Start
+		return this.worldObj.getWorldVec3Pool().getVecFromPool((double)ColorizeWorld.netherFogColor[0], (double)ColorizeWorld.netherFogColor[1], (double)ColorizeWorld.netherFogColor[2]);
+		// MCPatcher End
 		}
 		// Spout End
 	}

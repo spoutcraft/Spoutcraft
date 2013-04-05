@@ -3,8 +3,10 @@ package net.minecraft.src;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+// MCPatcher Start
+import com.prupe.mcpatcher.mod.MobRandomizer;
+// MCPatcher End
 // Spout Start
-import com.pclewis.mcpatcher.mod.MobRandomizer;
 import org.spoutcraft.client.config.Configuration;
 // Spout End
 
@@ -25,9 +27,9 @@ public class RenderEnderman extends RenderLiving {
 	 */
 	public void renderEnderman(EntityEnderman par1EntityEnderman, double par2, double par4, double par6, float par8, float par9) {
 		this.endermanModel.isCarrying = par1EntityEnderman.getCarried() > 0;
-		this.endermanModel.isAttacking = par1EntityEnderman.func_70823_r();
+		this.endermanModel.isAttacking = par1EntityEnderman.isScreaming();
 
-		if (par1EntityEnderman.func_70823_r()) {
+		if (par1EntityEnderman.isScreaming()) {
 			double var10 = 0.02D;
 			par2 += this.rnd.nextGaussian() * var10;
 			par6 += this.rnd.nextGaussian() * var10;
@@ -73,7 +75,7 @@ public class RenderEnderman extends RenderLiving {
 		} else {
 			// Spout Start
 			if (Configuration.isRandomMobTextures()) {
-				this.loadTexture(MobRandomizer.randomTexture((EntityLiving)par1EntityEnderman, "/mob/enderman_eyes.png"));
+			this.loadTexture(MobRandomizer.randomTexture((EntityLiving)par1EntityEnderman, "/mob/enderman_eyes.png"));
 			} else {
 				loadTexture(par1EntityEnderman.getCustomTexture(org.spoutcraft.api.entity.EntitySkinType.ENDERMAN_EYES, "/mob/enderman_eyes.png"));
 			}

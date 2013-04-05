@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;
 
 public class SmoothFPSButton extends AutomatedCheckBox {
@@ -30,7 +29,7 @@ public class SmoothFPSButton extends AutomatedCheckBox {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setSmoothFPS(!Configuration.isSmoothFPS());
 		Configuration.write();
 	}

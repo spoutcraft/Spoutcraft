@@ -115,7 +115,7 @@ public class TileEntityRenderer {
 	 * Render this TileEntity at its current position from the player
 	 */
 	public void renderTileEntity(TileEntity par1TileEntity, float par2) {
-		if (par1TileEntity.getDistanceFrom(this.playerX, this.playerY, this.playerZ) < par1TileEntity.func_82115_m()) {
+		if (par1TileEntity.getDistanceFrom(this.playerX, this.playerY, this.playerZ) < par1TileEntity.getMaxRenderDistanceSquared()) {
 			int var3 = this.worldObj.getLightBrightnessForSkyBlocks(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord, 0);
 			int var4 = var3 % 65536;
 			int var5 = var3 / 65536;
@@ -132,12 +132,11 @@ public class TileEntityRenderer {
 		TileEntitySpecialRenderer var9 = this.getSpecialRendererForEntity(par1TileEntity);
 
 		if (var9 != null) {
-			// Spout Start
 			try {
-			// Spout End
-			var9.renderTileEntityAt(par1TileEntity, par2, par4, par6, par8);
+				var9.renderTileEntityAt(par1TileEntity, par2, par4, par6, par8);
 			// Spout Start
-			} catch (ClassCastException ignore) { }
+			} catch (ClassCastException ignore) {
+			}
 			// Spout End
 		}
 	}

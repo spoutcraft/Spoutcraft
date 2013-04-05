@@ -44,25 +44,17 @@ public class CustomScreen extends GuiScreen {
 	}
 
 	public void drawScreen(int x, int y, float z) {
-		SpoutClient.enableSandbox();
 		if (screen instanceof PopupScreen) {
 			if (!((PopupScreen)screen).isTransparent()) {
 				this.drawDefaultBackground();
 			}
 		}
-
 		bg.setVisible(screen.isBgVisible());
-		SpoutClient.disableSandbox();
-		drawWidgets(x, y, z); // Already sandboxed
+		drawWidgets(x, y, z);
 	}
 
 	@Override
 	public boolean doesGuiPauseGame() {
-		boolean oldLock = SpoutClient.enableSandbox();
-		try {
-			return ((PopupScreen) getScreen()).isPausingGame();
-		} finally {
-			SpoutClient.enableSandbox(oldLock);
-		}
+		return ((PopupScreen) getScreen()).isPausingGame();
 	}
 }

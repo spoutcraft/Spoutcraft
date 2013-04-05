@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericRadioButton;
 import org.spoutcraft.api.gui.Label;
@@ -39,7 +38,7 @@ public class ManualSelectionButton extends GenericRadioButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setAutomatePerformance(false);
 		if (!Configuration.isAdvancedOptions()) {
 			Configuration.setAdvancedOptions(true);

@@ -64,7 +64,7 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 			i++;
 		}
 
-		getScreen().attachWidgets(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), title, buttonCancel, list);
+		getScreen().attachWidgets("Spoutcraft", title, buttonCancel, list);
 	}
 
 	protected void layoutWidgets() {

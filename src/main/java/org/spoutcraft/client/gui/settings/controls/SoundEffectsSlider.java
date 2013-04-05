@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
 
 public class SoundEffectsSlider extends GenericSlider {
@@ -32,8 +31,8 @@ public class SoundEffectsSlider extends GenericSlider {
 	}
 
 	@Override
-	public void onSliderDrag(SliderDragEvent event) {
-		Minecraft.theMinecraft.gameSettings.soundVolume = event.getNewPosition();
+	public void onSliderDrag(float old, float newPos) {
+		Minecraft.theMinecraft.gameSettings.soundVolume = newPos;
 		Minecraft.theMinecraft.gameSettings.saveOptions();
 		Minecraft.theMinecraft.sndManager.onSoundOptionsChanged();
 	}

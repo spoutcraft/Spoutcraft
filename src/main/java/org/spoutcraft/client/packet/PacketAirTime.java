@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketAirTime implements SpoutPacket {
 	public int airTime;
@@ -48,8 +49,8 @@ public class PacketAirTime implements SpoutPacket {
 	}
 
 	public void run(int id) {
-		Spoutcraft.getActivePlayer().setMaximumAir(airTime);
-		Spoutcraft.getActivePlayer().setRemainingAir(air);
+		SpoutClient.getInstance().getActivePlayer().setMaximumAir(airTime);
+		SpoutClient.getInstance().getActivePlayer().setRemainingAir(air);
 	}
 
 	public PacketType getPacketType() {

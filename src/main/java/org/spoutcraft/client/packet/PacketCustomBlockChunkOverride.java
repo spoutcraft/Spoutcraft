@@ -96,8 +96,8 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket {
 				customIds[i] = buffer.getShort(i * 3);
 				customData[i] = buffer.get((i * 3) + 2);
 			}
-			Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ).setCustomBlockIds(customIds);
-			Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ).setCustomBlockData(customData);
+			Spoutcraft.getChunk(SpoutClient.getInstance().getRawWorld(), chunkX, chunkZ).setCustomBlockIds(customIds);
+			Spoutcraft.getChunk(SpoutClient.getInstance().getRawWorld(), chunkX, chunkZ).setCustomBlockData(customData);
 			thread.queue.add(new LightingData(chunkX, chunkZ, customIds));
 		}
 	}

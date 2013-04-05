@@ -58,43 +58,37 @@ public class TexturePacksModel extends AbstractListModel {
 	}
 
 	public void update() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) SpoutClient.disableSandbox();
 		textures = SpoutClient.getHandle().texturePackList;
-		try {
-			textures.updateAvaliableTexturePacks();
+		textures.updateAvaliableTexturePacks();
 
-			List<TexturePackItem> oldPacks = new ArrayList<TexturePackItem>();
-			oldPacks.addAll(items);
-			items.clear();
+		List<TexturePackItem> oldPacks = new ArrayList<TexturePackItem>();
+		oldPacks.addAll(items);
+		items.clear();
 
-			for (TexturePackItem item : oldPacks) {
-				boolean found = false;
-				for (ITexturePack pack : getTextures()) {
-					if (item.getPack() == pack) {
-						found = true;
-						break;
-					}
-				}
-				if (found) {
-					items.add(item);
-				}
-			}
-
+		for (TexturePackItem item : oldPacks) {
+			boolean found = false;
 			for (ITexturePack pack : getTextures()) {
-				boolean found = false;
-				for (TexturePackItem item : oldPacks) {
-					if (item.getPack() == pack) {
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					items.add(new TexturePackItem(this, (TexturePackImplementation) pack));
+				if (item.getPack() == pack) {
+					found = true;
+					break;
 				}
 			}
-		} finally {
-			if (wasSandboxed) SpoutClient.enableSandbox();
+			if (found) {
+				items.add(item);
+			}
+		}
+
+		for (ITexturePack pack : getTextures()) {
+			boolean found = false;
+			for (TexturePackItem item : oldPacks) {
+				if (item.getPack() == pack) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				items.add(new TexturePackItem(this, (TexturePackImplementation) pack));
+			}
 		}
 	}
 

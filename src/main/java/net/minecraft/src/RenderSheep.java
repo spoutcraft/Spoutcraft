@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
+// MCPatcher Start
+import com.prupe.mcpatcher.mod.MobRandomizer;
+// MCPatcher End
 // Spout Start
-import com.pclewis.mcpatcher.mod.MobRandomizer;
 import org.spoutcraft.client.config.Configuration;
 // Spout End
 

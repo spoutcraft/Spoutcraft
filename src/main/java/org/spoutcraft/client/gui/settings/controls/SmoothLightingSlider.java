@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
 import org.spoutcraft.client.config.Configuration;
 
@@ -33,11 +32,11 @@ public class SmoothLightingSlider extends GenericSlider {
 	}
 
 	@Override
-	public void onSliderDrag(SliderDragEvent event) {
-		Configuration.setSmoothLighting(event.getNewPosition());
-		Minecraft.theMinecraft.gameSettings.ambientOcclusion = Configuration.getSmoothLighting() > 0F;
+	public void onSliderDrag(float old, float newPos) {
+		Configuration.setSmoothLighting(newPos);
+		Minecraft.theMinecraft.gameSettings.ambientOcclusion = Configuration.getSmoothLighting() > 0F ? 0 : 2;
 		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+			Minecraft.theMinecraft.renderGlobal.loadRenderers();
 		}
 		Configuration.write();
 	}

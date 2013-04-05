@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.lwjgl.Sys;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
@@ -53,9 +52,9 @@ public class ImageSection extends Section {
 			}
 
 			@Override
-			public void onButtonClick(ButtonClickEvent event) {
+			public void onButtonClick() {
 				Sys.openURL(url);
-				super.onButtonClick(event);
+				super.onButtonClick();
 			}
 		};
 	}

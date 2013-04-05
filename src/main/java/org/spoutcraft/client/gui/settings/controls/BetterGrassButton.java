@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.client.config.Configuration;
 
 public class BetterGrassButton extends AutomatedButton {
@@ -40,7 +39,7 @@ public class BetterGrassButton extends AutomatedButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		Configuration.setBetterGrass(Configuration.getBetterGrass() + 1);
 		if (Configuration.getBetterGrass() > 2) {
 			Configuration.setBetterGrass(0);

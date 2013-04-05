@@ -1,11 +1,17 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-
+// Spout Start
 import org.spoutcraft.api.material.MaterialData;
+// Spout End
 
 public class RenderItemFrame extends Render {
 	private final RenderBlocks renderBlocksInstance = new RenderBlocks();
+	private Icon field_94147_f;
+
+	public void updateIcons(IconRegister par1IconRegister) {
+		this.field_94147_f = par1IconRegister.registerIcon("itemframe_back");
+	}
 
 	public void func_82404_a(EntityItemFrame par1EntityItemFrame, double par2, double par4, double par6, float par8, float par9) {
 		GL11.glPushMatrix();
@@ -26,37 +32,37 @@ public class RenderItemFrame extends Render {
 	 */
 	private void renderFrameItemAsBlock(EntityItemFrame par1EntityItemFrame) {
 		GL11.glPushMatrix();
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderManager.renderEngine.getTexture("/terrain.png"));
+		this.renderManager.renderEngine.bindTexture("/terrain.png");
 		GL11.glRotatef(par1EntityItemFrame.rotationYaw, 0.0F, 1.0F, 0.0F);
 		Block var2 = Block.planks;
 		float var3 = 0.0625F;
 		float var4 = 0.75F;
 		float var5 = var4 / 2.0F;
 		GL11.glPushMatrix();
-		this.renderBlocksInstance.setCustomBlockBounds(0.0D, (double)(0.5F - var5 + 0.0625F), (double)(0.5F - var5 + 0.0625F), (double)(var3 * 0.5F), (double)(0.5F + var5 - 0.0625F), (double)(0.5F + var5 - 0.0625F));
-		this.renderBlocksInstance.setOverrideBlockTexture(185);
+		this.renderBlocksInstance.overrideBlockBounds(0.0D, (double)(0.5F - var5 + 0.0625F), (double)(0.5F - var5 + 0.0625F), (double)(var3 * 0.5F), (double)(0.5F + var5 - 0.0625F), (double)(0.5F + var5 - 0.0625F));
+		this.renderBlocksInstance.setOverrideBlockTexture(this.field_94147_f);
 		this.renderBlocksInstance.renderBlockAsItem(var2, 0, 1.0F);
 		this.renderBlocksInstance.clearOverrideBlockTexture();
-		this.renderBlocksInstance.resetCustomBlockBounds();
+		this.renderBlocksInstance.unlockBlockBounds();
 		GL11.glPopMatrix();
-		this.renderBlocksInstance.setOverrideBlockTexture(214);
+		this.renderBlocksInstance.setOverrideBlockTexture(Block.planks.getBlockTextureFromSideAndMetadata(1, 2));
 		GL11.glPushMatrix();
-		this.renderBlocksInstance.setCustomBlockBounds(0.0D, (double)(0.5F - var5), (double)(0.5F - var5), (double)(var3 + 1.0E-4F), (double)(var3 + 0.5F - var5), (double)(0.5F + var5));
+		this.renderBlocksInstance.overrideBlockBounds(0.0D, (double)(0.5F - var5), (double)(0.5F - var5), (double)(var3 + 1.0E-4F), (double)(var3 + 0.5F - var5), (double)(0.5F + var5));
 		this.renderBlocksInstance.renderBlockAsItem(var2, 0, 1.0F);
 		GL11.glPopMatrix();
 		GL11.glPushMatrix();
-		this.renderBlocksInstance.setCustomBlockBounds(0.0D, (double)(0.5F + var5 - var3), (double)(0.5F - var5), (double)(var3 + 1.0E-4F), (double)(0.5F + var5), (double)(0.5F + var5));
+		this.renderBlocksInstance.overrideBlockBounds(0.0D, (double)(0.5F + var5 - var3), (double)(0.5F - var5), (double)(var3 + 1.0E-4F), (double)(0.5F + var5), (double)(0.5F + var5));
 		this.renderBlocksInstance.renderBlockAsItem(var2, 0, 1.0F);
 		GL11.glPopMatrix();
 		GL11.glPushMatrix();
-		this.renderBlocksInstance.setCustomBlockBounds(0.0D, (double)(0.5F - var5), (double)(0.5F - var5), (double)var3, (double)(0.5F + var5), (double)(var3 + 0.5F - var5));
+		this.renderBlocksInstance.overrideBlockBounds(0.0D, (double)(0.5F - var5), (double)(0.5F - var5), (double)var3, (double)(0.5F + var5), (double)(var3 + 0.5F - var5));
 		this.renderBlocksInstance.renderBlockAsItem(var2, 0, 1.0F);
 		GL11.glPopMatrix();
 		GL11.glPushMatrix();
-		this.renderBlocksInstance.setCustomBlockBounds(0.0D, (double)(0.5F - var5), (double)(0.5F + var5 - var3), (double)var3, (double)(0.5F + var5), (double)(0.5F + var5));
+		this.renderBlocksInstance.overrideBlockBounds(0.0D, (double)(0.5F - var5), (double)(0.5F + var5 - var3), (double)var3, (double)(0.5F + var5), (double)(0.5F + var5));
 		this.renderBlocksInstance.renderBlockAsItem(var2, 0, 1.0F);
 		GL11.glPopMatrix();
-		this.renderBlocksInstance.resetCustomBlockBounds();
+		this.renderBlocksInstance.unlockBlockBounds();
 		this.renderBlocksInstance.clearOverrideBlockTexture();
 		GL11.glPopMatrix();
 	}
@@ -66,12 +72,12 @@ public class RenderItemFrame extends Render {
 
 		if (var2 != null) {
 			EntityItem var3 = new EntityItem(par1EntityItemFrame.worldObj, 0.0D, 0.0D, 0.0D, var2);
-			var3.item().stackSize = 1;
+			var3.getEntityItem().stackSize = 1;
 			var3.hoverStart = 0.0F;
 			// Spout Start
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderManager.renderEngine.getTexture("/terrain.png"));
 			GL11.glPushMatrix();
-			
+
 			if (var2.itemID == 318 && (MaterialData.getCustomBlock(var2.getItemDamage()) instanceof org.spoutcraft.api.material.Block)) {
 				if (par1EntityItemFrame.hangingDirection == 0) {
 					GL11.glTranslatef((-0.453125F * ((float)Direction.offsetX[par1EntityItemFrame.hangingDirection] + 0.25F)), -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.hangingDirection]);
@@ -83,7 +89,7 @@ public class RenderItemFrame extends Render {
 					GL11.glTranslatef((-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.hangingDirection]), -0.18F, -0.453125F * ((float)Direction.offsetZ[par1EntityItemFrame.hangingDirection] - 0.25F));
 				}
 			} else {
-				GL11.glTranslatef(-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.hangingDirection], -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.hangingDirection]);
+			GL11.glTranslatef(-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.hangingDirection], -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.hangingDirection]);
 			}
 			// Spout End
 			GL11.glRotatef(180.0F + par1EntityItemFrame.rotationYaw, 0.0F, 1.0F, 0.0F);
@@ -102,8 +108,8 @@ public class RenderItemFrame extends Render {
 					GL11.glTranslatef(0.16F, -0.16F, 0.0F);
 			}
 
-			if (var3.item().getItem() == Item.map) {
-				this.renderManager.renderEngine.bindTexture(this.renderManager.renderEngine.getTexture("/misc/mapbg.png"));
+			if (var3.getEntityItem().getItem() == Item.map) {
+				this.renderManager.renderEngine.bindTexture("/misc/mapbg.png");
 				Tessellator var4 = Tessellator.instance;
 				GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
@@ -117,36 +123,33 @@ public class RenderItemFrame extends Render {
 				var4.addVertexWithUV((double)(128 + var5), (double)(0 - var5), 0.0D, 1.0D, 0.0D);
 				var4.addVertexWithUV((double)(0 - var5), (double)(0 - var5), 0.0D, 0.0D, 0.0D);
 				var4.draw();
-				MapData var6 = Item.map.getMapData(var3.item(), par1EntityItemFrame.worldObj);
+				MapData var6 = Item.map.getMapData(var3.getEntityItem(), par1EntityItemFrame.worldObj);
+				GL11.glTranslatef(0.0F, 0.0F, -1.0F);
 
 				if (var6 != null) {
 					this.renderManager.itemRenderer.mapItemRenderer.renderMap((EntityPlayer)null, this.renderManager.renderEngine, var6);
 				}
 			} else {
-				if (var3.item().getItem() == Item.compass) {
-					// Spout Start
-					double var8 = TextureCompassFX.field_82391_c.field_76868_i;
-					double var10 = TextureCompassFX.field_82391_c.field_76866_j;
-					TextureCompassFX.field_82391_c.field_76868_i = 0.0D;
-					TextureCompassFX.field_82391_c.field_76866_j = 0.0D;
-					TextureCompassFX.func_82390_a(par1EntityItemFrame.posX, par1EntityItemFrame.posZ, (double)MathHelper.wrapAngleTo180_float((float)(180 + par1EntityItemFrame.hangingDirection * 90)), false, true);
-					TextureCompassFX.field_82391_c.field_76868_i = var8;
-					TextureCompassFX.field_82391_c.field_76866_j = var10;
-					this.renderManager.renderEngine.updateDynamicTexture(TextureCompassFX.field_82391_c, -1);
-					// Spout End
+				TextureCompass var9;
+
+				if (var3.getEntityItem().getItem() == Item.compass) {
+					var9 = TextureCompass.compassTexture;
+					double var10 = var9.currentAngle;
+					double var7 = var9.angleDelta;
+					var9.currentAngle = 0.0D;
+					var9.angleDelta = 0.0D;
+					var9.updateCompass(par1EntityItemFrame.worldObj, par1EntityItemFrame.posX, par1EntityItemFrame.posZ, (double)MathHelper.wrapAngleTo180_float((float)(180 + par1EntityItemFrame.hangingDirection * 90)), false, true);
+					var9.currentAngle = var10;
+					var9.angleDelta = var7;
 				}
 
-				float var9 = this.renderManager.playerViewY;
-				this.renderManager.playerViewY = 180.0F;
-				RenderItem.field_82407_g = true;
+				RenderItem.renderInFrame = true;
 				RenderManager.instance.renderEntityWithPosYaw(var3, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
-				RenderItem.field_82407_g = false;
-				this.renderManager.playerViewY = var9;
-				GL11.glEnable(GL11.GL_LIGHTING);
+				RenderItem.renderInFrame = false;
 
-				if (var3.item().getItem() == Item.compass) {
-					TextureCompassFX.field_82391_c.onTick();
-					this.renderManager.renderEngine.updateDynamicTexture(TextureCompassFX.field_82391_c, -1);
+				if (var3.getEntityItem().getItem() == Item.compass) {
+					var9 = TextureCompass.compassTexture;
+					var9.updateAnimation();
 				}
 			}
 

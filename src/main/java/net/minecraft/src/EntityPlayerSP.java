@@ -3,14 +3,14 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 // Spout Start
 import org.bukkit.ChatColor;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.special.Resources;
-import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.util.FixedLocation;
 // Spout End
 
 public class EntityPlayerSP extends EntityPlayer {
@@ -49,6 +49,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		super(par2World);
 		this.mc = par1Minecraft;
 		this.dimension = par4;
+
 		if (par3Session != null && par3Session.username != null && par3Session.username.length() > 0) {
 			// Spout Start
 			this.skinUrl = "http://cdn.spout.org/game/vanilla/skin/" + ChatColor.stripColor(par3Session.username) + ".png";
@@ -116,7 +117,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			--this.sprintToggleTimer;
 		}
 
-		if (this.mc.playerController.func_78747_a()) {
+		if (this.mc.playerController.enableEverythingIsScrewedUpMode()) {
 			this.posX = this.posZ = 0.5D;
 			this.posX = 0.0D;
 			this.posZ = 0.0D;
@@ -175,7 +176,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			boolean var1 = this.movementInput.jump;
 			float var2 = 0.8F;
 			boolean var3 = this.movementInput.moveForward >= var2;
-			// Spout Start - Kept parameter
+			// Spout Start - Keep parameter
 			this.movementInput.updatePlayerMoveState(this);
 			// Spout End
 
@@ -325,6 +326,14 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiChest(this.inventory, par1IInventory));
 	}
 
+	public void func_94064_a(TileEntityHopper par1TileEntityHopper) {
+		this.mc.displayGuiScreen(new GuiHopper(this.inventory, par1TileEntityHopper));
+	}
+
+	public void func_96125_a(EntityMinecartHopper par1EntityMinecartHopper) {
+		this.mc.displayGuiScreen(new GuiHopper(this.inventory, par1EntityMinecartHopper));
+	}
+
 	/**
 	 * Displays the crafting GUI for a workbench.
 	 */
@@ -332,8 +341,8 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiCrafting(this.inventory, this.worldObj, par1, par2, par3));
 	}
 
-	public void displayGUIEnchantment(int par1, int par2, int par3) {
-		this.mc.displayGuiScreen(new GuiEnchantment(this.inventory, this.worldObj, par1, par2, par3));
+	public void displayGUIEnchantment(int par1, int par2, int par3, String par4Str) {
+		this.mc.displayGuiScreen(new GuiEnchantment(this.inventory, this.worldObj, par1, par2, par3, par4Str));
 	}
 
 	/**
@@ -371,8 +380,8 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiDispenser(this.inventory, par1TileEntityDispenser));
 	}
 
-	public void displayGUIMerchant(IMerchant par1IMerchant) {
-		this.mc.displayGuiScreen(new GuiMerchant(this.inventory, par1IMerchant, this.worldObj));
+	public void displayGUIMerchant(IMerchant par1IMerchant, String par2Str) {
+		this.mc.displayGuiScreen(new GuiMerchant(this.inventory, par1IMerchant, this.worldObj, par2Str));
 	}
 
 	/**
@@ -545,7 +554,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 
 	/**
-	 * Return the coordinates for this player as ChunkCoordinates.
+	 * Return the position for this command sender.
 	 */
 	public ChunkCoordinates getPlayerCoordinates() {
 		return new ChunkCoordinates(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));

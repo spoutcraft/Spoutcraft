@@ -18,9 +18,6 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 	 * Determines the time before the EntityLightningBolt is destroyed. It is a random integer decremented over time.
 	 */
 	private int boltLivingTime;
-	// Spout Start
-	public boolean effect = false;
-	// Spout End
 
 	public EntityLightningBolt(World par1World, double par2, double par4, double par6) {
 		super(par1World);
@@ -29,15 +26,13 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 		this.boltVertex = this.rand.nextLong();
 		this.boltLivingTime = this.rand.nextInt(3) + 1;
 
-		// Spout Start
-		if (!par1World.isRemote && !effect && par1World.difficultySetting >= 2 && par1World.doChunksNearChunkExist(MathHelper.floor_double(par2), MathHelper.floor_double(par4), MathHelper.floor_double(par6), 10)) {
-		// Spout End
+		if (!par1World.isRemote && par1World.difficultySetting >= 2 && par1World.doChunksNearChunkExist(MathHelper.floor_double(par2), MathHelper.floor_double(par4), MathHelper.floor_double(par6), 10)) {
 			int var8 = MathHelper.floor_double(par2);
 			int var9 = MathHelper.floor_double(par4);
 			int var10 = MathHelper.floor_double(par6);
 
 			if (par1World.getBlockId(var8, var9, var10) == 0 && Block.fire.canPlaceBlockAt(par1World, var8, var9, var10)) {
-				par1World.setBlockWithNotify(var8, var9, var10, Block.fire.blockID);
+				par1World.setBlock(var8, var9, var10, Block.fire.blockID);
 			}
 
 			for (var8 = 0; var8 < 4; ++var8) {
@@ -46,7 +41,7 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 				int var11 = MathHelper.floor_double(par6) + this.rand.nextInt(3) - 1;
 
 				if (par1World.getBlockId(var9, var10, var11) == 0 && Block.fire.canPlaceBlockAt(par1World, var9, var10, var11)) {
-					par1World.setBlockWithNotify(var9, var10, var11, Block.fire.blockID);
+					par1World.setBlock(var9, var10, var11, Block.fire.blockID);
 				}
 			}
 		}
@@ -73,28 +68,24 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 				this.lightningState = 1;
 				this.boltVertex = this.rand.nextLong();
 
-				// Spout Start
-				if (!this.worldObj.isRemote && !effect && this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10)) {
-				// Spout End
+				if (!this.worldObj.isRemote && this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10)) {
 					int var1 = MathHelper.floor_double(this.posX);
 					int var2 = MathHelper.floor_double(this.posY);
 					int var3 = MathHelper.floor_double(this.posZ);
 
 					if (this.worldObj.getBlockId(var1, var2, var3) == 0 && Block.fire.canPlaceBlockAt(this.worldObj, var1, var2, var3)) {
-						this.worldObj.setBlockWithNotify(var1, var2, var3, Block.fire.blockID);
+						this.worldObj.setBlock(var1, var2, var3, Block.fire.blockID);
 					}
 				}
 			}
 		}
 
-		// Spout Start
-		if (!this.worldObj.isRemote && !effect && this.lightningState >= 0) {
-		// Spout End
+		if (this.lightningState >= 0) {
 			if (this.worldObj.isRemote) {
-				this.worldObj.lightningFlash = 2;
+				this.worldObj.lastLightningBolt = 2;
 			} else {
 				double var6 = 3.0D;
-				List var7 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(this.posX - var6, this.posY - var6, this.posZ - var6, this.posX + var6, this.posY + 6.0D + var6, this.posZ + var6));
+				List var7 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().getAABB(this.posX - var6, this.posY - var6, this.posZ - var6, this.posX + var6, this.posY + 6.0D + var6, this.posZ + var6));
 
 				for (int var4 = 0; var4 < var7.size(); ++var4) {
 					Entity var5 = (Entity)var7.get(var4);

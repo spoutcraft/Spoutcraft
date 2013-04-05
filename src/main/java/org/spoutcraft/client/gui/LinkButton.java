@@ -19,7 +19,6 @@
  */
 package org.spoutcraft.client.gui;
 
-import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.client.util.NetworkUtils;
 
@@ -40,7 +39,7 @@ public class LinkButton extends GenericButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick() {
 		NetworkUtils.openInBrowser(url);
 	}
 }

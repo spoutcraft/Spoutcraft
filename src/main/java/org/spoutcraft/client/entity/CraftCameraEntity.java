@@ -19,13 +19,12 @@
  */
 package org.spoutcraft.client.entity;
 
-import org.spoutcraft.api.entity.CameraEntity;
 import org.spoutcraft.api.property.Property;
 import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.api.util.Location;
 import org.spoutcraft.api.util.Vector;
 
-public class CraftCameraEntity extends CraftEntity implements CameraEntity {
+public class CraftCameraEntity extends CraftEntity  {
 	public CraftCameraEntity(FixedLocation location) {
 		super(location);
 		handle = new EntityCamera(this);

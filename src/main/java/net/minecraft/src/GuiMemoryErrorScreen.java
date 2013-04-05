@@ -7,9 +7,9 @@ public class GuiMemoryErrorScreen extends GuiScreen {
 	 */
 	public void initGui() {
 		StringTranslate var1 = StringTranslate.getInstance();
-		this.controlList.clear();
-		this.controlList.add(new GuiSmallButton(0, this.width / 2 - 155, this.height / 4 + 120 + 12, var1.translateKey("gui.toMenu")));
-		this.controlList.add(new GuiSmallButton(1, this.width / 2 - 155 + 160, this.height / 4 + 120 + 12, var1.translateKey("menu.quit")));
+		this.buttonList.clear();
+		this.buttonList.add(new GuiSmallButton(0, this.width / 2 - 155, this.height / 4 + 120 + 12, var1.translateKey("gui.toMenu")));
+		this.buttonList.add(new GuiSmallButton(1, this.width / 2 - 155 + 160, this.height / 4 + 120 + 12, var1.translateKey("menu.quit")));
 	}
 
 	/**

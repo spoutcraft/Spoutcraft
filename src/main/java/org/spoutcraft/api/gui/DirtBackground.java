@@ -23,6 +23,7 @@ import org.lwjgl.opengl.GL11;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.UnsafeClass;
+import org.spoutcraft.client.SpoutClient;
 
 @UnsafeClass
 public class DirtBackground extends GenericWidget{
@@ -33,7 +34,7 @@ public class DirtBackground extends GenericWidget{
 	public void render() {
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glDisable(2912 /*GL_FOG*/);
-		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, Spoutcraft.getTessellator().getMCTexture("/gui/background.png"));
+		SpoutClient.getHandle().renderEngine.bindTexture("/gui/allitems.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var3 = 32.0F;
 		Spoutcraft.getTessellator().startDrawingQuads();
