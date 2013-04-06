@@ -94,12 +94,13 @@ public class TexturePackItem implements ListWidgetItem {
 		font.drawStringWithShadow(pack.getSecondDescriptionLine(), x + 29, y + 20, 0xffaaaaaa);
 		String sTileSize;
 		if (tileSize != -1) {
-			sTileSize = ChatColor.GREEN + "" + tileSize + "x";
+			//ToDo:  Hide this until we come up with a way to calculate TileSize without building a sprite sheet for every texture pack in the texturepack folder.
+			//sTileSize = ChatColor.GREEN + "" + tileSize + "x";
 		} else {
-			sTileSize = ChatColor.YELLOW + "Calculating...";
+			//sTileSize = ChatColor.YELLOW + "Calculating...";
 		}
-		int w = font.getStringWidth(sTileSize);
-		font.drawStringWithShadow(sTileSize, width - 5 - w, y + 2, 0xffaaaaaa);
+		//int w = font.getStringWidth(sTileSize);
+		//font.drawStringWithShadow(sTileSize, width - 5 - w, y + 2, 0xffaaaaaa);
 
 		// TODO Show database information (author/member who posted it)
 

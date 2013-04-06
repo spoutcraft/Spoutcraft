@@ -156,6 +156,7 @@ public class GuiTexturePacks extends GuiScreen {
 			buttonSelect.setEnabled(true);
 			if (current) {
 				buttonSelect.setText(t.translateKey("spout.texturepack.preview.button", "Preview"));
+				buttonSelect.setEnabled(false);
 				updateScreen();
 			} else {
 				buttonSelect.setText(t.translateKey("spout.texturepack.select", "Select"));
