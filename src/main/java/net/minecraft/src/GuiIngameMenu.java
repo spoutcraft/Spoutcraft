@@ -13,6 +13,9 @@ public class GuiIngameMenu extends GuiScreen {
 
 	/** Counts the number of screen updates. */
 	private int updateCounter = 0;
+	
+	// Spout Start
+	private boolean fromSingle = false;
 
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
@@ -49,6 +52,9 @@ public class GuiIngameMenu extends GuiScreen {
 
 			case 1:
 				// Spout Start
+				if (this.mc.isIntegratedServerRunning()) {
+					fromSingle = true;
+				}
 				HeightMapAgent.save();
 				// Spout End
 				par1GuiButton.enabled = false;
@@ -56,7 +62,12 @@ public class GuiIngameMenu extends GuiScreen {
 				this.mc.theWorld.sendQuittingDisconnectingPacket();
 				this.mc.loadWorld((WorldClient)null);
 				// Spout Start
-				this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom());
+				if (fromSingle) {
+					this.mc.displayGuiScreen(new GuiSelectWorld(this));	
+				} else {				
+					this.mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
+				}
+				break;
 				// Spout End
 			case 2:
 			case 3:
