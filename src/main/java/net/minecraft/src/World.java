@@ -20,6 +20,8 @@ import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutcraftWorld;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.config.Configuration;
 // Spout End
 
@@ -348,19 +350,19 @@ public abstract class World implements IBlockAccess {
 	public boolean checkChunksExist(int par1, int par2, int par3, int par4, int par5, int par6) {
 		if (par5 >= 0 && par2 < 256) {
 			par1 >>= 4;
-			par3 >>= 4;
-			par4 >>= 4;
-			par6 >>= 4;
+		par3 >>= 4;
+		par4 >>= 4;
+		par6 >>= 4;
 
-			for (int var7 = par1; var7 <= par4; ++var7) {
-				for (int var8 = par3; var8 <= par6; ++var8) {
-					if (!this.chunkExists(var7, var8)) {
-						return false;
-					}
+		for (int var7 = par1; var7 <= par4; ++var7) {
+			for (int var8 = par3; var8 <= par6; ++var8) {
+				if (!this.chunkExists(var7, var8)) {
+					return false;
 				}
 			}
+		}
 
-			return true;
+		return true;
 		} else {
 			return false;
 		}
@@ -794,38 +796,38 @@ public abstract class World implements IBlockAccess {
 				return par1EnumSkyBlock.defaultLightValue;
 			} else if (par2 >= -30000000 && par4 >= -30000000 && par2 < 30000000 && par4 < 30000000) {
 				int var5 = par2 >> 4;
-				int var6 = par4 >> 4;
+			int var6 = par4 >> 4;
 
-				if (!this.chunkExists(var5, var6)) {
-					return par1EnumSkyBlock.defaultLightValue;
-				} else if (Block.useNeighborBrightness[this.getBlockId(par2, par3, par4)]) {
-					int var12 = this.getSavedLightValue(par1EnumSkyBlock, par2, par3 + 1, par4);
-					int var8 = this.getSavedLightValue(par1EnumSkyBlock, par2 + 1, par3, par4);
-					int var9 = this.getSavedLightValue(par1EnumSkyBlock, par2 - 1, par3, par4);
-					int var10 = this.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4 + 1);
-					int var11 = this.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4 - 1);
+			if (!this.chunkExists(var5, var6)) {
+				return par1EnumSkyBlock.defaultLightValue;
+			} else if (Block.useNeighborBrightness[this.getBlockId(par2, par3, par4)]) {
+				int var12 = this.getSavedLightValue(par1EnumSkyBlock, par2, par3 + 1, par4);
+				int var8 = this.getSavedLightValue(par1EnumSkyBlock, par2 + 1, par3, par4);
+				int var9 = this.getSavedLightValue(par1EnumSkyBlock, par2 - 1, par3, par4);
+				int var10 = this.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4 + 1);
+				int var11 = this.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4 - 1);
 
-					if (var8 > var12) {
-						var12 = var8;
-					}
-
-					if (var9 > var12) {
-						var12 = var9;
-					}
-
-					if (var10 > var12) {
-						var12 = var10;
-					}
-
-					if (var11 > var12) {
-						var12 = var11;
-					}
-
-					return var12;
-				} else {
-					Chunk var7 = this.getChunkFromChunkCoords(var5, var6);
-					return var7.getSavedLightValue(par1EnumSkyBlock, par2 & 15, par3, par4 & 15);
+				if (var8 > var12) {
+					var12 = var8;
 				}
+
+				if (var9 > var12) {
+					var12 = var9;
+				}
+
+				if (var10 > var12) {
+					var12 = var10;
+				}
+
+				if (var11 > var12) {
+					var12 = var11;
+				}
+
+				return var12;
+			} else {
+				Chunk var7 = this.getChunkFromChunkCoords(var5, var6);
+				return var7.getSavedLightValue(par1EnumSkyBlock, par2 & 15, par3, par4 & 15);
+			}
 			} else {
 				return par1EnumSkyBlock.defaultLightValue;
 			}
@@ -847,14 +849,14 @@ public abstract class World implements IBlockAccess {
 
 		if (par2 >= -30000000 && par4 >= -30000000 && par2 < 30000000 && par4 < 30000000) {
 			int var5 = par2 >> 4;
-			int var6 = par4 >> 4;
+		int var6 = par4 >> 4;
 
-			if (!this.chunkExists(var5, var6)) {
-				return par1EnumSkyBlock.defaultLightValue;
-			} else {
-				Chunk var7 = this.getChunkFromChunkCoords(var5, var6);
-				return var7.getSavedLightValue(par1EnumSkyBlock, par2 & 15, par3, par4 & 15);
-			}
+		if (!this.chunkExists(var5, var6)) {
+			return par1EnumSkyBlock.defaultLightValue;
+		} else {
+			Chunk var7 = this.getChunkFromChunkCoords(var5, var6);
+			return var7.getSavedLightValue(par1EnumSkyBlock, par2 & 15, par3, par4 & 15);
+		}
 		} else {
 			return par1EnumSkyBlock.defaultLightValue;
 		}
@@ -1201,7 +1203,7 @@ public abstract class World implements IBlockAccess {
 	 */
 	// Spout Start - protected to public
 	public void obtainEntitySkin(Entity par1Entity) {
-	// Spout End
+		// Spout End
 		for (int var2 = 0; var2 < this.worldAccesses.size(); ++var2) {
 			((IWorldAccess)this.worldAccesses.get(var2)).onEntityCreate(par1Entity);
 		}
@@ -1212,7 +1214,7 @@ public abstract class World implements IBlockAccess {
 	 */
 	// Spout Start - protected to public
 	public void releaseEntitySkin(Entity par1Entity) {
-	// Spout End
+		// Spout End
 		for (int var2 = 0; var2 < this.worldAccesses.size(); ++var2) {
 			((IWorldAccess)this.worldAccesses.get(var2)).onEntityDestroy(par1Entity);
 		}
@@ -2503,7 +2505,7 @@ public abstract class World implements IBlockAccess {
 
 		// Spout Start
 		if (!this.playerEntities.isEmpty() && Configuration.isClientLight()) {
-		// Spout End
+			// Spout End
 			var1 = this.rand.nextInt(this.playerEntities.size());
 			var2 = (EntityPlayer)this.playerEntities.get(var1);
 			var3 = MathHelper.floor_double(var2.posX) + this.rand.nextInt(11) - 5;
@@ -2523,19 +2525,19 @@ public abstract class World implements IBlockAccess {
 			int var4 = this.updateLCG >> 2;
 			int var5 = var4 & 15;
 			int var6 = var4 >> 8 & 15;
-			int var7 = var4 >> 16 & 127;
-			int var8 = par3Chunk.getBlockID(var5, var7, var6);
-			var5 += par1;
-			var6 += par2;
+				int var7 = var4 >> 16 & 127;
+				int var8 = par3Chunk.getBlockID(var5, var7, var6);
+				var5 += par1;
+				var6 += par2;
 
-			if (var8 == 0 && this.getFullBlockLightValue(var5, var7, var6) <= this.rand.nextInt(8) && this.getSavedLightValue(EnumSkyBlock.Sky, var5, var7, var6) <= 0) {
-				EntityPlayer var9 = this.getClosestPlayer((double)var5 + 0.5D, (double)var7 + 0.5D, (double)var6 + 0.5D, 8.0D);
+				if (var8 == 0 && this.getFullBlockLightValue(var5, var7, var6) <= this.rand.nextInt(8) && this.getSavedLightValue(EnumSkyBlock.Sky, var5, var7, var6) <= 0) {
+					EntityPlayer var9 = this.getClosestPlayer((double)var5 + 0.5D, (double)var7 + 0.5D, (double)var6 + 0.5D, 8.0D);
 
-				if (var9 != null && var9.getDistanceSq((double)var5 + 0.5D, (double)var7 + 0.5D, (double)var6 + 0.5D) > 4.0D) {
-					this.playSoundEffect((double)var5 + 0.5D, (double)var7 + 0.5D, (double)var6 + 0.5D, "ambient.cave.cave", 0.7F, 0.8F + this.rand.nextFloat() * 0.2F);
-					this.ambientTickCountdown = this.rand.nextInt(12000) + 6000;
+					if (var9 != null && var9.getDistanceSq((double)var5 + 0.5D, (double)var7 + 0.5D, (double)var6 + 0.5D) > 4.0D) {
+						this.playSoundEffect((double)var5 + 0.5D, (double)var7 + 0.5D, (double)var6 + 0.5D, "ambient.cave.cave", 0.7F, 0.8F + this.rand.nextFloat() * 0.2F);
+						this.ambientTickCountdown = this.rand.nextInt(12000) + 6000;
+					}
 				}
-			}
 		}
 
 		this.theProfiler.endStartSection("checkLight");
@@ -2682,60 +2684,207 @@ public abstract class World implements IBlockAccess {
 		}
 	}
 
-	//Spout start
+	// Spout Start - Lighting Calculations revert to 1.4.7 setup to make Spout CustomBlock Lighting work.
+	public int getBlockLightOpacity(int par1, int par2, int par3) {
+		return par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000 ? (par2 < 0 ? 0 : (par2 >= 256 ? 0 : this.getChunkFromChunkCoords(par1 >> 4, par3 >> 4).getBlockLightOpacity(par1 & 15, par2, par3 & 15))) : 0;
+	}
+
+	private int computeSkyLightValue(int par1, int par2, int par3, int par4, int par5, int par6) {
+		int var7 = 0;
+
+		if (this.canBlockSeeTheSky(par2, par3, par4)) {
+			var7 = 15;
+		} else {
+			if (par6 == 0) {
+				par6 = 1;
+			}
+
+			int var8 = this.getSavedLightValue(EnumSkyBlock.Sky, par2 - 1, par3, par4) - par6;
+			int var9 = this.getSavedLightValue(EnumSkyBlock.Sky, par2 + 1, par3, par4) - par6;
+			int var10 = this.getSavedLightValue(EnumSkyBlock.Sky, par2, par3 - 1, par4) - par6;
+			int var11 = this.getSavedLightValue(EnumSkyBlock.Sky, par2, par3 + 1, par4) - par6;
+			int var12 = this.getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 - 1) - par6;
+			int var13 = this.getSavedLightValue(EnumSkyBlock.Sky, par2, par3, par4 + 1) - par6;
+
+			if (var8 > var7) {
+				var7 = var8;
+			}
+
+			if (var9 > var7) {
+				var7 = var9;
+			}
+
+			if (var10 > var7) {
+				var7 = var10;
+			}
+
+			if (var11 > var7) {
+				var7 = var11;
+			}
+
+			if (var12 > var7) {
+				var7 = var12;
+			}
+
+			if (var13 > var7) {
+				var7 = var13;
+			}
+		}
+
+		return var7;
+	}
+
+	private int computeBlockLightValue(int par1, int par2, int par3, int par4, int par5, int par6) {
+		// Spout Start
+		int light = Block.lightValue[par5];
+
+		// Fix for generation-time accessing
+		SpoutcraftWorld world = Spoutcraft.getWorld();
+		short customId = 0;
+		if(world != null) {			
+			SpoutcraftChunk chunk = Spoutcraft.getChunkAt(SpoutClient.getInstance().getRawWorld(), par2, par3, par4);
+			customId = chunk.getCustomBlockId(par2, par3, par4);			
+		}
+		if (customId > 0) {
+			CustomBlock block = MaterialData.getCustomBlock(customId);
+			if (block != null) {
+				light = block.getLightLevel();
+			}
+		}
+		int var7 = light;
+		// Spout End
+		int var8 = this.getSavedLightValue(EnumSkyBlock.Block, par2 - 1, par3, par4) - par6;
+		int var9 = this.getSavedLightValue(EnumSkyBlock.Block, par2 + 1, par3, par4) - par6;
+		int var10 = this.getSavedLightValue(EnumSkyBlock.Block, par2, par3 - 1, par4) - par6;
+		int var11 = this.getSavedLightValue(EnumSkyBlock.Block, par2, par3 + 1, par4) - par6;
+		int var12 = this.getSavedLightValue(EnumSkyBlock.Block, par2, par3, par4 - 1) - par6;
+		int var13 = this.getSavedLightValue(EnumSkyBlock.Block, par2, par3, par4 + 1) - par6;
+
+		if (var8 > var7) {
+			var7 = var8;
+		}
+
+		if (var9 > var7) {
+			var7 = var9;
+		}
+
+		if (var10 > var7) {
+			var7 = var10;
+		}
+
+		if (var11 > var7) {
+			var7 = var11;
+		}
+
+		if (var12 > var7) {
+			var7 = var12;
+		}
+
+		if (var13 > var7) {
+			var7 = var13;
+		}
+
+		return var7;
+	}
+
 	public void updateLightByType(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4) {
-		updateLightByType(this.lightUpdateBlockList, par1EnumSkyBlock, par2, par3, par4);
+		// Spout Start
+		this.updateLightByType(this.lightUpdateBlockList, par1EnumSkyBlock, par2, par3, par4);
 	}
 
 	public void updateLightByType(int[] lightUpdateBlockList, EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4) {
-	//Spout end
+		// Spout End
 		if (this.doChunksNearChunkExist(par2, par3, par4, 17)) {
 			int var5 = 0;
 			int var6 = 0;
 			this.theProfiler.startSection("getBrightness");
 			int var7 = this.getSavedLightValue(par1EnumSkyBlock, par2, par3, par4);
-			int var8 = this.func_98179_a(par2, par3, par4, par1EnumSkyBlock);
-			int var9;
-			int var10;
-			int var11;
+			boolean var8 = false;
+			int var9 = this.getBlockId(par2, par3, par4);
+			int var10 = this.getBlockLightOpacity(par2, par3, par4);
+
+			if (var10 == 0) {
+				var10 = 1;
+			}
+
+			boolean var11 = false;
+			int var24;
+
+			if (par1EnumSkyBlock == EnumSkyBlock.Sky) {
+				var24 = this.computeSkyLightValue(var7, par2, par3, par4, var9, var10);
+			} else {
+				var24 = this.computeBlockLightValue(var7, par2, par3, par4, var9, var10);
+			}
+
 			int var12;
 			int var13;
 			int var14;
 			int var15;
 			int var17;
 			int var16;
+			int var19;
+			int var18;
 
-			if (var8 > var7) {
-				lightUpdateBlockList[var6++] = 133152; //Spout this -> parameter
-			} else if (var8 < var7) {
-				lightUpdateBlockList[var6++] = 133152 | var7 << 18; //Spout this -> parameter
+			if (var24 > var7) {
+				// Spout Start
+				lightUpdateBlockList[var6++] = 133152;
+				// Spout End
+			} else if (var24 < var7) {
+				if (par1EnumSkyBlock != EnumSkyBlock.Block) {
+					;
+				}
+
+				// Spout Start
+				lightUpdateBlockList[var6++] = 133152 + (var7 << 18);
+				// Spout End
 
 				while (var5 < var6) {
-					var9 = lightUpdateBlockList[var5++]; //Spout this -> parameter
+					// Spout Start
+					var9 = lightUpdateBlockList[var5++];
+					// Spout End
 					var10 = (var9 & 63) - 32 + par2;
-					var11 = (var9 >> 6 & 63) - 32 + par3;
+					var24 = (var9 >> 6 & 63) - 32 + par3;
 					var12 = (var9 >> 12 & 63) - 32 + par4;
 					var13 = var9 >> 18 & 15;
-					var14 = this.getSavedLightValue(par1EnumSkyBlock, var10, var11, var12);
+					var14 = this.getSavedLightValue(par1EnumSkyBlock, var10, var24, var12);
 
 					if (var14 == var13) {
-						this.setLightValue(par1EnumSkyBlock, var10, var11, var12, 0);
+						this.setLightValue(par1EnumSkyBlock, var10, var24, var12, 0);
 
 						if (var13 > 0) {
-							var15 = MathHelper.abs_int(var10 - par2);
-							var16 = MathHelper.abs_int(var11 - par3);
-							var17 = MathHelper.abs_int(var12 - par4);
+							var15 = var10 - par2;
+							var16 = var24 - par3;
+							var17 = var12 - par4;
+
+							if (var15 < 0) {
+								var15 = -var15;
+							}
+
+							if (var16 < 0) {
+								var16 = -var16;
+							}
+
+							if (var17 < 0) {
+								var17 = -var17;
+							}
 
 							if (var15 + var16 + var17 < 17) {
-								for (int var18 = 0; var18 < 6; ++var18) {
-									int var19 = var10 + Facing.offsetsXForSide[var18];
-									int var20 = var11 + Facing.offsetsYForSide[var18];
-									int var21 = var12 + Facing.offsetsZForSide[var18];
-									int var22 = Math.max(1, Block.lightOpacity[this.getBlockId(var19, var20, var21)]);
-									var14 = this.getSavedLightValue(par1EnumSkyBlock, var19, var20, var21);
+								for (var18 = 0; var18 < 6; ++var18) {
+									var19 = var18 % 2 * 2 - 1;
+									int var20 = var10 + var18 / 2 % 3 / 2 * var19;
+									int var21 = var24 + (var18 / 2 + 1) % 3 / 2 * var19;
+									int var22 = var12 + (var18 / 2 + 2) % 3 / 2 * var19;
+									var14 = this.getSavedLightValue(par1EnumSkyBlock, var20, var21, var22);
+									int var23 = Block.lightOpacity[this.getBlockId(var20, var21, var22)];
 
-									if (var14 == var13 - var22 && var6 < lightUpdateBlockList.length) { //Spout this -> parameter
-										lightUpdateBlockList[var6++] = var19 - par2 + 32 | var20 - par3 + 32 << 6 | var21 - par4 + 32 << 12 | var13 - var22 << 18; //Spout this -> parameter
+									if (var23 == 0) {
+										var23 = 1;
+									}
+
+									// Spout Start
+									if (var14 == var13 - var23 && var6 < lightUpdateBlockList.length) {
+										lightUpdateBlockList[var6++] = var20 - par2 + 32 + (var21 - par3 + 32 << 6) + (var22 - par4 + 32 << 12) + (var13 - var23 << 18);
+										// Spout End
 									}
 								}
 							}
@@ -2750,47 +2899,75 @@ public abstract class World implements IBlockAccess {
 			this.theProfiler.startSection("checkedPosition < toCheckCount");
 
 			while (var5 < var6) {
-				var9 = lightUpdateBlockList[var5++]; //Spout this -> parameter
+				// Spout Start
+				var9 = lightUpdateBlockList[var5++];
+				// Spout End
 				var10 = (var9 & 63) - 32 + par2;
-				var11 = (var9 >> 6 & 63) - 32 + par3;
+				var24 = (var9 >> 6 & 63) - 32 + par3;
 				var12 = (var9 >> 12 & 63) - 32 + par4;
-				var13 = this.getSavedLightValue(par1EnumSkyBlock, var10, var11, var12);
-				var14 = this.func_98179_a(var10, var11, var12, par1EnumSkyBlock);
+				var13 = this.getSavedLightValue(par1EnumSkyBlock, var10, var24, var12);
+				var14 = this.getBlockId(var10, var24, var12);
+				var15 = Block.lightOpacity[var14];
 
-				if (var14 != var13) {
-					this.setLightValue(par1EnumSkyBlock, var10, var11, var12, var14);
+				if (var15 == 0) {
+					var15 = 1;
+				}
 
-					if (var14 > var13) {
-						var15 = Math.abs(var10 - par2);
-						var16 = Math.abs(var11 - par3);
-						var17 = Math.abs(var12 - par4);
-						boolean var23 = var6 < lightUpdateBlockList.length - 6; //Spout this -> parameter
+				boolean var25 = false;
 
-						if (var15 + var16 + var17 < 17 && var23) {
-							if (this.getSavedLightValue(par1EnumSkyBlock, var10 - 1, var11, var12) < var14) {
-								lightUpdateBlockList[var6++] = var10 - 1 - par2 + 32 + (var11 - par3 + 32 << 6) + (var12 - par4 + 32 << 12); //Spout this -> parameter
+				if (par1EnumSkyBlock == EnumSkyBlock.Sky) {
+					var16 = this.computeSkyLightValue(var13, var10, var24, var12, var14, var15);
+				} else {
+					var16 = this.computeBlockLightValue(var13, var10, var24, var12, var14, var15);
+				}
+
+				if (var16 != var13) {
+					this.setLightValue(par1EnumSkyBlock, var10, var24, var12, var16);
+
+					if (var16 > var13) {
+						var17 = var10 - par2;
+						var18 = var24 - par3;
+						var19 = var12 - par4;
+
+						if (var17 < 0) {
+							var17 = -var17;
+						}
+
+						if (var18 < 0) {
+							var18 = -var18;
+						}
+
+						if (var19 < 0) {
+							var19 = -var19;
+						}
+
+						// Spout Start
+						if (var17 + var18 + var19 < 17 && var6 < lightUpdateBlockList.length - 6) {
+							if (this.getSavedLightValue(par1EnumSkyBlock, var10 - 1, var24, var12) < var16) {
+								lightUpdateBlockList[var6++] = var10 - 1 - par2 + 32 + (var24 - par3 + 32 << 6) + (var12 - par4 + 32 << 12);
 							}
 
-							if (this.getSavedLightValue(par1EnumSkyBlock, var10 + 1, var11, var12) < var14) {
-								lightUpdateBlockList[var6++] = var10 + 1 - par2 + 32 + (var11 - par3 + 32 << 6) + (var12 - par4 + 32 << 12); //Spout this -> parameter
+							if (this.getSavedLightValue(par1EnumSkyBlock, var10 + 1, var24, var12) < var16) {
+								lightUpdateBlockList[var6++] = var10 + 1 - par2 + 32 + (var24 - par3 + 32 << 6) + (var12 - par4 + 32 << 12);
 							}
 
-							if (this.getSavedLightValue(par1EnumSkyBlock, var10, var11 - 1, var12) < var14) {
-								lightUpdateBlockList[var6++] = var10 - par2 + 32 + (var11 - 1 - par3 + 32 << 6) + (var12 - par4 + 32 << 12); //Spout this -> parameter
+							if (this.getSavedLightValue(par1EnumSkyBlock, var10, var24 - 1, var12) < var16) {
+								lightUpdateBlockList[var6++] = var10 - par2 + 32 + (var24 - 1 - par3 + 32 << 6) + (var12 - par4 + 32 << 12);
 							}
 
-							if (this.getSavedLightValue(par1EnumSkyBlock, var10, var11 + 1, var12) < var14) {
-								lightUpdateBlockList[var6++] = var10 - par2 + 32 + (var11 + 1 - par3 + 32 << 6) + (var12 - par4 + 32 << 12); //Spout this -> parameter
+							if (this.getSavedLightValue(par1EnumSkyBlock, var10, var24 + 1, var12) < var16) {
+								lightUpdateBlockList[var6++] = var10 - par2 + 32 + (var24 + 1 - par3 + 32 << 6) + (var12 - par4 + 32 << 12);
 							}
 
-							if (this.getSavedLightValue(par1EnumSkyBlock, var10, var11, var12 - 1) < var14) {
-								lightUpdateBlockList[var6++] = var10 - par2 + 32 + (var11 - par3 + 32 << 6) + (var12 - 1 - par4 + 32 << 12); //Spout this -> parameter
+							if (this.getSavedLightValue(par1EnumSkyBlock, var10, var24, var12 - 1) < var16) {
+								lightUpdateBlockList[var6++] = var10 - par2 + 32 + (var24 - par3 + 32 << 6) + (var12 - 1 - par4 + 32 << 12);
 							}
 
-							if (this.getSavedLightValue(par1EnumSkyBlock, var10, var11, var12 + 1) < var14) {
-								lightUpdateBlockList[var6++] = var10 - par2 + 32 + (var11 - par3 + 32 << 6) + (var12 + 1 - par4 + 32 << 12); //Spout this -> parameter
+							if (this.getSavedLightValue(par1EnumSkyBlock, var10, var24, var12 + 1) < var16) {
+								lightUpdateBlockList[var6++] = var10 - par2 + 32 + (var24 - par3 + 32 << 6) + (var12 + 1 - par4 + 32 << 12);
 							}
 						}
+						// Spout End
 					}
 				}
 			}
@@ -2798,6 +2975,8 @@ public abstract class World implements IBlockAccess {
 			this.theProfiler.endSection();
 		}
 	}
+
+	// Spout End - Lighting Calculations revert to 1.4.7 setup to make Spout CustomBlock Lighting work.
 
 	/**
 	 * Runs through the list of updates to run and ticks them
