@@ -272,9 +272,9 @@ public class GuiFavorites extends GuiScreen {
 		}
 		
 		if (view.getSelectedItem() instanceof ServerItem) {
-			ServerItem item = (ServerItem) view.getSelectedItem();			
-			buttonJoin.setEnabled(item.canLogin(SpoutClient.spoutcraftVersion));			
-		}		
+			ServerItem item = (ServerItem) view.getSelectedItem();
+			buttonJoin.setEnabled(item.isCompatible(SpoutClient.spoutcraftVersion));
+		}
 	}
 
 	@Override

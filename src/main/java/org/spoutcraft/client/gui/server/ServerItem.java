@@ -275,7 +275,7 @@ public class ServerItem implements ListWidgetItem {
 		if (pollResult.getVersion() != null) {
 			GL11.glPushMatrix();
 			versionWidth = font.getStringWidth("1.0.0");
-				if (canLogin(SpoutClient.spoutcraftVersion)) {
+				if (isCompatible(SpoutClient.spoutcraftVersion)) {
 					font.drawStringWithShadow(pollResult.getVersion(), x + width - versionWidth - 20, y + 21, 0x00FF00);
 				} else {
 					font.drawStringWithShadow(pollResult.getVersion(), x + width - versionWidth - 20, y + 21, 0xF44607);
@@ -291,7 +291,7 @@ public class ServerItem implements ListWidgetItem {
 
 	public void onClick(int x, int y, boolean doubleClick) {
 		if (doubleClick) {
-			if (canLogin(SpoutClient.spoutcraftVersion)) {
+			if (isCompatible(SpoutClient.spoutcraftVersion)) {
 				if (databaseId != -1) {
 					String url = MirrorUtils.getMirrorUrl("/popular.php?uid=", "http://servers.spout.org/popular.php?uid=");
 					NetworkUtils.pingUrl(url + databaseId);
@@ -412,7 +412,7 @@ public class ServerItem implements ListWidgetItem {
 		this.acceptsTextures = acceptsTextures;
 	}
 	
-	public boolean canLogin(String version) {
+	public boolean isCompatible(String version) {
 		// Update the following method to allow users to login to server based on conditional versioning response.
 		if (version.equals("1.5.1")) {
 			if (getVersion().equals("1.5")) {
