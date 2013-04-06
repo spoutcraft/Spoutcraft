@@ -95,6 +95,7 @@ public class Configuration {
 	private static boolean randomMobTextures = true;
 	public static boolean ambientOcclusion = false;
 	private static boolean serverTexturePromptsEnabled = true;
+	public static int aaSampling = 0;
 
 	// Config specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
@@ -725,5 +726,36 @@ public class Configuration {
 			write();
 		}
 	}
+	
+	public static void setAASampling() {
+		System.out.println("AA = " + aaSampling);
+		if (aaSampling == 0) {
+			aaSampling = 2;
+			return;
+		}
+		
+		if (aaSampling == 2) {
+			aaSampling = 4;
+			return;
+		}
+		
+		if (aaSampling == 4) {
+			aaSampling = 6;
+			return;
+		}
+		
+		if (aaSampling == 6) {
+			aaSampling = 8;
+			return;
+		}
+		
+		if (aaSampling == 8) {
+			aaSampling = 0;
+			return;
+		}
+	}
 
+	public static int getAASampling() {
+		return aaSampling;
+	}
 }

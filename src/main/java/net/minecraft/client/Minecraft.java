@@ -445,7 +445,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		this.getLogAgent().logInfo("LWJGL Version: " + Sys.getVersion()); 
 
 		try {
-			Display.create((new PixelFormat()).withDepthBits(24));
+			Display.create(AAHelper.setupPixelFormat((new PixelFormat()).withDepthBits(24)));
 		} catch (LWJGLException var5) {
 			var5.printStackTrace();
 

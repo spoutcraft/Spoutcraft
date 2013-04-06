@@ -31,6 +31,7 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.settings.controls.AdvancedOpenGLButton;
 import org.spoutcraft.client.gui.settings.controls.AmbientOcclusionButton;
+import org.spoutcraft.client.gui.settings.controls.AntiAliasingButton;
 import org.spoutcraft.client.gui.settings.controls.Anaglyph3DButton;
 import org.spoutcraft.client.gui.settings.controls.AutosaveButton;
 import org.spoutcraft.client.gui.settings.controls.BetterGrassButton;
@@ -409,6 +410,11 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		control = new SignDistanceButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		
+		top +=22;
+		control = new AntiAliasingButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(center).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;

@@ -5,9 +5,13 @@ import com.prupe.mcpatcher.TexturePackAPI;
 import java.awt.image.BufferedImage;
 import org.lwjgl.opengl.PixelFormat;
 
+// Spout Start
+import org.spoutcraft.client.config.Configuration;
+// Spout End
+
 public class AAHelper {
 	private static final int debugColor = Config.getBoolean("Extended HD", "debugBorder", false) ? -16776961 : 0;
-	private static final int aaSamples = Config.getInt("Extended HD", "antiAliasing", 1);
+	private static final int aaSamples = Configuration.getAASampling();
 	public static int border;
 
 	static void reset() {
