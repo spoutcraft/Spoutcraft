@@ -91,7 +91,7 @@ public class FontUtils {
 
 	public static float getStringWidthf(FontRenderer var0, String var1) {
 		float var2 = 0.0F;
-
+		var1 = org.bukkit.ChatColor.stripColor(var1); // Spout - Strip Colors & Formatting Codes to calculate spacing properly.
 		if (var1 != null) {
 			boolean var3 = false;
 

@@ -728,7 +728,6 @@ public class Configuration {
 	}
 	
 	public static void setAASampling() {
-		System.out.println("AA = " + aaSampling);
 		if (aaSampling == 0) {
 			aaSampling = 2;
 			return;
