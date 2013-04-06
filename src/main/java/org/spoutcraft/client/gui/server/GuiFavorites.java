@@ -270,6 +270,11 @@ public class GuiFavorites extends GuiScreen {
 			buttonRefresh.setEnabled(true);
 			buttonRefresh.setText("Refresh");
 		}
+		
+		if (view.getSelectedItem() instanceof ServerItem) {
+			ServerItem item = (ServerItem) view.getSelectedItem();			
+			buttonJoin.setEnabled(item.canLogin(SpoutClient.spoutcraftVersion));			
+		}		
 	}
 
 	@Override

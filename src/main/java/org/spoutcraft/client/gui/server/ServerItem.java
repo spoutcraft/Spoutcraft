@@ -275,7 +275,11 @@ public class ServerItem implements ListWidgetItem {
 		if (pollResult.getVersion() != null) {
 			GL11.glPushMatrix();
 			versionWidth = font.getStringWidth("1.0.0");
-			font.drawStringWithShadow(pollResult.getVersion(), x + width - versionWidth - 20, y + 21, 0x00FF00);
+				if (canLogin(SpoutClient.spoutcraftVersion)) {
+					font.drawStringWithShadow(pollResult.getVersion(), x + width - versionWidth - 20, y + 21, 0x00FF00);
+				} else {
+					font.drawStringWithShadow(pollResult.getVersion(), x + width - versionWidth - 20, y + 21, 0xF44607);
+				}
 			GL11.glPopMatrix();
 		} else {
 			GL11.glPushMatrix();
@@ -287,11 +291,13 @@ public class ServerItem implements ListWidgetItem {
 
 	public void onClick(int x, int y, boolean doubleClick) {
 		if (doubleClick) {
-			if (databaseId != -1) {
-				String url = MirrorUtils.getMirrorUrl("/popular.php?uid=", "http://servers.spout.org/popular.php?uid=");
-				NetworkUtils.pingUrl(url + databaseId);
+			if (canLogin(SpoutClient.spoutcraftVersion)) {
+				if (databaseId != -1) {
+					String url = MirrorUtils.getMirrorUrl("/popular.php?uid=", "http://servers.spout.org/popular.php?uid=");
+					NetworkUtils.pingUrl(url + databaseId);
+				}
+				SpoutClient.getInstance().getServerManager().join(this, isFavorite?favorites.getCurrentGui():serverList.getCurrentGui(), isFavorite?"Favorites":"Server List");
 			}
-			SpoutClient.getInstance().getServerManager().join(this, isFavorite?favorites.getCurrentGui():serverList.getCurrentGui(), isFavorite?"Favorites":"Server List");
 		}
 	}
 
@@ -358,6 +364,14 @@ public class ServerItem implements ListWidgetItem {
 		return pollResult.getMaxPlayers();
 	}
 
+	public String getVersion() {
+		String version = pollResult.getVersion();
+		if (version != null) {
+			return version;
+		} 
+		return "0.0.0";				
+	}
+	
 	public void setCountry(String country) {
 		this.country = country;
 	}
@@ -396,5 +410,18 @@ public class ServerItem implements ListWidgetItem {
 
 	public void setAcceptsTextures(boolean acceptsTextures) {
 		this.acceptsTextures = acceptsTextures;
+	}
+	
+	public boolean canLogin(String version) {
+		// Update the following method to allow users to login to server based on conditional versioning response.
+		if (version.equals("1.5.1")) {
+			if (getVersion().equals("1.5")) {
+				return true;
+			}
+			if (getVersion().equals("1.5.1")) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
