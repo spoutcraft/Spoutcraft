@@ -40,7 +40,7 @@ public class Configuration {
 	private static boolean fancyBiomeColors = false;
 	private static boolean waterBiomeColors = true;
 	private static float brightnessSlider = 1F;
-
+	public static boolean chatColorAssist = true;
 	private static boolean fancyClouds = false;
 	private static boolean fancyFog = false;
 	private static boolean fancyGraphics = false;
@@ -756,5 +756,14 @@ public class Configuration {
 
 	public static int getAASampling() {
 		return aaSampling;
+	}
+	
+	public static boolean isShowingChatColorAssist() {
+		return chatColorAssist;
+	}
+	
+	public static synchronized void setChatColorAssist(boolean chatColorAssist) {
+		Configuration.chatColorAssist = chatColorAssist;
+		onPropertyChange();
 	}
 }

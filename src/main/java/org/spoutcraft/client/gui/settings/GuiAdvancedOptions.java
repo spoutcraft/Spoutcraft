@@ -38,6 +38,7 @@ import org.spoutcraft.client.gui.settings.controls.BetterGrassButton;
 import org.spoutcraft.client.gui.settings.controls.BiomeColorsButton;
 import org.spoutcraft.client.gui.settings.controls.BrightnessSlider;
 import org.spoutcraft.client.gui.settings.controls.ChatButton;
+import org.spoutcraft.client.gui.settings.controls.ChatColorAssistButton;
 import org.spoutcraft.client.gui.settings.controls.ChunkRenderSpeed;
 import org.spoutcraft.client.gui.settings.controls.ClearWaterToggleButton;
 import org.spoutcraft.client.gui.settings.controls.ConnectedTexturesButton;
@@ -488,6 +489,12 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		control = new ServerTexturesButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		
+		top +=22;
+		
+		control = new ChatColorAssistButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(center).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
