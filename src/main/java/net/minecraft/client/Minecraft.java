@@ -2039,7 +2039,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 				renderEngine.texturePack.setTexturePack(renderEngine.oldPack);
 				renderEngine.oldPack = null;
 			}
-			renderEngine.refreshTextures();
+			//renderEngine.refreshTextures(); // Nope, lets not do this again...
 			SpoutClient.getInstance().onWorldExit();
 			SpoutClient.getInstance().clearPermissions();
 			// Spout End
