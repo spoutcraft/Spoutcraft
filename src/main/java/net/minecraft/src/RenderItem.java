@@ -110,7 +110,6 @@ public class RenderItem extends Render {
 
 				GL11.glTranslatef((float)par2, (float)par4 + var11, (float)par6);
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-
 				int var17;
 				float var19;
 				float var18;
@@ -174,9 +173,9 @@ public class RenderItem extends Render {
 								var19 = (float)(var17 >> 8 & 255) / 255.0F;
 								var20 = (float)(var17 & 255) / 255.0F;
 								GL11.glColor4f(var18 * var16, var19 * var16, var20 * var16, 1.0F);
-								this.renderDroppedItem(par1EntityItem, var15, var13, par9, var18 * var16, var19 * var16, var20 * var16);
+								this.renderDroppedItem(par1EntityItem, var15, var13, par9, var18 * var16, var19 * var16, var20 * var16, custom);
 							} else {
-								this.renderDroppedItem(par1EntityItem, var15, var13, par9, 1.0F, 1.0F, 1.0F);
+								this.renderDroppedItem(par1EntityItem, var15, var13, par9, 1.0F, 1.0F, 1.0F, custom);
 							}
 						}
 					} else {
@@ -192,7 +191,9 @@ public class RenderItem extends Render {
 						if (var10.getItemSpriteNumber() == 0) {
 							this.loadTexture("/terrain.png");
 						} else {
-							this.loadTexture("/gui/items.png");
+							if (!custom) {
+								this.loadTexture("/gui/items.png");
+							}
 						}
 
 						if (this.renderWithColor) {
@@ -201,9 +202,9 @@ public class RenderItem extends Render {
 							float var26 = (float)(var22 >> 8 & 255) / 255.0F;
 							var18 = (float)(var22 & 255) / 255.0F;
 							var19 = 1.0F;
-							this.renderDroppedItem(par1EntityItem, var23, var13, par9, var16 * var19, var26 * var19, var18 * var19);
+							this.renderDroppedItem(par1EntityItem, var23, var13, par9, var16 * var19, var26 * var19, var18 * var19, custom);
 						} else {
-							this.renderDroppedItem(par1EntityItem, var23, var13, par9, 1.0F, 1.0F, 1.0F);
+							this.renderDroppedItem(par1EntityItem, var23, var13, par9, 1.0F, 1.0F, 1.0F, custom);
 						}
 					}
 				}
@@ -217,7 +218,7 @@ public class RenderItem extends Render {
 	/**
 	 * Renders a dropped item
 	 */
-	private void renderDroppedItem(EntityItem par1EntityItem, Icon par2Icon, int par3, float par4, float par5, float par6, float par7) {
+	private void renderDroppedItem(EntityItem par1EntityItem, Icon par2Icon, int par3, float par4, float par5, float par6, float par7, boolean customTexture) {
 		Tessellator var8 = Tessellator.instance;
 
 		if (par2Icon == null) {
@@ -233,12 +234,12 @@ public class RenderItem extends Render {
 		float var15 = 0.25F;
 		float var17;
 		// Spout Start
-		/*if (customTexture) {
+		if (customTexture) {
 			var9 = 0F;
 			var10 = 1F;
 			var11 = 1F;
 			var12 = 0F;
-		}*/
+		}
 		// Spout End
 
 		if (this.renderManager.options.fancyGraphics) {

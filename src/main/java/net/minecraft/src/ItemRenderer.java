@@ -14,6 +14,7 @@ import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.api.block.design.BlockDesign;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.SpoutClient;
 //Spout End
 
 public class ItemRenderer {
@@ -65,7 +66,7 @@ public class ItemRenderer {
 				if (textureURI != null) {
 					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon(), textureURI);
 					if (texture != null) {
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+						SpoutClient.getHandle().renderEngine.bindTexture(texture.getTextureID());
 						custom = true;
 					}
 				}
@@ -87,7 +88,7 @@ public class ItemRenderer {
 			this.renderBlocksInstance.renderBlockAsItem(Block.blocksList[par2ItemStack.itemID], par2ItemStack.getItemDamage(), 1.0F);
 		} else {
 			Tessellator var5 = Tessellator.instance;
-			 Icon var4 = par1EntityLiving.getItemIcon(par2ItemStack, par3);
+			Icon var4 = par1EntityLiving.getItemIcon(par2ItemStack, par3);
 			if (var4 == null) {
 				GL11.glPopMatrix();
 				return;
@@ -100,10 +101,10 @@ public class ItemRenderer {
 			float var10 = 0.0F;
 			float var11 = 0.3F;
 			if (custom){
-				var7 = 0;
+				var6 = 0;
+				var7 = 1;
 				var8 = 1;
-				var9 = 1;
-				var10 = 0;
+				var9 = 0;
 			}
 			// Spout end
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
