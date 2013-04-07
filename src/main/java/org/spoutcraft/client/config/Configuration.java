@@ -40,7 +40,7 @@ public class Configuration {
 	private static boolean fancyBiomeColors = false;
 	private static boolean waterBiomeColors = true;
 	private static float brightnessSlider = 1F;
-	public static boolean chatColorAssist = true;
+	public static boolean chatColorAssist = false;
 	private static boolean fancyClouds = false;
 	private static boolean fancyFog = false;
 	private static boolean fancyGraphics = false;
