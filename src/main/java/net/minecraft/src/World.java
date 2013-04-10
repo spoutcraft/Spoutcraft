@@ -2739,9 +2739,8 @@ public abstract class World implements IBlockAccess {
 		int light = Block.lightValue[par5];
 
 		// Fix for generation-time accessing
-		SpoutcraftWorld world = Spoutcraft.getWorld();
 		short customId = 0;
-		if(world != null) {			
+		if (SpoutClient.getInstance().getRawWorld() != null) {
 			SpoutcraftChunk chunk = Spoutcraft.getChunkAt(SpoutClient.getInstance().getRawWorld(), par2, par3, par4);
 			customId = chunk.getCustomBlockId(par2, par3, par4);			
 		}
