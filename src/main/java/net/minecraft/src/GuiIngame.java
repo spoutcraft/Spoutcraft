@@ -11,7 +11,9 @@ import org.lwjgl.opengl.GL12;
 // Spout Start
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.api.gui.InGameHUD;
+import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.inventory.CraftItemStack;
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.ZanMinimap;
@@ -264,6 +266,7 @@ public class GuiIngame extends Gui {
 
 		if (Configuration.showHotbarText) {
 			String var35;
+			String custom = null;
 			var12 = this.mc.thePlayer.getHealth();
 			var13 = this.mc.thePlayer.prevHealth;
 			String var34 = "" + this.mc.thePlayer.experienceLevel;
@@ -271,7 +274,14 @@ public class GuiIngame extends Gui {
 			this.mc.mcProfiler.startSection("toolHighlight");
 
 			if (this.field_92017_k > 0 && this.field_92016_l != null) {
-				var35 = this.field_92016_l.getDisplayName();
+				if (this.field_92016_l.itemID == 318) {
+					custom = Spoutcraft.getMaterialManager().getToolTip(new CraftItemStack(this.field_92016_l));
+				}
+				if (custom != null) {
+					var35 = custom;
+				} else {
+					var35 = this.field_92016_l.getDisplayName();
+				}
 				var12 = (screenWidth - font.getStringWidth(var35)) / 2;
 				var13 = screenHeight - 59;
 
@@ -281,7 +291,7 @@ public class GuiIngame extends Gui {
 				if (!mainScreen.getArmorBar().isVisible()) {
 					var13 += 8;
 				}
-				
+
 				if (!mainScreen.getExpBar().isVisible()) {
 					var13 += 6;
 				}
