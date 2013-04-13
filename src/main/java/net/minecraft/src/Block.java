@@ -652,8 +652,12 @@ public class Block {
 				int z = (int) target.getZ();
 				SpoutcraftChunk chunk = Spoutcraft.getChunkAt(entityhuman.worldObj, x, y, z);
 				short customId = chunk.getCustomBlockId(x, y, z);
-				if (customId > 0) {
+				if (customId > 0) {					
 					CustomBlock b = MaterialData.getCustomBlock(customId);
+					if (b == null) {
+						// ToDo: Shouldn't be needed.  Something outside of SpoutPlugin changed the Custom Blocks value outside of SpoutPlugin.  This is a fall-back return to prevent client returning null and crashing.
+						return (!entityhuman.canHarvestBlock(this) ? entityhuman.getCurrentPlayerStrVsBlock(this, false) / 1.0F / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this, true) / 1.0F / 30.0F);
+					}
 					return b.getHardness() < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? entityhuman.getCurrentPlayerStrVsBlock(this, false) / b.getHardness() / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this, true) / b.getHardness() / 30.0F);
 				}
 			}
