@@ -95,6 +95,7 @@ public class Configuration {
 	private static boolean randomMobTextures = true;
 	public static boolean ambientOcclusion = false;
 	private static boolean serverTexturePromptsEnabled = true;
+	public static boolean showHotbarText = true;
 	public static int aaSampling = 0;
 
 	// Config specific
@@ -764,6 +765,15 @@ public class Configuration {
 	
 	public static synchronized void setChatColorAssist(boolean chatColorAssist) {
 		Configuration.chatColorAssist = chatColorAssist;
+		onPropertyChange();
+	}
+	
+	public static synchronized boolean isShowingHotbarText() {
+		return showHotbarText;
+	}
+	
+	public static synchronized void setShowingHotbarText(boolean showingHotbarText) {
+		Configuration.showHotbarText = showingHotbarText;
 		onPropertyChange();
 	}
 }

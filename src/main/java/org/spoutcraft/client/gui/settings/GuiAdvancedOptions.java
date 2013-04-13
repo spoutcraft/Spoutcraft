@@ -62,6 +62,7 @@ import org.spoutcraft.client.gui.settings.controls.FieldOfViewSlider;
 import org.spoutcraft.client.gui.settings.controls.FlightSpeedSlider;
 import org.spoutcraft.client.gui.settings.controls.GuiScaleButton;
 import org.spoutcraft.client.gui.settings.controls.HotbarQuickKeysButton;
+import org.spoutcraft.client.gui.settings.controls.HotbarTextButton;
 import org.spoutcraft.client.gui.settings.controls.InvertMouseButton;
 import org.spoutcraft.client.gui.settings.controls.LanguagesButton;
 import org.spoutcraft.client.gui.settings.controls.ManualSelectionButton;
@@ -493,8 +494,12 @@ public class GuiAdvancedOptions extends GuiScreen {
 		
 		top +=22;
 		
+		control = new HotbarTextButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		
 		control = new ChatColorAssistButton().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(center).setY(top);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;

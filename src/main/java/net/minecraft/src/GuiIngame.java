@@ -257,6 +257,54 @@ public class GuiIngame extends Gui {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GL11.glPushMatrix();
+		
+		int var12;
+		int var13;
+		int var38;
+
+		if (Configuration.showHotbarText) {
+			String var35;
+			var12 = this.mc.thePlayer.getHealth();
+			var13 = this.mc.thePlayer.prevHealth;
+			String var34 = "" + this.mc.thePlayer.experienceLevel;
+			var38 = (screenWidth - font.getStringWidth(var34)) / 2;
+			this.mc.mcProfiler.startSection("toolHighlight");
+
+			if (this.field_92017_k > 0 && this.field_92016_l != null) {
+				var35 = this.field_92016_l.getDisplayName();
+				var12 = (screenWidth - font.getStringWidth(var35)) / 2;
+				var13 = screenHeight - 59;
+
+				if (!mainScreen.getHungerBar().isVisible() || !mainScreen.getHealthBar().isVisible()) {
+					var13 += 8;
+				}
+				if (!mainScreen.getArmorBar().isVisible()) {
+					var13 += 8;
+				}
+				
+				if (!mainScreen.getExpBar().isVisible()) {
+					var13 += 6;
+				}
+
+				var38 = (int)((float)this.field_92017_k * 256.0F / 10.0F);
+
+				if (var38 > 255) {
+					var38 = 255;
+				}
+
+				if (var38 > 0) {
+					GL11.glPushMatrix();
+					GL11.glEnable(GL11.GL_BLEND);
+					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					font.drawStringWithShadow(var35, var12, var13, 16777215 + (var38 << 24));
+					GL11.glDisable(GL11.GL_BLEND);
+					GL11.glPopMatrix();
+				}
+			}
+
+			this.mc.mcProfiler.endSection();
+		}
+		
 		GL11.glTranslatef(0.0F, (float)(screenHeight - 48), 0.0F);
 		this.mc.mcProfiler.startSection("chat");
 		this.persistantChatGUI.drawChat(this.updateCounter);
@@ -267,10 +315,9 @@ public class GuiIngame extends Gui {
 			this.mc.mcProfiler.startSection("playerList");
 			NetClientHandler var37 = this.mc.thePlayer.sendQueue;
 			List var39 = var37.playerInfoList;
-			int var13 = var37.currentServerMaxPlayers;
+			var13 = var37.currentServerMaxPlayers;
 			int var40 = var13;
-
-			int var38;
+			
 			for (var38 = 1; var40 > 20; var40 = (var13 + var38 - 1) / var38) {
 				++var38;
 			}
