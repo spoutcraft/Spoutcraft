@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.api.gui.InGameHUD;
 import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.material.Material;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.inventory.CraftItemStack;
