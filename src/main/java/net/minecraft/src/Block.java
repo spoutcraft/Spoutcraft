@@ -652,7 +652,7 @@ public class Block {
 				int z = (int) target.getZ();
 				SpoutcraftChunk chunk = Spoutcraft.getChunkAt(entityhuman.worldObj, x, y, z);
 				short customId = chunk.getCustomBlockId(x, y, z);
-				if (customId > 0) {					
+				if (customId > 0) {
 					CustomBlock b = MaterialData.getCustomBlock(customId);
 					if (b == null) {
 						// ToDo: Shouldn't be needed.  Something outside of SpoutPlugin changed the Custom Blocks value outside of SpoutPlugin.  This is a fall-back return to prevent client returning null and crashing.
