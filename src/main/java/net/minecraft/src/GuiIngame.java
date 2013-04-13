@@ -12,6 +12,8 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.api.gui.InGameHUD;
 import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.material.Material;
+import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.inventory.CraftItemStack;
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
@@ -274,7 +276,7 @@ public class GuiIngame extends Gui {
 			this.mc.mcProfiler.startSection("toolHighlight");
 
 			if (this.field_92017_k > 0 && this.field_92016_l != null) {
-				if (this.field_92016_l.itemID == 318) {
+				if (this.field_92016_l.itemID == MaterialData.flint.getRawId()) {
 					custom = Spoutcraft.getMaterialManager().getToolTip(new CraftItemStack(this.field_92016_l));
 				}
 				if (custom != null) {
