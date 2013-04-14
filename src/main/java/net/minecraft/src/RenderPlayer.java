@@ -143,18 +143,8 @@ public class RenderPlayer extends RenderLiving {
 		if (!AccessoryHandler.isHandled(par1EntityPlayer.username)) {
 			AccessoryHandler.addVIPAccessoriesFor(par1EntityPlayer);
 		}
-
-		VIP vip = par1EntityPlayer.vip;
-		if (vip != null) {
-			float s = vip.getScale();
-			GL11.glPushMatrix();
-			GL11.glTranslated(0, (s - 1) * 1.6, 0);
-			GL11.glScalef(s, s, s);
-			super.doRenderLiving(par1EntityPlayer, par2, var14, par6, par8, par9);
-			GL11.glPopMatrix();
-		} else {
+		
 		super.doRenderLiving(par1EntityPlayer, par2, var14, par6, par8, par9);
-		}
 		// Spout End
 		this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow = this.modelBipedMain.aimedBow = false;
 		this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = false;
@@ -359,6 +349,12 @@ public class RenderPlayer extends RenderLiving {
 
 	protected void renderPlayerScale(EntityPlayer par1EntityPlayer, float par2) {
 		float var3 = 0.9375F;
+		// Spout Start
+		VIP vip = par1EntityPlayer.vip;
+		if (vip != null) {
+			var3 = vip.getScale();
+		}
+		// Spout End
 		GL11.glScalef(var3, var3, var3);
 	}
 

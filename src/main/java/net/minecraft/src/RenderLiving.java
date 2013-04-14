@@ -385,8 +385,10 @@ public class RenderLiving extends Render {
 					if (var10 < (double)(var12 * var12)) {
 						String title = null;
 						VIP vip = par1EntityPlayer.vip;
+						float var92 = 0.0F;
 						if (vip != null) {
 							title = vip.getTitle();
+							var92 = vip.getScale();
 						} else {
 							title = par1EntityPlayer.displayName;
 						}
@@ -403,6 +405,10 @@ public class RenderLiving extends Render {
 									par4 = par4 + 0.275d;
 								} else if (AccessoryHandler.hasAccessory(par1EntityPlayer.username, AccessoryType.TOPHAT)) {
 									par4 = par4 + 0.5d;
+								}
+								
+								if (var92 > 0.9375F) {
+									par4 = par4 + 1.5D;
 								}
 
 								if (!par1EntityPlayer.isSneaking()) {
