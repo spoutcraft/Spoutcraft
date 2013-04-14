@@ -409,7 +409,7 @@ public class RenderLiving extends Render {
 								
 								if (var92 > 0.9375F) {
 									par4 = par4 + 0.5D;
-								} else if (var92 < 0.86F) {
+								} else if (var92 < 0.86F && var92 != 0.0F) {
 									par4 = par4 - 0.25D;
 								}
 
