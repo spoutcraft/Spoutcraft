@@ -408,7 +408,9 @@ public class RenderLiving extends Render {
 								}
 								
 								if (var92 > 0.9375F) {
-									par4 = par4 + 1.5D;
+									par4 = par4 + 0.5D;
+								} else if (var92 < 0.86F) {
+									par4 = par4 - 0.25D;
 								}
 
 								if (!par1EntityPlayer.isSneaking()) {
