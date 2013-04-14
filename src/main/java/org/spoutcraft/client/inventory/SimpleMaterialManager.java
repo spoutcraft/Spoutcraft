@@ -267,13 +267,16 @@ public class SimpleMaterialManager implements MaterialManager {
 		} else {
 			list = new ArrayList<String>();
 		}
-		Material item = MaterialData.getMaterial(is.getTypeId(), is.getDurability());
-		String custom = item != null ? String.format(item.getName(), String.valueOf(is.getDurability())) : null;
-		if (custom != null && is.getTypeId() != Item.potion.itemID) {
-			if (list.size() > 0) {
-				list.set(0, custom);
-			} else {
-				list.add(custom);
+
+		if (itemstack.itemID == MaterialData.flint.getRawId()) {
+			Material item = MaterialData.getMaterial(is.getTypeId(), is.getDurability());
+			String custom = item != null ? String.format(item.getName(), String.valueOf(is.getDurability())) : null;
+			if (custom != null && is.getTypeId() != Item.potion.itemID) {
+				if (list.size() > 0) {
+					list.set(0, custom);
+				} else {
+					list.add(custom);
+				}
 			}
 		}
 		if (list.size() > 0) {
