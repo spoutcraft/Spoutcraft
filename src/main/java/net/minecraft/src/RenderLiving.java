@@ -364,8 +364,8 @@ public class RenderLiving extends Render {
 		if (!(par1EntityLiving instanceof EntityPlayer)) { // Renderer for Entities since they can have a custom name (wolves for example)
 			if (Minecraft.isDebugInfoEnabled() && SpoutClient.getInstance().isEntityLabelCheat()) {
 				this.renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4, par6, 64);
-			} else {
-				String title = par1EntityLiving.displayName;
+			} else if (par1EntityLiving.func_94059_bO() || par1EntityLiving.func_94056_bM() && par1EntityLiving == this.renderManager.field_96451_i) {
+				String title = par1EntityLiving.func_96090_ax();
 				if (title != null && !title.equals("[hide]")) {
 					String lines[] = title.split("\\n");
 					for (int i = 0; i < lines.length; i++){
