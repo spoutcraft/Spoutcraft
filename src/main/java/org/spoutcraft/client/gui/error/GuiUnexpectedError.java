@@ -22,9 +22,7 @@ package org.spoutcraft.client.gui.error;
 import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -122,11 +120,13 @@ public class GuiUnexpectedError extends GuiScreen {
 			builder.append("    Exception: ").append(caused.getClass().getSimpleName()).append("\n");
 			builder.append("    Message: ").append(caused.getMessage()).append("\n");
 			builder.append("    Trace:").append("\n");
-			for (StackTraceElement ele : caused.getStackTrace()) {
-				builder.append("        ").append(ele.toString()).append("\n");
-			}
+			
+			StringWriter sw = new StringWriter();
+			caused.printStackTrace(new PrintWriter(sw));
+			String causeString = sw.toString();
+			builder.append("       ").append(sw).append("\n");
+			
 			builder.append("-----------------------------------").append("\n");
-
 			builder.append("Minecraft Information:\n");
 			builder.append("    Texture Pack: ").append(Minecraft.theMinecraft.texturePackList.getSelectedTexturePack().getTexturePackFileName()).append("\n");
 			//builder.append("    Texture Pack Res: ").append(TileSize.int_size + "x").append("\n");
