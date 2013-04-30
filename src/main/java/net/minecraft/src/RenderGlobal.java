@@ -421,10 +421,19 @@ public class RenderGlobal implements IWorldAccess {
 
 						// Spout Start
 						if (this.occlusionEnabled && Configuration.ambientOcclusion) {
-						// Spout End
-							this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].glOcclusionQuery = this.glOcclusionQueryBase.get(var3);
+							if (this.glOcclusionQueryBase != null) {
+								this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].glOcclusionQuery = this.glOcclusionQueryBase.get(var3);
+							} else {
+								this.occlusionResult.clear();
+								this.glOcclusionQueryBase = GLAllocation.createDirectIntBuffer(var3 * var3 * var4);
+								this.glOcclusionQueryBase.clear();
+								this.glOcclusionQueryBase.position(0);
+								this.glOcclusionQueryBase.limit(var3 * var3 * var4);
+								ARBOcclusionQuery.glGenQueriesARB(this.glOcclusionQueryBase);
+								this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].glOcclusionQuery = this.glOcclusionQueryBase.get(var3);
+							}
 						}
-
+						// Spout End
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].isWaitingOnOcclusionQuery = false;
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].isVisible = true;
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].isInFrustum = true;
