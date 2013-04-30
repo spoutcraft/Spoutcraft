@@ -107,9 +107,6 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 				var7.addVertexWithUV((double)var5, 0.0D, 0.0D, (double)((float)var5 / var8), 0.0D);
 				var7.addVertexWithUV(0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 				var7.draw();
-				// Spout Start - Shouldn't be needed, but it is.
-				GL11.glEnable(GL11.GL_TEXTURE_2D);
-				// Spout End
 
 				if (par1 >= 0) {
 					byte var9 = 100;
@@ -130,6 +127,10 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 					var7.addVertex((double)(var11 + par1), (double)var12, 0.0D);
 					var7.draw();
 					GL11.glEnable(GL11.GL_TEXTURE_2D);
+					// Spout Start
+				} else {
+					GL11.glEnable(GL11.GL_TEXTURE_2D);
+					// Spout End
 				}
 
 				this.mc.fontRenderer.drawStringWithShadow(this.currentlyDisplayedText, (var5 - this.mc.fontRenderer.getStringWidth(this.currentlyDisplayedText)) / 2, var6 / 2 - 4 - 16, 16777215);
