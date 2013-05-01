@@ -18,7 +18,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<minecraftVersion>1.5.1</minecraftVersion>
 		<minecraft_Version>1_5_1</minecraft_Version>
-		<lwjglVersion>2.4</lwjglVersion>
+		<lwjglVersion>2.9.0</lwjglVersion>
 		<mcpVersion>744</mcpVersion>
 		<buildNumber>0</buildNumber>
 	</properties>
@@ -239,7 +239,7 @@
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
-											<groupId>net.minecraft</groupId>
+											<groupId>org.lwjgl.lwjgl</groupId>
 											<artifactId>lwjgl</artifactId>
 											<version>${lwjglVersion}</version>
 											<stripVersion>true</stripVersion>
@@ -269,19 +269,19 @@
 									<targetPath>${project.basedir}/jars/bin</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>net.minecraft</groupId>
+											<groupId>org.lwjgl.lwjgl</groupId>
 											<artifactId>jinput</artifactId>
 											<version>1.0.0-b01</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
-											<groupId>net.minecraft</groupId>
+											<groupId>org.lwjgl.lwjgl</groupId>
 											<artifactId>lwjgl</artifactId>
 											<version>${lwjglVersion}</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
-											<groupId>net.minecraft</groupId>
+											<groupId>org.lwjgl.lwjgl</groupId>
 											<artifactId>lwjgl_util</artifactId>
 											<version>${lwjglVersion}</version>
 											<stripVersion>true</stripVersion>
@@ -294,7 +294,7 @@
 									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>net.minecraft</groupId>
+											<groupId>org.lwjgl.lwjgl</groupId>
 											<artifactId>lwjgl-platform</artifactId>
 											<version>${lwjglVersion}</version>
 											<classifier>natives-windows</classifier>
@@ -310,7 +310,7 @@
 									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>net.minecraft</groupId>
+											<groupId>org.lwjgl.lwjgl</groupId>
 											<artifactId>lwjgl-platform</artifactId>
 											<version>${lwjglVersion}</version>
 											<classifier>natives-osx</classifier>
@@ -326,7 +326,7 @@
 									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>net.minecraft</groupId>
+											<groupId>org.lwjgl.lwjgl</groupId>
 											<artifactId>lwjgl-platform</artifactId>
 											<version>${lwjglVersion}</version>
 											<classifier>natives-linux</classifier>
