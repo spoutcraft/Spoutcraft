@@ -420,18 +420,8 @@ public class RenderGlobal implements IWorldAccess {
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4] = new WorldRenderer(this.theWorld, this.tileEntities, var4 * 16, var5 * 16, var6 * 16, this.glRenderListBase + var2);
 
 						// Spout Start
-						if (this.occlusionEnabled && Configuration.ambientOcclusion) {
-							if (this.glOcclusionQueryBase != null) {
-								this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].glOcclusionQuery = this.glOcclusionQueryBase.get(var3);
-							} else {
-								this.occlusionResult.clear();
-								this.glOcclusionQueryBase = GLAllocation.createDirectIntBuffer(var3 * var3 * var4);
-								this.glOcclusionQueryBase.clear();
-								this.glOcclusionQueryBase.position(0);
-								this.glOcclusionQueryBase.limit(var3 * var3 * var4);
-								ARBOcclusionQuery.glGenQueriesARB(this.glOcclusionQueryBase);
-								this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].glOcclusionQuery = this.glOcclusionQueryBase.get(var3);
-							}
+						if (this.occlusionEnabled && Configuration.ambientOcclusion && this.glOcclusionQueryBase != null) {
+							this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].glOcclusionQuery = this.glOcclusionQueryBase.get(var3);
 						}
 						// Spout End
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].isWaitingOnOcclusionQuery = false;
