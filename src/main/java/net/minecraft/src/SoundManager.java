@@ -116,8 +116,10 @@ public class SoundManager {
 		if (loaded) {
 			if (this.options.musicVolume == 0.0F) {
 				sndSystem.stop("BgMusic");
+				sndSystem.stop("streaming");
 			} else {
 				sndSystem.setVolume("BgMusic", this.options.musicVolume);
+				sndSystem.setVolume("streaming", this.options.musicVolume);
 			}
 		}
 	}
@@ -353,8 +355,8 @@ public class SoundManager {
 
 	/**
 	 * If a sound is already playing from the given entity, update the position and velocity of that sound to match the
-	 * entity. Otherwise, start playing a sound from that entity. Args: The sound name, the entity, the volume, the pitch,
-	 * unknown flag
+	 * entity. Otherwise, start playing a sound from that entity. Setting the last flag to true will prevent other sounds
+	 * from overriding this one. Args: The sound name, the entity, the volume, the pitch, priority
 	 */
 	public void playEntitySound(String par1Str, Entity par2Entity, float par3, float par4, boolean par5) {
 		if (par2Entity != null) {

@@ -140,6 +140,6 @@ public class RenderPass {
 
 	static {
 		RenderPassAPI.instance = new RenderPass$1();
-		TexturePackChangeHandler.register(new RenderPass$2("Better Glass", 3));
+		TexturePackChangeHandler.register(new RenderPass$2("Better Glass", 4));
 	}
 }

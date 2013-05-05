@@ -209,7 +209,10 @@ public class GameSettings {
 		return par0 < 0 ? StatCollector.translateToLocalFormatted("key.mouseButton", new Object[] {Integer.valueOf(par0 + 101)}): Keyboard.getKeyName(par0);
 	}
 
-	public static boolean func_100015_a(KeyBinding par0KeyBinding) {
+	/**
+	 * Returns whether the specified key binding is currently being pressed.
+	 */
+	public static boolean isKeyDown(KeyBinding par0KeyBinding) {
 		return par0KeyBinding.keyCode < 0 ? Mouse.isButtonDown(par0KeyBinding.keyCode + 100) : Keyboard.isKeyDown(par0KeyBinding.keyCode);
 	}
 

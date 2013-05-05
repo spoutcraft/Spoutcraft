@@ -2,6 +2,10 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 
+// MCPatcher Start
+import com.prupe.mcpatcher.mod.CITUtils;
+// MCPatcher End
+
 public class RenderBiped extends RenderLiving {
 	protected ModelBiped modelBipedMain;
 	protected float field_77070_b;
@@ -38,7 +42,7 @@ public class RenderBiped extends RenderLiving {
 
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
-				this.loadTexture("/armor/" + bipedArmorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png");
+				this.loadTexture(CITUtils.getArmorTexture("/armor/" + bipedArmorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png", par1EntityLiving, var4));
 				ModelBiped var7 = par2 == 2 ? this.field_82425_h : this.field_82423_g;
 				var7.bipedHead.showModel = par2 == 0;
 				var7.bipedHeadwear.showModel = par2 == 0;
@@ -98,7 +102,7 @@ public class RenderBiped extends RenderLiving {
 
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
-				this.loadTexture("/armor/" + bipedArmorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + "_b.png");
+				this.loadTexture(CITUtils.getArmorTexture("/armor/" + bipedArmorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + "_b.png", par1EntityLiving, var4));
 				float var7 = 1.0F;
 				GL11.glColor3f(var7, var7, var7);
 			}

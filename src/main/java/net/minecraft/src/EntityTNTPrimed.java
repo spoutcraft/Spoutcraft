@@ -98,7 +98,10 @@ public class EntityTNTPrimed extends Entity {
 		return 0.0F;
 	}
 
-	public EntityLiving func_94083_c() {
+	/**
+	 * returns null or the entityliving it was placed or ignited by
+	 */
+	public EntityLiving getTntPlacedBy() {
 		return this.tntPlacedBy;
 	}
 }

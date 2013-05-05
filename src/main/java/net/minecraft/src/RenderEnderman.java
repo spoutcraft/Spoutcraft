@@ -86,7 +86,7 @@ public class RenderEnderman extends RenderLiving {
 			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 			GL11.glDisable(GL11.GL_LIGHTING);
 
-			if (par1EntityEnderman.getHasActivePotion()) {
+			if (par1EntityEnderman.isInvisible()) {
 				GL11.glDepthMask(false);
 			} else {
 				GL11.glDepthMask(true);

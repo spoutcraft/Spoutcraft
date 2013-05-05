@@ -682,7 +682,7 @@ public class Chunk {
 		int var3 = MathHelper.floor_double(par1Entity.posZ / 16.0D);
 
 		if (var2 != this.xPosition || var3 != this.zPosition) {
-			this.worldObj.getWorldLogAgent().func_98232_c("Wrong location! " + par1Entity);
+			this.worldObj.getWorldLogAgent().logSevere("Wrong location! " + par1Entity);
 			Thread.dumpStack();
 		}
 

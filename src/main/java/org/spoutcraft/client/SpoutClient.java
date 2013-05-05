@@ -73,7 +73,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
 	private static final Thread dataMiningThread = new DataMiningThread();
 	private static final String version = "Unknown Version";
-	public static final String spoutcraftVersion = "1.5.1";
+	public static final String spoutcraftVersion = "1.5.2";
 
 	private final SimpleSkyManager skyManager = new SimpleSkyManager();
 	private final PacketManager packetManager = new PacketManager();

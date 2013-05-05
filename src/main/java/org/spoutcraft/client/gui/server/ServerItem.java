@@ -413,14 +413,18 @@ public class ServerItem implements ListWidgetItem {
 	}
 	
 	public boolean isCompatible(String version) {
-		// Update the following method to allow users to login to server based on conditional versioning response.
-		if (version.equals("1.5.1")) {
+		// Update the following method to allow users to login to server based on conditional versioning response.		
+		if (version.equals("1.5.2")) {
 			if (getVersion().equals("1.5")) {
-				return true;
+				return false;
 			}
 			if (getVersion().equals("1.5.1")) {
-				return true;
+				return false;
 			}
+			
+			if (getVersion().equals("1.5.2")) {
+				return true;
+			}			
 		}
 		return false;
 	}

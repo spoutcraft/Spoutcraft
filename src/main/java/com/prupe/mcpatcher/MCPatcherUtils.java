@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
@@ -18,8 +20,7 @@ public class MCPatcherUtils {
 	private static boolean isGame = true;
 	private static Minecraft minecraft;
 	private static String minecraftVersion;
-	private static String patcherVersion;
-	public static final String HD_TEXTURES = "HD Textures";
+	private static String patcherVersion;	
 	public static final String EXTENDED_HD = "Extended HD";
 	public static final String HD_FONT = "HD Font";
 	public static final String RANDOM_MOBS = "Random Mobs";
@@ -40,6 +41,8 @@ public class MCPatcherUtils {
 	public static final String TEXTURE_PACK_CHANGE_HANDLER_CLASS = "com.prupe.mcpatcher.TexturePackChangeHandler";
 	public static final String WEIGHTED_INDEX_CLASS = "com.prupe.mcpatcher.WeightedIndex";
 	public static final String BLEND_METHOD_CLASS = "com.prupe.mcpatcher.BlendMethod";
+	public static final String TILE_LOADER_CLASS = "com.prupe.mcpatcher.TileLoader";
+	public static final String TESSELLATOR_UTILS_CLASS = "com.prupe.mcpatcher.TessellatorUtils";
 	public static final String GL11_CLASS = "org.lwjgl.opengl.GL11";
 	public static final String CUSTOM_ANIMATION_CLASS = "com.prupe.mcpatcher.mod.CustomAnimation";
 	public static final String FANCY_DIAL_CLASS = "com.prupe.mcpatcher.mod.FancyDial";
@@ -58,18 +61,19 @@ public class MCPatcherUtils {
 	public static final String COLOR_MAP_CLASS = "com.prupe.mcpatcher.mod.ColorMap";
 	public static final String BIOME_HELPER_CLASS = "com.prupe.mcpatcher.mod.BiomeHelper";
 	public static final String LIGHTMAP_CLASS = "com.prupe.mcpatcher.mod.Lightmap";
-	public static final String CTM_UTILS_CLASS = "com.prupe.mcpatcher.mod.CTMUtils";
-	public static final String TESSELLATOR_UTILS_CLASS = "com.prupe.mcpatcher.mod.TessellatorUtils";
+	public static final String CTM_UTILS_CLASS = "com.prupe.mcpatcher.mod.CTMUtils";	
 	public static final String TILE_OVERRIDE_INTERFACE = "com.prupe.mcpatcher.mod.ITileOverride";
 	public static final String TILE_OVERRIDE_CLASS = "com.prupe.mcpatcher.mod.TileOverride";
-	public static final String TILE_OVERRIDE_IMPL_CLASS = "com.prupe.mcpatcher.mod.TileOverrideImpl";
-	public static final String TILE_LOADER_CLASS = "com.prupe.mcpatcher.mod.TileLoader";
+	public static final String TILE_OVERRIDE_IMPL_CLASS = "com.prupe.mcpatcher.mod.TileOverrideImpl";	
 	public static final String GLASS_PANE_RENDERER_CLASS = "com.prupe.mcpatcher.mod.GlassPaneRenderer";
 	public static final String RENDER_PASS_CLASS = "com.prupe.mcpatcher.mod.RenderPass";
 	public static final String RENDER_PASS_API_CLASS = "com.prupe.mcpatcher.mod.RenderPassAPI";
 	public static final String SKY_RENDERER_CLASS = "com.prupe.mcpatcher.mod.SkyRenderer";
 	public static final String FIREWORKS_HELPER_CLASS = "com.prupe.mcpatcher.mod.FireworksHelper";
 	public static final String CIT_UTILS_CLASS = "com.prupe.mcpatcher.mod.CITUtils";
+	public static final String ITEM_OVERRIDE_CLASS = "com.prupe.mcpatcher.mod.ItemOverride";
+	public static final String ITEM_OVERLAY_CLASS = "com.prupe.mcpatcher.mod.ItemOverlay";
+	public static final String ITEM_OVERLAY_LIST_CLASS = "com.prupe.mcpatcher.mod.ItemOverlayList";
 	public static final String SHADERS_CLASS = "com.prupe.mcpatcher.mod.Shaders";
 
 	static File getDefaultGameDir() {
@@ -91,7 +95,7 @@ public class MCPatcherUtils {
 	}
 
 	static boolean setGameDir(File var0) {
-		if (var0 != null && var0.isDirectory() && (new File(var0, "bin/lwjgl.jar")).exists() && (new File(var0, "resources")).isDirectory()) {
+		if (var0 != null && var0.isDirectory() && ((new File(var0, "bin/lwjgl.jar")).exists() && (new File(var0, "resources")).isDirectory() || (new File(var0, "libraries")).isDirectory() && (new File(var0, "versions")).isDirectory())) {
 			minecraftDir = var0.getAbsoluteFile();
 		} else {
 			minecraftDir = null;
@@ -269,49 +273,54 @@ public class MCPatcherUtils {
 
 	public static int[] parseIntegerList(String var0, int var1, int var2) {
 		ArrayList var3 = new ArrayList();
-		String[] var4 = var0.replace(',', ' ').split("\\s+");
-		int var5 = var4.length;
+		Pattern var4 = Pattern.compile("(\\d*)-(\\d*)");
+		String[] var5 = var0.replace(',', ' ').split("\\s+");
+		int var6 = var5.length;
 
-		for (int var6 = 0; var6 < var5; ++var6) {
-			String var7 = var4[var6];
-			var7 = var7.trim();
+		for (int var7 = 0; var7 < var6; ++var7) {
+			String var8 = var5[var7];
 
 			try {
-				if (var7.matches("^\\d+$")) {
-					var3.add(Integer.valueOf(Integer.parseInt(var7)));
-				} else if (var7.matches("^\\d+-\\d+$")) {
-					String[] var8 = var7.split("-");
-					int var9 = Integer.parseInt(var8[0]);
-					int var10 = Integer.parseInt(var8[1]);
+				if (var8.matches("\\d+")) {
+					var3.add(Integer.valueOf(Integer.parseInt(var8)));
+				} else {
+					Matcher var9 = var4.matcher(var8);
 
-					for (int var11 = var9; var11 <= var10; ++var11) {
-						var3.add(Integer.valueOf(var11));
+					if (var9.matches()) {
+						String var10 = var9.group(1);
+						String var11 = var9.group(2);
+						int var12 = var10.equals("") ? var1 : Integer.parseInt(var10);
+						int var13 = var11.equals("") ? var2 : Integer.parseInt(var11);
+
+						for (int var14 = var12; var14 <= var13; ++var14) {
+							var3.add(Integer.valueOf(var14));
+						}
 					}
 				}
-			} catch (NumberFormatException var12) {
+			} catch (NumberFormatException var15) {
 				;
 			}
 		}
 
 		if (var1 <= var2) {
-			int var13 = 0;
+			int var16 = 0;
 
-			while (var13 < var3.size()) {
-				if (((Integer)var3.get(var13)).intValue() >= var1 && ((Integer)var3.get(var13)).intValue() <= var2) {
-					++var13;
+			while (var16 < var3.size()) {
+				if (((Integer)var3.get(var16)).intValue() >= var1 && ((Integer)var3.get(var16)).intValue() <= var2) {
+					++var16;
 				} else {
-					var3.remove(var13);
+					var3.remove(var16);
 				}
 			}
 		}
 
-		int[] var14 = new int[var3.size()];
+		int[] var17 = new int[var3.size()];
 
-		for (var5 = 0; var5 < var14.length; ++var5) {
-			var14[var5] = ((Integer)var3.get(var5)).intValue();
+		for (var6 = 0; var6 < var17.length; ++var6) {
+			var17[var6] = ((Integer)var3.get(var6)).intValue();
 		}
 
-		return var14;
+		return var17;
 	}
 
 	static {

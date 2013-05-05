@@ -1,4 +1,4 @@
-package com.prupe.mcpatcher.mod;
+package com.prupe.mcpatcher;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -15,14 +15,19 @@ public class TessellatorUtils {
 	private static final Integer MAGIC_VALUE = Integer.valueOf(305419896);
 	private static final Map textureMapNames = new WeakHashMap();
 	private static final Map iconMap = new HashMap();
-	private static final Map iconsByName = new HashMap();
 	private static Field[] fieldsToCopy;
 	public static boolean haveBufferSize;
 
-	static Tessellator getTessellator(Tessellator var0, Icon var1) {
+	public static void clearDefaultTextureMap(Tessellator var0) {
+		var0.textureMap = null;
+	}
+
+	public static Tessellator getTessellator(Tessellator var0, Icon var1) {
 		TextureMap var2 = (TextureMap)iconMap.get(var1);
 
-		if (var2 != null && var2 != CTMUtils.terrainMap) {
+		if (var2 == null) {
+			return var0;
+		} else {
 			Tessellator var3 = (Tessellator)var0.children.get(var2);
 
 			if (var3 == null) {
@@ -31,7 +36,6 @@ public class TessellatorUtils {
 				if (var4 == null) {
 					var4 = var2.toString();
 				}
-
 				var3 = new Tessellator(2097152);
 				copyFields(var0, var3, true);
 				var3.textureMap = var2;
@@ -41,8 +45,6 @@ public class TessellatorUtils {
 			}
 
 			return var3;
-		} else {
-			return var0;
 		}
 	}
 
@@ -52,11 +54,6 @@ public class TessellatorUtils {
 
 	static void registerIcon(TextureMap var0, Icon var1) {
 		iconMap.put(var1, var0);
-		iconsByName.put(var1.getIconName(), var1);
-	}
-
-	static Icon getIconByName(String var0) {
-		return (Icon)iconsByName.get(var0);
 	}
 
 	private static Field[] getFieldsToCopy(Tessellator var0) {
@@ -146,7 +143,6 @@ public class TessellatorUtils {
 		var0.children.clear();
 		textureMapNames.clear();
 		iconMap.clear();
-		iconsByName.clear();
 	}
 
 	public static void resetChildren(Tessellator var0) {

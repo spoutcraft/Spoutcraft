@@ -328,7 +328,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		StatList.nopInit();
 		// MCPatcher Start
 		MCPatcherUtils.setMinecraft(this);
-		MCPatcherUtils.setVersions("1.5.1", "3.0.3");
+		MCPatcherUtils.setVersions("1.5.2", "3.1.0-beta4");
 		// MCPatcher End
 		this.fullscreen = false;
 		this.hasCrashed = false;
@@ -441,7 +441,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
 		}
 
-		Display.setTitle("Minecraft Minecraft 1.5.1");
+		Display.setTitle("Minecraft Minecraft 1.5.2");
 		this.getLogAgent().logInfo("LWJGL Version: " + Sys.getVersion()); 
 
 		try {
@@ -504,7 +504,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		this.checkGLError("Startup");
 		this.sndManager.loadSoundSettings(this.gameSettings);
 		this.renderGlobal = new RenderGlobal(this, this.renderEngine);
+		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.TileLoader", "init");
 		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mod.CTMUtils", "reset");
+		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mod.CITUtils", "init");
 		TexturePackChangeHandler.beforeChange1();
 		this.renderEngine.refreshTextureMaps();
 		TexturePackChangeHandler.afterChange1();
@@ -1871,7 +1873,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			this.mcProfiler.endStartSection("animateTick");
 
 			if (!this.isGamePaused && this.theWorld != null) {
-				this.theWorld.func_73029_E(MathHelper.floor_double(this.thePlayer.posX), MathHelper.floor_double(this.thePlayer.posY), MathHelper.floor_double(this.thePlayer.posZ));
+				this.theWorld.doVoidFogParticles(MathHelper.floor_double(this.thePlayer.posX), MathHelper.floor_double(this.thePlayer.posY), MathHelper.floor_double(this.thePlayer.posZ));
 			}
 
 			this.mcProfiler.endStartSection("particles");
@@ -2307,7 +2309,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 				}
 
 				var4 = Item.itemsList[var2].getHasSubtypes();
-				int var9 = var2 < 256 && !Block.blocksList[var8.blockID].func_82505_u_() ? var2 : var8.blockID;
+				int var9 = var2 < 256 && !Block.blocksList[var8.blockID].isFlowerPot() ? var2 : var8.blockID;
 				var3 = Block.blocksList[var9].getDamageValue(this.theWorld, var5, var6, var7);
 			} else {
 				if (this.objectMouseOver.typeOfHit != EnumMovingObjectType.ENTITY || this.objectMouseOver.entityHit == null || !var1) {
@@ -2329,14 +2331,14 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 				} else if (this.objectMouseOver.entityHit instanceof EntityMinecart) {
 					EntityMinecart var11 = (EntityMinecart)this.objectMouseOver.entityHit;
 
-					if (var11.func_94087_l() == 2) {
+					if (var11.getMinecartType() == 2) {
 						var2 = Item.minecartPowered.itemID;
-					} else if (var11.func_94087_l() == 1) {
+					} else if (var11.getMinecartType() == 1) {
 						var2 = Item.minecartCrate.itemID;
-					} else if (var11.func_94087_l() == 3) {
-						var2 = Item.tntMinecart.itemID;
-					} else if (var11.func_94087_l() == 5) {
-						var2 = Item.hopperMinecart.itemID;
+					} else if (var11.getMinecartType() == 3) {
+						var2 = Item.minecartTnt.itemID;
+					} else if (var11.getMinecartType() == 5) {
+						var2 = Item.minecartHopper.itemID;
 					} else {
 						var2 = Item.minecartEmpty.itemID;
 					}

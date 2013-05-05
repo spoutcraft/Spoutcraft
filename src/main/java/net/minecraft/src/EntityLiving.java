@@ -28,7 +28,7 @@ public abstract class EntityLiving extends Entity {
 	private static final float[] armorEnchantmentProbability = new float[] {0.0F, 0.0F, 0.25F, 0.5F};
 
 	/** Probability to get armor */
-	private static final float[] armorProbability = new float[] {0.0F, 0.0F, 0.05F, 0.02F};
+	private static final float[] armorProbability = new float[] {0.0F, 0.0F, 0.05F, 0.07F};
 
 	/** Probability to pick up loot */
 	public static final float[] pickUpLootProability = new float[] {0.0F, 0.1F, 0.15F, 0.45F};
@@ -169,7 +169,9 @@ public abstract class EntityLiving extends Entity {
 
 	/** Chances for each equipment piece from dropping when this entity dies. */
 	protected float[] equipmentDropChances = new float[5];
-	private ItemStack[] field_82180_bT = new ItemStack[5];
+	
+	/** The equipment this mob was previously wearing, used for syncing. */
+	private ItemStack[] previousEquipment = new ItemStack[5];
 
 	/** Whether an arm swing is currently in progress. */
 	public boolean isSwingInProgress = false;
@@ -705,9 +707,9 @@ public abstract class EntityLiving extends Entity {
 			for (var1 = 0; var1 < 5; ++var1) {
 				ItemStack var2 = this.getCurrentItemOrArmor(var1);
 
-				if (!ItemStack.areItemStacksEqual(var2, this.field_82180_bT[var1])) {
+				if (!ItemStack.areItemStacksEqual(var2, this.previousEquipment[var1])) {
 					((WorldServer)this.worldObj).getEntityTracker().sendPacketToAllPlayersTrackingEntity(this, new Packet5PlayerInventory(this.entityId, var1, var2));
-					this.field_82180_bT[var1] = var2 == null ? null : var2.copy();
+					this.previousEquipment[var1] = var2 == null ? null : var2.copy();
 				}
 			}
 
@@ -1911,7 +1913,7 @@ public abstract class EntityLiving extends Entity {
 	 * Checks if the entity's current position is a valid location to spawn this entity.
 	 */
 	public boolean getCanSpawnHere() {
-		return this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
+		return this.worldObj.checkNoEntityCollision(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
 	}
 
 	/**
@@ -2072,12 +2074,12 @@ public abstract class EntityLiving extends Entity {
 				if (this.activePotionsMap.isEmpty()) {
 					this.dataWatcher.updateObject(9, Byte.valueOf((byte)0));
 					this.dataWatcher.updateObject(8, Integer.valueOf(0));
-					this.setHasActivePotion(false);
+					this.setInvisible(false);
 				} else {
 					var12 = PotionHelper.calcPotionLiquidColor(this.activePotionsMap.values());
 					this.dataWatcher.updateObject(9, Byte.valueOf((byte)(PotionHelper.func_82817_b(this.activePotionsMap.values()) ? 1 : 0)));
 					this.dataWatcher.updateObject(8, Integer.valueOf(var12));
-					this.setHasActivePotion(this.isPotionActive(Potion.invisibility.id));
+					this.setInvisible(this.isPotionActive(Potion.invisibility.id));
 				}
 			}
 
@@ -2090,7 +2092,7 @@ public abstract class EntityLiving extends Entity {
 		if (var12 > 0) {
 			boolean var4 = false;
 
-			if (!this.getHasActivePotion()) {
+			if (!this.isInvisible()) {
 				var4 = this.rand.nextBoolean();
 			} else {
 				var4 = this.rand.nextInt(15) == 0;
@@ -2428,60 +2430,60 @@ public abstract class EntityLiving extends Entity {
 	 */
 	public static Item getArmorItemForSlot(int par0, int par1) {
 		switch (par0) {
-		case 4:
-			if (par1 == 0) {
-				return Item.helmetLeather;
-			} else if (par1 == 1) {
-				return Item.helmetGold;
-			} else if (par1 == 2) {
-				return Item.helmetChain;
-			} else if (par1 == 3) {
-				return Item.helmetSteel;
-			} else if (par1 == 4) {
-				return Item.helmetDiamond;
-			}
+			case 4:
+				if (par1 == 0) {
+					return Item.helmetLeather;
+				} else if (par1 == 1) {
+					return Item.helmetGold;
+				} else if (par1 == 2) {
+					return Item.helmetChain;
+				} else if (par1 == 3) {
+					return Item.helmetIron;
+				} else if (par1 == 4) {
+					return Item.helmetDiamond;
+				}
 
-		case 3:
-			if (par1 == 0) {
-				return Item.plateLeather;
-			} else if (par1 == 1) {
-				return Item.plateGold;
-			} else if (par1 == 2) {
-				return Item.plateChain;
-			} else if (par1 == 3) {
-				return Item.plateSteel;
-			} else if (par1 == 4) {
-				return Item.plateDiamond;
-			}
+			case 3:
+				if (par1 == 0) {
+					return Item.plateLeather;
+				} else if (par1 == 1) {
+					return Item.plateGold;
+				} else if (par1 == 2) {
+					return Item.plateChain;
+				} else if (par1 == 3) {
+					return Item.plateIron;
+				} else if (par1 == 4) {
+					return Item.plateDiamond;
+				}
 
-		case 2:
-			if (par1 == 0) {
-				return Item.legsLeather;
-			} else if (par1 == 1) {
-				return Item.legsGold;
-			} else if (par1 == 2) {
-				return Item.legsChain;
-			} else if (par1 == 3) {
-				return Item.legsSteel;
-			} else if (par1 == 4) {
-				return Item.legsDiamond;
-			}
+			case 2:
+				if (par1 == 0) {
+					return Item.legsLeather;
+				} else if (par1 == 1) {
+					return Item.legsGold;
+				} else if (par1 == 2) {
+					return Item.legsChain;
+				} else if (par1 == 3) {
+					return Item.legsIron;
+				} else if (par1 == 4) {
+					return Item.legsDiamond;
+				}
 
-		case 1:
-			if (par1 == 0) {
-				return Item.bootsLeather;
-			} else if (par1 == 1) {
-				return Item.bootsGold;
-			} else if (par1 == 2) {
-				return Item.bootsChain;
-			} else if (par1 == 3) {
-				return Item.bootsSteel;
-			} else if (par1 == 4) {
-				return Item.bootsDiamond;
-			}
+			case 1:
+				if (par1 == 0) {
+					return Item.bootsLeather;
+				} else if (par1 == 1) {
+					return Item.bootsGold;
+				} else if (par1 == 2) {
+					return Item.bootsChain;
+				} else if (par1 == 3) {
+					return Item.bootsIron;
+				} else if (par1 == 4) {
+					return Item.bootsDiamond;
+				}
 
-		default:
-			return null;
+			default:
+				return null;
 		}
 	}
 
@@ -2642,6 +2644,10 @@ public abstract class EntityLiving extends Entity {
 
 	public void setCanPickUpLoot(boolean par1) {
 		this.canPickUpLoot = par1;
+	}
+
+	public boolean func_104002_bU() {
+		return this.persistenceRequired;
 	}
 
 }

@@ -26,7 +26,7 @@ public class ItemBlock extends Item {
 	 * Returns 0 for /terrain.png, 1 for /gui/items.png
 	 */
 	public int getSpriteNumber() {
-		return Block.blocksList[this.blockID].func_94327_t_() != null ? 1 : 0;
+		return Block.blocksList[this.blockID].getItemIconName() != null ? 1 : 0;
 	}
 
 	/**
@@ -168,8 +168,8 @@ public class ItemBlock extends Item {
 		Block.blocksList[this.blockID].getSubBlocks(par1, par2CreativeTabs, par3List);
 	}
 
-	public void updateIcons(IconRegister par1IconRegister) {
-		String var2 = Block.blocksList[this.blockID].func_94327_t_();
+	public void registerIcons(IconRegister par1IconRegister) {
+		String var2 = Block.blocksList[this.blockID].getItemIconName();
 
 		if (var2 != null) {
 			this.field_94588_b = par1IconRegister.registerIcon(var2);

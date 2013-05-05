@@ -116,8 +116,8 @@ public class ItemMonsterPlacer extends Item {
 		}
 	}
 
-	public void updateIcons(IconRegister par1IconRegister) {
-		super.updateIcons(par1IconRegister);
+	public void registerIcons(IconRegister par1IconRegister) {
+		super.registerIcons(par1IconRegister);
 		this.theIcon = par1IconRegister.registerIcon("monsterPlacer_overlay");
 	}
 }

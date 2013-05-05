@@ -2,6 +2,7 @@ package com.prupe.mcpatcher.mod;
 
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
+import com.prupe.mcpatcher.TileLoader;
 import com.prupe.mcpatcher.mod.TileOverrideImpl$CTM;
 import com.prupe.mcpatcher.mod.TileOverrideImpl$Fixed;
 import com.prupe.mcpatcher.mod.TileOverrideImpl$Horizontal;
@@ -9,13 +10,11 @@ import com.prupe.mcpatcher.mod.TileOverrideImpl$Random1;
 import com.prupe.mcpatcher.mod.TileOverrideImpl$Repeat;
 import com.prupe.mcpatcher.mod.TileOverrideImpl$Top;
 import com.prupe.mcpatcher.mod.TileOverrideImpl$Vertical;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -23,8 +22,6 @@ import java.util.regex.Pattern;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;
-import net.minecraft.src.Stitcher;
-import net.minecraft.src.TextureMap;
 
 abstract class TileOverride implements ITileOverride {
 	static final int BOTTOM_FACE = 0;
@@ -51,8 +48,7 @@ abstract class TileOverride implements ITileOverride {
 	private static final int CONNECT_BY_BLOCK = 0;
 	private static final int CONNECT_BY_TILE = 1;
 	private static final int CONNECT_BY_MATERIAL = 2;
-	private static Method getBiomeNameAt;
-	private static Field maxBorder;
+	private static Method getBiomeNameAt;	
 	private final String propertiesFile;
 	private final String texturesDirectory;
 	private final String propertiesName;
@@ -95,7 +91,11 @@ abstract class TileOverride implements ITileOverride {
 							if (var3.equals("vertical")) {
 								var4 = new TileOverrideImpl$Vertical(var0, var2, var1);
 							} else if (!var3.equals("sandstone") && !var3.equals("top")) {
-								var4 = new TileOverrideImpl$Repeat(var0, var2, var1);
+								if (!var3.equals("repeat") && !var3.equals("pattern")) {
+									;
+								} else {
+									var4 = new TileOverrideImpl$Repeat(var0, var2, var1);
+								}
 							} else {
 								var4 = new TileOverrideImpl$Top(var0, var2, var1);
 							}
@@ -239,7 +239,12 @@ abstract class TileOverride implements ITileOverride {
 	}
 
 	private boolean addIcon(String var1) {
-		return this.tileLoader.preload(var1, this.tileNames, this.renderPass > 2);
+		if (!var1.endsWith(".png")) {
+			var1 = var1 + ".png";
+		}
+
+		this.tileNames.add(var1);
+		return this.tileLoader.preloadTile(var1, this.renderPass > 2);
 	}
 
 	private void loadIcons(Properties var1) {
@@ -385,12 +390,16 @@ abstract class TileOverride implements ITileOverride {
 		return String.format("%s[%s]", new Object[] {this.getMethod(), this.propertiesFile});
 	}
 
-	public final int getTotalTextureSize() {
-		return this.tileLoader.getTextureSize(this.tileNames);
-	}
+	public final void registerIcons() {
+		this.icons = new Icon[this.tileNames.size()];
 
-	public final void registerIcons(TextureMap var1, Stitcher var2, Map var3) {
-		this.icons = this.tileLoader.registerIcons(var1, var2, var3, this.tileNames);
+		for (int var1 = 0; var1 < this.icons.length; ++var1) {
+			String var2 = (String)this.tileNames.get(var1);
+
+			if (var2 != null) {
+				this.icons[var1] = this.tileLoader.getIcon(var2);
+			}
+		}
 	}
 
 	final void error(String var1, Object ... var2) {
@@ -613,13 +622,7 @@ abstract class TileOverride implements ITileOverride {
 	static {
 		try {
 			Class var0 = Class.forName("com.prupe.mcpatcher.mod.BiomeHelper");
-			getBiomeNameAt = var0.getDeclaredMethod("getBiomeNameAt", new Class[] {Integer.TYPE, Integer.TYPE, Integer.TYPE});
-		} catch (Throwable var2) {
-			;
-		}
-
-		try {
-			maxBorder = Class.forName("com.prupe.mcpatcher.mod.AAHelper").getDeclaredField("maxBorder");
+			getBiomeNameAt = var0.getDeclaredMethod("getBiomeNameAt", new Class[] {Integer.TYPE, Integer.TYPE, Integer.TYPE});		
 		} catch (Throwable var1) {
 			;
 		}

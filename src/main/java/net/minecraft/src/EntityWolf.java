@@ -124,7 +124,7 @@ public class EntityWolf extends EntityTameable {
 	 * Determines if an entity can be despawned, used on idle far away entities
 	 */
 	protected boolean canDespawn() {
-		return this.isAngry();
+		return this.isAngry() && !this.isTamed();
 	}
 
 	/**

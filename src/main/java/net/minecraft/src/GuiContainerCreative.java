@@ -226,7 +226,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 	 */
 	protected void keyTyped(char par1, int par2) {
 		if (selectedTabIndex != CreativeTabs.tabAllSearch.getTabIndex()) {
-			if (GameSettings.func_100015_a(this.mc.gameSettings.keyBindChat)) {
+			if (GameSettings.isKeyDown(this.mc.gameSettings.keyBindChat)) {
 				this.setCurrentCreativeTab(CreativeTabs.tabAllSearch);
 			} else {
 				super.keyTyped(par1, par2);

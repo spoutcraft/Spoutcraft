@@ -244,7 +244,12 @@ public class ItemStack {
 		return Item.itemsList[this.itemID].getMaxDamage();
 	}
 
-	public boolean func_96631_a(int par1, Random par2Random) {
+	/**
+	 * Attempts to damage the ItemStack with par1 amount of damage, If the ItemStack has the Unbreaking enchantment there
+	 * is a chance for each point of damage to be negated. Returns true if it takes more damage than getMaxDamage().
+	 * Returns false otherwise or if the ItemStack can't be damaged or if all points of damage are negated.
+	 */
+	public boolean attemptDamageItem(int par1, Random par2Random) {
 		if (!this.isItemStackDamageable()) {
 			return false;
 		} else {
@@ -253,7 +258,7 @@ public class ItemStack {
 				int var4 = 0;
 
 				for (int var5 = 0; var3 > 0 && var5 < par1; ++var5) {
-					if (EnchantmentDurability.func_92097_a(this, var3, par2Random)) {
+					if (EnchantmentDurability.negateDamage(this, var3, par2Random)) {
 						++var4;
 					}
 				}
@@ -276,7 +281,7 @@ public class ItemStack {
 	public void damageItem(int par1, EntityLiving par2EntityLiving) {
 		if (!(par2EntityLiving instanceof EntityPlayer) || !((EntityPlayer)par2EntityLiving).capabilities.isCreativeMode) {
 			if (this.isItemStackDamageable()) {
-				if (this.func_96631_a(par1, par2EntityLiving.getRNG())) {
+				if (this.attemptDamageItem(par1, par2EntityLiving.getRNG())) {
 					par2EntityLiving.renderBrokenItemStack(this);
 
 					if (par2EntityLiving instanceof EntityPlayer) {

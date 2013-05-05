@@ -326,11 +326,11 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiChest(this.inventory, par1IInventory));
 	}
 
-	public void func_94064_a(TileEntityHopper par1TileEntityHopper) {
+	public void displayGUIHopper(TileEntityHopper par1TileEntityHopper) {
 		this.mc.displayGuiScreen(new GuiHopper(this.inventory, par1TileEntityHopper));
 	}
 
-	public void func_96125_a(EntityMinecartHopper par1EntityMinecartHopper) {
+	public void displayGUIHopperMinecart(EntityMinecartHopper par1EntityMinecartHopper) {
 		this.mc.displayGuiScreen(new GuiHopper(this.inventory, par1EntityMinecartHopper));
 	}
 

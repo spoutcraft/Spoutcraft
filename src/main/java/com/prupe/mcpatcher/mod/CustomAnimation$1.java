@@ -30,7 +30,10 @@ final class CustomAnimation$1 extends TexturePackChangeHandler {
 
 			for (int var3 = 0; var3 < var2; ++var3) {
 				String var4 = var1[var3];
-				CustomAnimation.addStrip(var4);
+				
+				if (!this.isCustomTerrainItemResource(var4)) {
+					CustomAnimation.addStrip(var4);
+				}
 			}
 
 			Collections.sort(CustomAnimation.access$000(), new CustomAnimation$1$1(this));

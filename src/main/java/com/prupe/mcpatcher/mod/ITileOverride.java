@@ -1,19 +1,14 @@
 package com.prupe.mcpatcher.mod;
 
-import java.util.Map;
 import java.util.Set;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;
-import net.minecraft.src.Stitcher;
-import net.minecraft.src.TextureMap;
 
 interface ITileOverride {
 	boolean isDisabled();
 
-	int getTotalTextureSize();
-
-	void registerIcons(TextureMap var1, Stitcher var2, Map var3);
+	void registerIcons();
 
 	Set getMatchingBlocks();
 

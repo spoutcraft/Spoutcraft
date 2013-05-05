@@ -108,25 +108,23 @@ public class FancyDial {
 			ArrayList var0 = new ArrayList();
 			var0.addAll(setupInfo.keySet());
 			Iterator var1 = var0.iterator();
-
 			while (var1.hasNext()) {
 				TextureStitched var2 = (TextureStitched)var1.next();
 				getInstance(var2);
 			}
-
-			inUpdateAll = true;
-			Iterator var3 = instances.values().iterator();
-
-			while (var3.hasNext()) {
-				FancyDial var4 = (FancyDial)var3.next();
-
-				if (var4 != null && var4.needExtraUpdate) {
-					var4.icon.updateAnimation();
-				}
-			}
-
-			inUpdateAll = false;
 		}
+
+		inUpdateAll = true;
+		Iterator var3 = instances.values().iterator();
+		while (var3.hasNext()) {
+			FancyDial var4 = (FancyDial)var3.next();
+
+			if (var4 != null && var4.needExtraUpdate) {
+				var4.icon.updateAnimation();
+			}
+		}
+
+		inUpdateAll = false;
 	}
 
 	static void postUpdateAll() {

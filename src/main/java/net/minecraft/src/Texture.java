@@ -9,8 +9,8 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // MCPatcher start
+import com.prupe.mcpatcher.TileLoader;
 import com.prupe.mcpatcher.mod.MipmapHelper;
-import com.prupe.mcpatcher.mod.TileLoader;
 // MCPatcher end
 
 public class Texture {
@@ -33,8 +33,17 @@ public class Texture {
 	private final String textureName;
 	private Rect2i textureRect;
 	private boolean transferred;
+
+	/**
+	 * Uninitialized boolean. If true, the texture is re-uploaded every time it's modified. If false, every tick after it's
+	 * been modified at least once in that tick.
+	 */
 	private boolean autoCreate;
-	private boolean textureCreated;
+
+	/**
+	 * False if the texture has been modified since it was last uploaded to the GPU.
+	 */
+	private boolean textureNotModified;
 	public ByteBuffer textureData;
 	public int border;
 
@@ -95,9 +104,9 @@ public class Texture {
 				this.textureData.position(0).limit(var11.length);
 
 				if (this.autoCreate) {
-					this.createTexture();
+					this.uploadTexture();
 				} else {
-					this.textureCreated = false;
+					this.textureNotModified = false;
 				}
 			} else {
 				this.transferred = false;
@@ -107,7 +116,7 @@ public class Texture {
 			this.transferFromImage(par10BufferedImage);
 
 			if (par2 != 2) {
-				this.createTexture();
+				this.uploadTexture();
 				this.autoCreate = false;
 			}
 		}
@@ -135,9 +144,9 @@ public class Texture {
 			}
 
 			if (this.autoCreate) {
-				this.createTexture();
+				this.uploadTexture();
 			} else {
-				this.textureCreated = false;
+				this.textureNotModified = false;
 			}
 		}
 	}
@@ -171,7 +180,7 @@ public class Texture {
 	}
 
 	public void copyFrom(int par1, int par2, Texture par3Texture, boolean par4) {
-		if (this.textureCreated) {
+		if (this.textureNotModified) {
 			MipmapHelper.copySubTexture(this, par3Texture, par1, par2, par4);
 		} else if (this.textureTarget != 32879) {
 			ByteBuffer var5 = par3Texture.getTextureData();
@@ -205,10 +214,20 @@ public class Texture {
 			this.textureData.position(this.width * this.height * 4);
 
 			if (this.autoCreate) {
-				this.createTexture();
+				this.uploadTexture();
 			} else {
-				this.textureCreated = false;
+				this.textureNotModified = false;
 			}
+		}
+	}
+	
+	public void func_104062_b(int par1, int par2, Texture par3Texture) {
+		if (this.textureNotModified) {
+			MipmapHelper.copySubTexture(this, par3Texture, par1, par2, false);
+		} else {
+			GL11.glBindTexture(this.textureTarget, this.glTextureId);
+			GL11.glTexSubImage2D(this.textureTarget, 0, par1, par2, par3Texture.getWidth(), par3Texture.getHeight(), this.textureFormat, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)par3Texture.getTextureData().position(0));
+			this.textureNotModified = true;
 		}
 	}
 
@@ -243,9 +262,9 @@ public class Texture {
 				this.textureData.limit(var9.length);
 
 				if (this.autoCreate) {
-					this.createTexture();
+					this.uploadTexture();
 				} else {
-					this.textureCreated = false;
+					this.textureNotModified = false;
 				}
 			} else {
 				Minecraft.getMinecraft().getLogAgent().logWarning("transferFromImage called with a BufferedImage with dimensions (" + var2 + ", " + var3 + ") larger than the Texture dimensions (" + this.width + ", " + this.height + "). Ignoring.");
@@ -283,12 +302,12 @@ public class Texture {
 		OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit + par1);
 		GL11.glBindTexture(this.textureTarget, this.glTextureId);
 
-		if (!this.textureCreated) {
-			this.createTexture();
+		if (!this.textureNotModified) {
+			this.uploadTexture();
 		}
 	}
 
-	public void createTexture() {
+	public void uploadTexture() {
 		this.textureData.flip();
 
 		if (this.height != 1 && this.textureDepth != 1) {
@@ -299,7 +318,7 @@ public class Texture {
 			GL11.glTexImage1D(this.textureTarget, 0, this.textureFormat, this.width, 0, this.textureFormat, GL11.GL_UNSIGNED_BYTE, this.textureData);
 		}
 
-		this.textureCreated = true;
+		this.textureNotModified = true;
 	}
 
 	public ByteBuffer getTextureData() {

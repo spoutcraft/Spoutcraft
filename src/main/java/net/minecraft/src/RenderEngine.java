@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
-import com.prupe.mcpatcher.mod.CTMUtils;
+import com.prupe.mcpatcher.TileLoader;
 import com.prupe.mcpatcher.mod.CustomAnimation;
 import com.prupe.mcpatcher.mod.MipmapHelper;
 import java.awt.Color;
@@ -355,7 +355,7 @@ public class RenderEngine {
 	}
 
 	public void updateDynamicTextures() {
-		CTMUtils.updateAnimations();
+		TileLoader.updateAnimations();
 		this.textureMapBlocks.updateAnimations();
 		this.textureMapItems.updateAnimations();
 		CustomAnimation.updateAll();

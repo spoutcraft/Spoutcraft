@@ -52,7 +52,9 @@ public class Colorizer {
 	}
 
 	private static void reloadColorProperties() {
-		TexturePackAPI.getProperties("/color.properties", properties);
+		if (TexturePackAPI.getProperties("/color.properties", properties)) {
+			;
+		}
 	}
 
 	static String getStringKey(String[] var0, int var1) {
@@ -98,9 +100,13 @@ public class Colorizer {
 	}
 
 	static void intToFloat3(int var0, float[] var1, int var2) {
-		var1[var2] = (float)(var0 & 16711680) / 1.671168E7F;
-		var1[var2 + 1] = (float)(var0 & 65280) / 65280.0F;
-		var1[var2 + 2] = (float)(var0 & 255) / 255.0F;
+		if ((var0 & 16777215) == 16777215) {
+			var1[var2] = var1[var2 + 1] = var1[var2 + 2] = 1.0F;
+		} else {
+			var1[var2] = (float)(var0 & 16711680) / 1.671168E7F;
+			var1[var2 + 1] = (float)(var0 & 65280) / 65280.0F;
+			var1[var2 + 2] = (float)(var0 & 255) / 255.0F;
+		}
 	}
 
 	static void intToFloat3(int var0, float[] var1) {

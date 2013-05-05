@@ -156,8 +156,8 @@ public class ItemArmor extends Item {
 		return this.material.getArmorCraftingMaterial() == par2ItemStack.itemID ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
 	}
 
-	public void updateIcons(IconRegister par1IconRegister) {
-		super.updateIcons(par1IconRegister);
+	public void registerIcons(IconRegister par1IconRegister) {
+		super.registerIcons(par1IconRegister);
 
 		if (this.material == EnumArmorMaterial.CLOTH) {
 			this.field_94605_cw = par1IconRegister.registerIcon(field_94606_cu[this.armorType]);

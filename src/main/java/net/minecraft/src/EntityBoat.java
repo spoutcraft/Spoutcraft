@@ -4,7 +4,7 @@ import java.util.List;
 
 public class EntityBoat extends Entity {
 	private boolean field_70279_a;
-	private double field_70276_b;
+	private double speedMultiplier;
 	private int boatPosRotationIncrements;
 	private double boatX;
 	private double boatY;
@@ -18,7 +18,7 @@ public class EntityBoat extends Entity {
 	public EntityBoat(World par1World) {
 		super(par1World);
 		this.field_70279_a = true;
-		this.field_70276_b = 0.07D;
+		this.speedMultiplier = 0.07D;
 		this.preventEntitySpawning = true;
 		this.setSize(1.5F, 0.6F);
 		this.yOffset = this.height / 2.0F;
@@ -263,8 +263,8 @@ public class EntityBoat extends Entity {
 			}
 
 			if (this.riddenByEntity != null) {
-				this.motionX += this.riddenByEntity.motionX * this.field_70276_b;
-				this.motionZ += this.riddenByEntity.motionZ * this.field_70276_b;
+				this.motionX += this.riddenByEntity.motionX * this.speedMultiplier;
+				this.motionZ += this.riddenByEntity.motionZ * this.speedMultiplier;
 			}
 
 			var6 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
@@ -276,17 +276,17 @@ public class EntityBoat extends Entity {
 				var6 = 0.35D;
 			}
 
-			if (var6 > var23 && this.field_70276_b < 0.35D) {
-				this.field_70276_b += (0.35D - this.field_70276_b) / 35.0D;
+			if (var6 > var23 && this.speedMultiplier < 0.35D) {
+				this.speedMultiplier += (0.35D - this.speedMultiplier) / 35.0D;
 
-				if (this.field_70276_b > 0.35D) {
-					this.field_70276_b = 0.35D;
+				if (this.speedMultiplier > 0.35D) {
+					this.speedMultiplier = 0.35D;
 				}
 			} else {
-				this.field_70276_b -= (this.field_70276_b - 0.07D) / 35.0D;
+				this.speedMultiplier -= (this.speedMultiplier - 0.07D) / 35.0D;
 
-				if (this.field_70276_b < 0.07D) {
-					this.field_70276_b = 0.07D;
+				if (this.speedMultiplier < 0.07D) {
+					this.speedMultiplier = 0.07D;
 				}
 			}
 
@@ -299,7 +299,7 @@ public class EntityBoat extends Entity {
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 
 			if (this.isCollidedHorizontally && var23 > 0.2D) {
-				if (!this.worldObj.isRemote) {
+				if (!this.worldObj.isRemote && !this.isDead) {
 					this.setDead();
 					int var24;
 

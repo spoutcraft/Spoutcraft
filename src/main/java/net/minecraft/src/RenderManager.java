@@ -200,7 +200,7 @@ public class RenderManager {
 			var10 = this.getEntityRenderObject(par1Entity);
 
 			if (var10 != null && this.renderEngine != null) {
-				if (field_85095_o && !par1Entity.getHasActivePotion()) {
+				if (field_85095_o && !par1Entity.isInvisible()) {
 					try {
 						this.func_85094_b(par1Entity, par2, par4, par6, par8, par9);
 					} catch (Throwable var17) {

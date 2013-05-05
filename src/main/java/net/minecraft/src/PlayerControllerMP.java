@@ -141,7 +141,7 @@ public class PlayerControllerMP {
 				this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, par1, par2, par3, par4));
 				clickBlockCreative(this.mc, this, par1, par2, par3, par4);
 				this.blockHitDelay = 5;
-			} else if (!this.isHittingBlock || !this.func_85182_a(par1, par2, par3)) {
+			} else if (!this.isHittingBlock || !this.sameToolAndBlock(par1, par2, par3)) {
 				if (this.isHittingBlock) {
 					this.netClientHandler.addToSendQueue(new Packet14BlockDig(1, this.currentBlockX, this.currentBlockY, this.currentblockZ, par4));
 				}
@@ -197,7 +197,7 @@ public class PlayerControllerMP {
 			this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, par1, par2, par3, par4));
 			clickBlockCreative(this.mc, this, par1, par2, par3, par4);
 		} else {
-			if (this.func_85182_a(par1, par2, par3)) {
+			if (this.sameToolAndBlock(par1, par2, par3)) {
 				int var5 = this.mc.theWorld.getBlockId(par1, par2, par3);
 
 				if (var5 == 0) {
@@ -244,7 +244,7 @@ public class PlayerControllerMP {
 		this.mc.sndManager.playRandomMusicIfReady();
 	}
 
-	private boolean func_85182_a(int par1, int par2, int par3) {
+	private boolean sameToolAndBlock(int par1, int par2, int par3) {
 		ItemStack var4 = this.mc.thePlayer.getHeldItem();
 		boolean var5 = this.field_85183_f == null && var4 == null;
 

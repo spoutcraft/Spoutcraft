@@ -1,13 +1,11 @@
 package com.prupe.mcpatcher.mod;
 
+import com.prupe.mcpatcher.TileLoader;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;
-import net.minecraft.src.Stitcher;
-import net.minecraft.src.TextureMap;
 
 final class TileOverrideImpl$BetterGrass implements ITileOverride {
 	private static final int[][] OFFSET_MATRIX = new int[][] {{0, -1}, {0, 1}, { -1, 0}, {1, 0}};
@@ -16,11 +14,11 @@ final class TileOverrideImpl$BetterGrass implements ITileOverride {
 	private final Icon fullTile;
 	private final Icon fullSnowTile;
 
-	TileOverrideImpl$BetterGrass(TextureMap var1, int var2, String var3) {
+	TileOverrideImpl$BetterGrass(TileLoader var1, int var2, String var3) {
 		this.blockID = var2;
 		this.tileName = var3;
-		this.fullSnowTile = var1.registerIcon("snow");
-		this.fullTile = var1.registerIcon(var3 + "_top");
+		this.fullSnowTile = var1.getIcon("snow");
+		this.fullTile = var1.getIcon(var3 + "_top");
 	}
 
 	public String toString() {
@@ -31,11 +29,7 @@ final class TileOverrideImpl$BetterGrass implements ITileOverride {
 		return false;
 	}
 
-	public int getTotalTextureSize() {
-		return 0;
-	}
-
-	public void registerIcons(TextureMap var1, Stitcher var2, Map var3) {}
+	public void registerIcons() {}
 
 	public Set getMatchingBlocks() {
 		HashSet var1 = new HashSet();
@@ -52,9 +46,7 @@ final class TileOverrideImpl$BetterGrass implements ITileOverride {
 	}
 
 	public Icon getTile(IBlockAccess var1, Block var2, Icon var3, int var4, int var5, int var6, int var7) {
-		if (var7 < 2) {
-			return null;
-		} else {
+		if (var7 >= 2 && var7 <= 5) {
 			int[] var8 = OFFSET_MATRIX[var7 - 2];
 
 			if (var1.getBlockId(var4 + var8[0], var5 - 1, var6 + var8[1]) == this.blockID) {
@@ -63,6 +55,8 @@ final class TileOverrideImpl$BetterGrass implements ITileOverride {
 			} else {
 				return null;
 			}
+		} else {
+			return null;
 		}
 	}
 

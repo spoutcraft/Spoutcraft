@@ -210,7 +210,7 @@ public class StringTranslate {
 		}
 	}
 
-	public synchronized boolean func_94520_b(String par1Str) {
+	public synchronized boolean containsTranslateKey(String par1Str) {
 		return this.translateTable.containsKey(par1Str);
 	}
 

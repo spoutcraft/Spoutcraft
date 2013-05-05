@@ -6,7 +6,7 @@
 	<name>Spoutcraft</name>
 	<groupId>org.spoutcraft</groupId>
 	<artifactId>spoutcraft</artifactId>
-	<version>1.5.1-SNAPSHOT</version>
+	<version>1.5.2-SNAPSHOT</version>
 	<url>http://www.spout.org</url>
 	<inceptionYear>2011</inceptionYear>
 	<description>Spoutcraft is a modified Minecraft client, which is accessible via the Spoutcraft Launcher, that boosts increased FPS, HD textures/fonts,
@@ -16,10 +16,10 @@
 	<!-- Build properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<minecraftVersion>1.5.1</minecraftVersion>
-		<minecraft_Version>1_5_1</minecraft_Version>
+		<minecraftVersion>1.5.2</minecraftVersion>
+		<minecraft_Version>1_5_2</minecraft_Version>
 		<lwjglVersion>2.9.0</lwjglVersion>
-		<mcpVersion>744</mcpVersion>
+		<mcpVersion>751</mcpVersion>
 		<buildNumber>0</buildNumber>
 	</properties>
 
@@ -196,7 +196,7 @@
 									</runIf>
 									<targetPath>${project.basedir}/jars/bin</targetPath>
 									<destFileName>minecraft.jar</destFileName>
-									<file>http://assets.minecraft.net/${minecraft_Version}/minecraft.jar</file>
+									<file>http://s3.amazonaws.com/Minecraft.Download/versions/${minecraftVersion}/${minecraftVersion}.jar</file>
 								</resource>
 								<!-- Download remaining dependencies -->
 								<resource>
@@ -269,9 +269,9 @@
 									<targetPath>${project.basedir}/jars/bin</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.java.jinput</groupId>
 											<artifactId>jinput</artifactId>
-											<version>1.0.0-b01</version>
+											<version>2.0.5</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>

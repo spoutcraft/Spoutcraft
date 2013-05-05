@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.mod.ColorizeWorld;
 import com.prupe.mcpatcher.mod.FontUtils;
 import java.awt.image.BufferedImage;
@@ -43,7 +42,7 @@ public class FontRenderer {
 	 * shadows.
 	 */
 	private int[] colorCode = new int[32];
-	private final String fontTextureName;
+	private String fontTextureName;
 
 	/**
 	 * The currently bound GL texture ID. Avoids unnecessary glBindTexture() for the same texture if it's already bound.
@@ -148,6 +147,7 @@ public class FontRenderer {
 	}
 
 	public void readFontData() {
+		this.fontTextureName = FontUtils.getFontName(this.fontTextureName);
 		this.readGlyphSizes();
 		this.readFontTexture(this.fontTextureName);
 	}
@@ -156,16 +156,53 @@ public class FontRenderer {
 		BufferedImage var2;
 
 		try {
-			var2 = TexturePackAPI.getImage(RenderEngine.class, par1Str);
-		} catch (Exception var6) {
-			throw new RuntimeException(var6);
+			var2 = FontUtils.getImage(RenderEngine.class, par1Str);
+		} catch (IOException var15) {
+			throw new RuntimeException(var15);
 		}
 
 		int var3 = var2.getWidth();
 		int var4 = var2.getHeight();
 		int[] var5 = new int[var3 * var4];
 		var2.getRGB(0, 0, var3, var4, var5, 0, var3);
-		this.charWidthf = FontUtils.computeCharWidths(this, par1Str, var2, var5, this.charWidth);
+		int var6 = 0;
+
+		while (var6 < 256) {
+			int var7 = var6 % 16;
+			int var8 = var6 / 16;
+			int var9 = 7;
+
+			while (true) {
+				if (var9 >= 0) {
+					int var10 = var7 * 8 + var9;
+					boolean var11 = true;
+
+					for (int var12 = 0; var12 < 8 && var11; ++var12) {
+						int var13 = (var8 * 8 + var12) * var3;
+						int var14 = var5[var10 + var13] & 255;
+
+						if (var14 > 0) {
+							var11 = false;
+						}
+					}
+
+					if (var11) {
+						--var9;
+						continue;
+					}
+				}
+
+				if (var6 == 32) {
+					var9 = 2;
+				}
+
+				this.charWidth[var6] = var9 + 2;
+				++var6;
+				break;
+			}
+		}
+
+		this.charWidthf = FontUtils.computeCharWidthsf(this, par1Str, var2, var5, this.charWidth);	
 	}
 
 	private void readGlyphSizes() {
@@ -203,7 +240,7 @@ public class FontRenderer {
 		GL11.glTexCoord2f((var3 + var6) / 128.0F, (var4 + 7.99F) / 128.0F);
 		GL11.glVertex3f(this.posX + var6 - var5, this.posY + 7.99F, 0.0F);
 		GL11.glEnd();
-		return this.charWidthf[par1] * (float)this.FONT_HEIGHT / 8.0F;
+		return FontUtils.getCharWidthf(this, this.charWidth, par1);
 	}
 
 	/**
@@ -531,7 +568,42 @@ public class FontRenderer {
 	 * Returns the width of this string. Equivalent of FontMetrics.stringWidth(String s).
 	 */
 	public int getStringWidth(String par1Str) {
-		return (int)FontUtils.getStringWidthf(this, par1Str);
+		if (FontUtils.enable) {
+			return (int)FontUtils.getStringWidthf(this, par1Str);
+		} else if (par1Str == null) {
+			return 0;
+		} else {
+			int var2 = 0;
+			boolean var3 = false;
+
+			for (int var4 = 0; var4 < par1Str.length(); ++var4) {
+				char var5 = par1Str.charAt(var4);
+				int var6 = this.getCharWidth(var5);
+
+				if (var6 < 0 && var4 < par1Str.length() - 1) {
+					++var4;
+					var5 = par1Str.charAt(var4);
+
+					if (var5 != 108 && var5 != 76) {
+						if (var5 == 114 || var5 == 82) {
+							var3 = false;
+						}
+					} else {
+						var3 = true;
+					}
+
+					var6 = 0;
+				}
+
+				var2 += var6;
+
+				if (var3) {
+					++var2;
+				}
+			}
+
+			return var2;
+		}
 	}
 
 	/**

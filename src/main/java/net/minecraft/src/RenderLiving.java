@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // MCPatcher Start
 import com.prupe.mcpatcher.mod.MobRandomizer;
+import com.prupe.mcpatcher.mod.CITUtils;
 // MCPatcher End
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
@@ -116,7 +117,12 @@ public class RenderLiving extends Render {
 						this.renderPassModel.render(par1EntityLiving, var16, var15, var13, var11 - var10, var12, var14);
 					}
 
-					if ((var18 & 15) == 15) {
+					if (CITUtils.setupArmorOverlays(par1EntityLiving, var17)) {
+						while (CITUtils.preRenderArmorOverlay()) {
+							this.renderPassModel.render(par1EntityLiving, var16, var15, var13, var11 - var10, var12, var14);
+							CITUtils.postRenderArmorOverlay();
+						}
+					} else if ((var18 & 15) == 15) {
 						var19 = (float)par1EntityLiving.ticksExisted + par9;
 						this.loadTexture("%blur%/misc/glint.png");
 						GL11.glEnable(GL11.GL_BLEND);
@@ -224,7 +230,7 @@ public class RenderLiving extends Render {
 	protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7) {
 		this.func_98190_a(par1EntityLiving);
 
-		if (!par1EntityLiving.getHasActivePotion()) {
+		if (!par1EntityLiving.isInvisible()) {
 			this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
 		} else if (!par1EntityLiving.func_98034_c(Minecraft.getMinecraft().thePlayer)) {
 			GL11.glPushMatrix();
@@ -365,7 +371,7 @@ public class RenderLiving extends Render {
 			if (Minecraft.isDebugInfoEnabled() && SpoutClient.getInstance().isEntityLabelCheat()) {
 				this.renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4, par6, 64);
 			} else if (par1EntityLiving.func_94059_bO() || par1EntityLiving.func_94056_bM() && par1EntityLiving == this.renderManager.field_96451_i) {
-				String title = par1EntityLiving.func_96090_ax();
+				String title = par1EntityLiving.getTranslatedEntityName();
 				if (title != null && !title.equals("[hide]")) {
 					String lines[] = title.split("\\n");
 					for (int i = 0; i < lines.length; i++){
@@ -375,7 +381,7 @@ public class RenderLiving extends Render {
 			}
 		} else if (par1EntityLiving instanceof EntityPlayer) {
 			EntityPlayer par1EntityPlayer = (EntityPlayer) par1EntityLiving;
-			if (!par1EntityPlayer.getHasActivePotion()) {
+			if (!par1EntityPlayer.isInvisible()) {
 				if(Minecraft.isGuiEnabled() && (par1EntityPlayer != this.renderManager.livingPlayer || (Minecraft.theMinecraft.gameSettings.thirdPersonView != 0 && Minecraft.theMinecraft.currentScreen == null))) {
 					float var8 = 1.6F;
 					float var9 = 0.016666668F * var8;

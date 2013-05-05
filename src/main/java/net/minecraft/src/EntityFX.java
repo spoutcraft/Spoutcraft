@@ -33,7 +33,9 @@ public class EntityFX extends Entity {
 
 	/** Particle alpha */
 	protected float particleAlpha;
-	protected Icon particleTextureIndex;
+	
+	/** The icon field from which the given particle pulls its texture. */
+	protected Icon particleIcon;
 	public static double interpPosX;
 	public static double interpPosY;
 	public static double interpPosZ;
@@ -45,7 +47,7 @@ public class EntityFX extends Entity {
 		this.particleAge = 0;
 		this.particleMaxAge = 0;
 		this.particleAlpha = 1.0F;
-		this.particleTextureIndex = null;
+		this.particleIcon = null;
 		this.setSize(0.2F, 0.2F);
 		this.yOffset = this.height / 2.0F;
 		this.setPosition(par2, par4, par6);
@@ -151,11 +153,11 @@ public class EntityFX extends Entity {
 		float var11 = var10 + 0.0624375F;
 		float var12 = 0.1F * this.particleScale;
 
-		if (this.particleTextureIndex != null) {
-			 var8 = this.particleTextureIndex.getMinU();
-			 var9 = this.particleTextureIndex.getMaxU();
-			 var10 = this.particleTextureIndex.getMinV();
-			 var11 = this.particleTextureIndex.getMaxV(); 
+		if (this.particleIcon != null) {
+			var8 = this.particleIcon.getMinU();
+			var9 = this.particleIcon.getMaxU();
+			var10 = this.particleIcon.getMinV();
+			var11 = this.particleIcon.getMaxV();
 		}
 
 		float var13 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)par2 - interpPosX);
@@ -183,15 +185,15 @@ public class EntityFX extends Entity {
 	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {}
 
-	public void func_94052_a(RenderEngine par1RenderEngine, Icon par2Icon) {
+	public void setParticleIcon(RenderEngine par1RenderEngine, Icon par2Icon) {
 		if (this.getFXLayer() == 1) {
-			this.particleTextureIndex = par2Icon;
+			this.particleIcon = par2Icon;
 		} else {
 			if (this.getFXLayer() != 2) {
 				throw new RuntimeException("Invalid call to Particle.setTex, use coordinate methods");
 			}
 
-			this.particleTextureIndex = par2Icon;
+			this.particleIcon = par2Icon;
 		}
 	}
 

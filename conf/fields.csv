@@ -1,6 +1,11 @@
 searge,name,side,desc
+field_100000_e,spawnChances,0,Chances for slimes to spawn in swamps for every moon phase.
+field_100001_o,doneBtn,0,"""Done"" button for the GUI."
+field_100002_d,cancelBtn,0,
+field_100003_c,doneBtn,0,
 field_100010_b,iconArray,0,
-field_70009_b,chatBuffer,0,
+field_100013_f,isPotionDurationMax,0,"True if potion effect duration is at maximum, false otherwise."
+field_70009_b,buffer,0,RCon string buffer for log.
 field_70010_a,consoleBuffer,0,only ever used by MinecraftServer.executeCommand
 field_70116_cv,serverPosZ,0,
 field_70117_cu,serverPosY,0,
@@ -137,6 +142,7 @@ field_70272_f,boatZ,0,
 field_70273_g,boatYaw,0,
 field_70274_d,boatX,0,
 field_70275_e,boatY,0,
+field_70276_b,speedMultiplier,0,
 field_70277_c,boatPosRotationIncrements,0,
 field_70278_an,velocityZ,0,
 field_70280_j,velocityY,0,
@@ -257,7 +263,7 @@ field_70546_d,particleAge,0,
 field_70547_e,particleMaxAge,0,
 field_70548_b,particleTextureJitterX,0,
 field_70549_c,particleTextureJitterY,0,
-field_70550_a,particleTextureIndex,0,
+field_70550_a,particleIcon,0,The icon field from which the given particle pulls its texture.
 field_70551_j,particleBlue,0,"The blue amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0."
 field_70552_h,particleRed,0,"The red amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0."
 field_70553_i,particleGreen,0,"The green amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0."
@@ -340,7 +346,7 @@ field_70749_g,lookHelper,0,
 field_70750_az,texture,0,the path for the texture of this entityLiving
 field_70751_d,lastAttackingEntity,0,
 field_70752_e,potionsNeedUpdate,0,Whether the DataWatcher needs to be updated with the active potions
-field_70754_ba,limbSwing,0,Only relevant when legYaw is not 0(the entity is moving). Influences where in its swing legs and arms currently are.
+field_70754_ba,limbSwing,0,Only relevant when limbYaw is not 0(the entity is moving). Influences where in its swing legs and arms currently are.
 field_70755_b,entityLivingToAttack,0,"is only being set, has no uses as of MC 1.1"
 field_70756_c,revengeTimer,0,
 field_70757_a,livingSoundTime,0,Number of ticks since this EntityLiving last produced its sound
@@ -383,8 +389,12 @@ field_70855_f,attackTimer,0,
 field_70856_g,holdRoseTick,0,
 field_70857_d,villageObj,0,
 field_70858_e,homeCheckTimer,0,"deincrements, and a distance-to-home check is done at 0"
+field_70859_f,squidYaw,0,
+field_70860_g,prevSquidYaw,0,
+field_70861_d,squidPitch,0,
+field_70862_e,prevSquidPitch,0,
 field_70863_bz,randomMotionSpeed,0,
-field_70865_by,lastTentacleAngle,0,the last calculated angle of the tentacles in radians
+field_70865_by,prevTentacleAngle,0,the last calculated angle of the tentacles in radians
 field_70866_j,tentacleAngle,0,angle of the tentacles in radians
 field_70869_bD,randomMotionVecY,0,
 field_70870_bE,randomMotionVecZ,0,
@@ -659,17 +669,18 @@ field_71572_b,posY,0,the y coordinate
 field_71573_c,posZ,0,the z coordinate
 field_71574_a,posX,0,
 field_71576_a,theReportedExceptionCrashReport,0,Instance of CrashReport.
-field_71577_f,enderEyeMetaToDirection,0,
-field_71579_d,vineGrowth,0,
-field_71580_e,footInvisibleFaceRemap,0,
+field_71577_f,rotateRight,0,Maps a direction to that to the right of it.
+field_71578_g,rotateLeft,0,Maps a direction to that to the left of it.
+field_71579_d,facingToDirection,0,Maps a Facing value (3D) to a Direction value (2D).
+field_71580_e,rotateOpposite,0,Maps a direction to that opposite of it.
 field_71581_b,offsetZ,0,
-field_71582_c,headInvisibleFace,0,
+field_71582_c,directionToFacing,0,Maps a Direction value (2D) to a Facing value (3D).
 field_71583_a,offsetX,0,
 field_71584_h,bedDirection,0,
 field_71585_d,offsetsZForSide,0,gives the offset required for this axis to get the block at that side.
 field_71586_b,offsetsXForSide,0,gives the offset required for this axis to get the block at that side.
 field_71587_c,offsetsYForSide,0,gives the offset required for this axis to get the block at that side.
-field_71588_a,faceToSide,0,Converts a face to a side.
+field_71588_a,oppositeSide,0,Converts a side to the opposite side. This is the same as XOR'ing it with 1.
 field_71589_f,bc_pbe_sha512,0,
 field_71590_g,bc_pbe_sha224,0,
 field_71591_d,bc_pbe_sha256,0,
@@ -976,7 +987,7 @@ field_72041_aW,blockClay,0,
 field_72042_aI,signWall,0,
 field_72043_aJ,lever,0,
 field_72044_aK,pressurePlateStone,0,
-field_72045_aL,doorSteel,0,
+field_72045_aL,doorIron,0,
 field_72046_aM,pressurePlatePlanks,0,
 field_72047_aN,oreRedstone,0,
 field_72048_aO,oreRedstoneGlowing,0,
@@ -1013,7 +1024,7 @@ field_72079_ak,stoneSingleSlab,0,stoneSingleSlab
 field_72080_bM,redstoneLampActive,0,
 field_72081_al,brick,0,
 field_72082_bJ,whiteStone,0,The rock found in The End.
-field_72083_ai,blockSteel,0,
+field_72083_ai,blockIron,0,
 field_72084_bK,dragonEgg,0,
 field_72085_aj,stoneDoubleSlab,0,stoneDoubleSlab
 field_72086_bP,cocoaPlant,0,
@@ -1175,7 +1186,7 @@ field_72588_q,lastPosZ,0,The last known z position for this connection.
 field_72589_p,lastPosY,0,The last known y position for this connection.
 field_72590_a,loginHandler,0,The login handler that spawned this thread.
 field_72595_f,requestIdAsString,0,The request ID stored as a String
-field_72596_d,requestId,0,A client-provided request ID associated with this query
+field_72596_d,requestId,0,A client-provided request ID associated with this query.
 field_72597_e,challengeValue,0,A unique string of bytes used to verify client auth
 field_72598_b,timestamp,0,The creation timestamp for this auth
 field_72599_c,randomChallenge,0,A random challenge
@@ -1270,7 +1281,7 @@ field_72781_x,glSkyList2,0,OpenGL sky list 2
 field_72782_b,theWorldServer,0,The WorldServer object.
 field_72783_a,mcServer,0,Reference to the MinecraftServer object.
 field_72792_d,entityViewDistance,0,
-field_72793_b,trackedEntities,0,
+field_72793_b,trackedEntities,0,"List of tracked entities, used for iteration operations on tracked entities."
 field_72794_c,trackedEntityIDs,0,
 field_72795_a,theWorld,0,
 field_72814_d,hasExtendedLevels,0,set by !chunk.getAreLevelsEmpty
@@ -1454,7 +1465,7 @@ field_73261_d,locationOfBlockChange,0,
 field_73262_e,numberOfTilesToUpdate,0,
 field_73263_b,playersInChunk,0,
 field_73264_c,chunkLocation,0,note: this is final
-field_73265_a,myManager,0,
+field_73265_a,thePlayerManager,0,
 field_73286_b,clientPacketIdList,0,List of the client's packet IDs.
 field_73287_r,isChunkDataPacket,0,"Only true for Packet51MapChunk, Packet52MultiBlockChange, Packet53BlockChange and Packet59ComplexEntity. Used to separate them into a different send queue."
 field_73288_c,serverPacketIdList,0,List of the server's packet IDs.
@@ -1632,6 +1643,7 @@ field_73513_e,zPosition,0,The player's Z position.
 field_73514_b,name,0,The player's name.
 field_73515_c,xPosition,0,The player's X position.
 field_73516_a,entityId,0,"The entity ID, in this case it's the player ID."
+field_73517_j,metadataWatchableObjects,0,
 field_73518_h,currentItem,0,The current item the player is holding.
 field_73519_i,metadata,0,
 field_73520_f,speedY,0,Not sent if the thrower entity ID is 0. The speed of this fireball along the Y axis.
@@ -1706,11 +1718,14 @@ field_73603_i,temp,0,A temporary storage for the compressed chunk data byte arra
 field_73604_b,targetEntity,0,The entity the player is interacting with
 field_73605_c,isLeftClick,0,Seems to be true when the player is pointing at an entity and left-clicking and false when right-clicking.
 field_73606_a,playerEntityId,0,The entity of the player (ignored by the server)
+field_73610_f,playerVelocityX,0,X velocity of the player being pushed by the explosion
+field_73611_g,playerVelocityY,0,Y velocity of the player being pushed by the explosion
 field_73612_d,explosionSize,0,
 field_73613_e,chunkPositionRecords,0,
 field_73614_b,explosionY,0,
 field_73615_c,explosionZ,0,
 field_73616_a,explosionX,0,
+field_73617_h,playerVelocityZ,0,Z velocity of the player being pushed by the explosion
 field_73618_b,eventType,0,"0: Invalid bed, 1: Rain starts, 2: Rain stops, 3: Game mode changed."
 field_73619_c,gameMode,0,"When reason==3, the game mode to set.  See EnumGameType for a list of values."
 field_73620_a,clientMessage,0,The client prints clientMessage[eventType] to chat when this packet is received.
@@ -2874,6 +2889,7 @@ field_76168_c,capacity,0,the maximum amount of elements in the hash (probably 3/
 field_76169_a,hashArray,0,the array of all elements in the hash
 field_76171_a,texturePacks,0,
 field_76172_a,parent,0,
+field_76173_f,maxFileSize,0,
 field_76174_d,destinationFile,0,
 field_76175_e,downloadSuccess,0,
 field_76176_b,sourceURL,0,
@@ -3292,7 +3308,6 @@ field_77022_g,itemRenderBlocks,0,
 field_77023_b,zLevel,0,Defines the zLevel of rendering of item on GUI.
 field_77024_a,renderWithColor,0,
 field_77025_h,random,0,The RNG used in RenderItem (for bobbing itemstacks on the ground)
-field_77027_a,itemIconIndex,0,"Have the icon index (in items.png) that will be used to render the image. Currently, eggs and snowballs uses this classes."
 field_77045_g,mainModel,0,
 field_77046_h,renderPassModel,0,The model to be used during the render passes.
 field_77050_a,ironGolemModel,0,Iron Golem's Model.
@@ -3532,14 +3547,14 @@ field_77685_T,wheat,0,
 field_77686_W,plateLeather,0,
 field_77687_V,helmetLeather,0,
 field_77688_Q,hoeDiamond,0,
-field_77689_P,hoeSteel,0,
+field_77689_P,hoeIron,0,
 field_77690_S,seeds,0,
 field_77691_R,hoeGold,0,
 field_77692_Y,bootsLeather,0,
 field_77693_X,legsLeather,0,
 field_77694_Z,helmetChain,0,
-field_77695_f,shovelSteel,0,
-field_77696_g,pickaxeSteel,0,
+field_77695_f,shovelIron,0,
+field_77696_g,pickaxeIron,0,
 field_77697_d,itemRand,0,The RNG used by the Item subclasses.
 field_77698_e,itemsList,0,A 32000 elements Item array.
 field_77699_b,maxDamage,0,Maximum damage an item can handle.
@@ -3551,7 +3566,7 @@ field_77704_l,arrow,0,
 field_77705_m,coal,0,
 field_77706_j,appleRed,0,
 field_77707_k,bow,0,
-field_77708_h,axeSteel,0,
+field_77708_h,axeIron,0,
 field_77709_i,flintAndSteel,0,
 field_77710_w,shovelStone,0,
 field_77711_v,swordStone,0,
@@ -3559,7 +3574,7 @@ field_77712_u,axeWood,0,
 field_77713_t,pickaxeWood,0,
 field_77714_s,shovelWood,0,
 field_77715_r,swordWood,0,
-field_77716_q,swordSteel,0,
+field_77716_q,swordIron,0,
 field_77717_p,ingotGold,0,
 field_77718_z,swordDiamond,0,
 field_77719_y,axeStone,0,
@@ -3609,7 +3624,7 @@ field_77762_aN,minecartCrate,0,
 field_77763_aO,minecartPowered,0,
 field_77764_aP,egg,0,
 field_77765_aA,saddle,0,
-field_77766_aB,doorSteel,0,
+field_77766_aB,doorIron,0,
 field_77767_aC,redstone,0,
 field_77768_aD,snowball,0,
 field_77769_aE,boat,0,
@@ -3634,7 +3649,7 @@ field_77787_bX,hasSubtypes,0,"Some items (like dyes) have multiple subtypes on s
 field_77788_aw,bucketEmpty,0,
 field_77789_bW,bFull3D,0,"If true, render the object in full 3D, like weapons and tools."
 field_77790_av,doorWood,0,
-field_77791_bV,iconIndex,0,Icon index in the icons table.
+field_77791_bV,itemIcon,0,Icon index in the icons table.
 field_77792_au,sign,0,
 field_77793_bL,recordChirp,0,
 field_77794_ak,bootsDiamond,0,
@@ -3655,19 +3670,19 @@ field_77808_an,legsGold,0,
 field_77809_bD,expBottle,0,Bottle o' Enchanting. Drops between 1 and 3 experience orbs when thrown.
 field_77810_ac,bootsChain,0,
 field_77811_bE,fireballCharge,0,Fire Charge. When used in a dispenser it fires a fireball similiar to a Ghast's.
-field_77812_ad,helmetSteel,0,
+field_77812_ad,helmetIron,0,
 field_77813_bB,speckledMelon,0,
 field_77814_aa,plateChain,0,
 field_77815_bC,monsterPlacer,0,
 field_77816_ab,legsChain,0,
 field_77817_bH,emerald,0,
-field_77818_ag,bootsSteel,0,
+field_77818_ag,bootsIron,0,
 field_77819_bI,record13,0,
 field_77820_ah,helmetDiamond,0,
 field_77821_bF,writableBook,0,
-field_77822_ae,plateSteel,0,
+field_77822_ae,plateIron,0,
 field_77823_bG,writtenBook,0,
-field_77824_af,legsSteel,0,
+field_77824_af,legsIron,0,
 field_77826_b,toolMaterial,0,
 field_77827_a,weaponDamage,0,
 field_77830_a,spawnID,0,The ID of the block the reed will spawn when used from inventory bar.
@@ -4097,28 +4112,16 @@ field_78634_H,aoLightValueScratchXYPP,0,Used as a scratch variable for ambient o
 field_78635_I,aoLightValueScratchYZPP,0,Used as a scratch variable for ambient occlusion between the top face and the west face.
 field_78636_J,aoLightValueScratchXYZPPP,0,Used as a scratch variable for ambient occlusion on the south/top/west corner.
 field_78637_K,aoLightValueScratchXZNN,0,Used as a scratch variable for ambient occlusion between the north face and the east face.
-field_78638_aI,aoGrassXYZPCP,0,"Grass flag for ambient occlusion on Positive X, Center Y, and Positive Z"
 field_78639_U,aoBrightnessXYZNNP,0,Ambient occlusion brightness XYZNNP
-field_78640_aJ,aoGrassXYZNCP,0,"Grass flag for ambient occlusion on Negative X, Center Y, and Positive Z"
 field_78641_T,aoBrightnessXYNN,0,Ambient occlusion brightness XYNN
-field_78642_aK,aoGrassXYZPCN,0,"Grass flag for ambient occlusion on Positive X, Center Y, and Negative Z"
 field_78643_W,aoBrightnessYZNP,0,Ambient occlusion brightness YZNP
-field_78644_aL,aoGrassXYZCNN,0,"Grass flag for ambient occlusion on Center X, Negative Y, and Negative Z"
 field_78645_V,aoBrightnessYZNN,0,Ambient occlusion brightness YZNN
-field_78646_aM,aoGrassXYZPNC,0,"Grass flag for ambient occlusion on Positive X, Negative Y, and Center Z"
-field_78647_aN,aoGrassXYZNNC,0,"Grass flag for ambient occlusion on Negative X, Negative Y, and center Z"
-field_78648_aO,aoGrassXYZCNP,0,"Grass flag for ambient occlusion on Center X, Negative Y, and Positive Z"
 field_78649_S,aoBrightnessXYZNNN,0,Ambient occlusion brightness XYZNNN
 field_78650_aA,colorBlueBottomLeft,0,Blue color value for the bottom left corner
 field_78651_aB,colorBlueBottomRight,0,Blue color value for the bottom right corner
 field_78652_aC,colorBlueTopRight,0,Blue color value for the top right corner
-field_78653_aD,aoGrassXYZCPN,0,"Grass flag for ambient occlusion on Center X, Positive Y, and Negative Z"
-field_78654_aE,aoGrassXYZPPC,0,"Grass flag for ambient occlusion on Positive X, Positive Y, and Center Z"
 field_78655_Y,aoBrightnessXYPN,0,Ambient occlusion brightness XYPN
-field_78656_aF,aoGrassXYZNPC,0,"Grass flag for ambient occlusion on Negative X, Positive Y, and Center Z"
 field_78657_X,aoBrightnessXYZPNN,0,Ambient occlusion brightness XYZPNN
-field_78658_aG,aoGrassXYZCPP,0,"Grass flag for ambient occlusion on Center X, Positive Y, and Positive Z"
-field_78659_aH,aoGrassXYZNCN,0,"Grass flag for ambient occlusion on Negative X, Center Y, and Negative Z"
 field_78660_Z,aoBrightnessXYZPNP,0,Ambient occlusion brightness XYZPNP
 field_78661_f,renderAllFaces,0,"If true, renders all faces on all blocks rather than using the logic in Block.shouldSideBeRendered.  Unused."
 field_78662_g,uvRotateEast,0,
@@ -4130,9 +4133,7 @@ field_78667_b,fancyGrass,0,Fancy grass side matching biome
 field_78668_c,useInventoryTint,0,
 field_78669_a,blockAccess,0,The IBlockAccess used by this instance of RenderBlocks
 field_78670_at,colorRedBottomRight,0,Red color value for the bottom right corner
-field_78671_n,lightValueOwn,0,Light value of the block itself
 field_78672_as,colorRedBottomLeft,0,Red color value for the bottom left corner
-field_78673_o,aoLightValueXNeg,0,Light value one block less in x axis
 field_78674_ar,colorRedTopLeft,0,Red color value for the top left corner
 field_78675_l,uvRotateBottom,0,
 field_78676_aq,brightnessTopRight,0,Brightness top right
@@ -4152,15 +4153,9 @@ field_78689_v,aoLightValueScratchXYNN,0,Used as a scratch variable for ambient o
 field_78690_ai,aoBrightnessXZNN,0,Ambient occlusion brightness XZNN
 field_78691_u,aoLightValueScratchXYZNNN,0,Used as a scratch variable for ambient occlusion on the north/bottom/east corner.
 field_78692_aj,aoBrightnessXZPN,0,Ambient occlusion brightness XZPN
-field_78693_t,aoLightValueZPos,0,Light value one block more in z axis
 field_78694_ao,brightnessBottomLeft,0,Brightness bottom left
-field_78695_s,aoLightValueYPos,0,Light value one block more in y axis
 field_78696_ap,brightnessBottomRight,0,Brightness bottom right
-field_78697_r,aoLightValueXPos,0,Light value one block more in x axis
-field_78698_am,aoType,0,"Ambient occlusion type (0=simple, 1=complex)"
-field_78699_q,aoLightValueZNeg,0,Light value one block more in z axis
 field_78700_an,brightnessTopLeft,0,Brightness top left
-field_78701_p,aoLightValueYNeg,0,Light value one block more in y axis
 field_78702_ac,aoBrightnessXYZNPP,0,Ambient occlusion brightness XYZNPP
 field_78703_ad,aoBrightnessYZPN,0,Ambient occlusion brightness YZPN
 field_78704_aa,aoBrightnessXYZNPN,0,Ambient occlusion brightness XYZNPN
@@ -4304,6 +4299,8 @@ field_82135_d,isBeaconActive,0,
 field_82136_e,levels,0,Level of this beacon's pyramid.
 field_82139_a,effectsList,0,List of effects that Beacon can apply
 field_82140_h,payment,0,Item given to this beacon as payment.
+field_82151_R,distanceWalkedOnStepModified,0,
+field_82152_aq,teleportDirection,0,
 field_82155_f,isAnvil,0,
 field_82156_g,fallHurtMax,0,Maximum amount of damage dealt to entities hit by falling block
 field_82157_e,isBreakingAnvil,0,
@@ -4316,6 +4313,7 @@ field_82176_d,armorProbability,0,Probability to get armor
 field_82177_b,enchantmentProbability,0,An array of probabilities that determines whether a random enchantment should be added to the held item. Indexed by difficulty.
 field_82178_c,armorEnchantmentProbability,0,Probability to get enchanted armor
 field_82179_bU,persistenceRequired,0,Whether this entity should NOT despawn.
+field_82180_bT,previousEquipment,0,"The equipment this mob was previously wearing, used for syncing."
 field_82181_as,pickUpLootProability,0,Probability to pick up loot
 field_82182_bS,equipment,0,Equipment (armor and held item) for this entity.
 field_82184_d,aiControlledByPlayer,0,AI task for player control.
@@ -4411,6 +4409,9 @@ field_82527_a,dispenseBehaviorRegistry,0,Registry for all dispense behaviors.
 field_82537_a,sensible,0,"Whether this button is sensible to arrows, used by wooden buttons."
 field_82539_a,types,0,The types of the wall.
 field_82548_a,theChunkCoordinates,0,
+field_82559_a,readSuccessfully,0,"Always 1, unless readByte threw an exception."
+field_82561_f,disableRelativeVolume,0,
+field_82562_a,worldAge,0,World age in ticks.
 field_82564_f,showCape,0,
 field_82575_g,totalTime,0,Total time for this world.
 field_82576_c,generatorOptions,0,
@@ -4499,6 +4500,7 @@ field_82807_a,skullTypes,0,
 field_82808_b,cropId,0,Block ID of the crop this seed food should place.
 field_82809_c,soilId,0,Block ID of the soil this seed food should be planted on.
 field_82811_a,hangingEntityClass,0,
+field_82818_l,goldenCarrotEffect,0,
 field_82822_g,gameVersion,0,Game version for this server.
 field_82823_k,hideAddress,0,Whether to hide the IP address for this server.
 field_82826_b,statusBarLength,0,
@@ -4567,6 +4569,8 @@ field_85080_a,blockID,0,
 field_85082_a,theSuspiciousClasses,0,
 field_85084_a,theCrashReport,0,
 field_85086_a,theCrashReport,0,
+field_85087_d,lastUpdateTime,0,The worldtime at which this PortalPosition was last verified
+field_85088_e,teleporterInstance,0,The teleporter to which this PortalPosition applies
 field_85098_d,globalRenderer,0,
 field_85109_a,worldInfoInstance,0,
 field_85111_a,worldInfoInstance,0,
@@ -4585,6 +4589,8 @@ field_85168_c,theMapStructureGenerator,0,
 field_85171_a,theDedicatedServer,0,
 field_85180_cf,recordWait,0,
 field_85185_A,touchscreen,0,
+field_85190_d,destinationCoordinateKeys,0,A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial location.
+field_85191_c,destinationCoordinateCache,0,Stores successful portal placement locations for rapid lookup.
 field_85192_a,worldServerInstance,0,
 field_90017_e,isMacOs,0,
 field_90018_r,isRightMouseClick,0,Used when touchscreen is enabled
@@ -4599,10 +4605,15 @@ field_90051_a,theMinecraft,0,
 field_90053_a,theMinecraft,0,
 field_90055_a,theMinecraft,0,
 field_92014_j,explosionStrength,0,The explosion radius of spawned fireballs.
+field_92016_l,highlightingItemStack,0,The ItemStack that is currently being highlighted
+field_92017_k,remainingHighlightTicks,0,Remaining ticks the item highlight should be visible
 field_92039_az,fireworkExplosions,0,
 field_92055_b,lifetime,0,The lifetime of the firework in ticks. When the age reaches the lifetime the firework explodes.
 field_92056_a,fireworkAge,0,The age of the firework in ticks.
 field_92061_d,isChristmas,0,"If true, chests will be rendered with the Christmas present textures."
+field_92076_h,skyLightSent,0,"Whether or not the chunk data contains a light nibble array. This is true in the main world, false in the end + nether."
+field_92077_h,pitch,0,The pitch in steps of 2p/256
+field_92078_i,yaw,0,The yaw in steps of 2p/256
 field_92086_a,isBlank,0,When isBlank is true the DataWatcher is not watching any objects
 field_92091_k,thorns,0,
 field_92104_bU,firework,0,
@@ -4611,12 +4622,19 @@ field_92106_bV,fireworkCharge,0,
 field_92117_D,heldItemTooltips,0,
 field_92118_B,overrideWidth,0,
 field_92119_C,overrideHeight,0,
+field_94050_c,customName,0,
 field_94054_b,particleTextureIndexX,0,
 field_94055_c,particleTextureIndexY,0,
 field_94084_b,tntPlacedBy,0,
+field_94102_c,entityName,0,
 field_94106_a,minecartTNTFuse,0,
+field_94109_b,pushZ,0,
+field_94110_c,fuel,0,
+field_94111_a,pushX,0,
+field_94112_b,dropContentsWhenDead,0,"When set to true, the minecart will drop all items when setDead() is called. When false (such as when travelling dimensions) it preserves its contents."
 field_94113_a,minecartContainerItems,0,
 field_94123_d,inventoryName,0,The name that is displayed if the hopper was renamed
+field_94124_b,hopperItemStacks,0,
 field_94141_F,destroyBlockIcons,0,
 field_94153_n,boundTexture,0,
 field_94154_l,textureMapBlocks,0,
@@ -4686,8 +4704,8 @@ field_94299_k,textureWrap,0,
 field_94300_h,textureTarget,0,
 field_94301_i,textureMinFilter,0,
 field_94302_r,textureData,0,
-field_94303_q,textureCreated,0,
-field_94304_p,autoCreate,0,
+field_94303_q,textureNotModified,0,False if the texture has been modified since it was last uploaded to the GPU.
+field_94304_p,autoCreate,0,"Uninitialized boolean. If true, the texture is re-uploaded every time it's modified. If false, every tick after it's been modified at least once in that tick."
 field_94313_f,maxHeight,0,
 field_94314_g,forcePowerOf2,0,
 field_94315_d,currentHeight,0,
@@ -4700,7 +4718,7 @@ field_94322_k,atlasTexture,0,
 field_94323_h,maxTileDimension,0,Max size (width or height) of a single tile
 field_94336_cN,blockIcon,0,
 field_94337_cv,railActivator,0,
-field_94338_cu,stairCompactNetherQuartz,0,
+field_94338_cu,stairsNetherQuartz,0,
 field_94339_ct,blockNetherQuartz,0,
 field_94340_cs,hopperBlock,0,
 field_94341_cq,blockRedstone,0,
@@ -4712,6 +4730,8 @@ field_94346_cn,redstoneComparatorIdle,0,
 field_94347_ck,chestTrapped,0,
 field_94348_cl,pressurePlateGold,0,
 field_94349_a,iconArray,0,
+field_94356_a,pressurePlateIconName,0,
+field_94357_a,maxItemsWeighted,0,The maximum number of items the plate weights.
 field_94359_b,theIcon,0,
 field_94362_b,theIcon,0,
 field_94363_a,iconArray,0,
@@ -4720,7 +4740,16 @@ field_94365_a,iconArray,0,
 field_94366_b,iconArray,0,
 field_94367_a,grassTypes,0,
 field_94369_b,theIcon,0,
+field_94371_c,saplingIcon,0,
 field_94372_b,iconArray,0,
+field_94376_b,cauldronTopIcon,0,
+field_94377_c,cauldronBottomIcon,0,
+field_94379_b,cactusBottomIcon,0,
+field_94380_a,cactusTopIcon,0,
+field_94381_b,cakeBottomIcon,0,
+field_94383_a,cakeTopIcon,0,
+field_94384_b,workbenchIconFront,0,
+field_94385_a,workbenchIconTop,0,
 field_94386_b,woodTextureTypes,0,
 field_94387_c,iconArray,0,
 field_94388_cO,tree_top,0,
@@ -4738,19 +4767,49 @@ field_94420_a,quartzBlockTypes,0,
 field_94423_a,theIcon,0,
 field_94425_a,theIcon,0,
 field_94428_c,iconArray,0,
+field_94430_b,breakableBlockIcon,0,
+field_94431_cO,anvilIconNames,0,
 field_94432_cP,iconArray,0,
 field_94433_b,theIcon,0,
 field_94435_b,iconSnowSide,0,
 field_94436_c,iconGrassSideOverlay,0,
 field_94437_a,iconGrassTop,0,
 field_94439_c,iconArray,0,
+field_94443_a,isTrapped,0,Determines whether of not the chest is trapped.
 field_94445_a,iconArray,0,
 field_94447_a,theIcon,0,
 field_94449_b,theIcon,0,
 field_94450_a,theIcon,0,
+field_94454_cO,hopperInsideIcon,0,
+field_94455_b,hopperIcon,0,
+field_94456_c,hopperTopIcon,0,
+field_94458_cO,furnaceIconTop,0,
+field_94459_cP,furnaceIconFront,0,
+field_94462_cO,furnaceFrontIcon,0,
+field_94463_c,furnaceTopIcon,0,
+field_94465_b,doorTypeForIcon,0,Used for pointing at icon names.
 field_94466_c,iconArray,0,
+field_94467_a,doorIconNames,0,
 field_94469_b,iconArray,0,
-field_94582_cb,tntMinecart,0,
+field_94470_a,cocoaIcons,0,
+field_94471_cO,bedTopIcons,0,
+field_94473_c,bedSideIcons,0,
+field_94497_cO,topIcon,0,Top icon of piston depends on (either sticky or normal)
+field_94498_b,innerTopIcon,0,Only visible when piston is extended
+field_94499_c,bottomIcon,0,Bottom side texture
+field_94500_e,useProvidedWindowTitle,0,"If false, the client will look up a string like ""window.minecart"". If true, the client uses what the server provides."
+field_94512_f,isStraightRail,0,
+field_94513_g,railChunkPosition,0,The chunk position the rail is at.
+field_94514_d,railY,0,
+field_94515_e,railZ,0,
+field_94516_b,logicWorld,0,
+field_94517_c,railX,0,
+field_94518_a,theRail,0,
+field_94557_a,selectAnything,0,
+field_94582_cb,minecartTnt,0,
+field_94583_ca,netherQuartz,0,
+field_94584_bZ,netherrackBrick,0,
+field_94585_bY,comparator,0,
 field_94593_a,theIcon,0,
 field_94596_a,theIcon,0,
 field_94598_a,theIcon,0,
@@ -4759,6 +4818,9 @@ field_94601_a,bowPullIconNameArray,0,
 field_94610_a,theTileEntity,0,
 field_94612_a,theTileEntity,0,
 field_96093_i,entityUniqueID,0,
+field_96105_c,commandSenderName,0,"The name of command sender (usually username, but possibly ""Rcon"")"
+field_96106_a,succesCount,0,
+field_96113_a,isBlocked,0,Whether this hopper minecart is being blocked by an activator rail.
 field_96291_i,pointedEntityLiving,0,
 field_96442_D,worldScoreboard,0,
 field_96452_b,flipU,0,
@@ -4771,33 +4833,87 @@ field_96462_b,potionItemStack,0,
 field_96463_c,dispenserPotionBehavior,0,
 field_96464_b,defaultDispenserItemBehavior,0,
 field_96469_cy,dropper,0,
+field_96474_cR,dropperDefaultBehaviour,0,
+field_96480_b,scoreName,0,The unique name for the scoreboard to be displayed.
+field_96481_a,scoreboardPosition,0,"The position of the scoreboard. 0 = list, 1 = sidebar, 2 = belowName."
+field_96482_b,objectiveDisplayName,0,
+field_96483_c,change,0,"0 to create scoreboard, 1 to remove scoreboard, 2 to update display text."
+field_96484_a,objectiveName,0,
+field_96485_d,updateOrRemove,0,0 to create/update an item. 1 to remove an item.
+field_96486_b,scoreName,0,The unique name for the scoreboard to be updated. Only sent when updateOrRemove does not equal 1.
+field_96487_c,value,0,The score to be displayed next to the entry. Only sent when Update/Remove does not equal 1.
+field_96488_a,itemName,0,An unique name to be displayed in the list.
+field_96489_f,mode,0,If 0 then the team is created. If 1 then the team is removed. If 2 the team team information is updated. If 3 then new players are added to the team. If 4 then players are removed from the team.
+field_96491_d,teamSuffix,0,Only if mode = 0 or 2. Displayed after the players' name that are part of this team.
+field_96492_e,playerNames,0,Only if mode = 0 or 3 or 4. Players to be added/remove from the team.
+field_96493_b,teamDisplayName,0,Only if mode = 0 or 2.
+field_96494_c,teamPrefix,0,Only if mode = 0 or 2. Displayed before the players' name that are part of this team.
+field_96495_a,teamName,0,A unique name for the team.
+field_96540_f,teamMemberships,0,Map of usernames to ScorePlayerTeam objects.
+field_96545_a,scoreObjectives,0,Map of objective names to ScoreObjective objects.
 field_96564_a,theEntity,0,
+field_96566_b,selectInventories,0,
 field_96569_b,theEntityTracker,0,
-field_96600_cc,hopperMinecart,0,
+field_96600_cc,minecartHopper,0,
 field_96601_a,theBlock,0,
 field_96602_b,dispenserMinecartBehavior,0,
 field_96633_b,playerInventory,0,
 field_96634_a,theItemStack,0,
 field_96656_b,theScoreboard,0,
+field_96676_c,membershipSet,0,A set of all team member usernames.
+field_96677_a,theScoreboard,0,
+field_96683_d,displayName,0,
+field_96684_b,name,0,
 field_96685_c,objectiveCriteria,0,The ScoreObjectiveCriteria for this objetive
 field_96686_a,theScoreboard,0,
 field_96691_E,chatScale,0,
 field_96692_F,chatWidth,0,
 field_96693_G,chatHeightUnfocused,0,
 field_96694_H,chatHeightFocused,0,
+field_98040_a,mobSpawnerLogic,0,Mob spawner logic for this spawner minecart.
+field_98044_b,transferTicker,0,
+field_98048_c,transferCooldown,0,
 field_98051_e,fallingBlockTileEntityData,0,
 field_98130_m,serverLogAgent,0,
 field_98151_a,theTexture,0,
+field_98181_L,worldLogAgent,0,The log agent for this world.
 field_98189_n,partialRenderBounds,0,
+field_98203_f,offsetY,0,This is added to the Y position after being multiplied by random.nextGaussian()
+field_98204_g,offsetZ,0,This is added to the Z position after being multiplied by random.nextGaussian()
+field_98205_d,posZ,0,Z position of the particle.
+field_98206_e,offsetX,0,This is added to the X position after being multiplied by random.nextGaussian()
+field_98207_b,posX,0,X position of the particle.
+field_98208_c,posY,0,Y position of the particle.
+field_98209_a,particleName,0,The name of the particle to create. A list can be found at https://gist.github.com/thinkofdeath/5110835
+field_98210_h,speed,0,The speed of each particle.
+field_98211_i,quantity,0,The number of particles to create.
+field_98212_g,friendlyFire,0,Only if mode = 0 or 2.
 field_98219_c,entityAvoiderAI,0,
+field_98223_c,minecartName,0,
 field_98226_b,theNetServerHandler,0,
 field_98227_a,thePacket,0,
+field_98239_d,loggerPrefix,0,
+field_98240_b,logFile,0,
+field_98241_c,loggerName,0,
+field_98242_a,serverLogger,0,
 field_98244_b,theNetServerHandler,0,
 field_98245_a,thePacket,0,
+field_98282_f,randomMinecart,0,
+field_98283_g,minSpawnDelay,0,
+field_98285_e,minecartToSpawn,0,List of minecart to spawn.
+field_98286_b,spawnDelay,0,The delay to spawn.
 field_98288_a,mobID,0,
+field_98289_l,activatingRangeFromPlayer,0,The distance from which a player activates the spawner.
+field_98290_m,spawnRange,0,The range coefficient for spawning entities around.
+field_98292_k,maxNearbyEntities,0,
+field_98293_h,maxSpawnDelay,0,
+field_98294_i,spawnCount,0,A counter for spawn tries.
+field_98295_a,mobSpawnerEntity,0,The mob spawner we deal with
+field_98296_a,spawnerMinecart,0,The spawner minecart using this mob spawner logic.
 field_98303_au,AMBIENT_OCCLUSIONS,0,
 field_98307_f,fontTextureName,0,
-field_70009_b,buffer,1,RCon string buffer for log
+field_100000_e,spawnChances,1,Chances for slimes to spawn in swamps for every moon phase.
+field_70009_b,buffer,1,RCon string buffer for log.
 field_70010_a,instance,1,Single instance of RConConsoleSource
 field_70121_D,boundingBox,1,Axis aligned bounding box.
 field_70122_E,onGround,1,
@@ -4926,6 +5042,7 @@ field_70272_f,boatZ,1,
 field_70273_g,boatYaw,1,
 field_70274_d,boatX,1,
 field_70275_e,boatY,1,
+field_70276_b,speedMultiplier,1,
 field_70277_c,boatPosRotationIncrements,1,
 field_70281_h,boatPitch,1,
 field_70284_d,shouldDropItem,1,
@@ -5081,7 +5198,7 @@ field_70749_g,lookHelper,1,
 field_70750_az,texture,1,the path for the texture of this entityLiving
 field_70751_d,lastAttackingEntity,1,
 field_70752_e,potionsNeedUpdate,1,Whether the DataWatcher needs to be updated with the active potions
-field_70754_ba,legSwing,1,Only relevant when legYaw is not 0(the entity is moving). Influences where in its swing legs and arms currently are.
+field_70754_ba,limbSwing,1,Only relevant when limbYaw is not 0(the entity is moving). Influences where in its swing legs and arms currently are.
 field_70755_b,entityLivingToAttack,1,"is only being set, has no uses as of MC 1.1"
 field_70756_c,revengeTimer,1,
 field_70757_a,livingSoundTime,1,Number of ticks since this EntityLiving last produced its sound
@@ -5266,7 +5383,7 @@ field_71324_y,canSpawnAnimals,1,True if the server has animals turned on.
 field_71325_x,onlineMode,1,True if the server is in online mode.
 field_71335_s,guiIsEnabled,1,
 field_71336_r,networkThread,1,
-field_71337_q,theGameType,1,The Game Type.
+field_71337_q,gameType,1,
 field_71338_p,canSpawnStructures,1,
 field_71339_n,theRConThreadMain,1,
 field_71340_o,settings,1,
@@ -5295,16 +5412,17 @@ field_71573_c,posZ,1,the z coordinate
 field_71574_a,posX,1,
 field_71576_a,theReportedExceptionCrashReport,1,Instance of CrashReport.
 field_71577_f,enderEyeMetaToDirection,1,
-field_71579_d,vineGrowth,1,
+field_71578_g,rotateLeft,1,Maps a direction to that to the left of it.
+field_71579_d,facingToDirection,1,Maps a Facing value (3D) to a Direction value (2D).
 field_71580_e,footInvisibleFaceRemap,1,
 field_71581_b,offsetZ,1,
-field_71582_c,headInvisibleFace,1,
+field_71582_c,directionToFacing,1,Maps a Direction value (2D) to a Facing value (3D).
 field_71583_a,offsetX,1,
 field_71584_h,bedDirection,1,
 field_71585_d,offsetsZForSide,1,gives the offset required for this axis to get the block at that side.
 field_71586_b,offsetsXForSide,1,gives the offset required for this axis to get the block at that side.
 field_71587_c,offsetsYForSide,1,gives the offset required for this axis to get the block at that side.
-field_71588_a,faceToSide,1,Converts a face to a side.
+field_71588_a,oppositeSide,1,Converts a side to the opposite side. This is the same as XOR'ing it with 1.
 field_71589_f,bc_pbe_sha512,1,
 field_71590_g,bc_pbe_sha224,1,
 field_71591_d,bc_pbe_sha256,1,
@@ -5604,7 +5722,7 @@ field_72041_aW,blockClay,1,
 field_72042_aI,signWall,1,
 field_72043_aJ,lever,1,
 field_72044_aK,pressurePlateStone,1,
-field_72045_aL,doorSteel,1,
+field_72045_aL,doorIron,1,
 field_72046_aM,pressurePlatePlanks,1,
 field_72047_aN,oreRedstone,1,
 field_72048_aO,oreRedstoneGlowing,1,
@@ -5641,7 +5759,7 @@ field_72079_ak,stoneSingleSlab,1,stoneSingleSlab
 field_72080_bM,redstoneLampActive,1,
 field_72081_al,brick,1,
 field_72082_bJ,whiteStone,1,
-field_72083_ai,blockSteel,1,
+field_72083_ai,blockIron,1,
 field_72084_bK,dragonEgg,1,
 field_72085_aj,stoneDoubleSlab,1,stoneDoubleSlab
 field_72086_bP,cocoaPlant,1,
@@ -5792,7 +5910,7 @@ field_72588_q,lastPosZ,1,The last known z position for this connection.
 field_72589_p,lastPosY,1,The last known y position for this connection.
 field_72590_a,loginHandler,1,The login handler that spawned this thread.
 field_72595_f,requestIdAsString,1,The request ID stored as a String
-field_72596_d,requestID,1,A client-provided request ID associated with this query
+field_72596_d,requestId,1,A client-provided request ID associated with this query.
 field_72597_e,challengeValue,1,A unique string of bytes used to verify client auth
 field_72598_b,timestamp,1,The creation timestamp for this auth
 field_72599_c,randomChallenge,1,A random integer value to be used for client response authentication
@@ -5842,7 +5960,7 @@ field_72701_a,theWorldServer,1,
 field_72782_b,theWorldServer,1,The WorldServer object.
 field_72783_a,mcServer,1,Reference to the MinecraftServer object.
 field_72792_d,maxTrackingDistanceThreshold,1,
-field_72793_b,trackedEntitySet,1,"List of tracked entities, used for iteration operations on tracked entities."
+field_72793_b,trackedEntities,1,"List of tracked entities, used for iteration operations on tracked entities."
 field_72794_c,trackedEntityHashTable,1,Used for identity lookup of tracked entities.
 field_72795_a,theWorld,1,
 field_72814_d,hasExtendedLevels,1,set by !chunk.getAreLevelsEmpty
@@ -6010,7 +6128,7 @@ field_73261_d,blocksToUpdate,1,array of blocks to update this tick
 field_73262_e,numBlocksToUpdate,1,the number of blocks that need to be updated next tick
 field_73263_b,players,1,the list of all players in this instance (chunk)
 field_73264_c,currentChunk,1,the chunk the player currently resides in
-field_73265_a,playerManager,1,
+field_73265_a,thePlayerManager,1,
 field_73286_b,clientPacketIdList,1,List of the client's packet IDs.
 field_73287_r,isChunkDataPacket,1,"Only true for Packet51MapChunk, Packet52MultiBlockChange, Packet53BlockChange and Packet59ComplexEntity. Used to separate them into a different send queue."
 field_73288_c,serverPacketIdList,1,List of the server's packet IDs.
@@ -6188,6 +6306,7 @@ field_73513_e,zPosition,1,The player's Z position.
 field_73514_b,name,1,The player's name.
 field_73515_c,xPosition,1,The player's X position.
 field_73516_a,entityId,1,"The entity ID, in this case it's the player ID."
+field_73517_j,metadataWatchableObjects,1,
 field_73518_h,currentItem,1,The current item the player is holding.
 field_73519_i,metadata,1,
 field_73520_f,speedY,1,Not sent if the thrower entity ID is 0. The speed of this fireball along the Y axis.
@@ -6262,11 +6381,14 @@ field_73603_i,temp,1,A temporary storage for the compressed chunk data byte arra
 field_73604_b,targetEntity,1,The entity the player is interacting with
 field_73605_c,isLeftClick,1,Seems to be true when the player is pointing at an entity and left-clicking and false when right-clicking.
 field_73606_a,playerEntityId,1,The entity of the player (ignored by the server)
+field_73610_f,playerVelocityX,1,X velocity of the player being pushed by the explosion
+field_73611_g,playerVelocityY,1,Y velocity of the player being pushed by the explosion
 field_73612_d,explosionSize,1,
 field_73613_e,chunkPositionRecords,1,
 field_73614_b,explosionY,1,
 field_73615_c,explosionZ,1,
 field_73616_a,explosionX,1,
+field_73617_h,playerVelocityZ,1,Z velocity of the player being pushed by the explosion
 field_73618_b,eventType,1,"0: Invalid bed, 1: Rain starts, 2: Rain stops, 3: Game mode changed."
 field_73619_c,gameMode,1,"When reason==3, the game mode to set.  See EnumGameType for a list of values."
 field_73620_a,clientMessage,1,The client prints clientMessage[eventType] to chat when this packet is received.
@@ -7492,14 +7614,14 @@ field_77685_T,wheat,1,
 field_77686_W,plateLeather,1,
 field_77687_V,helmetLeather,1,
 field_77688_Q,hoeDiamond,1,
-field_77689_P,hoeSteel,1,
+field_77689_P,hoeIron,1,
 field_77690_S,seeds,1,
 field_77691_R,hoeGold,1,
 field_77692_Y,bootsLeather,1,
 field_77693_X,legsLeather,1,
 field_77694_Z,helmetChain,1,
-field_77695_f,shovelSteel,1,
-field_77696_g,pickaxeSteel,1,
+field_77695_f,shovelIron,1,
+field_77696_g,pickaxeIron,1,
 field_77697_d,itemRand,1,The RNG used by the Item subclasses.
 field_77698_e,itemsList,1,A 32000 elements Item array.
 field_77699_b,maxDamage,1,Maximum damage an item can handle.
@@ -7511,7 +7633,7 @@ field_77704_l,arrow,1,
 field_77705_m,coal,1,
 field_77706_j,appleRed,1,
 field_77707_k,bow,1,
-field_77708_h,axeSteel,1,
+field_77708_h,axeIron,1,
 field_77709_i,flintAndSteel,1,
 field_77710_w,shovelStone,1,
 field_77711_v,swordStone,1,
@@ -7519,7 +7641,7 @@ field_77712_u,axeWood,1,
 field_77713_t,pickaxeWood,1,
 field_77714_s,shovelWood,1,
 field_77715_r,swordWood,1,
-field_77716_q,swordSteel,1,
+field_77716_q,swordIron,1,
 field_77717_p,ingotGold,1,
 field_77718_z,swordDiamond,1,
 field_77719_y,axeStone,1,
@@ -7569,7 +7691,7 @@ field_77762_aN,minecartCrate,1,
 field_77763_aO,minecartPowered,1,
 field_77764_aP,egg,1,
 field_77765_aA,saddle,1,
-field_77766_aB,doorSteel,1,
+field_77766_aB,doorIron,1,
 field_77767_aC,redstone,1,
 field_77768_aD,snowball,1,
 field_77769_aE,boat,1,
@@ -7614,19 +7736,19 @@ field_77808_an,legsGold,1,
 field_77809_bD,expBottle,1,Bottle o' Enchanting. Drops between 1 and 3 experience orbs when thrown.
 field_77810_ac,bootsChain,1,
 field_77811_bE,fireballCharge,1,Fire Charge. When used in a dispenser it fires a fireball similiar to a Ghast's.
-field_77812_ad,helmetSteel,1,
+field_77812_ad,helmetIron,1,
 field_77813_bB,speckledMelon,1,
 field_77814_aa,plateChain,1,
 field_77815_bC,monsterPlacer,1,
 field_77816_ab,legsChain,1,
 field_77817_bH,emerald,1,
-field_77818_ag,bootsSteel,1,
+field_77818_ag,bootsIron,1,
 field_77819_bI,record13,1,
 field_77820_ah,helmetDiamond,1,
 field_77821_bF,writableBook,1,
-field_77822_ae,plateSteel,1,
+field_77822_ae,plateIron,1,
 field_77823_bG,writtenBook,1,
-field_77824_af,legsSteel,1,
+field_77824_af,legsIron,1,
 field_77826_b,toolMaterial,1,
 field_77827_a,weaponDamage,1,
 field_77830_a,spawnID,1,The ID of the block the reed will spawn when used from inventory bar.
@@ -7714,7 +7836,7 @@ field_78055_h,enchantability,1,Return the enchantability factor of the material
 field_78741_b,secondaryComponents,1,
 field_78742_a,primaryComponents,1,
 field_78818_a,mineshaftChestContents,1,List of contents that can generate in Mineshafts.
-field_78828_a,theClass,1,
+field_78828_a,weightClass,1,The class of the StructureComponent to which this weight corresponds.
 field_78892_f,maxZ,1,The second z coordinate of a bounding box.
 field_78893_d,maxX,1,The second x coordinate of a bounding box.
 field_78894_e,maxY,1,The second y coordinate of a bounding box.
@@ -7746,6 +7868,8 @@ field_82135_d,isBeaconActive,1,
 field_82136_e,levels,1,Level of this beacon's pyramid.
 field_82139_a,effectsList,1,List of effects that Beacon can apply
 field_82140_h,payment,1,Item given to this beacon as payment.
+field_82151_R,distanceWalkedOnStepModified,1,
+field_82152_aq,teleportDirection,1,
 field_82153_h,timeInPortal,1,
 field_82155_f,isAnvil,1,
 field_82156_g,fallHurtMax,1,Maximum amount of damage dealt to entities hit by falling block
@@ -7759,6 +7883,7 @@ field_82176_d,armorProbability,1,Probability to get armor
 field_82177_b,enchantmentProbability,1,An array of probabilities that determines whether a random enchantment should be added to the held item. Indexed by difficulty.
 field_82178_c,armorEnchantmentProbability,1,Probability to get enchanted armor
 field_82179_bU,persistenceRequired,1,Whether this entity should NOT despawn.
+field_82180_bT,previousEquipment,1,"The equipment this mob was previously wearing, used for syncing."
 field_82181_as,pickUpLootProability,1,Probability to pick up loot
 field_82182_bS,equipment,1,Equipment (armor and held item) for this entity.
 field_82184_d,aiControlledByPlayer,1,AI task for player control.
@@ -7800,6 +7925,9 @@ field_82527_a,dispenseBehaviorRegistry,1,Registry for all dispense behaviors.
 field_82537_a,sensible,1,"Whether this button is sensible to arrows, used by wooden buttons."
 field_82539_a,types,1,The types of the wall.
 field_82548_a,theChunkCoordinates,1,
+field_82559_a,readSuccessfully,1,"Always 1, unless readByte threw an exception."
+field_82561_f,disableRelativeVolume,1,
+field_82562_a,worldAge,1,World age in ticks.
 field_82564_f,showCape,1,
 field_82575_g,totalTime,1,Total time for this world.
 field_82576_c,generatorOptions,1,
@@ -7887,6 +8015,7 @@ field_82807_a,skullTypes,1,
 field_82808_b,cropId,1,Block ID of the crop this seed food should place.
 field_82809_c,soilId,1,Block ID of the soil this seed food should be planted on.
 field_82811_a,hangingEntityClass,1,
+field_82818_l,goldenCarrotEffect,1,
 field_82843_f,itemFrame,1,"Item frame this stack is on, or null if not on an item frame."
 field_82852_f,outputSlot,1,Here comes out item you merged and/or renamed.
 field_82853_g,inputSlots,1,The 2slots where you put your items in that you want to merge and/or rename.
@@ -7922,6 +8051,8 @@ field_85080_a,blockID,1,
 field_85082_a,theSuspiciousClasses,1,
 field_85084_a,theCrashReport,1,
 field_85086_a,theCrashReport,1,
+field_85087_d,lastUpdateTime,1,The worldtime at which this PortalPosition was last verified
+field_85088_e,teleporterInstance,1,The teleporter to which this PortalPosition applies
 field_85109_a,worldInfoInstance,1,
 field_85111_a,worldInfoInstance,1,
 field_85113_a,worldInfoInstance,1,
@@ -7937,14 +8068,33 @@ field_85164_c,theMapStructureGenerator,1,
 field_85168_c,theMapStructureGenerator,1,
 field_85171_a,theDedicatedServer,1,
 field_85180_cf,recordWait,1,
+field_85190_d,destinationCoordinateKeys,1,A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial location.
+field_85191_c,destinationCoordinateCache,1,Stores successful portal placement locations for rapid lookup.
 field_85192_a,worldServerInstance,1,
 field_90044_b,records,1,List of all record items and their names.
+field_92014_j,explosionStrength,1,The explosion radius of spawned fireballs.
+field_92055_b,lifetime,1,The lifetime of the firework in ticks. When the age reaches the lifetime the firework explodes.
+field_92056_a,fireworkAge,1,The age of the firework in ticks.
+field_92076_h,skyLightSent,1,"Whether or not the chunk data contains a light nibble array. This is true in the main world, false in the end + nether."
+field_92077_h,pitch,1,The pitch in steps of 2p/256
+field_92078_i,yaw,1,The yaw in steps of 2p/256
+field_92086_a,isBlank,1,When isBlank is true the DataWatcher is not watching any objects
 field_92091_k,thorns,1,
+field_92104_bU,firework,1,
+field_92105_bW,enchantedBook,1,
+field_92106_bV,fireworkCharge,1,
 field_94084_b,tntPlacedBy,1,
+field_94102_c,entityName,1,
 field_94106_a,minecartTNTFuse,1,
+field_94109_b,pushZ,1,
+field_94110_c,fuel,1,
+field_94111_a,pushX,1,
+field_94112_b,preventContentDropping,1,Whether the minecart should not drop its content when flagged as dead.
 field_94113_a,minecartContainerItems,1,
+field_94123_d,inventoryName,1,The name that is displayed if the hopper was renamed
+field_94124_b,hopperItemStacks,1,
 field_94337_cv,railActivator,1,
-field_94338_cu,stairCompactNetherQuartz,1,
+field_94338_cu,stairsNetherQuartz,1,
 field_94339_ct,blockNetherQuartz,1,
 field_94340_cs,hopperBlock,1,
 field_94341_cq,blockRedstone,1,
@@ -7955,17 +8105,41 @@ field_94345_cm,pressurePlateIron,1,
 field_94346_cn,redstoneComparatorIdle,1,
 field_94347_ck,chestTrapped,1,
 field_94348_cl,pressurePlateGold,1,
+field_94356_a,pressurePlateIconName,1,
+field_94357_a,maxItemsWeighted,1,The maximum number of items the plate weights.
 field_94367_a,grassTypes,1,
 field_94386_b,woodTextureTypes,1,
+field_94389_b,treeTextureTypes,1,
 field_94395_cQ,iconArray,1,
 field_94418_b,quartzBlockTextureTypes,1,
 field_94420_a,quartzBlockTypes,1,
+field_94430_b,breakableBlockIcon,1,
+field_94431_cO,anvilIconNames,1,
+field_94443_a,isTrapped,1,Determines whether of not the chest is trapped.
 field_94445_a,iconArray,1,
+field_94465_b,doorTypeForIcon,1,Used for pointing at icon names.
+field_94467_a,doorIconNames,1,
+field_94470_a,cocoaIcons,1,
+field_94500_e,useProvidedWindowTitle,1,"If false, the client will look up a string like ""window.minecart"". If true, the client uses what the server provides."
+field_94512_f,isStraightRail,1,
+field_94513_g,connectedTracks,1,The positions of connected rails
+field_94514_d,railY,1,
+field_94515_e,railZ,1,
+field_94516_b,logicWorld,1,
+field_94517_c,railX,1,
+field_94518_a,theRail,1,
+field_94557_a,selectAnything,1,
 field_94582_cb,tntMinecart,1,
+field_94583_ca,netherQuartz,1,
+field_94584_bZ,netherrackBrick,1,
+field_94585_bY,comparator,1,
 field_94601_a,bowPullIconNameArray,1,
 field_94610_a,theTileEntity,1,
 field_94612_a,theTileEntity,1,
 field_96093_i,entityUniqueID,1,
+field_96105_c,commandSenderName,1,"The name of command sender (usually username, but possibly ""Rcon"")"
+field_96106_a,succesCount,1,
+field_96113_a,isBlocked,1,Whether this hopper minecart is being blocked by an activator rail.
 field_96442_D,worldScoreboard,1,
 field_96458_b,defaultDispenserItemBehavior,1,
 field_96459_b,defaultDispenserItemBehavior,1,
@@ -7974,7 +8148,26 @@ field_96462_b,potionItemStack,1,
 field_96463_c,dispenserPotionBehavior,1,
 field_96464_b,defaultDispenserItemBehavior,1,
 field_96469_cy,dropper,1,
+field_96474_cR,dropperDefaultBehaviour,1,
+field_96480_b,scoreName,1,The unique name for the scoreboard to be displayed.
+field_96481_a,scoreboardPosition,1,"The position of the scoreboard. 0 = list, 1 = sidebar, 2 = belowName."
+field_96482_b,objectiveDisplayName,1,
+field_96483_c,change,1,"0 to create scoreboard, 1 to remove scoreboard, 2 to update display text."
+field_96484_a,objectiveName,1,
+field_96485_d,updateOrRemove,1,0 to create/update an item. 1 to remove an item.
+field_96486_b,scoreName,1,The unique name for the scoreboard to be updated. Only sent when updateOrRemove does not equal 1.
+field_96487_c,value,1,The score to be displayed next to the entry. Only sent when Update/Remove does not equal 1.
+field_96488_a,itemName,1,An unique name to be displayed in the list.
+field_96489_f,mode,1,If 0 then the team is created. If 1 then the team is removed. If 2 the team team information is updated. If 3 then new players are added to the team. If 4 then players are removed from the team.
+field_96491_d,teamSuffix,1,Only if mode = 0 or 2. Displayed after the players' name that are part of this team.
+field_96492_e,playerNames,1,Only if mode = 0 or 3 or 4. Players to be added/remove from the team.
+field_96493_b,teamDisplayName,1,Only if mode = 0 or 2.
+field_96494_c,teamPrefix,1,Only if mode = 0 or 2. Displayed before the players' name that are part of this team.
+field_96495_a,teamName,1,A unique name for the team.
+field_96540_f,teamMemberships,1,Map of usernames to ScorePlayerTeam objects.
+field_96545_a,scoreObjectives,1,Map of objective names to ScoreObjective objects.
 field_96564_a,theEntity,1,
+field_96566_b,selectInventories,1,
 field_96569_b,theEntityTracker,1,
 field_96600_cc,hopperMinecart,1,
 field_96601_a,theBlock,1,
@@ -7982,11 +8175,46 @@ field_96602_b,dispenserMinecartBehavior,1,
 field_96633_b,playerInventory,1,
 field_96634_a,theItemStack,1,
 field_96656_b,theScoreboard,1,
+field_96676_c,membershipSet,1,A set of all team member usernames.
+field_96677_a,theScoreboard,1,
+field_96683_d,displayName,1,
+field_96684_b,name,1,
+field_96685_c,objectiveCriteria,1,The ScoreObjectiveCriteria for this objetive
 field_96686_a,theScoreboard,1,
+field_98040_a,mobSpawnerLogic,1,Mob spawner logic for this spawner minecart.
+field_98044_b,transferTicker,1,
+field_98048_c,transferCooldown,1,
 field_98051_e,fallingBlockTileEntityData,1,
+field_98181_L,worldLogAgent,1,The log agent for this world.
+field_98203_f,offsetY,1,This is added to the Y position after being multiplied by random.nextGaussian()
+field_98204_g,offsetZ,1,This is added to the Z position after being multiplied by random.nextGaussian()
+field_98205_d,posZ,1,Z position of the particle.
+field_98206_e,offsetX,1,This is added to the X position after being multiplied by random.nextGaussian()
+field_98207_b,posX,1,X position of the particle.
+field_98208_c,posY,1,Y position of the particle.
+field_98209_a,particleName,1,The name of the particle to create. A list can be found at https://gist.github.com/thinkofdeath/5110835
+field_98210_h,speed,1,The speed of each particle.
+field_98211_i,quantity,1,The number of particles to create.
+field_98212_g,friendlyFire,1,Only if mode = 0 or 2.
 field_98219_c,entityAvoiderAI,1,
+field_98223_c,minecartName,1,
 field_98226_b,theNetServerHandler,1,
 field_98227_a,thePacket,1,
+field_98239_d,loggerPrefix,1,
+field_98240_b,logFile,1,
+field_98241_c,loggerName,1,
+field_98242_a,serverLogger,1,
 field_98244_b,theNetServerHandler,1,
 field_98245_a,thePacket,1,
+field_98282_f,randomMinecart,1,
+field_98283_g,minSpawnDelay,1,
+field_98285_e,minecartToSpawn,1,List of minecart to spawn.
+field_98286_b,spawnDelay,1,The delay to spawn.
 field_98288_a,mobID,1,
+field_98289_l,activatingRangeFromPlayer,1,The distance from which a player activates the spawner.
+field_98290_m,spawnRange,1,The range coefficient for spawning entities around.
+field_98292_k,maxNearbyEntities,1,
+field_98293_h,maxSpawnDelay,1,
+field_98294_i,spawnCount,1,
+field_98295_a,mobSpawnerEntity,1,The mob spawner we deal with
+field_98296_a,spawnerMinecart,1,The spawner minecart using this mob spawner logic.

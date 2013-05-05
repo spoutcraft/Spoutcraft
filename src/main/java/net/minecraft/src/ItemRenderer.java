@@ -6,6 +6,7 @@ import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 //MCPatcher Start
+import com.prupe.mcpatcher.mod.CITUtils;
 import com.prupe.mcpatcher.mod.ColorizeBlock;
 //MCPatcher End
 // Spout Start
@@ -121,7 +122,7 @@ public class ItemRenderer {
 
 			renderItemIn2D(var5, var7, var8, var6, var9, var4.getSheetWidth(), var4.getSheetHeight(), 0.0625F);
 
-			if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0) {
+			if (!CITUtils.renderOverlayHeld(par2ItemStack) && par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0) {
 				GL11.glDepthFunc(GL11.GL_EQUAL);
 				GL11.glDisable(GL11.GL_LIGHTING);
 				this.mc.renderEngine.bindTexture("%blur%/misc/glint.png");
@@ -455,7 +456,7 @@ public class ItemRenderer {
 			}
 
 			GL11.glPopMatrix();
-		} else if (!var3.getHasActivePotion()) {
+		} else if (!var3.isInvisible()) {
 			GL11.glPushMatrix();
 			var7 = 0.8F;
 			var20 = var3.getSwingProgress(par1);

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.prupe.mcpatcher.TessellatorUtils;
 import com.prupe.mcpatcher.mod.CTMUtils;
 import com.prupe.mcpatcher.mod.ColorizeBlock;
 import com.prupe.mcpatcher.mod.Colorizer;
@@ -449,7 +450,7 @@ public class RenderBlocks {
 		if (var27 == null) {
 			return false;
 		} else {
-			var5 = CTMUtils.getTessellator(var27);
+			var5 = TessellatorUtils.getTessellator(var5, var27);
 			double var28 = (double)var27.getMinU();
 			double var30 = (double)var27.getMaxU();
 			double var32 = (double)var27.getMinV();
@@ -471,7 +472,7 @@ public class RenderBlocks {
 			if (var27 == null) {
 				return false;
 			} else {
-				var5 = CTMUtils.getTessellator(var27);
+				var5 = TessellatorUtils.getTessellator(var5, var27);
 				var28 = (double)var27.getMinU();
 				var30 = (double)var27.getMaxU();
 				var32 = (double)var27.getMinV();
@@ -515,10 +516,10 @@ public class RenderBlocks {
 				var5.addVertexWithUV(var54, var56, var58, var36, var40);
 				var5.addVertexWithUV(var52, var56, var58, var38, var42);
 				var5.addVertexWithUV(var52, var56, var60, var46, var50);
-				int var62 = Direction.headInvisibleFace[var7];
+				int var62 = Direction.directionToFacing[var7];
 
 				if (var8) {
-					var62 = Direction.headInvisibleFace[Direction.footInvisibleFaceRemap[var7]];
+					var62 = Direction.directionToFacing[Direction.rotateOpposite[var7]];
 				}
 
 				byte var63 = 4;
@@ -543,28 +544,28 @@ public class RenderBlocks {
 					var5.setBrightness(this.renderMinZ > 0.0D ? var25 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 - 1));
 					var5.setColorOpaque_F(var11, var11, var11);
 					this.flipTexture = var63 == 2;
-					this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 2));
+					this.renderFaceZNeg(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 2));
 				}
 
 				if (var62 != 3 && (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2, par3, par4 + 1, 3))) {
 					var5.setBrightness(this.renderMaxZ < 1.0D ? var25 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 + 1));
 					var5.setColorOpaque_F(var11, var11, var11);
 					this.flipTexture = var63 == 3;
-					this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3));
+					this.renderFaceZPos(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3));
 				}
 
 				if (var62 != 4 && (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2 - 1, par3, par4, 4))) {
 					var5.setBrightness(this.renderMinZ > 0.0D ? var25 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 - 1, par3, par4));
 					var5.setColorOpaque_F(var12, var12, var12);
 					this.flipTexture = var63 == 4;
-					this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 4));
+					this.renderFaceXNeg(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 4));
 				}
 
 				if (var62 != 5 && (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2 + 1, par3, par4, 5))) {
 					var5.setBrightness(this.renderMaxZ < 1.0D ? var25 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 + 1, par3, par4));
 					var5.setColorOpaque_F(var12, var12, var12);
 					this.flipTexture = var63 == 5;
-					this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 5));
+					this.renderFaceXPos(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 5));
 				}
 
 				this.flipTexture = false;
@@ -579,7 +580,7 @@ public class RenderBlocks {
 	private boolean renderBlockBrewingStand(BlockBrewingStand par1BlockBrewingStand, int par2, int par3, int par4) {
 		this.setRenderBounds(0.4375D, 0.0D, 0.4375D, 0.5625D, 0.875D, 0.5625D);
 		this.renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
-		this.setOverrideBlockTexture(par1BlockBrewingStand.func_94448_e());
+		this.setOverrideBlockTexture(par1BlockBrewingStand.getBrewingStandIcon());
 		this.setRenderBounds(0.5625D, 0.0D, 0.3125D, 0.9375D, 0.125D, 0.6875D);
 		this.renderStandardBlock(par1BlockBrewingStand, par2, par3, par4);
 		this.setRenderBounds(0.125D, 0.0D, 0.0625D, 0.5D, 0.125D, 0.4375D);
@@ -616,7 +617,7 @@ public class RenderBlocks {
 		if (var32 == null) {
 			return false;
 		} else {
-			var5 = CTMUtils.getTessellator(var32);
+			var5 = TessellatorUtils.getTessellator(var5, var32);
 			double var33 = (double)var32.getMinV();
 			double var14 = (double)var32.getMaxV();
 			int var16 = this.blockAccess.getBlockMetadata(par2, par3, par4);
@@ -675,13 +676,13 @@ public class RenderBlocks {
 		var5.setColorOpaque_F(var6 * var8, var6 * var9, var6 * var10);
 		Icon var16 = par1BlockCauldron.getBlockTextureFromSide(2);
 		var12 = 0.125F;
-		this.renderSouthFace(par1BlockCauldron, (double)((float)par2 - 1.0F + var12), (double)par3, (double)par4, var16);
-		this.renderNorthFace(par1BlockCauldron, (double)((float)par2 + 1.0F - var12), (double)par3, (double)par4, var16);
-		this.renderWestFace(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 - 1.0F + var12), var16);
-		this.renderEastFace(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 + 1.0F - var12), var16);
+		this.renderFaceXPos(par1BlockCauldron, (double)((float)par2 - 1.0F + var12), (double)par3, (double)par4, var16);
+		this.renderFaceXNeg(par1BlockCauldron, (double)((float)par2 + 1.0F - var12), (double)par3, (double)par4, var16);
+		this.renderFaceZPos(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 - 1.0F + var12), var16);
+		this.renderFaceZNeg(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 + 1.0F - var12), var16);
 		Icon var17 = BlockCauldron.func_94375_b("cauldron_inner");
-		this.renderTopFace(par1BlockCauldron, (double)par2, (double)((float)par3 - 1.0F + 0.25F), (double)par4, var17);
-		this.renderBottomFace(par1BlockCauldron, (double)par2, (double)((float)par3 + 1.0F - 0.75F), (double)par4, var17);
+		this.renderFaceYPos(par1BlockCauldron, (double)par2, (double)((float)par3 - 1.0F + 0.25F), (double)par4, var17);
+		this.renderFaceYNeg(par1BlockCauldron, (double)par2, (double)((float)par3 + 1.0F - 0.75F), (double)par4, var17);
 		int var14 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 
 		if (var14 > 0) {
@@ -693,7 +694,7 @@ public class RenderBlocks {
 				var14 = 3;
 			}
 
-			this.renderTopFace(par1BlockCauldron, (double)par2, (double)((float)par3 - 1.0F + (6.0F + (float)var14 * 3.0F) / 16.0F), (double)par4, var15);
+			this.renderFaceYPos(par1BlockCauldron, (double)par2, (double)((float)par3 - 1.0F + (6.0F + (float)var14 * 3.0F) / 16.0F), (double)par4, var15);
 		}
 
 		return true;
@@ -726,11 +727,11 @@ public class RenderBlocks {
 
 		var5.setColorOpaque_F(var6 * var9, var6 * var10, var6 * var11);
 		var12 = 0.1865F;
-		this.renderSouthFace(par1BlockFlowerPot, (double)((float)par2 - 0.5F + var12), (double)par3, (double)par4, var8);
-		this.renderNorthFace(par1BlockFlowerPot, (double)((float)par2 + 0.5F - var12), (double)par3, (double)par4, var8);
-		this.renderWestFace(par1BlockFlowerPot, (double)par2, (double)par3, (double)((float)par4 - 0.5F + var12), var8);
-		this.renderEastFace(par1BlockFlowerPot, (double)par2, (double)par3, (double)((float)par4 + 0.5F - var12), var8);
-		this.renderTopFace(par1BlockFlowerPot, (double)par2, (double)((float)par3 - 0.5F + var12 + 0.1875F), (double)par4, this.getBlockIcon(Block.dirt));
+		this.renderFaceXPos(par1BlockFlowerPot, (double)((float)par2 - 0.5F + var12), (double)par3, (double)par4, var8);
+		this.renderFaceXNeg(par1BlockFlowerPot, (double)((float)par2 + 0.5F - var12), (double)par3, (double)par4, var8);
+		this.renderFaceZPos(par1BlockFlowerPot, (double)par2, (double)par3, (double)((float)par4 - 0.5F + var12), var8);
+		this.renderFaceZNeg(par1BlockFlowerPot, (double)par2, (double)par3, (double)((float)par4 + 0.5F - var12), var8);
+		this.renderFaceYPos(par1BlockFlowerPot, (double)par2, (double)((float)par3 - 0.5F + var12 + 0.1875F), (double)par4, this.getBlockIcon(Block.dirt));
 		int var19 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 
 		if (var19 != 0) {
@@ -904,27 +905,27 @@ public class RenderBlocks {
 			Tessellator var14 = Tessellator.instance;
 			var14.startDrawingQuads();
 			var14.setNormal(0.0F, -1.0F, 0.0F);
-			this.renderBottomFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 0, par12));
+			this.renderFaceYNeg(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 0, par12));
 			var14.draw();
 			var14.startDrawingQuads();
 			var14.setNormal(0.0F, 1.0F, 0.0F);
-			this.renderTopFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 1, par12));
+			this.renderFaceYPos(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 1, par12));
 			var14.draw();
 			var14.startDrawingQuads();
 			var14.setNormal(0.0F, 0.0F, -1.0F);
-			this.renderEastFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 2, par12));
+			this.renderFaceZNeg(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 2, par12));
 			var14.draw();
 			var14.startDrawingQuads();
 			var14.setNormal(0.0F, 0.0F, 1.0F);
-			this.renderWestFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 3, par12));
+			this.renderFaceZPos(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 3, par12));
 			var14.draw();
 			var14.startDrawingQuads();
 			var14.setNormal(-1.0F, 0.0F, 0.0F);
-			this.renderNorthFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 4, par12));
+			this.renderFaceXNeg(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 4, par12));
 			var14.draw();
 			var14.startDrawingQuads();
 			var14.setNormal(1.0F, 0.0F, 0.0F);
-			this.renderSouthFace(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 5, par12));
+			this.renderFaceXPos(par1BlockAnvil, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockAnvil, 5, par12));
 			var14.draw();
 		} else {
 			this.renderStandardBlock(par1BlockAnvil, par2, par3, par4);
@@ -1107,7 +1108,7 @@ public class RenderBlocks {
 		var8 = CTMUtils.getTile(this, par1BlockRedstoneLogic, par2, par3, par4, var8, var6);
 
 		if (var8 != null) {
-			var6 = CTMUtils.getTessellator(var8);
+			var6 = TessellatorUtils.getTessellator(var6, var8);
 			double var9 = (double)var8.getMinU();
 			double var11 = (double)var8.getMaxU();
 			double var13 = (double)var8.getMinV();
@@ -1497,7 +1498,7 @@ public class RenderBlocks {
 		if (var14 == null) {
 			return false;
 		} else {
-			var8 = CTMUtils.getTessellator(var14);
+			var8 = TessellatorUtils.getTessellator(var8, var14);
 			double var15 = (double)var14.getMinU();
 			double var17 = (double)var14.getMinV();
 			double var19 = (double)var14.getMaxU();
@@ -1683,7 +1684,7 @@ public class RenderBlocks {
 		if (var18 == null) {
 			return false;
 		} else {
-			var5 = CTMUtils.getTessellator(var18);
+			var5 = TessellatorUtils.getTessellator(var5, var18);
 			double var19 = (double)var18.getMinU();
 			double var21 = (double)var18.getMinV();
 			double var23 = (double)var18.getMaxU();
@@ -1906,7 +1907,7 @@ public class RenderBlocks {
 					return false;
 				}
 
-				var5 = CTMUtils.getTessellator(var18);
+				var5 = TessellatorUtils.getTessellator(var5, var18);
 				double var52 = (double)var18.getMinU();
 				double var54 = (double)var18.getInterpolatedV(var8 ? 2.0D : 0.0D);
 				double var56 = (double)var18.getMaxU();
@@ -1980,7 +1981,7 @@ public class RenderBlocks {
 		if (var6 == null) {
 			return false;
 		} else {
-			var5 = CTMUtils.getTessellator(var6);
+			var5 = TessellatorUtils.getTessellator(var5, var6);
 			double var11 = (double)var6.getMinU();
 			double var13 = (double)var6.getInterpolatedV(var8 ? 2.0D : 0.0D);
 			double var15 = (double)var6.getMaxU();
@@ -2111,7 +2112,7 @@ public class RenderBlocks {
 		if (var8 == null) {
 			return false;
 		} else {
-			var5 = CTMUtils.getTessellator(var8);
+			var5 = TessellatorUtils.getTessellator(var5, var8);
 			double var9 = (double)var8.getMinU();
 			double var11 = (double)var8.getMinV();
 			double var13 = (double)var8.getMaxU();
@@ -2136,7 +2137,7 @@ public class RenderBlocks {
 						return false;
 					}
 
-					var5 = CTMUtils.getTessellator(var8);
+					var5 = TessellatorUtils.getTessellator(var5, var8);
 					var9 = (double)var8.getMinU();
 					var11 = (double)var8.getMinV();
 					var13 = (double)var8.getMaxU();
@@ -2208,7 +2209,7 @@ public class RenderBlocks {
 						return false;
 					}
 
-					var5 = CTMUtils.getTessellator(var8);
+					var5 = TessellatorUtils.getTessellator(var5, var8);
 					var9 = (double)var8.getMinU();
 					var11 = (double)var8.getMinV();
 					var13 = (double)var8.getMaxU();
@@ -2227,7 +2228,7 @@ public class RenderBlocks {
 							return false;
 						}
 
-						var5 = CTMUtils.getTessellator(var8);
+						var5 = TessellatorUtils.getTessellator(var5, var8);
 						var9 = (double)var8.getMinU();
 						var11 = (double)var8.getMinV();
 						var13 = (double)var8.getMaxU();
@@ -2247,7 +2248,7 @@ public class RenderBlocks {
 							return false;
 						}
 
-						var5 = CTMUtils.getTessellator(var8);
+						var5 = TessellatorUtils.getTessellator(var5, var8);
 						var9 = (double)var8.getMinU();
 						var11 = (double)var8.getMinV();
 						var13 = (double)var8.getMaxU();
@@ -2281,7 +2282,7 @@ public class RenderBlocks {
 					return false;
 				}
 
-				var5 = CTMUtils.getTessellator(var8);
+				var5 = TessellatorUtils.getTessellator(var5, var8);
 				var9 = (double)var8.getMinU();
 				var11 = (double)var8.getMinV();
 				var13 = (double)var8.getMaxU();
@@ -2316,7 +2317,7 @@ public class RenderBlocks {
 					return false;
 				}
 
-				var5 = CTMUtils.getTessellator(var8);
+				var5 = TessellatorUtils.getTessellator(var5, var8);
 				var9 = (double)var8.getMinU();
 				var11 = (double)var8.getMinV();
 				var13 = (double)var8.getMaxU();
@@ -2562,7 +2563,7 @@ public class RenderBlocks {
 		if (var7 == null) {
 			return false;
 		} else {
-			var5 = CTMUtils.getTessellator(var7);
+			var5 = TessellatorUtils.getTessellator(var5, var7);
 			double var8 = (double)var7.getMinU();
 			double var10 = (double)var7.getMinV();
 			double var12 = (double)var7.getMaxU();
@@ -2641,7 +2642,7 @@ public class RenderBlocks {
 		if (var6 == null) {
 			return false;
 		} else {
-			var5 = CTMUtils.getTessellator(var6);
+			var5 = TessellatorUtils.getTessellator(var5, var6);
 			double var20 = (double)var6.getMinU();
 			double var9 = (double)var6.getMinV();
 			double var11 = (double)var6.getMaxU();
@@ -2705,7 +2706,7 @@ public class RenderBlocks {
 		if (var6 == null) {
 			return false;
 		} else {
-			var5 = CTMUtils.getTessellator(var6);
+			var5 = TessellatorUtils.getTessellator(var5, var6);
 			double var19 = (double)var6.getMinU();
 			double var20 = (double)var6.getMinV();
 			double var12 = (double)var6.getMaxU();
@@ -3336,7 +3337,7 @@ public class RenderBlocks {
 		var11 = CTMUtils.getTile(this, par1Block, (int)par3, (int)par5, (int)par7, var11, var10);
 
 		if (var11 != null) {
-			var10 = CTMUtils.getTessellator(var11);
+			var10 = TessellatorUtils.getTessellator(var10, var11);
 			double var12 = (double)var11.getMinU();
 			double var14 = (double)var11.getMinV();
 			double var16 = (double)var11.getMaxU();
@@ -3427,7 +3428,7 @@ public class RenderBlocks {
 		if (var6 == null) {
 			return false;
 		} else {
-			var5 = CTMUtils.getTessellator(var6);
+			var5 = TessellatorUtils.getTessellator(var5, var6);
 			double var8 = (double)var6.getMinU();
 			double var10 = (double)var6.getMinV();
 			double var12 = (double)var6.getMaxU();
@@ -3650,7 +3651,7 @@ public class RenderBlocks {
 				var5.setBrightness(par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 - 1, par4));
 				float var58 = 1.0F;
 				var5.setColorOpaque_F(var14 * var58 * var7, var14 * var58 * var8, var14 * var58 * var9);
-				this.renderBottomFace(par1Block, (double)par2, (double)par3 + var32, (double)par4, this.getBlockIconFromSide(par1Block, 0));
+				this.renderFaceYNeg(par1Block, (double)par2, (double)par3 + var32, (double)par4, this.getBlockIconFromSide(par1Block, 0));
 				var13 = true;
 			}
 
@@ -3799,7 +3800,7 @@ public class RenderBlocks {
 
 		Colorizer.setColorF(ColorizeBlock.colorizeBlock(par1Block, par3, par4, par5, 0));
 		var11.setColorOpaque_F(Colorizer.setColor[0] * var13, Colorizer.setColor[1] * var13, Colorizer.setColor[2] * var13);
-		this.renderBottomFace(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 0, par6));
+		this.renderFaceYNeg(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 0, par6));
 		var13 = 1.0F;
 
 		if (var13 < var12) {
@@ -3807,7 +3808,7 @@ public class RenderBlocks {
 		}
 
 		var11.setColorOpaque_F(Colorizer.setColor[0] * var13, Colorizer.setColor[1] * var13, Colorizer.setColor[2] * var13);
-		this.renderTopFace(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 1, par6));
+		this.renderFaceYPos(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 1, par6));
 		var13 = 1.0F;
 
 		if (var13 < var12) {
@@ -3815,7 +3816,7 @@ public class RenderBlocks {
 		}
 
 		var11.setColorOpaque_F(Colorizer.setColor[0] * var13, Colorizer.setColor[1] * var13, Colorizer.setColor[2] * var13);
-		this.renderEastFace(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 2, par6));
+		this.renderFaceZNeg(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 2, par6));
 		var13 = 1.0F;
 
 		if (var13 < var12) {
@@ -3823,7 +3824,7 @@ public class RenderBlocks {
 		}
 
 		var11.setColorOpaque_F(Colorizer.setColor[0] * var13, Colorizer.setColor[1] * var13, Colorizer.setColor[2] * var13);
-		this.renderWestFace(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 3, par6));
+		this.renderFaceZPos(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 3, par6));
 		var13 = 1.0F;
 
 		if (var13 < var12) {
@@ -3831,7 +3832,7 @@ public class RenderBlocks {
 		}
 
 		var11.setColorOpaque_F(Colorizer.setColor[0] * var13, Colorizer.setColor[1] * var13, Colorizer.setColor[2] * var13);
-		this.renderNorthFace(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 4, par6));
+		this.renderFaceXNeg(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 4, par6));
 		var13 = 1.0F;
 
 		if (var13 < var12) {
@@ -3839,7 +3840,7 @@ public class RenderBlocks {
 		}
 
 		var11.setColorOpaque_F(Colorizer.setColor[0] * var13, Colorizer.setColor[1] * var13, Colorizer.setColor[2] * var13);
-		this.renderSouthFace(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 5, par6));
+		this.renderFaceXPos(par1Block, -0.5D, -0.5D, -0.5D, this.getBlockIconFromSideAndMetadata(par1Block, 5, par6));
 		var11.draw();
 	}
 
@@ -4033,7 +4034,7 @@ public class RenderBlocks {
 			this.colorRedTopRight *= var12;
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
-			this.renderBottomFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 0));
+			this.renderFaceYNeg(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 0));
 			var8 = true;
 		}
 
@@ -4121,7 +4122,7 @@ public class RenderBlocks {
 			this.colorRedTopRight *= var12;
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
-			this.renderTopFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 1));
+			this.renderFaceYPos(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 1));
 			var8 = true;
 		}
 
@@ -4220,7 +4221,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var22 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 2);
-			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var22);
+			this.renderFaceZNeg(par1Block, (double)par2, (double)par3, (double)par4, var22);
 
 			if (fancyGrass && var22.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				this.colorRedTopLeft *= par5;
@@ -4235,7 +4236,7 @@ public class RenderBlocks {
 				this.colorBlueBottomLeft *= par7;
 				this.colorBlueBottomRight *= par7;
 				this.colorBlueTopRight *= par7;
-				this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceZNeg(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var8 = true;
@@ -4334,7 +4335,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var22 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3);
-			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3));
+			this.renderFaceZPos(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3));
 
 			if (fancyGrass && var22.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				this.colorRedTopLeft *= par5;
@@ -4349,7 +4350,7 @@ public class RenderBlocks {
 				this.colorBlueBottomLeft *= par7;
 				this.colorBlueBottomRight *= par7;
 				this.colorBlueTopRight *= par7;
-				this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceZPos(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var8 = true;
@@ -4448,7 +4449,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var22 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 4);
-			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var22);
+			this.renderFaceXNeg(par1Block, (double)par2, (double)par3, (double)par4, var22);
 
 			if (fancyGrass && var22.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				this.colorRedTopLeft *= par5;
@@ -4463,7 +4464,7 @@ public class RenderBlocks {
 				this.colorBlueBottomLeft *= par7;
 				this.colorBlueBottomRight *= par7;
 				this.colorBlueTopRight *= par7;
-				this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceXNeg(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var8 = true;
@@ -4562,7 +4563,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var22 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 5);
-			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var22);
+			this.renderFaceXPos(par1Block, (double)par2, (double)par3, (double)par4, var22);
 
 			if (fancyGrass && var22.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				this.colorRedTopLeft *= par5;
@@ -4577,7 +4578,7 @@ public class RenderBlocks {
 				this.colorBlueBottomLeft *= par7;
 				this.colorBlueBottomRight *= par7;
 				this.colorBlueTopRight *= par7;
-				this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceXPos(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var8 = true;
@@ -4704,7 +4705,7 @@ public class RenderBlocks {
 			this.colorRedTopRight *= var12;
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
-			this.renderBottomFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 0));
+			this.renderFaceYNeg(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 0));
 			var8 = true;
 		}
 
@@ -4792,7 +4793,7 @@ public class RenderBlocks {
 			this.colorRedTopRight *= var12;
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
-			this.renderTopFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 1));
+			this.renderFaceYPos(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 1));
 			var8 = true;
 		}
 
@@ -4907,7 +4908,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var30 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 2);
-			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var30);
+			this.renderFaceZNeg(par1Block, (double)par2, (double)par3, (double)par4, var30);
 
 			if (fancyGrass && var30.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				this.colorRedTopLeft *= par5;
@@ -4922,7 +4923,7 @@ public class RenderBlocks {
 				this.colorBlueBottomLeft *= par7;
 				this.colorBlueBottomRight *= par7;
 				this.colorBlueTopRight *= par7;
-				this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceZNeg(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var8 = true;
@@ -5029,7 +5030,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var30 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3);
-			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3));
+			this.renderFaceZPos(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3));
 
 			if (fancyGrass && var30.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				this.colorRedTopLeft *= par5;
@@ -5044,7 +5045,7 @@ public class RenderBlocks {
 				this.colorBlueBottomLeft *= par7;
 				this.colorBlueBottomRight *= par7;
 				this.colorBlueTopRight *= par7;
-				this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceZPos(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var8 = true;
@@ -5151,7 +5152,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var30 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 4);
-			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var30);
+			this.renderFaceXNeg(par1Block, (double)par2, (double)par3, (double)par4, var30);
 
 			if (fancyGrass && var30.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				this.colorRedTopLeft *= par5;
@@ -5166,7 +5167,7 @@ public class RenderBlocks {
 				this.colorBlueBottomLeft *= par7;
 				this.colorBlueBottomRight *= par7;
 				this.colorBlueTopRight *= par7;
-				this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceXNeg(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var8 = true;
@@ -5273,7 +5274,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var30 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 5);
-			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var30);
+			this.renderFaceXPos(par1Block, (double)par2, (double)par3, (double)par4, var30);
 
 			if (fancyGrass && var30.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				this.colorRedTopLeft *= par5;
@@ -5288,7 +5289,7 @@ public class RenderBlocks {
 				this.colorBlueBottomLeft *= par7;
 				this.colorBlueBottomRight *= par7;
 				this.colorBlueTopRight *= par7;
-				this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceXPos(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var8 = true;
@@ -5364,14 +5365,14 @@ public class RenderBlocks {
 		if (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2, par3 - 1, par4, 0)) {
 			var8.setBrightness(this.renderMinY > 0.0D ? var26 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 - 1, par4));
 			var8.setColorOpaque_F(var17, var20, var23);
-			this.renderBottomFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 0));
+			this.renderFaceYNeg(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 0));
 			var9 = true;
 		}
 
 		if (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2, par3 + 1, par4, 1)) {
 			var8.setBrightness(this.renderMaxY < 1.0D ? var26 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 + 1, par4));
 			var8.setColorOpaque_F(var14, var15, var16);
-			this.renderTopFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 1));
+			this.renderFaceYPos(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 1));
 			var9 = true;
 		}
 
@@ -5387,11 +5388,11 @@ public class RenderBlocks {
 			}
 
 			var28 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 2);
-			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
+			this.renderFaceZNeg(par1Block, (double)par2, (double)par3, (double)par4, var28);
 
 			if (fancyGrass && var28.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
-				this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceZNeg(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var9 = true;
@@ -5407,11 +5408,11 @@ public class RenderBlocks {
 			}
 
 			var28 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3);
-			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
+			this.renderFaceZPos(par1Block, (double)par2, (double)par3, (double)par4, var28);
 
 			if (fancyGrass && var28.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
-				this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceZPos(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var9 = true;
@@ -5427,11 +5428,11 @@ public class RenderBlocks {
 			}
 
 			var28 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 4);
-			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
+			this.renderFaceXNeg(par1Block, (double)par2, (double)par3, (double)par4, var28);
 
 			if (fancyGrass && var28.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				var8.setColorOpaque_F(var19 * par5, var22 * par6, var25 * par7);
-				this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceXNeg(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var9 = true;
@@ -5447,11 +5448,11 @@ public class RenderBlocks {
 			}
 
 			var28 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 5);
-			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
+			this.renderFaceXPos(par1Block, (double)par2, (double)par3, (double)par4, var28);
 
 			if (fancyGrass && var28.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture()) {
 				var8.setColorOpaque_F(var19 * par5, var22 * par6, var25 * par7);
-				this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
+				this.renderFaceXPos(par1Block, (double)par2, (double)par3, (double)par4, BlockGrass.getIconSideOverlay());
 			}
 
 			var9 = true;
@@ -5538,7 +5539,7 @@ public class RenderBlocks {
 		if (var9 == null) {
 			return false;
 		} else {
-			var5 = CTMUtils.getTessellator(var9);
+			var5 = TessellatorUtils.getTessellator(var5, var9);
 			var20 = (double)var9.getMinU();
 			var22 = (double)var9.getInterpolatedU((double)var44);
 			var24 = (double)var9.getMinV();
@@ -5630,7 +5631,7 @@ public class RenderBlocks {
 		this.setOverrideBlockTexture(this.getBlockIcon(Block.glass));
 		this.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 		this.renderStandardBlock(par1BlockBeacon, par2, par3, par4);
-		this.setOverrideBlockTexture(par1BlockBeacon.func_94446_i());
+		this.setOverrideBlockTexture(par1BlockBeacon.getBeaconIcon());
 		this.setRenderBounds(0.1875D, (double)var5, 0.1875D, 0.8125D, 0.875D, 0.8125D);
 		this.renderStandardBlock(par1BlockBeacon, par2, par3, par4);
 		this.clearOverrideBlockTexture();
@@ -5686,14 +5687,14 @@ public class RenderBlocks {
 		if (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2, par3 - 1, par4, 0)) {
 			var8.setBrightness(this.renderMinY > 0.0D ? var28 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 - 1, par4));
 			var8.setColorOpaque_F(var14, var18, var22);
-			this.renderBottomFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 0));
+			this.renderFaceYNeg(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 0));
 			var9 = true;
 		}
 
 		if (this.renderAllFaces || RenderPass.shouldSideBeRendered(par1Block, this.blockAccess, par2, par3 + 1, par4, 1)) {
 			var8.setBrightness(this.renderMaxY < 1.0D ? var28 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 + 1, par4));
 			var8.setColorOpaque_F(var15, var19, var23);
-			this.renderTopFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 1));
+			this.renderFaceYPos(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 1));
 			var9 = true;
 		}
 
@@ -5701,7 +5702,7 @@ public class RenderBlocks {
 			var8.setBrightness(this.renderMinZ > 0.0D ? var28 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 - 1));
 			var8.setColorOpaque_F(var16, var20, var24);
 			var8.addTranslation(0.0F, 0.0F, var26);
-			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 2));
+			this.renderFaceZNeg(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 2));
 			var8.addTranslation(0.0F, 0.0F, -var26);
 			var9 = true;
 		}
@@ -5710,7 +5711,7 @@ public class RenderBlocks {
 			var8.setBrightness(this.renderMaxZ < 1.0D ? var28 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 + 1));
 			var8.setColorOpaque_F(var16, var20, var24);
 			var8.addTranslation(0.0F, 0.0F, -var26);
-			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3));
+			this.renderFaceZPos(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3));
 			var8.addTranslation(0.0F, 0.0F, var26);
 			var9 = true;
 		}
@@ -5719,7 +5720,7 @@ public class RenderBlocks {
 			var8.setBrightness(this.renderMinX > 0.0D ? var28 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 - 1, par3, par4));
 			var8.setColorOpaque_F(var17, var21, var25);
 			var8.addTranslation(var26, 0.0F, 0.0F);
-			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 4));
+			this.renderFaceXNeg(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 4));
 			var8.addTranslation(-var26, 0.0F, 0.0F);
 			var9 = true;
 		}
@@ -5728,7 +5729,7 @@ public class RenderBlocks {
 			var8.setBrightness(this.renderMaxX < 1.0D ? var28 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 + 1, par3, par4));
 			var8.setColorOpaque_F(var17, var21, var25);
 			var8.addTranslation(-var26, 0.0F, 0.0F);
-			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 5));
+			this.renderFaceXPos(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 5));
 			var8.addTranslation(var26, 0.0F, 0.0F);
 			var9 = true;
 		}
@@ -6102,34 +6103,34 @@ public class RenderBlocks {
 
 	private boolean renderBlockHopperMetadata(BlockHopper par1BlockHopper, int par2, int par3, int par4, int par5, boolean par6) {
 		Tessellator var7 = Tessellator.instance;
-		int var8 = BlockHopper.func_94451_c(par5);
+		int var8 = BlockHopper.getDirectionFromMetadata(par5);
 		double var9 = 0.625D;
 		this.setRenderBounds(0.0D, var9, 0.0D, 1.0D, 1.0D, 1.0D);
 
 		if (par6) {
 			var7.startDrawingQuads();
 			var7.setNormal(0.0F, -1.0F, 0.0F);
-			this.renderBottomFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 0, par5));
+			this.renderFaceYNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 0, par5));
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(0.0F, 1.0F, 0.0F);
-			this.renderTopFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 1, par5));
+			this.renderFaceYPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 1, par5));
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(0.0F, 0.0F, -1.0F);
-			this.renderEastFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 2, par5));
+			this.renderFaceZNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 2, par5));
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(0.0F, 0.0F, 1.0F);
-			this.renderWestFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 3, par5));
+			this.renderFaceZPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 3, par5));
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(-1.0F, 0.0F, 0.0F);
-			this.renderNorthFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 4, par5));
+			this.renderFaceXNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 4, par5));
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(1.0F, 0.0F, 0.0F);
-			this.renderSouthFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 5, par5));
+			this.renderFaceXPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(par1BlockHopper, 5, par5));
 			var7.draw();
 		} else {
 			this.renderStandardBlock(par1BlockHopper, par2, par3, par4);
@@ -6157,37 +6158,37 @@ public class RenderBlocks {
 			var7.setColorOpaque_F(var11 * var13, var11 * var14, var11 * var15);
 		}
 
-		Icon var24 = BlockHopper.func_94453_b("hopper");
-		Icon var25 = BlockHopper.func_94453_b("hopper_inside");
+		Icon var24 = BlockHopper.getHopperIcon("hopper");
+		Icon var25 = BlockHopper.getHopperIcon("hopper_inside");
 		var13 = 0.125F;
 
 		if (par6) {
 			var7.startDrawingQuads();
 			var7.setNormal(1.0F, 0.0F, 0.0F);
-			this.renderSouthFace(par1BlockHopper, (double)(-1.0F + var13), 0.0D, 0.0D, var24);
+			this.renderFaceXPos(par1BlockHopper, (double)(-1.0F + var13), 0.0D, 0.0D, var24);
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(-1.0F, 0.0F, 0.0F);
-			this.renderNorthFace(par1BlockHopper, (double)(1.0F - var13), 0.0D, 0.0D, var24);
+			this.renderFaceXNeg(par1BlockHopper, (double)(1.0F - var13), 0.0D, 0.0D, var24);
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(0.0F, 0.0F, 1.0F);
-			this.renderWestFace(par1BlockHopper, 0.0D, 0.0D, (double)(-1.0F + var13), var24);
+			this.renderFaceZPos(par1BlockHopper, 0.0D, 0.0D, (double)(-1.0F + var13), var24);
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(0.0F, 0.0F, -1.0F);
-			this.renderEastFace(par1BlockHopper, 0.0D, 0.0D, (double)(1.0F - var13), var24);
+			this.renderFaceZNeg(par1BlockHopper, 0.0D, 0.0D, (double)(1.0F - var13), var24);
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(0.0F, 1.0F, 0.0F);
-			this.renderTopFace(par1BlockHopper, 0.0D, -1.0D + var9, 0.0D, var25);
+			this.renderFaceYPos(par1BlockHopper, 0.0D, -1.0D + var9, 0.0D, var25);
 			var7.draw();
 		} else {
-			this.renderSouthFace(par1BlockHopper, (double)((float)par2 - 1.0F + var13), (double)par3, (double)par4, var24);
-			this.renderNorthFace(par1BlockHopper, (double)((float)par2 + 1.0F - var13), (double)par3, (double)par4, var24);
-			this.renderWestFace(par1BlockHopper, (double)par2, (double)par3, (double)((float)par4 - 1.0F + var13), var24);
-			this.renderEastFace(par1BlockHopper, (double)par2, (double)par3, (double)((float)par4 + 1.0F - var13), var24);
-			this.renderTopFace(par1BlockHopper, (double)par2, (double)((float)par3 - 1.0F) + var9, (double)par4, var25);
+			this.renderFaceXPos(par1BlockHopper, (double)((float)par2 - 1.0F + var13), (double)par3, (double)par4, var24);
+			this.renderFaceXNeg(par1BlockHopper, (double)((float)par2 + 1.0F - var13), (double)par3, (double)par4, var24);
+			this.renderFaceZPos(par1BlockHopper, (double)par2, (double)par3, (double)((float)par4 - 1.0F + var13), var24);
+			this.renderFaceZNeg(par1BlockHopper, (double)par2, (double)par3, (double)((float)par4 + 1.0F - var13), var24);
+			this.renderFaceYPos(par1BlockHopper, (double)par2, (double)((float)par3 - 1.0F) + var9, (double)par4, var25);
 		}
 
 		this.setOverrideBlockTexture(var24);
@@ -6198,27 +6199,27 @@ public class RenderBlocks {
 		if (par6) {
 			var7.startDrawingQuads();
 			var7.setNormal(1.0F, 0.0F, 0.0F);
-			this.renderSouthFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
+			this.renderFaceXPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(-1.0F, 0.0F, 0.0F);
-			this.renderNorthFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
+			this.renderFaceXNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(0.0F, 0.0F, 1.0F);
-			this.renderWestFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
+			this.renderFaceZPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(0.0F, 0.0F, -1.0F);
-			this.renderEastFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
+			this.renderFaceZNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(0.0F, 1.0F, 0.0F);
-			this.renderTopFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
+			this.renderFaceYPos(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
 			var7.draw();
 			var7.startDrawingQuads();
 			var7.setNormal(0.0F, -1.0F, 0.0F);
-			this.renderBottomFace(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
+			this.renderFaceYNeg(par1BlockHopper, 0.0D, 0.0D, 0.0D, var24);
 			var7.draw();
 		} else {
 			this.renderStandardBlock(par1BlockHopper, par2, par3, par4);
@@ -6301,34 +6302,34 @@ public class RenderBlocks {
 		int var12 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4);
 		var5.setBrightness(this.renderMinY > 0.0D ? var12 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 - 1, par4));
 		var5.setColorOpaque_F(var8, var8, var8);
-		this.renderBottomFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 0));
+		this.renderFaceYNeg(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 0));
 		var7 = true;
 		var5.setBrightness(this.renderMaxY < 1.0D ? var12 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 + 1, par4));
 		var5.setColorOpaque_F(var9, var9, var9);
-		this.renderTopFace(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 1));
+		this.renderFaceYPos(par1Block, (double)par2, (double)par3, (double)par4, this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 1));
 		var7 = true;
 		var5.setBrightness(this.renderMinZ > 0.0D ? var12 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 - 1));
 		var5.setColorOpaque_F(var10, var10, var10);
 		Icon var14 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 2);
-		this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var14);
+		this.renderFaceZNeg(par1Block, (double)par2, (double)par3, (double)par4, var14);
 		var7 = true;
 		this.flipTexture = false;
 		var5.setBrightness(this.renderMaxZ < 1.0D ? var12 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 + 1));
 		var5.setColorOpaque_F(var10, var10, var10);
 		var14 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 3);
-		this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, var14);
+		this.renderFaceZPos(par1Block, (double)par2, (double)par3, (double)par4, var14);
 		var7 = true;
 		this.flipTexture = false;
 		var5.setBrightness(this.renderMinX > 0.0D ? var12 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 - 1, par3, par4));
 		var5.setColorOpaque_F(var11, var11, var11);
 		var14 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 4);
-		this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var14);
+		this.renderFaceXNeg(par1Block, (double)par2, (double)par3, (double)par4, var14);
 		var7 = true;
 		this.flipTexture = false;
 		var5.setBrightness(this.renderMaxX < 1.0D ? var12 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 + 1, par3, par4));
 		var5.setColorOpaque_F(var11, var11, var11);
 		var14 = this.getBlockIcon(par1Block, this.blockAccess, par2, par3, par4, 5);
-		this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var14);
+		this.renderFaceXPos(par1Block, (double)par2, (double)par3, (double)par4, var14);
 		var7 = true;
 		this.flipTexture = false;
 		return var7;
@@ -6337,7 +6338,7 @@ public class RenderBlocks {
 	/**
 	 * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
 	 */
-	public void renderBottomFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+	public void renderFaceYNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
 		Tessellator var9 = Tessellator.instance;
 
 		if (this.hasOverrideBlockTexture()) {
@@ -6347,7 +6348,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 0, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = CTMUtils.getTessellator(par8Icon);
+			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinX * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxX * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(this.renderMinZ * 16.0D);
@@ -6432,7 +6433,7 @@ public class RenderBlocks {
 	/**
 	 * Renders the given texture to the top face of the block. Args: block, x, y, z, texture
 	 */
-	public void renderTopFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+	public void renderFaceYPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
 		Tessellator var9 = Tessellator.instance;
 
 		if (this.hasOverrideBlockTexture()) {
@@ -6442,7 +6443,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 1, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = CTMUtils.getTessellator(par8Icon);
+			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinX * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxX * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(this.renderMinZ * 16.0D);
@@ -6525,9 +6526,9 @@ public class RenderBlocks {
 	}
 
 	/**
-	 * Renders the given texture to the east (z-negative) face of the block.  Args: block, x, y, z, texture
+	 * Renders the given texture to the north (z-negative) face of the block.  Args: block, x, y, z, texture
 	 */
-	public void renderEastFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+	public void renderFaceZNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
 		Tessellator var9 = Tessellator.instance;
 
 		if (this.hasOverrideBlockTexture()) {
@@ -6537,7 +6538,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 2, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = CTMUtils.getTessellator(par8Icon);
+			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinX * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxX * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);
@@ -6627,9 +6628,9 @@ public class RenderBlocks {
 	}
 
 	/**
-	 * Renders the given texture to the west (z-positive) face of the block.  Args: block, x, y, z, texture
+	 * Renders the given texture to the south (z-positive) face of the block.  Args: block, x, y, z, texture
 	 */
-	public void renderWestFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+	public void renderFaceZPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
 		Tessellator var9 = Tessellator.instance;
 
 		if (this.hasOverrideBlockTexture()) {
@@ -6639,7 +6640,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 3, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = CTMUtils.getTessellator(par8Icon);
+			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinX * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxX * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);
@@ -6729,9 +6730,9 @@ public class RenderBlocks {
 	}
 
 	/**
-	 * Renders the given texture to the north (x-negative) face of the block.  Args: block, x, y, z, texture
+	 * Renders the given texture to the west (x-negative) face of the block.  Args: block, x, y, z, texture
 	 */
-	public void renderNorthFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+	public void renderFaceXNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
 		Tessellator var9 = Tessellator.instance;
 
 		if (this.hasOverrideBlockTexture()) {
@@ -6741,7 +6742,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 4, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = CTMUtils.getTessellator(par8Icon);
+			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinZ * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxZ * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);
@@ -6831,9 +6832,9 @@ public class RenderBlocks {
 	}
 
 	/**
-	 * Renders the given texture to the south (x-positive) face of the block.  Args: block, x, y, z, texture
+	 * Renders the given texture to the east (x-positive) face of the block.  Args: block, x, y, z, texture
 	 */
-	public void renderSouthFace(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+	public void renderFaceXPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
 		Tessellator var9 = Tessellator.instance;
 
 		if (this.hasOverrideBlockTexture()) {
@@ -6843,7 +6844,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 5, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = CTMUtils.getTessellator(par8Icon);
+			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinZ * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxZ * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);
@@ -6989,39 +6990,39 @@ public class RenderBlocks {
 				var4.startDrawingQuads();
 				var4.setNormal(0.0F, -1.0F, 0.0F);
 				CTMUtils.start();
-				this.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, var4));
+				this.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, var4));
 				var4.draw();
 				var4.startDrawingQuads();
 				var4.setNormal(0.0F, 1.0F, 0.0F);
 				CTMUtils.start();
-				this.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, var4));
+				this.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, var4));
 				var4.draw();
 				var4.startDrawingQuads();
 				var4.setNormal(0.0F, 0.0F, -1.0F);
 				var4.addTranslation(0.0F, 0.0F, var7);
 				CTMUtils.start();
-				this.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, var4));
+				this.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, var4));
 				var4.addTranslation(0.0F, 0.0F, -var7);
 				var4.draw();
 				var4.startDrawingQuads();
 				var4.setNormal(0.0F, 0.0F, 1.0F);
 				var4.addTranslation(0.0F, 0.0F, -var7);
 				CTMUtils.start();
-				this.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, var4));
+				this.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, var4));
 				var4.addTranslation(0.0F, 0.0F, var7);
 				var4.draw();
 				var4.startDrawingQuads();
 				var4.setNormal(-1.0F, 0.0F, 0.0F);
 				var4.addTranslation(var7, 0.0F, 0.0F);
 				CTMUtils.start();
-				this.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, var4));
+				this.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, var4));
 				var4.addTranslation(-var7, 0.0F, 0.0F);
 				var4.draw();
 				var4.startDrawingQuads();
 				var4.setNormal(1.0F, 0.0F, 0.0F);
 				var4.addTranslation(-var7, 0.0F, 0.0F);
 				CTMUtils.start();
-				this.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, var4));
+				this.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, var4));
 				var4.addTranslation(var7, 0.0F, 0.0F);
 				var4.draw();
 				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
@@ -7054,32 +7055,32 @@ public class RenderBlocks {
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, -1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, var4));
+					this.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, var4));
+					this.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 0.0F, -1.0F);
 					CTMUtils.start();
-					this.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, var4));
+					this.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 0.0F, 1.0F);
 					CTMUtils.start();
-					this.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, var4));
+					this.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(-1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, var4));
+					this.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, var4));
+					this.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, var4));
 					var4.draw();
 					GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 				}
@@ -7135,22 +7136,22 @@ public class RenderBlocks {
 					this.setRenderBounds((double)(0.5F - var11), (double)var13, (double)(0.5F - var11), (double)(0.5F + var11), (double)var12, (double)(0.5F + var11));
 					var4.setNormal(0.0F, -1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, var4));
+					this.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, var4));
 					var4.setNormal(0.0F, 1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, var4));
+					this.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, var4));
 					var4.setNormal(0.0F, 0.0F, -1.0F);
 					CTMUtils.start();
-					this.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, var4));
+					this.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, var4));
 					var4.setNormal(0.0F, 0.0F, 1.0F);
 					CTMUtils.start();
-					this.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, var4));
+					this.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, var4));
 					var4.setNormal(-1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, var4));
+					this.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, var4));
 					var4.setNormal(1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, var4));
+					this.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, var4));
 				}
 
 				var4.draw();
@@ -7182,32 +7183,32 @@ public class RenderBlocks {
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, -1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, var4));
+					this.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, var4));
+					this.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 0.0F, -1.0F);
 					CTMUtils.start();
-					this.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, var4));
+					this.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 0.0F, 1.0F);
 					CTMUtils.start();
-					this.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, var4));
+					this.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(-1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, var4));
+					this.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, var4));
+					this.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, var4));
 					var4.draw();
 					GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 				}
@@ -7235,32 +7236,32 @@ public class RenderBlocks {
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, -1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, var4));
+					this.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, var4));
+					this.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 0.0F, -1.0F);
 					CTMUtils.start();
-					this.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, var4));
+					this.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 0.0F, 1.0F);
 					CTMUtils.start();
-					this.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, var4));
+					this.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(-1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, var4));
+					this.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, var4));
+					this.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, var4));
 					var4.draw();
 					GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 				}
@@ -7278,32 +7279,32 @@ public class RenderBlocks {
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, -1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, par2, var4));
+					this.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, par2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, par2, var4));
+					this.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, par2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 0.0F, -1.0F);
 					CTMUtils.start();
-					this.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, par2, var4));
+					this.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, par2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 0.0F, 1.0F);
 					CTMUtils.start();
-					this.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, par2, var4));
+					this.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, par2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(-1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, par2, var4));
+					this.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, par2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, par2, var4));
+					this.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, par2, var4));
 					var4.draw();
 					GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 				}
@@ -7320,7 +7321,7 @@ public class RenderBlocks {
 						this.setOverrideBlockTexture(this.getBlockIcon(Block.obsidian));
 					} else if (var14 == 1) {
 						this.setRenderBounds(0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.875D, 0.8125D);
-						this.setOverrideBlockTexture(Block.beacon.func_94446_i());
+						this.setOverrideBlockTexture(Block.beacon.getBeaconIcon());
 					} else if (var14 == 2) {
 						this.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 						this.setOverrideBlockTexture(this.getBlockIcon(Block.glass));
@@ -7330,32 +7331,32 @@ public class RenderBlocks {
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, -1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, par2, var4));
+					this.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, par2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 1.0F, 0.0F);
 					CTMUtils.start();
-					this.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, par2, var4));
+					this.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, par2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 0.0F, -1.0F);
 					CTMUtils.start();
-					this.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, par2, var4));
+					this.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, par2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(0.0F, 0.0F, 1.0F);
 					CTMUtils.start();
-					this.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, par2, var4));
+					this.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, par2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(-1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, par2, var4));
+					this.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, par2, var4));
 					var4.draw();
 					var4.startDrawingQuads();
 					var4.setNormal(1.0F, 0.0F, 0.0F);
 					CTMUtils.start();
-					this.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, par2, var4));
+					this.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, par2, var4));
 					var4.draw();
 					GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 				}
@@ -7379,7 +7380,7 @@ public class RenderBlocks {
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, -1.0F, 0.0F);
 			CTMUtils.start();
-			this.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, par2, var4));
+			this.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 0, par2, var4));
 			var4.draw();
 
 			if (var5 && this.useInventoryTint) {
@@ -7393,7 +7394,7 @@ public class RenderBlocks {
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, 1.0F, 0.0F);
 			CTMUtils.start();
-			this.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, par2, var4));
+			this.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 1, par2, var4));
 			var4.draw();
 
 			if (var5 && this.useInventoryTint) {
@@ -7403,22 +7404,22 @@ public class RenderBlocks {
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, 0.0F, -1.0F);
 			CTMUtils.start();
-			this.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, par2, var4));
+			this.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 2, par2, var4));
 			var4.draw();
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, 0.0F, 1.0F);
 			CTMUtils.start();
-			this.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, par2, var4));
+			this.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 3, par2, var4));
 			var4.draw();
 			var4.startDrawingQuads();
 			var4.setNormal(-1.0F, 0.0F, 0.0F);
 			CTMUtils.start();
-			this.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, par2, var4));
+			this.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 4, par2, var4));
 			var4.draw();
 			var4.startDrawingQuads();
 			var4.setNormal(1.0F, 0.0F, 0.0F);
 			CTMUtils.start();
-			this.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, par2, var4));
+			this.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, CTMUtils.getTile(this, par1Block, 5, par2, var4));
 			var4.draw();
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		}
@@ -7438,7 +7439,7 @@ public class RenderBlocks {
 	}
 
 	public Icon getBlockIconFromSideAndMetadata(Block par1Block, int par2, int par3) {
-		return this.getIconSafe(par1Block.getBlockTextureFromSideAndMetadata(par2, par3));
+		return this.getIconSafe(par1Block.getIcon(par2, par3));
 	}
 
 	public Icon getBlockIconFromSide(Block par1Block, int par2) {
