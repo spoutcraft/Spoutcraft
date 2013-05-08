@@ -597,18 +597,26 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	public static File getMinecraftDir() {
 		if (minecraftDir == null) {
 			// Spout Start
-			String workingDirName = "minecraft";
-			if (spoutcraftLauncher)
-				workingDirName = "spoutcraft";
-			if (portable) {
-				File portableDir = new File(workingDirName);
-				if (portableDir.exists() || portableDir.mkdirs()) {
-					minecraftDir = portableDir;
-				} else {
-					throw new RuntimeException("The working directory could not be created: " + portableDir);
-				}
+			//First try getting working dir from launcher
+			String workingDir = mcApplet.getParameter("working_directory");
+			if (workingDir != null) {
+				minecraftDir = workingDir;
 			} else {
-				minecraftDir = getAppDir(workingDirName);
+				//If that fails, guess at it
+				String workingDirName = "minecraft";
+				if (spoutcraftLauncher) {
+					workingDirName = "spoutcraft";
+				}
+				if (portable) {
+					File portableDir = new File(workingDirName);
+					if (portableDir.exists() || portableDir.mkdirs()) {
+						minecraftDir = portableDir;
+					} else {
+						throw new RuntimeException("The working directory could not be created: " + portableDir);
+					}
+				} else {
+					minecraftDir = getAppDir(workingDirName);
+				}
 			}
 			// Spout End
 		}
