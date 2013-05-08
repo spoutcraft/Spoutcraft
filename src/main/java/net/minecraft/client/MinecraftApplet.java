@@ -24,6 +24,26 @@ public class MinecraftApplet extends Applet {
 	private Thread mcThread = null;
 
 	public void init() {
+		// Spout Start
+		// Note to maintainers, this code must be before MinecraftAppletImpl is created
+		if (this.getParameter("spoutcraftlauncher") != null) {
+			Minecraft.spoutcraftLauncher = this.getParameter("spoutcraftlauncher").equalsIgnoreCase("true");
+		}
+		if (this.getParameter("portable") != null) {
+			Minecraft.portable = this.getParameter("portable").equalsIgnoreCase("true");
+		}
+		if (this.getParameter("proxy_host") != null) {
+			System.setProperty("http.proxyHost", this.getParameter("proxy_host"));
+			System.setProperty("https.proxyHost", this.getParameter("proxy_host"));
+			if (this.getParameter("proxy_port") != null) {
+				System.setProperty("http.proxyPort", this.getParameter("proxy_port"));
+				System.setProperty("https.proxyPort", this.getParameter("proxy_port"));
+			}
+			if (this.getParameter("proxy_user") != null && this.getParameter("proxy_pass") != null) {
+				Authenticator.setDefault(new ProxyAuthenticator(this.getParameter("proxy_user"), this.getParameter("proxy_pass")));
+			}
+		}
+		// Spout End
 		this.mcCanvas = new CanvasMinecraftApplet(this);
 		boolean var1 = "true".equalsIgnoreCase(this.getParameter("fullscreen"));
 		this.mc = new MinecraftAppletImpl(this, this.mcCanvas, this, this.getWidth(), this.getHeight(), var1);
@@ -41,25 +61,6 @@ public class MinecraftApplet extends Applet {
 		} else {
 			this.mc.session = new Session("Player", "");
 		}
-		// Spout Start
-		if(this.getParameter("spoutcraftlauncher") != null) {
-			Minecraft.spoutcraftLauncher = this.getParameter("spoutcraftlauncher").equalsIgnoreCase("true");
-		}
-		if(this.getParameter("portable") != null) {
-			Minecraft.portable = this.getParameter("portable").equalsIgnoreCase("true");
-		}
-		if (this.getParameter("proxy_host") != null) {
-			System.setProperty("http.proxyHost", this.getParameter("proxy_host"));
-			System.setProperty("https.proxyHost", this.getParameter("proxy_host"));
-			if (this.getParameter("proxy_port") != null) {
-				System.setProperty("http.proxyPort", this.getParameter("proxy_port"));
-				System.setProperty("https.proxyPort", this.getParameter("proxy_port"));
-			}
-			if (this.getParameter("proxy_user") != null && this.getParameter("proxy_pass") != null) {
-				Authenticator.setDefault(new ProxyAuthenticator(this.getParameter("proxy_user"), this.getParameter("proxy_pass")));
-			}
-		}
-		// Spout End
 
 		this.mc.setDemo("true".equals(this.getParameter("demo")));
 
