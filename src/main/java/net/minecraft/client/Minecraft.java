@@ -325,11 +325,14 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	// Spout End
 
 	public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5) {
-		StatList.nopInit();
 		// MCPatcher Start
 		MCPatcherUtils.setMinecraft(this);
 		MCPatcherUtils.setVersions("1.5.2", "3.1.0-beta4");
 		// MCPatcher End
+		//Spout start
+		theMinecraft = this;
+		//Spout end
+		StatList.nopInit();
 		this.fullscreen = false;
 		this.hasCrashed = false;
 		this.timer = new Timer(20.0F);
@@ -598,9 +601,12 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		if (minecraftDir == null) {
 			// Spout Start
 			//First try getting working dir from launcher
-			String workingDir = mcApplet.getParameter("working_directory");
+			String workingDir = null;
+			if (Minecraft.theMinecraft != null && Minecraft.theMinecraft.mcApplet != null) {
+				workingDir = Minecraft.theMinecraft.mcApplet.getParameter("working_directory");
+			}
 			if (workingDir != null) {
-				minecraftDir = workingDir;
+				minecraftDir = new File(workingDir);
 			} else {
 				//If that fails, guess at it
 				String workingDirName = "minecraft";
