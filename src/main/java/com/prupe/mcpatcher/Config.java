@@ -56,6 +56,12 @@ public class Config {
 	static final String VAL_BUILTIN = "builtIn";
 	static final String VAL_EXTERNAL_ZIP = "externalZip";
 	static final String VAL_EXTERNAL_JAR = "externalJar";
+	static final String MCPATCHER_PROPERTIES = "mcpatcher.properties";
+	static final String TAG_MINECRAFT_VERSION = "minecraftVersion";
+	static final String TAG_PATCHER_VERSION = "patcherVersion";
+	static final String TAG_PRE_PATCH_STATE = "prePatchState";
+	static final String TAG_MODIFIED_CLASSES = "modifiedClasses";
+	static final String TAG_ADDED_CLASSES = "addedClasses";
 	private static final int XML_INDENT_AMOUNT = 2;
 	private static final String XSLT_REFORMAT = "<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\"><xsl:output method=\"xml\" omit-xml-declaration=\"no\"/><xsl:strip-space elements=\"*\"/><xsl:template match=\"@*|node()\"><xsl:copy><xsl:apply-templates select=\"@*|node()\"/></xsl:copy></xsl:template></xsl:stylesheet>";
 
@@ -166,6 +172,16 @@ public class Config {
 		}
 	}
 
+	static void setLogLevel(String var0, Level var1) {
+		if (instance != null) {
+			instance.setLogLevel1(var0, var1);
+		}
+	}
+
+	static Level getLogLevel(String var0) {
+		return instance == null ? Level.INFO : instance.getLogLevel1(var0);
+	}
+
 	static void remove(String var0) {
 		if (instance != null) {
 			instance.remove((Node)instance.getConfig(var0));
@@ -211,25 +227,25 @@ public class Config {
 			return null;
 		} else {
 			switch (var1.getNodeType()) {
-				case 1:
-					NodeList var2 = var1.getChildNodes();
+			case 1:
+				NodeList var2 = var1.getChildNodes();
 
-					for (int var3 = 0; var3 < var2.getLength(); ++var3) {
-						Node var4 = var2.item(var3);
+				for (int var3 = 0; var3 < var2.getLength(); ++var3) {
+					Node var4 = var2.item(var3);
 
-						if (var4.getNodeType() == 3) {
-							return ((Text)var4).getData();
-						}
+					if (var4.getNodeType() == 3) {
+						return ((Text)var4).getData();
 					}
+				}
 
-				case 2:
-					return ((Attr)var1).getValue();
+			case 2:
+				return ((Attr)var1).getValue();
 
-				case 3:
-					return ((Text)var1).getData();
+			case 3:
+				return ((Text)var1).getData();
 
-				default:
-					return null;
+			default:
+				return null;
 			}
 		}
 	}

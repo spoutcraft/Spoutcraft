@@ -21,7 +21,10 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import net.minecraft.client.Minecraft;
 
+import com.prupe.mcpatcher.TexturePackChangeHandler;
+
 import org.spoutcraft.client.config.Configuration;
+import org.spoutcraft.client.SpoutClient;
 
 public class BetterGrassButton extends AutomatedButton {
 	public BetterGrassButton() {
@@ -45,7 +48,13 @@ public class BetterGrassButton extends AutomatedButton {
 			Configuration.setBetterGrass(0);
 		}
 		Configuration.write();
-
+		
+		Minecraft game = SpoutClient.getHandle();
+		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mod.CTMUtils", "reset");
+		TexturePackChangeHandler.beforeChange1();
+		game.renderEngine.refreshTextureMaps();
+		TexturePackChangeHandler.afterChange1();
+		
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
 		}

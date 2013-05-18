@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.prupe.mcpatcher.TileLoader;
+import com.prupe.mcpatcher.mod.CTMUtils;
+import com.prupe.mcpatcher.mod.TileLoader;
 // MCPatcher End
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -23,7 +24,7 @@ public class TextureMap implements IconRegister {
 	private final String textureName;
 	private final String basePath;
 	private final String textureExt;
-	public final HashMap mapTexturesStiched = new HashMap();
+	private final HashMap mapTexturesStiched = new HashMap();
 	private BufferedImage missingImage = new BufferedImage(64, 64, 2);
 	private TextureStitched missingTextureStiched;
 	private Texture atlasTexture;
@@ -93,7 +94,7 @@ public class TextureMap implements IconRegister {
 		}
 
 		try {
-			TileLoader.registerIcons(this, var21, this.textureName, var20);
+			CTMUtils.registerIcons(this, var21, this.textureName, var20);
 			var21.doStitch();
 		} catch (StitcherException var18) {
 			throw var18;

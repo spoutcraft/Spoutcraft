@@ -6,7 +6,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // MCPatcher Start
 import com.prupe.mcpatcher.mod.MobRandomizer;
-import com.prupe.mcpatcher.mod.CITUtils;
 // MCPatcher End
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
@@ -117,12 +116,7 @@ public class RenderLiving extends Render {
 						this.renderPassModel.render(par1EntityLiving, var16, var15, var13, var11 - var10, var12, var14);
 					}
 
-					if (CITUtils.setupArmorOverlays(par1EntityLiving, var17)) {
-						while (CITUtils.preRenderArmorOverlay()) {
-							this.renderPassModel.render(par1EntityLiving, var16, var15, var13, var11 - var10, var12, var14);
-							CITUtils.postRenderArmorOverlay();
-						}
-					} else if ((var18 & 15) == 15) {
+					if ((var18 & 15) == 15) {
 						var19 = (float)par1EntityLiving.ticksExisted + par9;
 						this.loadTexture("%blur%/misc/glint.png");
 						GL11.glEnable(GL11.GL_BLEND);

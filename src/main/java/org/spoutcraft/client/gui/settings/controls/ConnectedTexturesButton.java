@@ -23,6 +23,7 @@ import net.minecraft.client.Minecraft;
 
 import com.prupe.mcpatcher.TexturePackChangeHandler;
 
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 
 public class ConnectedTexturesButton extends AutomatedCheckBox {
@@ -36,8 +37,12 @@ public class ConnectedTexturesButton extends AutomatedCheckBox {
 	public void onButtonClick() {
 		Configuration.setConnectedTextures(!Configuration.isConnectedTextures());
 		Configuration.write();
-
-		TexturePackChangeHandler.scheduleTexturePackRefresh();
+		
+		Minecraft game = SpoutClient.getHandle();
+		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mod.CTMUtils", "reset");
+		TexturePackChangeHandler.beforeChange1();
+		game.renderEngine.refreshTextureMaps();
+		TexturePackChangeHandler.afterChange1();
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
 		}

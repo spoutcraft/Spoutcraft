@@ -9,8 +9,8 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // MCPatcher start
-import com.prupe.mcpatcher.TileLoader;
 import com.prupe.mcpatcher.mod.MipmapHelper;
+import com.prupe.mcpatcher.mod.TileLoader;
 // MCPatcher end
 
 public class Texture {

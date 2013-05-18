@@ -121,8 +121,8 @@ public class ItemRenderer {
 			}
 
 			renderItemIn2D(var5, var7, var8, var6, var9, var4.getSheetWidth(), var4.getSheetHeight(), 0.0625F);
-
-			if (!CITUtils.renderOverlayHeld(par2ItemStack) && par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0) {
+			
+			if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0) {
 				GL11.glDepthFunc(GL11.GL_EQUAL);
 				GL11.glDisable(GL11.GL_LIGHTING);
 				this.mc.renderEngine.bindTexture("%blur%/misc/glint.png");

@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.TessellatorUtils;
 import com.prupe.mcpatcher.mod.CTMUtils;
 import com.prupe.mcpatcher.mod.ColorizeBlock;
 import com.prupe.mcpatcher.mod.Colorizer;
@@ -450,7 +449,7 @@ public class RenderBlocks {
 		if (var27 == null) {
 			return false;
 		} else {
-			var5 = TessellatorUtils.getTessellator(var5, var27);
+			var5 = CTMUtils.getTessellator(var27);
 			double var28 = (double)var27.getMinU();
 			double var30 = (double)var27.getMaxU();
 			double var32 = (double)var27.getMinV();
@@ -472,7 +471,7 @@ public class RenderBlocks {
 			if (var27 == null) {
 				return false;
 			} else {
-				var5 = TessellatorUtils.getTessellator(var5, var27);
+				var5 = CTMUtils.getTessellator(var27);
 				var28 = (double)var27.getMinU();
 				var30 = (double)var27.getMaxU();
 				var32 = (double)var27.getMinV();
@@ -617,7 +616,7 @@ public class RenderBlocks {
 		if (var32 == null) {
 			return false;
 		} else {
-			var5 = TessellatorUtils.getTessellator(var5, var32);
+			var5 = CTMUtils.getTessellator(var32);
 			double var33 = (double)var32.getMinV();
 			double var14 = (double)var32.getMaxV();
 			int var16 = this.blockAccess.getBlockMetadata(par2, par3, par4);
@@ -1108,7 +1107,7 @@ public class RenderBlocks {
 		var8 = CTMUtils.getTile(this, par1BlockRedstoneLogic, par2, par3, par4, var8, var6);
 
 		if (var8 != null) {
-			var6 = TessellatorUtils.getTessellator(var6, var8);
+			var6 = CTMUtils.getTessellator(var8);
 			double var9 = (double)var8.getMinU();
 			double var11 = (double)var8.getMaxU();
 			double var13 = (double)var8.getMinV();
@@ -1498,7 +1497,7 @@ public class RenderBlocks {
 		if (var14 == null) {
 			return false;
 		} else {
-			var8 = TessellatorUtils.getTessellator(var8, var14);
+			var8 = CTMUtils.getTessellator(var14);
 			double var15 = (double)var14.getMinU();
 			double var17 = (double)var14.getMinV();
 			double var19 = (double)var14.getMaxU();
@@ -1684,7 +1683,7 @@ public class RenderBlocks {
 		if (var18 == null) {
 			return false;
 		} else {
-			var5 = TessellatorUtils.getTessellator(var5, var18);
+			var5 = CTMUtils.getTessellator(var18);
 			double var19 = (double)var18.getMinU();
 			double var21 = (double)var18.getMinV();
 			double var23 = (double)var18.getMaxU();
@@ -1907,7 +1906,7 @@ public class RenderBlocks {
 					return false;
 				}
 
-				var5 = TessellatorUtils.getTessellator(var5, var18);
+				var5 = CTMUtils.getTessellator(var18);
 				double var52 = (double)var18.getMinU();
 				double var54 = (double)var18.getInterpolatedV(var8 ? 2.0D : 0.0D);
 				double var56 = (double)var18.getMaxU();
@@ -1981,7 +1980,7 @@ public class RenderBlocks {
 		if (var6 == null) {
 			return false;
 		} else {
-			var5 = TessellatorUtils.getTessellator(var5, var6);
+			var5 = CTMUtils.getTessellator(var6);
 			double var11 = (double)var6.getMinU();
 			double var13 = (double)var6.getInterpolatedV(var8 ? 2.0D : 0.0D);
 			double var15 = (double)var6.getMaxU();
@@ -2112,7 +2111,7 @@ public class RenderBlocks {
 		if (var8 == null) {
 			return false;
 		} else {
-			var5 = TessellatorUtils.getTessellator(var5, var8);
+			var5 = CTMUtils.getTessellator(var8);
 			double var9 = (double)var8.getMinU();
 			double var11 = (double)var8.getMinV();
 			double var13 = (double)var8.getMaxU();
@@ -2137,7 +2136,7 @@ public class RenderBlocks {
 						return false;
 					}
 
-					var5 = TessellatorUtils.getTessellator(var5, var8);
+					var5 = CTMUtils.getTessellator(var8);
 					var9 = (double)var8.getMinU();
 					var11 = (double)var8.getMinV();
 					var13 = (double)var8.getMaxU();
@@ -2209,7 +2208,7 @@ public class RenderBlocks {
 						return false;
 					}
 
-					var5 = TessellatorUtils.getTessellator(var5, var8);
+					var5 = CTMUtils.getTessellator(var8);
 					var9 = (double)var8.getMinU();
 					var11 = (double)var8.getMinV();
 					var13 = (double)var8.getMaxU();
@@ -2228,7 +2227,7 @@ public class RenderBlocks {
 							return false;
 						}
 
-						var5 = TessellatorUtils.getTessellator(var5, var8);
+						var5 = CTMUtils.getTessellator(var8);
 						var9 = (double)var8.getMinU();
 						var11 = (double)var8.getMinV();
 						var13 = (double)var8.getMaxU();
@@ -2248,7 +2247,7 @@ public class RenderBlocks {
 							return false;
 						}
 
-						var5 = TessellatorUtils.getTessellator(var5, var8);
+						var5 = CTMUtils.getTessellator(var8);
 						var9 = (double)var8.getMinU();
 						var11 = (double)var8.getMinV();
 						var13 = (double)var8.getMaxU();
@@ -2282,7 +2281,7 @@ public class RenderBlocks {
 					return false;
 				}
 
-				var5 = TessellatorUtils.getTessellator(var5, var8);
+				var5 = CTMUtils.getTessellator(var8);
 				var9 = (double)var8.getMinU();
 				var11 = (double)var8.getMinV();
 				var13 = (double)var8.getMaxU();
@@ -2317,7 +2316,7 @@ public class RenderBlocks {
 					return false;
 				}
 
-				var5 = TessellatorUtils.getTessellator(var5, var8);
+				var5 = CTMUtils.getTessellator(var8);
 				var9 = (double)var8.getMinU();
 				var11 = (double)var8.getMinV();
 				var13 = (double)var8.getMaxU();
@@ -2563,7 +2562,7 @@ public class RenderBlocks {
 		if (var7 == null) {
 			return false;
 		} else {
-			var5 = TessellatorUtils.getTessellator(var5, var7);
+			var5 = CTMUtils.getTessellator(var7);
 			double var8 = (double)var7.getMinU();
 			double var10 = (double)var7.getMinV();
 			double var12 = (double)var7.getMaxU();
@@ -2642,7 +2641,7 @@ public class RenderBlocks {
 		if (var6 == null) {
 			return false;
 		} else {
-			var5 = TessellatorUtils.getTessellator(var5, var6);
+			var5 = CTMUtils.getTessellator(var6);
 			double var20 = (double)var6.getMinU();
 			double var9 = (double)var6.getMinV();
 			double var11 = (double)var6.getMaxU();
@@ -2706,7 +2705,7 @@ public class RenderBlocks {
 		if (var6 == null) {
 			return false;
 		} else {
-			var5 = TessellatorUtils.getTessellator(var5, var6);
+			var5 = CTMUtils.getTessellator(var6);
 			double var19 = (double)var6.getMinU();
 			double var20 = (double)var6.getMinV();
 			double var12 = (double)var6.getMaxU();
@@ -3337,7 +3336,7 @@ public class RenderBlocks {
 		var11 = CTMUtils.getTile(this, par1Block, (int)par3, (int)par5, (int)par7, var11, var10);
 
 		if (var11 != null) {
-			var10 = TessellatorUtils.getTessellator(var10, var11);
+			var10 = CTMUtils.getTessellator(var11);
 			double var12 = (double)var11.getMinU();
 			double var14 = (double)var11.getMinV();
 			double var16 = (double)var11.getMaxU();
@@ -3428,7 +3427,7 @@ public class RenderBlocks {
 		if (var6 == null) {
 			return false;
 		} else {
-			var5 = TessellatorUtils.getTessellator(var5, var6);
+			var5 = CTMUtils.getTessellator(var6);
 			double var8 = (double)var6.getMinU();
 			double var10 = (double)var6.getMinV();
 			double var12 = (double)var6.getMaxU();
@@ -5539,7 +5538,7 @@ public class RenderBlocks {
 		if (var9 == null) {
 			return false;
 		} else {
-			var5 = TessellatorUtils.getTessellator(var5, var9);
+			var5 = CTMUtils.getTessellator(var9);
 			var20 = (double)var9.getMinU();
 			var22 = (double)var9.getInterpolatedU((double)var44);
 			var24 = (double)var9.getMinV();
@@ -6348,7 +6347,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 0, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
+			var9 = CTMUtils.getTessellator(par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinX * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxX * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(this.renderMinZ * 16.0D);
@@ -6443,7 +6442,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 1, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
+			var9 = CTMUtils.getTessellator(par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinX * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxX * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(this.renderMinZ * 16.0D);
@@ -6538,7 +6537,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 2, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
+			var9 = CTMUtils.getTessellator(par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinX * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxX * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);
@@ -6640,7 +6639,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 3, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
+			var9 = CTMUtils.getTessellator(par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinX * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxX * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);
@@ -6742,7 +6741,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 4, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
+			var9 = CTMUtils.getTessellator(par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinZ * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxZ * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);
@@ -6844,7 +6843,7 @@ public class RenderBlocks {
 		par8Icon = CTMUtils.getTile(this, par1Block, (int)par2, (int)par4, (int)par6, 5, par8Icon, var9);
 
 		if (par8Icon != null) {
-			var9 = TessellatorUtils.getTessellator(var9, par8Icon);
+			var9 = CTMUtils.getTessellator(par8Icon);
 			double var10 = (double)par8Icon.getInterpolatedU(this.renderMinZ * 16.0D);
 			double var12 = (double)par8Icon.getInterpolatedU(this.renderMaxZ * 16.0D);
 			double var14 = (double)par8Icon.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);

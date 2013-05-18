@@ -1,9 +1,6 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-// MCPatcher Start
-import com.prupe.mcpatcher.mod.CITUtils;
-// MCPatcher End
 
 // Spout Start
 import net.minecraft.client.Minecraft;
@@ -44,7 +41,7 @@ public class RenderPlayer extends RenderLiving {
 
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
-				this.loadTexture(CITUtils.getArmorTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png", par1EntityPlayer, var4));
+				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png");
 				// Spout Start
 				VIP vip = par1EntityPlayer.vip;
 				int armorId = (par2 == 2 ? 2 : 1);
@@ -114,7 +111,7 @@ public class RenderPlayer extends RenderLiving {
 
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
-				this.loadTexture(CITUtils.getArmorTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + "_b.png", par1EntityPlayer, var4));
+				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + "_b.png");
 				float var7 = 1.0F;
 				GL11.glColor3f(var7, var7, var7);
 			}

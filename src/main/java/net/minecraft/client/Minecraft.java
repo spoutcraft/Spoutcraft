@@ -327,7 +327,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5) {
 		// MCPatcher Start
 		MCPatcherUtils.setMinecraft(this);
-		MCPatcherUtils.setVersions("1.5.2", "3.1.0-beta4");
+		MCPatcherUtils.setVersions("1.5.2", "3.0.4");
 		// MCPatcher End
 		//Spout start
 		theMinecraft = this;
@@ -506,10 +506,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		this.checkGLError("Startup");
 		this.sndManager.loadSoundSettings(this.gameSettings);
-		this.renderGlobal = new RenderGlobal(this, this.renderEngine);
-		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.TileLoader", "init");
-		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mod.CTMUtils", "reset");
-		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mod.CITUtils", "init");
+		this.renderGlobal = new RenderGlobal(this, this.renderEngine);		
+		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mod.CTMUtils", "reset");		
 		TexturePackChangeHandler.beforeChange1();
 		this.renderEngine.refreshTextureMaps();
 		TexturePackChangeHandler.afterChange1();

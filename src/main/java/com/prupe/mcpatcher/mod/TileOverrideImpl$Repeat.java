@@ -1,6 +1,5 @@
 package com.prupe.mcpatcher.mod;
 
-import com.prupe.mcpatcher.TileLoader;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import java.util.Properties;
 import net.minecraft.src.Block;

@@ -40,9 +40,7 @@ public class MCPatcherUtils {
 	public static final String TEXTURE_PACK_API_CLASS = "com.prupe.mcpatcher.TexturePackAPI";
 	public static final String TEXTURE_PACK_CHANGE_HANDLER_CLASS = "com.prupe.mcpatcher.TexturePackChangeHandler";
 	public static final String WEIGHTED_INDEX_CLASS = "com.prupe.mcpatcher.WeightedIndex";
-	public static final String BLEND_METHOD_CLASS = "com.prupe.mcpatcher.BlendMethod";
-	public static final String TILE_LOADER_CLASS = "com.prupe.mcpatcher.TileLoader";
-	public static final String TESSELLATOR_UTILS_CLASS = "com.prupe.mcpatcher.TessellatorUtils";
+	public static final String BLEND_METHOD_CLASS = "com.prupe.mcpatcher.BlendMethod";	
 	public static final String GL11_CLASS = "org.lwjgl.opengl.GL11";
 	public static final String CUSTOM_ANIMATION_CLASS = "com.prupe.mcpatcher.mod.CustomAnimation";
 	public static final String FANCY_DIAL_CLASS = "com.prupe.mcpatcher.mod.FancyDial";
@@ -61,19 +59,18 @@ public class MCPatcherUtils {
 	public static final String COLOR_MAP_CLASS = "com.prupe.mcpatcher.mod.ColorMap";
 	public static final String BIOME_HELPER_CLASS = "com.prupe.mcpatcher.mod.BiomeHelper";
 	public static final String LIGHTMAP_CLASS = "com.prupe.mcpatcher.mod.Lightmap";
-	public static final String CTM_UTILS_CLASS = "com.prupe.mcpatcher.mod.CTMUtils";	
+	public static final String CTM_UTILS_CLASS = "com.prupe.mcpatcher.mod.CTMUtils";
+	public static final String TESSELLATOR_UTILS_CLASS = "com.prupe.mcpatcher.mod.TessellatorUtils";	
 	public static final String TILE_OVERRIDE_INTERFACE = "com.prupe.mcpatcher.mod.ITileOverride";
 	public static final String TILE_OVERRIDE_CLASS = "com.prupe.mcpatcher.mod.TileOverride";
-	public static final String TILE_OVERRIDE_IMPL_CLASS = "com.prupe.mcpatcher.mod.TileOverrideImpl";	
+	public static final String TILE_OVERRIDE_IMPL_CLASS = "com.prupe.mcpatcher.mod.TileOverrideImpl";
+	public static final String TILE_LOADER_CLASS = "com.prupe.mcpatcher.mod.TileLoader";
 	public static final String GLASS_PANE_RENDERER_CLASS = "com.prupe.mcpatcher.mod.GlassPaneRenderer";
 	public static final String RENDER_PASS_CLASS = "com.prupe.mcpatcher.mod.RenderPass";
 	public static final String RENDER_PASS_API_CLASS = "com.prupe.mcpatcher.mod.RenderPassAPI";
 	public static final String SKY_RENDERER_CLASS = "com.prupe.mcpatcher.mod.SkyRenderer";
 	public static final String FIREWORKS_HELPER_CLASS = "com.prupe.mcpatcher.mod.FireworksHelper";
 	public static final String CIT_UTILS_CLASS = "com.prupe.mcpatcher.mod.CITUtils";
-	public static final String ITEM_OVERRIDE_CLASS = "com.prupe.mcpatcher.mod.ItemOverride";
-	public static final String ITEM_OVERLAY_CLASS = "com.prupe.mcpatcher.mod.ItemOverlay";
-	public static final String ITEM_OVERLAY_LIST_CLASS = "com.prupe.mcpatcher.mod.ItemOverlayList";
 	public static final String SHADERS_CLASS = "com.prupe.mcpatcher.mod.Shaders";
 
 	static File getDefaultGameDir() {

@@ -44,8 +44,6 @@ public abstract class TexturePackChangeHandler {
 
 	public abstract void afterChange();
 
-	public void afterChange2() {}
-	
 	protected void setUpdateNeeded(boolean var1) {
 		this.updateNeeded = var1;
 	}
@@ -102,49 +100,42 @@ public abstract class TexturePackChangeHandler {
 	}
 
 	public static void beforeChange1() {
-		changing = true;
-		startTime = System.currentTimeMillis();
-		Runtime var0 = Runtime.getRuntime();
-		startMem = var0.totalMemory() - var0.freeMemory();
-		Iterator var1 = handlers.iterator();
+		if (changing) {
+			// do nothing
+		} else {
+			changing = true;
+			startTime = System.currentTimeMillis();
+			Runtime var0 = Runtime.getRuntime();
+			startMem = var0.totalMemory() - var0.freeMemory();
+			Iterator var1 = handlers.iterator();
 
-		while (var1.hasNext()) {
-			TexturePackChangeHandler var2 = (TexturePackChangeHandler)var1.next();
+			while (var1.hasNext()) {
+				TexturePackChangeHandler var2 = (TexturePackChangeHandler)var1.next();
 
-			try {
-				var2.beforeChange();
-			} catch (Throwable var4) {
-				var4.printStackTrace();
+				try {
+					var2.beforeChange();
+				} catch (Throwable var4) {
+					var4.printStackTrace();
+				}
 			}
 		}
 	}
 
 	public static void afterChange1() {
 		Iterator var0 = handlers.iterator();
-		TexturePackChangeHandler var1;
 
 		while (var0.hasNext()) {
-			var1 = (TexturePackChangeHandler)var0.next();
+			TexturePackChangeHandler var1 = (TexturePackChangeHandler)var0.next();
 
 			try {
 				var1.afterChange();
-			} catch (Throwable var6) {
-				var6.printStackTrace();
-			}
-		}
-
-		for (int var7 = handlers.size() - 1; var7 >= 0; --var7) {
-			var1 = (TexturePackChangeHandler)handlers.get(var7);
-
-			try {
-				var1.afterChange2();
 			} catch (Throwable var5) {
 				var5.printStackTrace();
 			}
 		}
 
 		System.gc();
-		long var8 = System.currentTimeMillis() - startTime;
+		long var6 = System.currentTimeMillis() - startTime;
 		Runtime var2 = Runtime.getRuntime();
 		long var3 = var2.totalMemory() - var2.freeMemory() - startMem;
 		changing = false;

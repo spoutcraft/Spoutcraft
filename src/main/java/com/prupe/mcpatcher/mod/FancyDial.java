@@ -104,27 +104,33 @@ public class FancyDial {
 	}
 
 	static void updateAll() {
-		if (!setupInfo.isEmpty()) {
-			ArrayList var0 = new ArrayList();
-			var0.addAll(setupInfo.keySet());
-			Iterator var1 = var0.iterator();
-			while (var1.hasNext()) {
-				TextureStitched var2 = (TextureStitched)var1.next();
-				getInstance(var2);
+		if (!initialized) {
+			// do nothing
+		} else {
+			if (!setupInfo.isEmpty()) {
+				ArrayList var0 = new ArrayList();
+				var0.addAll(setupInfo.keySet());
+				Iterator var1 = var0.iterator();
+
+				while (var1.hasNext()) {
+					TextureStitched var2 = (TextureStitched)var1.next();
+					getInstance(var2);
+				}
 			}
-		}
 
-		inUpdateAll = true;
-		Iterator var3 = instances.values().iterator();
-		while (var3.hasNext()) {
-			FancyDial var4 = (FancyDial)var3.next();
+			inUpdateAll = true;
+			Iterator var3 = instances.values().iterator();
 
-			if (var4 != null && var4.needExtraUpdate) {
-				var4.icon.updateAnimation();
+			while (var3.hasNext()) {
+				FancyDial var4 = (FancyDial)var3.next();
+
+				if (var4 != null && var4.needExtraUpdate) {
+					var4.icon.updateAnimation();
+				}
 			}
-		}
 
-		inUpdateAll = false;
+			inUpdateAll = false;
+		}
 	}
 
 	static void postUpdateAll() {
@@ -205,40 +211,47 @@ public class FancyDial {
 			this.scratchTextureBuffer = null;
 			var4 = this.itemsTexture;
 		}
-		int var7 = 0;
 
-		while (true) {
-			FancyDial$Layer var6 = this.newLayer("/misc/" + this.name + ".properties", var3, "." + var7);
-			if (var6 == null) {
-				if (var7 > 0) {
-					if (this.layers.size() < 2) {
+		if (this.itemsTexture < 0) {
+			// do nothing
+		} else {
+			int var7 = 0;
+
+			while (true) {
+				FancyDial$Layer var6 = this.newLayer("/misc/" + this.name + ".properties", var3, "." + var7);
+
+				if (var6 == null) {
+					if (var7 > 0) {
+						if (this.layers.size() < 2) {
+							return;
+						}
+
+						this.outputFrames = MCPatcherUtils.getIntProperty(var3, "outputFrames", 0);
+						this.frameBuffer = EXTFramebufferObject.glGenFramebuffersEXT();
+
+						if (this.frameBuffer < 0) {
+							return;
+						}
+
+						EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
+						EXTFramebufferObject.glFramebufferTexture2DEXT(36160, 36064, 3553, var4, 0);
+						EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
+						var7 = GL11.glGetError();
+
+						if (var7 != 0) {
+							return;
+						}
+
+						this.ok = true;
 						return;
 					}
-
-					this.outputFrames = MCPatcherUtils.getIntProperty(var3, "outputFrames", 0);
-					this.frameBuffer = EXTFramebufferObject.glGenFramebuffersEXT();
-
-					if (this.frameBuffer < 0) {
-						return;
-					}
-
-					EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
-					EXTFramebufferObject.glFramebufferTexture2DEXT(36160, 36064, 3553, var4, 0);
-					EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
-					var7 = GL11.glGetError();
-
-					if (var7 != 0) {
-						return;
-					}
-
-					this.ok = true;
-					return;
+				} else {
+					this.layers.add(var6);
+					this.debug |= var6.debug;
 				}
-			} else {
-				this.layers.add(var6);
-				this.debug |= var6.debug;
+
+				++var7;
 			}
-			++var7;
 		}
 	}
 
@@ -283,7 +296,7 @@ public class FancyDial {
 					IntBuffer var4 = var3.asIntBuffer();
 					int[] var5 = new int[this.width * this.height];
 					EXTFramebufferObject.glBindFramebufferEXT(36160, this.frameBuffer);
-					File var6 = MCPatcherUtils.getMinecraftPath(new String[] {"custom_" + this.name + ".png"});
+					File var6 = MCPatcherUtils.getMinecraftPath(new String[] {"custom_" + this.name + ".png"});					
 
 					for (int var7 = 0; var7 < this.outputFrames; ++var7) {
 						this.render((double)var7 * (360.0D / (double)this.outputFrames), false);

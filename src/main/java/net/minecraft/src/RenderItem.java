@@ -4,9 +4,6 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-// MCPatcher Start
-import com.prupe.mcpatcher.mod.CITUtils;
-// MCPatcher End
 
 //Spout Start
 import org.newdawn.slick.opengl.Texture;
@@ -289,7 +286,7 @@ public class RenderItem extends Render {
 				GL11.glColor4f(par5, par6, par7, 1.0F);
 				ItemRenderer.renderItemIn2D(var8, var10, var11, var9, var12, par2Icon.getSheetWidth(), par2Icon.getSheetHeight(), var16);
 
-				if (!CITUtils.renderOverlayDropped(var18) && var18 != null && var18.hasEffect()) {
+				if (var18 != null && var18.hasEffect()) {
 					GL11.glDepthFunc(GL11.GL_EQUAL);
 					GL11.glDisable(GL11.GL_LIGHTING);
 					this.renderManager.renderEngine.bindTexture("%blur%/misc/glint.png");
@@ -487,7 +484,7 @@ public class RenderItem extends Render {
 		if (par3ItemStack != null) {
 			this.renderItemIntoGUI(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5);
 
-			if (!CITUtils.renderOverlayGUI(par3ItemStack, par4, par5, this.zLevel) && par3ItemStack.hasEffect()) {
+			if (par3ItemStack.hasEffect()) {
 				GL11.glDepthFunc(GL11.GL_GREATER);
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDepthMask(false);

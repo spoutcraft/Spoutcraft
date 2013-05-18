@@ -11,7 +11,7 @@ import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 // MCPatcher Start
-import com.prupe.mcpatcher.TessellatorUtils;
+import com.prupe.mcpatcher.mod.TessellatorUtils;
 import org.spoutcraft.client.SpoutClient;
 // MCPatcher End
 
