@@ -508,9 +508,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		this.sndManager.loadSoundSettings(this.gameSettings);
 		this.renderGlobal = new RenderGlobal(this, this.renderEngine);		
 		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mod.CTMUtils", "reset");		
-		TexturePackChangeHandler.beforeChange1();
 		this.renderEngine.refreshTextureMaps();
-		TexturePackChangeHandler.afterChange1();
 		GL11.glViewport(0, 0, this.displayWidth, this.displayHeight);
 		this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
 

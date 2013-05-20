@@ -911,7 +911,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				text = CustomTextureManager.getTextureFromJar("/res/ui/box_descending.png");
 			}
 			GL11.glTranslated(comboBox.getWidth() - 16, 3, 0);
-			RenderUtil.drawRectangle(0, -3, 16, (int) comboBox.getHeight(), 0x33000000);
+			RenderUtil.drawRectangle(0, -3, 16, (int) comboBox.getHeight()-3, 0x33000000);
 			drawTexture(text, 16, 16, getColor(comboBox), true);
 		}
 	}
