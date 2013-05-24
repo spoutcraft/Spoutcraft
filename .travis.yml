@@ -1,7 +1,7 @@
 language: java
 jdk: oraclejdk7
 
-install: mvn clean package -DbuildNumber=${TRAVIS_BUILD_NUMBER}
+install: mvn clean package -P mcp-final-unix -DbuildNumber=${TRAVIS_BUILD_NUMBER}
 before_script: gem install travis-artifacts
 after_success:
   - export PROJECT_ARTIFACT_ID="`sed -n 's|.*<artifactId>\(.*\)</artifactId>.*|\1|p' $TRAVIS_BUILD_DIR/pom.xml | awk '{ print $1; exit }'`" && echo Project artifactId is $PROJECT_ARTIFACT_ID

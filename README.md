@@ -2,7 +2,7 @@ Spoutcraft
 ==========
 Spoutcraft is a Minecraft client mod and launcher that provides users with a simple and more customizable Minecraft experience. Servers running SpoutPlugin push content to Spoutcraft users as needed; such as custom items, blocks, and user skins, capes, and other accessories. Players can then enjoy custom server experiences without having to manually modify their client for each server.
 
-[Home] | [Forums] | [Twitter] | [Facebook]
+[Homepage] | [Forums] | [Twitter] | [Facebook]
 
 ## Using it
 Simply download the latest launcher that is appropriate for your OS. Currently we support [Windows](http://get.spout.org/exe), [Mac OS X](http://get.spout.org/jar), and [Linux](http://get.spout.org/jar).
@@ -34,13 +34,12 @@ This project uses Maven to handle its dependencies.
 * Checkout this repo and run: `mvn clean package`
 * To create a packaged jar, add `-P mcp-final-win` for Windows, or `-P mcp-final-unix` for Mac OS X/Linux.
 
-[Home]: http://www.spoutcraft.org
+[Homepage]: http://www.spoutcraft.org
 [Forums]: http://forums.spout.org
 [License]: http://www.gnu.org/licenses/lgpl.html
 [Source]: https://github.com/Legacy/Spoutcraft
 [Source Download]: https://github.com/Legacy/Spoutcraft/archive/master.zip
-[Builds]: http://build.spout.org/job/Spoutcraft
-[Issues]: http://issues.spout.org/browse/LEGACY
+[Issues]: https://spoutdev.atlassian.net/browse/LEGACY
 [Twitter]: http://spout.in/twitter
 [Facebook]: http://spout.in/facebook
 [Donate]: http://spout.in/donate
