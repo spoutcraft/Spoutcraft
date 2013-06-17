@@ -388,7 +388,7 @@ public class RenderItem extends Render {
 
 		if (design != null && custom) {
 			design.renderItemOnHUD((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
-		} else if (var6 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
+		} else if (par3ItemStack.getItemSpriteNumber() == 0 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
 			par2RenderEngine.bindTexture("/terrain.png");
 			Block var15 = Block.blocksList[var6];
 			GL11.glPushMatrix();
@@ -407,8 +407,6 @@ public class RenderItem extends Render {
 				GL11.glColor4f(var18, var12, var13, 1.0F);
 			}
 
-			//this.renderIcon(par4, par5, var10, 16, 16); //TODO:
-
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 			this.itemRenderBlocks.useInventoryTint = this.renderWithColor;
 			this.itemRenderBlocks.renderBlockAsItem(var15, var7, 1.0F);
@@ -416,13 +414,11 @@ public class RenderItem extends Render {
 			GL11.glPopMatrix();
 		} else {
 			int var9;
-
 			if (Item.itemsList[var6].requiresMultipleRenderPasses()) {
 				GL11.glDisable(GL11.GL_LIGHTING);
 				if (!custom) {
 					par2RenderEngine.bindTexture("/gui/items.png");
 				}
-
 				for (var9 = 0; var9 <= 1; ++var9) {
 					Icon var10 = Item.itemsList[var6].getIconFromDamageForRenderPass(var7, var9);
 					int var11 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, var9);
@@ -441,12 +437,16 @@ public class RenderItem extends Render {
 			} else {
 				GL11.glDisable(GL11.GL_LIGHTING);
 
-				if (var6 < 256) {
+				if (par3ItemStack.getItemSpriteNumber() == 0) {
 					par2RenderEngine.bindTexture("/terrain.png");
 				} else {
 					if (!custom) {
 						par2RenderEngine.bindTexture("/gui/items.png");
 					}
+				}
+
+				if (var8 == null) {
+					var8 = par2RenderEngine.getMissingIcon(par3ItemStack.getItemSpriteNumber());
 				}
 
 				var9 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);
@@ -460,16 +460,17 @@ public class RenderItem extends Render {
 
 				// Spout Start
 				if (custom) {
-				Tessellator tes = Tessellator.instance;
-				tes.startDrawingQuads();
-				tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 16), (double)0, 0, 0);
-				tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 16), (double)0, 1, 0);
-				tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 0), (double)0, 1, 1);
-				tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 0), (double)0, 0, 1);
-				tes.draw();
-				} else
+					Tessellator tes = Tessellator.instance;
+					tes.startDrawingQuads();
+					tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 16), (double)0, 0, 0);
+					tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 16), (double)0, 1, 0);
+					tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 0), (double)0, 1, 1);
+					tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 0), (double)0, 0, 1);
+					tes.draw();
+				} else {
 					this.renderIcon(par4, par5, var8, 16, 16);
 				// Spout End
+				}
 				GL11.glEnable(GL11.GL_LIGHTING);
 			}
 		}
