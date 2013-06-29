@@ -1154,15 +1154,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		if (Keyboard.isKeyDown(60)) {
 			if (!this.isTakingScreenshot) {
 				this.isTakingScreenshot = true;
-				// Spout Start
 				if (theWorld != null) {
-					if (Configuration.isResizeScreenshots()) {
-						this.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(minecraftDir, Configuration.getResizedScreenshotWidth(), Configuration.getResizedScreenshotHeight()));
-					} else {
 						this.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(minecraftDir, this.displayWidth, this.displayHeight));
-					}
 				}
-				// Spout End
 			}
 		} else {
 			this.isTakingScreenshot = false;

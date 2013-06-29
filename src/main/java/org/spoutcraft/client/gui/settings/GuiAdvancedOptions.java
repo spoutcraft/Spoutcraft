@@ -76,9 +76,6 @@ import org.spoutcraft.client.gui.settings.controls.RenderDistanceButton;
 import org.spoutcraft.client.gui.settings.controls.ReplaceBlocksButton;
 import org.spoutcraft.client.gui.settings.controls.ReplaceToolsButton;
 import org.spoutcraft.client.gui.settings.controls.ResetButton;
-import org.spoutcraft.client.gui.settings.controls.ResizeScreenshotButton;
-import org.spoutcraft.client.gui.settings.controls.ResizeScreenshotHeightField;
-import org.spoutcraft.client.gui.settings.controls.ResizeScreenshotWidthField;
 import org.spoutcraft.client.gui.settings.controls.SensitivitySlider;
 import org.spoutcraft.client.gui.settings.controls.ServerLightButton;
 import org.spoutcraft.client.gui.settings.controls.ServerTexturesButton;
@@ -576,27 +573,6 @@ public class GuiAdvancedOptions extends GuiScreen {
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
-
-		control = new ResizeScreenshotButton().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget("Spoutcraft", control);
-
-		label = new GenericLabel("Size:");
-		label.setWidth(150).setHeight(20).setX(right-7).setY(top + 6);
-		screen.attachWidget("Spoutcraft", label);
-
-		control = new ResizeScreenshotWidthField();
-		control.setWidth(35).setHeight(15).setX(right+20).setY(top + 2);
-		screen.attachWidget("Spoutcraft", control);
-
-		label = new GenericLabel("X");
-		label.setWidth(150).setHeight(20).setX(right+63).setY(top + 6);
-		screen.attachWidget("Spoutcraft", label);
-
-		control = new ResizeScreenshotHeightField();
-		control.setWidth(35).setHeight(15).setX(right+75).setY(top + 2);
-		screen.attachWidget("Spoutcraft", control);
-		top += 22;
 
 		control = new SnooperButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(center).setY(top);

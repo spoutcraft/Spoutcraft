@@ -86,8 +86,6 @@ public class Configuration {
 	private static boolean replaceBlocks = false;
 	private static boolean hotbarQuickKeysEnabled = true;
 	private static boolean resizeScreenshots = false;
-	private static int resizedScreenshotWidth = 6000;
-	private static int resizedScreenshotHeight = 3200;
 	private static float chatOpacity = 0.5f;
 	private static int mainMenuState = defaultMenuState();
 	private static boolean connectedTextures = false;
@@ -633,24 +631,6 @@ public class Configuration {
 
 	public static synchronized void setResizeScreenshots(boolean resizeScreenshots) {
 		Configuration.resizeScreenshots = resizeScreenshots;
-		onPropertyChange();
-	}
-
-	public static synchronized int getResizedScreenshotWidth() {
-		return resizedScreenshotWidth;
-	}
-
-	public static synchronized void setResizedScreenshotWidth(int resizedScreenshotWidth) {
-		Configuration.resizedScreenshotWidth = resizedScreenshotWidth;
-		onPropertyChange();
-	}
-
-	public static synchronized int getResizedScreenshotHeight() {
-		return resizedScreenshotHeight;
-	}
-
-	public static synchronized void setResizedScreenshotHeight(int resizedScreenshotHeight) {
-		Configuration.resizedScreenshotHeight = resizedScreenshotHeight;
 		onPropertyChange();
 	}
 
