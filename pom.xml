@@ -5,7 +5,7 @@
 	<name>Spoutcraft</name>
 	<groupId>org.spoutcraft</groupId>
 	<artifactId>spoutcraft</artifactId>
-	<version>1.5.2-SNAPSHOT</version>
+	<version>1.6.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<url>http://www.spoutcraft.org</url>
 	<inceptionYear>2011</inceptionYear>
@@ -14,11 +14,12 @@
 	<!-- Project properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<buildNumber>0</buildNumber>
+		<buildNumber>0</buildNumber><!-- DO NOT TOUCH! -->
 		<lwjglVersion>2.9.0</lwjglVersion>
-		<minecraftVersion>1.5.2</minecraftVersion>
-		<mcpVersion>7.51</mcpVersion>
-		<mcp_Version>751</mcp_Version>
+		<minecraftVersion>1.6.1</minecraftVersion>
+		<minecraft_Version>1_6_1</minecraft_Version>
+		<mcpVersion>8.02</mcpVersion>
+		<mcp_Version>802</mcp_Version>
 	</properties>
 
 	<!-- Organization information -->
@@ -59,7 +60,7 @@
 	<repositories>
 		<repository>
 			<id>spout-repo</id>
-			<url>http://nexus.spout.org/content/groups/public</url>
+			<url>http://nexus.spout.org/content/groups/public/</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -71,9 +72,23 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spout-repo</id>
-			<url>http://nexus.spout.org/content/groups/public</url>
+			<url>http://nexus.spout.org/content/groups/public/</url>
 		</pluginRepository>
 	</pluginRepositories>
+
+	<!-- Distribution management -->
+	<distributionManagement>
+		<!-- Publish releases here -->
+		<repository>
+			<id>spout-releases</id>
+			<url>http://nexus.spout.org/content/repositories/releases/</url>
+		</repository>
+		<!-- Publish snapshots here -->
+		<snapshotRepository>
+			<id>spout-snapshots</id>
+			<url>http://nexus.spout.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<!-- Build configuration -->
 	<build>
@@ -178,61 +193,62 @@
 											return true;
 										}}
 									</runIf>
-									<targetPath>${project.basedir}/jars/bin</targetPath>
-									<destFileName>minecraft.jar</destFileName>
+									<targetPath>${project.basedir}/jars/versions/${minecraftVersion}</targetPath>
+									<destFileName>${minecraftVersion}.jar</destFileName>
 									<file>http://s3.amazonaws.com/Minecraft.Download/versions/${minecraftVersion}/${minecraftVersion}.jar</file>
 								</resource>
 								<!-- Download remaining dependencies -->
 								<resource>
-									<targetPath>${project.basedir}/lib</targetPath>
+									<targetPath>${project.basedir}/jars/libraries</targetPath>
+									<!--<targetPath>${project.basedir}/jars/libraries/de/cuina/fireandfuel/codecjlayermp3/r2</targetPath>-->
 									<dependencies>
 										<dependency>
 											<groupId>de.cuina.fireandfuel</groupId>
 											<artifactId>codecjlayermp3</artifactId>
 											<version>r2</version>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 										<dependency>
 											<groupId>cc.thedudeguy</groupId>
 											<artifactId>codecjorbis</artifactId>
 											<version>r0</version>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 										<dependency>
 											<groupId>commons-io</groupId>
 											<artifactId>commons-io</artifactId>
 											<version>2.4</version>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 										<dependency>
 											<groupId>org.apache.commons</groupId>
 											<artifactId>commons-lang3</artifactId>
 											<version>3.1</version>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 										<dependency>
 											<groupId>dnsjava</groupId>
 											<artifactId>dnsjava</artifactId>
 											<version>2.1.1</version>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 										<dependency>
 											<groupId>javax.jmdns</groupId>
 											<artifactId>jmdns</artifactId>
 											<version>3.4.1</version>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 										<dependency>
 											<groupId>org.lwjgl.lwjgl</groupId>
 											<artifactId>lwjgl</artifactId>
 											<version>${lwjglVersion}</version>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 										<dependency>
 											<groupId>slick</groupId>
 											<artifactId>slick</artifactId>
 											<version>274</version>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 										<dependency>
 											<groupId>org.yaml</groupId>
@@ -244,7 +260,7 @@
 											<groupId>net.sf.trove4j</groupId>
 											<artifactId>trove4j</artifactId>
 											<version>3.0.3</version>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 									</dependencies>
 								</resource>
@@ -275,7 +291,7 @@
 								<!-- Copy and unpack LWJGL natives to MCP bin folder -->
 								<resource>
 									<runIf>{{ osName.contains("Windows") }}</runIf>
-									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
+									<targetPath>${project.basedir}/jars/versions/${minecraftVersion}/${minecraftVersion}-natives</targetPath>
 									<dependencies>
 										<dependency>
 											<groupId>org.lwjgl.lwjgl</groupId>
@@ -291,7 +307,7 @@
 								</resource>
 								<resource>
 									<runIf>{{ osName.contains("Mac") }}</runIf>
-									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
+									<targetPath>${project.basedir}/jars/versions/${minecraftVersion}/${minecraftVersion}-natives</targetPath>
 									<dependencies>
 										<dependency>
 											<groupId>org.lwjgl.lwjgl</groupId>
@@ -307,7 +323,7 @@
 								</resource>
 								<resource>
 									<runIf>{{ osName.contains("Linux") }}</runIf>
-									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
+									<targetPath>${project.basedir}/jars/versions/${minecraftVersion}/${minecraftVersion}-natives</targetPath>
 									<dependencies>
 										<dependency>
 											<groupId>org.lwjgl.lwjgl</groupId>

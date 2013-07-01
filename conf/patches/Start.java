@@ -1,27 +1,23 @@
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.main.Main;
 
 public class Start
 {
     public static void main(String[] args)
     {
-        try
-        {
-            // set new minecraft data folder to prevent it from using the .minecraft folder
-            // this makes it a portable version
-            Field f = Minecraft.class.getDeclaredField("field_71463_am");
-            Field.setAccessible(new Field[] { f }, true);
-            f.set(null, new File("."));
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return;
-        }
-
         // start minecraft game application
-        Minecraft.main(args);
+        // --version is just used as 'launched version' in snoop data and is required
+        // Working directory is used as gameDir if not provided
+        Main.main(concat(new String[]{"--version", "mcp"}, args));
+    }
+    
+    public static <T> T[] concat(T[] first, T[] second)
+    {
+        T[] result = Arrays.copyOf(first, first.length + second.length);
+        System.arraycopy(second, 0, result, first.length, second.length);
+        return result;
     }
 }
