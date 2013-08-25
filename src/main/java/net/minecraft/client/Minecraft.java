@@ -785,27 +785,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			if (!org.spoutcraft.client.gui.mainmenu.MainMenu.hasLoaded) {
 				return;
 			}
-			String var3 = GLU.gluErrorString(var2);
-
-			System.out.println("---------------- A GL Error has Occured! ----------------");
-			System.out.println("OpenGL Information");
-			System.out.println("    Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
-			System.out.println("    OpenGL Version: " + GL11.glGetString(GL11.GL_VERSION));
-			System.out.println("    GLSL Version: " + GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION));
-			System.out.println("    Max Texture Units: " + GL11.glGetInteger(GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
-
-			System.out.println("Error at " + par1Str);
-			System.out.println(var2 + ": " + var3);
-
-			System.out.println("Spoutcraft Configuration Information");
-			try {
-				for (Field f : Configuration.class.getFields()) {
-					System.out.println("    " + f.getName() + " : " + f.get(null));
-				}
-			} catch (Exception ignore) {
-			}
-			throw new RuntimeException("OpenGL Exception: (" + par1Str + ", " + var3 + ")");
-			// Spout End
 		}
 	}
 
