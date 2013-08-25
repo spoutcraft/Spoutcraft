@@ -276,7 +276,7 @@ public class PollResult {
 	}
 
 	/**
-	 * Sends ping, playercount and maximum players to the server list database.
+	 * Sends ping, player count, and maximum players to the server list database.
 	 * No personal data (aside your IP) will be transferred and the IP won't be
 	 * saved. Sending this data to the server makes for a more accurate ping calculation
 	 * and will give you better search results when you order by ping. Our server then
@@ -295,7 +295,7 @@ public class PollResult {
 						return;
 					}
 				}
-				String api = MirrorUtils.getMirrorUrl("/senddata.php", "http://servers.spout.org/senddata.php");
+				String api = MirrorUtils.getMirrorUrl("senddata.php", "http://servers.spout.org/senddata.php");
 				String json = "{";
 				int res = 0;
 				for (PollResult result:recentResults.valueCollection()) {
