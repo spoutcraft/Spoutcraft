@@ -386,6 +386,22 @@ public class BlockColor {
 		setDefaultColor(142, 0, 0x9C931D);
 		setDefaultColor(143, 0, 0xA4864F);
 
+		// New 9/8/13
+		//setDefaultColor(144, 0, 0xA4864F); // skull
+		//setDefaultColor(145, 0, 0xA4864F); // anvil
+		setDefaultColor(146, 0, -7378659); // trap chest
+		setDefaultColor(147, 0, -66723); // gold plate
+		setDefaultColor(148, 0, -1447447); // iron plate
+		//setDefaultColor(149, 0, 0xA4864F); // redstone compare		
+		//setDefaultColor(150, 0, 0xA4864F); // redstone compare
+		//setDefaultColor(151, 0, 0xA4864F); // daylight sensor
+		//setDefaultColor(152, 0, 0xA4864F); // block of redstone
+		setDefaultColor(153, 0, 0x6D001C); // netherquartz ore
+		//setDefaultColor(154, 0, 0xA4864F); // hopper
+		setDefaultColor(155, 0, 0xE9F1B6); // quartz block
+		setDefaultColor(155, 1, 0xE9F1B6); // quartz column
+		setDefaultColor(155, 2, 0xE9F1B6); // quartz column 2
+		setDefaultColor(156, 0, 0xADB388); // quartz stairs		
 	}
 
 	private static BlockColor instance(int argb, TintType tint) {
