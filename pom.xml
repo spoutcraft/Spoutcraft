@@ -16,7 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<buildNumber>0</buildNumber>
 		<lwjglVersion>2.9.0</lwjglVersion>
-		<minecraft.version>1.5.2</minecraft.version>
+		<minecraftVersion>1.5.2</minecraftVersion>
 		<mcp.version>7.51</mcp.version>
 		<mcpVersion>751</mcpVersion>
 	</properties>
@@ -174,13 +174,13 @@
 											entry = jar.getEntry("net/minecraft/client/Minecraft.class")
 											if (entry == null) { return true; }
 											java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(jar.getInputStream(entry)));
-											while ((line = reader.readLine()) != null) { if (line.contains(minecraft.version)) { return false; } }
+											while ((line = reader.readLine()) != null) { if (line.contains(minecraftVersion)) { return false; } }
 											return true;
 										}}
 									</runIf>
 									<targetPath>${project.basedir}/jars/bin</targetPath>
 									<destFileName>minecraft.jar</destFileName>
-									<file>http://s3.amazonaws.com/Minecraft.Download/versions/${minecraft.version}/${minecraft.version}.jar</file>
+									<file>http://s3.amazonaws.com/Minecraft.Download/versions/${minecraftVersion}/${minecraftVersion}.jar</file>
 								</resource>
 								<!-- Download remaining dependencies -->
 								<resource>
@@ -337,13 +337,13 @@
 								<resource>
 									<runIf>
 										{{
-											if (new File(project.basedir, "src/backup/minecraft/" + minecraft.version).isDirectory()) { return false; }
+											if (new File(project.basedir, "src/backup/minecraft/" + minecraftVersion).isDirectory()) { return false; }
 											if (new File(project.basedir, "src/minecraft").isDirectory()) { return true; }
 											return false;
 										}}
 									</runIf>
 									<directory>${project.basedir}/src/minecraft</directory>
-									<targetPath>${project.basedir}/src/backup/minecraft/${minecraft.version}</targetPath>
+									<targetPath>${project.basedir}/src/backup/minecraft/${minecraftVersion}</targetPath>
 									<include>**/*</include>
 									<preservePath>true</preservePath>
 								</resource>
@@ -363,11 +363,11 @@
 								<resource>
 									<runIf>
 										{{
-											if (!(new File(project.basedir, "src/backup/minecraft/" + minecraft.version).isDirectory())) { return false; }
+											if (!(new File(project.basedir, "src/backup/minecraft/" + minecraftVersion).isDirectory())) { return false; }
 											return true;
 										}}
 									</runIf>
-									<directory>${project.basedir}/src/backup/minecraft/${minecraft.version}</directory>
+									<directory>${project.basedir}/src/backup/minecraft/${minecraftVersion}</directory>
 									<targetPath>${project.basedir}/src/minecraft</targetPath>
 									<include>**/*</include>
 									<preservePath>true</preservePath>
@@ -451,7 +451,7 @@
 									<replaces>
 										<replace>
 											<from>Unknown Version</from>
-											<to>${minecraft.version}</to>
+											<to>${minecraftVersion}</to>
 										</replace>
 									</replaces>
 								</resource>
@@ -474,7 +474,7 @@
 									<replaces>
 										<replace>
 											<from>Unknown Version</from>
-											<to>${minecraft.version}</to>
+											<to>${minecraftVersion}</to>
 										</replace>
 									</replaces>
 								</resource>
