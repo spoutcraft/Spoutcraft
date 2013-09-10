@@ -17,8 +17,8 @@
 		<buildNumber>0</buildNumber>
 		<lwjglVersion>2.9.0</lwjglVersion>
 		<minecraftVersion>1.5.2</minecraftVersion>
-		<mcp.version>7.51</mcp.version>
-		<mcpVersion>751</mcpVersion>
+		<mcpVersion>7.51</mcpVersion>
+		<mcp_Version>751</mcp_Version>
 	</properties>
 
 	<!-- Organization information -->
@@ -150,12 +150,12 @@
 										{{
 											if (!(new File(project.basedir, "runtime").isDirectory())) { return true; }
 											if (!(new File(project.basedir, "conf/version.cfg").isFile())) { return true; }
-											new File(project.basedir, "conf/version.cfg").eachLine { line -> if (!(line.contains(mcp.version))) return true; }
+											new File(project.basedir, "conf/version.cfg").eachLine { line -> if (!(line.contains(mcpVersion))) return true; }
 											return false;
 										}}
 									</runIf>
 									<targetPath>${project.basedir}</targetPath>
-									<file>http://mcp.ocean-labs.de/files/archive/mcp${mcpVersion}.zip</file>
+									<file>http://mcp.ocean-labs.de/files/archive/mcp${mcp_Version}.zip</file>
 									<unpack>true</unpack>
 									<useTrueZipForUnpack>false</useTrueZipForUnpack>
 									<preservePath>true</preservePath>

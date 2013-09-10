@@ -69,18 +69,6 @@ nb-configuration.xml
 *.ipr
 *.iws
 
-# Runtime #
-###########
-/cache
-/config
-/data
-/natives
-/plugins
-/resources
-/update
-/updates
-/worlds
-
 # MCP #
 #######
 *.bat
