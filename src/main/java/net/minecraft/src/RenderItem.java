@@ -572,10 +572,10 @@ public class RenderItem extends Render {
 				}
 			}
 			boolean override = max > 0 && amnt > 0 && amnt < max;
-			// Spout End
-			if (par3ItemStack.isItemDamaged()) {
-				int var12 = (int)Math.round(13.0D - (double)par3ItemStack.getItemDamageForDisplay() * 13.0D / (double)par3ItemStack.getMaxDamage());
-				int var8 = (int)Math.round(255.0D - (double)par3ItemStack.getItemDamageForDisplay() * 255.0D / (double)par3ItemStack.getMaxDamage());
+			if (par3ItemStack.isItemDamaged() || override) {
+				int var12 = (int)Math.round(13.0D - (double)(override ? amnt : par3ItemStack.getItemDamageForDisplay()) * 13.0D / (double)(override ? max : par3ItemStack.getMaxDamage()));
+				int var8 = (int)Math.round(255.0D - (double)(override ? amnt : par3ItemStack.getItemDamageForDisplay()) * 255.0D / (double)(override ? max : par3ItemStack.getMaxDamage()));
+				// Spout End
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
