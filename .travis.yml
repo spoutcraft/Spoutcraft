@@ -1,22 +1,18 @@
 language: java
 jdk: oraclejdk7
 
-before_script: gem install travis-artifacts
-script: mvn clean package -P mcp-final-unix -DbuildNumber=${TRAVIS_BUILD_NUMBER}
+install: mvn package -Pmcp-final-unix -DbuildNumber=$TRAVIS_BUILD_NUMBER -DciSystem=travis -Dcommit=${TRAVIS_COMMIT:0:7}
 after_success:
-  - export PROJECT_ARTIFACT_ID="`sed -n 's|.*<artifactId>\(.*\)</artifactId>.*|\1|p' $TRAVIS_BUILD_DIR/pom.xml | awk '{ print $1; exit }'`" && echo Project artifactId is $PROJECT_ARTIFACT_ID
-  - export PROJECT_NAME="`sed -n 's|.*<name>\(.*\)</name>.*|\1|p' $TRAVIS_BUILD_DIR/pom.xml | awk '{ print $1; exit }'`" && echo Project name is $PROJECT_NAME
-  - export PROJECT_VERSION="`sed -n 's|.*<version>\(.*\)</version>.*|\1|p' $TRAVIS_BUILD_DIR/pom.xml | awk '{ print $1; exit }'`" && echo Project version is $PROJECT_VERSION
-  - "test ${TRAVIS_BRANCH} = master && cd $TRAVIS_BUILD_DIR/target && travis-artifacts upload --path $PROJECT_ARTIFACT_ID-* --target-path $TRAVIS_BUILD_NUMBER"
+  - "git clone -b travis `git config --get remote.origin.url` target/travis"
+  - "[[ \"$TRAVIS_BRANCH\" == \"master\" ]] && mvn deploy --settings target/travis/settings.xml"
 
 notifications:
   email: false
-  irc: "irc.esper.net#spoutdev"
-  webhooks: http://get.spout.org/hook
+  webhooks:
+    - http://get.spout.org/hook
+    - http://n.tkte.ch/h/515/XKi-6poJeJINy51JH0bWKXZh
 
 env:
   global:
-    - "ARTIFACTS_S3_BUCKET=sc-snapshots"
-    - "ARTIFACTS_AWS_REGION=us-east-1"
-    - secure: "Ksr3R/yLPtTnLlzouCch4c/O8WhdCnRh5qGOcVxFTvhZ8iQ7tA4f37cjmv4D\ndILSF29rl830HuBk8BOurr/GZEuNLmGFIR+8p/CG9kRFUiOxqYbo2fEhFbmT\n+3sAAm9M82tEjBE3r6EBVrO+8UcGCZJSpuoHpaRnGnPMTzX6mBM="
-    - secure: "07ZvSYyJpZI+MTOCxH28PGnvD3cn1/0E6t4DfcNMfXRW5kEWs2BWUBvytd9J\nu0MyL1IuoExLaNuDMKC5Mw/7dHIbNJvSpV9gyyHz6NHe3qlGhbgZcgpvZnMO\n60Gjkn3I9LX6BWULhFG9cEFArGhi6v1mAM7Qvk/+XfNV0QnGo0Y="
+    - secure: "YWDQXr6orafZjQ179p0RYVngDXUVFFXOOunkZUIgzZ3QkIRuyjQTjX1gbNOy7/nFfwR5jcMYtOg0R2H1zqrjdrRTBn9kjU9FddgsDTKuQetrsC2zsQON5KS0zE/JyMUKfenXuqw8SxsSEGhK8Ik0EIMCjjjmDoxxXGM1IXUdCkQ="
+    - secure: "ewDlug3sHoIrUYs68H9fy2zKni9RCIMfkZnYfMTbHwh+fM4ISFO4asNrKOufGdvfMo4jQLfuRsUtlvaHqvx2OwHuB3ymjS1pOKkj1RLee/dFFd1KAnbH8Mb2ANOKMRv3y6YO+c9R1w5Fqm9woz4ONmO0ukrSNR2qMjOntbuQRHM="

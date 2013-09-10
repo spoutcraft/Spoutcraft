@@ -1,6 +1,13 @@
-# Compiled source #
-###################
+# Build #
+#########
+MANIFEST.MF
+dependency-reduced-pom.xml
+
+# Compiled #
+############
 bin
+build
+dist
 lib
 out
 target
@@ -11,9 +18,11 @@ target
 *.o
 *.so
 
-# Git #
-#######
-.git
+# Databases #
+#############
+*.db
+*.sql
+*.sqlite
 
 # Packages #
 ############
@@ -21,37 +30,37 @@ target
 *.dmg
 *.gz
 *.iso
+*.jar
 *.rar
 *.tar
 *.zip
 
-# Logs and databases #
-######################
-*.log
-*.sql
-*.sqlite
+# Repository #
+##############
+.git
 
-# OS generated files #
-######################
+# Logging #
+###########
+/logs
+*.log
+
+# Misc #
+########
+*.bak
+
+# System #
+##########
 .DS_Store
 ehthumbs.db
-Icon?
 Thumbs.db
 
-# Build files #
-#################
-MANIFEST.MF
-dependency-reduced-pom.xml
-
-# Project files #
-#####################
+# Project #
+###########
 .classpath
 .externalToolBuilders
 .idea
 .project
 .settings
-build
-dist
 nbproject
 atlassian-ide-plugin.xml
 build.xml
@@ -60,23 +69,30 @@ nb-configuration.xml
 *.ipr
 *.iws
 
-# Misc files #
-##############
-*.bak
+# Runtime #
+###########
+/cache
+/config
+/data
+/natives
+/plugins
+/resources
+/update
+/updates
+/worlds
 
-# Minecraft Coder Pack #
-########################
-CHANGELOG
-LICENSE
-docs
-eclipse
-jars
-logs
-reobf
-runtime
-src/minecraft
-src/backup
-temp
-conf/version.cfg
+# MCP #
+#######
 *.bat
 *.sh
+/CHANGELOG
+/conf/version.cfg
+/docs
+/eclipse
+/jars
+/LICENSE
+/reobf
+/runtime
+/src/backup
+/src/minecraft
+/temp

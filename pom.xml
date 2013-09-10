@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<!-- Project information -->
@@ -7,20 +6,19 @@
 	<groupId>org.spoutcraft</groupId>
 	<artifactId>spoutcraft</artifactId>
 	<version>1.5.2-SNAPSHOT</version>
-	<url>http://www.spout.org</url>
+	<packaging>jar</packaging>
+	<url>http://www.spoutcraft.org</url>
 	<inceptionYear>2011</inceptionYear>
-	<description>Spoutcraft is a modified Minecraft client, which is accessible via the Spoutcraft Launcher, that boosts increased FPS, HD textures/fonts,
-	minimap, and an overview map. When connecting to a server with SpoutPlugin, custom blocks and items, custom guis, custom sounds, etc are
-	all available for use. Spoutcraft is a legacy project and will be replaced by the Spout client when finished.</description>
+	<description>Spoutcraft is a Minecraft client mod and launcher that provides users with a more customizable experience.</description>
 
-	<!-- Build properties -->
+	<!-- Project properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<minecraftVersion>1.5.2</minecraftVersion>
-		<minecraft_Version>1_5_2</minecraft_Version>
-		<lwjglVersion>2.9.0</lwjglVersion>
-		<mcpVersion>751</mcpVersion>
 		<buildNumber>0</buildNumber>
+		<lwjglVersion>2.9.0</lwjglVersion>
+		<minecraftVersion>1.5.2</minecraftVersion>
+		<mcp.version>7.51</mcp.version>
+		<mcpVersion>751</mcpVersion>
 	</properties>
 
 	<!-- Organization information -->
@@ -40,18 +38,18 @@
 
 	<!-- Source code access -->
 	<scm>
-		<developerConnection>scm:git:git@github.com:Legacy/Spoutcraft.git</developerConnection>
 		<connection>scm:git:git://github.com/Legacy/Spoutcraft.git</connection>
+		<developerConnection>scm:git:git@github.com:Legacy/Spoutcraft.git</developerConnection>
 		<url>https://github.com/Legacy/Spoutcraft</url>
 	</scm>
 
-	<!-- Build server -->
+	<!-- Continuous integration -->
 	<ciManagement>
-		<system>jenkins</system>
-		<url>http://build.spout.org/job/Spoutcraft</url>
+		<system>travis</system>
+		<url>https://travis-ci.org/Legacy/Spoutcraft</url>
 	</ciManagement>
 
-	<!-- Issue tracker -->
+	<!-- Issue management -->
 	<issueManagement>
 		<system>jira</system>
 		<url>http://issues.spout.org/browse/LEGACY</url>
@@ -61,7 +59,7 @@
 	<repositories>
 		<repository>
 			<id>spout-repo</id>
-			<url>http://repo.spout.org</url>
+			<url>http://nexus.spout.org/content/groups/public</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -73,23 +71,9 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spout-repo</id>
-			<url>http://repo.spout.org</url>
+			<url>http://nexus.spout.org/content/groups/public</url>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<!-- Distribution management -->
-	<distributionManagement>
-		<!-- Publish releases here -->
-		<repository>
-			<id>spout-releases</id>
-			<url>http://nexus.spout.org/content/repositories/releases</url>
-		</repository>
-		<!-- Publish snapshots here -->
-		<snapshotRepository>
-			<id>spout-snapshots</id>
-			<url>http://nexus.spout.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
 
 	<!-- Build configuration -->
 	<build>
@@ -101,7 +85,7 @@
 			<resource>
 				<filtering>false</filtering>
 				<targetPath>.</targetPath>
-				<directory>${project.basedir}</directory>
+				<directory>.</directory>
 				<includes>
 					<include>LICENSE.txt</include>
 				</includes>
@@ -110,7 +94,7 @@
 
 		<!-- Build plugins -->
 		<plugins>
-			<!-- License headers plugin -->
+			<!-- License header plugin -->
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
@@ -127,7 +111,7 @@
 							<quiet>true</quiet>
 							<encoding>UTF-8</encoding>
 							<strictCheck>true</strictCheck>
-							<header>${project.basedir}/HEADER.txt</header>
+							<header>HEADER.txt</header>
 							<mapping>
 								<java>SLASHSTAR_STYLE</java>
 							</mapping>
@@ -166,12 +150,12 @@
 										{{
 											if (!(new File(project.basedir, "runtime").isDirectory())) { return true; }
 											if (!(new File(project.basedir, "conf/version.cfg").isFile())) { return true; }
-											new File(project.basedir, "conf/version.cfg").eachLine { line -> if (!(line.contains(mcpVersion))) return true; }
+											new File(project.basedir, "conf/version.cfg").eachLine { line -> if (!(line.contains(mcp.version))) return true; }
 											return false;
 										}}
 									</runIf>
 									<targetPath>${project.basedir}</targetPath>
-									<file>http://www.almuramc.com/downloads/mcp751.zip</file>
+									<file>http://mcp.ocean-labs.de/files/archive/mcp${mcpVersion}.zip</file>
 									<unpack>true</unpack>
 									<useTrueZipForUnpack>false</useTrueZipForUnpack>
 									<preservePath>true</preservePath>
@@ -253,7 +237,7 @@
 										<dependency>
 											<groupId>org.yaml</groupId>
 											<artifactId>snakeyaml</artifactId>
-											<version>1.11</version>
+											<version>1.12</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
@@ -444,7 +428,7 @@
 									<replaces>
 										<replace>
 											<from>Unknown Version</from>
-											<to>${releaseVersion} b${buildNumber}</to>
+											<to>${project.version} b${buildNumber}</to>
 										</replace>
 									</replaces>
 								</resource>
@@ -527,25 +511,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Release version plugin -->
-			<plugin>
-				<groupId>com.sourcesense.maven</groupId>
-				<artifactId>maven-nosnapshot-plugin</artifactId>
-				<version>0.0.7</version>
-				<executions>
-					<execution>
-						<configuration>
-							<version>${project.version}</version>
-							<propertyName>releaseVersion</propertyName>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>strip</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- Disable compiler plugin -->
+			<!-- Disable source compiler plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
