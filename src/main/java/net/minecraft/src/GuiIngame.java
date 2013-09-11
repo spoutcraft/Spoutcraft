@@ -320,12 +320,19 @@ public class GuiIngame extends Gui {
 			this.mc.mcProfiler.endSection();
 		}
 
+		ScoreObjective var42 = this.mc.theWorld.getScoreboard().func_96539_a(1);
+
+		if (var42 != null) {
+			this.func_96136_a(var42, screenHeight, screenWidth, font);
+		}
+		
 		GL11.glTranslatef(0.0F, (float)(screenHeight - 48), 0.0F);
 		this.mc.mcProfiler.startSection("chat");
 		this.persistantChatGUI.drawChat(this.updateCounter);
 		this.mc.mcProfiler.endSection();
 		GL11.glPopMatrix();
-
+		var42 = this.mc.theWorld.getScoreboard().func_96539_a(0);
+		
 		if (this.mc.gameSettings.keyBindPlayerList.pressed && (!this.mc.isIntegratedServerRunning() || this.mc.thePlayer.sendQueue.playerInfoList.size() > 1)) {
 			this.mc.mcProfiler.startSection("playerList");
 			NetClientHandler var37 = this.mc.thePlayer.sendQueue;
@@ -356,7 +363,23 @@ public class GuiIngame extends Gui {
 
 				if (var19 < var39.size()) {
 					GuiPlayerInfo var46 = (GuiPlayerInfo)var39.get(var19);
-					font.drawStringWithShadow(var46.name, var20, var47, 16777215);
+					ScorePlayerTeam var60 = this.mc.theWorld.getScoreboard().getPlayersTeam(var46.name);
+					String var53 = ScorePlayerTeam.func_96667_a(var60, var46.name);
+					font.drawStringWithShadow(var53, var20, var47, 16777215);
+					
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F); // TODO: might not need this.
+										
+					if (var42 != null) {
+						int var51 = var20 + font.getStringWidth(var53) + 5;
+						int var50 = var20 + var16 - 12 - 5;
+
+						if (var50 - var51 > 5) {
+							Score var56 = var42.getScoreboard().func_96529_a(var46.name, var42);
+							String var57 = EnumChatFormatting.YELLOW + "" + var56.func_96652_c();
+							font.drawStringWithShadow(var57, var50 - font.getStringWidth(var57), var47, 16777215);
+						}
+					}
+					
 					this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/gui/icons.png"));
 					byte var50 = 0;
 					boolean var48 = false;
