@@ -19,7 +19,7 @@ public class Profiler {
 	private final List timestampList = new ArrayList();
 
 	/** Flag profiling enabled */
-	public boolean profilingEnabled = false;
+	public boolean profilingEnabled;
 
 	/** Current profiling section */
 	private String profilingSection = "";

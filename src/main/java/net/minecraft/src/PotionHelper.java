@@ -5,9 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-// MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeItem;
-// MCpatcher End
+import com.prupe.mcpatcher.cc.ColorizeItem;
 
 public class PotionHelper {
 	public static final String field_77924_a = null;
