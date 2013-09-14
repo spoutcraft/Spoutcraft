@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeBlock;
+import com.prupe.mcpatcher.cc.ColorizeBlock;
 // MCPatcher End
 
 public class EntityRainFX extends EntityFX {

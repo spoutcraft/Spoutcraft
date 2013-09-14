@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeEntity;
+import com.prupe.mcpatcher.cc.ColorizeEntity;
 // MCPatcher End
 
 public class EntityPortalFX extends EntityFX {
