@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
@@ -15,7 +14,7 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 	 */
 	private String currentlyDisplayedText = "";
 	private long field_73723_d = Minecraft.getSystemTime();
-	private boolean field_73724_e = false;
+	private boolean field_73724_e;
 
 	public LoadingScreenRenderer(Minecraft par1Minecraft) {
 		this.mc = par1Minecraft;
@@ -98,7 +97,7 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 				GL11.glTranslatef(0.0F, 0.0F, -200.0F);
 				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 				Tessellator var7 = Tessellator.instance;
-				this.mc.renderEngine.bindTexture("/gui/background.png");
+				this.mc.func_110434_K().func_110577_a(Gui.field_110325_k);
 				float var8 = 32.0F;
 				var7.startDrawingQuads();
 				var7.setColorOpaque_I(4210752);
@@ -144,10 +143,5 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 				}
 			}
 		}
-	}
-
-	/**
-	 * called when there is no more progress to be had, both on completion and failure
-	 */
-	public void onNoMoreProgress() {}
+	}	
 }

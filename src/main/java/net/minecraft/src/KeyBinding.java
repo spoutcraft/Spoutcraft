@@ -12,7 +12,7 @@ public class KeyBinding {
 
 	/** because _303 wanted me to call it that(Caironater) */
 	public boolean pressed;
-	public int pressTime = 0;
+	public int pressTime;
 
 	public static void onTick(int par0) {
 		// Spout Start
