@@ -4,13 +4,15 @@ import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.MobRandomizer;
+import com.prupe.mcpatcher.mob.MobRandomizer;
 // MCPatcher End
 // Spout Start
 import org.spoutcraft.client.config.Configuration;
 // Spout End
 
 public class RenderEnderman extends RenderLiving {
+	private static final ResourceLocation field_110840_a = new ResourceLocation("textures/entity/enderman/enderman_eyes.png");
+	private static final ResourceLocation field_110839_f = new ResourceLocation("textures/entity/enderman/enderman.png");
 
 	/** The model of the enderman */
 	private ModelEnderman endermanModel;
@@ -37,6 +39,10 @@ public class RenderEnderman extends RenderLiving {
 
 		super.doRenderLiving(par1EntityEnderman, par2, par4, par6, par8, par9);
 	}
+	
+	protected ResourceLocation func_110838_a(EntityEnderman par1EntityEnderman) {
+		return field_110839_f;
+	}
 
 	/**
 	 * Render the block an enderman is carrying
@@ -59,7 +65,7 @@ public class RenderEnderman extends RenderLiving {
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var5 / 1.0F, (float)var6 / 1.0F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			this.loadTexture("/terrain.png");
+			this.func_110776_a(TextureMap.field_110575_b);
 			this.renderBlocks.renderBlockAsItem(Block.blocksList[par1EntityEnderman.getCarried()], par1EntityEnderman.getCarryingData(), 1.0F);
 			GL11.glPopMatrix();
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -75,9 +81,10 @@ public class RenderEnderman extends RenderLiving {
 		} else {
 			// Spout Start
 			if (Configuration.isRandomMobTextures()) {
-			this.loadTexture(MobRandomizer.randomTexture((EntityLiving)par1EntityEnderman, "/mob/enderman_eyes.png"));
+				this.func_110776_a(MobRandomizer.randomTexture((EntityLivingBase)par1EntityEnderman, field_110840_a));
 			} else {
-				loadTexture(par1EntityEnderman.getCustomTexture(org.spoutcraft.api.entity.EntitySkinType.ENDERMAN_EYES, "/mob/enderman_eyes.png"));
+				// ToDO: Fix this.
+				//loadTexture(par1EntityEnderman.getCustomTexture(org.spoutcraft.api.entity.EntitySkinType.ENDERMAN_EYES, "/mob/enderman_eyes.png"));
 			}
 			// Spout End
 			float var4 = 1.0F;
@@ -103,19 +110,27 @@ public class RenderEnderman extends RenderLiving {
 		}
 	}
 
+	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
+		this.renderEnderman((EntityEnderman)par1EntityLiving, par2, par4, par6, par8, par9);
+	}
+	
 	/**
 	 * Queries whether should render the specified pass or not.
 	 */
-	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
-		return this.renderEyes((EntityEnderman)par1EntityLiving, par2, par3);
+	protected int shouldRenderPass(EntityLivingBase par1EntityLivingBase, int par2, float par3) {
+		return this.renderEyes((EntityEnderman)par1EntityLivingBase, par2, par3);
 	}
 
-	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {
-		this.renderCarrying((EntityEnderman)par1EntityLiving, par2);
+	protected void renderEquippedItems(EntityLivingBase par1EntityLivingBase, float par2) {
+		this.renderCarrying((EntityEnderman)par1EntityLivingBase, par2);
 	}
 
-	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
-		this.renderEnderman((EntityEnderman)par1EntityLiving, par2, par4, par6, par8, par9);
+	public void renderPlayer(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9) {
+		this.renderEnderman((EntityEnderman)par1EntityLivingBase, par2, par4, par6, par8, par9);
+	}
+
+	protected ResourceLocation func_110775_a(Entity par1Entity) {
+		return this.func_110838_a((EntityEnderman)par1Entity);
 	}
 
 	/**

@@ -10,7 +10,7 @@ public class RenderItemFrame extends Render {
 	private Icon field_94147_f;
 
 	public void updateIcons(IconRegister par1IconRegister) {
-		this.field_94147_f = par1IconRegister.registerIcon("itemframe_back");
+		this.field_94147_f = par1IconRegister.registerIcon("itemframe_background");
 	}
 
 	public void func_82404_a(EntityItemFrame par1EntityItemFrame, double par2, double par4, double par6, float par8, float par9) {
@@ -26,13 +26,17 @@ public class RenderItemFrame extends Render {
 		this.func_82402_b(par1EntityItemFrame);
 		GL11.glPopMatrix();
 	}
+	
+	protected ResourceLocation func_110788_a(EntityItemFrame par1EntityItemFrame) {
+		return null;
+	}
 
 	/**
 	 * Render the item frame's item as a block.
 	 */
 	private void renderFrameItemAsBlock(EntityItemFrame par1EntityItemFrame) {
 		GL11.glPushMatrix();
-		this.renderManager.renderEngine.bindTexture("/terrain.png");
+		this.renderManager.renderEngine.func_110577_a(TextureMap.field_110575_b);
 		GL11.glRotatef(par1EntityItemFrame.rotationYaw, 0.0F, 1.0F, 0.0F);
 		Block var2 = Block.planks;
 		float var3 = 0.0625F;
@@ -75,7 +79,7 @@ public class RenderItemFrame extends Render {
 			var3.getEntityItem().stackSize = 1;
 			var3.hoverStart = 0.0F;
 			// Spout Start
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderManager.renderEngine.getTexture("/terrain.png"));
+			this.renderManager.renderEngine.func_110577_a(field_110789_a);
 			GL11.glPushMatrix();
 
 			if (var2.itemID == 318 && (MaterialData.getCustomBlock(var2.getItemDamage()) instanceof org.spoutcraft.api.material.Block)) {
@@ -109,7 +113,7 @@ public class RenderItemFrame extends Render {
 			}
 
 			if (var3.getEntityItem().getItem() == Item.map) {
-				this.renderManager.renderEngine.bindTexture("/misc/mapbg.png");
+				this.renderManager.renderEngine.func_110577_a(field_110789_a);
 				Tessellator var4 = Tessellator.instance;
 				GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
@@ -130,17 +134,21 @@ public class RenderItemFrame extends Render {
 					this.renderManager.itemRenderer.mapItemRenderer.renderMap((EntityPlayer)null, this.renderManager.renderEngine, var6);
 				}
 			} else {
-				TextureCompass var9;
-
 				if (var3.getEntityItem().getItem() == Item.compass) {
-					var9 = TextureCompass.compassTexture;
-					double var10 = var9.currentAngle;
-					double var7 = var9.angleDelta;
-					var9.currentAngle = 0.0D;
-					var9.angleDelta = 0.0D;
-					var9.updateCompass(par1EntityItemFrame.worldObj, par1EntityItemFrame.posX, par1EntityItemFrame.posZ, (double)MathHelper.wrapAngleTo180_float((float)(180 + par1EntityItemFrame.hangingDirection * 90)), false, true);
-					var9.currentAngle = var10;
-					var9.angleDelta = var7;
+					TextureManager var11 = Minecraft.getMinecraft().func_110434_K();
+					var11.func_110577_a(TextureMap.field_110576_c);
+					TextureAtlasSprite var13 = ((TextureMap)var11.func_110581_b(TextureMap.field_110576_c)).func_110572_b(Item.compass.getIconIndex(var3.getEntityItem()).getIconName());
+
+					if (var13 instanceof TextureCompass) {
+						TextureCompass var14 = (TextureCompass)var13;
+						double var7 = var14.currentAngle;
+						double var9 = var14.angleDelta;
+						var14.currentAngle = 0.0D;
+						var14.angleDelta = 0.0D;
+						var14.updateCompass(par1EntityItemFrame.worldObj, par1EntityItemFrame.posX, par1EntityItemFrame.posZ, (double)MathHelper.wrapAngleTo180_float((float)(180 + par1EntityItemFrame.hangingDirection * 90)), false, true);
+						var14.currentAngle = var7;
+						var14.angleDelta = var9;
+					}
 				}
 
 				RenderItem.renderInFrame = true;
@@ -148,8 +156,11 @@ public class RenderItemFrame extends Render {
 				RenderItem.renderInFrame = false;
 
 				if (var3.getEntityItem().getItem() == Item.compass) {
-					var9 = TextureCompass.compassTexture;
-					var9.updateAnimation();
+					TextureAtlasSprite var12 = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(TextureMap.field_110576_c)).func_110572_b(Item.compass.getIconIndex(var3.getEntityItem()).getIconName());
+
+					if (var12.func_110970_k() > 0) {
+						var12.updateAnimation();
+					}
 				}
 			}
 
@@ -157,6 +168,10 @@ public class RenderItemFrame extends Render {
 		}
 	}
 
+	protected ResourceLocation func_110775_a(Entity par1Entity) {
+		return this.func_110788_a((EntityItemFrame)par1Entity);
+	}
+	
 	/**
 	 * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
 	 * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic

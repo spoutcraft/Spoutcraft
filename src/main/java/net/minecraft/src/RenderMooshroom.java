@@ -1,11 +1,12 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.MobOverlay;
+import com.prupe.mcpatcher.mob.MobOverlay;
 // MCPatcher End
 import org.lwjgl.opengl.GL11;
 
 public class RenderMooshroom extends RenderLiving {
+	private static final ResourceLocation field_110880_a = new ResourceLocation("textures/entity/cow/mooshroom.png");
 	public RenderMooshroom(ModelBase par1ModelBase, float par2) {
 		super(par1ModelBase, par2);
 	}
@@ -14,6 +15,10 @@ public class RenderMooshroom extends RenderLiving {
 		super.doRenderLiving(par1EntityMooshroom, par2, par4, par6, par8, par9);
 	}
 
+	protected ResourceLocation func_110879_a(EntityMooshroom par1EntityMooshroom) {
+		return field_110880_a;
+	}
+	
 	protected void renderMooshroomEquippedItems(EntityMooshroom par1EntityMooshroom, float par2) {
 		super.renderEquippedItems(par1EntityMooshroom, par2);
 
@@ -21,7 +26,7 @@ public class RenderMooshroom extends RenderLiving {
 		if (par1EntityMooshroom.isChild()) {
 			MobOverlay.finishMooshroom();
 		} else {
-			this.loadTexture(MobOverlay.setupMooshroom(par1EntityMooshroom, "/terrain.png"));
+			this.func_110776_a(MobOverlay.setupMooshroom(par1EntityMooshroom, TextureMap.field_110575_b));
 		// MCPatcher End
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glPushMatrix();
@@ -59,12 +64,20 @@ public class RenderMooshroom extends RenderLiving {
 		}
 	}
 
-	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {
-		this.renderMooshroomEquippedItems((EntityMooshroom)par1EntityLiving, par2);
-	}
-
 	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
 		this.renderLivingMooshroom((EntityMooshroom)par1EntityLiving, par2, par4, par6, par8, par9);
+	}
+	
+	protected void renderEquippedItems(EntityLivingBase par1EntityLivingBase, float par2) {
+		this.renderMooshroomEquippedItems((EntityMooshroom)par1EntityLivingBase, par2);
+	}
+
+	public void renderPlayer(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9) {
+		this.renderLivingMooshroom((EntityMooshroom)par1EntityLivingBase, par2, par4, par6, par8, par9);
+	}
+
+	protected ResourceLocation func_110775_a(Entity par1Entity) {
+		return this.func_110879_a((EntityMooshroom)par1Entity);
 	}
 
 	/**

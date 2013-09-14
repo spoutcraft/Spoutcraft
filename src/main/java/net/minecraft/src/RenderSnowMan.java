@@ -2,11 +2,11 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.MobOverlay;
+import com.prupe.mcpatcher.mob.MobOverlay;
 // MCPatcher End
 
 public class RenderSnowMan extends RenderLiving {
-
+	private static final ResourceLocation field_110895_a = new ResourceLocation("textures/entity/snowman.png");
 	/** A reference to the Snowman model in RenderSnowMan. */
 	private ModelSnowMan snowmanModel;
 
@@ -36,7 +36,7 @@ public class RenderSnowMan extends RenderLiving {
 
 			// MCPatcher Start
 			if (MobOverlay.setupSnowman(par1EntitySnowman)) {
-				this.loadTexture(MobOverlay.snowmanOverlayTexture);
+				this.func_110776_a(MobOverlay.snowmanOverlayTexture);
 				MobOverlay.renderSnowmanOverlay();
 			} else {
 				this.renderManager.itemRenderer.renderItem(par1EntitySnowman, var3, 0);
@@ -47,7 +47,16 @@ public class RenderSnowMan extends RenderLiving {
 		}
 	}
 
-	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {
-		this.renderSnowmanPumpkin((EntitySnowman)par1EntityLiving, par2);
+
+	protected ResourceLocation func_110894_a(EntitySnowman par1EntitySnowman) {
+		return field_110895_a;
+	}
+
+	protected void renderEquippedItems(EntityLivingBase par1EntityLivingBase, float par2) {
+		this.renderSnowmanPumpkin((EntitySnowman)par1EntityLivingBase, par2);
+	}
+
+	protected ResourceLocation func_110775_a(Entity par1Entity) {
+		return this.func_110894_a((EntitySnowman)par1Entity);
 	}
 }

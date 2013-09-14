@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.util.Random;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -14,6 +13,7 @@ import org.spoutcraft.client.SpoutClient;
 //Spout End
 
 public class RenderItem extends Render {
+	private static final ResourceLocation field_110798_h = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 	private RenderBlocks itemRenderBlocks = new RenderBlocks();
 
 	/** The RNG used in RenderItem (for bobbing itemstacks on the ground) */
@@ -21,8 +21,8 @@ public class RenderItem extends Render {
 	public boolean renderWithColor = true;
 
 	/** Defines the zLevel of rendering of item on GUI. */
-	public float zLevel = 0.0F;
-	public static boolean renderInFrame = false;
+	public float zLevel;
+	public static boolean renderInFrame;
 
 	public RenderItem() {
 		this.shadowSize = 0.15F;
@@ -35,7 +35,8 @@ public class RenderItem extends Render {
 		if (this.renderManager != null && this.renderManager.renderEngine != null) {
 			int textureId = this.renderManager.renderEngine.getTexture(texture);
 			if (textureId >= 0) {
-				this.renderManager.renderEngine.bindTexture(textureId);
+				//ToDO: Render bindTexture calls no longer implemented like this
+				//this.renderManager.renderEngine.bindTexture(textureId);
 			}
 		}
 	}
@@ -45,6 +46,7 @@ public class RenderItem extends Render {
 	 * Renders the item
 	 */
 	public void doRenderItem(EntityItem par1EntityItem, double par2, double par4, double par6, float par8, float par9) {
+		this.func_110777_b(par1EntityItem);
 		this.random.setSeed(187L);
 		ItemStack var10 = par1EntityItem.getEntityItem();
 
@@ -87,7 +89,8 @@ public class RenderItem extends Render {
 					if (textureURI != null) {
 						Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon(), textureURI);
 						if (texture != null) {
-							SpoutClient.getHandle().renderEngine.bindTexture(texture.getTextureID());
+							//ToDo: cannot do this anymore
+							//SpoutClient.getHandle().renderEngine.bindTexture(texture.getTextureID());
 							custom = true;
 						}
 					}
@@ -102,9 +105,10 @@ public class RenderItem extends Render {
 				GL11.glPushMatrix(); // the push from above
 				if (!custom) {
 					if (var10.itemID < 256) {
-						this.loadTexture("/terrain.png");
+						//ToDO: Fix these
+						//this.loadTexture("/terrain.png");
 					} else {
-						this.loadTexture("/gui/items.png");
+						//this.loadTexture("/gui/items.png");
 					}
 				}
 				// Spout End
@@ -126,7 +130,7 @@ public class RenderItem extends Render {
 						GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 					}
 
-					this.loadTexture("/terrain.png");
+					//this.loadTexture("/terrain.png");
 					float var25 = 0.25F;
 					int var24 = var21.getRenderType();
 
@@ -190,10 +194,10 @@ public class RenderItem extends Render {
 						Icon var23 = var10.getIconIndex();
 
 						if (var10.getItemSpriteNumber() == 0) {
-							this.loadTexture("/terrain.png");
+							//this.loadTexture("/terrain.png");
 						} else {
 							if (!custom) {
-								this.loadTexture("/gui/items.png");
+								//this.loadTexture("/gui/items.png");
 							}
 						}
 
@@ -216,28 +220,34 @@ public class RenderItem extends Render {
 		}
 	}
 
-	/**
+	protected ResourceLocation func_110796_a(EntityItem par1EntityItem) {
+		return this.renderManager.renderEngine.func_130087_a(par1EntityItem.getEntityItem().getItemSpriteNumber());
+	}
+	
+	/***
 	 * Renders a dropped item
 	 */
 	private void renderDroppedItem(EntityItem par1EntityItem, Icon par2Icon, int par3, float par4, float par5, float par6, float par7, boolean customTexture) {
 		Tessellator var8 = Tessellator.instance;
 
 		if (par2Icon == null) {
-			par2Icon = this.renderManager.renderEngine.getMissingIcon(par1EntityItem.getEntityItem().getItemSpriteNumber());
+			TextureManager var9 = Minecraft.getMinecraft().func_110434_K();
+			ResourceLocation var10 = var9.func_130087_a(par1EntityItem.getEntityItem().getItemSpriteNumber());
+			par2Icon = ((TextureMap)var9.func_110581_b(var10)).func_110572_b("missingno");
 		}
 
-		float var9 = par2Icon.getMinU();
-		float var10 = par2Icon.getMaxU();
-		float var11 = par2Icon.getMinV();
-		float var12 = par2Icon.getMaxV();
+		float var25 = ((Icon)par2Icon).getMinU();
+		float var26 = ((Icon)par2Icon).getMaxU();
+		float var11 = ((Icon)par2Icon).getMinV();
+		float var12 = ((Icon)par2Icon).getMaxV();
 		float var13 = 1.0F;
 		float var14 = 0.5F;
 		float var15 = 0.25F;
 		float var17;
 		// Spout Start
 		if (customTexture) {
-			var9 = 0F;
-			var10 = 1F;
+			var25 = 0F;
+			var26 = 1F;
 			var11 = 1F;
 			var12 = 0F;
 		}
@@ -273,15 +283,12 @@ public class RenderItem extends Render {
 			for (int var20 = 0; var20 < var27; ++var20) {
 				GL11.glTranslatef(0.0F, 0.0F, var16 + var17);
 
-				// Spout Removed
-				/*
-				if (Block.blocksList[var18.itemID] != null) {
-					this.loadTexture("/terrain.png");
+				//ToDo: this may need to be removed.
+				if (var18.getItemSpriteNumber() == 0 && Block.blocksList[var18.itemID] != null) {
+					this.func_110776_a(TextureMap.field_110575_b); //terrain.png
 				} else {
-					this.loadTexture("/gui/items.png");
+					this.func_110776_a(TextureMap.field_110576_c); //gui/items.png
 				}
-				*/
-				// Spout End
 
 				GL11.glColor4f(par5, par6, par7, 1.0F);
 				ItemRenderer.renderItemIn2D(var8, var10, var11, var9, var12, par2Icon.getSheetWidth(), par2Icon.getSheetHeight(), var16);
@@ -289,7 +296,7 @@ public class RenderItem extends Render {
 				if (var18 != null && var18.hasEffect()) {
 					GL11.glDepthFunc(GL11.GL_EQUAL);
 					GL11.glDisable(GL11.GL_LIGHTING);
-					this.renderManager.renderEngine.bindTexture("%blur%/misc/glint.png");
+					this.renderManager.renderEngine.func_110577_a(field_110798_h);
 					GL11.glEnable(GL11.GL_BLEND);
 					GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
 					float var21 = 0.76F;
@@ -349,47 +356,18 @@ public class RenderItem extends Render {
 	/**
 	 * Renders the item's icon or block into the UI at the specified position.
 	 */
-	public void renderItemIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
+	//ToDO: missing Spoutcraft API render code for CustomBlock
+	public void renderItemIntoGUI(FontRenderer par1FontRenderer, TextureManager par2TextureManager, ItemStack par3ItemStack, int par4, int par5) {
 		int var6 = par3ItemStack.itemID;
 		int var7 = par3ItemStack.getItemDamage();
-		Icon var8 = par3ItemStack.getIconIndex();
+		Object var8 = par3ItemStack.getIconIndex();
+		float var17;
+		int var18;
 		float var12;
 		float var13;
-		float var18;
 
-		// Spout Start
-		boolean custom = false;
-		BlockDesign design = null;
-		if (var6 == 318) {
-			org.spoutcraft.api.material.CustomItem item = MaterialData.getCustomItem(var7);
-			if (item != null) {
-				String textureURI = item.getTexture();
-				if (textureURI == null) {
-					org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var7);
-					design = block != null ? block.getBlockDesign() : null;
-					textureURI = design != null ? design.getTexureURL() : null;
-				}
-				if (textureURI != null) {
-					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon(), textureURI);
-					if (texture != null) {
-						SpoutClient.getHandle().renderEngine.bindTexture(texture.getTextureID());
-						custom = true;
-					}
-				}
-			}
-		}
-		if (!custom) {
-			if (var6 < 256) {
-				loadTexture("/terrain.png");
-			} else {
-				loadTexture("/gui/items.png");
-			}
-		}
-
-		if (design != null && custom) {
-			design.renderItemOnHUD((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
-		} else if (par3ItemStack.getItemSpriteNumber() == 0 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
-			par2RenderEngine.bindTexture("/terrain.png");
+		if (par3ItemStack.getItemSpriteNumber() == 0 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
+			par2TextureManager.func_110577_a(TextureMap.field_110575_b);
 			Block var15 = Block.blocksList[var6];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
@@ -398,13 +376,13 @@ public class RenderItem extends Render {
 			GL11.glScalef(1.0F, 1.0F, -1.0F);
 			GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			int var16 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);
-			var18 = (float)(var16 >> 16 & 255) / 255.0F;
-			var12 = (float)(var16 >> 8 & 255) / 255.0F;
-			var13 = (float)(var16 & 255) / 255.0F;
+			var18 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);
+			var17 = (float)(var18 >> 16 & 255) / 255.0F;
+			var12 = (float)(var18 >> 8 & 255) / 255.0F;
+			var13 = (float)(var18 & 255) / 255.0F;
 
 			if (this.renderWithColor) {
-				GL11.glColor4f(var18, var12, var13, 1.0F);
+				GL11.glColor4f(var17, var12, var13, 1.0F);
 			}
 
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
@@ -412,84 +390,63 @@ public class RenderItem extends Render {
 			this.itemRenderBlocks.renderBlockAsItem(var15, var7, 1.0F);
 			this.itemRenderBlocks.useInventoryTint = true;
 			GL11.glPopMatrix();
-		} else {
-			int var9;
-			if (Item.itemsList[var6].requiresMultipleRenderPasses()) {
-				GL11.glDisable(GL11.GL_LIGHTING);
-				if (!custom) {
-					par2RenderEngine.bindTexture("/gui/items.png");
-				}
-				for (var9 = 0; var9 <= 1; ++var9) {
-					Icon var10 = Item.itemsList[var6].getIconFromDamageForRenderPass(var7, var9);
-					int var11 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, var9);
-					var12 = (float)(var11 >> 16 & 255) / 255.0F;
-					var13 = (float)(var11 >> 8 & 255) / 255.0F;
-					float var14 = (float)(var11 & 255) / 255.0F;
+		} else if (Item.itemsList[var6].requiresMultipleRenderPasses()) {
+			GL11.glDisable(GL11.GL_LIGHTING);
+			par2TextureManager.func_110577_a(TextureMap.field_110576_c);
 
-					if (this.renderWithColor) {
-						GL11.glColor4f(var12, var13, var14, 1.0F);
-					}
-
-					this.renderIcon(par4, par5, var10, 16, 16);
-				}
-
-				GL11.glEnable(GL11.GL_LIGHTING);
-			} else {
-				GL11.glDisable(GL11.GL_LIGHTING);
-
-				if (par3ItemStack.getItemSpriteNumber() == 0) {
-					par2RenderEngine.bindTexture("/terrain.png");
-				} else {
-					if (!custom) {
-						par2RenderEngine.bindTexture("/gui/items.png");
-					}
-				}
-
-				if (var8 == null) {
-					var8 = par2RenderEngine.getMissingIcon(par3ItemStack.getItemSpriteNumber());
-				}
-
-				var9 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);
-				float var17 = (float)(var9 >> 16 & 255) / 255.0F;
-				var18 = (float)(var9 >> 8 & 255) / 255.0F;
-				var12 = (float)(var9 & 255) / 255.0F;
+			for (int var9 = 0; var9 <= 1; ++var9) {
+				Icon var10 = Item.itemsList[var6].getIconFromDamageForRenderPass(var7, var9);
+				int var11 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, var9);
+				var12 = (float)(var11 >> 16 & 255) / 255.0F;
+				var13 = (float)(var11 >> 8 & 255) / 255.0F;
+				float var14 = (float)(var11 & 255) / 255.0F;
 
 				if (this.renderWithColor) {
-					GL11.glColor4f(var17, var18, var12, 1.0F);
+					GL11.glColor4f(var12, var13, var14, 1.0F);
 				}
 
-				// Spout Start
-				if (custom) {
-					Tessellator tes = Tessellator.instance;
-					tes.startDrawingQuads();
-					tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 16), (double)0, 0, 0);
-					tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 16), (double)0, 1, 0);
-					tes.addVertexWithUV((double)(par4 + 16), (double)(par5 + 0), (double)0, 1, 1);
-					tes.addVertexWithUV((double)(par4 + 0), (double)(par5 + 0), (double)0, 0, 1);
-					tes.draw();
-				} else {
-					this.renderIcon(par4, par5, var8, 16, 16);
-				// Spout End
-				}
-				GL11.glEnable(GL11.GL_LIGHTING);
+				this.renderIcon(par4, par5, var10, 16, 16);
 			}
+
+			GL11.glEnable(GL11.GL_LIGHTING);
+		} else {
+			GL11.glDisable(GL11.GL_LIGHTING);
+			ResourceLocation var16 = par2TextureManager.func_130087_a(par3ItemStack.getItemSpriteNumber());
+			par2TextureManager.func_110577_a(var16);
+
+			if (var8 == null) {
+				var8 = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(var16)).func_110572_b("missingno");
+			}
+
+			var18 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);
+			var17 = (float)(var18 >> 16 & 255) / 255.0F;
+			var12 = (float)(var18 >> 8 & 255) / 255.0F;
+			var13 = (float)(var18 & 255) / 255.0F;
+
+			if (this.renderWithColor) {
+				GL11.glColor4f(var17, var12, var13, 1.0F);
+			}
+
+			this.renderIcon(par4, par5, (Icon)var8, 16, 16);
+			GL11.glEnable(GL11.GL_LIGHTING);
 		}
 
 		GL11.glEnable(GL11.GL_CULL_FACE);
 	}
 
+
 	/**
 	 * Render the item's icon or block into the GUI, including the glint effect.
 	 */
-	public void renderItemAndEffectIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
+	public void renderItemAndEffectIntoGUI(FontRenderer par1FontRenderer, TextureManager par2TextureManager, ItemStack par3ItemStack, int par4, int par5) {
 		if (par3ItemStack != null) {
-			this.renderItemIntoGUI(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5);
+			this.renderItemIntoGUI(par1FontRenderer, par2TextureManager, par3ItemStack, par4, par5);
 
 			if (par3ItemStack.hasEffect()) {
 				GL11.glDepthFunc(GL11.GL_GREATER);
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDepthMask(false);
-				par2RenderEngine.bindTexture("%blur%/misc/glint.png");
+				par2TextureManager.func_110577_a(field_110798_h);
 				this.zLevel -= 50.0F;
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);
@@ -538,11 +495,11 @@ public class RenderItem extends Render {
 	 * Renders the item's overlay information. Examples being stack count or damage on top of the item's image at the
 	 * specified position.
 	 */
-	public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
-		this.renderItemOverlayIntoGUI(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5, (String)null);
+	public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, TextureManager par2TextureManager, ItemStack par3ItemStack, int par4, int par5) {
+		this.renderItemOverlayIntoGUI(par1FontRenderer, par2TextureManager, par3ItemStack, par4, par5, (String)null);
 	}
 
-	public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5, String par6Str) {
+	public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, TextureManager par2TextureManager, ItemStack par3ItemStack, int par4, int par5, String par6Str) {
 		if (par3ItemStack != null) {
 			if (par3ItemStack.stackSize > 1 || par6Str != null) {
 				String var7 = par6Str == null ? String.valueOf(par3ItemStack.stackSize) : par6Str;
@@ -617,6 +574,10 @@ public class RenderItem extends Render {
 		var6.draw();
 	}
 
+	protected ResourceLocation func_110775_a(Entity par1Entity) {
+		return this.func_110796_a((EntityItem)par1Entity);
+	}
+	
 	/**
 	 * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
 	 * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic

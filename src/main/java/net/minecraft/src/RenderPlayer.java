@@ -12,12 +12,12 @@ import org.spoutcraft.client.special.VIP;
 // Spout End
 
 public class RenderPlayer extends RenderLiving {
+	private static final ResourceLocation field_110826_a = new ResourceLocation("textures/entity/steve.png");
 	// Spout Start - private to public
 	public ModelBiped modelBipedMain;
 	// Spout End
 	private ModelBiped modelArmorChestplate;
-	private ModelBiped modelArmor;
-	private static final String[] armorFilenamePrefix = new String[] {"cloth", "chain", "iron", "diamond", "gold"};
+	private ModelBiped modelArmor;	
 
 	public RenderPlayer() {
 		super(new ModelBiped(0.0F), 0.5F);
@@ -26,32 +26,19 @@ public class RenderPlayer extends RenderLiving {
 		this.modelArmor = new ModelBiped(0.5F);
 	}
 
-	protected void func_98191_a(EntityPlayer par1EntityPlayer) {
-		this.loadDownloadableImageTexture(par1EntityPlayer.skinUrl, par1EntityPlayer.getTexture());
-	}
-
 	/**
 	 * Set the specified armor model as the player model. Args: player, armorSlot, partialTick
 	 */
-	protected int setArmorModel(EntityPlayer par1EntityPlayer, int par2, float par3) {
-		ItemStack var4 = par1EntityPlayer.inventory.armorItemInSlot(3 - par2);
+	//ToDo: Missing Spoutcraft API Custom Armor API code
+	protected int setArmorModel(AbstractClientPlayer par1AbstractClientPlayer, int par2, float par3) {
+		ItemStack var4 = par1AbstractClientPlayer.inventory.armorItemInSlot(3 - par2);
 
 		if (var4 != null) {
 			Item var5 = var4.getItem();
 
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
-				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png");
-				// Spout Start
-				VIP vip = par1EntityPlayer.vip;
-				int armorId = (par2 == 2 ? 2 : 1);
-				if (vip != null && vip.getArmor(armorId) != null) {
-					String url = vip.getArmor(armorId);
-					if (!this.loadDownloadableImageTexture(url, (String) null)) {
-						Minecraft.theMinecraft.renderEngine.obtainImageData(url, new HDImageBufferDownload());
-					}
-				}
-				// Spout End
+				this.func_110776_a(RenderBiped.func_110857_a(var6, par2));
 				ModelBiped var7 = par2 == 2 ? this.modelArmor : this.modelArmorChestplate;
 				var7.bipedHead.showModel = par2 == 0;
 				var7.bipedHeadwear.showModel = par2 == 0;
@@ -61,19 +48,9 @@ public class RenderPlayer extends RenderLiving {
 				var7.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
 				var7.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
 				this.setRenderPassModel(var7);
-
-				if (var7 != null) {
-					var7.onGround = this.mainModel.onGround;
-				}
-
-				if (var7 != null) {
-					var7.isRiding = this.mainModel.isRiding;
-				}
-
-				if (var7 != null) {
-					var7.isChild = this.mainModel.isChild;
-				}
-
+				var7.onGround = this.mainModel.onGround;
+				var7.isRiding = this.mainModel.isRiding;
+				var7.isChild = this.mainModel.isChild;
 				float var8 = 1.0F;
 
 				if (var6.getArmorMaterial() == EnumArmorMaterial.CLOTH) {
@@ -103,28 +80,28 @@ public class RenderPlayer extends RenderLiving {
 		return -1;
 	}
 
-	protected void func_82439_b(EntityPlayer par1EntityPlayer, int par2, float par3) {
-		ItemStack var4 = par1EntityPlayer.inventory.armorItemInSlot(3 - par2);
+	protected void func_130220_b(AbstractClientPlayer par1AbstractClientPlayer, int par2, float par3) {
+		ItemStack var4 = par1AbstractClientPlayer.inventory.armorItemInSlot(3 - par2);
 
 		if (var4 != null) {
 			Item var5 = var4.getItem();
 
 			if (var5 instanceof ItemArmor) {
-				ItemArmor var6 = (ItemArmor)var5;
-				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + "_b.png");
-				float var7 = 1.0F;
-				GL11.glColor3f(var7, var7, var7);
+				this.func_110776_a(RenderBiped.func_110858_a((ItemArmor)var5, par2, "overlay"));
+				float var6 = 1.0F;
+				GL11.glColor3f(var6, var6, var6);
 			}
 		}
 	}
 
-	public void renderPlayer(EntityPlayer par1EntityPlayer, double par2, double par4, double par6, float par8, float par9) {
+	//ToDo: Missing from this method (renderPlayer) is the Accessorize Code
+	public void func_130009_a(AbstractClientPlayer par1AbstractClientPlayer, double par2, double par4, double par6, float par8, float par9) {
 		float var10 = 1.0F;
 		GL11.glColor3f(var10, var10, var10);
-		ItemStack var11 = par1EntityPlayer.inventory.getCurrentItem();
+		ItemStack var11 = par1AbstractClientPlayer.inventory.getCurrentItem();
 		this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight = this.modelBipedMain.heldItemRight = var11 != null ? 1 : 0;
 
-		if (var11 != null && par1EntityPlayer.getItemInUseCount() > 0) {
+		if (var11 != null && par1AbstractClientPlayer.getItemInUseCount() > 0) {
 			EnumAction var12 = var11.getItemUseAction();
 
 			if (var12 == EnumAction.block) {
@@ -134,33 +111,33 @@ public class RenderPlayer extends RenderLiving {
 			}
 		}
 
-		this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = par1EntityPlayer.isSneaking();
-		double var14 = par4 - (double)par1EntityPlayer.yOffset;
+		this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = par1AbstractClientPlayer.isSneaking();
+		double var14 = par4 - (double)par1AbstractClientPlayer.yOffset;
 
-		if (par1EntityPlayer.isSneaking() && !(par1EntityPlayer instanceof EntityPlayerSP)) {
+		if (par1AbstractClientPlayer.isSneaking() && !(par1AbstractClientPlayer instanceof EntityPlayerSP)) {
 			var14 -= 0.125D;
 		}
-		// Spout Start - VIP
-		if (!AccessoryHandler.isHandled(par1EntityPlayer.username)) {
-			AccessoryHandler.addVIPAccessoriesFor(par1EntityPlayer);
-		}
-		
-		super.doRenderLiving(par1EntityPlayer, par2, var14, par6, par8, par9);
-		// Spout End
+
+		super.func_130000_a(par1AbstractClientPlayer, par2, var14, par6, par8, par9);
 		this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow = this.modelBipedMain.aimedBow = false;
 		this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = false;
 		this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight = this.modelBipedMain.heldItemRight = 0;
 	}
 
+	protected ResourceLocation func_110817_a(AbstractClientPlayer par1AbstractClientPlayer) {
+		return par1AbstractClientPlayer.func_110306_p();
+	}
+	
 	/**
 	 * Method for adding special render rules
 	 */
-	protected void renderSpecials(EntityPlayer par1EntityPlayer, float par2) {
+	//ToDo: missing Accessorize API code and CustomMaterial code
+	protected void renderSpecials(AbstractClientPlayer par1AbstractClientPlayer, float par2) {
 		float var3 = 1.0F;
 		GL11.glColor3f(var3, var3, var3);
-		super.renderEquippedItems(par1EntityPlayer, par2);
-		super.renderArrowsStuckInEntity(par1EntityPlayer, par2);
-		ItemStack var4 = par1EntityPlayer.inventory.armorItemInSlot(3);
+		super.renderEquippedItems(par1AbstractClientPlayer, par2);
+		super.renderArrowsStuckInEntity(par1AbstractClientPlayer, par2);
+		ItemStack var4 = par1AbstractClientPlayer.inventory.armorItemInSlot(3);
 
 		if (var4 != null) {
 			GL11.glPushMatrix();
@@ -175,7 +152,7 @@ public class RenderPlayer extends RenderLiving {
 					GL11.glScalef(var5, -var5, -var5);
 				}
 
-				this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var4, 0);
+				this.renderManager.itemRenderer.renderItem(par1AbstractClientPlayer, var4, 0);
 			} else if (var4.getItem().itemID == Item.skull.itemID) {
 				var5 = 1.0625F;
 				GL11.glScalef(var5, -var5, -var5);
@@ -191,118 +168,115 @@ public class RenderPlayer extends RenderLiving {
 			GL11.glPopMatrix();
 		}
 
-		// Spout Start
-		if (!par1EntityPlayer.isInvisible()){
-			AccessoryHandler.renderAllAccessories(par1EntityPlayer, 0.0625F, par2);
-		}
-		// Spout End
+		if (par1AbstractClientPlayer.getCommandSenderName().equals("deadmau5") && par1AbstractClientPlayer.func_110309_l().func_110557_a()) {
+			this.func_110776_a(par1AbstractClientPlayer.func_110306_p());
 
-		float var8;
-		float var7;
-
-		if (par1EntityPlayer.username.equals("deadmau5") && this.loadDownloadableImageTexture(par1EntityPlayer.skinUrl, (String)null)) {
-			for (int var20 = 0; var20 < 2; ++var20) {
-				float var25 = par1EntityPlayer.prevRotationYaw + (par1EntityPlayer.rotationYaw - par1EntityPlayer.prevRotationYaw) * par2 - (par1EntityPlayer.prevRenderYawOffset + (par1EntityPlayer.renderYawOffset - par1EntityPlayer.prevRenderYawOffset) * par2);
-				var7 = par1EntityPlayer.prevRotationPitch + (par1EntityPlayer.rotationPitch - par1EntityPlayer.prevRotationPitch) * par2;
+			for (int var23 = 0; var23 < 2; ++var23) {
+				float var27 = par1AbstractClientPlayer.prevRotationYaw + (par1AbstractClientPlayer.rotationYaw - par1AbstractClientPlayer.prevRotationYaw) * par2 - (par1AbstractClientPlayer.prevRenderYawOffset + (par1AbstractClientPlayer.renderYawOffset - par1AbstractClientPlayer.prevRenderYawOffset) * par2);
+				float var7 = par1AbstractClientPlayer.prevRotationPitch + (par1AbstractClientPlayer.rotationPitch - par1AbstractClientPlayer.prevRotationPitch) * par2;
 				GL11.glPushMatrix();
-				GL11.glRotatef(var25, 0.0F, 1.0F, 0.0F);
+				GL11.glRotatef(var27, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(var7, 1.0F, 0.0F, 0.0F);
-				GL11.glTranslatef(0.375F * (float)(var20 * 2 - 1), 0.0F, 0.0F);
+				GL11.glTranslatef(0.375F * (float)(var23 * 2 - 1), 0.0F, 0.0F);
 				GL11.glTranslatef(0.0F, -0.375F, 0.0F);
 				GL11.glRotatef(-var7, 1.0F, 0.0F, 0.0F);
-				GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
-				var8 = 1.3333334F;
+				GL11.glRotatef(-var27, 0.0F, 1.0F, 0.0F);
+				float var8 = 1.3333334F;
 				GL11.glScalef(var8, var8, var8);
 				this.modelBipedMain.renderEars(0.0625F);
 				GL11.glPopMatrix();
 			}
 		}
 
-		float var11;
+		boolean var24 = par1AbstractClientPlayer.func_110310_o().func_110557_a();
+		boolean var25 = !par1AbstractClientPlayer.isInvisible();
+		boolean var26 = !par1AbstractClientPlayer.getHideCape();
+		float var14;
 
-		if (this.loadDownloadableImageTexture(par1EntityPlayer.cloakUrl, (String)null) && !par1EntityPlayer.isInvisible() && !par1EntityPlayer.getHideCape()) {
+		if (var24 && var25 && var26) {
+			this.func_110776_a(par1AbstractClientPlayer.func_110303_q());
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-			double var22 = par1EntityPlayer.field_71091_bM + (par1EntityPlayer.field_71094_bP - par1EntityPlayer.field_71091_bM) * (double)par2 - (par1EntityPlayer.prevPosX + (par1EntityPlayer.posX - par1EntityPlayer.prevPosX) * (double)par2);
-			double var24 = par1EntityPlayer.field_71096_bN + (par1EntityPlayer.field_71095_bQ - par1EntityPlayer.field_71096_bN) * (double)par2 - (par1EntityPlayer.prevPosY + (par1EntityPlayer.posY - par1EntityPlayer.prevPosY) * (double)par2);
-			double var9 = par1EntityPlayer.field_71097_bO + (par1EntityPlayer.field_71085_bR - par1EntityPlayer.field_71097_bO) * (double)par2 - (par1EntityPlayer.prevPosZ + (par1EntityPlayer.posZ - par1EntityPlayer.prevPosZ) * (double)par2);
-			var11 = par1EntityPlayer.prevRenderYawOffset + (par1EntityPlayer.renderYawOffset - par1EntityPlayer.prevRenderYawOffset) * par2;
-			double var12 = (double)MathHelper.sin(var11 * (float)Math.PI / 180.0F);
-			double var14 = (double)(-MathHelper.cos(var11 * (float)Math.PI / 180.0F));
-			float var16 = (float)var24 * 10.0F;
+			double var29 = par1AbstractClientPlayer.field_71091_bM + (par1AbstractClientPlayer.field_71094_bP - par1AbstractClientPlayer.field_71091_bM) * (double)par2 - (par1AbstractClientPlayer.prevPosX + (par1AbstractClientPlayer.posX - par1AbstractClientPlayer.prevPosX) * (double)par2);
+			double var10 = par1AbstractClientPlayer.field_71096_bN + (par1AbstractClientPlayer.field_71095_bQ - par1AbstractClientPlayer.field_71096_bN) * (double)par2 - (par1AbstractClientPlayer.prevPosY + (par1AbstractClientPlayer.posY - par1AbstractClientPlayer.prevPosY) * (double)par2);
+			double var12 = par1AbstractClientPlayer.field_71097_bO + (par1AbstractClientPlayer.field_71085_bR - par1AbstractClientPlayer.field_71097_bO) * (double)par2 - (par1AbstractClientPlayer.prevPosZ + (par1AbstractClientPlayer.posZ - par1AbstractClientPlayer.prevPosZ) * (double)par2);
+			var14 = par1AbstractClientPlayer.prevRenderYawOffset + (par1AbstractClientPlayer.renderYawOffset - par1AbstractClientPlayer.prevRenderYawOffset) * par2;
+			double var15 = (double)MathHelper.sin(var14 * (float)Math.PI / 180.0F);
+			double var17 = (double)(-MathHelper.cos(var14 * (float)Math.PI / 180.0F));
+			float var19 = (float)var10 * 10.0F;
 
-			if (var16 < -6.0F) {
-				var16 = -6.0F;
+			if (var19 < -6.0F) {
+				var19 = -6.0F;
 			}
 
-			if (var16 > 32.0F) {
-				var16 = 32.0F;
+			if (var19 > 32.0F) {
+				var19 = 32.0F;
 			}
 
-			float var17 = (float)(var22 * var12 + var9 * var14) * 100.0F;
-			float var18 = (float)(var22 * var14 - var9 * var12) * 100.0F;
+			float var20 = (float)(var29 * var15 + var12 * var17) * 100.0F;
+			float var21 = (float)(var29 * var17 - var12 * var15) * 100.0F;
 
-			if (var17 < 0.0F) {
-				var17 = 0.0F;
+			if (var20 < 0.0F) {
+				var20 = 0.0F;
 			}
 
-			float var19 = par1EntityPlayer.prevCameraYaw + (par1EntityPlayer.cameraYaw - par1EntityPlayer.prevCameraYaw) * par2;
-			var16 += MathHelper.sin((par1EntityPlayer.prevDistanceWalkedModified + (par1EntityPlayer.distanceWalkedModified - par1EntityPlayer.prevDistanceWalkedModified) * par2) * 6.0F) * 32.0F * var19;
+			float var22 = par1AbstractClientPlayer.prevCameraYaw + (par1AbstractClientPlayer.cameraYaw - par1AbstractClientPlayer.prevCameraYaw) * par2;
+			var19 += MathHelper.sin((par1AbstractClientPlayer.prevDistanceWalkedModified + (par1AbstractClientPlayer.distanceWalkedModified - par1AbstractClientPlayer.prevDistanceWalkedModified) * par2) * 6.0F) * 32.0F * var22;
 
-			if (par1EntityPlayer.isSneaking()) {
-				var16 += 25.0F;
+			if (par1AbstractClientPlayer.isSneaking()) {
+				var19 += 25.0F;
 			}
 
-			GL11.glRotatef(6.0F + var17 / 2.0F + var16, 1.0F, 0.0F, 0.0F);
-			GL11.glRotatef(var18 / 2.0F, 0.0F, 0.0F, 1.0F);
-			GL11.glRotatef(-var18 / 2.0F, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(6.0F + var20 / 2.0F + var19, 1.0F, 0.0F, 0.0F);
+			GL11.glRotatef(var21 / 2.0F, 0.0F, 0.0F, 1.0F);
+			GL11.glRotatef(-var21 / 2.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
 			this.modelBipedMain.renderCloak(0.0625F);
 			GL11.glPopMatrix();
 		}
 
-		ItemStack var21 = par1EntityPlayer.inventory.getCurrentItem();
+		ItemStack var28 = par1AbstractClientPlayer.inventory.getCurrentItem();
 
-		if (var21 != null) {
+		if (var28 != null) {
 			GL11.glPushMatrix();
 			this.modelBipedMain.bipedRightArm.postRender(0.0625F);
 			GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
 
-			if (par1EntityPlayer.fishEntity != null) {
-				var21 = new ItemStack(Item.stick);
+			if (par1AbstractClientPlayer.fishEntity != null) {
+				var28 = new ItemStack(Item.stick);
 			}
 
-			EnumAction var23 = null;
+			EnumAction var9 = null;
 
-			if (par1EntityPlayer.getItemInUseCount() > 0) {
-				var23 = var21.getItemUseAction();
+			if (par1AbstractClientPlayer.getItemInUseCount() > 0) {
+				var9 = var28.getItemUseAction();
 			}
 
-			if (var21.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var21.itemID].getRenderType())) {
-				var7 = 0.5F;
+			float var31;
+
+			if (var28.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var28.itemID].getRenderType())) {
+				var31 = 0.5F;
 				GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
-				var7 *= 0.75F;
+				var31 *= 0.75F;
 				GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-				GL11.glScalef(-var7, -var7, var7);
-			} else if (var21.itemID == Item.bow.itemID) {
-				var7 = 0.625F;
+				GL11.glScalef(-var31, -var31, var31);
+			} else if (var28.itemID == Item.bow.itemID) {
+				var31 = 0.625F;
 				GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
 				GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
-				GL11.glScalef(var7, -var7, var7);
+				GL11.glScalef(var31, -var31, var31);
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-				// Spout Start
-			} else if (Item.itemsList[var21.itemID].isFull3D() || var21.itemID == Item.flint.itemID && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) {
-				// Spout End
-				var7 = 0.625F;
+			} else if (Item.itemsList[var28.itemID].isFull3D()) {
+				var31 = 0.625F;
 
-				if (Item.itemsList[var21.itemID].shouldRotateAroundWhenRendering()) {
+				if (Item.itemsList[var28.itemID].shouldRotateAroundWhenRendering()) {
 					GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 					GL11.glTranslatef(0.0F, -0.125F, 0.0F);
 				}
 
-				if (par1EntityPlayer.getItemInUseCount() > 0 && var23 == EnumAction.block) {
+				if (par1AbstractClientPlayer.getItemInUseCount() > 0 && var9 == EnumAction.block) {
 					GL11.glTranslatef(0.05F, 0.0F, -0.1F);
 					GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
 					GL11.glRotatef(-10.0F, 1.0F, 0.0F, 0.0F);
@@ -310,48 +284,48 @@ public class RenderPlayer extends RenderLiving {
 				}
 
 				GL11.glTranslatef(0.0F, 0.1875F, 0.0F);
-				GL11.glScalef(var7, -var7, var7);
+				GL11.glScalef(var31, -var31, var31);
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 			} else {
-				var7 = 0.375F;
+				var31 = 0.375F;
 				GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
-				GL11.glScalef(var7, var7, var7);
+				GL11.glScalef(var31, var31, var31);
 				GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
 			}
 
-			float var10;
-			int var27;
-			float var28;
+			float var13;
+			float var32;
+			int var33;
 
-			if (var21.getItem().requiresMultipleRenderPasses()) {
-				for (var27 = 0; var27 <= 1; ++var27) {
-					int var26 = var21.getItem().getColorFromItemStack(var21, var27);
-					var28 = (float)(var26 >> 16 & 255) / 255.0F;
-					var10 = (float)(var26 >> 8 & 255) / 255.0F;
-					var11 = (float)(var26 & 255) / 255.0F;
-					GL11.glColor4f(var28, var10, var11, 1.0F);
-					this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var21, var27);
+			if (var28.getItem().requiresMultipleRenderPasses()) {
+				for (var33 = 0; var33 <= 1; ++var33) {
+					int var11 = var28.getItem().getColorFromItemStack(var28, var33);
+					var32 = (float)(var11 >> 16 & 255) / 255.0F;
+					var13 = (float)(var11 >> 8 & 255) / 255.0F;
+					var14 = (float)(var11 & 255) / 255.0F;
+					GL11.glColor4f(var32, var13, var14, 1.0F);
+					this.renderManager.itemRenderer.renderItem(par1AbstractClientPlayer, var28, var33);
 				}
 			} else {
-				var27 = var21.getItem().getColorFromItemStack(var21, 0);
-				var8 = (float)(var27 >> 16 & 255) / 255.0F;
-				var28 = (float)(var27 >> 8 & 255) / 255.0F;
-				var10 = (float)(var27 & 255) / 255.0F;
-				GL11.glColor4f(var8, var28, var10, 1.0F);
-				this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var21, 0);
+				var33 = var28.getItem().getColorFromItemStack(var28, 0);
+				float var30 = (float)(var33 >> 16 & 255) / 255.0F;
+				var32 = (float)(var33 >> 8 & 255) / 255.0F;
+				var13 = (float)(var33 & 255) / 255.0F;
+				GL11.glColor4f(var30, var32, var13, 1.0F);
+				this.renderManager.itemRenderer.renderItem(par1AbstractClientPlayer, var28, 0);
 			}
 
 			GL11.glPopMatrix();
 		}
 	}
 
-	protected void renderPlayerScale(EntityPlayer par1EntityPlayer, float par2) {
+	protected void renderPlayerScale(AbstractClientPlayer par1AbstractClientPlayer, float par2) {
 		float var3 = 0.9375F;
 		// Spout Start
-		VIP vip = par1EntityPlayer.vip;
+		VIP vip = par1AbstractClientEntityPlayer.vip;
 		if (vip != null) {
 			var3 = vip.getScale();
 		}
@@ -359,25 +333,25 @@ public class RenderPlayer extends RenderLiving {
 		GL11.glScalef(var3, var3, var3);
 	}
 
-	protected void func_96450_a(EntityPlayer par1EntityPlayer, double par2, double par4, double par6, String par8Str, float par9, double par10) {
+	protected void func_96450_a(AbstractClientPlayer par1AbstractClientPlayer, double par2, double par4, double par6, String par8Str, float par9, double par10) {
 		if (par10 < 100.0D) {
-			Scoreboard var12 = par1EntityPlayer.getWorldScoreboard();
+			Scoreboard var12 = par1AbstractClientPlayer.getWorldScoreboard();
 			ScoreObjective var13 = var12.func_96539_a(2);
 
 			if (var13 != null) {
-				Score var14 = var12.func_96529_a(par1EntityPlayer.getEntityName(), var13);
+				Score var14 = var12.func_96529_a(par1AbstractClientPlayer.getEntityName(), var13);
 
-				if (par1EntityPlayer.isPlayerSleeping()) {
-					this.renderLivingLabel(par1EntityPlayer, var14.func_96652_c() + " " + var13.getDisplayName(), par2, par4 - 1.5D, par6, 64);
+				if (par1AbstractClientPlayer.isPlayerSleeping()) {
+					this.renderLivingLabel(par1AbstractClientPlayer, var14.getScorePoints() + " " + var13.getDisplayName(), par2, par4 - 1.5D, par6, 64);
 				} else {
-					this.renderLivingLabel(par1EntityPlayer, var14.func_96652_c() + " " + var13.getDisplayName(), par2, par4, par6, 64);
+					this.renderLivingLabel(par1AbstractClientPlayer, var14.getScorePoints() + " " + var13.getDisplayName(), par2, par4, par6, 64);
 				}
 
 				par4 += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * par9);
 			}
 		}
 
-		super.func_96449_a(par1EntityPlayer, par2, par4, par6, par8Str, par9, par10);
+		super.func_96449_a(par1AbstractClientPlayer, par2, par4, par6, par8Str, par9, par10);
 	}
 
 	public void renderFirstPersonArm(EntityPlayer par1EntityPlayer) {
@@ -391,71 +365,71 @@ public class RenderPlayer extends RenderLiving {
 	/**
 	 * Renders player with sleeping offset if sleeping
 	 */
-	protected void renderPlayerSleep(EntityPlayer par1EntityPlayer, double par2, double par4, double par6) {
-		if (par1EntityPlayer.isEntityAlive() && par1EntityPlayer.isPlayerSleeping()) {
-			super.renderLivingAt(par1EntityPlayer, par2 + (double)par1EntityPlayer.field_71079_bU, par4 + (double)par1EntityPlayer.field_71082_cx, par6 + (double)par1EntityPlayer.field_71089_bV);
+	protected void renderPlayerSleep(AbstractClientPlayer par1AbstractClientPlayer, double par2, double par4, double par6) {
+		if (par1AbstractClientPlayer.isEntityAlive() && par1AbstractClientPlayer.isPlayerSleeping()) {
+			super.renderLivingAt(par1AbstractClientPlayer, par2 + (double)par1AbstractClientPlayer.field_71079_bU, par4 + (double)par1AbstractClientPlayer.field_71082_cx, par6 + (double)par1AbstractClientPlayer.field_71089_bV);
 		} else {
-			super.renderLivingAt(par1EntityPlayer, par2, par4, par6);
+			super.renderLivingAt(par1AbstractClientPlayer, par2, par4, par6);
 		}
 	}
 
 	/**
 	 * Rotates the player if the player is sleeping. This method is called in rotateCorpse.
 	 */
-	protected void rotatePlayer(EntityPlayer par1EntityPlayer, float par2, float par3, float par4) {
-		if (par1EntityPlayer.isEntityAlive() && par1EntityPlayer.isPlayerSleeping()) {
-			GL11.glRotatef(par1EntityPlayer.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(this.getDeathMaxRotation(par1EntityPlayer), 0.0F, 0.0F, 1.0F);
+	protected void rotatePlayer(AbstractClientPlayer par1AbstractClientPlayer, float par2, float par3, float par4) {
+		if (par1AbstractClientPlayer.isEntityAlive() && par1AbstractClientPlayer.isPlayerSleeping()) {
+			GL11.glRotatef(par1AbstractClientPlayer.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(this.getDeathMaxRotation(par1AbstractClientPlayer), 0.0F, 0.0F, 1.0F);
 			GL11.glRotatef(270.0F, 0.0F, 1.0F, 0.0F);
 		} else {
-			super.rotateCorpse(par1EntityPlayer, par2, par3, par4);
+			super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
 		}
 	}
 
-	protected void func_96449_a(EntityLiving par1EntityLiving, double par2, double par4, double par6, String par8Str, float par9, double par10) {
-		this.func_96450_a((EntityPlayer)par1EntityLiving, par2, par4, par6, par8Str, par9, par10);
+	protected void func_96449_a(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, String par8Str, float par9, double par10) {
+		this.func_96450_a((AbstractClientPlayer)par1EntityLivingBase, par2, par4, par6, par8Str, par9, par10);
 	}
 
 	/**
 	 * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args: entityLiving,
 	 * partialTickTime
 	 */
-	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2) {
-		this.renderPlayerScale((EntityPlayer)par1EntityLiving, par2);
+	protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2) {
+		this.renderPlayerScale((AbstractClientPlayer)par1EntityLivingBase, par2);
 	}
 
-	protected void func_82408_c(EntityLiving par1EntityLiving, int par2, float par3) {
-		this.func_82439_b((EntityPlayer)par1EntityLiving, par2, par3);
+	protected void func_82408_c(EntityLivingBase par1EntityLivingBase, int par2, float par3) {
+		this.func_130220_b((AbstractClientPlayer)par1EntityLivingBase, par2, par3);
 	}
 
 	/**
 	 * Queries whether should render the specified pass or not.
 	 */
-	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
-		return this.setArmorModel((EntityPlayer)par1EntityLiving, par2, par3);
+	protected int shouldRenderPass(EntityLivingBase par1EntityLivingBase, int par2, float par3) {
+		return this.setArmorModel((AbstractClientPlayer)par1EntityLivingBase, par2, par3);
 	}
 
-	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {
-		this.renderSpecials((EntityPlayer)par1EntityLiving, par2);
+	protected void renderEquippedItems(EntityLivingBase par1EntityLivingBase, float par2) {
+		this.renderSpecials((AbstractClientPlayer)par1EntityLivingBase, par2);
 	}
 
-	protected void rotateCorpse(EntityLiving par1EntityLiving, float par2, float par3, float par4) {
-		this.rotatePlayer((EntityPlayer)par1EntityLiving, par2, par3, par4);
+	protected void rotateCorpse(EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4) {
+		this.rotatePlayer((AbstractClientPlayer)par1EntityLivingBase, par2, par3, par4);
 	}
 
 	/**
 	 * Sets a simple glTranslate on a LivingEntity.
 	 */
-	protected void renderLivingAt(EntityLiving par1EntityLiving, double par2, double par4, double par6) {
-		this.renderPlayerSleep((EntityPlayer)par1EntityLiving, par2, par4, par6);
+	protected void renderLivingAt(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6) {
+		this.renderPlayerSleep((AbstractClientPlayer)par1EntityLivingBase, par2, par4, par6);
 	}
 
-	protected void func_98190_a(EntityLiving par1EntityLiving) {
-		this.func_98191_a((EntityPlayer)par1EntityLiving);
+	public void func_130000_a(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9) {
+		this.func_130009_a((AbstractClientPlayer)par1EntityLivingBase, par2, par4, par6, par8, par9);
 	}
 
-	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
-		this.renderPlayer((EntityPlayer)par1EntityLiving, par2, par4, par6, par8, par9);
+	protected ResourceLocation func_110775_a(Entity par1Entity) {
+		return this.func_110817_a((AbstractClientPlayer)par1Entity);
 	}
 
 	/**
@@ -465,6 +439,6 @@ public class RenderPlayer extends RenderLiving {
 	 * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
 	 */
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-		this.renderPlayer((EntityPlayer)par1Entity, par2, par4, par6, par8, par9);
+		this.func_130009_a((AbstractClientPlayer)par1Entity, par2, par4, par6, par8, par9);
 	}
 }

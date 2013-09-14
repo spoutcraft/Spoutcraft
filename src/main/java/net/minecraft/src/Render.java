@@ -1,12 +1,13 @@
 package net.minecraft.src;
 
+import com.prupe.mcpatcher.mob.MobRandomizer;
 import org.lwjgl.opengl.GL11;
 
 public abstract class Render {
+	private static final ResourceLocation field_110778_a = new ResourceLocation("textures/misc/shadow.png");
 	protected RenderManager renderManager;
-	private ModelBase modelBase = new ModelBiped();
 	protected RenderBlocks renderBlocks = new RenderBlocks();
-	protected float shadowSize = 0.0F;
+	protected float shadowSize;
 
 	/**
 	 * Determines the darkness of the object's shadow. Higher value makes a darker shadow.
@@ -21,29 +22,15 @@ public abstract class Render {
 	 */
 	public abstract void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9);
 
-	/**
-	 * loads the specified texture
-	 */
-	protected void loadTexture(String par1Str) {
-		this.renderManager.renderEngine.bindTexture(par1Str);
+	protected abstract ResourceLocation func_110775_a(Entity var1);
+
+	protected void func_110777_b(Entity par1Entity) {
+		this.func_110776_a(MobRandomizer.randomTexture(par1Entity, this.func_110775_a(par1Entity)));
 	}
 
-	/**
-	 * loads the specified downloadable texture or alternative built in texture
-	 */
-	// Spout Start - protected to public
-	public boolean loadDownloadableImageTexture(String par1Str, String par2Str) {
-	// Spout End
-		RenderEngine var3 = this.renderManager.renderEngine;
-		int var4 = var3.getTextureForDownloadableImage(par1Str, par2Str);
-
-		if (var4 >= 0) {
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var4);
-			var3.resetBoundTexture();
-			return true;
-		} else {
-			return false;
-		}
+	//ToDo: this probably needs to be public
+	protected void func_110776_a(ResourceLocation par1ResourceLocation) {
+		this.renderManager.renderEngine.func_110577_a(par1ResourceLocation); //Previously Public for getting images.
 	}
 
 	/**
@@ -56,8 +43,7 @@ public abstract class Render {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)par2, (float)par4, (float)par6);
 		float var11 = par1Entity.width * 1.4F;
-		GL11.glScalef(var11, var11, var11);
-		this.loadTexture("/terrain.png");
+		GL11.glScalef(var11, var11, var11);		
 		Tessellator var12 = Tessellator.instance;
 		float var13 = 0.5F;
 		float var14 = 0.0F;
@@ -71,14 +57,8 @@ public abstract class Render {
 		var12.startDrawingQuads();
 
 		while (var15 > 0.0F) {
-			Icon var19;
-
-			if (var18 % 2 == 0) {
-				var19 = var9;
-			} else {
-				var19 = var10;
-			}
-
+			Icon var19 = var18 % 2 == 0 ? var9 : var10;
+			this.func_110776_a(TextureMap.field_110575_b);
 			float var20 = var19.getMinU();
 			float var21 = var19.getMinV();
 			float var22 = var19.getMaxU();
@@ -113,7 +93,7 @@ public abstract class Render {
 	private void renderShadow(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		this.renderManager.renderEngine.bindTexture("%clamp%/misc/shadow.png");
+		this.renderManager.renderEngine.func_110577_a(field_110778_a);
 		World var10 = this.getWorldFromRenderManager();
 		GL11.glDepthMask(false);
 		float var11 = this.shadowSize;
