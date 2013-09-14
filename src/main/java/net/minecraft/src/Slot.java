@@ -127,4 +127,8 @@ public class Slot {
 	public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
 		return true;
 	}
+	
+	public boolean func_111238_b() {
+		return true;
+	}
 }

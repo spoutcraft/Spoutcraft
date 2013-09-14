@@ -11,7 +11,7 @@ import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.TessellatorUtils;
+import com.prupe.mcpatcher.mob.TessellatorUtils;
 import org.spoutcraft.client.SpoutClient;
 // MCPatcher End
 
@@ -20,12 +20,12 @@ public class Tessellator {
 	/**
 	 * Boolean used to check whether quads should be drawn as two triangles. Initialized to false and never changed.
 	 */
-	private static boolean convertQuadsToTriangles = false;
+	private static boolean convertQuadsToTriangles;
 
 	/**
 	 * Boolean used to check if we should use vertex buffers. Initialized to false and never changed.
 	 */
-	private static boolean tryVBO = false;
+	private static boolean tryVBO;
 
 	/** The byte buffer used for GL allocation. */
 	private ByteBuffer byteBuffer;
@@ -46,7 +46,7 @@ public class Tessellator {
 	 * The number of vertices to be drawn in the next draw call. Reset to 0 between draw calls.
 	 */
 	// MCPatcher Start - private to public
-	public int vertexCount = 0;
+	public int vertexCount;
 	// MCPatcher End
 
 	/** The first coordinate to be used for the texture. */
@@ -62,22 +62,22 @@ public class Tessellator {
 	/**
 	 * Whether the current draw object for this tessellator has color values.
 	 */
-	private boolean hasColor = false;
+	private boolean hasColor;
 
 	/**
 	 * Whether the current draw object for this tessellator has texture coordinates.
 	 */
-	private boolean hasTexture = false;
-	private boolean hasBrightness = false;
+	private boolean hasTexture;
+	private boolean hasBrightness;
 
 	/**
 	 * Whether the current draw object for this tessellator has normal values.
 	 */
-	private boolean hasNormals = false;
+	private boolean hasNormals;
 
 	/** The index into the raw buffer to be used for the next data. */
 	// MCPatcher Start - private to public
-	public int rawBufferIndex = 0;
+	public int rawBufferIndex;
 	// MCPatcher End
 
 	/**
@@ -85,11 +85,11 @@ public class Tessellator {
 	 * vertices when converting quads to triangles.
 	 */
 	// MCPatcher Start - private to public
-	public int addedVertices = 0;
+	public int addedVertices;
 	// MCPatcher End
 
 	/** Disables all color information for the following draw call. */
-	private boolean isColorDisabled = false;
+	private boolean isColorDisabled;
 
 	/** The draw mode currently being used by the tessellator. */
 	// MCPatcher Start - private to public
@@ -119,11 +119,11 @@ public class Tessellator {
 
 	/** Whether this tessellator is currently in draw mode. */
 	// MCPatcher Start - private to public
-	public boolean isDrawing = false;
+	public boolean isDrawing;
 	// MCPatcher End
 
 	/** Whether we are currently using VBO or not. */
-	private boolean useVBO = false;
+	private boolean useVBO;
 
 	/** An IntBuffer used to store the indices of vertex buffer objects. */
 	private IntBuffer vertexBuffers;
@@ -132,7 +132,7 @@ public class Tessellator {
 	 * The index of the last VBO used. This is used in round-robin fashion, sequentially, through the vboCount vertex
 	 * buffers.
 	 */
-	private int vboIndex = 0;
+	private int vboIndex;
 
 	/** Number of vertex buffer objects allocated for use. */
 	private int vboCount = 10;
@@ -180,9 +180,10 @@ public class Tessellator {
 			if (this.vertexCount > 0) {
 				// MCPatcher && Spout Start
 				if (this.textureMap != null && SpoutClient.getHandle().renderEngine.boundTexture <= 0) {
-					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.textureMap.getTexture().getGlTextureId());
+					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.textureMap.func_110552_b());
 				} else if (this.texture > 0) {
-					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture);
+					//ToDO: need to be re-written
+					//GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture);
 				}
 				// MCPatcher && Spout End
 

@@ -13,8 +13,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.crypto.SecretKey;
+import net.minecraft.server.MinecraftServer;
 //Spout Start
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
 //Spout End
@@ -50,7 +53,7 @@ public class TcpConnection implements INetworkManager {
 	/**
 	 * Linked list of packets that have been read and are awaiting processing.
 	 */
-	private List readPackets;
+	private Queue readPackets;
 
 	/** Linked list of packets awaiting sending. */
 	private List dataPackets;
@@ -101,19 +104,10 @@ public class TcpConnection implements INetworkManager {
 	public TcpConnection(ILogAgent par1ILogAgent, Socket par2Socket, String par3Str, NetHandler par4NetHandler, PrivateKey par5PrivateKey) throws IOException {
 		this.sendQueueLock = new Object();
 		this.isRunning = true;
-		this.isTerminating = false;
-		this.readPackets = Collections.synchronizedList(new ArrayList());
+		this.readPackets = new ConcurrentLinkedQueue();		
 		this.dataPackets = Collections.synchronizedList(new ArrayList());
-		this.chunkDataPackets = Collections.synchronizedList(new ArrayList());
-		this.isServerTerminating = false;
-		this.terminationReason = "";
-		this.field_74490_x = 0;
-		this.sendQueueByteLength = 0;
-		this.field_74468_e = 0;
-		this.isInputBeingDecrypted = false;
-		this.isOutputEncrypted = false;
-		this.sharedKeyForEncryption = null;
-		this.field_74463_A = null;
+		this.chunkDataPackets = Collections.synchronizedList(new ArrayList());		
+		this.terminationReason = "";		
 		this.chunkDataPacketsDelay = 50;
 		this.field_74463_A = par5PrivateKey;
 		this.networkSocket = par2Socket;
@@ -179,7 +173,7 @@ public class TcpConnection implements INetworkManager {
 			int var10001;
 			int[] var10000;
 
-			if (this.field_74468_e == 0 || !this.dataPackets.isEmpty() && System.currentTimeMillis() - ((Packet)this.dataPackets.get(0)).creationTimeMillis >= (long)this.field_74468_e) {
+			if (this.field_74468_e == 0 || !this.dataPackets.isEmpty() && MinecraftServer.func_130071_aq() - ((Packet)this.dataPackets.get(0)).creationTimeMillis >= (long)this.field_74468_e) {
 				var2 = this.func_74460_a(false);
 
 				if (var2 != null) {
@@ -204,7 +198,7 @@ public class TcpConnection implements INetworkManager {
 				}
 			}
 
-			if (this.chunkDataPacketsDelay-- <= 0 && (this.field_74468_e == 0 || !this.chunkDataPackets.isEmpty() && System.currentTimeMillis() - ((Packet)this.chunkDataPackets.get(0)).creationTimeMillis >= (long)this.field_74468_e)) {
+			if (this.chunkDataPacketsDelay-- <= 0 && (this.field_74468_e == 0 || !this.chunkDataPackets.isEmpty() && MinecraftServer.func_130071_aq() - ((Packet)this.chunkDataPackets.get(0)).creationTimeMillis >= (long)this.field_74468_e)) {
 				var2 = this.func_74460_a(true);
 
 				if (var2 != null) {
@@ -393,12 +387,14 @@ public class TcpConnection implements INetworkManager {
 
 		int var1 = 1000;
 
-		while (!this.readPackets.isEmpty() && var1-- >= 0) {
-			Packet var2 = (Packet)this.readPackets.remove(0);
+		while (var1-- >= 0) {
+			Packet var2 = (Packet)this.readPackets.poll();
 			// Spout Start
 			ChunkNetCache.totalPacketDown.addAndGet(var2.getPacketSize());
 			// Spout End
-			var2.processPacket(this.theNetHandler);
+			if (var2 != null && !this.theNetHandler.func_142032_c()) {
+				var2.processPacket(this.theNetHandler);
+			}
 		}
 
 		this.wakeThreads();

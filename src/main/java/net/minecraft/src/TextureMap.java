@@ -1,46 +1,127 @@
 package net.minecraft.src;
 
-// MCPatcher Start
-import com.prupe.mcpatcher.mod.CTMUtils;
-import com.prupe.mcpatcher.mod.TileLoader;
-// MCPatcher End
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.prupe.mcpatcher.TileLoader;
+import com.prupe.mcpatcher.hd.BorderedTexture;
+import com.prupe.mcpatcher.hd.MipmapHelper;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.client.Minecraft;
+import java.util.Map.Entry;
 
-public class TextureMap implements IconRegister {
+public class TextureMap extends AbstractTexture implements TickableTextureObject, IconRegister {
+	public static final ResourceLocation field_110575_b = new ResourceLocation("textures/atlas/blocks.png");
+	public static final ResourceLocation field_110576_c = new ResourceLocation("textures/atlas/items.png");
+	private final List listTextureStiched = Lists.newArrayList();
+	private final Map field_110574_e = Maps.newHashMap();
+	private final Map mapTexturesStiched = Maps.newHashMap();
 
 	/** 0 = terrain.png, 1 = items.png */
 	private final int textureType;
-	private final String textureName;
 	private final String basePath;
-	private final String textureExt;
-	private final HashMap mapTexturesStiched = new HashMap();
-	private BufferedImage missingImage = new BufferedImage(64, 64, 2);
-	private TextureStitched missingTextureStiched;
-	private Texture atlasTexture;
-	private final List listTextureStiched = new ArrayList();
-	private final Map textureStichedMap = new HashMap();
+	private final TextureAtlasSprite missingImage = new TextureAtlasSprite("missingno");
 
-	public TextureMap(int par1, String par2, String par3Str, BufferedImage par4BufferedImage) {
+	public TextureMap(int par1, String par2Str) {
 		this.textureType = par1;
-		this.textureName = par2;
-		this.basePath = par3Str;
-		this.textureExt = ".png";
-		this.missingImage = par4BufferedImage;
+		this.basePath = par2Str;
+		this.func_110573_f();
 	}
 
-	public void refreshTextures() {
-		this.textureStichedMap.clear();
+	private void func_110569_e() {
+		this.missingImage.func_110968_a(Lists.newArrayList(new int[][] {TextureUtil.field_110999_b}));
+		this.missingImage.func_110966_b(16);
+		this.missingImage.func_110969_c(16);
+	}
+
+	public void func_110551_a(ResourceManager par1ResourceManager) throws IOException {
+		this.func_110569_e();
+		this.func_110571_b(par1ResourceManager);
+	}
+
+	public void func_110571_b(ResourceManager par1ResourceManager) {
+		int var2 = Minecraft.getGLMaximumTextureSize();
+		Stitcher var3 = new Stitcher(var2, var2, true);
+		this.mapTexturesStiched.clear();
+		this.listTextureStiched.clear();
+		this.func_110573_f();
+		TileLoader.registerIcons(this, this.basePath, this.field_110574_e);
+		Iterator var4 = this.field_110574_e.entrySet().iterator();
+
+		while (var4.hasNext()) {
+			Entry var5 = (Entry)var4.next();
+			ResourceLocation var6 = new ResourceLocation((String)var5.getKey());
+			TextureAtlasSprite var7 = (TextureAtlasSprite)var5.getValue();
+			ResourceLocation var8 = new ResourceLocation(var6.func_110624_b(), TileLoader.getOverridePath(this.basePath, var6.func_110623_a(), ".png"));
+
+			try {
+				var7.func_130100_a(par1ResourceManager.func_110536_a(var8));
+			} catch (RuntimeException var13) {
+				Minecraft.getMinecraft().getLogAgent().logSevere(String.format("Unable to parse animation metadata from %s: %s", new Object[] {var8, var13.getMessage()}));
+				continue;
+			} catch (IOException var14) {
+				Minecraft.getMinecraft().getLogAgent().logSevere("Using missing texture, unable to load: " + var8);
+				continue;
+			}
+
+			var3.func_110934_a(var7);
+		}
+
+		var3.func_110934_a(this.missingImage);
+
+		try {
+			var3.doStitch();
+		} catch (StitcherException var12) {
+			throw var12;
+		}
+
+		MipmapHelper.setupTexture(this.func_110552_b(), var3.func_110935_a(), var3.func_110936_b(), this.basePath);
+		HashMap var15 = Maps.newHashMap(this.field_110574_e);
+		Iterator var16 = var3.getStichSlots().iterator();
+		TextureAtlasSprite var17;
+
+		while (var16.hasNext()) {
+			var17 = (TextureAtlasSprite)var16.next();
+			String var18 = var17.getIconName();
+			var15.remove(var18);
+			this.mapTexturesStiched.put(var18, var17);
+
+			try {
+				int[] var10000 = var17.func_110965_a(0);
+				int var10001 = var17.getOriginX();
+				int var10002 = var17.getOriginY();
+				int var10003 = var17.func_130010_a();
+				int var10004 = var17.func_110967_i();
+				boolean var10005 = false;
+				boolean var10006 = false;
+				MipmapHelper.copySubTexture(var10000, var10001, var10002, var10003, var10004, this.basePath);
+			} catch (Throwable var11) {
+				CrashReport var9 = CrashReport.makeCrashReport(var11, "Stitching texture atlas");
+				CrashReportCategory var10 = var9.makeCategory("Texture being stitched together");
+				var10.addCrashSection("Atlas path", this.basePath);
+				var10.addCrashSection("Sprite", var17);
+				throw new ReportedException(var9);
+			}
+
+			if (var17.func_130098_m()) {
+				this.listTextureStiched.add(var17);
+			} else {
+				var17.func_130103_l();
+			}
+		}
+
+		var16 = var15.values().iterator();
+
+		while (var16.hasNext()) {
+			var17 = (TextureAtlasSprite)var16.next();
+			var17.copyFrom(this.missingImage);
+		}
+	}
+
+	private void func_110573_f() {
+		this.field_110574_e.clear();
 		int var2;
 		int var3;
 
@@ -60,113 +141,36 @@ public class TextureMap implements IconRegister {
 			RenderManager.instance.updateIcons(this);
 		}
 
-		Item[] var19 = Item.itemsList;
-		var2 = var19.length;
+		Item[] var5 = Item.itemsList;
+		var2 = var5.length;
 
 		for (var3 = 0; var3 < var2; ++var3) {
-			Item var22 = var19[var3];
+			Item var6 = var5[var3];
 
-			if (var22 != null && var22.getSpriteNumber() == this.textureType) {
-				var22.registerIcons(this);
+			if (var6 != null && var6.getSpriteNumber() == this.textureType) {
+				var6.registerIcons(this);
 			}
 		}
+	}
 
-		HashMap var20 = new HashMap();
-		Stitcher var21 = TextureManager.instance().createStitcher(this.textureName);
-		this.mapTexturesStiched.clear();
-		this.listTextureStiched.clear();
-		Texture var23 = TextureManager.instance().makeTexture("missingno", 2, this.missingImage.getWidth(), this.missingImage.getHeight(), 10496, 6408, 9728, 9728, false, this.missingImage);
-		StitchHolder var24 = new StitchHolder(var23);
-		var21.addStitchHolder(var24);
-		var20.put(var24, Arrays.asList(new Texture[] {var23}));
-		Iterator var5 = this.textureStichedMap.keySet().iterator();
+	public TextureAtlasSprite func_110572_b(String par1Str) {
+		TextureAtlasSprite var2 = (TextureAtlasSprite)this.mapTexturesStiched.get(par1Str);
 
-		while (var5.hasNext()) {
-			String var6 = (String)var5.next();
-			String var7 = this.basePath + var6 + this.textureExt;
-			List var8 = TextureManager.instance().createTexture(var7);
-
-			if (!var8.isEmpty()) {
-				StitchHolder var9 = new StitchHolder((Texture)var8.get(0));
-				var21.addStitchHolder(var9);
-				var20.put(var9, var8);
-			}
+		if (var2 == null) {
+			var2 = this.missingImage;
 		}
 
-		try {
-			CTMUtils.registerIcons(this, var21, this.textureName, var20);
-			var21.doStitch();
-		} catch (StitcherException var18) {
-			throw var18;
-		}
-
-		this.atlasTexture = var21.getTexture();
-		var5 = var21.getStichSlots().iterator();
-
-		while (var5.hasNext()) {
-			StitchSlot var26 = (StitchSlot)var5.next();
-			StitchHolder var27 = var26.getStitchHolder();
-			Texture var28 = var27.func_98150_a();
-			String var29 = var28.getTextureName();
-			List var10 = (List)var20.get(var27);
-			TextureStitched var11 = (TextureStitched)this.textureStichedMap.get(var29);
-			boolean var12 = false;
-
-			if (var11 == null) {
-				var12 = true;
-				var11 = TextureStitched.makeTextureStitched(var29);
-
-				if (!var29.equals("missingno")) {
-					Minecraft.getMinecraft().getLogAgent().logWarning("Couldn\'t find premade icon for " + var29 + " doing " + this.textureName);
-				}
-			}
-
-			var11.init(this.atlasTexture, var10, var26.getOriginX(), var26.getOriginY(), var27.func_98150_a().getWidth(), var27.func_98150_a().getHeight(), var27.isRotated());
-			this.mapTexturesStiched.put(var29, var11);
-
-			if (!var12) {
-				this.textureStichedMap.remove(var29);
-			}
-
-			if (var10.size() > 1) {
-				this.listTextureStiched.add(var11);
-				String var13 = TileLoader.getOverridePath(this.basePath, var29, ".txt");
-				ITexturePack var14 = Minecraft.getMinecraft().texturePackList.getSelectedTexturePack();
-				boolean var15 = !var14.func_98138_b("/" + this.basePath + var29 + ".png", false);
-
-				try {
-					InputStream var16 = var14.func_98137_a("/" + var13, var15);
-					//Minecraft.getMinecraft().getLogAgent().logInfo("Found animation info for: " + var13);
-					var11.readAnimationInfo(new BufferedReader(new InputStreamReader(var16)));
-				} catch (IOException var17) {
-					;
-				}
-			}
-		}
-
-		this.missingTextureStiched = (TextureStitched)this.mapTexturesStiched.get("missingno");
-		var5 = this.textureStichedMap.values().iterator();
-
-		while (var5.hasNext()) {
-			TextureStitched var25 = (TextureStitched)var5.next();
-			var25.copyFrom(this.missingTextureStiched);
-		}
-
-		this.atlasTexture.writeImage("debug.stitched_" + this.textureName + ".png");
-		this.atlasTexture.uploadTexture();
+		return var2;
 	}
 
 	public void updateAnimations() {
+		TextureUtil.bindTexture(this.func_110552_b());
 		Iterator var1 = this.listTextureStiched.iterator();
 
 		while (var1.hasNext()) {
-			TextureStitched var2 = (TextureStitched)var1.next();
+			TextureAtlasSprite var2 = (TextureAtlasSprite)var1.next();
 			var2.updateAnimation();
 		}
-	}
-
-	public Texture getTexture() {
-		return this.atlasTexture;
 	}
 
 	public Icon registerIcon(String par1Str) {
@@ -174,17 +178,32 @@ public class TextureMap implements IconRegister {
 			(new RuntimeException("Don\'t register null!")).printStackTrace();
 		}
 
-		TextureStitched var2 = (TextureStitched)this.textureStichedMap.get(par1Str);
+		Object var2 = (TextureAtlasSprite)this.field_110574_e.get(par1Str);
 
 		if (var2 == null) {
-			var2 = TextureStitched.makeTextureStitched(par1Str);
-			this.textureStichedMap.put(par1Str, var2);
+			if (this.textureType == 1) {
+				if (TileLoader.isSpecialTexture(this, par1Str, "clock")) {
+					var2 = new TextureClock(par1Str);
+				} else if (TileLoader.isSpecialTexture(this, par1Str, "compass")) {
+					var2 = new TextureCompass(par1Str);
+				} else {
+					var2 = BorderedTexture.create(this.basePath, par1Str);
+				}
+			} else {
+				var2 = BorderedTexture.create(this.basePath, par1Str);
+			}
+
+			this.field_110574_e.put(par1Str, var2);
 		}
 
-		return var2;
+		return (Icon)var2;
 	}
 
-	public Icon getMissingIcon() {
-		return this.missingTextureStiched;
+	public int func_130086_a() {
+		return this.textureType;
+	}
+
+	public void func_110550_d() {
+		this.updateAnimations();
 	}
 }

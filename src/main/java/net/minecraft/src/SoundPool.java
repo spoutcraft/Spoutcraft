@@ -1,9 +1,10 @@
 package net.minecraft.src;
 
-import java.io.File;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -11,29 +12,28 @@ import java.util.Random;
 public class SoundPool {
 
 	/** The RNG used by SoundPool. */
-	private Random rand = new Random();
+	private final Random rand = new Random();
 
 	/**
 	 * Maps a name (can be sound/newsound/streaming/music/newmusic) to a list of SoundPoolEntry's.
 	 */
-	private Map nameToSoundPoolEntriesMapping = new HashMap();
+	private final Map nameToSoundPoolEntriesMapping = Maps.newHashMap();
+	private final ResourceManager field_110657_c;
+	private final String field_110656_d;
+	private final boolean isGetRandomSound;
 
-	/** A list of all SoundPoolEntries that have been loaded. */
-	private List allSoundPoolEntries = new ArrayList();
-
-	/**
-	 * The number of soundPoolEntry's. This value is computed but never used (should be equal to
-	 * allSoundPoolEntries.size()).
-	 */
-	public int numberOfSoundPoolEntries = 0;
-	public boolean isGetRandomSound = true;
+	public SoundPool(ResourceManager par1ResourceManager, String par2Str, boolean par3) {
+		this.field_110657_c = par1ResourceManager;
+		this.field_110656_d = par2Str;
+		this.isGetRandomSound = par3;
+	}
 
 	/**
 	 * Adds a sound to this sound pool.
 	 */
-	public SoundPoolEntry addSound(String par1Str, File par2File) {
+	public void addSound(String par1Str) {
 		try {
-			String var3 = par1Str;
+			String var2 = par1Str;
 			par1Str = par1Str.substring(0, par1Str.indexOf("."));
 
 			if (this.isGetRandomSound) {
@@ -43,20 +43,25 @@ public class SoundPool {
 			}
 
 			par1Str = par1Str.replaceAll("/", ".");
+			Object var3 = (List)this.nameToSoundPoolEntriesMapping.get(par1Str);
 
-			if (!this.nameToSoundPoolEntriesMapping.containsKey(par1Str)) {
-				this.nameToSoundPoolEntriesMapping.put(par1Str, new ArrayList());
+			if (var3 == null) {
+				var3 = Lists.newArrayList();
+				this.nameToSoundPoolEntriesMapping.put(par1Str, var3);
 			}
 
-			SoundPoolEntry var4 = new SoundPoolEntry(var3, par2File.toURI().toURL());
-			((List)this.nameToSoundPoolEntriesMapping.get(par1Str)).add(var4);
-			this.allSoundPoolEntries.add(var4);
-			++this.numberOfSoundPoolEntries;
-			return var4;
-		} catch (MalformedURLException var5) {
-			var5.printStackTrace();
-			throw new RuntimeException(var5);
+			((List)var3).add(new SoundPoolEntry(var2, this.func_110654_c(var2)));
+		} catch (MalformedURLException var4) {
+			var4.printStackTrace();
+			throw new RuntimeException(var4);
 		}
+	}
+
+	private URL func_110654_c(String par1Str) throws MalformedURLException {
+		ResourceLocation var2 = new ResourceLocation(par1Str);
+		String var3 = String.format("%s:%s:%s/%s", new Object[] {"mcsounddomain", var2.func_110624_b(), this.field_110656_d, var2.func_110623_a()});
+		SoundPoolProtocolHandler var4 = new SoundPoolProtocolHandler(this);
+		return new URL((URL)null, var3, var4);
 	}
 
 	/**
@@ -71,7 +76,16 @@ public class SoundPool {
 	 * Gets a random SoundPoolEntry.
 	 */
 	public SoundPoolEntry getRandomSound() {
-		return this.allSoundPoolEntries.isEmpty() ? null : (SoundPoolEntry)this.allSoundPoolEntries.get(this.rand.nextInt(this.allSoundPoolEntries.size()));
+		if (this.nameToSoundPoolEntriesMapping.isEmpty()) {
+			return null;
+		} else {
+			ArrayList var1 = Lists.newArrayList(this.nameToSoundPoolEntriesMapping.keySet());
+			return this.getRandomSoundFromSoundPool((String)var1.get(this.rand.nextInt(var1.size())));
+		}
+	}
+
+	static ResourceManager func_110655_a(SoundPool par0SoundPool) {
+		return par0SoundPool.field_110657_c;
 	}
 
 	// Spout Start
