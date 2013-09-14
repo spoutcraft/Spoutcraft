@@ -6,8 +6,8 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.special.Resources;
 // Spout End
 
-public class EntityOtherPlayerMP extends EntityPlayer {
-	private boolean isItemInUse = false;
+public class EntityOtherPlayerMP extends AbstractClientPlayer {
+	private boolean isItemInUse;
 	private int otherPlayerMPPosRotationIncrements;
 	private double otherPlayerMPX;
 	private double otherPlayerMPY;
@@ -16,27 +16,12 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	private double otherPlayerMPPitch;
 
 	public EntityOtherPlayerMP(World par1World, String par2Str) {
-		super(par1World);
-		this.username = par2Str;
+		super(par1World, par2Str);		
 		this.yOffset = 0.0F;
-		this.stepHeight = 0.0F;
-
-		if (par2Str != null && par2Str.length() > 0) {
-			// Spout Start
-			this.skinUrl = "http://cdn.spout.org/game/vanilla/skin/" + ChatColor.stripColor(par2Str) + ".png";
-			this.vip = Resources.getVIP(ChatColor.stripColor(par2Str));
-			// Spout End
-		}
-
+		this.stepHeight = 0.0F;		
 		this.noClip = true;
 		this.field_71082_cx = 0.25F;
 		this.renderDistanceWeight = 10.0D;
-		// Spout Start
-		if (vip != null) {
-			displayName = vip.getTitle();
-		} else {
-			displayName = username;
-		}
 		this.worldObj.releaseEntitySkin(this);
 		worldObj.obtainEntitySkin(this);
 		// Spout End
@@ -52,7 +37,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	/**
 	 * Called when the entity is attacked.
 	 */
-	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
+	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
 		return true;
 	}
 
@@ -67,14 +52,6 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.otherPlayerMPYaw = (double)par7;
 		this.otherPlayerMPPitch = (double)par8;
 		this.otherPlayerMPPosRotationIncrements = par9;
-	}
-
-	public void updateCloak() {
-		// Spout Start
-		if (this.cloakUrl == null || this.playerCloakUrl == null) {
-			super.updateCloak();
-		}
-		// Spout End
 	}
 
 	/**
@@ -145,11 +122,11 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 			var9 = 0.1F;
 		}
 
-		if (!this.onGround || this.getHealth() <= 0) {
+		if (!this.onGround || this.func_110143_aJ() <= 0.0F) {
 			var9 = 0.0F;
 		}
 
-		if (this.onGround || this.getHealth() <= 0) {
+		if (this.onGround || this.func_110143_aJ() <= 0.0F) {
 			var2 = 0.0F;
 		}
 
@@ -172,11 +149,8 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		return 1.82F;
 	}
 
-	public void sendChatToPlayer(String par1Str) {
-		// Spout Start - Removed
-		// TODO: Something?
-		//Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(par1Str);
-		// Spout End
+	public void sendChatToPlayer(ChatMessageComponent par1ChatMessageComponent) {
+		Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(par1ChatMessageComponent.func_111068_a(true));
 	}
 
 	/**
