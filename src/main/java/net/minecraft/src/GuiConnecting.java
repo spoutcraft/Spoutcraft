@@ -11,7 +11,7 @@ public class GuiConnecting extends GuiScreen {
 	private NetClientHandler clientHandler;
 
 	/** True if the connection attempt has been cancelled. */
-	private boolean cancelled = false;
+	private boolean cancelled;
 	private final GuiScreen field_98098_c;
 
 	public GuiConnecting(Minecraft par2Minecraft, ServerData par3ServerData) {
@@ -60,10 +60,9 @@ public class GuiConnecting extends GuiScreen {
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
-	public void initGui() {
-		StringTranslate var1 = StringTranslate.getInstance();
+	public void initGui() {		
 		this.buttonList.clear();
-		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, var1.translateKey("gui.cancel")));
+		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, I18n.func_135053_a("gui.cancel")));
 	}
 
 	/**
@@ -88,13 +87,12 @@ public class GuiConnecting extends GuiScreen {
 	 */
 	public void drawScreen(int par1, int par2, float par3) {
 		this.drawDefaultBackground();
-		StringTranslate var4 = StringTranslate.getInstance();
 
 		if (this.clientHandler == null) {
-			this.drawCenteredString(this.fontRenderer, var4.translateKey("connect.connecting"), this.width / 2, this.height / 2 - 50, 16777215);
+			this.drawCenteredString(this.fontRenderer, I18n.func_135053_a("connect.connecting"), this.width / 2, this.height / 2 - 50, 16777215);
 			this.drawCenteredString(this.fontRenderer, "", this.width / 2, this.height / 2 - 10, 16777215);
 		} else {
-			this.drawCenteredString(this.fontRenderer, var4.translateKey("connect.authorizing"), this.width / 2, this.height / 2 - 50, 16777215);
+			this.drawCenteredString(this.fontRenderer, I18n.func_135053_a("connect.authorizing"), this.width / 2, this.height / 2 - 50, 16777215);
 			this.drawCenteredString(this.fontRenderer, this.clientHandler.field_72560_a, this.width / 2, this.height / 2 - 10, 16777215);
 		}
 

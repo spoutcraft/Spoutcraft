@@ -7,7 +7,6 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -26,8 +25,7 @@ import org.spoutcraft.client.gui.*;
 import org.spoutcraft.client.packet.*;
 // Spout End
 
-public class GuiScreen extends Gui {
-	public static final boolean isMacOs = Minecraft.getOs() == EnumOS.MACOS;
+public class GuiScreen extends Gui {	
 
 	/** Reference to the Minecraft object. */
 	protected Minecraft mc;
@@ -40,17 +38,17 @@ public class GuiScreen extends Gui {
 
 	/** A list of all the buttons in this container. */
 	protected List buttonList = new ArrayList();
-	public boolean allowUserInput = false;
+	public boolean allowUserInput;
 
 	/** The FontRenderer used by GuiScreen */
 	protected FontRenderer fontRenderer;
 	public GuiParticle guiParticles;
 
 	/** The button that was just pressed. */
-	private GuiButton selectedButton = null;
-	private int eventButton = 0;
-	private long field_85043_c = 0L;
-	private int field_92018_d = 0;
+	private GuiButton selectedButton;
+	private int eventButton;
+	private long field_85043_c;
+	private int field_92018_d;
 
 	// Spout Start
 	public GenericGradient bg;
@@ -528,7 +526,11 @@ public class GuiScreen extends Gui {
 		}
 	}
 
-	protected void func_85041_a(int par1, int par2, int par3, long par4) {}
+	/**
+	 * Called when a mouse button is pressed and the mouse is moved around. Parameters are : mouseX, mouseY,
+	 * lastButtonClicked & timeSinceMouseClick.
+	 */
+	protected void mouseClickMove(int par1, int par2, int par3, long par4) {}
 
 	/**
 	 * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
@@ -538,8 +540,7 @@ public class GuiScreen extends Gui {
 	/**
 	 * Causes the screen to lay out its subcomponents again. This is the equivalent of the Java call Container.validate()
 	 */
-	public void setWorldAndResolution(Minecraft par1Minecraft, int par2, int par3) {
-		this.guiParticles = new GuiParticle(par1Minecraft);
+	public void setWorldAndResolution(Minecraft par1Minecraft, int par2, int par3) {		
 		this.mc = par1Minecraft;
 		this.fontRenderer = par1Minecraft.fontRenderer;
 		this.width = par2;
@@ -590,6 +591,7 @@ public class GuiScreen extends Gui {
 	 * Handles mouse input.
 	 */
 	// Spout Start - Rewritten
+	// ToDo: needs a rewritten rewrite.
 	public void handleMouseInput() {
 		int x;
 		int y;
@@ -641,6 +643,7 @@ public class GuiScreen extends Gui {
 	/**
 	 * Handles keyboard input.
 	 */
+	// ToDo: needs isMacOS variations added.
 	public void handleKeyboardInput() {
 		// Spout Start
 		boolean handled = false;
@@ -796,7 +799,7 @@ public class GuiScreen extends Gui {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_FOG);
 		Tessellator var2 = Tessellator.instance;
-		this.mc.renderEngine.bindTexture("/gui/background.png");
+		this.mc.func_110434_K().func_110577_a(field_110325_k);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var3 = 32.0F;
 		var2.startDrawingQuads();
@@ -966,8 +969,7 @@ public class GuiScreen extends Gui {
 	// Spout End
 
 	public static boolean isCtrlKeyDown() {
-		boolean var0 = Keyboard.isKeyDown(28) && Keyboard.getEventCharacter() == 0;
-		return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157) || isMacOs && (var0 || Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220));
+		return Minecraft.field_142025_a ? Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220) : Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
 	}
 
 	public static boolean isShiftKeyDown() {

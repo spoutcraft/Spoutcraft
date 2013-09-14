@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -13,16 +14,17 @@ import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public class GuiContainerCreative extends InventoryEffectRenderer {
+	private static final ResourceLocation field_110424_t = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
 	private static InventoryBasic inventory = new InventoryBasic("tmp", true, 45);
 
 	/** Currently selected creative inventory tab index. */
 	private static int selectedTabIndex = CreativeTabs.tabBlock.getTabIndex();
 
 	/** Amount scrolled in Creative mode inventory (0 = top, 1 = bottom) */
-	private float currentScroll = 0.0F;
+	private float currentScroll;
 
 	/** True if the scrollbar is being dragged */
-	private boolean isScrolling = false;
+	private boolean isScrolling;
 
 	/**
 	 * True if the left mouse button was held down last time drawScreen was called.
@@ -35,8 +37,8 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 	 * inventory tab.
 	 */
 	private List backupContainerSlots;
-	private Slot field_74235_v = null;
-	private boolean field_74234_w = false;
+	private Slot field_74235_v;
+	private boolean field_74234_w;
 	private CreativeCrafting field_82324_x;
 
 	public GuiContainerCreative(EntityPlayer par1EntityPlayer) {
@@ -311,7 +313,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		CreativeTabs var3 = CreativeTabs.creativeTabArray[selectedTabIndex];
 
 		if (var3.drawInForegroundOfTab()) {
-			this.fontRenderer.drawString(var3.getTranslatedTabLabel(), 8, 6, 4210752);
+			this.fontRenderer.drawString(I18n.func_135053_a(var3.getTranslatedTabLabel()), 8, 6, 4210752);
 		}
 	}
 
@@ -531,13 +533,55 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		// Spout End
 
 		if (this.field_74235_v != null && selectedTabIndex == CreativeTabs.tabInventory.getTabIndex() && this.isPointInRegion(this.field_74235_v.xDisplayPosition, this.field_74235_v.yDisplayPosition, 16, 16, par1, par2)) {
-			this.drawCreativeTabHoveringText(StringTranslate.getInstance().translateKey("inventory.binSlot"), par1, par2);
+			this.drawCreativeTabHoveringText(I18n.func_135053_a("inventory.binSlot"), par1, par2);
 		}
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_LIGHTING);
 	}
 
+	protected void drawItemStackTooltip(ItemStack par1ItemStack, int par2, int par3) {
+		if (selectedTabIndex == CreativeTabs.tabAllSearch.getTabIndex()) {
+			List var4 = par1ItemStack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+			CreativeTabs var5 = par1ItemStack.getItem().getCreativeTab();
+
+			if (var5 == null && par1ItemStack.itemID == Item.enchantedBook.itemID) {
+				Map var6 = EnchantmentHelper.getEnchantments(par1ItemStack);
+
+				if (var6.size() == 1) {
+					Enchantment var7 = Enchantment.enchantmentsList[((Integer)var6.keySet().iterator().next()).intValue()];
+					CreativeTabs[] var8 = CreativeTabs.creativeTabArray;
+					int var9 = var8.length;
+
+					for (int var10 = 0; var10 < var9; ++var10) {
+						CreativeTabs var11 = var8[var10];
+
+						if (var11.func_111226_a(var7.type)) {
+							var5 = var11;
+							break;
+						}
+					}
+				}
+			}
+
+			if (var5 != null) {
+				var4.add(1, "" + EnumChatFormatting.BOLD + EnumChatFormatting.BLUE + I18n.func_135053_a(var5.getTranslatedTabLabel()));
+			}
+
+			for (int var12 = 0; var12 < var4.size(); ++var12) {
+				if (var12 == 0) {
+					var4.set(var12, "\u00a7" + Integer.toHexString(par1ItemStack.getRarity().rarityColor) + (String)var4.get(var12));
+				} else {
+					var4.set(var12, EnumChatFormatting.GRAY + (String)var4.get(var12));
+				}
+			}
+
+			this.func_102021_a(var4, par2, par3);
+		} else {
+			super.drawItemStackTooltip(par1ItemStack, par2, par3);
+		}
+	}
+	
 	/**
 	 * Draw the background layer for the GuiContainer (everything behind the items)
 	 */
@@ -551,7 +595,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 
 		for (var7 = 0; var7 < var6 - 1; ++var7) { //Spout don't render the last tab
 			CreativeTabs var8 = var5[var7];
-			this.mc.renderEngine.bindTexture("/gui/allitems.png");
+			this.mc.func_110434_K().func_110577_a(field_110424_t);
 
 			if (var8.getTabIndex() != selectedTabIndex) {
 				this.renderCreativeTab(var8);
@@ -562,14 +606,14 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		renderInInventory(true);
 		// Spout End
 
-		this.mc.renderEngine.bindTexture("/gui/creative_inv/" + var4.getBackgroundImageName());
+		this.mc.func_110434_K().func_110577_a(new ResourceLocation("textures/gui/container/creative_inventory/tab_" + var4.getBackgroundImageName()));
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		this.searchField.drawTextBox();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		int var9 = this.guiLeft + 175;
 		var6 = this.guiTop + 18;
 		var7 = var6 + 112;
-		this.mc.renderEngine.bindTexture("/gui/allitems.png");
+		this.mc.func_110434_K().func_110577_a(field_110424_t);
 
 		if (var4.shouldHidePlayerInventory()) {
 			this.drawTexturedModalRect(var9, var6 + (int)((float)(var7 - var6 - 17) * this.currentScroll), 232 + (this.needsScrollBars() ? 0 : 12), 0, 12, 15);
@@ -585,7 +629,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		this.renderCreativeTab(var4);
 
 		if (var4 == CreativeTabs.tabInventory) {
-			GuiInventory.drawPlayerOnGui(this.mc, this.guiLeft + 43, this.guiTop + 45, 20, (float)(this.guiLeft + 43 - par2), (float)(this.guiTop + 45 - 30 - par3));
+			GuiInventory.func_110423_a(this.guiLeft + 43, this.guiTop + 45, 20, (float)(this.guiLeft + 43 - par2), (float)(this.guiTop + 45 - 30 - par3), this.mc.thePlayer);
 		}
 	}
 
@@ -635,7 +679,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		}
 
 		if (this.isPointInRegion(var5 + 3, var7 + 3, 23, 27, par2, par3)) {
-			this.drawCreativeTabHoveringText(par1CreativeTabs.getTranslatedTabLabel(), par2, par3);
+			this.drawCreativeTabHoveringText(I18n.func_135053_a(par1CreativeTabs.getTranslatedTabLabel()), par2, par3);
 			return true;
 		} else {
 			return false;
@@ -681,8 +725,8 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		ItemStack var10 = new ItemStack(par1CreativeTabs.getTabIconItem());
-		itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var7, var8);
-		itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var7, var8);
+		itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.func_110434_K(), var10, var7, var8);
+		itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.func_110434_K(), var10, var7, var8);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		itemRenderer.zLevel = 0.0F;
 		this.zLevel = 0.0F;
@@ -701,7 +745,10 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		}
 	}
 
-	public int func_74230_h() {
+	/**
+	 * Returns the current creative tab index.
+	 */
+	public int getCurrentTabIndex() {
 		return selectedTabIndex;
 	}
 

@@ -17,8 +17,8 @@ public class GuiNewChat extends Gui {
 	/** Chat lines to be displayed in the chat box */
 	private final List chatLines = new ArrayList();
 	private final List field_96134_d = new ArrayList();
-	private int field_73768_d = 0;
-	private boolean field_73769_e = false;
+	private int field_73768_d;
+	private boolean field_73769_e;
 
 	public GuiNewChat(Minecraft par1Minecraft) {
 		this.mc = par1Minecraft;
@@ -135,7 +135,7 @@ public class GuiNewChat extends Gui {
 	public void printChatMessageWithOptionalDeletion(String par1Str, int par2) {
 		this.func_96129_a(par1Str, par2, this.mc.ingameGUI.getUpdateCounter(), false);
 		// Spout Start
-		//this.mc.getLogAgent().logInfo("[CHAT] " + par1Str);
+		//this.mc.getLogAgent().logInfo("[CHAT] " + EnumChatFormatting.func_110646_a(par1Str));
 		// Spout End
 	}
 
@@ -260,7 +260,7 @@ public class GuiNewChat extends Gui {
 	 * Adds a message to the chat after translating to the client's locale.
 	 */
 	public void addTranslatedMessage(String par1Str, Object ... par2ArrayOfObj) {
-		this.printChatMessage(StringTranslate.getInstance().translateKeyFormat(par1Str, par2ArrayOfObj));
+		this.printChatMessage(I18n.func_135052_a(par1Str, par2ArrayOfObj));
 	}
 
 	/**

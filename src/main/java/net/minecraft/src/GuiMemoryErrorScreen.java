@@ -5,11 +5,10 @@ public class GuiMemoryErrorScreen extends GuiScreen {
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
-	public void initGui() {
-		StringTranslate var1 = StringTranslate.getInstance();
+	public void initGui() {		
 		this.buttonList.clear();
-		this.buttonList.add(new GuiSmallButton(0, this.width / 2 - 155, this.height / 4 + 120 + 12, var1.translateKey("gui.toMenu")));
-		this.buttonList.add(new GuiSmallButton(1, this.width / 2 - 155 + 160, this.height / 4 + 120 + 12, var1.translateKey("menu.quit")));
+		this.buttonList.add(new GuiSmallButton(0, this.width / 2 - 155, this.height / 4 + 120 + 12, I18n.func_135053_a("gui.toMenu")));
+		this.buttonList.add(new GuiSmallButton(1, this.width / 2 - 155 + 160, this.height / 4 + 120 + 12, I18n.func_135053_a("menu.quit")));
 	}
 
 	/**

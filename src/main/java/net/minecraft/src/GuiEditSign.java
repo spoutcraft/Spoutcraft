@@ -24,13 +24,13 @@ public class GuiEditSign extends GuiScreen {
 	private int updateCounter;
 
 	/** The number of the line that is being edited. */
-	private int editLine = 0;
+	private int editLine;
 	
 	/** "Done" button for the GUI. */
 	private GuiButton doneBtn;
 
 	// Spout Start
-	private int editColumn = 0;
+	private int editColumn;
 	// Spout End
 
 	public GuiEditSign(TileEntitySign par1TileEntitySign) {
@@ -109,7 +109,7 @@ public class GuiEditSign extends GuiScreen {
 			editColumn = entitySign.signText[editLine].length();
 		}
 
-		if (par2 == 208 || par2 == 28) { // Down
+		iif (par2 == 208 || par2 == 28 || par2 == 156) { // Down
 			this.editLine = this.editLine + 1 & 3;
 			editColumn = entitySign.signText[editLine].length();
 		}

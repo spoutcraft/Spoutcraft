@@ -5,7 +5,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class GuiAchievement extends Gui {
-
+	private static final ResourceLocation field_110331_a = new ResourceLocation("textures/gui/achievement/achievement_background.png");
+	
 	/** Holds the instance of the game (Minecraft) */
 	private Minecraft theGame;
 
@@ -42,8 +43,8 @@ public class GuiAchievement extends Gui {
 	 * Queue a taken achievement to be displayed.
 	 */
 	public void queueTakenAchievement(Achievement par1Achievement) {
-		this.achievementGetLocalText = StatCollector.translateToLocal("achievement.get");
-		this.achievementStatName = StatCollector.translateToLocal(par1Achievement.getName());
+		this.achievementGetLocalText = I18n.func_135053_a("achievement.get");
+		this.achievementStatName = I18n.func_135053_a(par1Achievement.getName());
 		this.achievementTime = Minecraft.getSystemTime();
 		this.theAchievement = par1Achievement;
 		this.haveAchiement = false;
@@ -53,13 +54,13 @@ public class GuiAchievement extends Gui {
 	 * Queue a information about a achievement to be displayed.
 	 */
 	public void queueAchievementInformation(Achievement par1Achievement) {
-		this.achievementGetLocalText = StatCollector.translateToLocal(par1Achievement.getName());
+		this.achievementGetLocalText = I18n.func_135053_a(par1Achievement.getName());
 		this.achievementStatName = par1Achievement.getDescription();
 		this.achievementTime = Minecraft.getSystemTime() - 2500L;
 		this.theAchievement = par1Achievement;
 		this.haveAchiement = true;
 	}
-
+	
 	// Spout Start
 	public void queueNotification(String title, String message, int toRender) {
 		queueNotification(title, message, toRender, (short) -1, -1);
@@ -143,7 +144,7 @@ public class GuiAchievement extends Gui {
 				int var6 = 0 - (int)(var3 * 36.0D);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				GL11.glEnable(GL11.GL_TEXTURE_2D);
-				this.theGame.renderEngine.bindTexture("/achievement/bg.png");
+				this.theGame.func_110434_K().func_110577_a(field_110331_a);
 				GL11.glDisable(GL11.GL_LIGHTING);
 				this.drawTexturedModalRect(var5, var6, 96, 202, 160, 32);
 
@@ -168,8 +169,9 @@ public class GuiAchievement extends Gui {
 						toRender = new ItemStack(itemId, 1, data);
 					}
 				}
+				//ToDo: this toRender() thing may need to go away.
 				if (toRender != null) {
-					this.itemRender.renderItemIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, toRender, var5 + 8, var6 + 8);
+					this.itemRender.renderItemAndEffectIntoGUI(this.theGame.fontRenderer, this.theGame.func_110434_K(), this.theAchievement.theItemStack, var5 + 8, var6 + 8);
 				}
 				// Spout End
 				GL11.glDisable(GL11.GL_LIGHTING);

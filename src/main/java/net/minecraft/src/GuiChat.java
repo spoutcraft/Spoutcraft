@@ -20,13 +20,13 @@ public class GuiChat extends GuiScreen {
 	 * sent immediately after each other)
 	 */
 	private int sentHistoryCursor = -1;
-	private boolean field_73897_d = false;
-	private boolean field_73905_m = false;
-	private int field_73903_n = 0;
+	private boolean field_73897_d;
+	private boolean field_73905_m;
+	private int field_73903_n;
 	private List field_73904_o = new ArrayList();
 
 	/** used to pass around the URI to various dialogues and to the host os */
-	private URI clickedURI = null;
+	private URI clickedURI;
 
 	/** Chat entry field */
 	protected GuiTextField inputField;
@@ -85,7 +85,19 @@ public class GuiChat extends GuiScreen {
 
 		if (par2 == 1) {
 			this.mc.displayGuiScreen((GuiScreen)null);
-		} else if (par2 == 28) {
+		} else if (par2 != 28 && par2 != 156) {
+			if (par2 == 200) {
+				this.getSentHistory(-1);
+			} else if (par2 == 208) {
+				this.getSentHistory(1);
+			} else if (par2 == 201) {
+				this.mc.ingameGUI.getChatGUI().scroll(this.mc.ingameGUI.getChatGUI().func_96127_i() - 1);
+			} else if (par2 == 209) {
+				this.mc.ingameGUI.getChatGUI().scroll(-this.mc.ingameGUI.getChatGUI().func_96127_i() + 1);
+			} else {
+				this.inputField.textboxKeyTyped(par1, par2);
+			}
+		} else {
 			String var3 = this.inputField.getText().trim();
 
 			if (var3.length() > 0) {
@@ -95,18 +107,8 @@ public class GuiChat extends GuiScreen {
 					this.mc.thePlayer.sendChatMessage(var3);
 				}
 			}
-
-			this.mc.displayGuiScreen((GuiScreen)null);
-		} else if (par2 == 200) {
-			this.getSentHistory(-1);
-		} else if (par2 == 208) {
-			this.getSentHistory(1);
-		} else if (par2 == 201) {
-			this.mc.ingameGUI.getChatGUI().scroll(this.mc.ingameGUI.getChatGUI().func_96127_i() - 1);
-		} else if (par2 == 209) {
-			this.mc.ingameGUI.getChatGUI().scroll(-this.mc.ingameGUI.getChatGUI().func_96127_i() + 1);
-		} else {
-			this.inputField.textboxKeyTyped(par1, par2);
+			
+			this.mc.displayGuiScreen((GuiScreen)null);		
 		}
 	}
 

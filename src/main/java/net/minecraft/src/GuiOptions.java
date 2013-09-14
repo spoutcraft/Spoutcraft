@@ -26,43 +26,39 @@ public class GuiOptions extends GuiScreen {
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
+	// ToDo:  Need Spoutcraft API update for buttonList calls.
 	public void initGui() {
-		StringTranslate var1 = StringTranslate.getInstance();
-		int var2 = 0;
-		this.screenTitle = var1.translateKey("options.title");
-		EnumOptions[] var3 = relevantOptions;
-		int var4 = var3.length;
+		int var1 = 0;
+		this.screenTitle = I18n.func_135053_a("options.title");
+		EnumOptions[] var2 = relevantOptions;
+		int var3 = var2.length;
 
-		for (int var5 = 0; var5 < var4; ++var5) {
-			EnumOptions var6 = var3[var5];
+		for (int var4 = 0; var4 < var3; ++var4) {
+			EnumOptions var5 = var2[var4];
 
-			if (var6.getEnumFloat()) {
-				// Spout Start
-				this.buttonList.add(new GuiSlider(var6.returnEnumOrdinal(), this.width / 2 - 155 + var2 % 2 * 160, this.height / 6 + 24 * (var2 >> 1), var6, this.options.getKeyBinding(var6), this.options.getOptionFloatValue(var6)));
-				// Spout End
+			if (var5.getEnumFloat()) {
+				this.buttonList.add(new GuiSlider(var5.returnEnumOrdinal(), this.width / 2 - 155 + var1 % 2 * 160, this.height / 6 - 12 + 24 * (var1 >> 1), var5, this.options.getKeyBinding(var5), this.options.getOptionFloatValue(var5)));
 			} else {
-				// Spout Start
-				GuiSmallButton var7 = new GuiSmallButton(var6.returnEnumOrdinal(), this.width / 2 - 155 + var2 % 2 * 160, this.height / 6 + 24 * (var2 >> 1), var6, this.options.getKeyBinding(var6));
-				// Spout End
+				GuiSmallButton var6 = new GuiSmallButton(var5.returnEnumOrdinal(), this.width / 2 - 155 + var1 % 2 * 160, this.height / 6 - 12 + 24 * (var1 >> 1), var5, this.options.getKeyBinding(var5));
 
-				if (var6 == EnumOptions.DIFFICULTY && this.mc.theWorld != null && this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
-					var7.enabled = false;
-					var7.displayString = StatCollector.translateToLocal("options.difficulty") + ": " + StatCollector.translateToLocal("options.difficulty.hardcore");
+				if (var5 == EnumOptions.DIFFICULTY && this.mc.theWorld != null && this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
+					var6.enabled = false;
+					var6.displayString = I18n.func_135053_a("options.difficulty") + ": " + I18n.func_135053_a("options.difficulty.hardcore");
 				}
 
-				this.buttonList.add(var7);
+				this.buttonList.add(var6);
 			}
 
-			++var2;
+			++var1;
 		}
 
-		this.buttonList.add(new GuiButton(101, this.width / 2 - 152, this.height / 6 + 96 - 6, 150, 20, var1.translateKey("options.video")));
-		this.buttonList.add(new GuiButton(100, this.width / 2 + 2, this.height / 6 + 96 - 6, 150, 20, var1.translateKey("options.controls")));
-		this.buttonList.add(new GuiButton(102, this.width / 2 - 152, this.height / 6 + 120 - 6, 150, 20, var1.translateKey("options.language")));
-		this.buttonList.add(new GuiButton(103, this.width / 2 + 2, this.height / 6 + 120 - 6, 150, 20, var1.translateKey("options.multiplayer.title")));
-		this.buttonList.add(new GuiButton(105, this.width / 2 - 152, this.height / 6 + 144 - 6, 150, 20, var1.translateKey("options.texture.pack")));
-		this.buttonList.add(new GuiButton(104, this.width / 2 + 2, this.height / 6 + 144 - 6, 150, 20, var1.translateKey("options.snooper.view")));
-		this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, var1.translateKey("gui.done")));
+		this.buttonList.add(new GuiButton(101, this.width / 2 - 152, this.height / 6 + 96 - 6, 150, 20, I18n.func_135053_a("options.video")));
+		this.buttonList.add(new GuiButton(100, this.width / 2 + 2, this.height / 6 + 96 - 6, 150, 20, I18n.func_135053_a("options.controls")));
+		this.buttonList.add(new GuiButton(102, this.width / 2 - 152, this.height / 6 + 120 - 6, 150, 20, I18n.func_135053_a("options.language")));
+		this.buttonList.add(new GuiButton(103, this.width / 2 + 2, this.height / 6 + 120 - 6, 150, 20, I18n.func_135053_a("options.multiplayer.title")));
+		this.buttonList.add(new GuiButton(105, this.width / 2 - 152, this.height / 6 + 144 - 6, 150, 20, I18n.func_135053_a("options.resourcepack")));
+		this.buttonList.add(new GuiButton(104, this.width / 2 + 2, this.height / 6 + 144 - 6, 150, 20, I18n.func_135053_a("options.snooper.view")));
+		this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, I18n.func_135053_a("gui.done")));
 	}
 
 	/**
@@ -87,7 +83,7 @@ public class GuiOptions extends GuiScreen {
 
 			if (par1GuiButton.id == 102) {
 				this.mc.gameSettings.saveOptions();
-				this.mc.displayGuiScreen(new GuiLanguage(this, this.options));
+				this.mc.displayGuiScreen(new GuiLanguage(this, this.options, this.mc.func_135016_M()));
 			}
 
 			if (par1GuiButton.id == 103) {
@@ -107,7 +103,7 @@ public class GuiOptions extends GuiScreen {
 
 			if (par1GuiButton.id == 105) {
 				this.mc.gameSettings.saveOptions();
-				this.mc.displayGuiScreen(new GuiTexturePacks(this, this.options));
+				this.mc.displayGuiScreen(new GuiScreenTemporaryResourcePackSelect(this, this.options));
 			}
 		}
 	}

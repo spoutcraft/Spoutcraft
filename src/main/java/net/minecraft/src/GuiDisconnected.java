@@ -17,10 +17,9 @@ public class GuiDisconnected extends GuiScreen {
 	private List field_74245_d;
 	private final GuiScreen field_98095_n;
 
-	public GuiDisconnected(GuiScreen par1GuiScreen, String par2Str, String par3Str, Object ... par4ArrayOfObj) {
-		StringTranslate var5 = StringTranslate.getInstance();
+	public GuiDisconnected(GuiScreen par1GuiScreen, String par2Str, String par3Str, Object ... par4ArrayOfObj) {		
 		this.field_98095_n = par1GuiScreen;
-		this.errorMessage = var5.translateKey(par2Str);
+		this.errorMessage = I18n.func_135053_a(par2Str);
 		this.errorDetail = par3Str;
 		this.field_74247_c = par4ArrayOfObj;
 		// Spout Start
@@ -36,16 +35,15 @@ public class GuiDisconnected extends GuiScreen {
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
-	public void initGui() {
-		StringTranslate var1 = StringTranslate.getInstance();
+	public void initGui() {	
 		this.buttonList.clear();
 		// Spout Start
 		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, "Back to " + SpoutClient.getInstance().getServerManager().getJoinedFromName()));
 		// Spout End
 		if (this.field_74247_c != null) {
-			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(var1.translateKeyFormat(this.errorDetail, this.field_74247_c), this.width - 50);
+			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(I18n.func_135052_a(this.errorDetail, this.field_74247_c), this.width - 50);
 		} else {
-			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(var1.translateKey(this.errorDetail), this.width - 50);
+			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(I18n.func_135053_a(this.errorDetail), this.width - 50);
 		}
 	}
 

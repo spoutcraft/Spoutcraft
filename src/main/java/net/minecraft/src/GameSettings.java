@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -28,13 +27,13 @@ public class GameSettings {
 	public float musicVolume = 1.0F;
 	public float soundVolume = 1.0F;
 	public float mouseSensitivity = 0.5F;
-	public boolean invertMouse = false;
-	public int renderDistance = 0;
+	public boolean invertMouse;
+	public int renderDistance;
 	public boolean viewBobbing = true;
-	public boolean anaglyph = false;
+	public boolean anaglyph;
 
 	/** Advanced OpenGL */
-	public boolean advancedOpengl = false;
+	public boolean advancedOpengl;
 	public int limitFramerate = 1;
 	public boolean fancyGraphics = true;
 
@@ -46,30 +45,30 @@ public class GameSettings {
 
 	/** The name of the selected texture pack. */
 	public String skin = "Default";
-	public int chatVisibility = 0;
+	public int chatVisibility;
 	public boolean chatColours = true;
 	public boolean chatLinks = true;
 	public boolean chatLinksPrompt = true;
 	public float chatOpacity = 1.0F;
 	public boolean serverTextures = true;
 	public boolean snooperEnabled = true;
-	public boolean fullScreen = false;
+	public boolean fullScreen;
 	public boolean enableVsync = true;
-	public boolean hideServerAddress = false;
+	public boolean hideServerAddress;
 
 	/**
 	 * Whether to show advanced information on item tooltips, toggled by F3+H
 	 */
-	public boolean advancedItemTooltips = false;
+	public boolean advancedItemTooltips;
 
 	/** Whether to pause when the game loses focus, toggled by F3+P */
 	public boolean pauseOnLostFocus = true;
 
 	/** Whether to show your cape */
 	public boolean showCape = true;
-	public boolean touchscreen = false;
-	public int overrideWidth = 0;
-	public int overrideHeight = 0;
+	public boolean touchscreen;
+	public int overrideWidth;
+	public int overrideHeight;
 	public boolean heldItemTooltips = true;
 	public float chatScale = 1.0F;
 	public float chatWidth = 1.0F;
@@ -148,21 +147,10 @@ public class GameSettings {
 
 	public GameSettings(Minecraft par1Minecraft, File par2File) {
 		this.keyBindings = new KeyBinding[] {this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindCommand};
-		this.difficulty = 2;
-		this.hideGUI = false;
-		this.thirdPersonView = 0;
-		this.showDebugInfo = false;
-		this.showDebugProfilerChart = false;
-		this.lastServer = "";
-		this.noclip = false;
-		this.smoothCamera = false;
-		this.debugCamEnable = false;
+		this.difficulty = 2;		
+		this.lastServer = "";		
 		this.noclipRate = 1.0F;
-		this.debugCamRate = 1.0F;
-		this.fovSetting = 0.0F;
-		this.gammaSetting = 0.0F;
-		this.guiScale = 0;
-		this.particleSetting = 0;
+		this.debugCamRate = 1.0F;		
 		this.language = "en_US";
 		this.mc = par1Minecraft;
 		this.optionsFile = new File(par2File, "options.txt");
@@ -171,27 +159,15 @@ public class GameSettings {
 
 	public GameSettings() {
 		this.keyBindings = new KeyBinding[] {this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindCommand};
-		this.difficulty = 2;
-		this.hideGUI = false;
-		this.thirdPersonView = 0;
-		this.showDebugInfo = false;
-		this.showDebugProfilerChart = false;
-		this.lastServer = "";
-		this.noclip = false;
-		this.smoothCamera = false;
-		this.debugCamEnable = false;
+		this.difficulty = 2;		
+		this.lastServer = "";		
 		this.noclipRate = 1.0F;
-		this.debugCamRate = 1.0F;
-		this.fovSetting = 0.0F;
-		this.gammaSetting = 0.0F;
-		this.guiScale = 0;
-		this.particleSetting = 0;
+		this.debugCamRate = 1.0F;		
 		this.language = "en_US";
 	}
 
 	public String getKeyBindingDescription(int par1) {
-		StringTranslate var2 = StringTranslate.getInstance();
-		return var2.translateKey(this.keyBindings[par1].keyDescription);
+		return I18n.func_135053_a(this.keyBindings[par1].keyDescription);
 	}
 
 	/**
@@ -206,7 +182,7 @@ public class GameSettings {
 	 * Represents a key or mouse button as a string. Args: key
 	 */
 	public static String getKeyDisplayString(int par0) {
-		return par0 < 0 ? StatCollector.translateToLocalFormatted("key.mouseButton", new Object[] {Integer.valueOf(par0 + 101)}): Keyboard.getKeyName(par0);
+		return par0 < 0 ? I18n.func_135052_a("key.mouseButton", new Object[] {Integer.valueOf(par0 + 101)}): Keyboard.getKeyName(par0);
 	}
 
 	/**
@@ -311,7 +287,7 @@ public class GameSettings {
 
 		if (par1EnumOptions == EnumOptions.ANAGLYPH) {
 			this.anaglyph = !this.anaglyph;
-			this.mc.renderEngine.refreshTextures();
+			this.mc.func_110436_a();
 		}
 
 		if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT) {
@@ -442,25 +418,44 @@ public class GameSettings {
 			par1 = 0;
 		}
 
-		StringTranslate var2 = StringTranslate.getInstance();
-		return var2.translateKey(par0ArrayOfStr[par1]);
+		return I18n.func_135053_a(par0ArrayOfStr[par1]);
 	}
 
 	/**
 	 * Gets a key binding.
 	 */
 	public String getKeyBinding(EnumOptions par1EnumOptions) {
-		StringTranslate var2 = StringTranslate.getInstance();
-		String var3 = var2.translateKey(par1EnumOptions.getEnumString()) + ": ";
+		String var2 = I18n.func_135053_a(par1EnumOptions.getEnumString()) + ": ";
 
 		if (par1EnumOptions.getEnumFloat()) {
 			float var5 = this.getOptionFloatValue(par1EnumOptions);
-			return par1EnumOptions == EnumOptions.SENSITIVITY ? (var5 == 0.0F ? var3 + var2.translateKey("options.sensitivity.min") : (var5 == 1.0F ? var3 + var2.translateKey("options.sensitivity.max") : var3 + (int)(var5 * 200.0F) + "%")) : (par1EnumOptions == EnumOptions.FOV ? (var5 == 0.0F ? var3 + var2.translateKey("options.fov.min") : (var5 == 1.0F ? var3 + var2.translateKey("options.fov.max") : var3 + (int)(70.0F + var5 * 40.0F))) : (par1EnumOptions == EnumOptions.GAMMA ? (var5 == 0.0F ? var3 + var2.translateKey("options.gamma.min") : (var5 == 1.0F ? var3 + var2.translateKey("options.gamma.max") : var3 + "+" + (int)(var5 * 100.0F) + "%")) : (par1EnumOptions == EnumOptions.CHAT_OPACITY ? var3 + (int)(var5 * 90.0F + 10.0F) + "%" : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_UNFOCUSED ? var3 + GuiNewChat.func_96130_b(var5) + "px" : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_FOCUSED ? var3 + GuiNewChat.func_96130_b(var5) + "px" : (par1EnumOptions == EnumOptions.CHAT_WIDTH ? var3 + GuiNewChat.func_96128_a(var5) + "px" : (var5 == 0.0F ? var3 + var2.translateKey("options.off") : var3 + (int)(var5 * 100.0F) + "%")))))));
+			return par1EnumOptions == EnumOptions.SENSITIVITY ? (var5 == 0.0F ? var2 + I18n.func_135053_a("options.sensitivity.min") : (var5 == 1.0F ? var2 + I18n.func_135053_a("options.sensitivity.max") : var2 + (int)(var5 * 200.0F) + "%")) : (par1EnumOptions == EnumOptions.FOV ? (var5 == 0.0F ? var2 + I18n.func_135053_a("options.fov.min") : (var5 == 1.0F ? var2 + I18n.func_135053_a("options.fov.max") : var2 + (int)(70.0F + var5 * 40.0F))) : (par1EnumOptions == EnumOptions.GAMMA ? (var5 == 0.0F ? var2 + I18n.func_135053_a("options.gamma.min") : (var5 == 1.0F ? var2 + I18n.func_135053_a("options.gamma.max") : var2 + "+" + (int)(var5 * 100.0F) + "%")) : (par1EnumOptions == EnumOptions.CHAT_OPACITY ? var2 + (int)(var5 * 90.0F + 10.0F) + "%" : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_UNFOCUSED ? var2 + GuiNewChat.func_96130_b(var5) + "px" : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_FOCUSED ? var2 + GuiNewChat.func_96130_b(var5) + "px" : (par1EnumOptions == EnumOptions.CHAT_WIDTH ? var2 + GuiNewChat.func_96128_a(var5) + "px" : (var5 == 0.0F ? var2 + I18n.func_135053_a("options.off") : var2 + (int)(var5 * 100.0F) + "%")))))));
 		} else if (par1EnumOptions.getEnumBoolean()) {
 			boolean var4 = this.getOptionOrdinalValue(par1EnumOptions);
-			return var4 ? var3 + var2.translateKey("options.on") : var3 + var2.translateKey("options.off");
+			return var4 ? var2 + I18n.func_135053_a("options.on") : var2 + I18n.func_135053_a("options.off");
+		} else if (par1EnumOptions == EnumOptions.RENDER_DISTANCE) {
+			return var2 + getTranslation(RENDER_DISTANCES, this.renderDistance);
+		} else if (par1EnumOptions == EnumOptions.DIFFICULTY) {
+			return var2 + getTranslation(DIFFICULTIES, this.difficulty);
+		} else if (par1EnumOptions == EnumOptions.GUI_SCALE) {
+			return var2 + getTranslation(GUISCALES, this.guiScale);
+		} else if (par1EnumOptions == EnumOptions.CHAT_VISIBILITY) {
+			return var2 + getTranslation(CHAT_VISIBILITIES, this.chatVisibility);
+		} else if (par1EnumOptions == EnumOptions.PARTICLES) {
+			return var2 + getTranslation(PARTICLES, this.particleSetting);
+		} else if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT) {
+			return var2 + getTranslation(LIMIT_FRAMERATES, this.limitFramerate);
+		} else if (par1EnumOptions == EnumOptions.AMBIENT_OCCLUSION) {
+			return var2 + getTranslation(AMBIENT_OCCLUSIONS, this.ambientOcclusion);
+		} else if (par1EnumOptions == EnumOptions.GRAPHICS) {
+			if (this.fancyGraphics) {
+				return var2 + I18n.func_135053_a("options.graphics.fancy");
+			} else {
+				String var3 = "options.graphics.fast";
+				return var2 + I18n.func_135053_a("options.graphics.fast");
+			}
 		} else {
-			return par1EnumOptions == EnumOptions.RENDER_DISTANCE ? var3 + getTranslation(RENDER_DISTANCES, this.renderDistance) : (par1EnumOptions == EnumOptions.DIFFICULTY ? var3 + getTranslation(DIFFICULTIES, this.difficulty) : (par1EnumOptions == EnumOptions.GUI_SCALE ? var3 + getTranslation(GUISCALES, this.guiScale) : (par1EnumOptions == EnumOptions.CHAT_VISIBILITY ? var3 + getTranslation(CHAT_VISIBILITIES, this.chatVisibility) : (par1EnumOptions == EnumOptions.PARTICLES ? var3 + getTranslation(PARTICLES, this.particleSetting) : (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT ? var3 + getTranslation(LIMIT_FRAMERATES, this.limitFramerate) : (par1EnumOptions == EnumOptions.AMBIENT_OCCLUSION ? var3 + getTranslation(AMBIENT_OCCLUSIONS, this.ambientOcclusion) : (par1EnumOptions == EnumOptions.GRAPHICS ? (this.fancyGraphics ? var3 + var2.translateKey("options.graphics.fancy") : var3 + var2.translateKey("options.graphics.fast")) : var3)))))));
+			return var2;
 		}
 	}
 
@@ -559,7 +554,7 @@ public class GameSettings {
 					}
 
 					if (var3[0].equals("lastServer") && var3.length >= 2) {
-						this.lastServer = var3[1];
+						this.lastServer = var2.substring(var2.indexOf(58) + 1);
 					}
 
 					if (var3[0].equals("lang") && var3.length >= 2) {

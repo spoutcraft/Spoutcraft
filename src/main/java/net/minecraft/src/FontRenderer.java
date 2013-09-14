@@ -1,8 +1,7 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.TexturePackAPI;
-import com.prupe.mcpatcher.mod.ColorizeWorld;
-import com.prupe.mcpatcher.mod.FontUtils;
+import com.prupe.mcpatcher.cc.ColorizeWorld;
+import com.prupe.mcpatcher.hd.FontUtils;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,10 +10,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
-import net.minecraft.client.Minecraft;
 
-public class FontRenderer {
+public class FontRenderer implements ResourceManagerReloadListener {
+	private static final ResourceLocation[] field_111274_c = new ResourceLocation[256];
+
 
 	/** Array of width of all the characters in default.png */
 	private int[] charWidth = new int[256];
@@ -43,7 +44,7 @@ public class FontRenderer {
 	 * shadows.
 	 */
 	private int[] colorCode = new int[32];
-	private String fontTextureName;
+	private ResourceLocation field_111273_g; // FonttextureName
 
 	/**
 	 * The currently bound GL texture ID. Avoids unnecessary glBindTexture() for the same texture if it's already bound.
@@ -52,7 +53,7 @@ public class FontRenderer {
 
 	/** The RenderEngine used to load and setup glyph textures. */
 	// Spout start - Removed final modifier
-	private RenderEngine renderEngine;
+	private TextureManager renderEngine;
 	// Spout End
 
 	/** Current X coordinate at which to draw the next character. */
@@ -87,36 +88,39 @@ public class FontRenderer {
 	private int textColor;
 
 	/** Set if the "k" style (random) is active in currently rendering string */
-	private boolean randomStyle = false;
+	private boolean randomStyle;
 
 	/** Set if the "l" style (bold) is active in currently rendering string */
-	private boolean boldStyle = false;
+	private boolean boldStyle;
 
 	/** Set if the "o" style (italic) is active in currently rendering string */
-	private boolean italicStyle = false;
+	private boolean italicStyle;
 
 	/**
 	 * Set if the "n" style (underlined) is active in currently rendering string
 	 */
-	private boolean underlineStyle = false;
+	private boolean underlineStyle;
 
 	/**
 	 * Set if the "m" style (strikethrough) is active in currently rendering string
 	 */
-	private boolean strikethroughStyle = false;
+	private boolean strikethroughStyle;
 	public float[] charWidthf;
+	public ResourceLocation defaultFont;
+	public ResourceLocation hdFont;
+	public boolean isHD;
+	public float fontAdj;
 
 	FontRenderer() {
 		this.renderEngine = null;
 		this.fontTextureName = null;
 	}
 
-	public FontRenderer(GameSettings par1GameSettings, String par2Str, RenderEngine par3RenderEngine, boolean par4) {
-		this.fontTextureName = par2Str;
-		this.renderEngine = par3RenderEngine;
+	public FontRenderer(GameSettings par1GameSettings, ResourceLocation par2ResourceLocation, TextureManager par3TextureManager, boolean par4) {
+		this.field_111273_g = par2ResourceLocation;
+		this.renderEngine = par3TextureManager;
 		this.unicodeFlag = par4;
-		this.readFontData();
-		par3RenderEngine.bindTexture(par2Str);
+		par3TextureManager.func_110577_a(this.field_111273_g);  //bindTexture(par2Str)
 
 		for (int var5 = 0; var5 < 32; ++var5) {
 			int var6 = (var5 >> 3 & 1) * 85;
@@ -145,70 +149,75 @@ public class FontRenderer {
 
 			this.colorCode[var5] = (var7 & 255) << 16 | (var8 & 255) << 8 | var9 & 255;
 		}
-	}
-
-	public void readFontData() {
-		this.fontTextureName = FontUtils.getFontName(this.fontTextureName);
 		this.readGlyphSizes();
-		this.readFontTexture(this.fontTextureName);
 	}
 
-	private void readFontTexture(String par1Str) {
-		BufferedImage var2;
+	public void func_110549_a(ResourceManager par1ResourceManager) {
+		this.func_111272_d();
+	}
+
+	public void func_111272_d() {
+		BufferedImage var1;
 
 		try {
-			var2 = TexturePackAPI.getImage(RenderEngine.class, par1Str);
-		} catch (Exception var15) {
-			throw new RuntimeException(var15);
+			this.field_111273_g = FontUtils.getFontName(this, this.field_111273_g);
+			var1 = ImageIO.read(Minecraft.getMinecraft().func_110442_L().func_110536_a(this.field_111273_g).func_110527_b());
+		} catch (IOException var17) {
+			throw new RuntimeException(var17);
 		}
 
-		int var3 = var2.getWidth();
-		int var4 = var2.getHeight();
-		int[] var5 = new int[var3 * var4];
-		var2.getRGB(0, 0, var3, var4, var5, 0, var3);
-		int var6 = 0;
+		int var2 = var1.getWidth();
+		int var3 = var1.getHeight();
+		int[] var4 = new int[var2 * var3];
+		var1.getRGB(0, 0, var2, var3, var4, 0, var2);
+		int var5 = var3 / 16;
+		int var6 = var2 / 16;
+		byte var7 = 1;
+		float var8 = 8.0F / (float)var6;
+		int var9 = 0;
 
-		while (var6 < 256) {
-			int var7 = var6 % 16;
-			int var8 = var6 / 16;
-			int var9 = 7;
+		while (var9 < 256) {
+			int var10 = var9 % 16;
+			int var11 = var9 / 16;
+
+			if (var9 == 32) {
+				this.charWidth[var9] = 3 + var7;
+			}
+
+			int var12 = var6 - 1;
 
 			while (true) {
-				if (var9 >= 0) {
-					int var10 = var7 * 8 + var9;
-					boolean var11 = true;
+				if (var12 >= 0) {
+					int var13 = var10 * var6 + var12;
+					boolean var14 = true;
 
-					for (int var12 = 0; var12 < 8 && var11; ++var12) {
-						int var13 = (var8 * 8 + var12) * var3;
-						int var14 = var5[var10 + var13] & 255;
+					for (int var15 = 0; var15 < var5 && var14; ++var15) {
+						int var16 = (var11 * var6 + var15) * var2;
 
-						if (var14 > 0) {
-							var11 = false;
+						if ((var4[var13 + var16] >> 24 & 255) != 0) {
+							var14 = false;
 						}
 					}
 
-					if (var11) {
-						--var9;
+					if (var14) {
+						--var12;
 						continue;
 					}
 				}
 
-				if (var6 == 32) {
-					var9 = 2;
-				}
-
-				this.charWidth[var6] = var9 + 2;
-				++var6;
+				++var12;
+				this.charWidth[var9] = (int)(0.5D + (double)((float)var12 * var8)) + var7;
+				++var9;
 				break;
 			}
 		}
 
-		this.charWidthf = FontUtils.computeCharWidths(this, par1Str, var2, var5, this.charWidth);	
+		this.charWidthf = FontUtils.computeCharWidthsf(this, this.field_111273_g, var1, var4, this.charWidth, 1.0F);
 	}
 
 	private void readGlyphSizes() {
 		try {
-			InputStream var1 = Minecraft.getMinecraft().texturePackList.getSelectedTexturePack().getResourceAsStream("/font/glyph_sizes.bin");
+			InputStream var1 = Minecraft.getMinecraft().func_110442_L().func_110536_a(new ResourceLocation("font/glyph_sizes.bin")).func_110527_b();
 			var1.read(this.glyphWidth);
 		} catch (IOException var2) {
 			throw new RuntimeException(var2);
@@ -229,27 +238,34 @@ public class FontRenderer {
 		float var3 = (float)(par1 % 16 * 8);
 		float var4 = (float)(par1 / 16 * 8);
 		float var5 = par2 ? 1.0F : 0.0F;
-		this.renderEngine.bindTexture(this.fontTextureName);
+		this.renderEngine.func_110577_a(this.field_111273_g);
 		float var6 = (float)this.charWidth[par1] - 0.01F;
 		GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
 		GL11.glTexCoord2f(var3 / 128.0F, var4 / 128.0F);
 		GL11.glVertex3f(this.posX + var5, this.posY, 0.0F);
 		GL11.glTexCoord2f(var3 / 128.0F, (var4 + 7.99F) / 128.0F);
 		GL11.glVertex3f(this.posX - var5, this.posY + 7.99F, 0.0F);
-		GL11.glTexCoord2f((var3 + var6) / 128.0F, var4 / 128.0F);
-		GL11.glVertex3f(this.posX + var6 + var5, this.posY, 0.0F);
-		GL11.glTexCoord2f((var3 + var6) / 128.0F, (var4 + 7.99F) / 128.0F);
-		GL11.glVertex3f(this.posX + var6 - var5, this.posY + 7.99F, 0.0F);
+		GL11.glTexCoord2f((var3 + var6 - this.fontAdj) / 128.0F, var4 / 128.0F);
+		GL11.glVertex3f(this.posX + var6 - this.fontAdj + var5, this.posY, 0.0F);
+		GL11.glTexCoord2f((var3 + var6 - this.fontAdj) / 128.0F, (var4 + 7.99F) / 128.0F);
+		GL11.glVertex3f(this.posX + var6 - this.fontAdj - var5, this.posY + 7.99F, 0.0F);
 		GL11.glEnd();
-		return this.charWidthf[par1] * (float)this.FONT_HEIGHT / 8.0F;
+		return FontUtils.getCharWidthf(this, this.charWidth, par1);
+	}
+
+	private ResourceLocation func_111271_a(int par1) {
+		if (field_111274_c[par1] == null) {
+			field_111274_c[par1] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(par1)}));
+		}
+
+		return FontUtils.getUnicodePage(field_111274_c[par1]);
 	}
 
 	/**
 	 * Load one of the /font/glyph_XX.png into a new GL texture and store the texture ID in glyphTextureName array.
 	 */
 	private void loadGlyphTexture(int par1) {
-		String var2 = String.format("/font/glyph_%02X.png", new Object[] {Integer.valueOf(par1)});
-		this.renderEngine.bindTexture(var2);
+		this.renderEngine.func_110577_a(this.func_111271_a(par1));
 	}
 
 	/**
@@ -569,7 +585,42 @@ public class FontRenderer {
 	 * Returns the width of this string. Equivalent of FontMetrics.stringWidth(String s).
 	 */
 	public int getStringWidth(String par1Str) {
-		return (int)FontUtils.getStringWidthf(this, par1Str);
+		if (this.isHD) {
+			return (int)FontUtils.getStringWidthf(this, par1Str);
+		} else if (par1Str == null) {
+			return 0;
+		} else {
+			int var2 = 0;
+			boolean var3 = false;
+
+			for (int var4 = 0; var4 < par1Str.length(); ++var4) {
+				char var5 = par1Str.charAt(var4);
+				int var6 = this.getCharWidth(var5);
+
+				if (var6 < 0 && var4 < par1Str.length() - 1) {
+					++var4;
+					var5 = par1Str.charAt(var4);
+
+					if (var5 != 108 && var5 != 76) {
+						if (var5 == 114 || var5 == 82) {
+							var3 = false;
+						}
+					} else {
+						var3 = true;
+					}
+
+					var6 = 0;
+				}
+
+				var2 += var6;
+
+				if (var3) {
+					++var2;
+				}
+			}
+
+			return var2;
+		}
 	}
 
 	/**
