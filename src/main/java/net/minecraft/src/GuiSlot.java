@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import java.util.List;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -57,7 +55,7 @@ public abstract class GuiSlot {
 	private int selectedElement = -1;
 
 	/** the time when this button was last clicked. */
-	private long lastClicked = 0L;
+	private long lastClicked;
 
 	/** true if a selected element in this gui will show an outline box */
 	private boolean showSelectionBox = true;
@@ -140,9 +138,9 @@ public abstract class GuiSlot {
 	/**
 	 * Registers the IDs that can be used for the scrollbar's buttons.
 	 */
-	public void registerScrollButtons(List par1List, int par2, int par3) {
-		this.scrollUpButtonID = par2;
-		this.scrollDownButtonID = par3;
+	public void registerScrollButtons(int par1, int par2) {
+		this.scrollUpButtonID = par1;
+		this.scrollDownButtonID = par2;
 	}
 
 	/**
@@ -281,7 +279,7 @@ public abstract class GuiSlot {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_FOG);
 		Tessellator var18 = Tessellator.instance;
-		this.mc.renderEngine.bindTexture("/gui/background.png");
+		this.mc.func_110434_K().func_110577_a(Gui.field_110325_k);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var17 = 32.0F;
 		var18.startDrawingQuads();
@@ -415,7 +413,7 @@ public abstract class GuiSlot {
 		GL11.glPushMatrix();
 		// Spout End
 		Tessellator var5 = Tessellator.instance;
-		this.mc.renderEngine.bindTexture("/gui/background.png");
+		this.mc.func_110434_K().func_110577_a(Gui.field_110325_k);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		// Spout Start
 		GL11.glTranslatef(0, 0, -0.1f);
