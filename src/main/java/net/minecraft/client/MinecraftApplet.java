@@ -9,7 +9,7 @@ import net.minecraft.src.Session;
 // Spout Start
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 // Spout End
 
 public class MinecraftApplet extends Applet {
