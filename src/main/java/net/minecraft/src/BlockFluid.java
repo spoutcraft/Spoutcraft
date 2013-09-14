@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.Random;
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeBlock;
+import com.prupe.mcpatcher.cc.ColorizeBlock;
 // MCPatcher End
 
 public abstract class BlockFluid extends Block {
@@ -111,7 +111,8 @@ public abstract class BlockFluid extends Block {
 	}
 
 	/**
-	 * Returns whether this block is collideable based on the arguments passed in Args: blockMetaData, unknownFlag
+	 * Returns whether this block is collideable based on the arguments passed in \n@param par1 block metaData \n@param
+	 * par2 whether the player right-clicked while holding a boat
 	 */
 	public boolean canCollideCheck(int par1, boolean par2) {
 		return par2 && par1 == 0;
@@ -510,15 +511,15 @@ public abstract class BlockFluid extends Block {
 	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This is
 	 * the only chance you get to register icons.
 	 */
-	public void registerIcons(IconRegister par1IconRegister) { 
+	public void registerIcons(IconRegister par1IconRegister) {
 		if (this.blockMaterial == Material.lava) {
-			this.theIcon = new Icon[] {par1IconRegister.registerIcon("lava"), par1IconRegister.registerIcon("lava_flow")}; 
+			this.theIcon = new Icon[] {par1IconRegister.registerIcon("lava_still"), par1IconRegister.registerIcon("lava_flow")};
 		} else {
-			this.theIcon = new Icon[] {par1IconRegister.registerIcon("water"), par1IconRegister.registerIcon("water_flow")}; 
+			this.theIcon = new Icon[] {par1IconRegister.registerIcon("water_still"), par1IconRegister.registerIcon("water_flow")};
 		}
 	}
 
 	public static Icon func_94424_b(String par0Str) {
-		return par0Str == "water" ? Block.waterMoving.theIcon[0] : (par0Str == "water_flow" ? Block.waterMoving.theIcon[1] : (par0Str == "lava" ? Block.lavaMoving.theIcon[0] : (par0Str == "lava_flow" ? Block.lavaMoving.theIcon[1] : null))); 
+		return par0Str == "water_still" ? Block.waterMoving.theIcon[0] : (par0Str == "water_flow" ? Block.waterMoving.theIcon[1] : (par0Str == "lava_still" ? Block.lavaMoving.theIcon[0] : (par0Str == "lava_flow" ? Block.lavaMoving.theIcon[1] : null)));
 	}
 }

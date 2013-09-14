@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeBlock;
+import com.prupe.mcpatcher.cc.ColorizeBlock;
 // MCPatcher End
 
 public class BlockLilyPad extends BlockFlower {

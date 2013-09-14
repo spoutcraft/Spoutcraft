@@ -87,7 +87,11 @@ class ContainerCreative extends Container {
 		return par2Slot.yDisplayPosition > 90;
 	}
 
-	public boolean func_94531_b(Slot par1Slot) {
+	/**
+	 * Returns true if the player can "drag-spilt" items into this slot,. returns true by default. Called to check if the
+	 * slot can be added to a list of Slots to split the held ItemStack across.
+	 */
+	public boolean canDragIntoSlot(Slot par1Slot) {
 		return par1Slot.inventory instanceof InventoryPlayer || par1Slot.yDisplayPosition > 90 && par1Slot.xDisplayPosition <= 162;
 	}
 }

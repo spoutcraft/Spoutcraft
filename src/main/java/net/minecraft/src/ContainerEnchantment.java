@@ -161,7 +161,7 @@ public class ContainerEnchantment extends Container {
 
 						if (!var5 || var7 == var6) {
 							if (var5) {
-								Item.enchantedBook.func_92115_a(var3, var8);
+								Item.enchantedBook.getEnchantedItemStack_do(var3, var8);
 							} else {
 								var3.addEnchantment(var8.enchantmentobj, var8.enchantmentLevel);
 							}
@@ -179,10 +179,10 @@ public class ContainerEnchantment extends Container {
 	}
 
 	/**
-	 * Callback for when the crafting gui is closed.
+	 * Called when the container is closed.
 	 */
-	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
-		super.onCraftGuiClosed(par1EntityPlayer);
+	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+		super.onContainerClosed(par1EntityPlayer);
 
 		if (!this.worldPointer.isRemote) {
 			ItemStack var2 = this.tableInventory.getStackInSlotOnClosing(0);

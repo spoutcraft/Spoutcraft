@@ -9,8 +9,8 @@ public class ChunkCache implements IBlockAccess {
 	private int chunkZ;
 	private Chunk[][] chunkArray;
 
-	/** set by !chunk.getAreLevelsEmpty */
-	private boolean hasExtendedLevels;
+	/** True if the chunk cache is empty. */
+	private boolean isEmpty;
 
 	/** Reference to the World object. */
 	private World worldObj;
@@ -22,7 +22,7 @@ public class ChunkCache implements IBlockAccess {
 		int var9 = par5 + par8 >> 4;
 		int var10 = par7 + par8 >> 4;
 		this.chunkArray = new Chunk[var9 - this.chunkX + 1][var10 - this.chunkZ + 1];
-		this.hasExtendedLevels = true;
+		this.isEmpty = true;
 		int var11;
 		int var12;
 		Chunk var13;
@@ -42,7 +42,7 @@ public class ChunkCache implements IBlockAccess {
 				var13 = this.chunkArray[var11 - this.chunkX][var12 - this.chunkZ];
 
 				if (var13 != null && !var13.getAreLevelsEmpty(par3, par6)) {
-					this.hasExtendedLevels = false;
+					this.isEmpty = false;
 				}
 			}
 		}
@@ -52,7 +52,7 @@ public class ChunkCache implements IBlockAccess {
 	 * set by !chunk.getAreLevelsEmpty
 	 */
 	public boolean extendedLevelsInChunkCache() {
-		return this.hasExtendedLevels;
+		return this.isEmpty;
 	}
 
 	/**

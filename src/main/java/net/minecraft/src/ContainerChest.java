@@ -74,13 +74,13 @@ public class ContainerChest extends Container {
 	}
 
 	/**
-	 * Callback for when the crafting gui is closed.
+	 * Called when the container is closed.
 	 */
-	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
-		super.onCraftGuiClosed(par1EntityPlayer);
+	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+		super.onContainerClosed(par1EntityPlayer);
 		this.lowerChestInventory.closeChest();
 	}
-
+	
 	/**
 	 * Return this chest container's lower chest inventory.
 	 */

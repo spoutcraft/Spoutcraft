@@ -5,7 +5,7 @@ public class ContainerBrewingStand extends Container {
 
 	/** Instance of Slot. */
 	private final Slot theSlot;
-	private int brewTime = 0;
+	private int brewTime;
 
 	public ContainerBrewingStand(InventoryPlayer par1InventoryPlayer, TileEntityBrewingStand par2TileEntityBrewingStand) {
 		this.tileBrewingStand = par2TileEntityBrewingStand;

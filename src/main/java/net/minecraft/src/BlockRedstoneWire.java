@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeBlock;
-import com.prupe.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.cc.ColorizeBlock;
+import com.prupe.mcpatcher.cc.Colorizer;
 // MCPatcher End
 
 public class BlockRedstoneWire extends Block {
@@ -456,14 +456,14 @@ public class BlockRedstoneWire extends Block {
 	 * the only chance you get to register icons.
 	 */
 	public void registerIcons(IconRegister par1IconRegister) {
-		this.field_94413_c = par1IconRegister.registerIcon("redstoneDust_cross");
-		this.field_94410_cO = par1IconRegister.registerIcon("redstoneDust_line");
-		this.field_94411_cP = par1IconRegister.registerIcon("redstoneDust_cross_overlay");
-		this.field_94412_cQ = par1IconRegister.registerIcon("redstoneDust_line_overlay");
-		this.blockIcon = this.field_94413_c; 
+		this.field_94413_c = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "cross");
+		this.field_94410_cO = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "line");
+		this.field_94411_cP = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "cross_overlay");
+		this.field_94412_cQ = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "line_overlay");
+		this.blockIcon = this.field_94413_c;
 	}
 
 	public static Icon func_94409_b(String par0Str) {
-		return par0Str == "redstoneDust_cross" ? Block.redstoneWire.field_94413_c : (par0Str == "redstoneDust_line" ? Block.redstoneWire.field_94410_cO : (par0Str == "redstoneDust_cross_overlay" ? Block.redstoneWire.field_94411_cP : (par0Str == "redstoneDust_line_overlay" ? Block.redstoneWire.field_94412_cQ : null)));
+		return par0Str.equals("cross") ? Block.redstoneWire.field_94413_c : (par0Str.equals("line") ? Block.redstoneWire.field_94410_cO : (par0Str.equals("cross_overlay") ? Block.redstoneWire.field_94411_cP : (par0Str.equals("line_overlay") ? Block.redstoneWire.field_94412_cQ : null)));
 	}
 }

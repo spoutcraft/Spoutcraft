@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.Random;
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeBlock;
+import com.prupe.mcpatcher.cc.ColorizeBlock;
 // MCPatcher End
 
 public class BlockStem extends BlockFlower {
@@ -150,7 +150,7 @@ public class BlockStem extends BlockFlower {
 		int var3 = 255 - par1 * 8;
 		int var4 = par1 * 4;
 		// MCPatcher Start
-		return ColorizeBlock.colorizeStem(var2 << 16 | var3 << 8 | var4, par1);
+		return ColorizeBlock.colorizeStem(var2 << 16 | var3 << 8 | var4, this, par1);
 		// MCPatcher End
 	}
 
@@ -246,8 +246,8 @@ public class BlockStem extends BlockFlower {
 	 * the only chance you get to register icons.
 	 */
 	public void registerIcons(IconRegister par1IconRegister) {
-		this.blockIcon = par1IconRegister.registerIcon("stem_straight");
-		this.theIcon = par1IconRegister.registerIcon("stem_bent"); 
+		this.blockIcon = par1IconRegister.registerIcon(this.func_111023_E() + "_disconnected");
+		this.theIcon = par1IconRegister.registerIcon(this.func_111023_E() + "_connected");
 	}
 
 	public Icon func_94368_p() {

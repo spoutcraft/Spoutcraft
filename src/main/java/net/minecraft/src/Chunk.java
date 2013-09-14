@@ -83,13 +83,13 @@ public class Chunk {
 
 	/** Lowest value in the heightmap. */
 	public int heightMapMinimum; 
+	public long field_111204_q;
 
 	/**
 	 * Contains the current round-robin relight check index, and is implied as the relight check location as well.
 	 */
 	private int queuedLightChecks;
-	boolean field_76653_p;
-
+	
 	// Spout Start
 	public SpoutcraftChunk spoutChunk;
 	int grassColorCache = -1;
@@ -102,22 +102,13 @@ public class Chunk {
 		this.blockBiomeArray = new byte[256];
 		this.precipitationHeightMap = new int[256];
 		this.updateSkylightColumns = new boolean[256];
-		this.isGapLightingUpdated = false;
 		this.chunkTileEntityMap = new HashMap();
-		this.isTerrainPopulated = false;
-		this.isModified = false;
-		this.hasEntities = false;
-		this.lastSaveTime = 0L;
-		this.sendUpdates = false;
-		this.heightMapMinimum = 0;
 		this.queuedLightChecks = 4096;
-		this.field_76653_p = false;
 		this.entityLists = new List[16];
 		this.worldObj = par1World;
 		this.xPosition = par2;
 		this.zPosition = par3;
 		this.heightMap = new int[256];
-
 		for (int var4 = 0; var4 < this.entityLists.length; ++var4) {
 			this.entityLists[var4] = new ArrayList();
 		}
@@ -819,6 +810,12 @@ public class Chunk {
 		this.worldObj.addTileEntity(this.chunkTileEntityMap.values());
 
 		for (int var1 = 0; var1 < this.entityLists.length; ++var1) {
+			Iterator var2 = this.entityLists[var1].iterator();
+
+			while (var2.hasNext()) {
+				Entity var3 = (Entity)var2.next();
+				var3.func_110123_P();
+			}
 			this.worldObj.addLoadedEntities(this.entityLists[var1]);
 		}
 
