@@ -22,17 +22,15 @@ public class EntitySheep extends EntityAnimal {
 
 	public EntitySheep(World par1World) {
 		super(par1World);
-		this.texture = "/mob/sheep.png";
 		this.setSize(0.9F, 1.3F);
-		float var2 = 0.23F;
 		this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
-		this.tasks.addTask(2, new EntityAIMate(this, var2));
-		this.tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.itemID, false));
-		this.tasks.addTask(4, new EntityAIFollowParent(this, 0.25F));
+		this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
+		this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
+		this.tasks.addTask(3, new EntityAITempt(this, 1.1D, Item.wheat.itemID, false));
+		this.tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
 		this.tasks.addTask(5, this.aiEatGrass);
-		this.tasks.addTask(6, new EntityAIWander(this, var2));
+		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
 		this.field_90016_e.setInventorySlotContents(0, new ItemStack(Item.dyePowder, 1, 0));
@@ -63,8 +61,10 @@ public class EntitySheep extends EntityAnimal {
 		super.onLivingUpdate();
 	}
 
-	public int getMaxHealth() {
-		return 8;
+	protected void func_110147_ax() {
+		super.func_110147_ax();
+		this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(8.0D);
+		this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.23000000417232513D);
 	}
 
 	protected void entityInit() {
@@ -235,21 +235,14 @@ public class EntitySheep extends EntityAnimal {
 		this.setSheared(false);
 
 		if (this.isChild()) {
-			int var1 = this.getGrowingAge() + 1200;
-
-			if (var1 > 0) {
-				var1 = 0;
-			}
-
-			this.setGrowingAge(var1);
+			this.func_110195_a(60);
 		}
 	}
 
-	/**
-	 * Initialize this creature.
-	 */
-	public void initCreature() {
+	public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData) {
+		par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
 		this.setFleeceColor(getRandomFleeceColor(this.worldObj.rand));
+		return par1EntityLivingData;
 	}
 
 	private int func_90014_a(EntityAnimal par1EntityAnimal, EntityAnimal par2EntityAnimal) {

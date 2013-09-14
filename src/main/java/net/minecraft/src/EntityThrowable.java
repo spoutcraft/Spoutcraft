@@ -6,19 +6,19 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 	private int xTile = -1;
 	private int yTile = -1;
 	private int zTile = -1;
-	private int inTile = 0;
-	protected boolean inGround = false;
-	public int throwableShake = 0;
+	private int inTile;
+	protected boolean inGround;
+	public int throwableShake;
 
 	/**
 	 * Is the entity that throws this 'thing' (snowball, ender pearl, eye of ender or potion)
 	 */
 	// Spout Start - private to public
-	public EntityLiving thrower;
+	public EntityLivingBase thrower;
 	// Spout End
-	private String throwerName = null;
+	private String throwerName;
 	private int ticksInGround;
-	private int ticksInAir = 0;
+	private int ticksInAir;
 
 	public EntityThrowable(World par1World) {
 		super(par1World);
@@ -37,11 +37,11 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 		return par1 < var3 * var3;
 	}
 
-	public EntityThrowable(World par1World, EntityLiving par2EntityLiving) {
+	public EntityThrowable(World par1World, EntityLivingBase par2EntityLivingBase) {
 		super(par1World);
-		this.thrower = par2EntityLiving;
+		this.thrower = par2EntityLivingBase;
 		this.setSize(0.25F, 0.25F);
-		this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
+		this.setLocationAndAngles(par2EntityLivingBase.posX, par2EntityLivingBase.posY + (double)par2EntityLivingBase.getEyeHeight(), par2EntityLivingBase.posZ, par2EntityLivingBase.rotationYaw, par2EntityLivingBase.rotationPitch);
 		this.posX -= (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
 		this.posY -= 0.10000000149011612D;
 		this.posZ -= (double)(MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
@@ -146,7 +146,7 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 
 		Vec3 var17 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 		Vec3 var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-		MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var17, var2);
+		MovingObjectPosition var3 = this.worldObj.clip(var17, var2);
 		var17 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 		var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -158,7 +158,7 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 			Entity var4 = null;
 			List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 			double var6 = 0.0D;
-			EntityLiving var8 = this.getThrower();
+			EntityLivingBase var8 = this.getThrower();
 
 			for (int var9 = 0; var9 < var5.size(); ++var9) {
 				Entity var10 = (Entity)var5.get(var9);
@@ -286,7 +286,7 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
 		return 0.0F;
 	}
 
-	public EntityLiving getThrower() {
+	public EntityLivingBase getThrower() {
 		if (this.thrower == null && this.throwerName != null && this.throwerName.length() > 0) {
 			this.thrower = this.worldObj.getPlayerEntityByName(this.throwerName);
 		}

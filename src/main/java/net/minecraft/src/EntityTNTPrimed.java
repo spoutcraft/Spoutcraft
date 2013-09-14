@@ -4,17 +4,16 @@ public class EntityTNTPrimed extends Entity {
 
 	/** How long the fuse is */
 	public int fuse;
-	private EntityLiving tntPlacedBy;
+	private EntityLivingBase tntPlacedBy;
 
 	public EntityTNTPrimed(World par1World) {
-		super(par1World);
-		this.fuse = 0;
+		super(par1World);		
 		this.preventEntitySpawning = true;
 		this.setSize(0.98F, 0.98F);
 		this.yOffset = this.height / 2.0F;
 	}
 
-	public EntityTNTPrimed(World par1World, double par2, double par4, double par6, EntityLiving par8EntityLiving) {
+	public EntityTNTPrimed(World par1World, double par2, double par4, double par6, EntityLivingBase par8EntityLivingBase) {
 		this(par1World);
 		this.setPosition(par2, par4, par6);
 		float var9 = (float)(Math.random() * Math.PI * 2.0D);
@@ -25,7 +24,7 @@ public class EntityTNTPrimed extends Entity {
 		this.prevPosX = par2;
 		this.prevPosY = par4;
 		this.prevPosZ = par6;
-		this.tntPlacedBy = par8EntityLiving;
+		this.tntPlacedBy = par8EntityLivingBase;
 	}
 
 	protected void entityInit() {}
@@ -101,7 +100,7 @@ public class EntityTNTPrimed extends Entity {
 	/**
 	 * returns null or the entityliving it was placed or ignited by
 	 */
-	public EntityLiving getTntPlacedBy() {
+	public EntityLivingBase getTntPlacedBy() {
 		return this.tntPlacedBy;
 	}
 }
