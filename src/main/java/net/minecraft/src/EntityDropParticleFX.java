@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeBlock;
-import com.prupe.mcpatcher.mod.ColorizeEntity;
-import com.prupe.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.cc.ColorizeBlock;
+import com.prupe.mcpatcher.cc.ColorizeEntity;
+import com.prupe.mcpatcher.cc.Colorizer;
 // MCPatcher End
 
 public class EntityDropParticleFX extends EntityFX {

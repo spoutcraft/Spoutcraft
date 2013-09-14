@@ -27,8 +27,7 @@ public class EntityItem extends Entity {
 	public float hoverStart;
 
 	public EntityItem(World par1World, double par2, double par4, double par6) {
-		super(par1World);
-		this.age = 0;
+		super(par1World);		
 		this.health = 5;
 		this.hoverStart = (float)(Math.random() * Math.PI * 2.0D);
 		this.setSize(0.25F, 0.25F);
@@ -54,8 +53,7 @@ public class EntityItem extends Entity {
 	}
 
 	public EntityItem(World par1World) {
-		super(par1World);
-		this.age = 0;
+		super(par1World);		
 		this.health = 5;
 		this.hoverStart = (float)(Math.random() * Math.PI * 2.0D);
 		this.setSize(0.25F, 0.25F);
@@ -204,20 +202,20 @@ public class EntityItem extends Entity {
 	 * Will deal the specified amount of damage to the entity if the entity isn't immune to fire damage. Args: amountDamage
 	 */
 	protected void dealFireDamage(int par1) {
-		this.attackEntityFrom(DamageSource.inFire, par1);
+		this.attackEntityFrom(DamageSource.inFire, (float)par1);
 	}
 
 	/**
 	 * Called when the entity is attacked.
 	 */
-	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
+	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
 		if (this.isEntityInvulnerable()) {
 			return false;
 		} else if (this.getEntityItem() != null && this.getEntityItem().itemID == Item.netherStar.itemID && par1DamageSource.isExplosion()) {
 			return false;
 		} else {
 			this.setBeenAttacked();
-			this.health -= par2;
+			this.health = (int)((float)this.health - par2);
 
 			if (this.health <= 0) {
 				this.setDead();

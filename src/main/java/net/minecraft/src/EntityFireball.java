@@ -6,11 +6,11 @@ public abstract class EntityFireball extends Entity {
 	private int xTile = -1;
 	private int yTile = -1;
 	private int zTile = -1;
-	private int inTile = 0;
-	private boolean inGround = false;
-	public EntityLiving shootingEntity;
+	private int inTile;
+	private boolean inGround;
+	public EntityLivingBase shootingEntity;
 	private int ticksAlive;
-	private int ticksInAir = 0;
+	private int ticksInAir;
 	public double accelerationX;
 	public double accelerationY;
 	public double accelerationZ;
@@ -47,11 +47,11 @@ public abstract class EntityFireball extends Entity {
 		this.accelerationZ = par12 / var14 * 0.1D;
 	}
 
-	public EntityFireball(World par1World, EntityLiving par2EntityLiving, double par3, double par5, double par7) {
+	public EntityFireball(World par1World, EntityLivingBase par2EntityLivingBase, double par3, double par5, double par7) {
 		super(par1World);
-		this.shootingEntity = par2EntityLiving;
+		this.shootingEntity = par2EntityLivingBase;
 		this.setSize(1.0F, 1.0F);
-		this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY, par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
+		this.setLocationAndAngles(par2EntityLivingBase.posX, par2EntityLivingBase.posY, par2EntityLivingBase.posZ, par2EntityLivingBase.rotationYaw, par2EntityLivingBase.rotationPitch);
 		this.setPosition(this.posX, this.posY, this.posZ);
 		this.yOffset = 0.0F;
 		this.motionX = this.motionY = this.motionZ = 0.0D;
@@ -99,7 +99,7 @@ public abstract class EntityFireball extends Entity {
 
 			Vec3 var19 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 			Vec3 var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var19, var2);
+			MovingObjectPosition var3 = this.worldObj.clip(var15, var2);
 			var19 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 			var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -242,7 +242,7 @@ public abstract class EntityFireball extends Entity {
 	/**
 	 * Called when the entity is attacked.
 	 */
-	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
+	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
 		if (this.isEntityInvulnerable()) {
 			return false;
 		} else {
@@ -260,8 +260,8 @@ public abstract class EntityFireball extends Entity {
 					this.accelerationZ = this.motionZ * 0.1D;
 				}
 
-				if (par1DamageSource.getEntity() instanceof EntityLiving) {
-					this.shootingEntity = (EntityLiving)par1DamageSource.getEntity();
+				if (par1DamageSource.getEntity() instanceof EntityLivingBase) {
+					this.shootingEntity = (EntityLivingBase)par1DamageSource.getEntity();
 				}
 
 				return true;

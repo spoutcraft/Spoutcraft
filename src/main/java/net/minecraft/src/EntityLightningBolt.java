@@ -12,7 +12,7 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 	/**
 	 * A random long that is used to change the vertex of the lightning rendered in RenderLightningBolt
 	 */
-	public long boltVertex = 0L;
+	public long boltVertex;
 
 	/**
 	 * Determines the time before the EntityLightningBolt is destroyed. It is a random integer decremented over time.
@@ -26,7 +26,7 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 		this.boltVertex = this.rand.nextLong();
 		this.boltLivingTime = this.rand.nextInt(3) + 1;
 
-		if (!par1World.isRemote && par1World.difficultySetting >= 2 && par1World.doChunksNearChunkExist(MathHelper.floor_double(par2), MathHelper.floor_double(par4), MathHelper.floor_double(par6), 10)) {
+		if (!par1World.isRemote && par1World.getGameRules().getGameRuleBooleanValue("doFireTick") && par1World.difficultySetting >= 2 && par1World.doChunksNearChunkExist(MathHelper.floor_double(par2), MathHelper.floor_double(par4), MathHelper.floor_double(par6), 10)) {
 			int var8 = MathHelper.floor_double(par2);
 			int var9 = MathHelper.floor_double(par4);
 			int var10 = MathHelper.floor_double(par6);
@@ -68,7 +68,7 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 				this.lightningState = 1;
 				this.boltVertex = this.rand.nextLong();
 
-				if (!this.worldObj.isRemote && this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10)) {
+				if (!this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("doFireTick") && this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10)) {
 					int var1 = MathHelper.floor_double(this.posX);
 					int var2 = MathHelper.floor_double(this.posY);
 					int var3 = MathHelper.floor_double(this.posZ);
