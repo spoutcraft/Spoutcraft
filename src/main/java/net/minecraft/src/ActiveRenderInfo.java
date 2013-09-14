@@ -8,13 +8,13 @@ import org.lwjgl.util.glu.GLU;
 public class ActiveRenderInfo {
 
 	/** The calculated view object X coordinate */
-	public static float objectX = 0.0F;
+	public static float objectX;
 
 	/** The calculated view object Y coordinate */
-	public static float objectY = 0.0F;
+	public static float objectY;
 
 	/** The calculated view object Z coordinate */
-	public static float objectZ = 0.0F;
+	public static float objectZ;
 
 	/** The current GL viewport */
 	private static IntBuffer viewport = GLAllocation.createDirectIntBuffer(16);
@@ -81,22 +81,22 @@ public class ActiveRenderInfo {
 	/**
 	 * Returns a vector representing the projection along the given entity's view for the given distance
 	 */
-	public static Vec3 projectViewFromEntity(EntityLiving par0EntityLiving, double par1) {
-		double var3 = par0EntityLiving.prevPosX + (par0EntityLiving.posX - par0EntityLiving.prevPosX) * par1;
-		double var5 = par0EntityLiving.prevPosY + (par0EntityLiving.posY - par0EntityLiving.prevPosY) * par1 + (double)par0EntityLiving.getEyeHeight();
-		double var7 = par0EntityLiving.prevPosZ + (par0EntityLiving.posZ - par0EntityLiving.prevPosZ) * par1;
+	public static Vec3 projectViewFromEntity(EntityLivingBase par0EntityLivingBase, double par1) {
+		double var3 = par0EntityLivingBase.prevPosX + (par0EntityLivingBase.posX - par0EntityLivingBase.prevPosX) * par1;
+		double var5 = par0EntityLivingBase.prevPosY + (par0EntityLivingBase.posY - par0EntityLivingBase.prevPosY) * par1 + (double)par0EntityLivingBase.getEyeHeight();
+		double var7 = par0EntityLivingBase.prevPosZ + (par0EntityLivingBase.posZ - par0EntityLivingBase.prevPosZ) * par1;
 		double var9 = var3 + (double)(objectX * 1.0F);
 		double var11 = var5 + (double)(objectY * 1.0F);
 		double var13 = var7 + (double)(objectZ * 1.0F);
-		return par0EntityLiving.worldObj.getWorldVec3Pool().getVecFromPool(var9, var11, var13);
+		return par0EntityLivingBase.worldObj.getWorldVec3Pool().getVecFromPool(var9, var11, var13);
 	}
 
 	/**
 	 * Returns the block ID at the current camera location (either air or fluid), taking into account the height of fluid
 	 * blocks
 	 */
-	public static int getBlockIdAtEntityViewpoint(World par0World, EntityLiving par1EntityLiving, float par2) {
-		Vec3 var3 = projectViewFromEntity(par1EntityLiving, (double)par2);
+	public static int getBlockIdAtEntityViewpoint(World par0World, EntityLivingBase par1EntityLivingBase, float par2) {
+		Vec3 var3 = projectViewFromEntity(par1EntityLivingBase, (double)par2);
 		ChunkPosition var4 = new ChunkPosition(var3);
 		int var5 = par0World.getBlockId(var4.x, var4.y, var4.z);
 

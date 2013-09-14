@@ -149,18 +149,11 @@ public class BiomeDecorator {
 		this.reedGen = new WorldGenReed();
 		this.cactusGen = new WorldGenCactus();
 		this.waterlilyGen = new WorldGenWaterlily();
-		this.waterlilyPerChunk = 0;
-		this.treesPerChunk = 0;
 		this.flowersPerChunk = 2;
 		this.grassPerChunk = 1;
-		this.deadBushPerChunk = 0;
-		this.mushroomsPerChunk = 0;
-		this.reedsPerChunk = 0;
-		this.cactiPerChunk = 0;
 		this.sandPerChunk = 1;
 		this.sandPerChunk2 = 3;
 		this.clayPerChunk = 1;
-		this.bigMushroomsPerChunk = 0;
 		this.generateLakes = true;
 		this.biome = par1BiomeGenBase;
 	}
