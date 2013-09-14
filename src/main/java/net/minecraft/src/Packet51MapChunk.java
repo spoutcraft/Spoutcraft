@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
@@ -77,19 +77,19 @@ public class Packet51MapChunk extends Packet {
 	/**
 	 * Abstract. Reads the raw packet data from the data stream.
 	 */
-	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
-		this.xCh = par1DataInputStream.readInt();
-		this.zCh = par1DataInputStream.readInt();
-		this.includeInitialize = par1DataInputStream.readBoolean();
-		this.yChMin = par1DataInputStream.readShort();
-		this.yChMax = par1DataInputStream.readShort();
-		this.tempLength = par1DataInputStream.readInt();
+	public void readPacketData(DataInput par1DataInput) throws IOException {
+		this.xCh = par1DataInput.readInt();
+		this.zCh = par1DataInput.readInt();
+		this.includeInitialize = par1DataInput.readBoolean();
+		this.yChMin = par1DataInput.readShort();
+		this.yChMax = par1DataInput.readShort();
+		this.tempLength = par1DataInput.readInt();
 
 		if (temp.length < this.tempLength) {
 			temp = new byte[this.tempLength];
 		}
 
-		par1DataInputStream.readFully(temp, 0, this.tempLength);
+		par1DataInput.readFully(temp, 0, this.tempLength);
 		int var2 = 0;
 		int var3;
 
@@ -130,14 +130,14 @@ public class Packet51MapChunk extends Packet {
 	/**
 	 * Abstract. Writes the raw packet data to the data stream.
 	 */
-	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
-		par1DataOutputStream.writeInt(this.xCh);
-		par1DataOutputStream.writeInt(this.zCh);
-		par1DataOutputStream.writeBoolean(this.includeInitialize);
-		par1DataOutputStream.writeShort((short)(this.yChMin & 65535));
-		par1DataOutputStream.writeShort((short)(this.yChMax & 65535));
-		par1DataOutputStream.writeInt(this.tempLength);
-		par1DataOutputStream.write(this.chunkData, 0, this.tempLength);
+	public void writePacketData(DataOutput par1DataOutput) throws IOException {
+		par1DataOutput.writeInt(this.xCh);
+		par1DataOutput.writeInt(this.zCh);
+		par1DataOutput.writeBoolean(this.includeInitialize);
+		par1DataOutput.writeShort((short)(this.yChMin & 65535));
+		par1DataOutput.writeShort((short)(this.yChMax & 65535));
+		par1DataOutput.writeInt(this.tempLength);
+		par1DataOutput.write(this.chunkData, 0, this.tempLength);
 	}
 
 	/**

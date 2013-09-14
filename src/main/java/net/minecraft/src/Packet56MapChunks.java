@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
 import java.util.List;
 import java.util.zip.DataFormatException;
@@ -81,10 +81,10 @@ public class Packet56MapChunks extends Packet {
 	/**
 	 * Abstract. Reads the raw packet data from the data stream.
 	 */
-	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
-		short var2 = par1DataInputStream.readShort();
-		this.dataLength = par1DataInputStream.readInt();
-		this.skyLightSent = par1DataInputStream.readBoolean();
+	public void readPacketData(DataInput par1DataInput) throws IOException {
+		short var2 = par1DataInput.readShort();
+		this.dataLength = par1DataInput.readInt();
+		this.skyLightSent = par1DataInput.readBoolean();
 		this.chunkPostX = new int[var2];
 		this.chunkPosZ = new int[var2];
 		this.field_73590_a = new int[var2];
@@ -95,7 +95,7 @@ public class Packet56MapChunks extends Packet {
 			chunkDataNotCompressed = new byte[this.dataLength];
 		}
 
-		par1DataInputStream.readFully(chunkDataNotCompressed, 0, this.dataLength);
+		par1DataInput.readFully(chunkDataNotCompressed, 0, this.dataLength);
 
 		// Spout Start
 		byte[] inflateBuffer = inflateBufferCache.get();
@@ -122,10 +122,10 @@ public class Packet56MapChunks extends Packet {
 		int var5 = 0;
 
 		for (int var6 = 0; var6 < var2; ++var6) {
-			this.chunkPostX[var6] = par1DataInputStream.readInt();
-			this.chunkPosZ[var6] = par1DataInputStream.readInt();
-			this.field_73590_a[var6] = par1DataInputStream.readShort();
-			this.field_73588_b[var6] = par1DataInputStream.readShort();
+			this.chunkPostX[var6] = par1DataInput.readInt();
+			this.chunkPosZ[var6] = par1DataInput.readInt();
+			this.field_73590_a[var6] = par1DataInput.readShort();
+			this.field_73588_b[var6] = par1DataInput.readShort();
 			int var7 = 0;
 			int var8 = 0;
 			int var9;
@@ -151,17 +151,17 @@ public class Packet56MapChunks extends Packet {
 	/**
 	 * Abstract. Writes the raw packet data to the data stream.
 	 */
-	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
-		par1DataOutputStream.writeShort(this.chunkPostX.length);
-		par1DataOutputStream.writeInt(this.dataLength);
-		par1DataOutputStream.writeBoolean(this.skyLightSent);
-		par1DataOutputStream.write(this.chunkDataBuffer, 0, this.dataLength);
+	public void writePacketData(DataOutput par1DataOutput) throws IOException {
+		par1DataOutput.writeShort(this.chunkPostX.length);
+		par1DataOutput.writeInt(this.dataLength);
+		par1DataOutput.writeBoolean(this.skyLightSent);
+		par1DataOutput.write(this.chunkDataBuffer, 0, this.dataLength);
 
 		for (int var2 = 0; var2 < this.chunkPostX.length; ++var2) {
-			par1DataOutputStream.writeInt(this.chunkPostX[var2]);
-			par1DataOutputStream.writeInt(this.chunkPosZ[var2]);
-			par1DataOutputStream.writeShort((short)(this.field_73590_a[var2] & 65535));
-			par1DataOutputStream.writeShort((short)(this.field_73588_b[var2] & 65535));
+			par1DataOutput.writeInt(this.chunkPostX[var2]);
+			par1DataOutput.writeInt(this.chunkPosZ[var2]);
+			par1DataOutput.writeShort((short)(this.field_73590_a[var2] & 65535));
+			par1DataOutput.writeShort((short)(this.field_73588_b[var2] & 65535));
 		}
 	}
 

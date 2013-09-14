@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
 // Spout Start
 import org.spoutcraft.client.DataMiningThread;
@@ -10,7 +10,7 @@ import org.spoutcraft.client.DataMiningThread;
 public class Packet1Login extends Packet {
 
 	/** The player's entity ID */
-	public int clientEntityId = 0;
+	public int clientEntityId;
 	public WorldType terrainType;
 	public boolean hardcoreMode;
 	public EnumGameType gameType;
@@ -43,42 +43,42 @@ public class Packet1Login extends Packet {
 	/**
 	 * Abstract. Reads the raw packet data from the data stream.
 	 */
-	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
-		this.clientEntityId = par1DataInputStream.readInt();
-		String var2 = readString(par1DataInputStream, 16);
+	public void readPacketData(DataInput par1DataInput) throws IOException {
+		this.clientEntityId = par1DataInput.readInt();
+		String var2 = readString(par1DataInput, 16);
 		this.terrainType = WorldType.parseWorldType(var2);
 
 		if (this.terrainType == null) {
 			this.terrainType = WorldType.DEFAULT;
 		}
 
-		byte var3 = par1DataInputStream.readByte();
+		byte var3 = par1DataInput.readByte();
 		this.hardcoreMode = (var3 & 8) == 8;
 		int var4 = var3 & -9;
 		this.gameType = EnumGameType.getByID(var4);
-		this.dimension = par1DataInputStream.readByte();
-		this.difficultySetting = par1DataInputStream.readByte();
-		this.worldHeight = par1DataInputStream.readByte();
-		this.maxPlayers = par1DataInputStream.readByte();
+		this.dimension = par1DataInput.readByte();
+		this.difficultySetting = par1DataInput.readByte();
+		this.worldHeight = par1DataInput.readByte();
+		this.maxPlayers = par1DataInput.readByte();
 	}
 
 	/**
 	 * Abstract. Writes the raw packet data to the data stream.
 	 */
-	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
-		par1DataOutputStream.writeInt(this.clientEntityId);
-		writeString(this.terrainType == null ? "" : this.terrainType.getWorldTypeName(), par1DataOutputStream);
+	public void writePacketData(DataOutput par1DataOutput) throws IOException {
+		par1DataOutput.writeInt(this.clientEntityId);
+		writeString(this.terrainType == null ? "" : this.terrainType.getWorldTypeName(), par1DataOutput);
 		int var2 = this.gameType.getID();
 
 		if (this.hardcoreMode) {
 			var2 |= 8;
 		}
 
-		par1DataOutputStream.writeByte(var2);
-		par1DataOutputStream.writeByte(this.dimension);
-		par1DataOutputStream.writeByte(this.difficultySetting);
-		par1DataOutputStream.writeByte(this.worldHeight);
-		par1DataOutputStream.writeByte(this.maxPlayers);
+		par1DataOutput.writeByte(var2);
+		par1DataOutput.writeByte(this.dimension);
+		par1DataOutput.writeByte(this.difficultySetting);
+		par1DataOutput.writeByte(this.worldHeight);
+		par1DataOutput.writeByte(this.maxPlayers);
 	}
 
 	/**

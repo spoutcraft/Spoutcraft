@@ -34,17 +34,17 @@ public class Packet18Animation extends Packet {
 	/**
 	 * Abstract. Reads the raw packet data from the data stream.
 	 */
-	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
-		this.entityId = par1DataInputStream.readInt();
-		this.animate = par1DataInputStream.readByte();
+	public void readPacketData(DataInput par1DataInput) throws IOException {
+		this.entityId = par1DataInput.readInt();
+		this.animate = par1DataInput.readByte();
 	}
 
 	/**
 	 * Abstract. Writes the raw packet data to the data stream.
 	 */
-	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
-		par1DataOutputStream.writeInt(this.entityId);
-		par1DataOutputStream.writeByte(this.animate);
+	public void writePacketData(DataOutput par1DataOutput) throws IOException {
+		par1DataOutput.writeInt(this.entityId);
+		par1DataOutput.writeByte(this.animate);
 	}
 
 	/**
