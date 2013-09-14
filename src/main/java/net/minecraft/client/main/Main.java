@@ -6,10 +6,12 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.util.List;
+
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.NonOptionArgumentSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import net.minecraft.src.GameWindowListener;
 import net.minecraft.src.MainProxyAuthenticator;
 import net.minecraft.src.MainShutdownHook;
 import net.minecraft.src.Minecraft;
@@ -67,6 +69,11 @@ public class Main {
 		File var30 = var17.has(var6) ? (File)var17.valueOf(var6) : new File(var28, "resourcepacks/");
 		Session var31 = new Session((String)var11.value(var17), (String)var12.value(var17));
 		Minecraft var32 = new Minecraft(var31, var23, var24, var25, var26, var28, var29, var30, var20, var27);
+		
+		//Spout Start
+		var32.addWindowListener(new GameWindowListener());
+		//Spout end
+		
 		String var33 = (String)var17.valueOf(var2);
 
 		if (var33 != null) {
