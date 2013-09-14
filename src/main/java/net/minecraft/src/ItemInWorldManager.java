@@ -119,7 +119,7 @@ public class ItemInWorldManager {
 	 * tryHarvestBlock can also be the result of this call
 	 */
 	public void onBlockClicked(int par1, int par2, int par3, int par4) {
-		if (!this.gameType.isAdventure() || this.thisPlayerMP.canCurrentToolHarvestBlock(par1, par2, par3)) {
+		if (!this.gameType.isAdventure() || this.thisPlayerMP.isCurrentToolAdventureModeExempt(par1, par2, par3)) {
 			if (this.isCreative()) {
 				if (!this.theWorld.extinguishFire((EntityPlayer)null, par1, par2, par3, par4)) {
 					this.tryHarvestBlock(par1, par2, par3);
@@ -217,7 +217,9 @@ public class ItemInWorldManager {
 	 * Attempts to harvest a block at the given coordinate
 	 */
 	public boolean tryHarvestBlock(int par1, int par2, int par3) {
-		if (this.gameType.isAdventure() && !this.thisPlayerMP.canCurrentToolHarvestBlock(par1, par2, par3)) {
+		if (this.gameType.isAdventure() && !this.thisPlayerMP.isCurrentToolAdventureModeExempt(par1, par2, par3)) {
+			return false;
+		} else if (this.gameType.isCreative() && this.thisPlayerMP.getHeldItem() != null && this.thisPlayerMP.getHeldItem().getItem() instanceof ItemSword) {
 			return false;
 		} else {
 			int var4 = this.theWorld.getBlockId(par1, par2, par3);

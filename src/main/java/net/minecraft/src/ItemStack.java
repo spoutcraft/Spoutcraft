@@ -1,8 +1,13 @@
 package net.minecraft.src;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Map.Entry;
 // Spout Start
 import net.minecraft.src.NBTTagList;
 import org.spoutcraft.client.config.Configuration;
@@ -12,6 +17,8 @@ import org.spoutcraft.client.inventory.InventoryUtil;
 // Spout Start - Removed final
 public class ItemStack {
 // Spout End
+	
+	public static final DecimalFormat field_111284_a = new DecimalFormat("#.###");
 	/** Size of the stack. */
 	public int stackSize;
 
@@ -58,9 +65,7 @@ public class ItemStack {
 		this(par1Item.itemID, par2, par3);
 	}
 
-	public ItemStack(int par1, int par2, int par3) {
-		this.stackSize = 0;
-		this.itemFrame = null;
+	public ItemStack(int par1, int par2, int par3) {		
 		this.itemID = par1;
 		this.stackSize = par2;
 		this.itemDamage = par3;
@@ -76,10 +81,7 @@ public class ItemStack {
 		return var1.getItem() != null ? var1 : null;
 	}
 
-	private ItemStack() {
-		this.stackSize = 0;
-		this.itemFrame = null;
-	}
+	private ItemStack() {}
 
 	/**
 	 * Remove the argument from the stack size. Return a new stack object with argument size.
@@ -278,17 +280,21 @@ public class ItemStack {
 	/**
 	 * Damages the item in the ItemStack
 	 */
-	public void damageItem(int par1, EntityLiving par2EntityLiving) {
-		if (!(par2EntityLiving instanceof EntityPlayer) || !((EntityPlayer)par2EntityLiving).capabilities.isCreativeMode) {
+	public void damageItem(int par1, EntityLivingBase par2EntityLivingBase) {
+		if (!(par2EntityLivingBase instanceof EntityPlayer) || !((EntityPlayer)par2EntityLivingBase).capabilities.isCreativeMode) {
 			if (this.isItemStackDamageable()) {
-				if (this.attemptDamageItem(par1, par2EntityLiving.getRNG())) {
-					par2EntityLiving.renderBrokenItemStack(this);
-
-					if (par2EntityLiving instanceof EntityPlayer) {
-						((EntityPlayer)par2EntityLiving).addStat(StatList.objectBreakStats[this.itemID], 1);
-					}
-
+				if (this.attemptDamageItem(par1, par2EntityLivingBase.getRNG())) {
+					par2EntityLivingBase.renderBrokenItemStack(this);
 					--this.stackSize;
+
+					if (par2EntityLivingBase instanceof EntityPlayer) {
+						EntityPlayer var3 = (EntityPlayer)par2EntityLivingBase;
+						var3.addStat(StatList.objectBreakStats[this.itemID], 1);
+
+						if (this.stackSize == 0 && this.getItem() instanceof ItemBow) {
+							var3.destroyCurrentEquippedItem();
+						}
+					}
 
 					if (this.stackSize < 0) {
 						this.stackSize = 0;
@@ -309,8 +315,8 @@ public class ItemStack {
 	/**
 	 * Calls the corresponding fct in di
 	 */
-	public void hitEntity(EntityLiving par1EntityLiving, EntityPlayer par2EntityPlayer) {
-		boolean var3 = Item.itemsList[this.itemID].hitEntity(this, par1EntityLiving, par2EntityPlayer);
+	public void hitEntity(EntityLivingBase par1EntityLivingBase, EntityPlayer par2EntityPlayer) {
+		boolean var3 = Item.itemsList[this.itemID].hitEntity(this, par1EntityLivingBase, par2EntityPlayer);
 
 		if (var3) {
 			par2EntityPlayer.addStat(StatList.objectUseStats[this.itemID], 1);
@@ -326,21 +332,14 @@ public class ItemStack {
 	}
 
 	/**
-	 * Returns the damage against a given entity.
-	 */
-	public int getDamageVsEntity(Entity par1Entity) {
-		return Item.itemsList[this.itemID].getDamageVsEntity(par1Entity);
-	}
-
-	/**
 	 * Checks if the itemStack object can harvest a specified block
 	 */
 	public boolean canHarvestBlock(Block par1Block) {
 		return Item.itemsList[this.itemID].canHarvestBlock(par1Block);
 	}
 
-	public boolean interactWith(EntityLiving par1EntityLiving) {
-		return Item.itemsList[this.itemID].itemInteractionForEntity(this, par1EntityLiving);
+	public boolean func_111282_a(EntityPlayer par1EntityPlayer, EntityLivingBase par2EntityLivingBase) {
+		return Item.itemsList[this.itemID].func_111207_a(this, par1EntityPlayer, par2EntityLivingBase);
 	}
 
 	/**
@@ -506,6 +505,23 @@ public class ItemStack {
 
 		this.stackTagCompound.getCompoundTag("display").setString("Name", par1Str);
 	}
+	
+	public void func_135074_t() {
+		if (this.stackTagCompound != null) {
+			if (this.stackTagCompound.hasKey("display")) {
+				NBTTagCompound var1 = this.stackTagCompound.getCompoundTag("display");
+				var1.removeTag("Name");
+
+				if (var1.hasNoTags()) {
+					this.stackTagCompound.removeTag("display");
+
+					if (this.stackTagCompound.hasNoTags()) {
+						this.setTagCompound((NBTTagCompound)null);
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * Returns true if the itemstack has a display name
@@ -547,12 +563,12 @@ public class ItemStack {
 		var4.addInformation(this, par1EntityPlayer, var3, par2);
 
 		if (this.hasTagCompound()) {
-			NBTTagList var13 = this.getEnchantmentTagList();
+			NBTTagList var14 = this.getEnchantmentTagList();
 
-			if (var13 != null) {
-				for (int var7 = 0; var7 < var13.tagCount(); ++var7) {
-					short var8 = ((NBTTagCompound)var13.tagAt(var7)).getShort("id");
-					short var9 = ((NBTTagCompound)var13.tagAt(var7)).getShort("lvl");
+			if (var14 != null) {
+				for (int var7 = 0; var7 < var14.tagCount(); ++var7) {
+					short var8 = ((NBTTagCompound)var14.tagAt(var7)).getShort("id");
+					short var9 = ((NBTTagCompound)var14.tagAt(var7)).getShort("lvl");
 
 					if (Enchantment.enchantmentsList[var8] != null) {
 						var3.add(Enchantment.enchantmentsList[var8].getTranslatedName(var9));
@@ -561,24 +577,51 @@ public class ItemStack {
 			}
 
 			if (this.stackTagCompound.hasKey("display")) {
-				NBTTagCompound var11 = this.stackTagCompound.getCompoundTag("display");
+				NBTTagCompound var17 = this.stackTagCompound.getCompoundTag("display");
 
-				if (var11.hasKey("color")) {
+				if (var17.hasKey("color")) {
 					if (par2) {
-						var3.add("Color: #" + Integer.toHexString(var11.getInteger("color")).toUpperCase());
+						var3.add("Color: #" + Integer.toHexString(var17.getInteger("color")).toUpperCase());
 					} else {
 						var3.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("item.dyed"));
 					}
 				}
 
-				if (var11.hasKey("Lore")) {
-					NBTTagList var12 = var11.getTagList("Lore");
+				if (var17.hasKey("Lore")) {
+					NBTTagList var19 = var17.getTagList("Lore");
 
-					if (var12.tagCount() > 0) {
-						for (int var10 = 0; var10 < var12.tagCount(); ++var10) {
-							var3.add(EnumChatFormatting.DARK_PURPLE + "" + EnumChatFormatting.ITALIC + ((NBTTagString)var12.tagAt(var10)).data);
+					if (var19.tagCount() > 0) {
+						for (int var20 = 0; var20 < var19.tagCount(); ++var20) {
+							var3.add(EnumChatFormatting.DARK_PURPLE + "" + EnumChatFormatting.ITALIC + ((NBTTagString)var19.tagAt(var20)).data);
 						}
 					}
+				}
+			}
+		}
+
+		Multimap var16 = this.func_111283_C();
+
+		if (!var16.isEmpty()) {
+			var3.add("");
+			Iterator var15 = var16.entries().iterator();
+
+			while (var15.hasNext()) {
+				Entry var18 = (Entry)var15.next();
+				AttributeModifier var21 = (AttributeModifier)var18.getValue();
+				double var10 = var21.func_111164_d();
+				double var12;
+
+				if (var21.func_111169_c() != 1 && var21.func_111169_c() != 2) {
+					var12 = var21.func_111164_d();
+				} else {
+					var12 = var21.func_111164_d() * 100.0D;
+				}
+
+				if (var10 > 0.0D) {
+					var3.add(EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("attribute.modifier.plus." + var21.func_111169_c(), new Object[] {field_111284_a.format(var12), StatCollector.translateToLocal("attribute.name." + (String)var18.getKey())}));
+				} else if (var10 < 0.0D) {
+					var12 *= -1.0D;
+					var3.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("attribute.modifier.take." + var21.func_111169_c(), new Object[] {field_111284_a.format(var12), StatCollector.translateToLocal("attribute.name." + (String)var18.getKey())}));
 				}
 			}
 		}
@@ -589,7 +632,6 @@ public class ItemStack {
 
 		return var3;
 	}
-
 	public boolean hasEffect() {
 		return this.getItem().hasEffect(this);
 	}
@@ -639,8 +681,8 @@ public class ItemStack {
 		this.stackTagCompound.setTag(par1Str, par2NBTBase);
 	}
 
-	public boolean func_82835_x() {
-		return this.getItem().func_82788_x();
+	public boolean canEditBlocks() {
+		return this.getItem().canItemEditBlocks();
 	}
 
 	/**
@@ -680,5 +722,27 @@ public class ItemStack {
 		}
 
 		this.stackTagCompound.setInteger("RepairCost", par1);
+	}
+	
+	public Multimap func_111283_C() {
+		Object var1;
+
+		if (this.hasTagCompound() && this.stackTagCompound.hasKey("AttributeModifiers")) {
+			var1 = HashMultimap.create();
+			NBTTagList var2 = this.stackTagCompound.getTagList("AttributeModifiers");
+
+			for (int var3 = 0; var3 < var2.tagCount(); ++var3) {
+				NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+				AttributeModifier var5 = SharedMonsterAttributes.func_111259_a(var4);
+
+				if (var5.func_111167_a().getLeastSignificantBits() != 0L && var5.func_111167_a().getMostSignificantBits() != 0L) {
+					((Multimap)var1).put(var4.getString("AttributeName"), var5);
+				}
+			}
+		} else {
+			var1 = this.getItem().func_111205_h();
+		}
+
+		return (Multimap)var1;
 	}
 }

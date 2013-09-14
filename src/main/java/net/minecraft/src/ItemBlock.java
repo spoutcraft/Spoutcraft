@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 //Spout Start
-import com.prupe.mcpatcher.mod.ColorizeBlock;
+import com.prupe.mcpatcher.cc.ColorizeBlock;
 //Spout end
 import java.util.List;
 
