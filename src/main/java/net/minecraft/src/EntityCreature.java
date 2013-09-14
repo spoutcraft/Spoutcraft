@@ -1,6 +1,10 @@
 package net.minecraft.src;
 
+import java.util.UUID;
+
 public abstract class EntityCreature extends EntityLiving {
+	public static final UUID field_110179_h = UUID.fromString("E199AD21-BA8A-4C53-8D13-6182D5C69D3A");
+	public static final AttributeModifier field_110181_i = (new AttributeModifier(field_110179_h, "Fleeing speed bonus", 2.0D, 2)).func_111168_a(false);
 	// Spout Start - private to public
 	public PathEntity pathToEntity;
 	// Spout End
@@ -13,10 +17,16 @@ public abstract class EntityCreature extends EntityLiving {
 	/**
 	 * returns true if a creature has attacked recently only used for creepers and skeletons
 	 */
-	protected boolean hasAttacked = false;
+	protected boolean hasAttacked;
 
 	/** Used to make a creature speed up and wander away when hit. */
-	protected int fleeingTick = 0;
+	protected int fleeingTick;
+	private ChunkCoordinates homePosition = new ChunkCoordinates(0, 0, 0);
+
+	/** If -1 there is no maximum distance */
+	private float maximumHomeDistance = -1.0F;
+	private EntityAIBase field_110178_bs = new EntityAIMoveTowardsRestriction(this, 1.0D);
+	private boolean field_110180_bt;
 
 	public EntityCreature(World par1World) {
 		super(par1World);
@@ -32,18 +42,19 @@ public abstract class EntityCreature extends EntityLiving {
 	protected void updateEntityActionState() {
 		this.worldObj.theProfiler.startSection("ai");
 
-		if (this.fleeingTick > 0) {
-			--this.fleeingTick;
+		if (this.fleeingTick > 0 && --this.fleeingTick == 0) {
+			AttributeInstance var1 = this.func_110148_a(SharedMonsterAttributes.field_111263_d);
+			var1.func_111124_b(field_110181_i);
 		}
 
 		this.hasAttacked = this.isMovementCeased();
-		float var1 = 16.0F;
+		float var21 = 16.0F;
 
 		if (this.entityToAttack == null) {
 			this.entityToAttack = this.findPlayerToAttack();
 
 			if (this.entityToAttack != null) {
-				this.pathToEntity = this.worldObj.getPathEntityToEntity(this, this.entityToAttack, var1, true, false, false, true);
+				this.pathToEntity = this.worldObj.getPathEntityToEntity(this, this.entityToAttack, var21, true, false, false, true);
 			}
 		} else if (this.entityToAttack.isEntityAlive()) {
 			float var2 = this.entityToAttack.getDistanceToEntity(this);
@@ -58,12 +69,12 @@ public abstract class EntityCreature extends EntityLiving {
 		this.worldObj.theProfiler.endSection();
 
 		if (!this.hasAttacked && this.entityToAttack != null && (this.pathToEntity == null || this.rand.nextInt(20) == 0)) {
-			this.pathToEntity = this.worldObj.getPathEntityToEntity(this, this.entityToAttack, var1, true, false, false, true);
+			this.pathToEntity = this.worldObj.getPathEntityToEntity(this, this.entityToAttack, var21, true, false, false, true);
 		} else if (!this.hasAttacked && (this.pathToEntity == null && this.rand.nextInt(180) == 0 || this.rand.nextInt(120) == 0 || this.fleeingTick > 0) && this.entityAge < 100) {
 			this.updateWanderPath();
 		}
 
-		int var21 = MathHelper.floor_double(this.boundingBox.minY + 0.5D);
+		int var22 = MathHelper.floor_double(this.boundingBox.minY + 0.5D);
 		boolean var3 = this.isInWater();
 		boolean var4 = this.handleLavaMovement();
 		this.rotationPitch = 0.0F;
@@ -89,10 +100,10 @@ public abstract class EntityCreature extends EntityLiving {
 			if (var5 != null) {
 				double var8 = var5.xCoord - this.posX;
 				double var10 = var5.zCoord - this.posZ;
-				double var12 = var5.yCoord - (double)var21;
+				double var12 = var5.yCoord - (double)var22;
 				float var14 = (float)(Math.atan2(var10, var8) * 180.0D / Math.PI) - 90.0F;
 				float var15 = MathHelper.wrapAngleTo180_float(var14 - this.rotationYaw);
-				this.moveForward = this.moveSpeed;
+				this.moveForward = (float)this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111126_e();
 
 				if (var15 > 30.0F) {
 					var15 = 30.0F;
@@ -230,17 +241,82 @@ public abstract class EntityCreature extends EntityLiving {
 		this.entityToAttack = par1Entity;
 	}
 
-	/**
-	 * This method returns a value to be applied directly to entity speed, this factor is less than 1 when a slowdown
-	 * potion effect is applied, more than 1 when a haste potion effect is applied and 2 for fleeing entities.
-	 */
-	public float getSpeedModifier() {
-		float var1 = super.getSpeedModifier();
-
-		if (this.fleeingTick > 0 && !this.isAIEnabled()) {
-			var1 *= 2.0F;
-		}
-
-		return var1;
+	public boolean func_110173_bK() {
+		return this.func_110176_b(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
 	}
+
+	public boolean func_110176_b(int par1, int par2, int par3) {
+		return this.maximumHomeDistance == -1.0F ? true : this.homePosition.getDistanceSquared(par1, par2, par3) < this.maximumHomeDistance * this.maximumHomeDistance;
+	}
+
+	public void func_110171_b(int par1, int par2, int par3, int par4) {
+		this.homePosition.set(par1, par2, par3);
+		this.maximumHomeDistance = (float)par4;
+	}
+
+	public ChunkCoordinates func_110172_bL() {
+		return this.homePosition;
+	}
+
+	public float func_110174_bM() {
+		return this.maximumHomeDistance;
+	}
+
+	public void func_110177_bN() {
+		this.maximumHomeDistance = -1.0F;
+	}
+
+	public boolean func_110175_bO() {
+		return this.maximumHomeDistance != -1.0F;
+	}
+
+	protected void func_110159_bB() {
+		super.func_110159_bB();
+
+		if (this.func_110167_bD() && this.func_110166_bE() != null && this.func_110166_bE().worldObj == this.worldObj) {
+			Entity var1 = this.func_110166_bE();
+			this.func_110171_b((int)var1.posX, (int)var1.posY, (int)var1.posZ, 5);
+			float var2 = this.getDistanceToEntity(var1);
+
+			if (this instanceof EntityTameable && ((EntityTameable)this).isSitting()) {
+				if (var2 > 10.0F) {
+					this.func_110160_i(true, true);
+				}
+
+				return;
+			}
+
+			if (!this.field_110180_bt) {
+				this.tasks.addTask(2, this.field_110178_bs);
+				this.getNavigator().setAvoidsWater(false);
+				this.field_110180_bt = true;
+			}
+
+			this.func_142017_o(var2);
+
+			if (var2 > 4.0F) {
+				this.getNavigator().tryMoveToEntityLiving(var1, 1.0D);
+			}
+
+			if (var2 > 6.0F) {
+				double var3 = (var1.posX - this.posX) / (double)var2;
+				double var5 = (var1.posY - this.posY) / (double)var2;
+				double var7 = (var1.posZ - this.posZ) / (double)var2;
+				this.motionX += var3 * Math.abs(var3) * 0.4D;
+				this.motionY += var5 * Math.abs(var5) * 0.4D;
+				this.motionZ += var7 * Math.abs(var7) * 0.4D;
+			}
+
+			if (var2 > 10.0F) {
+				this.func_110160_i(true, true);
+			}
+		} else if (!this.func_110167_bD() && this.field_110180_bt) {
+			this.field_110180_bt = false;
+			this.tasks.removeTask(this.field_110178_bs);
+			this.getNavigator().setAvoidsWater(true);
+			this.func_110177_bN();
+		}
+	}
+
+	protected void func_142017_o(float par1) {}
 }

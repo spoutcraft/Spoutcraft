@@ -19,15 +19,16 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	private float oldRotationPitch;
 
 	/** Check if was on ground last update */
-	private boolean wasOnGround = false;
+	private boolean wasOnGround;
 
 	/** should the player stop sneaking? */
-	private boolean shouldStopSneaking = false;
-	private boolean wasSneaking = false;
-	private int field_71168_co = 0;
+	private boolean shouldStopSneaking;
+	private boolean wasSneaking;
+	private int field_71168_co;
 
 	/** has the client player's health been set? */
-	private boolean hasSetHealth = false;
+	private boolean hasSetHealth;
+	private String field_142022_ce;
 
 	public EntityClientPlayerMP(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler) {
 		super(par1Minecraft, par2World, par3Session, 0);
@@ -37,7 +38,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	/**
 	 * Called when the entity is attacked.
 	 */
-	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
+	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
 		return false;
 	}
 
@@ -52,14 +53,21 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	public void onUpdate() {
 		if (this.worldObj.blockExists(MathHelper.floor_double(this.posX), 0, MathHelper.floor_double(this.posZ))) {
 			super.onUpdate();
-			this.sendMotionUpdates();
+			if (this.isRiding()) {
+				this.sendQueue.addToSendQueue(new Packet12PlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
+				this.sendQueue.addToSendQueue(new Packet27PlayerInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
+			} else {
+				this.sendMotionUpdates();
+			}
 		}
 
 		// Spout Start
-		if (!this.isSprinting() && runToggle) {
-			if (canSprint()) {
-				setSprinting(true);
-				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
+		if (!this.isRiding()) {
+			if (!this.isSprinting() && runToggle) {
+				if (canSprint()) {
+					setSprinting(true);
+					this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
+				}
 			}
 		}
 		// Spout End
@@ -171,10 +179,10 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	 * with the reduced value. Args: damageAmount
 	 */
 	// Spout Start - private to public
-	public void damageEntity(DamageSource par1DamageSource, int par2) {
+	public void damageEntity(DamageSource par1DamageSource, float par2) {
 	// Spout End
 		if (!this.isEntityInvulnerable()) {
-			this.setEntityHealth(this.getHealth() - par2);
+			this.setEntityHealth(this.func_110143_aJ() - par2);
 		}
 	}
 
@@ -194,7 +202,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	/**
 	 * Updates health locally.
 	 */
-	public void setHealth(int par1) {
+	public void setHealth(float par1) {
 		if (this.hasSetHealth) {
 			super.setHealth(par1);
 		} else {
@@ -232,8 +240,20 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		this.sendQueue.addToSendQueue(new Packet202PlayerAbilities(this.capabilities));
 	}
 
-	public boolean func_71066_bF() {
-		return true;
+	protected void func_110318_g() {
+		this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 6, (int)(this.func_110319_bJ() * 100.0F)));
+	}
+
+	public void func_110322_i() {
+		this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 7));
+	}
+
+	public void func_142020_c(String par1Str) {
+		this.field_142022_ce = par1Str;
+	}
+
+	public String func_142021_k() {
+		return this.field_142022_ce;
 	}
 
 	// Spout Start
@@ -249,7 +269,8 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	@Override
 	public void updateCloak() {
 		if (this.cloakUrl == null || this.playerCloakUrl == null) {
-			super.updateCloak();
+			//super.updateCloak();
+			//ToDo: This isn't going to work since ParentClass ENTITY no loner has a updateCloak() method.
 		}
 	}
 	// Spout End

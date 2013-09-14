@@ -11,7 +11,7 @@ public class ContainerPlayer extends Container {
 	public IInventory craftResult = new InventoryCraftResult();
 
 	/** Determines if inventory manipulation should be handled. */
-	public boolean isLocalWorld = false;
+	public boolean isLocalWorld;
 	private final EntityPlayer thePlayer;
 
 	public ContainerPlayer(InventoryPlayer par1InventoryPlayer, boolean par2, EntityPlayer par3EntityPlayer) {
@@ -63,10 +63,10 @@ public class ContainerPlayer extends Container {
 	}
 
 	/**
-	 * Callback for when the crafting gui is closed.
+	 * Called when the container is closed.
 	 */
-	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
-		super.onCraftGuiClosed(par1EntityPlayer);
+	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+		super.onContainerClosed(par1EntityPlayer);
 
 		for (int var2 = 0; var2 < 4; ++var2) {
 			ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2);

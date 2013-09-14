@@ -9,18 +9,18 @@ public class CreativeTabs {
 	// Spout Start - Custom item/block tab
 	public static final CreativeTabs[] creativeTabArray = new CreativeTabs[13];
 	// Spout End
-	public static final CreativeTabs tabBlock = new CreativeTabBlock(0, "buildingBlocks");
-	public static final CreativeTabs tabDecorations = new CreativeTabDeco(1, "decorations");
-	public static final CreativeTabs tabRedstone = new CreativeTabRedstone(2, "redstone");
-	public static final CreativeTabs tabTransport = new CreativeTabTransport(3, "transportation");
-	public static final CreativeTabs tabMisc = new CreativeTabMisc(4, "misc");
-	public static final CreativeTabs tabAllSearch = (new CreativeTabSearch(5, "search")).setBackgroundImageName("search.png");
-	public static final CreativeTabs tabFood = new CreativeTabFood(6, "food");
-	public static final CreativeTabs tabTools = new CreativeTabTools(7, "tools");
-	public static final CreativeTabs tabCombat = new CreativeTabCombat(8, "combat");
+	public static final CreativeTabs tabBlock = new CreativeTabCombat(0, "buildingBlocks");
+	public static final CreativeTabs tabDecorations = new CreativeTabBlock(1, "decorations");
+	public static final CreativeTabs tabRedstone = new CreativeTabDeco(2, "redstone");
+	public static final CreativeTabs tabTransport = new CreativeTabRedstone(3, "transportation");
+	public static final CreativeTabs tabMisc = (new CreativeTabTransport(4, "misc")).func_111229_a(new EnumEnchantmentType[] {EnumEnchantmentType.all});
+	public static final CreativeTabs tabAllSearch = (new CreativeTabMisc(5, "search")).setBackgroundImageName("item_search.png");
+	public static final CreativeTabs tabFood = new CreativeTabSearch(6, "food");
+	public static final CreativeTabs tabTools = (new CreativeTabFood(7, "tools")).func_111229_a(new EnumEnchantmentType[] {EnumEnchantmentType.digger});
+	public static final CreativeTabs tabCombat = (new CreativeTabTools(8, "combat")).func_111229_a(new EnumEnchantmentType[] {EnumEnchantmentType.armor, EnumEnchantmentType.armor_feet, EnumEnchantmentType.armor_head, EnumEnchantmentType.armor_legs, EnumEnchantmentType.armor_torso, EnumEnchantmentType.bow, EnumEnchantmentType.weapon});
 	public static final CreativeTabs tabBrewing = new CreativeTabBrewing(9, "brewing");
 	public static final CreativeTabs tabMaterials = new CreativeTabMaterial(10, "materials");
-	public static final CreativeTabs tabInventory = (new CreativeTabInventory(11, "inventory")).setBackgroundImageName("survival_inv.png").setNoScrollbar().setNoTitle();
+	public static final CreativeTabs tabInventory = (new CreativeTabInventory(11, "inventory")).setBackgroundImageName("inventory.png").setNoScrollbar().setNoTitle();
 	// Spout Start - Custom item/block tab
 	public static final CreativeTabs tabSpout = new CreativeTabCustom(12, "custom");
 	// Spout End
@@ -28,11 +28,12 @@ public class CreativeTabs {
 	private final String tabLabel;
 
 	/** Texture to use. */
-	private String backgroundImageName = "list_items.png";
+	private String backgroundImageName = "items.png";
 	private boolean hasScrollbar = true;
 
 	/** Whether to draw the title in the foreground of the creative GUI */
 	private boolean drawTitle = true;
+	private EnumEnchantmentType[] field_111230_s;
 
 	public CreativeTabs(int par1, String par2Str) {
 		this.tabIndex = par1;
@@ -52,7 +53,7 @@ public class CreativeTabs {
 	 * Gets the translated Label.
 	 */
 	public String getTranslatedTabLabel() {
-		return StringTranslate.getInstance().translateKey("itemGroup." + this.getTabLabel());
+		return "itemGroup." + this.getTabLabel();
 	}
 
 	public Item getTabIconItem() {
@@ -106,6 +107,34 @@ public class CreativeTabs {
 	public boolean isTabInFirstRow() {
 		return this.tabIndex < 6;
 	}
+	
+	public EnumEnchantmentType[] func_111225_m() {
+		return this.field_111230_s;
+	}
+
+	public CreativeTabs func_111229_a(EnumEnchantmentType ... par1ArrayOfEnumEnchantmentType) {
+		this.field_111230_s = par1ArrayOfEnumEnchantmentType;
+		return this;
+	}
+
+	public boolean func_111226_a(EnumEnchantmentType par1EnumEnchantmentType) {
+		if (this.field_111230_s == null) {
+			return false;
+		} else {
+			EnumEnchantmentType[] var2 = this.field_111230_s;
+			int var3 = var2.length;
+
+			for (int var4 = 0; var4 < var3; ++var4) {
+				EnumEnchantmentType var5 = var2[var4];
+
+				if (var5 == par1EnumEnchantmentType) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+	}
 
 	/**
 	 * only shows items which have tabToDisplayOn == this
@@ -121,9 +150,16 @@ public class CreativeTabs {
 				var5.getSubItems(var5.itemID, this, par1List);
 			}
 		}
+
+		if (this.func_111225_m() != null) {
+			this.addEnchantmentBooksToList(par1List, this.func_111225_m());
+		}
 	}
 
-	public void func_92116_a(List par1List, EnumEnchantmentType ... par2ArrayOfEnumEnchantmentType) {
+	/**
+	 * Adds the enchantment books from the supplied EnumEnchantmentType to the given list.
+	 */
+	public void addEnchantmentBooksToList(List par1List, EnumEnchantmentType ... par2ArrayOfEnumEnchantmentType) {
 		Enchantment[] var3 = Enchantment.enchantmentsList;
 		int var4 = var3.length;
 
@@ -140,7 +176,7 @@ public class CreativeTabs {
 				}
 
 				if (var7) {
-					par1List.add(Item.enchantedBook.func_92111_a(new EnchantmentData(var6, var6.getMaxLevel())));
+					par1List.add(Item.enchantedBook.getEnchantedItemStack(new EnchantmentData(var6, var6.getMaxLevel())));
 				}
 			}
 		}
