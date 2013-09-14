@@ -7,81 +7,81 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MCLogger {
-	private static final HashMap allLoggers = new HashMap();
+	private static final HashMap<String, MCLogger> allLoggers = new HashMap();
 	public static final Level ERROR = new MCLogger$ErrorLevel();
 	private final String logPrefix;
 	private final Logger logger;
 
-	public static MCLogger getLogger(String var0) {
-		return getLogger(var0, var0);
+	public static MCLogger getLogger(String category) {
+		return getLogger(category, category);
 	}
 
-	public static synchronized MCLogger getLogger(String var0, String var1) {
-		MCLogger var2 = (MCLogger)allLoggers.get(var0);
+	public static synchronized MCLogger getLogger(String category, String logPrefix) {
+		MCLogger logger = (MCLogger)allLoggers.get(category);
 
-		if (var2 == null) {
-			var2 = new MCLogger(var0, var1);
-			allLoggers.put(var0, var2);
+		if (logger == null) {
+			logger = new MCLogger(category, logPrefix);
+			allLoggers.put(category, logger);
 		}
 
-		return var2;
+		return logger;
 	}
 
-	private MCLogger(String var1, String var2) {
-		this.logPrefix = var2;
-		this.logger = Logger.getLogger(var1);
-		this.logger.setLevel(Config.getLogLevel(var1));
+	private MCLogger(String category, String logPrefix) {
+		this.logPrefix = logPrefix;
+		this.logger = Logger.getLogger(category);
+		this.logger.setLevel(Config.getLogLevel(category));
 		this.logger.setUseParentHandlers(false);
 		this.logger.addHandler(new MCLogger$1(this));
 	}
 
-	public boolean isLoggable(Level var1) {
-		return this.logger.isLoggable(var1);
+	public boolean isLoggable(Level level) {
+		return this.logger.isLoggable(level);
 	}
 
-	public void setLevel(Level var1) {
-		this.logger.setLevel(var1);
+	public void setLevel(Level level) {
+		this.logger.setLevel(level);
 	}
 
-	public void log(Level var1, String var2, Object ... var3) {
-		if (this.isLoggable(var1)) {
-			this.logger.log(var1, String.format(var2, var3));
+	public void log(Level level, String format, Object ... params) {
+		if (this.isLoggable(level)) {
+			this.logger.log(level, String.format(format, params));
 		}
 	}
 
-	public void severe(String var1, Object ... var2) {
-		this.log(Level.SEVERE, var1, var2);
+	public void severe(String format, Object ... params) {
+		this.log(Level.SEVERE, format, params);
 	}
 
-	public void error(String var1, Object ... var2) {
-		this.log(ERROR, var1, var2);
+	public void error(String format, Object ... params) {
+		this.log(ERROR, format, params);
 	}
 
-	public void warning(String var1, Object ... var2) {
-		this.log(Level.WARNING, var1, var2);
+	public void warning(String format, Object ... params) {
+		this.log(Level.WARNING, format, params);
 	}
 
-	public void info(String var1, Object ... var2) {
-		this.log(Level.INFO, var1, var2);
+	public void info(String format, Object ... params) {
+		this.log(Level.INFO, format, params);
 	}
 
-	public void config(String var1, Object ... var2) {
-		this.log(Level.CONFIG, var1, var2);
+	public void config(String format, Object ... params) {
+		this.log(Level.CONFIG, format, params);
 	}
 
-	public void fine(String var1, Object ... var2) {
-		this.log(Level.FINE, var1, var2);
+	public void fine(String format, Object ... params) {
+		this.log(Level.FINE, format, params);
 	}
 
-	public void finer(String var1, Object ... var2) {
-		this.log(Level.FINER, var1, var2);
+	public void finer(String format, Object ... params) {
+		this.log(Level.FINER, format, params);
 	}
 
-	public void finest(String var1, Object ... var2) {
-		this.log(Level.FINEST, var1, var2);
+	public void finest(String format, Object ... params) {
+		this.log(Level.FINEST, format, params);
 	}
 
-	static String access$000(MCLogger var0) {
-		return var0.logPrefix;
+	static String access$000(MCLogger x0) {
+		return x0.logPrefix;
 	}
 }

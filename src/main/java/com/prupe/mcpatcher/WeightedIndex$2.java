@@ -5,36 +5,36 @@ final class WeightedIndex$2 extends WeightedIndex {
 
 	final int[] val$weights;
 
-	WeightedIndex$2(int var1, int var2, int[] var3) {
-		super(var1);
+	WeightedIndex$2(int x0, int var2, int[] var3) {
+		super(x0);
 		this.val$sum = var2;
 		this.val$weights = var3;
 	}
 
-	public int choose(long var1) {
-		int var4 = this.mod(var1, this.val$sum);
-		int var3;
+	public int choose(long key) {
+		int m = this.mod(key, this.val$sum);
+		int index;
 
-		for (var3 = 0; var3 < this.size - 1 && var4 >= this.val$weights[var3]; ++var3) {
-			var4 -= this.val$weights[var3];
+		for (index = 0; index < this.size - 1 && m >= this.val$weights[index]; ++index) {
+			m -= this.val$weights[index];
 		}
 
-		return var3;
+		return index;
 	}
 
 	public String toString() {
-		StringBuilder var1 = new StringBuilder();
-		var1.append("%(");
+		StringBuilder sb = new StringBuilder();
+		sb.append("%(");
 
-		for (int var2 = 0; var2 < this.val$weights.length; ++var2) {
-			if (var2 > 0) {
-				var1.append(", ");
+		for (int i = 0; i < this.val$weights.length; ++i) {
+			if (i > 0) {
+				sb.append(", ");
 			}
 
-			var1.append(String.format("%.1f", new Object[] {Double.valueOf(100.0D * (double)this.val$weights[var2] / (double)this.val$sum)}));
+			sb.append(String.format("%.1f", new Object[] {Double.valueOf(100.0D * (double)this.val$weights[i] / (double)this.val$sum)}));
 		}
 
-		var1.append(")");
-		return var1.toString();
+		sb.append(")");
+		return sb.toString();
 	}
 }

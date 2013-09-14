@@ -19,34 +19,34 @@ public class BlendMethod {
 	private final boolean fadeRGB;
 	private final boolean fadeAlpha;
 
-	public static BlendMethod parse(String var0) {
-		var0 = var0.toLowerCase().trim();
+	public static BlendMethod parse(String text) {
+		text = text.toLowerCase().trim();
 
-		if (var0.equals("alpha")) {
+		if (text.equals("alpha")) {
 			return ALPHA;
-		} else if (var0.equals("add")) {
+		} else if (text.equals("add")) {
 			return ADD;
-		} else if (var0.equals("subtract")) {
+		} else if (text.equals("subtract")) {
 			return SUBTRACT;
-		} else if (var0.equals("multiply")) {
+		} else if (text.equals("multiply")) {
 			return MULTIPLY;
-		} else if (var0.equals("dodge")) {
+		} else if (text.equals("dodge")) {
 			return DODGE;
-		} else if (var0.equals("burn")) {
+		} else if (text.equals("burn")) {
 			return BURN;
-		} else if (var0.equals("screen")) {
+		} else if (text.equals("screen")) {
 			return SCREEN;
-		} else if (!var0.equals("overlay") && !var0.equals("color")) {
-			if (var0.equals("replace")) {
+		} else if (!text.equals("overlay") && !text.equals("color")) {
+			if (text.equals("replace")) {
 				return REPLACE;
 			} else {
-				String[] var1 = var0.split("\\s+");
+				String[] tokens = text.split("\\s+");
 
-				if (var1.length >= 2) {
+				if (tokens.length >= 2) {
 					try {
-						int var2 = Integer.parseInt(var1[0]);
-						int var3 = Integer.parseInt(var1[1]);
-						return new BlendMethod("custom(" + var2 + "," + var3 + ")", var2, var3, true, true, false);
+						int e = Integer.parseInt(tokens[0]);
+						int dstBlend = Integer.parseInt(tokens[1]);
+						return new BlendMethod("custom(" + e + "," + dstBlend + ")", e, dstBlend, true, true, false);
 					} catch (NumberFormatException var4) {
 						;
 					}
@@ -59,26 +59,26 @@ public class BlendMethod {
 		}
 	}
 
-	private BlendMethod(String var1, int var2, int var3, boolean var4, boolean var5, boolean var6) {
-		this.name = var1;
-		this.srcBlend = var2;
-		this.dstBlend = var3;
-		this.blend = var4;
-		this.fadeRGB = var5;
-		this.fadeAlpha = var6;
+	private BlendMethod(String name, int srcBlend, int dstBlend, boolean blend, boolean fadeRGB, boolean fadeAlpha) {
+		this.name = name;
+		this.srcBlend = srcBlend;
+		this.dstBlend = dstBlend;
+		this.blend = blend;
+		this.fadeRGB = fadeRGB;
+		this.fadeAlpha = fadeAlpha;
 	}
 
 	public String toString() {
 		return this.name;
 	}
 
-	public void applyFade(float var1) {
+	public void applyFade(float fade) {
 		if (this.fadeRGB && this.fadeAlpha) {
-			GL11.glColor4f(var1, var1, var1, var1);
+			GL11.glColor4f(fade, fade, fade, fade);
 		} else if (this.fadeRGB) {
-			GL11.glColor4f(var1, var1, var1, 1.0F);
+			GL11.glColor4f(fade, fade, fade, 1.0F);
 		} else if (this.fadeAlpha) {
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, var1);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, fade);
 		}
 	}
 
@@ -101,5 +101,9 @@ public class BlendMethod {
 
 	public boolean isColorBased() {
 		return this.fadeRGB;
+	}
+
+	public boolean canFade() {
+		return this.blend && (this.fadeAlpha || this.fadeRGB);
 	}
 }

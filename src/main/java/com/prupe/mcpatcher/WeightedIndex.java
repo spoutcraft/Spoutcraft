@@ -4,50 +4,76 @@ import com.prupe.mcpatcher.WeightedIndex$1;
 import com.prupe.mcpatcher.WeightedIndex$2;
 
 public abstract class WeightedIndex {
+	private static final long K1 = -5435081209227447693L;
+	private static final long KMUL = -7070675565921424023L;
 	final int size;
 
-	public static WeightedIndex create(int var0) {
-		return var0 <= 0 ? null : new WeightedIndex$1(var0);
+	public static WeightedIndex create(int size) {
+		return size <= 0 ? null : new WeightedIndex$1(size);
 	}
 
-	public static WeightedIndex create(int var0, String var1) {
-		if (var0 > 0 && var1 != null) {
-			int[] var2 = new int[var0];
-			int var3 = 0;
-			boolean var4 = false;
-			String[] var5 = var1.trim().split("\\s+");
+	public static WeightedIndex create(int size, String weightList) {
+		if (size > 0 && weightList != null) {
+			int[] weights = new int[size];
+			int sum1 = 0;
+			boolean useWeight = false;
+			String[] list = weightList.trim().split("\\s+");
 
-			for (int var6 = 0; var6 < var0; ++var6) {
-				if (var6 < var5.length && var5[var6].matches("^\\d+$")) {
-					var2[var6] = Math.max(Integer.parseInt(var5[var6]), 0);
+			for (int sum = 0; sum < size; ++sum) {
+				if (sum < list.length && list[sum].matches("^\\d+$")) {
+					weights[sum] = Math.max(Integer.parseInt(list[sum]), 0);
 				} else {
-					var2[var6] = 1;
+					weights[sum] = 1;
 				}
 
-				if (var6 > 0 && var2[var6] != var2[0]) {
-					var4 = true;
+				if (sum > 0 && weights[sum] != weights[0]) {
+					useWeight = true;
 				}
 
-				var3 += var2[var6];
+				sum1 += weights[sum];
 			}
 
-			if (var4 && var3 > 0) {
-				return new WeightedIndex$2(var0, var3, var2);
+			if (useWeight && sum1 > 0) {
+				return new WeightedIndex$2(size, sum1, weights);
 			} else {
-				return create(var0);
+				return create(size);
 			}
 		} else {
-			return create(var0);
+			return create(size);
 		}
 	}
 
-	protected WeightedIndex(int var1) {
-		this.size = var1;
+	protected WeightedIndex(int size) {
+		this.size = size;
 	}
 
-	protected final int mod(long var1, int var3) {
-		return (int)((var1 >> 32 ^ var1) & 2147483647L) % var3;
+	protected final int mod(long n, int modulus) {
+		return (int)((n >> 32 ^ n) & 2147483647L) % modulus;
 	}
 
 	public abstract int choose(long var1);
+
+	public static long hash128To64(int i, int j, int k, int l) {
+		return hash128To64((long)i << 32 | (long)j, (long)k << 32 | (long)l);
+	}
+
+	public static long hash128To64(long a, long b) {
+		a = shiftMix(a * -5435081209227447693L) * -5435081209227447693L;
+		long c = b * -5435081209227447693L + mix128to64(a, b);
+		long d = shiftMix(a + b);
+		a = mix128to64(a, c);
+		b = mix128to64(d, b);
+		return a ^ b ^ mix128to64(b, a);
+	}
+
+	private static long shiftMix(long val) {
+		return val ^ val >>> 47;
+	}
+
+	private static long mix128to64(long u, long v) {
+		long a = shiftMix((u ^ v) * -7070675565921424023L);
+		long b = shiftMix((u ^ a) * -7070675565921424023L);
+		b *= -7070675565921424023L;
+		return b;
+	}
 }

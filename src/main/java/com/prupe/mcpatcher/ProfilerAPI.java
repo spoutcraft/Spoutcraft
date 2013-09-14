@@ -3,15 +3,15 @@ package com.prupe.mcpatcher;
 public class ProfilerAPI {
 	private static final boolean enable = Config.getBoolean("extraProfiling", false);
 
-	public static void startSection(String var0) {
+	public static void startSection(String name) {
 		if (enable) {
-			MCPatcherUtils.getMinecraft().mcProfiler.startSection(var0);
+			MCPatcherUtils.getMinecraft().mcProfiler.startSection(name);
 		}
 	}
 
-	public static void endStartSection(String var0) {
+	public static void endStartSection(String name) {
 		if (enable) {
-			MCPatcherUtils.getMinecraft().mcProfiler.endStartSection(var0);
+			MCPatcherUtils.getMinecraft().mcProfiler.endStartSection(name);
 		}
 	}
 

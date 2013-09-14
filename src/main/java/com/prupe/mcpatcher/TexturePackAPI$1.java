@@ -1,16 +1,13 @@
 package com.prupe.mcpatcher;
 
 import java.util.Comparator;
+import net.minecraft.src.ResourceLocation;
 
-final class TexturePackAPI$1 implements Comparator {
-	public int compare(String var1, String var2) {
-		String var3 = var1.replaceAll(".*/", "").replaceFirst("\\.properties", "");
-		String var4 = var2.replaceAll(".*/", "").replaceFirst("\\.properties", "");
-		int var5 = var3.compareTo(var4);
-		return var5 != 0 ? var5 : var1.compareTo(var2);
-	}
-
-	public int compare(Object var1, Object var2) {
-		return this.compare((String)var1, (String)var2);
+final class TexturePackAPI$1 implements Comparator<ResourceLocation> {
+	public int compare(ResourceLocation o1, ResourceLocation o2) {
+		String f1 = o1.func_110623_a().replaceAll(".*/", "").replaceFirst("\\.properties", "");
+		String f2 = o2.func_110623_a().replaceAll(".*/", "").replaceFirst("\\.properties", "");
+		int result = f1.compareTo(f2);
+		return result != 0 ? result : o1.func_110623_a().compareTo(o2.func_110623_a());
 	}
 }

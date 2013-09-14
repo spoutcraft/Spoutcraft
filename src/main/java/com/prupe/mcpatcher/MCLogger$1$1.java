@@ -12,20 +12,20 @@ class MCLogger$1$1 extends Formatter {
 		this.this$1 = var1;
 	}
 
-	public String format(LogRecord var1) {
-		Level var2 = var1.getLevel();
+	public String format(LogRecord record) {
+		Level level = record.getLevel();
 
-		if (var2 == Level.CONFIG) {
-			return var1.getMessage();
+		if (level == Level.CONFIG) {
+			return record.getMessage();
 		} else {
-			String var3 = var1.getMessage();
-			String var4;
+			String message = record.getMessage();
+			String prefix;
 
-			for (var4 = ""; var3.startsWith("\n"); var3 = var3.substring(1)) {
-				var4 = var4 + "\n";
+			for (prefix = ""; message.startsWith("\n"); message = message.substring(1)) {
+				prefix = prefix + "\n";
 			}
 
-			return var4 + "[" + MCLogger.access$000(this.this$1.this$0) + "] " + var2.toString() + ": " + var3;
+			return prefix + "[" + MCLogger.access$000(this.this$1.this$0) + "] " + level.toString() + ": " + message;
 		}
 	}
 }

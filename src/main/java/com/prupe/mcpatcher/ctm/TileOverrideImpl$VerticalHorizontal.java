@@ -1,0 +1,62 @@
+package com.prupe.mcpatcher.ctm;
+
+import com.prupe.mcpatcher.TileLoader;
+import com.prupe.mcpatcher.ctm.TileOverrideImpl$Vertical;
+import java.util.Properties;
+import net.minecraft.src.Block;
+import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.Icon;
+import net.minecraft.src.ResourceLocation;
+
+final class TileOverrideImpl$VerticalHorizontal extends TileOverrideImpl$Vertical {
+	private static final int[] neighborMap = new int[] {3, 6, 3, 3, 3, 6, 3, 3, 4, 5, 4, 4, 3, 6, 3, 3, 3, 6, 3, 3, 3, 6, 3, 3, 3, 6, 3, 3, 3, 6, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3};
+
+	TileOverrideImpl$VerticalHorizontal(ResourceLocation filePrefix, Properties properties, TileLoader tileLoader) {
+		super(filePrefix, properties, tileLoader);
+	}
+
+	String getMethod() {
+		return "vertical+horizontal";
+	}
+
+	String checkTileMap() {
+		return this.getNumberOfTiles() == 7 ? null : "requires exactly 7 tiles";
+	}
+
+	Icon getTileImpl(IBlockAccess blockAccess, Block block, Icon origIcon, int i, int j, int k, int face) {
+		Icon icon = super.getTileImpl(blockAccess, block, origIcon, i, j, k, face);
+
+		if (icon != this.icons[3]) {
+			return icon;
+		} else {
+			int[][] offsets = NEIGHBOR_OFFSET[face];
+			int neighborBits = 0;
+
+			if (this.shouldConnect(blockAccess, block, origIcon, i, j, k, face, offsets[this.rotateUV(0)])) {
+				neighborBits |= 1;
+			}
+
+			if (this.shouldConnect(blockAccess, block, origIcon, i, j, k, face, offsets[this.rotateUV(1)])) {
+				neighborBits |= 2;
+			}
+
+			if (this.shouldConnect(blockAccess, block, origIcon, i, j, k, face, offsets[this.rotateUV(3)])) {
+				neighborBits |= 4;
+			}
+
+			if (this.shouldConnect(blockAccess, block, origIcon, i, j, k, face, offsets[this.rotateUV(4)])) {
+				neighborBits |= 8;
+			}
+
+			if (this.shouldConnect(blockAccess, block, origIcon, i, j, k, face, offsets[this.rotateUV(5)])) {
+				neighborBits |= 16;
+			}
+
+			if (this.shouldConnect(blockAccess, block, origIcon, i, j, k, face, offsets[this.rotateUV(7)])) {
+				neighborBits |= 32;
+			}
+
+			return this.icons[neighborMap[neighborBits]];
+		}
+	}
+}

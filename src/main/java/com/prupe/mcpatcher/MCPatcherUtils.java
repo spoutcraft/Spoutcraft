@@ -12,15 +12,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 
 public class MCPatcherUtils {
 	private static File minecraftDir = null;
-	private static String directoryStr = "";
-	private static boolean isGame = true;
+	private static boolean isGame;
 	private static Minecraft minecraft;
 	private static String minecraftVersion;
-	private static String patcherVersion;	
+	private static String patcherVersion;
 	public static final String EXTENDED_HD = "Extended HD";
 	public static final String HD_FONT = "HD Font";
 	public static final String RANDOM_MOBS = "Random Mobs";
@@ -30,180 +29,219 @@ public class MCPatcherUtils {
 	public static final String BETTER_GLASS = "Better Glass";
 	public static final String CUSTOM_ITEM_TEXTURES = "Custom Item Textures";
 	public static final String GLSL_SHADERS = "GLSL Shaders";
+	public static final String BASE_MOD = "__Base";
+	public static final String BASE_TEXTURE_PACK_MOD = "__TexturePackBase";
+	public static final String BASE_TILESHEET_MOD = "__TilesheetBase";
 	public static final String CUSTOM_ANIMATIONS = "Custom Animations";
 	public static final String MIPMAP = "Mipmap";
+	public static final String GL11_CLASS = "org.lwjgl.opengl.GL11";
 	public static final String UTILS_CLASS = "com.prupe.mcpatcher.MCPatcherUtils";
 	public static final String LOGGER_CLASS = "com.prupe.mcpatcher.MCLogger";
 	public static final String CONFIG_CLASS = "com.prupe.mcpatcher.Config";
-	public static final String TILE_MAPPING_CLASS = "com.prupe.mcpatcher.TileMapping";
 	public static final String PROFILER_API_CLASS = "com.prupe.mcpatcher.ProfilerAPI";
+	public static final String INPUT_HANDLER_CLASS = "com.prupe.mcpatcher.InputHandler";
 	public static final String TEXTURE_PACK_API_CLASS = "com.prupe.mcpatcher.TexturePackAPI";
 	public static final String TEXTURE_PACK_CHANGE_HANDLER_CLASS = "com.prupe.mcpatcher.TexturePackChangeHandler";
 	public static final String WEIGHTED_INDEX_CLASS = "com.prupe.mcpatcher.WeightedIndex";
-	public static final String BLEND_METHOD_CLASS = "com.prupe.mcpatcher.BlendMethod";	
-	public static final String GL11_CLASS = "org.lwjgl.opengl.GL11";
-	public static final String CUSTOM_ANIMATION_CLASS = "com.prupe.mcpatcher.mod.CustomAnimation";
-	public static final String FANCY_DIAL_CLASS = "com.prupe.mcpatcher.mod.FancyDial";
-	public static final String MIPMAP_HELPER_CLASS = "com.prupe.mcpatcher.mod.MipmapHelper";
-	public static final String AA_HELPER_CLASS = "com.prupe.mcpatcher.mod.AAHelper";
-	public static final String BORDERED_TEXTURE_CLASS = "com.prupe.mcpatcher.mod.BorderedTexture";
-	public static final String FONT_UTILS_CLASS = "com.prupe.mcpatcher.mod.FontUtils";
-	public static final String RANDOM_MOBS_CLASS = "com.prupe.mcpatcher.mod.MobRandomizer";
-	public static final String MOB_RULE_LIST_CLASS = "com.prupe.mcpatcher.mod.MobRuleList";
-	public static final String MOB_OVERLAY_CLASS = "com.prupe.mcpatcher.mod.MobOverlay";
-	public static final String COLORIZER_CLASS = "com.prupe.mcpatcher.mod.Colorizer";
-	public static final String COLORIZE_WORLD_CLASS = "com.prupe.mcpatcher.mod.ColorizeWorld";
-	public static final String COLORIZE_ITEM_CLASS = "com.prupe.mcpatcher.mod.ColorizeItem";
-	public static final String COLORIZE_ENTITY_CLASS = "com.prupe.mcpatcher.mod.ColorizeEntity";
-	public static final String COLORIZE_BLOCK_CLASS = "com.prupe.mcpatcher.mod.ColorizeBlock";
-	public static final String COLOR_MAP_CLASS = "com.prupe.mcpatcher.mod.ColorMap";
-	public static final String BIOME_HELPER_CLASS = "com.prupe.mcpatcher.mod.BiomeHelper";
-	public static final String LIGHTMAP_CLASS = "com.prupe.mcpatcher.mod.Lightmap";
-	public static final String CTM_UTILS_CLASS = "com.prupe.mcpatcher.mod.CTMUtils";
-	public static final String TESSELLATOR_UTILS_CLASS = "com.prupe.mcpatcher.mod.TessellatorUtils";	
-	public static final String TILE_OVERRIDE_INTERFACE = "com.prupe.mcpatcher.mod.ITileOverride";
-	public static final String TILE_OVERRIDE_CLASS = "com.prupe.mcpatcher.mod.TileOverride";
-	public static final String TILE_OVERRIDE_IMPL_CLASS = "com.prupe.mcpatcher.mod.TileOverrideImpl";
-	public static final String TILE_LOADER_CLASS = "com.prupe.mcpatcher.mod.TileLoader";
-	public static final String GLASS_PANE_RENDERER_CLASS = "com.prupe.mcpatcher.mod.GlassPaneRenderer";
-	public static final String RENDER_PASS_CLASS = "com.prupe.mcpatcher.mod.RenderPass";
-	public static final String RENDER_PASS_API_CLASS = "com.prupe.mcpatcher.mod.RenderPassAPI";
-	public static final String SKY_RENDERER_CLASS = "com.prupe.mcpatcher.mod.SkyRenderer";
-	public static final String FIREWORKS_HELPER_CLASS = "com.prupe.mcpatcher.mod.FireworksHelper";
-	public static final String CIT_UTILS_CLASS = "com.prupe.mcpatcher.mod.CITUtils";
-	public static final String SHADERS_CLASS = "com.prupe.mcpatcher.mod.Shaders";
+	public static final String BLEND_METHOD_CLASS = "com.prupe.mcpatcher.BlendMethod";
+	public static final String TILE_LOADER_CLASS = "com.prupe.mcpatcher.TileLoader";
+	public static final String TESSELLATOR_UTILS_CLASS = "com.prupe.mcpatcher.TessellatorUtils";
+	public static final String AA_HELPER_CLASS = "com.prupe.mcpatcher.hd.AAHelper";
+	public static final String BORDERED_TEXTURE_CLASS = "com.prupe.mcpatcher.hd.BorderedTexture";
+	public static final String CUSTOM_ANIMATION_CLASS = "com.prupe.mcpatcher.hd.CustomAnimation";
+	public static final String FANCY_DIAL_CLASS = "com.prupe.mcpatcher.hd.FancyDial";
+	public static final String FONT_UTILS_CLASS = "com.prupe.mcpatcher.hd.FontUtils";
+	public static final String MIPMAP_HELPER_CLASS = "com.prupe.mcpatcher.hd.MipmapHelper";
+	public static final String RANDOM_MOBS_CLASS = "com.prupe.mcpatcher.mob.MobRandomizer";
+	public static final String MOB_RULE_LIST_CLASS = "com.prupe.mcpatcher.mob.MobRuleList";
+	public static final String MOB_OVERLAY_CLASS = "com.prupe.mcpatcher.mob.MobOverlay";
+	public static final String LINE_RENDERER_CLASS = "com.prupe.mcpatcher.mob.LineRenderer";
+	public static final String COLORIZER_CLASS = "com.prupe.mcpatcher.cc.Colorizer";
+	public static final String COLORIZE_WORLD_CLASS = "com.prupe.mcpatcher.cc.ColorizeWorld";
+	public static final String COLORIZE_ITEM_CLASS = "com.prupe.mcpatcher.cc.ColorizeItem";
+	public static final String COLORIZE_ENTITY_CLASS = "com.prupe.mcpatcher.cc.ColorizeEntity";
+	public static final String COLORIZE_BLOCK_CLASS = "com.prupe.mcpatcher.cc.ColorizeBlock";
+	public static final String COLOR_MAP_CLASS = "com.prupe.mcpatcher.cc.ColorMap";
+	public static final String BIOME_HELPER_CLASS = "com.prupe.mcpatcher.cc.BiomeHelper";
+	public static final String LIGHTMAP_CLASS = "com.prupe.mcpatcher.cc.Lightmap";
+	public static final String CTM_UTILS_CLASS = "com.prupe.mcpatcher.ctm.CTMUtils";
+	public static final String TILE_OVERRIDE_INTERFACE = "com.prupe.mcpatcher.ctm.ITileOverride";
+	public static final String TILE_OVERRIDE_CLASS = "com.prupe.mcpatcher.ctm.TileOverride";
+	public static final String TILE_OVERRIDE_IMPL_CLASS = "com.prupe.mcpatcher.ctm.TileOverrideImpl";
+	public static final String GLASS_PANE_RENDERER_CLASS = "com.prupe.mcpatcher.ctm.GlassPaneRenderer";
+	public static final String RENDER_PASS_CLASS = "com.prupe.mcpatcher.ctm.RenderPass";
+	public static final String RENDER_PASS_API_CLASS = "com.prupe.mcpatcher.ctm.RenderPassAPI";
+	public static final String SKY_RENDERER_CLASS = "com.prupe.mcpatcher.sky.SkyRenderer";
+	public static final String FIREWORKS_HELPER_CLASS = "com.prupe.mcpatcher.sky.FireworksHelper";
+	public static final String CIT_UTILS_CLASS = "com.prupe.mcpatcher.cit.CITUtils";
+	public static final String OVERRIDE_BASE_CLASS = "com.prupe.mcpatcher.cit.OverrideBase";
+	public static final String ITEM_OVERRIDE_CLASS = "com.prupe.mcpatcher.cit.ItemOverride";
+	public static final String ENCHANTMENT_CLASS = "com.prupe.mcpatcher.cit.Enchantment";
+	public static final String ENCHANTMENT_LIST_CLASS = "com.prupe.mcpatcher.cit.EnchantmentList";
+	public static final String ARMOR_OVERRIDE_CLASS = "com.prupe.mcpatcher.cit.ArmorOverride";
+	public static final String POTION_REPLACER_CLASS = "com.prupe.mcpatcher.cit.PotionReplacer";
+	public static final String SHADERS_CLASS = "com.prupe.mcpatcher.glsl.Shaders";
+	public static final String BLANK_PNG = "mcpatcher/blank.png";
 
 	static File getDefaultGameDir() {
-		String var0 = System.getProperty("os.name").toLowerCase();
-		String var1 = null;
-		String var2 = ".spoutcraft";
+		String os = System.getProperty("os.name").toLowerCase();
+		String baseDir = null;
+		String subDir = ".minecraft";
 
-		if (var0.contains("win")) {
-			var1 = System.getenv("APPDATA");
-		} else if (var0.contains("mac")) {
-			var2 = "Library/Application Support/spoutcraft";
+		if (os.contains("win")) {
+			baseDir = System.getenv("APPDATA");
+		} else if (os.contains("mac")) {
+			subDir = "Library/Application Support/minecraft";
 		}
 
-		if (var1 == null) {
-			var1 = System.getProperty("user.home");
+		if (baseDir == null) {
+			baseDir = System.getProperty("user.home");
 		}
 
-		return new File(var1, var2);
+		return new File(baseDir, subDir);
 	}
 
-	static boolean setGameDir(File var0) {
-		if (var0 != null && var0.isDirectory() && ((new File(var0, "bin/lwjgl.jar")).exists() && (new File(var0, "resources")).isDirectory() || (new File(var0, "libraries")).isDirectory() && (new File(var0, "versions")).isDirectory())) {
-			minecraftDir = var0.getAbsoluteFile();
+	static boolean setGameDir(File dir) {
+		if (dir != null && dir.isDirectory() && (new File(dir, "libraries")).isDirectory() && (new File(dir, "versions")).isDirectory()) {
+			minecraftDir = dir.getAbsoluteFile();
 		} else {
 			minecraftDir = null;
 		}
 
-		return true;
+		return Config.load(minecraftDir);
 	}
 
-	public static File getMinecraftPath(String ... var0) {
-		File var1 = minecraftDir;
-		String[] var2 = var0;
-		int var3 = var0.length;
+	public static File getMinecraftPath(String ... subdirs) {
+		File f = minecraftDir;
+		String[] arr$ = subdirs;
+		int len$ = subdirs.length;
 
-		for (int var4 = 0; var4 < var3; ++var4) {
-			String var5 = var2[var4];
-			var1 = new File(var1, var5);
+		for (int i$ = 0; i$ < len$; ++i$) {
+			String s = arr$[i$];
+			f = new File(f, s);
 		}
 
-		return var1;
+		return f;
 	}
 
 	public static boolean isGame() {
 		return isGame;
 	}
 
-	public static String getStringProperty(Properties var0, String var1, String var2) {
-		return var0 == null ? var2 : var0.getProperty(var1, var2).trim();
+	public static String getStringProperty(Properties properties, String key, String defaultValue) {
+		return properties == null ? defaultValue : properties.getProperty(key, defaultValue).trim();
 	}
 
-	public static int getIntProperty(Properties var0, String var1, int var2) {
-		if (var0 != null) {
-			String var3 = var0.getProperty(var1, "").trim();
+	public static int getIntProperty(Properties properties, String key, int defaultValue) {
+		if (properties != null) {
+			String value = properties.getProperty(key, "").trim();
 
-			if (!var3.equals("")) {
+			if (!value.equals("")) {
 				try {
-					return Integer.parseInt(var3);
+					return Integer.parseInt(value);
 				} catch (NumberFormatException var5) {
 					;
 				}
 			}
 		}
 
-		return var2;
+		return defaultValue;
 	}
 
-	public static boolean getBooleanProperty(Properties var0, String var1, boolean var2) {
-		if (var0 != null) {
-			String var3 = var0.getProperty(var1, "").trim().toLowerCase();
+	public static boolean getBooleanProperty(Properties properties, String key, boolean defaultValue) {
+		if (properties != null) {
+			String value = properties.getProperty(key, "").trim().toLowerCase();
 
-			if (!var3.equals("")) {
-				return Boolean.parseBoolean(var3);
+			if (!value.equals("")) {
+				return Boolean.parseBoolean(value);
 			}
 		}
 
-		return var2;
+		return defaultValue;
 	}
 
-	public static float getFloatProperty(Properties var0, String var1, float var2) {
-		if (var0 != null) {
-			String var3 = var0.getProperty(var1, "").trim();
+	public static float getFloatProperty(Properties properties, String key, float defaultValue) {
+		if (properties != null) {
+			String value = properties.getProperty(key, "").trim();
 
-			if (!var3.equals("")) {
+			if (!value.equals("")) {
 				try {
-					return Float.parseFloat(var3);
+					return Float.parseFloat(value);
 				} catch (NumberFormatException var5) {
 					;
 				}
 			}
 		}
 
-		return var2;
+		return defaultValue;
 	}
 
-	public static void close(Closeable var0) {
-		if (var0 != null) {
+	public static double getDoubleProperty(Properties properties, String key, double defaultValue) {
+		if (properties != null) {
+			String value = properties.getProperty(key, "").trim();
+
+			if (!value.equals("")) {
+				try {
+					return Double.parseDouble(value);
+				} catch (NumberFormatException var6) {
+					;
+				}
+			}
+		}
+
+		return defaultValue;
+	}
+
+	public static void close(Closeable closeable) {
+		if (closeable != null) {
 			try {
-				var0.close();
+				closeable.close();
 			} catch (IOException var2) {
 				var2.printStackTrace();
 			}
 		}
 	}
 
-	public static void close(ZipFile var0) {
-		if (var0 != null) {
+	public static void close(ZipFile zip) {
+		if (zip != null) {
 			try {
-				var0.close();
+				zip.close();
 			} catch (IOException var2) {
 				var2.printStackTrace();
 			}
 		}
 	}
 
-	public static void setMinecraft(Minecraft var0) {
-		minecraft = var0;
-	}
-
-	public static void setVersions(String var0, String var1) {
-		minecraftVersion = var0;
-		patcherVersion = var1;
+	public static void setMinecraft(Minecraft minecraft1, File minecraftDir, String minecraftVersion1, String patcherVersion1) {
+		isGame = true;
+		minecraft = minecraft1;
+		minecraftDir = minecraftDir.getAbsoluteFile();
+		minecraftVersion = minecraftVersion1;
+		patcherVersion = patcherVersion1;
+		System.out.println();
+		System.out.printf("MCPatcherUtils initialized:\n", new Object[0]);
+		System.out.printf("Game directory:    %s\n", new Object[] {minecraftDir});
+		System.out.printf("Minecraft version: %s\n", new Object[] {minecraftVersion});
+		System.out.printf("MCPatcher version: %s\n", new Object[] {patcherVersion});
+		System.out.printf("Max heap memory:   %.1fMB\n", new Object[] {Float.valueOf((float)Runtime.getRuntime().maxMemory() / 1048576.0F)});
 
 		try {
-			Class var2 = Class.forName("sun.misc.VM");
-			Method var3 = var2.getDeclaredMethod("maxDirectMemory", new Class[0]);
-			long var4 = ((Long)var3.invoke((Object)null, new Object[0])).longValue();
-		} catch (Throwable var6) {
-			var6.printStackTrace();
+			Class e = Class.forName("sun.misc.VM");
+			Method method = e.getDeclaredMethod("maxDirectMemory", new Class[0]);
+			long memory = ((Long)method.invoke((Object)null, new Object[0])).longValue();
+			System.out.printf("Max direct memory: %.1fMB\n", new Object[] {Float.valueOf((float)memory / 1048576.0F)});
+		} catch (Throwable var8) {
+			var8.printStackTrace();
 		}
+
+		System.out.println();
+		Config.load(minecraftDir);
 	}
 
 	public static Minecraft getMinecraft() {
+		if (minecraft == null) {
+			System.out.println("Getting Minecraft, returned Error because it was null");
+		}
 		return minecraft;
 	}
 
@@ -215,82 +253,82 @@ public class MCPatcherUtils {
 		return patcherVersion;
 	}
 
-	public static BufferedImage readImage(InputStream var0) {
-		BufferedImage var1 = null;
+	public static BufferedImage readImage(InputStream input) {
+		BufferedImage image = null;
 
-		if (var0 != null) {
+		if (input != null) {
 			try {
-				var1 = ImageIO.read(var0);
+				image = ImageIO.read(input);
 			} catch (IOException var6) {
 				var6.printStackTrace();
 			} finally {
-				close((Closeable)var0);
+				close((Closeable)input);
 			}
 		}
 
-		return var1;
+		return image;
 	}
 
-	public static Properties readProperties(InputStream var0) {
-		Properties var1 = new Properties();
-		return readProperties(var0, var1) ? var1 : null;
+	public static Properties readProperties(InputStream input) {
+		Properties properties = new Properties();
+		return readProperties(input, properties) ? properties : null;
 	}
 
-	public static boolean readProperties(InputStream var0, Properties var1) {
-		if (var0 != null && var1 != null) {
-			boolean var2;
+	public static boolean readProperties(InputStream input, Properties properties) {
+		if (input != null && properties != null) {
+			boolean e;
 
 			try {
-				var1.load(var0);
-				var2 = true;
+				properties.load(input);
+				e = true;
 			} catch (IOException var6) {
 				var6.printStackTrace();
 				return false;
 			} finally {
-				close((Closeable)var0);
+				close((Closeable)input);
 			}
 
-			return var2;
+			return e;
 		} else {
 			return false;
 		}
 	}
 
-	public static int[] getImageRGB(BufferedImage var0) {
-		if (var0 == null) {
+	public static int[] getImageRGB(BufferedImage image) {
+		if (image == null) {
 			return null;
 		} else {
-			int var1 = var0.getWidth();
-			int var2 = var0.getHeight();
-			int[] var3 = new int[var1 * var2];
-			var0.getRGB(0, 0, var1, var2, var3, 0, var1);
-			return var3;
+			int width = image.getWidth();
+			int height = image.getHeight();
+			int[] rgb = new int[width * height];
+			image.getRGB(0, 0, width, height, rgb, 0, width);
+			return rgb;
 		}
 	}
 
-	public static int[] parseIntegerList(String var0, int var1, int var2) {
-		ArrayList var3 = new ArrayList();
-		Pattern var4 = Pattern.compile("(\\d*)-(\\d*)");
-		String[] var5 = var0.replace(',', ' ').split("\\s+");
-		int var6 = var5.length;
+	public static int[] parseIntegerList(String list, int minValue, int maxValue) {
+		ArrayList tmpList = new ArrayList();
+		Pattern p = Pattern.compile("(\\d*)-(\\d*)");
+		String[] a = list.replace(',', ' ').split("\\s+");
+		int i = a.length;
 
-		for (int var7 = 0; var7 < var6; ++var7) {
-			String var8 = var5[var7];
+		for (int i$ = 0; i$ < i; ++i$) {
+			String token = a[i$];
 
 			try {
-				if (var8.matches("\\d+")) {
-					var3.add(Integer.valueOf(Integer.parseInt(var8)));
+				if (token.matches("\\d+")) {
+					tmpList.add(Integer.valueOf(Integer.parseInt(token)));
 				} else {
-					Matcher var9 = var4.matcher(var8);
+					Matcher e = p.matcher(token);
 
-					if (var9.matches()) {
-						String var10 = var9.group(1);
-						String var11 = var9.group(2);
-						int var12 = var10.equals("") ? var1 : Integer.parseInt(var10);
-						int var13 = var11.equals("") ? var2 : Integer.parseInt(var11);
+					if (e.matches()) {
+						String a1 = e.group(1);
+						String b = e.group(2);
+						int min = a1.equals("") ? minValue : Integer.parseInt(a1);
+						int max = b.equals("") ? maxValue : Integer.parseInt(b);
 
-						for (int var14 = var12; var14 <= var13; ++var14) {
-							var3.add(Integer.valueOf(var14));
+						for (int i1 = min; i1 <= max; ++i1) {
+							tmpList.add(Integer.valueOf(i1));
 						}
 					}
 				}
@@ -299,44 +337,24 @@ public class MCPatcherUtils {
 			}
 		}
 
-		if (var1 <= var2) {
+		if (minValue <= maxValue) {
 			int var16 = 0;
 
-			while (var16 < var3.size()) {
-				if (((Integer)var3.get(var16)).intValue() >= var1 && ((Integer)var3.get(var16)).intValue() <= var2) {
+			while (var16 < tmpList.size()) {
+				if (((Integer)tmpList.get(var16)).intValue() >= minValue && ((Integer)tmpList.get(var16)).intValue() <= maxValue) {
 					++var16;
 				} else {
-					var3.remove(var16);
+					tmpList.remove(var16);
 				}
 			}
 		}
 
-		int[] var17 = new int[var3.size()];
+		int[] var17 = new int[tmpList.size()];
 
-		for (var6 = 0; var6 < var17.length; ++var6) {
-			var17[var6] = ((Integer)var3.get(var6)).intValue();
+		for (i = 0; i < var17.length; ++i) {
+			var17[i] = ((Integer)tmpList.get(i)).intValue();
 		}
 
 		return var17;
-	}
-
-	static {
-		try {
-			if (Class.forName("com.prupe.mcpatcher.MCPatcher") != null) {
-				isGame = false;
-			}
-		} catch (ClassNotFoundException var1) {
-			;
-		} catch (Throwable var2) {
-			var2.printStackTrace();
-		}
-
-		if (isGame) {
-			if (!setGameDir(new File(".")) && !setGameDir(getDefaultGameDir())) {
-				//directoryStr = String.format("Current directory: %s", new Object[] {(new File(".")).getAbsolutePath()});
-			} else {
-				//directoryStr = String.format("Game directory:    %s", new Object[] {minecraftDir.getPath()});
-			}
-		}
 	}
 }

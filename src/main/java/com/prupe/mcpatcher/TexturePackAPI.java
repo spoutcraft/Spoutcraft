@@ -1,416 +1,341 @@
 package com.prupe.mcpatcher;
 
 import com.prupe.mcpatcher.TexturePackAPI$1;
+import com.prupe.mcpatcher.TexturePackAPI$2;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.ITexturePack;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.TexturePackCustom;
-import net.minecraft.src.TexturePackDefault;
-import net.minecraft.src.TexturePackFolder;
-import net.minecraft.src.TexturePackList;
+import net.minecraft.src.AbstractResourcePack;
+import net.minecraft.src.AbstractTexture;
+import net.minecraft.src.DefaultResourcePack;
+import net.minecraft.src.DynamicTexture;
+import net.minecraft.src.FallbackResourceManager;
+import net.minecraft.src.FileResourcePack;
+import net.minecraft.src.Minecraft;
+import net.minecraft.src.ResourceLocation;
+import net.minecraft.src.ResourceManager;
+import net.minecraft.src.ResourcePack;
+import net.minecraft.src.SimpleReloadableResourceManager;
+import net.minecraft.src.TextureManager;
+import net.minecraft.src.TextureMap;
+import net.minecraft.src.TextureObject;
+import org.lwjgl.opengl.GL11;
 
 public class TexturePackAPI {
+	private static final MCLogger logger = MCLogger.getLogger("Texture Pack");
+	public static final String DEFAULT_NAMESPACE = "minecraft";
+	public static final String MCPATCHER_SUBDIR = "mcpatcher/";
 	public static TexturePackAPI instance = new TexturePackAPI();
-	public static boolean enableTextureBorder;
-	private static final ArrayList textureMapFields = new ArrayList();
 
-	public static ITexturePack getTexturePack() {
-		Minecraft var0 = MCPatcherUtils.getMinecraft();
+	public static List<ResourcePack> getResourcePacks(String namespace) {
+		ArrayList list = new ArrayList();
+		ResourceManager resourceManager = getResourceManager();
 
-		if (var0 == null) {
-			return null;
-		} else {
-			TexturePackList var1 = var0.texturePackList;
-			return var1 == null ? null : var1.getSelectedTexturePack();
+		if (resourceManager instanceof SimpleReloadableResourceManager) {
+			Iterator i$ = ((SimpleReloadableResourceManager)resourceManager).field_110548_a.entrySet().iterator();
+
+			while (i$.hasNext()) {
+				Entry entry = (Entry)i$.next();
+
+				if (namespace == null || namespace.equals(entry.getKey())) {
+					FallbackResourceManager resourceManager1 = (FallbackResourceManager)entry.getValue();
+					list.addAll(resourceManager1.field_110540_a);
+				}
+			}
 		}
+
+		Collections.reverse(list);
+		return list;
+	}
+
+	public static ResourceManager getResourceManager() {
+		return Minecraft.getMinecraft().func_110442_L();
 	}
 
 	public static boolean isDefaultTexturePack() {
-		return getTexturePack() instanceof TexturePackDefault;
+		return getResourcePacks("minecraft").size() <= 1;
 	}
 
-	public static String[] parseTextureName(String var0) {
-		String[] var1 = new String[] {null, var0};
-
-		if (var0.startsWith("##")) {
-			var1[0] = "##";
-			var1[1] = var0.substring(2);
-		} else if (var0.startsWith("%")) {
-			int var2 = var0.indexOf(37, 1);
-
-			if (var2 > 0) {
-				var1[0] = var0.substring(0, var2 + 1);
-				var1[1] = var0.substring(var2 + 1);
-			}
-		}
-
-		return var1;
+	public static InputStream getInputStream(ResourceLocation resource) {
+		return resource == null ? null : instance.getInputStreamImpl(resource);
 	}
 
-	public static InputStream getInputStream(String var0) {
-		return instance.getInputStreamImpl(var0);
-	}
-
-	public static boolean hasResource(String var0) {
-		if (var0.endsWith(".png")) {
-			return getImage(var0) != null;
-		} else if (var0.endsWith(".properties")) {
-			return getProperties(var0) != null;
-		} else {
-			InputStream var1 = getInputStream(var0);
-			MCPatcherUtils.close((Closeable)var1);
-			return var1 != null;
-		}
-	}
-
-	public static BufferedImage getImage(String var0) {
-		return instance.getImageImpl(var0);
-	}
-
-	public static BufferedImage getImage(Object var0, String var1) {
-		return getImage(var1);
-	}
-
-	public static BufferedImage getImage(Object var0, Object var1, String var2) {
-		return getImage(var2);
-	}
-
-	public static Properties getProperties(String var0) {
-		Properties var1 = new Properties();
-		return getProperties(var0, var1) ? var1 : null;
-	}
-
-	public static boolean getProperties(String var0, Properties var1) {
-		return instance.getPropertiesImpl(var0, var1);
-	}
-
-	private static String fixupPath(String var0) {
-		if (var0 == null) {
-			var0 = "";
-		}
-
-		return var0.replace('\\', '/').replaceFirst("^/", "").replaceFirst("/$", "");
-	}
-
-	private static boolean directlyContains(String var0, String var1) {
-		var0 = fixupPath(var0);
-		var1 = fixupPath(var1);
-
-		if (!var1.startsWith(var0)) {
+	public static boolean hasResource(ResourceLocation resource) {
+		if (resource == null) {
 			return false;
+		} else if (resource.func_110623_a().endsWith(".png")) {
+			return getImage(resource) != null;
+		} else if (resource.func_110623_a().endsWith(".properties")) {
+			return getProperties(resource) != null;
 		} else {
-			var1 = var1.substring(var0.length());
-			return var1.matches("/[^/]+/?");
+			InputStream is = getInputStream(resource);
+			MCPatcherUtils.close((Closeable)is);
+			return is != null;
 		}
 	}
 
-	public static String[] listResources(String var0, String var1) {
-		List var2 = listResources(var0, var1, false, false, false);
-		return (String[])var2.toArray(new String[var2.size()]);
+	public static BufferedImage getImage(ResourceLocation resource) {
+		return resource == null ? null : instance.getImageImpl(resource);
 	}
 
-	public static String[] listDirectories(String var0) {
-		List var1 = listResources(var0, "", false, true, false);
-		return (String[])var1.toArray(new String[var1.size()]);
+	public static Properties getProperties(ResourceLocation resource) {
+		Properties properties = new Properties();
+		return getProperties(resource, properties) ? properties : null;
 	}
 
-	public static List listResources(String var0, String var1, boolean var2, boolean var3, boolean var4) {
-		var0 = fixupPath(var0);
+	public static boolean getProperties(ResourceLocation resource, Properties properties) {
+		return resource != null && instance.getPropertiesImpl(resource, properties);
+	}
 
-		if (var1 == null) {
-			var1 = "";
-		}
+	public static ResourceLocation transformResourceLocation(ResourceLocation resource, String oldExt, String newExt) {
+		return new ResourceLocation(resource.func_110624_b(), resource.func_110623_a().replaceFirst(Pattern.quote(oldExt) + "$", newExt));
+	}
 
-		ArrayList var5 = new ArrayList();
-		findResources(var0, var1, var2, var3, var5);
+	public static ResourceLocation parseResourceLocation(ResourceLocation baseResource, String path) {
+		if (path != null && !path.equals("")) {
+			if (path.startsWith("%blur%")) {
+				path = path.substring(6);
+			}
 
-		if (var4) {
-			Collections.sort(var5, new TexturePackAPI$1());
+			if (path.startsWith("%clamp%")) {
+				path = path.substring(7);
+			}
+
+			if (path.startsWith("/")) {
+				path = path.substring(1);
+			}
+
+			if (path.startsWith("assets/minecraft/")) {
+				path = path.substring(17);
+			}
+
+			int colon = path.indexOf(58);
+			return colon >= 0 ? new ResourceLocation(path.substring(0, colon), path.substring(colon + 1)) : (path.startsWith("~/") ? new ResourceLocation(baseResource.func_110624_b(), "mcpatcher/" + path.substring(2)) : (path.startsWith("./") ? new ResourceLocation(baseResource.func_110624_b(), baseResource.func_110623_a().replaceFirst("[^/]+$", "") + path.substring(2)) : new ResourceLocation(baseResource.func_110624_b(), path)));
 		} else {
-			Collections.sort(var5);
+			return null;
 		}
-
-		return var5;
 	}
 
-	private static void findResources(String var0, String var1, boolean var2, boolean var3, Collection var4) {
-		ITexturePack var5 = getTexturePack();
+	public static ResourceLocation newMCPatcherResourceLocation(String path) {
+		return new ResourceLocation("mcpatcher/" + path);
+	}
 
-		if (var5 instanceof TexturePackCustom) {
-			ZipFile var6 = ((TexturePackCustom)var5).texturePackZipFile;
+	public static List<ResourceLocation> listResources(String directory, String suffix, boolean recursive, boolean directories, boolean sortByFilename) {
+		if (suffix == null) {
+			suffix = "";
+		}
 
-			if (var6 != null) {
-				Iterator var7 = Collections.list(var6.entries()).iterator();
+		ArrayList resources = new ArrayList();
+		findResources("minecraft", directory, suffix, recursive, directories, resources);
 
-				while (var7.hasNext()) {
-					ZipEntry var8 = (ZipEntry)var7.next();
+		if (sortByFilename) {
+			Collections.sort(resources, new TexturePackAPI$1());
+		} else {
+			Collections.sort(resources, new TexturePackAPI$2());
+		}
 
-					if (var8.isDirectory() == var3) {
-						String var9 = fixupPath(var8.getName());
+		return resources;
+	}
 
-						if (var9.startsWith(var0) && var9.endsWith(var1)) {
-							if (var0.equals("")) {
-								if (var2 || !var9.contains("/")) {
-									var4.add("/" + var9);
-								}
-							} else {
-								String var10 = var9.substring(var0.length());
+	private static void findResources(String namespace, String directory, String suffix, boolean recursive, boolean directories, Collection<ResourceLocation> resources) {
+		Iterator i$ = getResourcePacks(namespace).iterator();
 
-								if ((var10.equals("") || var10.startsWith("/")) && (var2 || var10.equals("") || !var10.substring(1).contains("/"))) {
-									var4.add("/" + var9);
-								}
-							}
+		while (i$.hasNext()) {
+			ResourcePack resourcePack = (ResourcePack)i$.next();
+
+			if (resourcePack instanceof FileResourcePack) {
+				ZipFile base = ((FileResourcePack)resourcePack).field_110600_d;
+
+				if (base != null) {
+					findResources(base, namespace, "assets/" + namespace, directory, suffix, recursive, directories, resources);
+				}
+			} else {
+				File base1;
+
+				if (resourcePack instanceof DefaultResourcePack) {
+					if ("minecraft".equals(namespace)) {
+						base1 = ((DefaultResourcePack)resourcePack).field_110607_c;
+
+						if (base1 != null && base1.isDirectory()) {
+							findResources(base1, namespace, directory, suffix, recursive, directories, resources);
+						}
+					}
+				} else if (resourcePack instanceof AbstractResourcePack) {
+					base1 = ((AbstractResourcePack)resourcePack).field_110597_b;
+
+					if (base1 != null && base1.isDirectory()) {
+						base1 = new File(base1, "assets/" + namespace);
+
+						if (base1.isDirectory()) {
+							findResources(base1, namespace, directory, suffix, recursive, directories, resources);
 						}
 					}
 				}
 			}
-		} else if (var5 instanceof TexturePackFolder) {
-			File var11 = ((TexturePackFolder)var5).texturePackFile;
-
-			if (var11 != null && var11.isDirectory()) {
-				findResources(var11, var0, var1, var2, var3, var4);
-			}
 		}
 	}
 
-	private static void findResources(File var0, String var1, String var2, boolean var3, boolean var4, Collection var5) {
-		File var6 = new File(var0, var1);
-		String[] var7 = var6.list();
+	private static void findResources(ZipFile zipFile, String namespace, String root, String directory, String suffix, boolean recursive, boolean directories, Collection<ResourceLocation> resources) {
+		String base = root + "/" + directory;
+		Iterator i$ = Collections.list(zipFile.entries()).iterator();
 
-		if (var7 != null) {
-			String var8 = var1.equals("") ? "" : var1 + "/";
-			String[] var9 = var7;
-			int var10 = var7.length;
+		while (i$.hasNext()) {
+			ZipEntry entry = (ZipEntry)i$.next();
 
-			for (int var11 = 0; var11 < var10; ++var11) {
-				String var12 = var9[var11];
-				File var13 = new File(var6, var12);
-				String var14 = "/" + var8 + var12;
+			if (entry.isDirectory() == directories) {
+				String name = entry.getName().replaceFirst("^/", "");
 
-				if (var13.isDirectory()) {
-					if (var4 && var12.endsWith(var2)) {
-						var5.add(var14);
-					}
+				if (name.startsWith(base) && name.endsWith(suffix)) {
+					if (directory.equals("")) {
+						if (recursive || !name.contains("/")) {
+							resources.add(new ResourceLocation(namespace, name));
+						}
+					} else {
+						String subpath = name.substring(base.length());
 
-					if (var3) {
-						findResources(var0, var8 + var12, var2, var3, var4, var5);
-					}
-				} else if (var12.endsWith(var2) && !var4) {
-					var5.add(var14);
-				}
-			}
-		}
-	}
-	
-	public static int getTextureIfLoaded(String var0) {
-		RenderEngine var1 = MCPatcherUtils.getMinecraft().renderEngine;
-		Iterator var2 = textureMapFields.iterator();
-
-		while (var2.hasNext()) {
-			Field var3 = (Field)var2.next();
-
-			try {
-				HashMap var4 = (HashMap)var3.get(var1);
-
-				if (var4 != null) {
-					Object var5 = var4.get(var0);
-
-					if (var5 instanceof Integer) {
-						return ((Integer)var5).intValue();
-					}
-				}
-			} catch (IllegalAccessException var6) {
-				;
-			}
-		}
-
-		return -1;
-	}
-
-	public static boolean isTextureLoaded(String var0) {
-		return getTextureIfLoaded(var0) >= 0;
-	}
-
-	public static void bindTexture(String var0) {
-		MCPatcherUtils.getMinecraft().renderEngine.bindTexture(var0);
-	}
-
-	public static void bindTexture(int var0) {
-		MCPatcherUtils.getMinecraft().renderEngine.bindTexture(var0);
-	}
-
-	public static void clearBoundTexture() {
-		MCPatcherUtils.getMinecraft().renderEngine.resetBoundTexture();
-	}
-
-	public static int unloadTexture(String var0) {
-		int var1 = getTextureIfLoaded(var0);
-
-		if (var1 >= 0) {
-			RenderEngine var2 = MCPatcherUtils.getMinecraft().renderEngine;
-			var2.deleteTexture(var1);
-			Iterator var3 = textureMapFields.iterator();
-
-			while (var3.hasNext()) {
-				Field var4 = (Field)var3.next();
-
-				try {
-					HashMap var5 = (HashMap)var4.get(var2);
-
-					if (var5 != null) {
-						var5.remove(var0);
-					}
-				} catch (IllegalAccessException var6) {
-					;
-				}
-			}
-		}
-
-		return var1;
-	}
-
-	public static void deleteTexture(int var0) {
-		if (var0 >= 0) {
-			MCPatcherUtils.getMinecraft().renderEngine.deleteTexture(var0);
-		}
-	}
-
-	public static String getTextureName(int var0) {
-		if (var0 >= 0) {
-			RenderEngine var1 = MCPatcherUtils.getMinecraft().renderEngine;
-			Iterator var2 = textureMapFields.iterator();
-
-			while (var2.hasNext()) {
-				Field var3 = (Field)var2.next();
-
-				try {
-					HashMap var4 = (HashMap)var3.get(var1);
-					Iterator var5 = var4.entrySet().iterator();
-
-					while (var5.hasNext()) {
-						Object var6 = var5.next();
-						Entry var7 = (Entry)var6;
-						Object var8 = var7.getValue();
-						Object var9 = var7.getKey();
-
-						if (var8 instanceof Integer && var9 instanceof String && ((Integer)var8).intValue() == var0) {
-							return (String)var9;
+						if ((subpath.equals("") || subpath.startsWith("/")) && (recursive || subpath.equals("") || !subpath.substring(1).contains("/"))) {
+							resources.add(new ResourceLocation(namespace, name.substring(root.length() + 1)));
 						}
 					}
-				} catch (IllegalAccessException var10) {
-					;
 				}
 			}
 		}
-
-		return null;
 	}
 
-	public static IntBuffer getIntBuffer(IntBuffer var0, int[] var1) {
-		var0.clear();
-		int var2 = var0.capacity();
-		int var3 = var1.length;
+	private static void findResources(File base, String namespace, String directory, String suffix, boolean recursive, boolean directories, Collection<ResourceLocation> resources) {
+		File subdirectory = new File(base, directory);
+		String[] list = subdirectory.list();
 
-		if (var3 > var2) {
-			var0 = ByteBuffer.allocateDirect(4 * var3).order(var0.order()).asIntBuffer();
-		}
+		if (list != null) {
+			String pathComponent = directory.equals("") ? "" : directory + "/";
+			String[] arr$ = list;
+			int len$ = list.length;
 
-		var0.put(var1);
-		var0.position(0).limit(var3);
-		return var0;
-	}
+			for (int i$ = 0; i$ < len$; ++i$) {
+				String s = arr$[i$];
+				File entry = new File(subdirectory, s);
+				String resourceName = pathComponent + s;
 
-	protected InputStream getInputStreamImpl(String var1) {
-		var1 = parseTextureName(var1)[1];
-		ITexturePack var2 = getTexturePack();
+				if (entry.isDirectory()) {
+					if (directories && s.endsWith(suffix)) {
+						resources.add(new ResourceLocation(namespace, resourceName));
+					}
 
-		if (var2 == null) {
-			return TexturePackAPI.class.getResourceAsStream(var1);
-		} else {
-			try {
-				return var2.getResourceAsStream(var1);
-			} catch (Throwable var4) {
-				return null;
+					if (recursive) {
+						findResources(base, namespace, pathComponent + s, suffix, recursive, directories, resources);
+					}
+				} else if (s.endsWith(suffix) && !directories) {
+					resources.add(new ResourceLocation(namespace, resourceName));
+				}
 			}
 		}
 	}
 
-	protected BufferedImage getImageImpl(String var1) {
-		InputStream var2 = getInputStream(var1);
-		BufferedImage var3 = null;
+	public static int getTextureIfLoaded(ResourceLocation resource) {
+		if (resource == null) {
+			return -1;
+		} else {
+			TextureObject texture = MCPatcherUtils.getMinecraft().func_110434_K().func_110581_b(resource);
+			return texture instanceof AbstractTexture ? ((AbstractTexture)texture).field_110553_a : -1;
+		}
+	}
 
-		if (var2 != null) {
+	public static boolean isTextureLoaded(ResourceLocation resource) {
+		return getTextureIfLoaded(resource) >= 0;
+	}
+
+	public static void bindTexture(ResourceLocation resource) {
+		MCPatcherUtils.getMinecraft().func_110434_K().func_110577_a(resource);
+	}
+
+	public static void bindTexture(int texture) {
+		if (texture >= 0) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+		}
+	}
+
+	public static void unloadTexture(ResourceLocation resource) {
+		TextureManager textureManager = MCPatcherUtils.getMinecraft().func_110434_K();
+		TextureObject texture = textureManager.func_110581_b(resource);
+
+		if (texture != null && !(texture instanceof TextureMap) && !(texture instanceof DynamicTexture)) {
+			if (texture instanceof AbstractTexture) {
+				((AbstractTexture)texture).unloadGLTexture();
+			}
+
+			logger.finer("unloading texture %s", new Object[] {resource});
+			textureManager.field_110585_a.remove(resource);
+		}
+	}
+
+	public static void deleteTexture(int texture) {
+		if (texture >= 0) {
+			GL11.glDeleteTextures(texture);
+		}
+	}
+
+	protected InputStream getInputStreamImpl(ResourceLocation resource) {
+		try {
+			return Minecraft.getMinecraft().func_110442_L().func_110536_a(resource).func_110527_b();
+		} catch (IOException var3) {
+			return null;
+		}
+	}
+
+	protected BufferedImage getImageImpl(ResourceLocation resource) {
+		InputStream input = getInputStream(resource);
+		BufferedImage image = null;
+
+		if (input != null) {
 			try {
-				var3 = ImageIO.read(var2);
+				image = ImageIO.read(input);
 			} catch (IOException var8) {
+				logger.error("could not read %s", new Object[] {resource});
 				var8.printStackTrace();
 			} finally {
-				MCPatcherUtils.close((Closeable)var2);
+				MCPatcherUtils.close((Closeable)input);
 			}
 		}
 
-		return var3;
+		return image;
 	}
 
-	protected boolean getPropertiesImpl(String var1, Properties var2) {
-		if (var2 != null) {
-			InputStream var3 = getInputStream(var1);
-			boolean var4;
+	protected boolean getPropertiesImpl(ResourceLocation resource, Properties properties) {
+		if (properties != null) {
+			InputStream input = getInputStream(resource);
+			boolean e;
 
 			try {
-				if (var3 == null) {
+				if (input == null) {
 					return false;
 				}
 
-				var2.load(var3);
-				var4 = true;
+				properties.load(input);
+				e = true;
 			} catch (IOException var8) {
+				logger.error("could not read %s", new Object[] {resource});
 				var8.printStackTrace();
 				return false;
 			} finally {
-				MCPatcherUtils.close((Closeable)var3);
+				MCPatcherUtils.close((Closeable)input);
 			}
 
-			return var4;
+			return e;
 		} else {
 			return false;
-		}
-	}
-
-	static {
-		try {
-			Field[] var0 = RenderEngine.class.getDeclaredFields();
-			int var1 = var0.length;
-
-			for (int var2 = 0; var2 < var1; ++var2) {
-				Field var3 = var0[var2];
-
-				if (HashMap.class.isAssignableFrom(var3.getType())) {
-					var3.setAccessible(true);
-					textureMapFields.add(var3);
-				}
-			}
-		} catch (Throwable var4) {
-			var4.printStackTrace();
 		}
 	}
 }

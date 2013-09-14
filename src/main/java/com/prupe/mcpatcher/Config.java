@@ -62,138 +62,139 @@ public class Config {
 	static final String TAG_PRE_PATCH_STATE = "prePatchState";
 	static final String TAG_MODIFIED_CLASSES = "modifiedClasses";
 	static final String TAG_ADDED_CLASSES = "addedClasses";
+	static final String XML_FILENAME = "mcpatcher4.xml";
 	private static final int XML_INDENT_AMOUNT = 2;
 	private static final String XSLT_REFORMAT = "<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\"><xsl:output method=\"xml\" omit-xml-declaration=\"no\"/><xsl:strip-space elements=\"*\"/><xsl:template match=\"@*|node()\"><xsl:copy><xsl:apply-templates select=\"@*|node()\"/></xsl:copy></xsl:template></xsl:stylesheet>";
 
-	Config(File var1) throws ParserConfigurationException {
-		this.xmlFile = new File(var1, "mcpatcher3.xml");
-		DocumentBuilderFactory var2 = DocumentBuilderFactory.newInstance();
-		DocumentBuilder var3 = var2.newDocumentBuilder();
-		boolean var4 = false;
+	Config(File minecraftDir) throws ParserConfigurationException {
+		this.xmlFile = new File(minecraftDir, "mcpatcher4.xml");
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		boolean save = false;
 
-		if (this.xmlFile.exists()) {
+		if (this.xmlFile.exists() && this.xmlFile.length() > 0L) {
 			try {
-				this.xml = var3.parse(this.xmlFile);
+				this.xml = builder.parse(this.xmlFile);
 			} catch (Exception var6) {
 				var6.printStackTrace();
 			}
 		}
 
 		if (this.xml == null) {
-			this.xml = var3.newDocument();
+			this.xml = builder.newDocument();
 			this.buildNewProperties();
-			var4 = true;
+			save = true;
 		}
 
-		if (var4) {
+		if (save) {
 			this.saveProperties();
 		}
 	}
 
-	public static String getString(String var0, String var1, Object var2) {
+	public static String getString(String mod, String tag, Object defaultValue) {
 		if (instance == null) {
-			return var2 == null ? null : var2.toString();
+			return defaultValue == null ? null : defaultValue.toString();
 		} else {
-			String var3 = instance.getModConfigValue(var0, var1);
+			String value = instance.getModConfigValue(mod, tag);
 
-			if (var3 == null && var2 != null) {
-				var3 = var2.toString();
-				instance.setModConfigValue(var0, var1, var3);
+			if (value == null && defaultValue != null) {
+				value = defaultValue.toString();
+				instance.setModConfigValue(mod, tag, value);
 			}
 
-			return var3;
+			return value;
 		}
 	}
 
-	public static String getString(String var0, Object var1) {
+	public static String getString(String tag, Object defaultValue) {
 		if (instance == null) {
-			return var1 == null ? null : var1.toString();
+			return defaultValue == null ? null : defaultValue.toString();
 		} else {
-			String var2 = instance.getConfigValue(var0);
+			String value = instance.getConfigValue(tag);
 
-			if (var2 == null && var1 != null) {
-				var2 = var1.toString();
-				instance.setConfigValue(var0, var2);
+			if (value == null && defaultValue != null) {
+				value = defaultValue.toString();
+				instance.setConfigValue(tag, value);
 			}
 
-			return var2;
+			return value;
 		}
 	}
 
-	public static int getInt(String var0, String var1, int var2) {
-		int var3;
+	public static int getInt(String mod, String tag, int defaultValue) {
+		int value;
 
 		try {
-			var3 = Integer.parseInt(getString(var0, var1, Integer.valueOf(var2)));
+			value = Integer.parseInt(getString(mod, tag, Integer.valueOf(defaultValue)));
 		} catch (NumberFormatException var5) {
-			var3 = var2;
+			value = defaultValue;
 		}
 
-		return var3;
+		return value;
 	}
 
-	public static int getInt(String var0, int var1) {
-		int var2;
+	public static int getInt(String tag, int defaultValue) {
+		int value;
 
 		try {
-			var2 = Integer.parseInt(getString(var0, Integer.valueOf(var1)));
+			value = Integer.parseInt(getString(tag, Integer.valueOf(defaultValue)));
 		} catch (NumberFormatException var4) {
-			var2 = var1;
+			value = defaultValue;
 		}
 
-		return var2;
+		return value;
 	}
 
-	public static boolean getBoolean(String var0, String var1, boolean var2) {
-		String var3 = getString(var0, var1, Boolean.valueOf(var2)).toLowerCase();
-		return var3.equals("false") ? false : (var3.equals("true") ? true : var2);
+	public static boolean getBoolean(String mod, String tag, boolean defaultValue) {
+		String value = getString(mod, tag, Boolean.valueOf(defaultValue)).toLowerCase();
+		return value.equals("false") ? false : (value.equals("true") ? true : defaultValue);
 	}
 
-	public static boolean getBoolean(String var0, boolean var1) {
-		String var2 = getString(var0, Boolean.valueOf(var1)).toLowerCase();
-		return var2.equals("false") ? false : (var2.equals("true") ? true : var1);
+	public static boolean getBoolean(String tag, boolean defaultValue) {
+		String value = getString(tag, Boolean.valueOf(defaultValue)).toLowerCase();
+		return value.equals("false") ? false : (value.equals("true") ? true : defaultValue);
 	}
 
-	public static void set(String var0, String var1, Object var2) {
+	public static void set(String mod, String tag, Object value) {
 		if (instance != null) {
-			instance.setModConfigValue(var0, var1, var2.toString());
+			instance.setModConfigValue(mod, tag, value.toString());
 		}
 	}
 
-	static void set(String var0, Object var1) {
+	static void set(String tag, Object value) {
 		if (instance != null) {
-			instance.setConfigValue(var0, var1.toString());
+			instance.setConfigValue(tag, value.toString());
 		}
 	}
 
-	public static void remove(String var0, String var1) {
+	public static void remove(String mod, String tag) {
 		if (instance != null) {
-			instance.remove((Node)instance.getModConfig(var0, var1));
+			instance.remove((Node)instance.getModConfig(mod, tag));
 		}
 	}
 
-	static void setLogLevel(String var0, Level var1) {
+	static void remove(String tag) {
 		if (instance != null) {
-			instance.setLogLevel1(var0, var1);
+			instance.remove((Node)instance.getConfig(tag));
 		}
 	}
 
-	static Level getLogLevel(String var0) {
-		return instance == null ? Level.INFO : instance.getLogLevel1(var0);
-	}
-
-	static void remove(String var0) {
+	static void setLogLevel(String category, Level level) {
 		if (instance != null) {
-			instance.remove((Node)instance.getConfig(var0));
+			instance.setLogLevel1(category, level);
 		}
 	}
 
-	static boolean load(File var0) {
+	static Level getLogLevel(String category) {
+		return instance == null ? Level.INFO : instance.getLogLevel1(category);
+	}
+
+	static boolean load(File minecraftDir) {
 		instance = null;
 
-		if (var0 != null && var0.exists()) {
+		if (minecraftDir != null && minecraftDir.exists()) {
 			try {
-				instance = new Config(var0);
+				instance = new Config(minecraftDir);
 			} catch (Exception var2) {
 				var2.printStackTrace();
 			}
@@ -204,88 +205,88 @@ public class Config {
 		}
 	}
 
-	Element getElement(Element var1, String var2) {
-		if (var1 == null) {
+	Element getElement(Element parent, String tag) {
+		if (parent == null) {
 			return null;
 		} else {
-			NodeList var3 = var1.getElementsByTagName(var2);
-			Element var4;
+			NodeList list = parent.getElementsByTagName(tag);
+			Element element;
 
-			if (var3.getLength() == 0) {
-				var4 = this.xml.createElement(var2);
-				var1.appendChild(var4);
+			if (list.getLength() == 0) {
+				element = this.xml.createElement(tag);
+				parent.appendChild(element);
 			} else {
-				var4 = (Element)var3.item(0);
+				element = (Element)list.item(0);
 			}
 
-			return var4;
+			return element;
 		}
 	}
 
-	String getText(Node var1) {
-		if (var1 == null) {
+	String getText(Node node) {
+		if (node == null) {
 			return null;
 		} else {
-			switch (var1.getNodeType()) {
-			case 1:
-				NodeList var2 = var1.getChildNodes();
+			switch (node.getNodeType()) {
+				case 1:
+					NodeList list = node.getChildNodes();
 
-				for (int var3 = 0; var3 < var2.getLength(); ++var3) {
-					Node var4 = var2.item(var3);
+					for (int i = 0; i < list.getLength(); ++i) {
+						Node node1 = list.item(i);
 
-					if (var4.getNodeType() == 3) {
-						return ((Text)var4).getData();
+						if (node1.getNodeType() == 3) {
+							return ((Text)node1).getData();
+						}
 					}
-				}
 
-			case 2:
-				return ((Attr)var1).getValue();
+				case 2:
+					return ((Attr)node).getValue();
 
-			case 3:
-				return ((Text)var1).getData();
+				case 3:
+					return ((Text)node).getData();
 
-			default:
-				return null;
+				default:
+					return null;
 			}
 		}
 	}
 
-	void setText(Element var1, String var2, String var3) {
-		if (var1 != null) {
-			Element var4 = this.getElement(var1, var2);
+	void setText(Element parent, String tag, String value) {
+		if (parent != null) {
+			Element element = this.getElement(parent, tag);
 
-			while (var4.hasChildNodes()) {
-				var4.removeChild(var4.getFirstChild());
+			while (element.hasChildNodes()) {
+				element.removeChild(element.getFirstChild());
 			}
 
-			Text var5 = this.xml.createTextNode(var3);
-			var4.appendChild(var5);
+			Text text = this.xml.createTextNode(value);
+			element.appendChild(text);
 		}
 	}
 
-	void remove(Node var1) {
-		if (var1 != null) {
-			Node var2 = var1.getParentNode();
-			var2.removeChild(var1);
+	void remove(Node node) {
+		if (node != null) {
+			Node parent = node.getParentNode();
+			parent.removeChild(node);
 		}
 	}
 
-	String getText(Element var1, String var2) {
-		return this.getText(this.getElement(var1, var2));
+	String getText(Element parent, String tag) {
+		return this.getText(this.getElement(parent, tag));
 	}
 
 	Element getRoot() {
 		if (this.xml == null) {
 			return null;
 		} else {
-			Element var1 = this.xml.getDocumentElement();
+			Element root = this.xml.getDocumentElement();
 
-			if (var1 == null) {
-				var1 = this.xml.createElement("mcpatcherProfile");
-				this.xml.appendChild(var1);
+			if (root == null) {
+				root = this.xml.createElement("mcpatcherProfile");
+				this.xml.appendChild(root);
 			}
 
-			return var1;
+			return root;
 		}
 	}
 
@@ -293,202 +294,210 @@ public class Config {
 		return this.getElement(this.getRoot(), "config");
 	}
 
-	Element getConfig(String var1) {
-		return this.getElement(this.getConfig(), var1);
+	Element getConfig(String tag) {
+		return this.getElement(this.getConfig(), tag);
 	}
 
-	String getConfigValue(String var1) {
-		return this.getText(this.getConfig(var1));
+	String getConfigValue(String tag) {
+		return this.getText(this.getConfig(tag));
 	}
 
-	void setConfigValue(String var1, String var2) {
-		Element var3 = this.getConfig(var1);
+	void setConfigValue(String tag, String value) {
+		Element element = this.getConfig(tag);
 
-		if (var3 != null) {
-			while (var3.hasChildNodes()) {
-				var3.removeChild(var3.getFirstChild());
+		if (element != null) {
+			while (element.hasChildNodes()) {
+				element.removeChild(element.getFirstChild());
 			}
 
-			var3.appendChild(this.xml.createTextNode(var2));
+			element.appendChild(this.xml.createTextNode(value));
 		}
 	}
 
-	static String getDefaultProfileName(String var0) {
-		return "Minecraft " + var0;
+	static String getDefaultProfileName(String mcVersion) {
+		return "Minecraft " + mcVersion;
 	}
 
-	static boolean isDefaultProfile(String var0) {
-		return var0.startsWith("Minecraft ");
+	static boolean isDefaultProfile(String profileName) {
+		return profileName.startsWith("Minecraft ");
 	}
 
-	void setDefaultProfileName(String var1) {
-		Element var2 = this.getRoot();
-		NodeList var3 = var2.getElementsByTagName("mods");
-		String var4 = this.getConfigValue("selectedProfile");
+	static String getVersionForDefaultProfile(String profileName) {
+		return isDefaultProfile(profileName) ? profileName.replaceFirst("Minecraft\\s+", "") : null;
+	}
 
-		if (var4 == null || var4.equals("")) {
-			this.setConfigValue("selectedProfile", var1);
+	void setDefaultProfileName(String profileName) {
+		Element root = this.getRoot();
+		NodeList list = root.getElementsByTagName("mods");
+		String name = this.getConfigValue("selectedProfile");
+
+		if (name == null || name.equals("")) {
+			this.setConfigValue("selectedProfile", profileName);
 		}
 
-		boolean var6 = false;
+		boolean found = false;
 
-		for (int var7 = 0; var7 < var3.getLength(); ++var7) {
-			Node var8 = var3.item(var7);
+		for (int i = 0; i < list.getLength(); ++i) {
+			Node node = list.item(i);
 
-			if (var8 instanceof Element) {
-				Element var5 = (Element)var8;
-				var4 = var5.getAttribute("profile");
+			if (node instanceof Element) {
+				Element element = (Element)node;
+				name = element.getAttribute("profile");
 
-				if (var4 == null || var4.equals("")) {
-					if (var6) {
-						var2.removeChild(var5);
+				if (name == null || name.equals("")) {
+					if (found) {
+						root.removeChild(element);
 					} else {
-						var5.setAttribute("profile", var1);
-						var6 = true;
+						element.setAttribute("profile", profileName);
+						found = true;
 					}
 				}
 			}
 		}
 	}
 
-	Element findProfileByName(String var1, boolean var2) {
-		Element var3 = null;
-		Element var4 = this.getRoot();
-		NodeList var5 = var4.getElementsByTagName("mods");
-		int var6;
-		Node var7;
-		Element var8;
-		String var9;
+	Element findProfileByName(String profileName, boolean create) {
+		Element profile = null;
+		Element root = this.getRoot();
+		NodeList list = root.getElementsByTagName("mods");
+		int i;
+		Node node;
+		Element element;
+		String name;
 
-		for (var6 = 0; var6 < var5.getLength(); ++var6) {
-			var7 = var5.item(var6);
+		for (i = 0; i < list.getLength(); ++i) {
+			node = list.item(i);
 
-			if (var7 instanceof Element) {
-				var8 = (Element)var7;
-				var9 = var8.getAttribute("profile");
+			if (node instanceof Element) {
+				element = (Element)node;
+				name = element.getAttribute("profile");
 
-				if (var1 == null || var1.equals(var9)) {
-					return var8;
+				if (profileName == null || profileName.equals(name)) {
+					return element;
 				}
 			}
 		}
 
-		if (var2) {
-			var3 = this.xml.createElement("mods");
+		if (create) {
+			profile = this.xml.createElement("mods");
 
 			if (this.selectedProfile != null) {
-				var5 = this.selectedProfile.getElementsByTagName("mod");
+				list = this.selectedProfile.getElementsByTagName("mod");
 
-				for (var6 = 0; var6 < var5.getLength(); ++var6) {
-					var7 = var5.item(var6);
+				for (i = 0; i < list.getLength(); ++i) {
+					node = list.item(i);
 
-					if (var7 instanceof Element) {
-						var8 = (Element)var7;
-						var9 = this.getText(var8, "type");
+					if (node instanceof Element) {
+						element = (Element)node;
+						name = this.getText(element, "type");
 
-						if ("builtIn".equals(var9)) {
-							var3.appendChild(var7.cloneNode(true));
+						if ("builtIn".equals(name)) {
+							profile.appendChild(node.cloneNode(true));
 						}
 					}
 				}
 			}
 
-			var3.setAttribute("profile", var1);
-			var4.appendChild(var3);
+			profile.setAttribute("profile", profileName);
+			root.appendChild(profile);
 		}
 
-		return var3;
+		return profile;
 	}
 
 	void selectProfile() {
 		this.selectProfile(this.getConfigValue("selectedProfile"));
 	}
 
-	void selectProfile(String var1) {
-		this.selectedProfile = this.findProfileByName(var1, true);
-		this.setConfigValue("selectedProfile", var1);
+	void selectProfile(String profileName) {
+		if (profileName == null) {
+			profileName = "";
+		}
+
+		this.selectedProfile = this.findProfileByName(profileName, true);
+		this.setConfigValue("selectedProfile", profileName);
 	}
 
-	void deleteProfile(String var1) {
-		Element var2 = this.getRoot();
-		Element var3 = this.findProfileByName(var1, false);
+	void deleteProfile(String profileName) {
+		Element root = this.getRoot();
+		Element profile = this.findProfileByName(profileName, false);
 
-		if (var3 != null) {
-			if (var3 == this.selectedProfile) {
+		if (profile != null) {
+			if (profile == this.selectedProfile) {
 				this.selectedProfile = null;
 			}
 
-			var2.removeChild(var3);
+			root.removeChild(profile);
 		}
 
 		this.getMods();
 	}
 
-	void renameProfile(String var1, String var2) {
-		if (!var1.equals(var2)) {
-			Element var3 = this.findProfileByName(var1, false);
+	void renameProfile(String oldName, String newName) {
+		if (!oldName.equals(newName)) {
+			Element profile = this.findProfileByName(oldName, false);
 
-			if (var3 != null) {
-				var3.setAttribute("profile", var2);
-				String var4 = this.getConfigValue("selectedProfile");
+			if (profile != null) {
+				profile.setAttribute("profile", newName);
+				String selectedProfile = this.getConfigValue("selectedProfile");
 
-				if (var1.equals(var4)) {
-					this.setConfigValue("selectedProfile", var2);
+				if (oldName.equals(selectedProfile)) {
+					this.setConfigValue("selectedProfile", newName);
 				}
 			}
 		}
 	}
 
-	void rewriteModPaths(File var1, File var2) {
-		NodeList var3 = this.getRoot().getElementsByTagName("mods");
+	void rewriteModPaths(File oldDir, File newDir) {
+		NodeList profiles = this.getRoot().getElementsByTagName("mods");
 
-		for (int var4 = 0; var4 < var3.getLength(); ++var4) {
-			Element var5 = (Element)var3.item(var4);
-			this.rewriteModPaths(var5, var1, var2);
+		for (int i = 0; i < profiles.getLength(); ++i) {
+			Element profile = (Element)profiles.item(i);
+			this.rewriteModPaths(profile, oldDir, newDir);
 		}
 	}
 
-	void rewriteModPaths(Element var1, File var2, File var3) {
-		NodeList var4 = var1.getElementsByTagName("mod");
+	void rewriteModPaths(Element profile, File oldDir, File newDir) {
+		NodeList mods = profile.getElementsByTagName("mod");
 
-		for (int var5 = 0; var5 < var4.getLength(); ++var5) {
-			Element var6 = (Element)var4.item(var5);
-			String var7 = this.getText(var6, "type");
+		for (int i = 0; i < mods.getLength(); ++i) {
+			Element mod = (Element)mods.item(i);
+			String type = this.getText(mod, "type");
 
-			if ("externalZip".equals(var7)) {
-				String var8 = this.getText(var6, "path");
+			if ("externalZip".equals(type)) {
+				String currentPath = this.getText(mod, "path");
 
-				if (var8 != null && !var8.equals("")) {
-					File var9 = new File(var8);
+				if (currentPath != null && !currentPath.equals("")) {
+					File currentFile = new File(currentPath);
 
-					if (var2.equals(var9.getParentFile())) {
-						this.setText(var6, "path", (new File(var3, var9.getName())).getPath());
+					if (oldDir.equals(currentFile.getParentFile())) {
+						this.setText(mod, "path", (new File(newDir, currentFile.getName())).getPath());
 					}
 				}
 			}
 		}
 	}
 
-	ArrayList getProfiles() {
-		ArrayList var1 = new ArrayList();
-		Element var2 = this.getRoot();
-		NodeList var3 = var2.getElementsByTagName("mods");
+	ArrayList<String> getProfiles() {
+		ArrayList profiles = new ArrayList();
+		Element root = this.getRoot();
+		NodeList list = root.getElementsByTagName("mods");
 
-		for (int var4 = 0; var4 < var3.getLength(); ++var4) {
-			Node var5 = var3.item(var4);
+		for (int i = 0; i < list.getLength(); ++i) {
+			Node node = list.item(i);
 
-			if (var5 instanceof Element) {
-				Element var6 = (Element)var5;
-				String var7 = var6.getAttribute("profile");
+			if (node instanceof Element) {
+				Element element = (Element)node;
+				String name = element.getAttribute("profile");
 
-				if (var7 != null && !var7.equals("")) {
-					var1.add(var7);
+				if (name != null && !name.equals("")) {
+					profiles.add(name);
 				}
 			}
 		}
 
-		Collections.sort(var1);
-		return var1;
+		Collections.sort(profiles);
+		return profiles;
 	}
 
 	Element getMods() {
@@ -499,20 +508,20 @@ public class Config {
 		return this.selectedProfile;
 	}
 
-	boolean hasMod(String var1) {
-		Element var2 = this.getMods();
+	boolean hasMod(String mod) {
+		Element parent = this.getMods();
 
-		if (var2 != null) {
-			NodeList var3 = var2.getElementsByTagName("mod");
+		if (parent != null) {
+			NodeList list = parent.getElementsByTagName("mod");
 
-			for (int var4 = 0; var4 < var3.getLength(); ++var4) {
-				Element var5 = (Element)var3.item(var4);
-				NodeList var6 = var5.getElementsByTagName("name");
+			for (int i = 0; i < list.getLength(); ++i) {
+				Element element = (Element)list.item(i);
+				NodeList list1 = element.getElementsByTagName("name");
 
-				if (var6.getLength() > 0) {
-					var5 = (Element)var6.item(0);
+				if (list1.getLength() > 0) {
+					element = (Element)list1.item(0);
 
-					if (var1.equals(this.getText(var5))) {
+					if (mod.equals(this.getText(element))) {
 						return true;
 					}
 				}
@@ -522,30 +531,30 @@ public class Config {
 		return false;
 	}
 
-	Element getMod(String var1) {
-		Element var2 = this.getMods();
+	Element getMod(String mod) {
+		Element parent = this.getMods();
 
-		if (var2 == null) {
+		if (parent == null) {
 			return null;
 		} else {
-			NodeList var3 = var2.getElementsByTagName("mod");
+			NodeList list = parent.getElementsByTagName("mod");
 
-			for (int var4 = 0; var4 < var3.getLength(); ++var4) {
-				Node var5 = var3.item(var4);
+			for (int element = 0; element < list.getLength(); ++element) {
+				Node element1 = list.item(element);
 
-				if (var5 instanceof Element) {
-					Element var6 = (Element)var5;
+				if (element1 instanceof Element) {
+					Element text = (Element)element1;
 
-					if (var1.equals(this.getText(var6, "name"))) {
-						return var6;
+					if (mod.equals(this.getText(text, "name"))) {
+						return text;
 					}
 				}
 			}
 
 			Element var7 = this.xml.createElement("mod");
-			var2.appendChild(var7);
+			parent.appendChild(var7);
 			Element var8 = this.xml.createElement("name");
-			Text var9 = this.xml.createTextNode(var1);
+			Text var9 = this.xml.createTextNode(mod);
 			var8.appendChild(var9);
 			var7.appendChild(var8);
 			var8 = this.xml.createElement("enabled");
@@ -556,72 +565,72 @@ public class Config {
 		}
 	}
 
-	void setModEnabled(String var1, boolean var2) {
-		this.setText(this.getMod(var1), "enabled", Boolean.toString(var2));
+	void setModEnabled(String mod, boolean enabled) {
+		this.setText(this.getMod(mod), "enabled", Boolean.toString(enabled));
 	}
 
-	Element getModConfig(String var1) {
-		return this.getElement(this.getMod(var1), "config");
+	Element getModConfig(String mod) {
+		return this.getElement(this.getMod(mod), "config");
 	}
 
-	Element getModConfig(String var1, String var2) {
-		return this.getElement(this.getModConfig(var1), var2);
+	Element getModConfig(String mod, String tag) {
+		return this.getElement(this.getModConfig(mod), tag);
 	}
 
-	String getModConfigValue(String var1, String var2) {
-		return this.getText(this.getModConfig(var1, var2));
+	String getModConfigValue(String mod, String tag) {
+		return this.getText(this.getModConfig(mod, tag));
 	}
 
-	void setModConfigValue(String var1, String var2, String var3) {
-		Element var4 = this.getModConfig(var1, var2);
+	void setModConfigValue(String mod, String tag, String value) {
+		Element element = this.getModConfig(mod, tag);
 
-		if (var4 != null) {
-			while (var4.hasChildNodes()) {
-				var4.removeChild(var4.getFirstChild());
+		if (element != null) {
+			while (element.hasChildNodes()) {
+				element.removeChild(element.getFirstChild());
 			}
 
-			var4.appendChild(this.xml.createTextNode(var3));
+			element.appendChild(this.xml.createTextNode(value));
 		}
 	}
 
-	private Element getLogLevelElement(String var1) {
-		Element var2 = this.getConfig();
-		NodeList var3 = var2.getElementsByTagName("logging");
+	private Element getLogLevelElement(String category) {
+		Element config = this.getConfig();
+		NodeList list = config.getElementsByTagName("logging");
 
-		for (int var4 = 0; var4 < var3.getLength(); ++var4) {
-			Element var5 = (Element)var3.item(var4);
+		for (int element = 0; element < list.getLength(); ++element) {
+			Element element1 = (Element)list.item(element);
 
-			if (var1.equals(var5.getAttribute("category"))) {
-				return var5;
+			if (category.equals(element1.getAttribute("category"))) {
+				return element1;
 			}
 		}
 
 		Element var6 = this.xml.createElement("logging");
-		var2.appendChild(var6);
-		var6.setAttribute("category", var1);
+		config.appendChild(var6);
+		var6.setAttribute("category", category);
 		return var6;
 	}
 
-	void setLogLevel1(String var1, Level var2) {
-		this.getLogLevelElement(var1).setAttribute("level", var2.toString());
+	void setLogLevel1(String category, Level level) {
+		this.getLogLevelElement(category).setAttribute("level", level.toString());
 	}
 
-	Level getLogLevel1(String var1) {
-		Level var2 = Level.INFO;
-		Element var3 = this.getLogLevelElement(var1);
+	Level getLogLevel1(String category) {
+		Level level = Level.INFO;
+		Element element = this.getLogLevelElement(category);
 
 		try {
-			String var4 = var3.getAttribute("level");
+			String e = element.getAttribute("level");
 
-			if (var4 != null) {
-				var2 = Level.parse(var4.trim().toUpperCase());
+			if (e != null) {
+				level = Level.parse(e.trim().toUpperCase());
 			}
 		} catch (Throwable var5) {
 			;
 		}
 
-		var3.setAttribute("level", var2.toString());
-		return var2;
+		element.setAttribute("level", level.toString());
+		return level;
 	}
 
 	private void buildNewProperties() {
@@ -633,35 +642,39 @@ public class Config {
 	}
 
 	boolean saveProperties() {
-		boolean var1 = false;
+		boolean saved = false;
 
 		if (this.xml != null && this.xmlFile != null) {
-			FileOutputStream var2 = null;
+			File tmpFile = new File(this.xmlFile.getParentFile(), this.xmlFile.getName() + ".tmp");
+			FileOutputStream output = null;
 
 			try {
-				TransformerFactory var3 = TransformerFactory.newInstance();
-				Transformer var4;
+				TransformerFactory e = TransformerFactory.newInstance();
+				Transformer trans;
 
 				try {
-					var3.setAttribute("indent-number", Integer.valueOf(2));
-					var4 = var3.newTransformer(new StreamSource(new StringReader("<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\"><xsl:output method=\"xml\" omit-xml-declaration=\"no\"/><xsl:strip-space elements=\"*\"/><xsl:template match=\"@*|node()\"><xsl:copy><xsl:apply-templates select=\"@*|node()\"/></xsl:copy></xsl:template></xsl:stylesheet>")));
-					var4.setOutputProperty("indent", "yes");
-					var4.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-				} catch (Throwable var10) {
-					var4 = var3.newTransformer();
+					e.setAttribute("indent-number", Integer.valueOf(2));
+					trans = e.newTransformer(new StreamSource(new StringReader("<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\"><xsl:output method=\"xml\" omit-xml-declaration=\"no\"/><xsl:strip-space elements=\"*\"/><xsl:template match=\"@*|node()\"><xsl:copy><xsl:apply-templates select=\"@*|node()\"/></xsl:copy></xsl:template></xsl:stylesheet>")));
+					trans.setOutputProperty("indent", "yes");
+					trans.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+				} catch (Throwable var11) {
+					trans = e.newTransformer();
 				}
 
-				DOMSource var5 = new DOMSource(this.xml);
-				var2 = new FileOutputStream(this.xmlFile);
-				var4.transform(var5, new StreamResult(new OutputStreamWriter(var2, "UTF-8")));
-				var1 = true;
-			} catch (Exception var11) {
-				var11.printStackTrace();
+				DOMSource source = new DOMSource(this.xml);
+				output = new FileOutputStream(tmpFile);
+				trans.transform(source, new StreamResult(new OutputStreamWriter(output, "UTF-8")));
+				output.close();
+				this.xmlFile.delete();
+				saved = tmpFile.renameTo(this.xmlFile);
+			} catch (Throwable var12) {
+				var12.printStackTrace();
 			} finally {
-				MCPatcherUtils.close((Closeable)var2);
+				MCPatcherUtils.close((Closeable)output);
+				tmpFile.delete();
 			}
 		}
 
-		return var1;
+		return saved;
 	}
 }

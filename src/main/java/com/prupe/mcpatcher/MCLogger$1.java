@@ -15,8 +15,8 @@ class MCLogger$1 extends Handler {
 		this.formatter = new MCLogger$1$1(this);
 	}
 
-	public void publish(LogRecord var1) {
-		System.out.println(this.formatter.format(var1));
+	public void publish(LogRecord record) {
+		System.out.println(this.formatter.format(record));
 	}
 
 	public void flush() {}
