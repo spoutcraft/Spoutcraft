@@ -1,9 +1,11 @@
 package net.minecraft.src;
 
+import com.google.common.base.Charsets;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 // Spout Start - Unused import
@@ -20,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javax.crypto.SecretKey;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.ClientBrandRetriever;
 import org.lwjgl.input.Keyboard;
 // Spout Start
 import java.net.InetSocketAddress;
@@ -37,7 +39,7 @@ import org.spoutcraft.client.util.NetworkUtils;
 public class NetClientHandler extends NetHandler {
 
 	/** True if kicked or disconnected from the server. */
-	private boolean disconnected = false;
+	private boolean disconnected;
 
 	/** Reference to the NetworkManager object. */
 	private INetworkManager netManager;
@@ -51,7 +53,7 @@ public class NetClientHandler extends NetHandler {
 	 * True if the client has finished downloading terrain and may spawn. Set upon receipt of a player position packet,
 	 * reset upon respawning.
 	 */
-	private boolean doneLoadingTerrain = false;
+	private boolean doneLoadingTerrain;
 	public MapStorage mapStorage = new MapStorage((ISaveHandler)null);
 
 	/** A HashMap of all player names and their player information objects */
@@ -62,7 +64,7 @@ public class NetClientHandler extends NetHandler {
 	 */
 	public List playerInfoList = new ArrayList();
 	public int currentServerMaxPlayers = 20;
-	private GuiScreen field_98183_l = null;
+	private GuiScreen field_98183_l;
 
 	/** RNG. */
 	Random rand = new Random();
@@ -98,7 +100,7 @@ public class NetClientHandler extends NetHandler {
 	public NetClientHandler(Minecraft par1Minecraft, IntegratedServer par2IntegratedServer) throws IOException {
 		this.mc = par1Minecraft;
 		this.netManager = new MemoryConnection(par1Minecraft.getLogAgent(), this);
-		par2IntegratedServer.getServerListeningThread().func_71754_a((MemoryConnection)this.netManager, par1Minecraft.session.username);
+		par2IntegratedServer.getServerListeningThread().func_71754_a((MemoryConnection)this.netManager, par1Minecraft.func_110432_I().func_111285_a());
 	}
 
 	/**
@@ -146,7 +148,7 @@ public class NetClientHandler extends NetHandler {
 
 		if (!"-".equals(var2)) {
 			String var5 = (new BigInteger(CryptManager.getServerIdHash(var2, var3, var4))).toString(16);
-			String var6 = this.sendSessionRequest(this.mc.session.username, this.mc.session.sessionId, var5);
+			String var6 = this.sendSessionRequest(this.mc.func_110432_I().func_111285_a(), this.mc.func_110432_I().func_111286_b(), var5);
 
 			if (!"ok".equalsIgnoreCase(var6)) {
 				this.netManager.networkShutdown("disconnect.loginFailedInfo", new Object[] {var6});
@@ -163,12 +165,13 @@ public class NetClientHandler extends NetHandler {
 	private String sendSessionRequest(String par1Str, String par2Str, String par3Str) {
 		try {
 			URL var4 = new URL("http://session.minecraft.net/game/joinserver.jsp?user=" + urlEncode(par1Str) + "&sessionId=" + urlEncode(par2Str) + "&serverId=" + urlEncode(par3Str));
-			BufferedReader var5 = new BufferedReader(new InputStreamReader(var4.openStream()));
-			String var6 = var5.readLine();
-			var5.close();
-			return var6;
-		} catch (IOException var7) {
-			return var7.toString();
+			InputStream var5 = var4.openConnection(this.mc.func_110437_J()).getInputStream();
+			BufferedReader var6 = new BufferedReader(new InputStreamReader(var5));
+			String var7 = var6.readLine();
+			var6.close();
+			return var7;
+		} catch (IOException var8) {
+			return var8.toString();
 		}
 	}
 
@@ -201,6 +204,7 @@ public class NetClientHandler extends NetHandler {
 		this.currentServerMaxPlayers = par1Packet1Login.maxPlayers;
 		this.mc.playerController.setGameType(par1Packet1Login.gameType);
 		this.mc.gameSettings.sendSettingsToServer();
+		this.netManager.addToSendQueue(new Packet250CustomPayload("MC|Brand", ClientBrandRetriever.getClientModName().getBytes(Charsets.UTF_8)));
 	}
 
 	public void handleVehicleSpawn(Packet23VehicleSpawn par1Packet23VehicleSpawn) {
@@ -225,6 +229,9 @@ public class NetClientHandler extends NetHandler {
 			var8 = new EntitySnowball(this.worldClient, var2, var4, var6);
 		} else if (par1Packet23VehicleSpawn.type == 71) {
 			var8 = new EntityItemFrame(this.worldClient, (int)var2, (int)var4, (int)var6, par1Packet23VehicleSpawn.throwerEntityId);
+			par1Packet23VehicleSpawn.throwerEntityId = 0;
+		} else if (par1Packet23VehicleSpawn.type == 77) {
+			var8 = new EntityLeashKnot(this.worldClient, (int)var2, (int)var4, (int)var6);
 			par1Packet23VehicleSpawn.throwerEntityId = 0;
 		} else if (par1Packet23VehicleSpawn.type == 65) {
 			var8 = new EntityEnderPearl(this.worldClient, var2, var4, var6);
@@ -252,7 +259,7 @@ public class NetClientHandler extends NetHandler {
 		} else if (par1Packet23VehicleSpawn.type == 1) {
 			var8 = new EntityBoat(this.worldClient, var2, var4, var6);
 		} else if (par1Packet23VehicleSpawn.type == 50) {
-			var8 = new EntityTNTPrimed(this.worldClient, var2, var4, var6, (EntityLiving)null);
+			var8 = new EntityTNTPrimed(this.worldClient, var2, var4, var6, (EntityLivingBase)null);
 		} else if (par1Packet23VehicleSpawn.type == 51) {
 			var8 = new EntityEnderCrystal(this.worldClient, var2, var4, var6);
 		} else if (par1Packet23VehicleSpawn.type == 2) {
@@ -285,7 +292,7 @@ public class NetClientHandler extends NetHandler {
 				if (par1Packet23VehicleSpawn.type == 60) {
 					Entity var13 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
 
-					if (var13 instanceof EntityLiving) {
+					if (var13 instanceof EntityLivingBase) {
 						EntityArrow var14 = (EntityArrow)var8;
 						var14.shootingEntity = var13;
 					}
@@ -631,7 +638,7 @@ public class NetClientHandler extends NetHandler {
 
 	public void handleCollect(Packet22Collect par1Packet22Collect) {
 		Entity var2 = this.getEntityByID(par1Packet22Collect.collectedEntityId);
-		Object var3 = (EntityLiving)this.getEntityByID(par1Packet22Collect.collectorEntityId);
+		Object var3 = (EntityLivingBase)this.getEntityByID(par1Packet22Collect.collectorEntityId);
 
 		if (var3 == null) {
 			var3 = this.mc.thePlayer;
@@ -650,7 +657,7 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleChat(Packet3Chat par1Packet3Chat) {
-		this.mc.ingameGUI.getChatGUI().printChatMessage(par1Packet3Chat.message);
+		this.mc.ingameGUI.getChatGUI().printChatMessage(ChatMessageComponent.func_111078_c(par1Packet3Chat.message).func_111068_a(true));
 	}
 
 	public void handleAnimation(Packet18Animation par1Packet18Animation) {
@@ -658,7 +665,7 @@ public class NetClientHandler extends NetHandler {
 
 		if (var2 != null) {
 			if (par1Packet18Animation.animate == 1) {
-				EntityLiving var3 = (EntityLiving)var2;
+				EntityLivingBase var3 = (EntityLivingBase)var2;
 				var3.swingItem();
 			} else if (par1Packet18Animation.animate == 2) {
 				var2.performHurtAnimation();
@@ -704,7 +711,7 @@ public class NetClientHandler extends NetHandler {
 		double var6 = (double)par1Packet24MobSpawn.zPosition / 32.0D;
 		float var8 = (float)(par1Packet24MobSpawn.yaw * 360) / 256.0F;
 		float var9 = (float)(par1Packet24MobSpawn.pitch * 360) / 256.0F;
-		EntityLiving var10 = (EntityLiving)EntityList.createEntityByID(par1Packet24MobSpawn.type, this.mc.theWorld);
+		EntityLivingBase var10 = (EntityLivingBase)EntityList.createEntityByID(par1Packet24MobSpawn.type, this.mc.theWorld);
 		var10.serverPosX = par1Packet24MobSpawn.xPosition;
 		var10.serverPosY = par1Packet24MobSpawn.yPosition;
 		var10.serverPosZ = par1Packet24MobSpawn.zPosition;
@@ -762,22 +769,44 @@ public class NetClientHandler extends NetHandler {
 	/**
 	 * Packet handler
 	 */
+	/**
+	 * Packet handler
+	 */
 	public void handleAttachEntity(Packet39AttachEntity par1Packet39AttachEntity) {
-		Object var2 = this.getEntityByID(par1Packet39AttachEntity.entityId);
+		Object var2 = this.getEntityByID(par1Packet39AttachEntity.field_111006_b);
 		Entity var3 = this.getEntityByID(par1Packet39AttachEntity.vehicleEntityId);
 
-		if (par1Packet39AttachEntity.entityId == this.mc.thePlayer.entityId) {
-			var2 = this.mc.thePlayer;
+		if (par1Packet39AttachEntity.field_111007_a == 0) {
+			boolean var4 = false;
 
-			if (var3 instanceof EntityBoat) {
-				((EntityBoat)var3).func_70270_d(false);
+			if (par1Packet39AttachEntity.field_111006_b == this.mc.thePlayer.entityId) {
+				var2 = this.mc.thePlayer;
+
+				if (var3 instanceof EntityBoat) {
+					((EntityBoat)var3).func_70270_d(false);
+				}
+
+				var4 = ((Entity)var2).ridingEntity == null && var3 != null;
+			} else if (var3 instanceof EntityBoat) {
+				((EntityBoat)var3).func_70270_d(true);
 			}
-		} else if (var3 instanceof EntityBoat) {
-			((EntityBoat)var3).func_70270_d(true);
-		}
 
-		if (var2 != null) {
+			if (var2 == null) {
+				return;
+			}
+
 			((Entity)var2).mountEntity(var3);
+
+			if (var4) {
+				GameSettings var5 = this.mc.gameSettings;
+				this.mc.ingameGUI.func_110326_a(I18n.func_135052_a("mount.onboard", new Object[] {GameSettings.getKeyDisplayString(var5.keyBindSneak.keyCode)}), false);
+			}
+		} else if (par1Packet39AttachEntity.field_111007_a == 1 && var2 != null && var2 instanceof EntityLiving) {
+			if (var3 != null) {
+				((EntityLiving)var2).func_110162_b(var3, false);
+			} else {
+				((EntityLiving)var2).func_110160_i(false, false);
+			}
 		}
 	}
 
@@ -869,7 +898,7 @@ public class NetClientHandler extends NetHandler {
 				TileEntityDispenser var7 = new TileEntityDispenser();
 
 				if (par1Packet100OpenWindow.useProvidedWindowTitle) {
-					var7.setCustomName(par1Packet100OpenWindow.windowTitle);
+					var4.setGuiDisplayName(par1Packet100OpenWindow.windowTitle);
 				}
 
 				var2.displayGUIDispenser(var7);
@@ -933,6 +962,15 @@ public class NetClientHandler extends NetHandler {
 
 				var2.displayGUIDispenser(var6);
 				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
+				break;
+
+			case 11:
+				Entity var9 = this.getEntityByID(par1Packet100OpenWindow.field_111008_f);
+
+				if (var9 != null && var9 instanceof EntityHorse) {
+					var2.func_110298_a((EntityHorse)var9, new AnimalChest(par1Packet100OpenWindow.windowTitle, par1Packet100OpenWindow.useProvidedWindowTitle, par1Packet100OpenWindow.slotsCount));
+					var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
+				}
 		}
 	}
 
@@ -946,7 +984,7 @@ public class NetClientHandler extends NetHandler {
 
 			if (this.mc.currentScreen instanceof GuiContainerCreative) {
 				GuiContainerCreative var4 = (GuiContainerCreative)this.mc.currentScreen;
-				var3 = var4.func_74230_h() != CreativeTabs.tabInventory.getTabIndex();
+				var3 = var4.getCurrentTabIndex() != CreativeTabs.tabInventory.getTabIndex();
 			}
 
 			if (par1Packet103SetSlot.windowId == 0 && par1Packet103SetSlot.itemSlot >= 36 && par1Packet103SetSlot.itemSlot < 45) {
@@ -987,6 +1025,21 @@ public class NetClientHandler extends NetHandler {
 			var2.openContainer.putStacksInSlots(par1Packet104WindowItems.itemStack);
 		}
 	}
+	
+	public void func_142031_a(Packet133TileEditorOpen par1Packet133TileEditorOpen) {
+		TileEntity var2 = this.worldClient.getBlockTileEntity(par1Packet133TileEditorOpen.field_142035_b, par1Packet133TileEditorOpen.field_142036_c, par1Packet133TileEditorOpen.field_142034_d);
+
+		if (var2 != null) {
+			this.mc.thePlayer.displayGUIEditSign(var2);
+		} else if (par1Packet133TileEditorOpen.field_142037_a == 0) {
+			TileEntitySign var3 = new TileEntitySign();
+			var3.setWorldObj(this.worldClient);
+			var3.xCoord = par1Packet133TileEditorOpen.field_142035_b;
+			var3.yCoord = par1Packet133TileEditorOpen.field_142036_c;
+			var3.zCoord = par1Packet133TileEditorOpen.field_142034_d;
+			this.mc.thePlayer.displayGUIEditSign(var3);
+		}
+	}
 
 	/**
 	 * Updates Client side signs
@@ -1016,7 +1069,7 @@ public class NetClientHandler extends NetHandler {
 		}
 
 		if (!var2 && this.mc.thePlayer != null) {
-			this.mc.thePlayer.sendChatToPlayer("Unable to locate sign at " + par1Packet130UpdateSign.xPosition + ", " + par1Packet130UpdateSign.yPosition + ", " + par1Packet130UpdateSign.zPosition);
+			this.mc.thePlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d("Unable to locate sign at " + par1Packet130UpdateSign.xPosition + ", " + par1Packet130UpdateSign.yPosition + ", " + par1Packet130UpdateSign.zPosition));
 		}
 	}
 
@@ -1171,10 +1224,10 @@ public class NetClientHandler extends NetHandler {
 	public void handleEntityEffect(Packet41EntityEffect par1Packet41EntityEffect) {
 		Entity var2 = this.getEntityByID(par1Packet41EntityEffect.entityId);
 
-		if (var2 instanceof EntityLiving) {
+		if (var2 instanceof EntityLivingBase) {
 			PotionEffect var3 = new PotionEffect(par1Packet41EntityEffect.effectId, par1Packet41EntityEffect.duration, par1Packet41EntityEffect.effectAmplifier);
 			var3.setPotionDurationMax(par1Packet41EntityEffect.isDurationMax());
-			((EntityLiving)var2).addPotionEffect(var3);
+			((EntityLivingBase)var2).addPotionEffect(var3);
 		}
 	}
 
@@ -1184,8 +1237,8 @@ public class NetClientHandler extends NetHandler {
 	public void handleRemoveEntityEffect(Packet42RemoveEntityEffect par1Packet42RemoveEntityEffect) {
 		Entity var2 = this.getEntityByID(par1Packet42RemoveEntityEffect.entityId);
 
-		if (var2 instanceof EntityLiving) {
-			((EntityLiving)var2).removePotionEffectClient(par1Packet42RemoveEntityEffect.effectId);
+		if (var2 instanceof EntityLivingBase) {
+			((EntityLivingBase)var2).removePotionEffectClient(par1Packet42RemoveEntityEffect.effectId);
 		}
 	}
 
@@ -1252,36 +1305,24 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleCustomPayload(Packet250CustomPayload par1Packet250CustomPayload) {
-		if ("MC|TPack".equals(par1Packet250CustomPayload.channel)) {
-			String[] var2 = (new String(par1Packet250CustomPayload.data)).split("\u0000");
-			String var3 = var2[0];
-
-			if (var2[1].equals("16")) {
-				if (this.mc.texturePackList.getAcceptsTextures()) {
-					this.mc.texturePackList.requestDownloadOfTexture(var3);
-				} else if (this.mc.texturePackList.func_77300_f()) {
-					// Spout Start
-					if (Configuration.isServerTexturePromptsEnabled()) {
-					this.mc.displayGuiScreen(new GuiYesNo(new NetClientWebTextures(this, var3), StringTranslate.getInstance().translateKey("multiplayer.texturePrompt.line1"), StringTranslate.getInstance().translateKey("multiplayer.texturePrompt.line2"), 0));
-					}
-					// Spout End
-				}
-			}
-		} else if ("MC|TrList".equals(par1Packet250CustomPayload.channel)) {
-			DataInputStream var8 = new DataInputStream(new ByteArrayInputStream(par1Packet250CustomPayload.data));
+		// ToDo: ServerSide Texture Pack Configuration Option was here
+		if ("MC|TrList".equals(par1Packet250CustomPayload.channel)) {
+			DataInputStream var2 = new DataInputStream(new ByteArrayInputStream(par1Packet250CustomPayload.data));
 
 			try {
-				int var9 = var8.readInt();
+				int var3 = var2.readInt();
 				GuiScreen var4 = this.mc.currentScreen;
 
-				if (var4 != null && var4 instanceof GuiMerchant && var9 == this.mc.thePlayer.openContainer.windowId) {
+				if (var4 != null && var4 instanceof GuiMerchant && var3 == this.mc.thePlayer.openContainer.windowId) {
 					IMerchant var5 = ((GuiMerchant)var4).getIMerchant();
-					MerchantRecipeList var6 = MerchantRecipeList.readRecipiesFromStream(var8);
+					MerchantRecipeList var6 = MerchantRecipeList.readRecipiesFromStream(var2);
 					var5.setRecipes(var6);
 				}
 			} catch (IOException var7) {
 				var7.printStackTrace();
 			}
+		} else if ("MC|Brand".equals(par1Packet250CustomPayload.channel)) {
+			this.mc.thePlayer.func_142020_c(new String(par1Packet250CustomPayload.data, Charsets.UTF_8));
 		}
 	}
 
@@ -1395,6 +1436,38 @@ public class NetClientHandler extends NetHandler {
 			this.worldClient.spawnParticle(par1Packet63WorldParticles.getParticleName(), par1Packet63WorldParticles.getPositionX() + var3, par1Packet63WorldParticles.getPositionY() + var5, par1Packet63WorldParticles.getPositionZ() + var7, var9, var11, var13);
 		}
 	}
+	
+	public void func_110773_a(Packet44UpdateAttributes par1Packet44UpdateAttributes) {
+		Entity var2 = this.getEntityByID(par1Packet44UpdateAttributes.func_111002_d());
+
+		if (var2 != null) {
+			if (!(var2 instanceof EntityLivingBase)) {
+				throw new IllegalStateException("Server tried to update attributes of a non-living entity (actually: " + var2 + ")");
+			} else {
+				BaseAttributeMap var3 = ((EntityLivingBase)var2).func_110140_aT();
+				Iterator var4 = par1Packet44UpdateAttributes.func_111003_f().iterator();
+
+				while (var4.hasNext()) {
+					Packet44UpdateAttributesSnapshot var5 = (Packet44UpdateAttributesSnapshot)var4.next();
+					AttributeInstance var6 = var3.func_111152_a(var5.func_142040_a());
+
+					if (var6 == null) {
+						var6 = var3.func_111150_b(new RangedAttribute(var5.func_142040_a(), 0.0D, 2.2250738585072014E-308D, Double.MAX_VALUE));
+					}
+
+					var6.func_111128_a(var5.func_142041_b());
+					var6.func_142049_d();
+					Iterator var7 = var5.func_142039_c().iterator();
+
+					while (var7.hasNext()) {
+						AttributeModifier var8 = (AttributeModifier)var7.next();
+						var6.func_111121_a(var8);
+					}
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * Return the NetworkManager instance used by this NetClientHandler

@@ -48,15 +48,19 @@ public class NBTTagList extends NBTBase {
 	/**
 	 * Read the actual data contents of the tag, implemented in NBT extension classes
 	 */
-	void load(DataInput par1DataInput) throws IOException {
-		this.tagType = par1DataInput.readByte();
-		int var2 = par1DataInput.readInt();
-		this.tagList = new ArrayList();
+	void load(DataInput par1DataInput, int par2) throws IOException {
+		if (par2 > 512) {
+			throw new RuntimeException("Tried to read NBT tag with too high complexity, depth > 512");
+		} else {
+			this.tagType = par1DataInput.readByte();
+			int var3 = par1DataInput.readInt();
+			this.tagList = new ArrayList();
 
-		for (int var3 = 0; var3 < var2; ++var3) {
-			NBTBase var4 = NBTBase.newTag(this.tagType, (String)null);
-			var4.load(par1DataInput);
-			this.tagList.add(var4);
+			for (int var4 = 0; var4 < var3; ++var4) {
+				NBTBase var5 = NBTBase.newTag(this.tagType, (String)null);
+				var5.load(par1DataInput, par2 + 1);
+				this.tagList.add(var5);
+			}
 		}
 	}
 

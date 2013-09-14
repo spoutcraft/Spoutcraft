@@ -9,17 +9,17 @@ public class MovementInput {
 	/**
 	 * The speed at which the player is strafing. Postive numbers to the left and negative to the right.
 	 */
-	public float moveStrafe = 0.0F;
+	public float moveStrafe;
 
 	/**
 	 * The speed at which the player is moving forward. Negative numbers will move backwards.
 	 */
-	public float moveForward = 0.0F;
-	public boolean jump = false;
-	public boolean sneak = false;
+	public float moveForward;
+	public boolean jump;
+	public boolean sneak;
 	// Spout Start
-	public boolean flyingUp = false;
-	public boolean flyingDown = false;
+	public boolean flyingUp;
+	public boolean flyingDown;
 	// Spout End
 
 	// Spout Start - Keep parameter. TODO: Add a reason why.
