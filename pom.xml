@@ -18,8 +18,8 @@
 		<lwjglVersion>2.9.0</lwjglVersion>
 		<minecraftVersion>1.6.2</minecraftVersion>
 		<minecraft_Version>1_6_2</minecraft_Version>
-		<mcpVersion>8.04</mcpVersion>
-		<mcp_Version>804</mcp_Version>
+		<mcpVersion>8.05</mcpVersion>
+		<mcp_Version>805</mcp_Version>
 	</properties>
 
 	<!-- Organization information -->

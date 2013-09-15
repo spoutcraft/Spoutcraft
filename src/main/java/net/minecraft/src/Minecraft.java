@@ -1469,7 +1469,7 @@ public class Minecraft implements IPlayerUsage {
 
 		if (this.currentScreen == null || this.currentScreen.allowUserInput) {
 			this.mcProfiler.endStartSection("mouse");
-			int var1
+			int var1;
 
 			while (Mouse.next()) {
 				var1 = Mouse.getEventButton();
