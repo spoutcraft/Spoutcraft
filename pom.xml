@@ -230,56 +230,11 @@
 									</dependency>
 								</resource>
 								<resource>
-									<targetPath>${project.basedir}/jars/libraries/org/bouncycastle/bcprov-jdk15on/1.47</targetPath>
-									<dependency>
-										<groupId>org.bouncycastle</groupId>
-										<artifactId>bcprov-jdk15on</artifactId>
-										<version>1.47</version>
-										<stripVersion>false</stripVersion>
-									</dependency>
-								</resource>
-								<resource>
-									<targetPath>${project.basedir}/lib</targetPath>
-									<dependency>
-										<groupId>de.cuina.fireandfuel</groupId>
-										<artifactId>codecjlayermp3</artifactId>
-										<version>r2</version>
-										<stripVersion>false</stripVersion>
-									</dependency>
-								</resource>
-								<resource>
 									<targetPath>${project.basedir}/lib</targetPath>
 									<dependency>
 										<groupId>cc.thedudeguy</groupId>
 										<artifactId>codecjorbis</artifactId>
 										<version>r0</version>
-										<stripVersion>false</stripVersion>
-									</dependency>
-								</resource>
-								<resource>
-									<targetPath>${project.basedir}/jars/libraries/commons-io/commons-io/2.4</targetPath>
-									<dependency>
-										<groupId>commons-io</groupId>
-										<artifactId>commons-io</artifactId>
-										<version>2.4</version>
-										<stripVersion>false</stripVersion>
-									</dependency>
-								</resource>
-								<resource>
-									<targetPath>${project.basedir}/jars/libraries/org/apache/commons/commons-lang3/3.1</targetPath>
-									<dependency>
-										<groupId>org.apache.commons</groupId>
-										<artifactId>commons-lang3</artifactId>
-										<version>3.1</version>
-										<stripVersion>false</stripVersion>
-									</dependency>
-								</resource>
-								<resource>
-									<targetPath>${project.basedir}/lib</targetPath>
-									<dependency>
-										<groupId>dnsjava</groupId>
-										<artifactId>dnsjava</artifactId>
-										<version>2.1.1</version>
 										<stripVersion>false</stripVersion>
 									</dependency>
 								</resource>
@@ -302,11 +257,29 @@
 									</dependency>
 								</resource>
 								<resource>
-									<targetPath>${project.basedir}/jars/libraries/net/java/jinput/jinput/2.0.5</targetPath>
+									<targetPath>${project.basedir}/jars/libraries/commons-io/commons-io/2.4</targetPath>
 									<dependency>
-										<groupId>net.java.jinput</groupId>
-										<artifactId>jinput</artifactId>
-										<version>2.0.5</version>
+										<groupId>commons-io</groupId>
+										<artifactId>commons-io</artifactId>
+										<version>2.4</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>de.cuina.fireandfuel</groupId>
+										<artifactId>codecjlayermp3</artifactId>
+										<version>r2</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>dnsjava</groupId>
+										<artifactId>dnsjava</artifactId>
+										<version>2.1.1</version>
 										<stripVersion>false</stripVersion>
 									</dependency>
 								</resource>
@@ -316,42 +289,6 @@
 										<groupId>javax.jmdns</groupId>
 										<artifactId>jmdns</artifactId>
 										<version>3.4.1</version>
-										<stripVersion>false</stripVersion>
-									</dependency>
-								</resource>
-								<resource>
-									<targetPath>${project.basedir}/jars/libraries/net/sf/jopt-simple/jopt-simple/4.5</targetPath>
-									<dependency>
-										<groupId>net.sf.jopt-simple</groupId>
-										<artifactId>jopt-simple</artifactId>
-										<version>4.5</version>
-										<stripVersion>false</stripVersion>
-									</dependency>
-								</resource>
-								<resource>
-									<targetPath>${project.basedir}/jars/libraries/net/java/jutils/jutils/1.0.0</targetPath>
-									<dependency>
-										<groupId>net.java.jutils</groupId>
-										<artifactId>jutils</artifactId>
-										<version>1.0.0</version>
-										<stripVersion>false</stripVersion>
-									</dependency>
-								</resource>
-								<resource>
-									<targetPath>${project.basedir}/jars/libraries/org/lwjgl/lwjgl/lwjgl/2.9.0</targetPath>
-									<dependency>
-										<groupId>org.lwjgl.lwjgl</groupId>
-										<artifactId>lwjgl</artifactId>
-										<version>2.9.0</version>
-										<stripVersion>false</stripVersion>
-									</dependency>
-								</resource>
-								<resource>
-									<targetPath>${project.basedir}/jars/libraries/org/lwjgl/lwjgl/lwjgl_util/2.9.0</targetPath>
-									<dependency>
-										<groupId>org.lwjgl.lwjgl</groupId>
-										<artifactId>lwjgl_util</artifactId>
-										<version>2.9.0</version>
 										<stripVersion>false</stripVersion>
 									</dependency>
 								</resource>
@@ -401,20 +338,29 @@
 									</dependency>
 								</resource>
 								<resource>
-									<targetPath>${project.basedir}/lib</targetPath>
+									<targetPath>${project.basedir}/jars/libraries/net/java/jinput/jinput/2.0.5</targetPath>
 									<dependency>
-										<groupId>slick</groupId>
-										<artifactId>slick</artifactId>
-										<version>274</version>
+										<groupId>net.java.jinput</groupId>
+										<artifactId>jinput</artifactId>
+										<version>2.0.5</version>
 										<stripVersion>false</stripVersion>
 									</dependency>
 								</resource>
 								<resource>
-									<targetPath>${project.basedir}/lib</targetPath>
+									<targetPath>${project.basedir}/jars/libraries/net/java/jutils/jutils/1.0.0</targetPath>
 									<dependency>
-										<groupId>org.yaml</groupId>
-										<artifactId>snakeyaml</artifactId>
-										<version>1.12</version>
+										<groupId>net.java.jutils</groupId>
+										<artifactId>jutils</artifactId>
+										<version>1.0.0</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/net/sf/jopt-simple/jopt-simple/4.5</targetPath>
+									<dependency>
+										<groupId>net.sf.jopt-simple</groupId>
+										<artifactId>jopt-simple</artifactId>
+										<version>4.5</version>
 										<stripVersion>false</stripVersion>
 									</dependency>
 								</resource>
@@ -424,6 +370,60 @@
 										<groupId>net.sf.trove4j</groupId>
 										<artifactId>trove4j</artifactId>
 										<version>3.0.3</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>slick</groupId>
+										<artifactId>slick</artifactId>
+										<version>274</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/org/apache/commons/commons-lang3/3.1</targetPath>
+									<dependency>
+										<groupId>org.apache.commons</groupId>
+										<artifactId>commons-lang3</artifactId>
+										<version>3.1</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/org/bouncycastle/bcprov-jdk15on/1.47</targetPath>
+									<dependency>
+										<groupId>org.bouncycastle</groupId>
+										<artifactId>bcprov-jdk15on</artifactId>
+										<version>1.47</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/org/lwjgl/lwjgl/lwjgl/2.9.0</targetPath>
+									<dependency>
+										<groupId>org.lwjgl.lwjgl</groupId>
+										<artifactId>lwjgl</artifactId>
+										<version>2.9.0</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/org/lwjgl/lwjgl/lwjgl_util/2.9.0</targetPath>
+									<dependency>
+										<groupId>org.lwjgl.lwjgl</groupId>
+										<artifactId>lwjgl_util</artifactId>
+										<version>2.9.0</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>org.yaml</groupId>
+										<artifactId>snakeyaml</artifactId>
+										<version>1.12</version>
 										<stripVersion>false</stripVersion>
 									</dependency>
 								</resource>
