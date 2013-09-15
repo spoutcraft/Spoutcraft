@@ -1,10 +1,5 @@
 package net.minecraft.src;
 
-import com.google.common.collect.Lists;
-import com.prupe.mcpatcher.MCPatcherUtils;
-import com.prupe.mcpatcher.TexturePackChangeHandler;
-import com.prupe.mcpatcher.hd.AAHelper;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,11 +13,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.imageio.ImageIO;
 
-import net.minecraft.client.ClientBrandRetriever;
-import net.minecraft.server.MinecraftServer;
+import com.google.common.collect.Lists;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -35,18 +28,16 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.util.glu.GLU;
 
+import com.prupe.mcpatcher.MCPatcherUtils;
+import com.prupe.mcpatcher.TexturePackChangeHandler;
+import com.prupe.mcpatcher.hd.AAHelper;
 
-
-// Spout Start
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.lang.reflect.Field;
-
-import net.minecraft.src.EntityPlayer;
+import net.minecraft.client.ClientBrandRetriever;
+import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.ChatColor;
+
 import org.spoutcraft.api.gui.PopupScreen;
 import org.spoutcraft.api.gui.Screen;
 import org.spoutcraft.api.gui.ScreenType;
@@ -58,12 +49,10 @@ import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.client.gui.minimap.MinimapConfig;
 import org.spoutcraft.client.gui.minimap.MinimapUtils;
 import org.spoutcraft.client.gui.minimap.Waypoint;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.packet.PacketScreenAction;
 import org.spoutcraft.client.packet.ScreenAction;
 import org.spoutcraft.client.packet.SpoutPacket;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
-// Spout End
 
 public class Minecraft implements IPlayerUsage {
 	private static final ResourceLocation field_110444_H = new ResourceLocation("textures/gui/title/mojang.png");

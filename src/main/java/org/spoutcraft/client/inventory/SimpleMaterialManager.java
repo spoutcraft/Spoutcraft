@@ -25,11 +25,9 @@ import java.util.List;
 import gnu.trove.map.hash.TIntByteHashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.Item;
 
-import org.spoutcraft.api.util.map.TIntPairFloatHashMap;
-import org.spoutcraft.api.util.map.TIntPairObjectHashMap;
 import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.api.inventory.MaterialManager;
 import org.spoutcraft.api.inventory.Recipe;
@@ -38,6 +36,8 @@ import org.spoutcraft.api.inventory.ShapelessRecipe;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.Material;
 import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.api.util.map.TIntPairFloatHashMap;
+import org.spoutcraft.api.util.map.TIntPairObjectHashMap;
 
 public class SimpleMaterialManager implements MaterialManager {
 	private final TIntPairFloatHashMap originalHardness = new TIntPairFloatHashMap();

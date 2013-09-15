@@ -22,6 +22,7 @@ package org.spoutcraft.api.gui;
 import java.util.LinkedList;
 
 import org.apache.commons.lang3.tuple.Pair;
+
 import org.lwjgl.opengl.GL11;
 
 import org.spoutcraft.api.Spoutcraft;

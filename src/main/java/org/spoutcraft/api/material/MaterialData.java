@@ -40,13 +40,13 @@ import org.spoutcraft.api.material.block.StoneBricks;
 import org.spoutcraft.api.material.block.Tree;
 import org.spoutcraft.api.material.block.Wool;
 import org.spoutcraft.api.material.item.Coal;
-import org.spoutcraft.api.material.item.Potion;
 import org.spoutcraft.api.material.item.Dye;
 import org.spoutcraft.api.material.item.GenericArmor;
 import org.spoutcraft.api.material.item.GenericFood;
 import org.spoutcraft.api.material.item.GenericItem;
 import org.spoutcraft.api.material.item.GenericTool;
 import org.spoutcraft.api.material.item.GenericWeapon;
+import org.spoutcraft.api.material.item.Potion;
 import org.spoutcraft.api.material.item.SpawnEgg;
 
 public class MaterialData {

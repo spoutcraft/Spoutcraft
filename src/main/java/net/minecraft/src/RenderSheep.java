@@ -1,13 +1,10 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-// MCPatcher Start
-import com.prupe.mcpatcher.mob.MobRandomizer;
-// MCPatcher End
-// Spout Start
-import org.spoutcraft.client.config.Configuration;
-// Spout End
 
+import com.prupe.mcpatcher.mob.MobRandomizer;
+
+import org.spoutcraft.client.config.Configuration;
 public class RenderSheep extends RenderLiving {
 	private static final ResourceLocation field_110885_a = new ResourceLocation("textures/entity/sheep/sheep_fur.png");
 	private static final ResourceLocation field_110884_f = new ResourceLocation("textures/entity/sheep/sheep.png");

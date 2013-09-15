@@ -21,7 +21,7 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.api.gui.CheckBox;
 import org.spoutcraft.client.config.Configuration;

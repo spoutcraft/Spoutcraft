@@ -3,16 +3,11 @@ package net.minecraft.src;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-// Spout Start
 import java.util.Map.Entry;
-import net.minecraft.client.Minecraft;
-import org.bukkit.ChatColor;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
-import org.spoutcraft.client.special.Holiday;
-import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.client.special.VIP;
-// Spout End
 
 public abstract class EntityPlayer extends EntityLivingBase implements ICommandSender {
 

@@ -19,8 +19,8 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 
 import net.minecraft.src.RenderEngine;
 

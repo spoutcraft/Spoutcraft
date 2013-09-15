@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.cc.ColorizeWorld;
-import com.prupe.mcpatcher.hd.FontUtils;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +9,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
+
 import org.lwjgl.opengl.GL11;
+
+import com.prupe.mcpatcher.cc.ColorizeWorld;
+import com.prupe.mcpatcher.hd.FontUtils;
 
 public class FontRenderer implements ResourceManagerReloadListener {
 	private static final ResourceLocation[] field_111274_c = new ResourceLocation[256];

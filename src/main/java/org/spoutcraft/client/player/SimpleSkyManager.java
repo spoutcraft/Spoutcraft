@@ -19,7 +19,7 @@
  */
 package org.spoutcraft.client.player;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.player.SkyManager;

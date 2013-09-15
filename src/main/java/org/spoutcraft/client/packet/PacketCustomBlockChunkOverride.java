@@ -31,13 +31,13 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import net.minecraft.src.EnumSkyBlock;
 import net.minecraft.src.World;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.packet.LightingThread.LightingData;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.packet.LightingThread.LightingData;
 
 public class PacketCustomBlockChunkOverride implements CompressablePacket {
 	private static LightingThread thread;

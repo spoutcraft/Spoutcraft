@@ -29,7 +29,7 @@ import java.util.zip.Inflater;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.WorldClient;
 
 import org.spoutcraft.api.io.SpoutInputStream;

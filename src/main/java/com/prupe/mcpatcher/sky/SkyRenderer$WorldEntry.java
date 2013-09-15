@@ -1,7 +1,5 @@
 package com.prupe.mcpatcher.sky;
 
-import com.prupe.mcpatcher.TexturePackAPI;
-import com.prupe.mcpatcher.sky.SkyRenderer$Layer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
+import com.prupe.mcpatcher.TexturePackAPI;
+
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.Tessellator;
 

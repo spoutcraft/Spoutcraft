@@ -19,7 +19,7 @@
  */
 package org.spoutcraft.client.player;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.EntityPlayer;
 
 import org.spoutcraft.client.entity.CraftHumanEntity;

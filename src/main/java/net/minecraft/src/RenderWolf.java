@@ -1,10 +1,9 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-// MCPatcher Start
-import com.prupe.mcpatcher.mob.ColorizeEntity;
+
+import com.prupe.mcpatcher.cc.ColorizeEntity;
 import com.prupe.mcpatcher.mob.MobRandomizer;
-// MCPatcher End
 
 public class RenderWolf extends RenderLiving {
 	private static final ResourceLocation field_110917_a = new ResourceLocation("textures/entity/wolf/wolf.png");

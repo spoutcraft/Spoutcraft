@@ -19,9 +19,9 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import net.minecraft.client.Minecraft;
-
 import com.prupe.mcpatcher.TexturePackChangeHandler;
+
+import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.client.config.Configuration;
 

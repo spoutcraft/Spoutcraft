@@ -1,14 +1,15 @@
 package com.prupe.mcpatcher.mob;
 
-import com.prupe.mcpatcher.MCLogger;
-import com.prupe.mcpatcher.TexturePackAPI;
-import com.prupe.mcpatcher.mob.MobRuleList$MobRuleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import com.prupe.mcpatcher.MCLogger;
+import com.prupe.mcpatcher.TexturePackAPI;
+
 import net.minecraft.src.ResourceLocation;
 
 class MobRuleList {

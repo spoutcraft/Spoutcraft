@@ -1,12 +1,13 @@
 package com.prupe.mcpatcher.mob;
 
-import com.prupe.mcpatcher.MCPatcherUtils;
-import com.prupe.mcpatcher.WeightedIndex;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
+
+import com.prupe.mcpatcher.MCPatcherUtils;
+import com.prupe.mcpatcher.WeightedIndex;
 
 class MobRuleList$MobRuleEntry {
 	final int[] skins;

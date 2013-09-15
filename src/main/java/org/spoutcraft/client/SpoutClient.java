@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 import org.newdawn.slick.util.Log;
 import org.newdawn.slick.util.LogSystem;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityPlayer;

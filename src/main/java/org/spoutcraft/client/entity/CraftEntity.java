@@ -19,23 +19,20 @@
  */
 package org.spoutcraft.client.entity;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import org.spoutcraft.api.entity.EntitySkinType;
-import org.spoutcraft.api.property.PropertyObject;
 import org.spoutcraft.api.property.Property;
+import org.spoutcraft.api.property.PropertyObject;
 import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.api.util.Location;
 import org.spoutcraft.api.util.MutableLocation;
 import org.spoutcraft.api.util.MutableVector;
 import org.spoutcraft.api.util.Vector;
 import org.spoutcraft.client.SpoutcraftWorld;
-import org.spoutcraft.client.player.SpoutPlayer;
 
 public class CraftEntity extends PropertyObject{
 	protected net.minecraft.src.Entity handle = null;

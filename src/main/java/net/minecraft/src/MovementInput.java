@@ -1,9 +1,5 @@
 package net.minecraft.src;
 
-// Spout Start
-import net.minecraft.src.EntityPlayer;
-// Spout End
-
 public class MovementInput {
 
 	/**

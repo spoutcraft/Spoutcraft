@@ -7,12 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-// Spout Start
+
 import org.spoutcraft.client.block.SpoutcraftChunk;
-// Spout End
 
 public class Chunk {
-
 	/**
 	 * Determines if the chunk is lit or not at a light value greater than 0.
 	 */

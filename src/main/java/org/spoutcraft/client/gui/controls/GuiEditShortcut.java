@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.controls;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericButton;

@@ -7,13 +7,14 @@ import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 import java.util.Map;
 import java.util.WeakHashMap;
+
 import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
-// MCPatcher Start
-import com.prupe.mcpatcher.mob.TessellatorUtils;
+
+import com.prupe.mcpatcher.TessellatorUtils;
+
 import org.spoutcraft.client.SpoutClient;
-// MCPatcher End
 
 public class Tessellator {
 

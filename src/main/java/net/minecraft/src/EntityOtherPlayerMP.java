@@ -1,11 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
-// Spout Start
-import org.bukkit.ChatColor;
-import org.spoutcraft.client.special.Resources;
-// Spout End
-
 public class EntityOtherPlayerMP extends AbstractClientPlayer {
 	private boolean isItemInUse;
 	private int otherPlayerMPPosRotationIncrements;

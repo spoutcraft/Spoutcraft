@@ -21,7 +21,7 @@ package org.spoutcraft.client.gui.minimap;
 
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.EntityLiving;

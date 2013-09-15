@@ -1,18 +1,17 @@
 package net.minecraft.src;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Map.Entry;
-// Spout Start
-import net.minecraft.src.NBTTagList;
+import java.util.Random;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.inventory.InventoryUtil;
-// Spout End
 
 // Spout Start - Removed final
 public class ItemStack {

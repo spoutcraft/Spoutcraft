@@ -1,9 +1,8 @@
 package net.minecraft.src;
 
 import java.util.Random;
-// MCPatcher Start
+
 import com.prupe.mcpatcher.cc.ColorizeBlock;
-// MCPatcher End
 
 public abstract class BlockFluid extends Block {
 	private Icon[] theIcon;

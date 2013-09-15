@@ -2,9 +2,8 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 import java.util.List;
-// Spout Start
+
 import org.spoutcraft.client.SpoutClient;
-// Spout End
 
 public class GuiDisconnected extends GuiScreen {
 

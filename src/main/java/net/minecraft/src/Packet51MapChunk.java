@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-// Spout Start
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
-// Spout End
 
 public class Packet51MapChunk extends Packet {
 

@@ -1,27 +1,23 @@
 package net.minecraft.src;
 
-import java.awt.image.BufferedImage;
 import java.nio.FloatBuffer;
 import java.util.List;
 import java.util.Random;
-import net.minecraft.client.Minecraft;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Protect;
-// MCPatcher Start
+import org.lwjgl.util.vector.*;
+
 import com.prupe.mcpatcher.cc.ColorizeWorld;
 import com.prupe.mcpatcher.cc.Colorizer;
 import com.prupe.mcpatcher.cc.Lightmap;
-import com.prupe.mcpatcher.cc.RenderPass;
-// MCPatcher End
-// Spout Start
-import org.lwjgl.util.vector.*;
+import com.prupe.mcpatcher.ctm.RenderPass;
+
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
-// Spout End
-
 public class EntityRenderer {
 	private static final ResourceLocation field_110924_q = new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation field_110923_r = new ResourceLocation("textures/environment/snow.png");

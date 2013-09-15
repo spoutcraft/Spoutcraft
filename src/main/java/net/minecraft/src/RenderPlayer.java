@@ -2,14 +2,7 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 
-// Spout Start
-import net.minecraft.client.Minecraft;
-import org.spoutcraft.api.material.MaterialData;
-import org.spoutcraft.client.HDImageBufferDownload;
-import org.spoutcraft.client.player.accessories.AccessoryHandler;
-import org.spoutcraft.client.player.accessories.AccessoryType;
 import org.spoutcraft.client.special.VIP;
-// Spout End
 
 public class RenderPlayer extends RenderLiving {
 	private static final ResourceLocation field_110826_a = new ResourceLocation("textures/entity/steve.png");

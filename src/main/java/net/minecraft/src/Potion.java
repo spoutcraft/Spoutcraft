@@ -1,11 +1,13 @@
 package net.minecraft.src;
 
-import com.google.common.collect.Maps;
-import com.prupe.mcpatcher.cc.ColorizeItem;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
+
+import com.google.common.collect.Maps;
+
+import com.prupe.mcpatcher.cc.ColorizeItem;
 
 public class Potion {
 

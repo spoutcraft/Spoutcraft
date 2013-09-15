@@ -1,12 +1,5 @@
 package com.prupe.mcpatcher.hd;
 
-import com.prupe.mcpatcher.BlendMethod;
-import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.InputHandler;
-import com.prupe.mcpatcher.MCLogger;
-import com.prupe.mcpatcher.MCPatcherUtils;
-import com.prupe.mcpatcher.TexturePackAPI;
-import com.prupe.mcpatcher.hd.FancyDial$Layer;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Field;
@@ -19,16 +12,25 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.WeakHashMap;
 import javax.imageio.ImageIO;
-import net.minecraft.src.Icon;
-import net.minecraft.src.ResourceLocation;
-import net.minecraft.src.TextureAtlasSprite;
-import net.minecraft.src.TextureClock;
-import net.minecraft.src.TextureCompass;
+
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
+
+import com.prupe.mcpatcher.BlendMethod;
+import com.prupe.mcpatcher.Config;
+import com.prupe.mcpatcher.InputHandler;
+import com.prupe.mcpatcher.MCLogger;
+import com.prupe.mcpatcher.MCPatcherUtils;
+import com.prupe.mcpatcher.TexturePackAPI;
+
+import net.minecraft.src.Icon;
+import net.minecraft.src.ResourceLocation;
+import net.minecraft.src.TextureAtlasSprite;
+import net.minecraft.src.TextureClock;
+import net.minecraft.src.TextureCompass;
 
 public class FancyDial {
 	private static final MCLogger logger = MCLogger.getLogger("Custom Animations", "Animation");

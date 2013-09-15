@@ -1,10 +1,10 @@
 package com.prupe.mcpatcher.mob;
 
+import java.util.LinkedHashMap;
+
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
-import com.prupe.mcpatcher.mob.MobRandomizer$1;
-import com.prupe.mcpatcher.mob.MobRandomizer$ExtraInfo;
-import java.util.LinkedHashMap;
+
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLivingBase;
 import net.minecraft.src.ResourceLocation;

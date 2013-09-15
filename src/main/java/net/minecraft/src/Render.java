@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.mob.MobRandomizer;
 import org.lwjgl.opengl.GL11;
+
+import com.prupe.mcpatcher.mob.MobRandomizer;
 
 public abstract class Render {
 	private static final ResourceLocation field_110778_a = new ResourceLocation("textures/misc/shadow.png");

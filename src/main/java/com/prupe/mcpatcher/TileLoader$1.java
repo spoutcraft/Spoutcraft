@@ -2,6 +2,7 @@ package com.prupe.mcpatcher;
 
 import java.io.IOException;
 import java.util.Iterator;
+
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.TextureMap;
 

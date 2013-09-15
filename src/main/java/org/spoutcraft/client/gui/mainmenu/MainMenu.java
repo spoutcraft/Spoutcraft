@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -65,7 +66,7 @@ public class MainMenu extends GuiScreen {
 	public static String mcVersion = "Unknown Version";
 	final static List<String> splashes = new ArrayList<String>(1000);
 	public static boolean hasLoaded = false;
-	Button singleplayer, multiplayer, textures, about, options, quit, language;
+	Button singleplayer, multiplayer, resources, about, options, quit, language;
 	Texture background, logo;
 	Label splashText, buildNumber, animate, debugText;
 	static String timeOfDay = "";
@@ -207,8 +208,8 @@ public class MainMenu extends GuiScreen {
 		multiplayer = new GenericButton(translate.translateKey("menu.multiplayer"));
 		multiplayer.setGeometry(width - 110, height - 130, 100, 20);
 
-		textures = new GenericButton(translate.translateKey("options.texture.pack"));
-		textures.setGeometry(width - 110, height - 105, 100, 20);
+		resources = new GenericButton(translate.translateKey("options.resourcepack"));
+		resources.setGeometry(width - 110, height - 105, 100, 20);
 
 		buildNumber = new GenericLabel(SpoutClient.getClientVersion());
 		textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(buildNumber.getText());
@@ -263,7 +264,7 @@ public class MainMenu extends GuiScreen {
 		debugText.setTextColor(new Color(0xFFE303));
 		debugText.setGeometry(1, 1, 12, 100);
 		debugText.setVisible(false);
-		this.getScreen().attachWidgets("Spoutcraft", singleplayer, multiplayer, textures, buildNumber, background, splashText, about, options,  logo, quit, animate, debugText);
+		this.getScreen().attachWidgets("Spoutcraft", singleplayer, multiplayer, resources, buildNumber, background, splashText, about, options,  logo, quit, animate, debugText);
 	}
 
 	@Override
@@ -273,10 +274,10 @@ public class MainMenu extends GuiScreen {
 			mc.displayGuiScreen(new GuiSelectWorld(this));
 		}
 		if (multiplayer == btn) {
-			mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
+			mc.displayGuiScreen(new GuiFavorites(this));
 		}
-		if (textures == btn) {
-			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
+		if (resources == btn) {
+			mc.displayGuiScreen(new GuiScreenTemporaryResourcePackSelect());
 		}
 		if (about == btn) {
 			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiNewAbout(this));
@@ -293,11 +294,11 @@ public class MainMenu extends GuiScreen {
 	public void drawScreen(int mouseX, int mouseY, float scroll) {
 		super.drawScreen(mouseX, mouseY, scroll);
 		if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
-			mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
+			mc.displayGuiScreen(new GuiFavorites(this));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			mc.displayGuiScreen(new GuiSelectWorld(this));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
-			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
+			mc.displayGuiScreen(new GuiScreenTemporaryResourcePackSelect());
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
 			mc.displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
 		}

@@ -26,7 +26,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.RenderManager;

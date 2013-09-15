@@ -21,7 +21,7 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import org.lwjgl.opengl.Display;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.client.config.Configuration;
 

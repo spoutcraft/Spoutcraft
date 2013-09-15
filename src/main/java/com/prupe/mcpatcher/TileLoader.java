@@ -1,6 +1,5 @@
 package com.prupe.mcpatcher;
 
-import com.prupe.mcpatcher.TileLoader$1;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -14,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import net.minecraft.src.Icon;
 import net.minecraft.src.IconRegister;
 import net.minecraft.src.Minecraft;

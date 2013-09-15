@@ -1,7 +1,5 @@
 package com.prupe.mcpatcher;
 
-import com.prupe.mcpatcher.TexturePackAPI$1;
-import com.prupe.mcpatcher.TexturePackAPI$2;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.File;
@@ -12,12 +10,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.src.AbstractResourcePack;
 import net.minecraft.src.AbstractTexture;
 import net.minecraft.src.DefaultResourcePack;
@@ -32,7 +33,6 @@ import net.minecraft.src.SimpleReloadableResourceManager;
 import net.minecraft.src.TextureManager;
 import net.minecraft.src.TextureMap;
 import net.minecraft.src.TextureObject;
-import org.lwjgl.opengl.GL11;
 
 public class TexturePackAPI {
 	private static final MCLogger logger = MCLogger.getLogger("Texture Pack");

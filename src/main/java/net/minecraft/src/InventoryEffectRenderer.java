@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.lwjgl.opengl.GL11;
 
 public abstract class InventoryEffectRenderer extends GuiContainer {

@@ -1,16 +1,19 @@
 package net.minecraft.src;
 
+import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.newdawn.slick.opengl.Texture;
 
 import com.prupe.mcpatcher.cc.ColorizeBlock;
-// Spout Start
-import java.util.Random;
-import org.newdawn.slick.opengl.Texture;
+
 import org.spoutcraft.api.block.design.BlockDesign;
 import org.spoutcraft.api.material.MaterialData;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.CustomTextureManager;
+
+// Spout Start
 //Spout End
 
 public class ItemRenderer {

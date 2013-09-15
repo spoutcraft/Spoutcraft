@@ -24,8 +24,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import net.minecraft.src.Packet;
 import net.minecraft.src.NetHandler;
+import net.minecraft.src.Packet;
 
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;

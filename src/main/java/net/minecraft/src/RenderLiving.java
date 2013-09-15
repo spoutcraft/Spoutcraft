@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.mob.LineRenderer;
 import org.lwjgl.opengl.GL11;
+
+import com.prupe.mcpatcher.mob.LineRenderer;
 
 public abstract class RenderLiving extends RendererLivingEntity {
 	public RenderLiving(ModelBase par1ModelBase, float par2) {

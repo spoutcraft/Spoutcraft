@@ -1,9 +1,6 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
-// Spout Start
 import org.spoutcraft.client.gui.mainmenu.MainMenu;
-// Spout End
 
 public class GuiConnecting extends GuiScreen {
 

@@ -29,9 +29,10 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import gnu.trove.map.hash.TIntObjectHashMap;
+
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.Spoutcraft;

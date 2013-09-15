@@ -8,23 +8,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+import de.cuina.fireandfuel.CodecJLayerMP3;
 import org.apache.commons.io.FileUtils;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
+import paulscode.sound.codecs.CodecWav;
+import paulscode.sound.libraries.LibraryLWJGLOpenAL;
+import thedudeguy.paulscode.sound.codecs.CodecJOrbis;
+
+import org.spoutcraft.api.sound.Music;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.packet.PacketMusicChange;
+
 // Spout Start - Unused import
 //import paulscode.sound.codecs.CodecJOrbis;
 // Spout End
-import paulscode.sound.codecs.CodecWav;
-import paulscode.sound.libraries.LibraryLWJGLOpenAL;
-// Spout Start
-import thedudeguy.paulscode.sound.codecs.CodecJOrbis;
-import de.cuina.fireandfuel.CodecJLayerMP3;
-import org.spoutcraft.api.sound.Music;
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.packet.*;
-// Spout End
-
 public class SoundManager implements ResourceManagerReloadListener {
 	private static final String[] field_130084_a = new String[] {"ogg"};
 	

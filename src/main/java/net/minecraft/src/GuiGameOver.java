@@ -1,10 +1,10 @@
 package net.minecraft.src;
 
 import java.util.Iterator;
+
 import org.lwjgl.opengl.GL11;
-// Spout Start
+
 import org.spoutcraft.client.gui.mainmenu.MainMenu;
-// Spout End
 
 public class GuiGameOver extends GuiScreen {
 

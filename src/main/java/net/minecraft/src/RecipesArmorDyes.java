@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.cc.ColorizeEntity;
 import java.util.ArrayList;
+
+import com.prupe.mcpatcher.cc.ColorizeEntity;
 
 public class RecipesArmorDyes implements IRecipe {
 

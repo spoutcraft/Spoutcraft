@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
-import com.google.common.collect.Maps;
 import java.util.Map;
+
+import com.google.common.collect.Maps;
+
 import org.lwjgl.opengl.GL11;
 
 public class RenderBiped extends RenderLiving {

@@ -3,13 +3,13 @@ package net.minecraft.src;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.lwjgl.opengl.GL11;
-// Spout Start
+
 import org.spoutcraft.client.entity.EntityText;
 import org.spoutcraft.client.entity.EntityTexture;
 import org.spoutcraft.client.entity.RenderText;
 import org.spoutcraft.client.entity.RenderTexture;
-// Spout End
 
 public class RenderManager {
 

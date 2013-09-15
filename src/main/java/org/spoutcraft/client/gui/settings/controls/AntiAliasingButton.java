@@ -19,10 +19,6 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import net.minecraft.client.Minecraft;
-
-import org.spoutcraft.api.player.RenderDistance;
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 
 public class AntiAliasingButton extends AutomatedButton {

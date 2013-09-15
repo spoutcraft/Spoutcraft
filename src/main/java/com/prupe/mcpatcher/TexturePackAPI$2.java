@@ -1,6 +1,7 @@
 package com.prupe.mcpatcher;
 
 import java.util.Comparator;
+
 import net.minecraft.src.ResourceLocation;
 
 final class TexturePackAPI$2 implements Comparator<ResourceLocation> {

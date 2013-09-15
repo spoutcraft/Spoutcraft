@@ -34,7 +34,7 @@ import org.spoutcraft.api.gui.WidgetType;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.*;
+import org.spoutcraft.client.gui.CustomScreen;
 
 public class PacketWidget implements SpoutPacket {
 	private Widget widget;

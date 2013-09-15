@@ -1,6 +1,7 @@
 package com.prupe.mcpatcher.ctm;
 
 import java.util.Arrays;
+
 import net.minecraft.src.Block;
 
 final class RenderPass$1 extends RenderPassAPI {

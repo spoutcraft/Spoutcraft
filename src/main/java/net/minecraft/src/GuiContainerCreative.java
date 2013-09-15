@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-// Spout Start
+
 import org.spoutcraft.api.material.CustomItem;
 import org.spoutcraft.api.material.MaterialData;
-// Spout End
 
 public class GuiContainerCreative extends InventoryEffectRenderer {
 	private static final ResourceLocation field_110424_t = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");

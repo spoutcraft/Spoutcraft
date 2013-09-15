@@ -1,9 +1,5 @@
 package net.minecraft.src;
 
-// Spout Start
-import org.spoutcraft.api.entity.EntitySkinType;
-// Spout End
-
 public class RenderPig extends RenderLiving {
 	private static final ResourceLocation field_110888_a = new ResourceLocation("textures/entity/pig/pig_saddle.png");
 	private static final ResourceLocation field_110887_f = new ResourceLocation("textures/entity/pig/pig.png");

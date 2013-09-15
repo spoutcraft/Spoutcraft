@@ -1,9 +1,8 @@
 package net.minecraft.src;
 
 import java.util.List;
-// Spout Start
+
 import org.spoutcraft.client.gui.inventory.CreativeTabCustom;
-// Spout End
 
 public class CreativeTabs {
 	// Spout Start - Custom item/block tab

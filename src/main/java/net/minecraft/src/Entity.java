@@ -1,14 +1,13 @@
 package net.minecraft.src;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
 import net.minecraft.server.MinecraftServer;
-// Spout Start
-import java.util.LinkedList;
-import java.util.UUID;
+
 import org.spoutcraft.client.entity.CraftEntityFactory;
-// Spout End
 
 public abstract class Entity {
 	private static int nextEntityID;

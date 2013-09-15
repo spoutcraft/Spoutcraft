@@ -23,7 +23,8 @@ import java.awt.image.BufferedImage;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
+
 import org.spoutcraft.client.SpoutClient;
 
 public class ImageManager {

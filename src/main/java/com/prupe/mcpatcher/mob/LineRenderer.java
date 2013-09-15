@@ -1,14 +1,17 @@
 package com.prupe.mcpatcher.mob;
 
+import java.util.Properties;
+
+import org.lwjgl.opengl.GL11;
+
 import com.prupe.mcpatcher.Config;
 import com.prupe.mcpatcher.InputHandler;
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
-import java.util.Properties;
+
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.Tessellator;
-import org.lwjgl.opengl.GL11;
 
 public class LineRenderer {
 	private static final MCLogger logger = MCLogger.getLogger("Random Mobs");

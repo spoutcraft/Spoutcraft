@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 // Spout Start
-import org.bukkit.ChatColor;
+
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.client.SpoutClient;
@@ -9,7 +9,6 @@ import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
-import org.spoutcraft.client.special.Resources;
 // Spout End
 
 public class EntityPlayerSP extends AbstractClientPlayer {

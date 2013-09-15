@@ -1,9 +1,8 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-// Spout Start
+
 import org.spoutcraft.api.material.MaterialData;
-// Spout End
 
 public class RenderItemFrame extends Render {
 	private final RenderBlocks renderBlocksInstance = new RenderBlocks();

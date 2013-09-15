@@ -1,9 +1,12 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.prupe.mcpatcher.mob.MobOverlay;
-// MCPatcher End
+
 import org.lwjgl.opengl.GL11;
+
+import com.prupe.mcpatcher.mob.MobOverlay;
+
+// MCPatcher End
 
 public class RenderMooshroom extends RenderLiving {
 	private static final ResourceLocation field_110880_a = new ResourceLocation("textures/entity/cow/mooshroom.png");

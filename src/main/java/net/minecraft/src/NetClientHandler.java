@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import com.google.common.base.Charsets;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -8,34 +7,37 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
-// Spout Start - Unused import
-//import java.net.InetAddress;
-// Spout End
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javax.crypto.SecretKey;
-import net.minecraft.client.ClientBrandRetriever;
+
+import com.google.common.base.Charsets;
+
 import org.lwjgl.input.Keyboard;
-// Spout Start
-import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
-import java.util.LinkedList;
+
+import net.minecraft.client.ClientBrandRetriever;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.precache.GuiPrecache;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.util.NetworkUtils;
-// Spout End
 
+// Spout Start - Unused import
+//import java.net.InetAddress;
+// Spout End
 public class NetClientHandler extends NetHandler {
 
 	/** True if kicked or disconnected from the server. */

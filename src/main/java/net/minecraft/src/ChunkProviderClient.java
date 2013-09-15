@@ -1,9 +1,10 @@
 package net.minecraft.src;
 
-import java.util.ArrayList;
 import java.util.List;
-// Spout
+
 import gnu.trove.map.hash.TLongObjectHashMap;
+
+// Spout
 // Spout End
 
 public class ChunkProviderClient implements IChunkProvider {

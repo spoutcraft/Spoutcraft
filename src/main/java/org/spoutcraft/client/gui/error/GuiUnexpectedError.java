@@ -30,12 +30,11 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.Sys;
+import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.GuiScreen;
-import net.minecraft.src.TexturePackList;
 
 import org.bukkit.ChatColor;
 

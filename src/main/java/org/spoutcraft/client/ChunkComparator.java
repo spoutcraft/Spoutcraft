@@ -21,7 +21,7 @@ package org.spoutcraft.client;
 
 import java.util.Comparator;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.MathHelper;
 

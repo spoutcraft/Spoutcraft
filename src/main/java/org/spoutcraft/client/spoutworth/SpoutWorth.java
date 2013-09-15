@@ -22,7 +22,7 @@ package org.spoutcraft.client.spoutworth;
 import gnu.trove.iterator.TLongIterator;
 import gnu.trove.list.linked.TLongLinkedList;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.client.config.Configuration;
 

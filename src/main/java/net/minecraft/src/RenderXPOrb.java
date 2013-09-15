@@ -2,9 +2,8 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-// MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeEntity;
-// MCPatcher End
+
+import com.prupe.mcpatcher.mob.ColorizeEntity;
 
 public class RenderXPOrb extends Render {
 	private static final ResourceLocation field_110785_a = new ResourceLocation("textures/entity/experience_orb.png");

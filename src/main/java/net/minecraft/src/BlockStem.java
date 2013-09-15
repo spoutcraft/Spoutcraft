@@ -1,9 +1,8 @@
 package net.minecraft.src;
 
 import java.util.Random;
-// MCPatcher Start
+
 import com.prupe.mcpatcher.cc.ColorizeBlock;
-// MCPatcher End
 
 public class BlockStem extends BlockFlower {
 

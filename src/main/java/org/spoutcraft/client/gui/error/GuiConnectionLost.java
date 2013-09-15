@@ -19,12 +19,12 @@
  */
 package org.spoutcraft.client.gui.error;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.GuiConnecting;
-import net.minecraft.src.GuiScreen;
-
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
+
+import net.minecraft.src.Minecraft;
+import net.minecraft.src.GuiConnecting;
+import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.Button;

@@ -20,10 +20,11 @@
 package org.spoutcraft.client.player.accessories;
 
 import java.io.IOException;
-import org.spoutcraft.client.packet.PacketType;
-import org.spoutcraft.client.packet.SpoutPacket;
+
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.packet.PacketType;
+import org.spoutcraft.client.packet.SpoutPacket;
 
 public class PacketAccessory implements SpoutPacket{
 	private AccessoryType type;

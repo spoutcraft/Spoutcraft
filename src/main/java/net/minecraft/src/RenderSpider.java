@@ -1,13 +1,10 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-// MCPatcher Start
-import com.prupe.mcpatcher.mod.MobRandomizer;
-// MCPatcher End
-// Spout Start
-import org.spoutcraft.client.config.Configuration;
-// Spout End
 
+import com.prupe.mcpatcher.mob.MobRandomizer;
+
+import org.spoutcraft.client.config.Configuration;
 public class RenderSpider extends RenderLiving {
 	private static final ResourceLocation field_110891_a = new ResourceLocation("textures/entity/spider_eyes.png");
 	private static final ResourceLocation field_110890_f = new ResourceLocation("textures/entity/spider/spider.png");

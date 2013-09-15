@@ -3,9 +3,8 @@ package net.minecraft.src;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-// MCPatcher Start
+
 import com.prupe.mcpatcher.cc.ColorizeItem;
-// MCPatcher End
 
 public class EntityList {
 

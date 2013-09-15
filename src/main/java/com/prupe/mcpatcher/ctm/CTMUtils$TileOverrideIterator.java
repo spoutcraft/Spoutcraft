@@ -3,6 +3,7 @@ package com.prupe.mcpatcher.ctm;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.Icon;
 

@@ -1,19 +1,10 @@
 package net.minecraft.src;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-// Spout Start
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import org.spoutcraft.api.Spoutcraft;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketFullVersion;
 import org.spoutcraft.client.packet.PacketRenderDistance;
-// Spout End
 
 public class Packet18Animation extends Packet {
 

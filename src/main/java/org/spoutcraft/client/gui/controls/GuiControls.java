@@ -22,7 +22,6 @@ package org.spoutcraft.client.gui.controls;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.ChatColor;
-import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.CheckBox;
 import org.spoutcraft.api.gui.GenericButton;
@@ -38,9 +37,6 @@ import org.spoutcraft.client.controls.Shortcut;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.ButtonUpdater;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.gui.controls.ControlsBasicItem;
-import org.spoutcraft.client.gui.controls.KeyBindingItem;
-import org.spoutcraft.client.gui.controls.ShortcutBindingItem;
 
 public class GuiControls extends GuiSpoutScreen implements ButtonUpdater {
 	private GenericLabel labelTitle, labelDescription;

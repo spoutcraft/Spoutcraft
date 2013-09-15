@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import net.minecraft.client.Minecraft;
+
 import org.lwjgl.opengl.GL11;
 
 public class GuiNewChat extends Gui {

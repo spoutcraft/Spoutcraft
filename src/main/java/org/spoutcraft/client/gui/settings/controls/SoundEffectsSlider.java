@@ -19,7 +19,7 @@
  */
 package org.spoutcraft.client.gui.settings.controls;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.api.gui.GenericSlider;
 

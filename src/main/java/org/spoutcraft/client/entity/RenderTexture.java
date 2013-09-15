@@ -26,8 +26,8 @@ import net.minecraft.src.RenderEntity;
 import net.minecraft.src.RenderHelper;
 import net.minecraft.src.Tessellator;
 
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class RenderTexture extends RenderEntity {
 	@Override

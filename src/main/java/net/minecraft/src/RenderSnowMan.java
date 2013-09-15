@@ -1,9 +1,8 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-// MCPatcher Start
+
 import com.prupe.mcpatcher.mob.MobOverlay;
-// MCPatcher End
 
 public class RenderSnowMan extends RenderLiving {
 	private static final ResourceLocation field_110895_a = new ResourceLocation("textures/entity/snowman.png");

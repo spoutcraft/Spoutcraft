@@ -19,7 +19,8 @@
  */
 package org.spoutcraft.client.entity;
 
-import net.minecraft.src.*;
+import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityPlayerSP;
 
 import org.spoutcraft.client.player.ClientPlayer;
 

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
+
 import net.minecraft.src.Icon;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.TextureMap;

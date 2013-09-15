@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import net.minecraft.src.EntityLivingBase;
 import net.minecraft.src.NBTTagCompound;
 

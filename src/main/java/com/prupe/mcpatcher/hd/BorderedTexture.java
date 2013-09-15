@@ -1,6 +1,7 @@
 package com.prupe.mcpatcher.hd;
 
 import com.prupe.mcpatcher.MCLogger;
+
 import net.minecraft.src.TextureAtlasSprite;
 
 public class BorderedTexture extends TextureAtlasSprite {

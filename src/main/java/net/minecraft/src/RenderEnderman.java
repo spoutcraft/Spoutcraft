@@ -1,15 +1,13 @@
 package net.minecraft.src;
 
 import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-// MCPatcher Start
-import com.prupe.mcpatcher.mob.MobRandomizer;
-// MCPatcher End
-// Spout Start
-import org.spoutcraft.client.config.Configuration;
-// Spout End
 
+import com.prupe.mcpatcher.mob.MobRandomizer;
+
+import org.spoutcraft.client.config.Configuration;
 public class RenderEnderman extends RenderLiving {
 	private static final ResourceLocation field_110840_a = new ResourceLocation("textures/entity/enderman/enderman_eyes.png");
 	private static final ResourceLocation field_110839_f = new ResourceLocation("textures/entity/enderman/enderman.png");

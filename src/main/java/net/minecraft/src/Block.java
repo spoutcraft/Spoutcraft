@@ -2,13 +2,8 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Random;
-// MCPatcher Start
+
 import com.prupe.mcpatcher.cc.ColorizeBlock;
-// MCPatcher End
-// Spout Start
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.World;
-import gnu.trove.map.hash.TIntFloatHashMap;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
@@ -16,8 +11,6 @@ import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.util.FastLocation;
 import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.client.block.SpoutcraftChunk;
-// Spout End
-
 public class Block {
 
 	/**

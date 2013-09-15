@@ -3,25 +3,17 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
 import org.lwjgl.opengl.GL11;
-// MCPatcher Start
+import org.newdawn.slick.opengl.Texture;
+
 import com.prupe.mcpatcher.ctm.CTMUtils;
 import com.prupe.mcpatcher.ctm.RenderPass;
-// MCPatcher End
-// Spout Start
-import net.minecraft.client.Minecraft;
+
 import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
-import net.minecraft.src.Chunk;
-import net.minecraft.src.Entity;
 import net.minecraft.src.ICamera;
-import net.minecraft.src.RenderBlocks;
-import net.minecraft.src.RenderItem;
-import net.minecraft.src.Tessellator;
 import net.minecraft.src.TileEntity;
-import net.minecraft.src.TileEntityRenderer;
-import net.minecraft.src.World;
-import org.newdawn.slick.opengl.Texture;
+
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.block.design.GenericBlockDesign;
 import org.spoutcraft.api.material.CustomBlock;
@@ -29,8 +21,6 @@ import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.io.CustomTextureManager;
-// Spout End
-
 public class WorldRenderer {
 
 	/** Reference to the World object. */

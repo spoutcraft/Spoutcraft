@@ -28,8 +28,8 @@ import java.util.zip.Inflater;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-import net.minecraft.src.*;
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;

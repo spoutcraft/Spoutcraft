@@ -2,18 +2,20 @@ package net.minecraft.src;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-//Spout Start - Unused import
-//import java.nio.IntBuffer;
-//Spout End
+import java.nio.ByteBuffer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+
+//Spout Start - Unused import
+//import java.nio.IntBuffer;
+//Spout End
 // Spout Start
 //import org.lwjgl.opengl.GL12; // Unused import
-import java.nio.ByteBuffer;
 // Spout End
 
 public class ScreenShotHelper {

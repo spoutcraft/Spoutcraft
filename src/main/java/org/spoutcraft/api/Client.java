@@ -29,7 +29,6 @@ import org.spoutcraft.api.keyboard.KeyBindingManager;
 import org.spoutcraft.api.player.BiomeManager;
 import org.spoutcraft.api.player.SkyManager;
 import org.spoutcraft.api.property.PropertyInterface;
-import org.spoutcraft.client.entity.CraftCameraEntity;
 
 public interface Client extends PropertyInterface {
 	public String getName();

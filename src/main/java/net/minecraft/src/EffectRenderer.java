@@ -3,9 +3,10 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
 
-import com.prupe.mcpatcher.mod.FireworksHelper;
+import com.prupe.mcpatcher.sky.FireworksHelper;
 
 public class EffectRenderer {
 	private static final ResourceLocation field_110737_b = new ResourceLocation("textures/particle/particles.png");

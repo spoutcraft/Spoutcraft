@@ -1,11 +1,8 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
-// Spout Start
 import org.spoutcraft.api.gui.ScreenType;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketKeyPress;
-// Spout End
 
 public class EntityClientPlayerMP extends EntityPlayerSP {
 	public NetClientHandler sendQueue;

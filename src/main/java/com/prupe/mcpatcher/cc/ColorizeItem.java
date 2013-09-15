@@ -1,12 +1,14 @@
 package com.prupe.mcpatcher.cc;
 
-import com.prupe.mcpatcher.MCLogger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import com.prupe.mcpatcher.MCLogger;
+
 import net.minecraft.src.MapColor;
 import net.minecraft.src.Potion;
 

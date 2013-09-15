@@ -22,7 +22,7 @@ package org.spoutcraft.client.item;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityDiggingFX;
 import net.minecraft.src.Tessellator;

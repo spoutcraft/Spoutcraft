@@ -2,10 +2,9 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Random;
-// MCPatcher Start
+
 import com.prupe.mcpatcher.cc.ColorizeBlock;
 import com.prupe.mcpatcher.cc.Colorizer;
-// MCPatcher End
 
 public class BlockLeaves extends BlockLeavesBase {
 	public static final String[] LEAF_TYPES = new String[] {"oak", "spruce", "birch", "jungle"};

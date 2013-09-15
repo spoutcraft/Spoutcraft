@@ -21,7 +21,7 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import net.minecraft.src.*;
+import net.minecraft.src.MovementInputFromOptions;
 
 import org.spoutcraft.api.gui.ScreenType;
 import org.spoutcraft.api.io.SpoutInputStream;

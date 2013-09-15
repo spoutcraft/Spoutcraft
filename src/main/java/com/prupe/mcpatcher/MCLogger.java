@@ -1,7 +1,5 @@
 package com.prupe.mcpatcher;
 
-import com.prupe.mcpatcher.MCLogger$1;
-import com.prupe.mcpatcher.MCLogger$ErrorLevel;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;

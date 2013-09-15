@@ -28,6 +28,7 @@ import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import org.lwjgl.opengl.ContextCapabilities;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
@@ -37,7 +38,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLContext;
 import org.newdawn.slick.opengl.Texture;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.Entity;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.FoodStats;
@@ -50,7 +51,6 @@ import net.minecraft.src.RenderManager;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Tessellator;
 
-import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.gui.ArmorBar;
 import org.spoutcraft.api.gui.BubbleBar;
 import org.spoutcraft.api.gui.Button;
@@ -86,6 +86,7 @@ import org.spoutcraft.api.gui.RenderUtil;
 import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.api.gui.WidgetAnchor;
 import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
 

@@ -19,7 +19,7 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.client.io.CustomTextureManager;
 

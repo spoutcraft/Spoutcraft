@@ -26,7 +26,6 @@ import java.util.Map.Entry;
 
 import net.minecraft.src.Entity;
 
-import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;

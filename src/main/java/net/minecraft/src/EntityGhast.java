@@ -1,9 +1,5 @@
 package net.minecraft.src;
 
-// Spout Start
-import org.spoutcraft.api.entity.EntitySkinType;
-// Spout End
-
 public class EntityGhast extends EntityFlying implements IMob {
 	public int courseChangeCooldown;
 	public double waypointX;

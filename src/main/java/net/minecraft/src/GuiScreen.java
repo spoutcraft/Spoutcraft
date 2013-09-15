@@ -6,24 +6,47 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
-import org.lwjgl.input.Keyboard;
+import java.util.concurrent.ConcurrentSkipListMap;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-// Spout Start
-import java.util.IdentityHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
-import org.spoutcraft.api.gui.*;
+
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.CheckBox;
+import org.spoutcraft.api.gui.ComboBox;
+import org.spoutcraft.api.gui.Control;
+import org.spoutcraft.api.gui.GenericComboBox;
 import org.spoutcraft.api.gui.GenericComboBox.ComboBoxView;
+import org.spoutcraft.api.gui.GenericGradient;
+import org.spoutcraft.api.gui.GenericOverlayScreen;
+import org.spoutcraft.api.gui.Keyboard;
+import org.spoutcraft.api.gui.ListWidget;
+import org.spoutcraft.api.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.Orientation;
+import org.spoutcraft.api.gui.OverlayScreen;
+import org.spoutcraft.api.gui.RadioButton;
+import org.spoutcraft.api.gui.RenderPriority;
+import org.spoutcraft.api.gui.Screen;
+import org.spoutcraft.api.gui.ScreenType;
+import org.spoutcraft.api.gui.Scrollable;
+import org.spoutcraft.api.gui.Slider;
 import org.spoutcraft.api.gui.Slot;
+import org.spoutcraft.api.gui.TextField;
+import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.client.ScheduledTextFieldUpdate;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.client.gui.*;
-import org.spoutcraft.client.packet.*;
-// Spout End
+import org.spoutcraft.client.gui.CustomScreen;
+import org.spoutcraft.client.gui.MCRenderDelegate;
+import org.spoutcraft.client.gui.ScreenUtil;
+import org.spoutcraft.client.packet.PacketComboBox;
+import org.spoutcraft.client.packet.PacketControlAction;
+import org.spoutcraft.client.packet.PacketKeyPress;
+import org.spoutcraft.client.packet.PacketSlotClick;
 
 public class GuiScreen extends Gui {	
 

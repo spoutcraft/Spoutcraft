@@ -19,7 +19,7 @@
  */
 package org.spoutcraft.client.inventory;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.InventoryPlayer;

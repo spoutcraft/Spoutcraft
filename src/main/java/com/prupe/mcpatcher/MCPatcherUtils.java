@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
+
 import net.minecraft.src.Minecraft;
 
 public class MCPatcherUtils {

@@ -1,19 +1,17 @@
 package com.prupe.mcpatcher.ctm;
 
-import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
-import com.prupe.mcpatcher.TessellatorUtils;
-import com.prupe.mcpatcher.TexturePackChangeHandler;
-import com.prupe.mcpatcher.TileLoader;
-import com.prupe.mcpatcher.ctm.CTMUtils$1;
-import com.prupe.mcpatcher.ctm.CTMUtils$2;
-import com.prupe.mcpatcher.ctm.CTMUtils$3;
-import com.prupe.mcpatcher.ctm.TileOverrideImpl$BetterGrass;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import com.prupe.mcpatcher.Config;
+import com.prupe.mcpatcher.MCLogger;
+import com.prupe.mcpatcher.TessellatorUtils;
+import com.prupe.mcpatcher.TexturePackChangeHandler;
+import com.prupe.mcpatcher.TileLoader;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;

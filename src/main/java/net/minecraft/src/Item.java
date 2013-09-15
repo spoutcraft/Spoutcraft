@@ -1,12 +1,12 @@
 package net.minecraft.src;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import java.util.List;
 import java.util.Random;
-// Spout Start
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
 import org.spoutcraft.client.item.SpoutItem;
-// Spout End
 
 public class Item {
 	protected static final UUID field_111210_e = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");

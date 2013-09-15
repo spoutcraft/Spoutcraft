@@ -30,9 +30,8 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.minimap.ZanMinimap;
 
 public class CustomTextureManager {

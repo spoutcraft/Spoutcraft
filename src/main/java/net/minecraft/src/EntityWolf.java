@@ -1,9 +1,5 @@
 package net.minecraft.src;
 
-// Spout Start
-import org.spoutcraft.api.entity.EntitySkinType;
-// Spout End
-
 public class EntityWolf extends EntityTameable {
 	private float field_70926_e;
 	private float field_70924_f;

@@ -1,8 +1,10 @@
 package com.prupe.mcpatcher.ctm;
 
+import java.util.Properties;
+
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TileLoader;
-import java.util.Properties;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;

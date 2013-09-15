@@ -1,16 +1,12 @@
 package net.minecraft.src;
 
 import java.util.Iterator;
-// Spout Start
-import net.minecraft.src.Block;
+
 import net.minecraft.src.DamageSource;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
-// Spout End
 
 public class EntityItem extends Entity {
 

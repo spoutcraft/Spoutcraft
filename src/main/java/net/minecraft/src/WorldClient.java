@@ -4,11 +4,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
-// Spout Start
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
-// Spout End
 
 public class WorldClient extends World {
 

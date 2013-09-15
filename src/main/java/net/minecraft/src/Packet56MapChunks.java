@@ -3,15 +3,14 @@ package net.minecraft.src;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.lang.ref.Reference;
+import java.lang.ref.SoftReference;
 import java.util.List;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-// Spout Start
-import java.lang.ref.Reference;
-import java.lang.ref.SoftReference;
+
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
-// Spout End
 
 public class Packet56MapChunks extends Packet {
 	private int[] chunkPostX;

@@ -1,15 +1,18 @@
 package net.minecraft.src;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import com.prupe.mcpatcher.TessellatorUtils;
 import com.prupe.mcpatcher.cc.ColorizeBlock;
 import com.prupe.mcpatcher.cc.Colorizer;
 import com.prupe.mcpatcher.ctm.CTMUtils;
 import com.prupe.mcpatcher.ctm.GlassPaneRenderer;
 import com.prupe.mcpatcher.ctm.RenderPass;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-//Spout Start
+
 import org.spoutcraft.client.config.Configuration;
+
+//Spout Start
 //Spout End
 
 public class RenderBlocks {

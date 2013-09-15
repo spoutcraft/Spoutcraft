@@ -33,7 +33,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;

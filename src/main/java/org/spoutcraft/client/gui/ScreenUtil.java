@@ -39,7 +39,7 @@ import net.minecraft.src.GuiStats;
 import net.minecraft.src.GuiWinGame;
 import net.minecraft.src.StatFileWriter;
 
-import org.spoutcraft.api.gui.*;
+import org.spoutcraft.api.gui.ScreenType;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.GuiAmbigousInput;
 import org.spoutcraft.client.gui.controls.GuiControls;

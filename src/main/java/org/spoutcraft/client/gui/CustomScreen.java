@@ -19,10 +19,11 @@
  */
 package org.spoutcraft.client.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.*;
+import net.minecraft.src.GuiScreen;
+import net.minecraft.src.Minecraft;
 
-import org.spoutcraft.api.gui.*;
+import org.spoutcraft.api.gui.GenericGradient;
+import org.spoutcraft.api.gui.PopupScreen;
 import org.spoutcraft.client.SpoutClient;
 
 public class CustomScreen extends GuiScreen {

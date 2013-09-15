@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
+
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.MinecraftTessellator;
 import org.spoutcraft.api.io.SpoutInputStream;

@@ -19,7 +19,7 @@
  */
 package org.spoutcraft.client.packet;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;

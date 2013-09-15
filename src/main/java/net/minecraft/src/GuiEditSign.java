@@ -2,10 +2,10 @@ package net.minecraft.src;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-// Spout Start
+
 import org.bukkit.ChatColor;
+
 import org.spoutcraft.api.Spoutcraft;
-// Spout End
 
 public class GuiEditSign extends GuiScreen {
 

@@ -1,10 +1,8 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-// Spout Start
-import com.prupe.mcpatcher.cc.ColorizeWorld;
+
 import org.spoutcraft.client.config.Configuration;
-// Spout End
 
 public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 

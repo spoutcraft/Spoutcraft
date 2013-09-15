@@ -11,6 +11,7 @@ import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.NonOptionArgumentSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+
 import net.minecraft.src.GameWindowListener;
 import net.minecraft.src.MainProxyAuthenticator;
 import net.minecraft.src.MainShutdownHook;

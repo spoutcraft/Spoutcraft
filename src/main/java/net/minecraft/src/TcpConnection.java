@@ -17,9 +17,12 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.crypto.SecretKey;
+
 import net.minecraft.server.MinecraftServer;
-//Spout Start
+
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
+
+//Spout Start
 //Spout End
 
 public class TcpConnection implements INetworkManager {

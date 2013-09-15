@@ -1,9 +1,5 @@
 package net.minecraft.src;
 
-// Spout Start
-import net.minecraft.client.Minecraft;
-// Spout End
-
 public class ChunkCache implements IBlockAccess {
 	private int chunkX;
 	private int chunkZ;

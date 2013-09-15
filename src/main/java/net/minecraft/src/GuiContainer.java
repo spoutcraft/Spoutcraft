@@ -1,17 +1,17 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import net.minecraft.client.Minecraft;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-// Spout Start
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
@@ -19,9 +19,8 @@ import org.spoutcraft.api.gui.ScreenType;
 import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.client.MCItemStackComparator;
 import org.spoutcraft.client.gui.ScreenUtil;
-import org.spoutcraft.client.inventory.InventoryUtil;
 import org.spoutcraft.client.inventory.CraftItemStack;
-// Spout End
+import org.spoutcraft.client.inventory.InventoryUtil;
 
 public abstract class GuiContainer extends GuiScreen {
 	protected static final ResourceLocation field_110408_a = new ResourceLocation("textures/gui/container/inventory.png");

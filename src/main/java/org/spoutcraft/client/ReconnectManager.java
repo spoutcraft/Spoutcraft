@@ -19,8 +19,6 @@
  */
 package org.spoutcraft.client;
 
-import java.lang.String;
-
 import net.minecraft.src.GuiConnecting;
 
 import org.spoutcraft.client.gui.server.ServerItem;
@@ -61,7 +59,7 @@ public class ReconnectManager {
 		}
 	}
 
-	public static void teleport(net.minecraft.client.Minecraft mc) {
+	public static void teleport(net.minecraft.src.Minecraft mc) {
 		if (portNum != -1 && hostName != null) {
 			mc.displayGuiScreen(new GuiConnecting(mc, hostName, portNum));
 			serverTeleport = true;

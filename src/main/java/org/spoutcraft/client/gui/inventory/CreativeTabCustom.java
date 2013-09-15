@@ -19,15 +19,15 @@
  */
 package org.spoutcraft.client.gui.inventory;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.material.CustomItem;
+import org.spoutcraft.api.material.MaterialData;
 
 public class CreativeTabCustom extends CreativeTabs{
 	public CreativeTabCustom(int inty, String string) {

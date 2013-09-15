@@ -20,9 +20,9 @@
 package org.spoutcraft.client.gui.precache;
 
 import net.minecraft.src.GuiScreen;
+
 import org.bukkit.ChatColor;
 
-import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.WidgetAnchor;
 

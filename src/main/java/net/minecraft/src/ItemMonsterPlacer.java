@@ -1,8 +1,9 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.cc.ColorizeItem;
 import java.util.Iterator;
 import java.util.List;
+
+import com.prupe.mcpatcher.cc.ColorizeItem;
 
 public class ItemMonsterPlacer extends Item {
 	private Icon theIcon;

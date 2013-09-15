@@ -1,8 +1,10 @@
 package com.prupe.mcpatcher.cc;
 
+import java.lang.reflect.Method;
+
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
-import java.lang.reflect.Method;
+
 import net.minecraft.src.BiomeGenBase;
 
 class BiomeHelper {

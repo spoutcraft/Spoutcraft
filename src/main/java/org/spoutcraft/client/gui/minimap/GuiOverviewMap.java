@@ -20,6 +20,7 @@
 package org.spoutcraft.client.gui.minimap;
 
 import org.apache.commons.lang3.ArrayUtils;
+
 import org.lwjgl.input.Mouse;
 
 import org.spoutcraft.api.Spoutcraft;

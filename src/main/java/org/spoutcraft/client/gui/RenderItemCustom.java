@@ -19,7 +19,8 @@
  */
 package org.spoutcraft.client.gui;
 
-import net.minecraft.src.*;
+import net.minecraft.src.RenderItem;
+import net.minecraft.src.Tessellator;
 
 public class RenderItemCustom extends RenderItem {
 	private double width, height, depth;

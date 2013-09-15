@@ -20,6 +20,7 @@
 package org.spoutcraft.client.config;
 
 import gnu.trove.map.hash.TIntIntHashMap;
+
 import org.lwjgl.opengl.ContextCapabilities;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
@@ -29,12 +30,12 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLContext;
 import org.newdawn.slick.opengl.Texture;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class MipMapUtils {
 	private static TIntIntHashMap mipmapLevels = new TIntIntHashMap();

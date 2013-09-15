@@ -1,8 +1,5 @@
 package com.prupe.mcpatcher.hd;
 
-import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
-import com.prupe.mcpatcher.TexturePackAPI;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
@@ -19,14 +16,20 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Map.Entry;
-import net.minecraft.src.ResourceLocation;
+import java.util.Properties;
+
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
+
+import com.prupe.mcpatcher.Config;
+import com.prupe.mcpatcher.MCLogger;
+import com.prupe.mcpatcher.TexturePackAPI;
+
+import net.minecraft.src.ResourceLocation;
 
 public class MipmapHelper {
 	private static final MCLogger logger = MCLogger.getLogger("Mipmap");

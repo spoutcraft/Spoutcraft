@@ -1,12 +1,13 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.mob.MobRandomizer$ExtraInfo;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import com.prupe.mcpatcher.mob.MobRandomizer$ExtraInfo;
 
 public abstract class EntityLivingBase extends Entity {
 	private static final UUID field_110156_b = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");

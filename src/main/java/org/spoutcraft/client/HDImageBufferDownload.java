@@ -20,7 +20,8 @@
 package org.spoutcraft.client;
 
 import java.awt.Graphics;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 import net.minecraft.src.IImageBuffer;
 

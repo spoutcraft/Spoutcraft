@@ -5,19 +5,18 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-// Spout Start
-import org.lwjgl.opengl.GL11;
-import org.spoutcraft.api.gui.InGameHUD;
+
 import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.gui.InGameHUD;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.inventory.CraftItemStack;
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.ZanMinimap;
-// Spout End
+import org.spoutcraft.client.inventory.CraftItemStack;
 
 public class GuiIngame extends Gui {
 	private static final ResourceLocation field_110329_b = new ResourceLocation("textures/misc/vignette.png");

@@ -1,18 +1,5 @@
 package com.prupe.mcpatcher.ctm;
 
-import com.prupe.mcpatcher.MCLogger;
-import com.prupe.mcpatcher.MCPatcherUtils;
-import com.prupe.mcpatcher.TexturePackAPI;
-import com.prupe.mcpatcher.TileLoader;
-import com.prupe.mcpatcher.ctm.TileOverrideImpl$CTM;
-import com.prupe.mcpatcher.ctm.TileOverrideImpl$Fixed;
-import com.prupe.mcpatcher.ctm.TileOverrideImpl$Horizontal;
-import com.prupe.mcpatcher.ctm.TileOverrideImpl$HorizontalVertical;
-import com.prupe.mcpatcher.ctm.TileOverrideImpl$Random1;
-import com.prupe.mcpatcher.ctm.TileOverrideImpl$Repeat;
-import com.prupe.mcpatcher.ctm.TileOverrideImpl$Top;
-import com.prupe.mcpatcher.ctm.TileOverrideImpl$Vertical;
-import com.prupe.mcpatcher.ctm.TileOverrideImpl$VerticalHorizontal;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +9,12 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.prupe.mcpatcher.MCLogger;
+import com.prupe.mcpatcher.MCPatcherUtils;
+import com.prupe.mcpatcher.TexturePackAPI;
+import com.prupe.mcpatcher.TileLoader;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;

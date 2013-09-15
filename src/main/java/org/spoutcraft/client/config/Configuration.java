@@ -27,7 +27,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.client.io.FileUtil;
 

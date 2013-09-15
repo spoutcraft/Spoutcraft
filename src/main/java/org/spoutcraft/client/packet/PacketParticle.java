@@ -22,7 +22,7 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.EntityFX;
 
 import org.spoutcraft.api.io.SpoutInputStream;

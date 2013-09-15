@@ -1,11 +1,12 @@
 package com.prupe.mcpatcher.cc;
 
+import java.util.Properties;
+
 import com.prupe.mcpatcher.Config;
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
-import com.prupe.mcpatcher.cc.Colorizer$1;
-import java.util.Properties;
+
 import net.minecraft.src.Potion;
 import net.minecraft.src.ResourceLocation;
 

@@ -4,13 +4,13 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-// Spout Start
 import org.bukkit.ChatColor;
+
 import org.spoutcraft.client.config.Configuration;
-// Spout End
 
 public class GuiChat extends GuiScreen {
 	private String field_73898_b = "";

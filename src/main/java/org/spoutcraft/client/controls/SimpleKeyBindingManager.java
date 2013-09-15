@@ -28,13 +28,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.src.Block;
-import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiChat;
+import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.ScreenType;

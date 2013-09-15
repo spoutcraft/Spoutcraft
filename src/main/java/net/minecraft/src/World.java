@@ -8,23 +8,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-// MCPatcher Start
+
+import gnu.trove.map.hash.TIntObjectHashMap;
+
 import com.prupe.mcpatcher.cc.ColorizeWorld;
 import com.prupe.mcpatcher.cc.Colorizer;
-// MCPatcher End
-// Spout Start
-import net.minecraft.client.Minecraft;
+
 import net.minecraft.src.NBTTagCompound;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.config.Configuration;
-// Spout End
-
 public abstract class World implements IBlockAccess {
 
 	/**

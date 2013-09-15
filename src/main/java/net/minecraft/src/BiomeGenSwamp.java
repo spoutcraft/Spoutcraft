@@ -1,10 +1,9 @@
 package net.minecraft.src;
 
 import java.util.Random;
-// MCPatcher Start
+
 import com.prupe.mcpatcher.cc.ColorizeBlock;
 import com.prupe.mcpatcher.cc.Colorizer;
-// MCPatcher End
 
 public class BiomeGenSwamp extends BiomeGenBase {
 	protected BiomeGenSwamp(int par1) {

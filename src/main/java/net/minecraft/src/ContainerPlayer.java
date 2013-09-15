@@ -1,9 +1,5 @@
 package net.minecraft.src;
 
-// Spout Start
-import net.minecraft.client.Minecraft;
-// Spout End
-
 public class ContainerPlayer extends Container {
 
 	/** The crafting matrix inventory. */

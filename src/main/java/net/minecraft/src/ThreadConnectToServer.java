@@ -2,9 +2,6 @@ package net.minecraft.src;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
-// Spout Start
-import net.minecraft.client.Minecraft;
-// Spout End
 
 class ThreadConnectToServer extends Thread {
 

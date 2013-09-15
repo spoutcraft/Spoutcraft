@@ -9,23 +9,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
-// MCPatcher Start
+
 import com.prupe.mcpatcher.cc.ColorizeWorld;
-import com.prupe.mcpatcher.cc.RenderPass;
-import com.prupe.mcpatcher.cc.SkyRenderer;
-// MCPatcher End
-// Spout Start
+import com.prupe.mcpatcher.ctm.RenderPass;
+import com.prupe.mcpatcher.sky.SkyRenderer;
+
 import org.spoutcraft.api.gui.Color;
-import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.TileEntityComparator;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
-// Spout End
-
 public class RenderGlobal implements IWorldAccess {
 	private static final ResourceLocation field_110927_h = new ResourceLocation("textures/environment/moon_phases.png");
 	private static final ResourceLocation field_110928_i = new ResourceLocation("textures/environment/sun.png");

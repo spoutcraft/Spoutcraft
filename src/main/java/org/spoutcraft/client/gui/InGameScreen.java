@@ -22,8 +22,21 @@ package org.spoutcraft.client.gui;
 import java.util.LinkedList;
 import java.util.UUID;
 
-import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.gui.*;
+import org.spoutcraft.api.gui.ArmorBar;
+import org.spoutcraft.api.gui.BubbleBar;
+import org.spoutcraft.api.gui.ChatBar;
+import org.spoutcraft.api.gui.ChatTextBox;
+import org.spoutcraft.api.gui.ExpBar;
+import org.spoutcraft.api.gui.GenericScreen;
+import org.spoutcraft.api.gui.HealthBar;
+import org.spoutcraft.api.gui.HungerBar;
+import org.spoutcraft.api.gui.InGameHUD;
+import org.spoutcraft.api.gui.PopupScreen;
+import org.spoutcraft.api.gui.Screen;
+import org.spoutcraft.api.gui.ScreenType;
+import org.spoutcraft.api.gui.ServerPlayerList;
+import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.api.gui.WidgetType;
 import org.spoutcraft.client.SpoutClient;
 
 public class InGameScreen extends GenericScreen implements InGameHUD {

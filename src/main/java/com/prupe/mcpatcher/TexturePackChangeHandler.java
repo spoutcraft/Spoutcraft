@@ -1,12 +1,12 @@
 package com.prupe.mcpatcher;
 
-import com.prupe.mcpatcher.TexturePackChangeHandler$1;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+
 import net.minecraft.src.Minecraft;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.ResourcePack;

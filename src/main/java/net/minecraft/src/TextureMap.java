@@ -1,16 +1,18 @@
 package net.minecraft.src;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.prupe.mcpatcher.TileLoader;
-import com.prupe.mcpatcher.hd.BorderedTexture;
-import com.prupe.mcpatcher.hd.MipmapHelper;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import com.prupe.mcpatcher.TileLoader;
+import com.prupe.mcpatcher.hd.BorderedTexture;
+import com.prupe.mcpatcher.hd.MipmapHelper;
 
 public class TextureMap extends AbstractTexture implements TickableTextureObject, IconRegister {
 	public static final ResourceLocation field_110575_b = new ResourceLocation("textures/atlas/blocks.png");

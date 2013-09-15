@@ -1,16 +1,17 @@
 package com.prupe.mcpatcher.hd;
 
+import java.awt.image.BufferedImage;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
+
 import com.prupe.mcpatcher.Config;
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
-import com.prupe.mcpatcher.hd.FontUtils$1;
-import java.awt.image.BufferedImage;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
-import java.util.Map.Entry;
+
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.ResourceLocation;
 

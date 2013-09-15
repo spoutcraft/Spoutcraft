@@ -1,6 +1,5 @@
 package com.prupe.mcpatcher;
 
-import com.prupe.mcpatcher.MCLogger$1;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;

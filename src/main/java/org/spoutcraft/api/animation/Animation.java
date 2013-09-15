@@ -22,8 +22,6 @@ package org.spoutcraft.api.animation;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.spoutcraft.api.Spoutcraft;
-
 public class Animation {
 	public enum Direction {
 		FORWARD(1),

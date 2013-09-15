@@ -21,8 +21,8 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import net.minecraft.src.*;
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.GameSettings;
+import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;

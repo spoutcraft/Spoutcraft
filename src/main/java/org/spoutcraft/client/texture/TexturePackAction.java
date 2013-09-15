@@ -21,7 +21,7 @@ package org.spoutcraft.client.texture;
 
 import java.io.File;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.TexturePackCustom;
 import net.minecraft.src.TexturePackList;
 import net.minecraft.src.WorldRenderer;
