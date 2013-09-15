@@ -113,11 +113,6 @@ public class FontRenderer implements ResourceManagerReloadListener {
 	public boolean isHD;
 	public float fontAdj;
 
-	FontRenderer() {
-		this.renderEngine = null;
-		this.fontTextureName = null;
-	}
-
 	public FontRenderer(GameSettings par1GameSettings, ResourceLocation par2ResourceLocation, TextureManager par3TextureManager, boolean par4) {
 		this.field_111273_g = par2ResourceLocation;
 		this.renderEngine = par3TextureManager;

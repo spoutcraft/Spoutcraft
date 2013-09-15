@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.imageio.ImageIO;
 
 import com.google.common.collect.Lists;
@@ -35,9 +36,9 @@ import com.prupe.mcpatcher.hd.AAHelper;
 
 import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.Session;
 
 import org.bukkit.ChatColor;
-
 import org.spoutcraft.api.gui.PopupScreen;
 import org.spoutcraft.api.gui.Screen;
 import org.spoutcraft.api.gui.ScreenType;
@@ -55,19 +56,20 @@ import org.spoutcraft.client.packet.SpoutPacket;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
 
 public class Minecraft implements IPlayerUsage {
-	private static final ResourceLocation field_110444_H = new ResourceLocation("textures/gui/title/mojang.png");
+	private static final ResourceLocation field_110444_H = new ResourceLocation("textures/gui/title/mojang.png");	
 	public static final boolean field_142025_a = Util.func_110647_a() == EnumOS.MACOS;
-	private static final List field_110445_I = Lists.newArrayList(new DisplayMode[] {new DisplayMode(2560, 1600), new DisplayMode(2880, 1800)});
+	
 	/** A 10MiB preallocation to ensure the heap is reasonably sized. */
-	// MCPatcher Start - Unused
-	//public static byte[] memoryReserve = new byte[10485760];
-	// MCPatcher End
+	private static final List field_110445_I = Lists.newArrayList(new DisplayMode[] {new DisplayMode(2560, 1600), new DisplayMode(2880, 1800)});
+	public static byte[] memoryReserve = new byte[10485760];
 	private final ILogAgent field_94139_O;
 	private final File field_130070_K;
 	private ServerData currentServerData;
 
 	/** The RenderEngine instance used by Minecraft */
-	private TextureManager renderEngine;
+	// Spout Start
+	public TextureManager renderEngine;
+	// Spout End
 
 	/**
 	 * Set to 'this' in Minecraft constructor; used by some settings get methods
@@ -113,7 +115,7 @@ public class Minecraft implements IPlayerUsage {
 	public EntityRenderer entityRenderer;
 
 	/** Mouse left click counter */
-	private int leftClickCounter = 0;
+	private int leftClickCounter;
 
 	/** Display width */
 	private int tempDisplayWidth;
@@ -219,7 +221,7 @@ public class Minecraft implements IPlayerUsage {
 	public static int framesPerSecond = 0;
 	// Spout End
 
-	public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5) {		
+	public Minecraft(Session par1Session, int par2, int par3, boolean par4, boolean par5, File par6File, File par7File, File par8File, Proxy par9Proxy, String par10Str) {		
 		MCPatcherUtils.setMinecraft(this, par6File, "1.6.2", "4.1.0_04");
 		this.timer = new Timer(20.0F);
 		this.usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.func_130071_aq());
@@ -432,7 +434,6 @@ public class Minecraft implements IPlayerUsage {
 		GL11.glViewport(0, 0, this.displayWidth, this.displayHeight);
 		TexturePackChangeHandler.afterChange1(true);
 		this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
-
 		this.checkGLError("Post startup");
 		this.ingameGUI = new GuiIngame(this);
 
@@ -1409,8 +1410,7 @@ public class Minecraft implements IPlayerUsage {
 		if (!this.isGamePaused && this.theWorld != null) {
 			this.playerController.updateController();
 		}
-
-		this.renderEngine.bindTexture("/terrain.png");
+		
 		this.mcProfiler.endStartSection("textures");
 
 		if (!this.isGamePaused) {
@@ -1898,13 +1898,7 @@ public class Minecraft implements IPlayerUsage {
 			// Spout End
 		} else {
 			this.saveLoader.flushCache();
-			this.thePlayer = null;
-			// Spout Start
-			if (renderEngine.oldPack != null) {
-				renderEngine.texturePack.setTexturePack(renderEngine.oldPack);
-				renderEngine.oldPack = null;
-			}
-			//renderEngine.refreshTextures(); // Nope, lets not do this again...
+			this.thePlayer = null;			
 			SpoutClient.getInstance().onWorldExit();
 			SpoutClient.getInstance().clearPermissions();
 			// Spout End
@@ -1966,7 +1960,9 @@ public class Minecraft implements IPlayerUsage {
 		this.thePlayer.entityId = var2;
 		this.playerController.setPlayerCapabilities(this.thePlayer);
 
+		//ToDo: Needs var9.func_110138_aP update.
 		// Spout Start
+		/* 
 		EntityPlayer var9 = this.thePlayer;
 		if (var9 != null) {
 			this.thePlayer.setData(var9.getData()); // Even in MP still need to copy Spout data across
@@ -1976,7 +1972,7 @@ public class Minecraft implements IPlayerUsage {
 				death.deathpoint = true;
 				MinimapConfig.getInstance().addWaypoint(death);
 			}
-		}
+		}*/
 		// Spout End
 
 		if (this.currentScreen instanceof GuiGameOver) {

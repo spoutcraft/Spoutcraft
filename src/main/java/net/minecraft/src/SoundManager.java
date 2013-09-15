@@ -28,6 +28,9 @@ import org.spoutcraft.client.packet.PacketMusicChange;
 public class SoundManager implements ResourceManagerReloadListener {
 	private static final String[] field_130084_a = new String[] {"ogg"};
 	
+	/** A reference to the sound system. */
+	private SoundSystem sndSystem;
+	
 	/** Set to true when the SoundManager has been initialised. */
 	private boolean loaded;
 
@@ -52,9 +55,6 @@ public class SoundManager implements ResourceManagerReloadListener {
 	/** Identifiers of all currently playing sounds. Type: HashSet<String> */
 	private final Set playingSounds = new HashSet();
 	private final List field_92072_h = new ArrayList();
-
-	/** Set to true when the SoundManager has been initialised. */
-	private static boolean loaded = false;
 
 	/** RNG. */
 	private Random rand = new Random();

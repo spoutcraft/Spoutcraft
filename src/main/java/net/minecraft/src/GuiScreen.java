@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import org.spoutcraft.api.gui.Button;

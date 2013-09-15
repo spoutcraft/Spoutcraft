@@ -31,18 +31,20 @@ public class RenderItem extends Render {
 	}
 
 	// Spout Start
+	//ToDO: Render bindTexture calls no longer implemented like this
+	/*
 	@Override
 	protected void loadTexture(String texture) {
 		if (this.renderManager != null && this.renderManager.renderEngine != null) {
 			int textureId = this.renderManager.renderEngine.getTexture(texture);
 			if (textureId >= 0) {
-				//ToDO: Render bindTexture calls no longer implemented like this
+				
 				//this.renderManager.renderEngine.bindTexture(textureId);
 			}
 		}
 	}
 	// Spout End
-
+	*/
 	/**
 	 * Renders the item
 	 */
@@ -292,9 +294,9 @@ public class RenderItem extends Render {
 				}
 
 				GL11.glColor4f(par5, par6, par7, 1.0F);
-				ItemRenderer.renderItemIn2D(var8, var10, var11, var9, var12, par2Icon.getSheetWidth(), par2Icon.getSheetHeight(), var16);
+				ItemRenderer.renderItemIn2D(var8, var26, var11, var25, var12, ((Icon)par2Icon).getOriginX(), ((Icon)par2Icon).getOriginY(), var16);
 
-				if (var18 != null && var18.hasEffect()) {
+				if (var18.hasEffect()) {
 					GL11.glDepthFunc(GL11.GL_EQUAL);
 					GL11.glDisable(GL11.GL_LIGHTING);
 					this.renderManager.renderEngine.func_110577_a(field_110798_h);
@@ -327,14 +329,14 @@ public class RenderItem extends Render {
 
 			GL11.glPopMatrix();
 		} else {
-			for (int var26 = 0; var26 < par3; ++var26) {
+			for (int var27 = 0; var27 < par3; ++var27) {
 				GL11.glPushMatrix();
 
-				if (var26 > 0) {
+				if (var27 > 0) {
 					var17 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
-					float var24 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
-					float var25 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
-					GL11.glTranslatef(var17, var24, var25);
+					float var29 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
+					float var28 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
+					GL11.glTranslatef(var17, var29, var28);
 				}
 
 				if (!renderInFrame) {
@@ -344,10 +346,10 @@ public class RenderItem extends Render {
 				GL11.glColor4f(par5, par6, par7, 1.0F);
 				var8.startDrawingQuads();
 				var8.setNormal(0.0F, 1.0F, 0.0F);
-				var8.addVertexWithUV((double)(0.0F - var14), (double)(0.0F - var15), 0.0D, (double)var9, (double)var12);
-				var8.addVertexWithUV((double)(var13 - var14), (double)(0.0F - var15), 0.0D, (double)var10, (double)var12);
-				var8.addVertexWithUV((double)(var13 - var14), (double)(1.0F - var15), 0.0D, (double)var10, (double)var11);
-				var8.addVertexWithUV((double)(0.0F - var14), (double)(1.0F - var15), 0.0D, (double)var9, (double)var11);
+				var8.addVertexWithUV((double)(0.0F - var14), (double)(0.0F - var15), 0.0D, (double)var25, (double)var12);
+				var8.addVertexWithUV((double)(var13 - var14), (double)(0.0F - var15), 0.0D, (double)var26, (double)var12);
+				var8.addVertexWithUV((double)(var13 - var14), (double)(1.0F - var15), 0.0D, (double)var26, (double)var11);
+				var8.addVertexWithUV((double)(0.0F - var14), (double)(1.0F - var15), 0.0D, (double)var25, (double)var11);
 				var8.draw();
 				GL11.glPopMatrix();
 			}

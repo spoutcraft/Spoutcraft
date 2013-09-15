@@ -17,12 +17,15 @@ import com.prupe.mcpatcher.cc.ColorizeWorld;
 import com.prupe.mcpatcher.ctm.RenderPass;
 import com.prupe.mcpatcher.sky.SkyRenderer;
 
+//Spout Start
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.TileEntityComparator;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
+// Spout End
+
 public class RenderGlobal implements IWorldAccess {
 	private static final ResourceLocation field_110927_h = new ResourceLocation("textures/environment/moon_phases.png");
 	private static final ResourceLocation field_110928_i = new ResourceLocation("textures/environment/sun.png");
@@ -167,11 +170,11 @@ public class RenderGlobal implements IWorldAccess {
 
 	// Spout Start
 	private long lastMovedTime = System.currentTimeMillis();
-	private long frameCount = 0;
-	public static int renderersToUpdateLastTick = 0;
+	private long frameCount;
+	public static int renderersToUpdateLastTick;
 	// Spout End
 
-	public RenderGlobal(Minecraft par1Minecraft, RenderEngine par2RenderEngine) {
+	public RenderGlobal(Minecraft par1Minecraft) {
 		this.mc = par1Minecraft;
 		this.renderEngine = par1Minecraft.func_110434_K();
 		// Spout Start
@@ -184,7 +187,7 @@ public class RenderGlobal implements IWorldAccess {
 		if (this.occlusionEnabled && Configuration.ambientOcclusion) {
 		// Spout End
 			this.occlusionResult.clear();
-			this.glOcclusionQueryBase = GLAllocation.createDirectIntBuffer(var2 * var2 * var4);
+			this.glOcclusionQueryBase = GLAllocation.createDirectIntBuffer(var2 * var2 * var3);
 			this.glOcclusionQueryBase.clear();
 			this.glOcclusionQueryBase.position(0);
 			this.glOcclusionQueryBase.limit(var2 * var2 * var3);
@@ -1868,7 +1871,7 @@ public class RenderGlobal implements IWorldAccess {
 					} else if (par1Str.equals("reddust")) {
 						var21 = new EntityReddustFX(this.theWorld, par2, par4, par6, (float)par8, (float)par10, (float)par12);
 					} else if (par1Str.equals("snowballpoof")) {
-						var21 = new EntityBreakingFX(this.theWorld, par2, par4, par6, Item.snowball, this.renderEngine);
+						var21 = new EntityBreakingFX(this.theWorld, par2, par4, par6, Item.snowball);
 					} else if (par1Str.equals("dripWater")) {
 						var21 = new EntityDropParticleFX(this.theWorld, par2, par4, par6, Material.water);
 					} else if (par1Str.equals("dripLava")) {
@@ -1876,7 +1879,7 @@ public class RenderGlobal implements IWorldAccess {
 					} else if (par1Str.equals("snowshovel")) {
 						var21 = new EntitySnowShovelFX(this.theWorld, par2, par4, par6, par8, par10, par12);
 					} else if (par1Str.equals("slime")) {
-						var21 = new EntityBreakingFX(this.theWorld, par2, par4, par6, Item.slimeBall, this.renderEngine);
+						var21 = new EntityBreakingFX(this.theWorld, par2, par4, par6, Item.slimeBall);
 					} else if (par1Str.equals("heart")) {
 						var21 = new EntityHeartFX(this.theWorld, par2, par4, par6, par8, par10, par12);
 					} else if (par1Str.equals("angryVillager")) {

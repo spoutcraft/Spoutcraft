@@ -51,8 +51,9 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 		// Spout Start
 		((ClientPlayer) spoutEnty).setPlayer(this);
 		SpoutClient.getInstance().player = (ClientPlayer) spoutEnty;
-		this.worldObj.releaseEntitySkin(this);
-		this.worldObj.obtainEntitySkin(this);
+		// ToDo: needs update
+		//this.worldObj.releaseEntitySkin(this);
+		//this.worldObj.obtainEntitySkin(this);
 		// Spout End
 	}
 

@@ -263,12 +263,14 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		super.handleKeyPress(i, keyReleased);
 	}
 
+	//ToDo: This isn't going to work since ParentClass ENTITY no loner has a updateCloak() method.
+	/*
 	@Override
 	public void updateCloak() {
 		if (this.cloakUrl == null || this.playerCloakUrl == null) {
 			//super.updateCloak();
-			//ToDo: This isn't going to work since ParentClass ENTITY no loner has a updateCloak() method.
+			
 		}
-	}
+	} */
 	// Spout End
 }

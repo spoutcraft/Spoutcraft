@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.Map.Entry;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import com.prupe.mcpatcher.hd.CustomAnimation;
 
 public class TextureManager implements Tickable, ResourceManagerReloadListener {
@@ -115,4 +115,70 @@ public class TextureManager implements Tickable, ResourceManagerReloadListener {
 			this.func_110579_a((ResourceLocation)var3.getKey(), (TextureObject)var3.getValue());
 		}
 	}
+	
+	// Spout Start
+	public void bindTexture(String par1Str) {
+		this.bindTexture(this.getTexture(par1Str));
+	}
+
+	public void bindTexture(int par1) {
+		if (par1 != this.boundTexture) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1);
+			this.boundTexture = par1;
+		}
+	}
+
+	public void resetBoundTexture() {
+		this.boundTexture = -1;
+	}
+
+	public int getTexture(String par1Str) {
+		if (par1Str.equals("/terrain.png")) {
+			this.textureMapBlocks.getTexture().bindTexture(0);
+			return this.textureMapBlocks.getTexture().getGlTextureId();
+		} else if (par1Str.equals("/gui/items.png")) {
+			this.textureMapItems.getTexture().bindTexture(0);
+			return this.textureMapItems.getTexture().getGlTextureId();
+		} else {
+			Integer var2 = (Integer)this.textureMap.get(par1Str);
+
+			if (var2 != null) {
+				return var2.intValue();
+			} else {
+				String var9 = par1Str;
+
+				try {
+					int var3 = GLAllocation.generateTextureNames();
+					boolean var10 = par1Str.startsWith("%blur%");
+
+					if (var10) {
+						par1Str = par1Str.substring(6);
+					}
+
+					boolean var5 = par1Str.startsWith("%clamp%");
+
+					if (var5) {
+						par1Str = par1Str.substring(7);
+					}
+
+					BufferedImage var7 = TexturePackAPI.getImage(par1Str);
+
+					if (var7 == null) {
+						var7 = this.missingTextureImage;
+					}
+
+					MipmapHelper.setupTexture(this, var7, var3, var10, var5, par1Str);
+					this.textureMap.put(var9, Integer.valueOf(var3));
+					return var3;
+				} catch (Exception var8) {
+					var8.printStackTrace();
+					int var4 = GLAllocation.generateTextureNames();
+					this.setupTexture(this.missingTextureImage, var4);
+					this.textureMap.put(par1Str, Integer.valueOf(var4));
+					return var4;
+				}
+			}
+		}
+	}
+	// Spout End
 }
