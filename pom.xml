@@ -59,8 +59,28 @@
 	<!-- Dependency repositories -->
 	<repositories>
 		<repository>
-			<id>spout-repo</id>
-			<url>http://nexus.spout.org/content/groups/public/</url>
+			<id>temp-repo</id>
+			<url>https://raw.github.com/Legacy/temp-maven-repo/master</url>
+		</repository>
+		<repository>
+			<id>minecraft-libraries</id>
+			<url>http://download.minecraft.net/libraries</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>sonatype-nexus-releases</id>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -71,24 +91,14 @@
 	<!-- Build plugin repositories -->
 	<pluginRepositories>
 		<pluginRepository>
-			<id>spout-repo</id>
-			<url>http://nexus.spout.org/content/groups/public/</url>
+			<id>sonatype-nexus-releases</id>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<!-- Distribution management -->
-	<distributionManagement>
-		<!-- Publish releases here -->
-		<repository>
-			<id>spout-releases</id>
-			<url>http://nexus.spout.org/content/repositories/releases/</url>
-		</repository>
-		<!-- Publish snapshots here -->
-		<snapshotRepository>
-			<id>spout-snapshots</id>
-			<url>http://nexus.spout.org/content/repositories/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
 
 	<!-- Build configuration -->
 	<build>
@@ -183,7 +193,7 @@
 								<resource>
 									<runIf>
 										{{
-											file = new File(project.basedir, "jars/bin/minecraft.jar")
+											file = new File(project.basedir, "jars/versions/" + minecraftVersion + "/" + minecraftVersion + ".jar")
 											if (!file.isFile()) { return true; }
 											java.util.jar.JarFile jar = new java.util.jar.JarFile(file);
 											entry = jar.getEntry("net/minecraft/client/Minecraft.class")
@@ -197,96 +207,225 @@
 									<destFileName>${minecraftVersion}.jar</destFileName>
 									<file>http://s3.amazonaws.com/Minecraft.Download/versions/${minecraftVersion}/${minecraftVersion}.jar</file>
 								</resource>
+								<resource>
+									<runIf>
+										{{
+											file = new File(project.basedir, "jars/versions/" + minecraftVersion + "/" + minecraftVersion + ".json")
+											if (!file.isFile()) { return true; }
+											return true;
+										}}
+									</runIf>
+									<targetPath>${project.basedir}/jars/versions/${minecraftVersion}</targetPath>
+									<destFileName>${minecraftVersion}.json</destFileName>
+									<file>http://s3.amazonaws.com/Minecraft.Download/versions/${minecraftVersion}/${minecraftVersion}.json</file>
+								</resource>
 								<!-- Download remaining dependencies -->
 								<resource>
-									<targetPath>${project.basedir}/jars/libraries</targetPath>
-									<!--<targetPath>${project.basedir}/jars/libraries/de/cuina/fireandfuel/codecjlayermp3/r2</targetPath>-->
-									<dependencies>
-										<dependency>
-											<groupId>de.cuina.fireandfuel</groupId>
-											<artifactId>codecjlayermp3</artifactId>
-											<version>r2</version>
-											<stripVersion>false</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>cc.thedudeguy</groupId>
-											<artifactId>codecjorbis</artifactId>
-											<version>r0</version>
-											<stripVersion>false</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>commons-io</groupId>
-											<artifactId>commons-io</artifactId>
-											<version>2.4</version>
-											<stripVersion>false</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>org.apache.commons</groupId>
-											<artifactId>commons-lang3</artifactId>
-											<version>3.1</version>
-											<stripVersion>false</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>dnsjava</groupId>
-											<artifactId>dnsjava</artifactId>
-											<version>2.1.1</version>
-											<stripVersion>false</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>javax.jmdns</groupId>
-											<artifactId>jmdns</artifactId>
-											<version>3.4.1</version>
-											<stripVersion>false</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
-											<artifactId>lwjgl</artifactId>
-											<version>${lwjglVersion}</version>
-											<stripVersion>false</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>slick</groupId>
-											<artifactId>slick</artifactId>
-											<version>274</version>
-											<stripVersion>false</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>org.yaml</groupId>
-											<artifactId>snakeyaml</artifactId>
-											<version>1.12</version>
-											<stripVersion>true</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>net.sf.trove4j</groupId>
-											<artifactId>trove4j</artifactId>
-											<version>3.0.3</version>
-											<stripVersion>false</stripVersion>
-										</dependency>
-									</dependencies>
+									<targetPath>${project.basedir}/jars/libraries/argo/argo/2.25_fixed</targetPath>
+									<dependency>
+										<groupId>argo</groupId>
+										<artifactId>argo</artifactId>
+										<version>2.25_fixed</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
 								</resource>
-								<!-- Copy LWJGL jars to MCP bin folder -->
 								<resource>
-									<targetPath>${project.basedir}/jars/bin</targetPath>
-									<dependencies>
-										<dependency>
-											<groupId>net.java.jinput</groupId>
-											<artifactId>jinput</artifactId>
-											<version>2.0.5</version>
-											<stripVersion>true</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
-											<artifactId>lwjgl</artifactId>
-											<version>${lwjglVersion}</version>
-											<stripVersion>true</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
-											<artifactId>lwjgl_util</artifactId>
-											<version>${lwjglVersion}</version>
-											<stripVersion>true</stripVersion>
-										</dependency>
-									</dependencies>
+									<targetPath>${project.basedir}/jars/libraries/org/bouncycastle/bcprov-jdk15on/1.47</targetPath>
+									<dependency>
+										<groupId>org.bouncycastle</groupId>
+										<artifactId>bcprov-jdk15on</artifactId>
+										<version>1.47</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>de.cuina.fireandfuel</groupId>
+										<artifactId>codecjlayermp3</artifactId>
+										<version>r2</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>cc.thedudeguy</groupId>
+										<artifactId>codecjorbis</artifactId>
+										<version>r0</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/commons-io/commons-io/2.4</targetPath>
+									<dependency>
+										<groupId>commons-io</groupId>
+										<artifactId>commons-io</artifactId>
+										<version>2.4</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/org/apache/commons/commons-lang3/3.1</targetPath>
+									<dependency>
+										<groupId>org.apache.commons</groupId>
+										<artifactId>commons-lang3</artifactId>
+										<version>3.1</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>dnsjava</groupId>
+										<artifactId>dnsjava</artifactId>
+										<version>2.1.1</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/com/google/code/gson/gson/2.2.2</targetPath>
+									<dependency>
+										<groupId>com.google.code.gson</groupId>
+										<artifactId>gson</artifactId>
+										<version>2.2.2</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>com.google.guava</groupId>
+										<artifactId>guava</artifactId>
+										<version>14.0</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/net/java/jinput/jinput/2.0.5</targetPath>
+									<dependency>
+										<groupId>net.java.jinput</groupId>
+										<artifactId>jinput</artifactId>
+										<version>2.0.5</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>javax.jmdns</groupId>
+										<artifactId>jmdns</artifactId>
+										<version>3.4.1</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/net/sf/jopt-simple/jopt-simple/4.5</targetPath>
+									<dependency>
+										<groupId>net.sf.jopt-simple</groupId>
+										<artifactId>jopt-simple</artifactId>
+										<version>4.5</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/net/java/jutils/jutils/1.0.0</targetPath>
+									<dependency>
+										<groupId>net.java.jutils</groupId>
+										<artifactId>jutils</artifactId>
+										<version>1.0.0</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/org/lwjgl/lwjgl/lwjgl/2.9.0</targetPath>
+									<dependency>
+										<groupId>org.lwjgl.lwjgl</groupId>
+										<artifactId>lwjgl</artifactId>
+										<version>2.9.0</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/org/lwjgl/lwjgl/lwjgl_util/2.9.0</targetPath>
+									<dependency>
+										<groupId>org.lwjgl.lwjgl</groupId>
+										<artifactId>lwjgl_util</artifactId>
+										<version>2.9.0</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/com/paulscode/codecjorbis/20101023</targetPath>
+									<dependency>
+										<groupId>com.paulscode</groupId>
+										<artifactId>codecjorbis</artifactId>
+										<version>20101023</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/com/paulscode/codecwav/20101023</targetPath>
+									<dependency>
+										<groupId>com.paulscode</groupId>
+										<artifactId>codecwav</artifactId>
+										<version>20101023</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/com/paulscode/libraryjavasound/20101123</targetPath>
+									<dependency>
+										<groupId>com.paulscode</groupId>
+										<artifactId>libraryjavasound</artifactId>
+										<version>20101123</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/com/paulscode/librarylwjglopenal/20100824</targetPath>
+									<dependency>
+										<groupId>com.paulscode</groupId>
+										<artifactId>librarylwjglopenal</artifactId>
+										<version>20100824</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/jars/libraries/com/paulscode/soundsystem/20120107</targetPath>
+									<dependency>
+										<groupId>com.paulscode</groupId>
+										<artifactId>soundsystem</artifactId>
+										<version>20120107</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>slick</groupId>
+										<artifactId>slick</artifactId>
+										<version>274</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>org.yaml</groupId>
+										<artifactId>snakeyaml</artifactId>
+										<version>1.12</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
+								</resource>
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependency>
+										<groupId>net.sf.trove4j</groupId>
+										<artifactId>trove4j</artifactId>
+										<version>3.0.3</version>
+										<stripVersion>false</stripVersion>
+									</dependency>
 								</resource>
 								<!-- Copy and unpack LWJGL natives to MCP bin folder -->
 								<resource>
@@ -294,11 +433,18 @@
 									<targetPath>${project.basedir}/jars/versions/${minecraftVersion}/${minecraftVersion}-natives</targetPath>
 									<dependencies>
 										<dependency>
+											<groupId>net.java.jinput</groupId>
+											<artifactId>jinput-platform</artifactId>
+											<version>2.0.5</version>
+											<classifier>natives-windows</classifier>
+											<stripVersion>false</stripVersion>
+										</dependency>
+										<dependency>
 											<groupId>org.lwjgl.lwjgl</groupId>
 											<artifactId>lwjgl-platform</artifactId>
-											<version>${lwjglVersion}</version>
+											<version>2.9.0</version>
 											<classifier>natives-windows</classifier>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 									</dependencies>
 									<unpack>true</unpack>
@@ -310,11 +456,18 @@
 									<targetPath>${project.basedir}/jars/versions/${minecraftVersion}/${minecraftVersion}-natives</targetPath>
 									<dependencies>
 										<dependency>
+											<groupId>net.java.jinput</groupId>
+											<artifactId>jinput-platform</artifactId>
+											<version>2.0.5</version>
+											<classifier>natives-osx</classifier>
+											<stripVersion>false</stripVersion>
+										</dependency>
+										<dependency>
 											<groupId>org.lwjgl.lwjgl</groupId>
 											<artifactId>lwjgl-platform</artifactId>
-											<version>${lwjglVersion}</version>
+											<version>2.9.0</version>
 											<classifier>natives-osx</classifier>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 									</dependencies>
 									<unpack>true</unpack>
@@ -326,11 +479,18 @@
 									<targetPath>${project.basedir}/jars/versions/${minecraftVersion}/${minecraftVersion}-natives</targetPath>
 									<dependencies>
 										<dependency>
+											<groupId>net.java.jinput</groupId>
+											<artifactId>jinput-platform</artifactId>
+											<version>2.0.5</version>
+											<classifier>natives-linux</classifier>
+											<stripVersion>false</stripVersion>
+										</dependency>
+										<dependency>
 											<groupId>org.lwjgl.lwjgl</groupId>
 											<artifactId>lwjgl-platform</artifactId>
-											<version>${lwjglVersion}</version>
+											<version>2.9.0</version>
 											<classifier>natives-linux</classifier>
-											<stripVersion>true</stripVersion>
+											<stripVersion>false</stripVersion>
 										</dependency>
 									</dependencies>
 									<unpack>true</unpack>
@@ -579,53 +739,28 @@
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>com.sourcesense.maven</groupId>
-										<artifactId>maven-nosnapshot-plugin</artifactId>
-										<versionRange>[0.0.7,)</versionRange>
-										<goals>
-											<goal>strip</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute/>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											com.github.goldin
-										</groupId>
-										<artifactId>
-											copy-maven-plugin
-										</artifactId>
-										<versionRange>
-											[0.2.5,)
-										</versionRange>
+										<groupId>com.github.goldin</groupId>
+										<artifactId>copy-maven-plugin</artifactId>
+										<versionRange>[0.2.5,)</versionRange>
 										<goals>
 											<goal>copy</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.mojo
-										</groupId>
-										<artifactId>
-											exec-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.2.1,)
-										</versionRange>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>exec-maven-plugin</artifactId>
+										<versionRange>[1.2.1,)</versionRange>
 										<goals>
 											<goal>exec</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -663,6 +798,7 @@
 									<arguments>
 										<argument>runtime/decompile.py</argument>
 										<argument>%*</argument>
+										<argument>--nocopy</argument>
 									</arguments>
 								</configuration>
 								<phase>generate-sources</phase>
@@ -714,6 +850,7 @@
 									<arguments>
 										<argument>runtime/decompile.py</argument>
 										<argument>"$@"</argument>
+										<argument>--nocopy</argument>
 									</arguments>
 								</configuration>
 								<phase>generate-sources</phase>
