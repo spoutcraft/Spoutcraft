@@ -19,8 +19,8 @@ import com.prupe.mcpatcher.ctm.RenderPass;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
 public class EntityRenderer {
-	private static final ResourceLocation field_110924_q = new ResourceLocation("textures/environment/rain.png");
-	private static final ResourceLocation field_110923_r = new ResourceLocation("textures/environment/snow.png");
+	private static final ResourceLocation locationRainPng = new ResourceLocation("textures/environment/rain.png");
+	private static final ResourceLocation locationSnowPng = new ResourceLocation("textures/environment/snow.png");
 	public static boolean anaglyphEnable;
 
 	/** Anaglyph field (0=R, 1=GB) */
@@ -87,7 +87,7 @@ public class EntityRenderer {
 	 * Colors computed in updateLightmap() and loaded into the lightmap emptyTexture
 	 */
 	private final int[] lightmapColors;
-	private final ResourceLocation field_110922_T;
+	private final ResourceLocation locationLightMap;
 
 	/** FOV modifier hand */
 	private float fovModifierHand;
@@ -174,8 +174,8 @@ public class EntityRenderer {
 		this.mc = par1Minecraft;
 		this.itemRenderer = new ItemRenderer(par1Minecraft);
 		this.lightmapTexture = new DynamicTexture(16, 16);
-		this.field_110922_T = par1Minecraft.func_110434_K().func_110578_a("lightMap", this.lightmapTexture);
-		this.lightmapColors = this.lightmapTexture.func_110565_c();
+		this.locationLightMap = par1Minecraft.getTextureManager().getDynamicTextureLocation("lightMap", this.lightmapTexture);
+		this.lightmapColors = this.lightmapTexture.getTextureData();
 	}
 
 	/**
@@ -337,7 +337,7 @@ public class EntityRenderer {
 				var4 *= this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * par1;
 			}
 
-			if (var3.func_110143_aJ() <= 0.0F) {
+			if (var3.getHealth() <= 0.0F) {
 				float var5 = (float)var3.deathTime + par1;
 				var4 /= (1.0F - 500.0F / (var5 + 500.0F)) * 2.0F + 1.0F;
 			}
@@ -357,7 +357,7 @@ public class EntityRenderer {
 		float var3 = (float)var2.hurtTime - par1;
 		float var4;
 
-		if (var2.func_110143_aJ() <= 0.0F) {
+		if (var2.getHealth() <= 0.0F) {
 			var4 = (float)var2.deathTime + par1;
 			GL11.glRotatef(40.0F - 8000.0F / (var4 + 200.0F), 0.0F, 0.0F, 1.0F);
 		}
@@ -658,7 +658,7 @@ public class EntityRenderer {
 		GL11.glScalef(var3, var3, var3);
 		GL11.glTranslatef(8.0F, 8.0F, 8.0F);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		this.mc.func_110434_K().func_110577_a(this.field_110922_T);
+		this.mc.getTextureManager().bindTexture(this.locationLightMap);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
@@ -687,7 +687,7 @@ public class EntityRenderer {
 		WorldClient var2 = this.mc.theWorld;
 
 		if (Lightmap.computeLightmap(this, var2, this.lightmapColors, par1)) {
-			this.lightmapTexture.func_110564_a();
+			this.lightmapTexture.updateDynamicTexture();
 			this.lightmapUpdateNeeded = false;
 		} else if (var2 != null) {
 			for (int var3 = 0; var3 < 256; ++var3) {
@@ -800,7 +800,7 @@ public class EntityRenderer {
 				this.lightmapColors[var3] = var20 << 24 | var21 << 16 | var22 << 8 | var23;
 			}
 
-			this.lightmapTexture.func_110564_a();
+			this.lightmapTexture.updateDynamicTexture();
 			this.lightmapUpdateNeeded = false;
 		}
 	}
@@ -1066,7 +1066,7 @@ public class EntityRenderer {
 			this.mc.mcProfiler.endStartSection("prepareterrain");
 			this.setupFog(0, par1);
 			GL11.glEnable(GL11.GL_FOG);
-			this.mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+			this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 			RenderHelper.disableStandardItemLighting();
 			this.mc.mcProfiler.endStartSection("terrain");
 			var5.sortAndRender(var4, 0, (double)par1);
@@ -1105,7 +1105,7 @@ public class EntityRenderer {
 			this.setupFog(0, par1);
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glDisable(GL11.GL_CULL_FACE);
-			this.mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+			this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 
 			if (this.mc.gameSettings.fancyGraphics) {
 				this.mc.mcProfiler.endStartSection("water");
@@ -1322,7 +1322,7 @@ public class EntityRenderer {
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F);
-			this.mc.func_110434_K().func_110577_a(field_110923_r);  //Snow			
+			this.mc.getTextureManager().bindTexture(locationSnowPng);	
 			double var9 = var41.lastTickPosX + (var41.posX - var41.lastTickPosX) * (double)par1;
 			double var11 = var41.lastTickPosY + (var41.posY - var41.lastTickPosY) * (double)par1;
 			double var13 = var41.lastTickPosZ + (var41.posZ - var41.lastTickPosZ) * (double)par1;
@@ -1386,7 +1386,7 @@ public class EntityRenderer {
 									}
 
 									var18 = 0;
-									this.mc.func_110434_K().func_110577_a(field_110924_q); //Rain
+									this.mc.getTextureManager().bindTexture(locationRainPng);
 									var8.startDrawingQuads();
 								}
 
@@ -1410,7 +1410,7 @@ public class EntityRenderer {
 									}
 
 									var18 = 1;
-									this.mc.func_110434_K().func_110577_a(new ResourceLocation("textures/environment/snow.png"));
+									this.mc.getTextureManager().bindTexture(new ResourceLocation("textures/environment/snow.png"));
 									var8.startDrawingQuads();
 								}
 

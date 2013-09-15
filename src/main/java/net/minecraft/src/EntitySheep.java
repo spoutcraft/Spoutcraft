@@ -61,10 +61,10 @@ public class EntitySheep extends EntityAnimal {
 		super.onLivingUpdate();
 	}
 
-	protected void func_110147_ax() {
-		super.func_110147_ax();
-		this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(8.0D);
-		this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.23000000417232513D);
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.23000000417232513D);
 	}
 
 	protected void entityInit() {
@@ -235,12 +235,12 @@ public class EntitySheep extends EntityAnimal {
 		this.setSheared(false);
 
 		if (this.isChild()) {
-			this.func_110195_a(60);
+			this.addGrowth(60);
 		}
 	}
 
-	public EntityLivingData func_110161_a(EntityLivingData par1EntityLivingData) {
-		par1EntityLivingData = super.func_110161_a(par1EntityLivingData);
+	public EntityLivingData onSpawnWithEgg(EntityLivingData par1EntityLivingData) {
+		par1EntityLivingData = super.onSpawnWithEgg(par1EntityLivingData);
 		this.setFleeceColor(getRandomFleeceColor(this.worldObj.rand));
 		return par1EntityLivingData;
 	}

@@ -260,7 +260,7 @@ public class GuiNewChat extends Gui {
 	 * Adds a message to the chat after translating to the client's locale.
 	 */
 	public void addTranslatedMessage(String par1Str, Object ... par2ArrayOfObj) {
-		this.printChatMessage(I18n.func_135052_a(par1Str, par2ArrayOfObj));
+		this.printChatMessage(I18n.getStringParams(par1Str, par2ArrayOfObj));
 	}
 
 	/**

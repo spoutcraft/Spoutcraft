@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public abstract class EntityCreature extends EntityLiving {
 	public static final UUID field_110179_h = UUID.fromString("E199AD21-BA8A-4C53-8D13-6182D5C69D3A");
-	public static final AttributeModifier field_110181_i = (new AttributeModifier(field_110179_h, "Fleeing speed bonus", 2.0D, 2)).func_111168_a(false);
+	public static final AttributeModifier field_110181_i = (new AttributeModifier(field_110179_h, "Fleeing speed bonus", 2.0D, 2)).setSaved(false);
 	// Spout Start - private to public
 	public PathEntity pathToEntity;
 	// Spout End
@@ -43,8 +43,8 @@ public abstract class EntityCreature extends EntityLiving {
 		this.worldObj.theProfiler.startSection("ai");
 
 		if (this.fleeingTick > 0 && --this.fleeingTick == 0) {
-			AttributeInstance var1 = this.func_110148_a(SharedMonsterAttributes.field_111263_d);
-			var1.func_111124_b(field_110181_i);
+			AttributeInstance var1 = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+			var1.removeModifier(field_110181_i);
 		}
 
 		this.hasAttacked = this.isMovementCeased();
@@ -103,7 +103,7 @@ public abstract class EntityCreature extends EntityLiving {
 				double var12 = var5.yCoord - (double)var22;
 				float var14 = (float)(Math.atan2(var10, var8) * 180.0D / Math.PI) - 90.0F;
 				float var15 = MathHelper.wrapAngleTo180_float(var14 - this.rotationYaw);
-				this.moveForward = (float)this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111126_e();
+				this.moveForward = (float)this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
 
 				if (var15 > 30.0F) {
 					var15 = 30.0F;
@@ -249,12 +249,15 @@ public abstract class EntityCreature extends EntityLiving {
 		return this.maximumHomeDistance == -1.0F ? true : this.homePosition.getDistanceSquared(par1, par2, par3) < this.maximumHomeDistance * this.maximumHomeDistance;
 	}
 
-	public void func_110171_b(int par1, int par2, int par3, int par4) {
+	public void setHomeArea(int par1, int par2, int par3, int par4) {
 		this.homePosition.set(par1, par2, par3);
 		this.maximumHomeDistance = (float)par4;
 	}
 
-	public ChunkCoordinates func_110172_bL() {
+	/**
+	 * Returns the chunk coordinate object of the home position.
+	 */
+	public ChunkCoordinates getHomePosition() {
 		return this.homePosition;
 	}
 
@@ -262,25 +265,28 @@ public abstract class EntityCreature extends EntityLiving {
 		return this.maximumHomeDistance;
 	}
 
-	public void func_110177_bN() {
+	public void detachHome() {
 		this.maximumHomeDistance = -1.0F;
 	}
 
-	public boolean func_110175_bO() {
+	/**
+	 * Returns whether a home area is defined for this entity.
+	 */
+	public boolean hasHome() {
 		return this.maximumHomeDistance != -1.0F;
 	}
 
 	protected void func_110159_bB() {
 		super.func_110159_bB();
 
-		if (this.func_110167_bD() && this.func_110166_bE() != null && this.func_110166_bE().worldObj == this.worldObj) {
-			Entity var1 = this.func_110166_bE();
-			this.func_110171_b((int)var1.posX, (int)var1.posY, (int)var1.posZ, 5);
+		if (this.getLeashed() && this.getLeashedToEntity() != null && this.getLeashedToEntity().worldObj == this.worldObj) {
+			Entity var1 = this.getLeashedToEntity();
+			this.setHomeArea((int)var1.posX, (int)var1.posY, (int)var1.posZ, 5);
 			float var2 = this.getDistanceToEntity(var1);
 
 			if (this instanceof EntityTameable && ((EntityTameable)this).isSitting()) {
 				if (var2 > 10.0F) {
-					this.func_110160_i(true, true);
+					this.clearLeashed(true, true);
 				}
 
 				return;
@@ -308,13 +314,13 @@ public abstract class EntityCreature extends EntityLiving {
 			}
 
 			if (var2 > 10.0F) {
-				this.func_110160_i(true, true);
+				this.clearLeashed(true, true);
 			}
-		} else if (!this.func_110167_bD() && this.field_110180_bt) {
+		} else if (!this.getLeashed() && this.field_110180_bt) {
 			this.field_110180_bt = false;
 			this.tasks.removeTask(this.field_110178_bs);
 			this.getNavigator().setAvoidsWater(true);
-			this.func_110177_bN();
+			this.detachHome();
 		}
 	}
 

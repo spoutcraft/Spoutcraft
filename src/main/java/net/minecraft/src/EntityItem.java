@@ -286,7 +286,7 @@ public class EntityItem extends Entity {
 	 * Gets the username of the entity.
 	 */
 	public String getEntityName() {
-		return StatCollector.translateToLocal("item." + this.getEntityItem().getItemName());
+		return StatCollector.translateToLocal("item." + this.getEntityItem().getUnlocalizedName());
 	}
 
 	/**

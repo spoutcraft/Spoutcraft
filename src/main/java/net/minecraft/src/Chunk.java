@@ -81,8 +81,10 @@ public class Chunk {
 
 	/** Lowest value in the heightmap. */
 	public int heightMapMinimum; 
-	public long field_111204_q;
-
+	
+	/** the cumulative number of ticks players have been in this chunk */
+	public long inhabitedTime;
+	
 	/**
 	 * Contains the current round-robin relight check index, and is implied as the relight check location as well.
 	 */
@@ -508,7 +510,7 @@ public class Chunk {
 			int var13 = this.zPosition * 16 + par3;
 
 			if (var8 != 0 && !this.worldObj.isRemote) {
-				Block.blocksList[var8].onSetBlockIDWithMetaData(this.worldObj, var12, par2, var13, var9);
+				Block.blocksList[var8].onBlockPreDestroy(this.worldObj, var12, par2, var13, var9);
 			}
 
 			var10.setExtBlockID(par1, par2 & 15, par3, par4);
@@ -812,7 +814,7 @@ public class Chunk {
 
 			while (var2.hasNext()) {
 				Entity var3 = (Entity)var2.next();
-				var3.func_110123_P();
+				var3.onChunkLoad();
 			}
 			this.worldObj.addLoadedEntities(this.entityLists[var1]);
 		}

@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import com.prupe.mcpatcher.sky.FireworksHelper;
 
 public class EffectRenderer {
-	private static final ResourceLocation field_110737_b = new ResourceLocation("textures/particle/particles.png");
+	private static final ResourceLocation particleTextures = new ResourceLocation("textures/particle/particles.png");
 	/** Reference to the World object. */
 	// MCPatcher Start - protected to public
 	public World worldObj;
@@ -73,15 +73,15 @@ public class EffectRenderer {
 				switch (var8) {
 					case 0:
 					default:
-						this.renderer.func_110577_a(field_110737_b);
+						this.renderer.bindTexture(particleTextures);
 						break;
 
 					case 1:
-						this.renderer.func_110577_a(TextureMap.field_110575_b);
+						this.renderer.bindTexture(TextureMap.locationBlocksTexture);
 						break;
 
 					case 2:
-						this.renderer.func_110577_a(TextureMap.field_110576_c);
+						this.renderer.bindTexture(TextureMap.locationItemsTexture);
 				}
 
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

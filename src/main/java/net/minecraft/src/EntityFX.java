@@ -182,7 +182,7 @@ public class EntityFX extends Entity {
 	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {}
 
-	public void func_110125_a(Icon par1Icon) {
+	public void setParticleIcon(Icon par1Icon) {
 		if (this.getFXLayer() == 1) {
 			this.particleIcon = par1Icon;
 		} else {

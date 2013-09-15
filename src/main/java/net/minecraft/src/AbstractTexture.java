@@ -3,20 +3,20 @@ package net.minecraft.src;
 import org.lwjgl.opengl.GL11;
 
 public abstract class AbstractTexture implements TextureObject {
-	public int field_110553_a = -1;
+	public int glTextureId = -1;
 
-	public int func_110552_b() {
-		if (this.field_110553_a == -1) {
-			this.field_110553_a = TextureUtil.func_110996_a();
+	public int getGlTextureId() {
+		if (this.glTextureId == -1) {
+			this.glTextureId = TextureUtil.glGenTextures();
 		}
 
-		return this.field_110553_a;
+		return this.glTextureId;
 	}
 
 	public void unloadGLTexture() {
-		if (this.field_110553_a >= 0) {
-			GL11.glDeleteTextures(this.field_110553_a);
-			this.field_110553_a = -1;
+		if (this.glTextureId >= 0) {
+			GL11.glDeleteTextures(this.glTextureId);
+			this.glTextureId = -1;
 		}
 	}
 

@@ -16,8 +16,7 @@ import com.prupe.mcpatcher.cc.ColorizeWorld;
 import com.prupe.mcpatcher.hd.FontUtils;
 
 public class FontRenderer implements ResourceManagerReloadListener {
-	private static final ResourceLocation[] field_111274_c = new ResourceLocation[256];
-
+	private static final ResourceLocation[] unicodePageLocations = new ResourceLocation[256];
 
 	/** Array of width of all the characters in default.png */
 	private int[] charWidth = new int[256];
@@ -46,7 +45,7 @@ public class FontRenderer implements ResourceManagerReloadListener {
 	 * shadows.
 	 */
 	private int[] colorCode = new int[32];
-	private ResourceLocation field_111273_g; // FonttextureName
+	private ResourceLocation locationFontTexture;
 
 	/**
 	 * The currently bound GL texture ID. Avoids unnecessary glBindTexture() for the same texture if it's already bound.
@@ -114,10 +113,10 @@ public class FontRenderer implements ResourceManagerReloadListener {
 	public float fontAdj;
 
 	public FontRenderer(GameSettings par1GameSettings, ResourceLocation par2ResourceLocation, TextureManager par3TextureManager, boolean par4) {
-		this.field_111273_g = par2ResourceLocation;
+		this.locationFontTexture = par2ResourceLocation;
 		this.renderEngine = par3TextureManager;
 		this.unicodeFlag = par4;
-		par3TextureManager.func_110577_a(this.field_111273_g);  //bindTexture(par2Str)
+		par3TextureManager.bindTexture(this.locationFontTexture);
 
 		for (int var5 = 0; var5 < 32; ++var5) {
 			int var6 = (var5 >> 3 & 1) * 85;
@@ -149,16 +148,16 @@ public class FontRenderer implements ResourceManagerReloadListener {
 		this.readGlyphSizes();
 	}
 
-	public void func_110549_a(ResourceManager par1ResourceManager) {
-		this.func_111272_d();
+	public void onResourceManagerReload(ResourceManager par1ResourceManager) {
+		this.readFontTexture();
 	}
 
-	public void func_111272_d() {
+	public void readFontTexture() {
 		BufferedImage var1;
 
 		try {
-			this.field_111273_g = FontUtils.getFontName(this, this.field_111273_g);
-			var1 = ImageIO.read(Minecraft.getMinecraft().func_110442_L().func_110536_a(this.field_111273_g).func_110527_b());
+			this.locationFontTexture = FontUtils.getFontName(this, this.locationFontTexture);
+			var1 = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(this.locationFontTexture).getInputStream());
 		} catch (IOException var17) {
 			throw new RuntimeException(var17);
 		}
@@ -209,12 +208,12 @@ public class FontRenderer implements ResourceManagerReloadListener {
 			}
 		}
 
-		this.charWidthf = FontUtils.computeCharWidthsf(this, this.field_111273_g, var1, var4, this.charWidth, 1.0F);
+		this.charWidthf = FontUtils.computeCharWidthsf(this, this.locationFontTexture, var1, var4, this.charWidth, 1.0F);
 	}
 
 	private void readGlyphSizes() {
 		try {
-			InputStream var1 = Minecraft.getMinecraft().func_110442_L().func_110536_a(new ResourceLocation("font/glyph_sizes.bin")).func_110527_b();
+			InputStream var1 = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("font/glyph_sizes.bin")).getInputStream();
 			var1.read(this.glyphWidth);
 		} catch (IOException var2) {
 			throw new RuntimeException(var2);
@@ -235,7 +234,7 @@ public class FontRenderer implements ResourceManagerReloadListener {
 		float var3 = (float)(par1 % 16 * 8);
 		float var4 = (float)(par1 / 16 * 8);
 		float var5 = par2 ? 1.0F : 0.0F;
-		this.renderEngine.func_110577_a(this.field_111273_g);
+		this.renderEngine.bindTexture(this.locationFontTexture);
 		float var6 = (float)this.charWidth[par1] - 0.01F;
 		GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
 		GL11.glTexCoord2f(var3 / 128.0F, var4 / 128.0F);
@@ -250,19 +249,19 @@ public class FontRenderer implements ResourceManagerReloadListener {
 		return FontUtils.getCharWidthf(this, this.charWidth, par1);
 	}
 
-	private ResourceLocation func_111271_a(int par1) {
-		if (field_111274_c[par1] == null) {
-			field_111274_c[par1] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(par1)}));
+	private ResourceLocation getUnicodePageLocation(int par1) {
+		if (unicodePageLocations[par1] == null) {
+			unicodePageLocations[par1] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(par1)}));
 		}
 
-		return FontUtils.getUnicodePage(field_111274_c[par1]);
+		return FontUtils.getUnicodePage(unicodePageLocations[par1]);
 	}
 
 	/**
 	 * Load one of the /font/glyph_XX.png into a new GL texture and store the texture ID in glyphTextureName array.
 	 */
 	private void loadGlyphTexture(int par1) {
-		this.renderEngine.func_110577_a(this.func_111271_a(par1));
+		this.renderEngine.bindTexture(this.getUnicodePageLocation(par1));
 	}
 
 	/**

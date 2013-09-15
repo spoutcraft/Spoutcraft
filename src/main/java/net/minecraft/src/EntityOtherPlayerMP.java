@@ -55,7 +55,7 @@ public class EntityOtherPlayerMP extends AbstractClientPlayer {
 	public void onUpdate() {
 		this.field_71082_cx = 0.0F;
 		super.onUpdate();
-		this.prevLimbYaw = this.limbYaw;
+		this.prevLimbSwingAmount = this.limbSwingAmount;
 		double var1 = this.posX - this.prevPosX;
 		double var3 = this.posZ - this.prevPosZ;
 		float var5 = MathHelper.sqrt_double(var1 * var1 + var3 * var3) * 4.0F;
@@ -64,8 +64,8 @@ public class EntityOtherPlayerMP extends AbstractClientPlayer {
 			var5 = 1.0F;
 		}
 
-		this.limbYaw += (var5 - this.limbYaw) * 0.4F;
-		this.limbSwing += this.limbYaw;
+		this.limbSwingAmount += (var5 - this.limbSwingAmount) * 0.4F;
+		this.limbSwing += this.limbSwingAmount;
 
 		if (!this.isItemInUse && this.isEating() && this.inventory.mainInventory[this.inventory.currentItem] != null) {
 			ItemStack var6 = this.inventory.mainInventory[this.inventory.currentItem];
@@ -117,11 +117,11 @@ public class EntityOtherPlayerMP extends AbstractClientPlayer {
 			var9 = 0.1F;
 		}
 
-		if (!this.onGround || this.func_110143_aJ() <= 0.0F) {
+		if (!this.onGround || this.getHealth() <= 0.0F) {
 			var9 = 0.0F;
 		}
 
-		if (this.onGround || this.func_110143_aJ() <= 0.0F) {
+		if (this.onGround || this.getHealth() <= 0.0F) {
 			var2 = 0.0F;
 		}
 

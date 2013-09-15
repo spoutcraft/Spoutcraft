@@ -179,7 +179,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	public void damageEntity(DamageSource par1DamageSource, float par2) {
 	// Spout End
 		if (!this.isEntityInvulnerable()) {
-			this.setEntityHealth(this.func_110143_aJ() - par2);
+			this.setHealth(this.getHealth() - par2);
 		}
 	}
 
@@ -199,11 +199,11 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	/**
 	 * Updates health locally.
 	 */
-	public void setHealth(float par1) {
+	public void setPlayerSPHealth(float par1) {
 		if (this.hasSetHealth) {
-			super.setHealth(par1);
+			super.setPlayerSPHealth(par1);
 		} else {
-			this.setEntityHealth(par1);
+			this.setHealth(par1);
 			this.hasSetHealth = true;
 		}
 	}
@@ -238,7 +238,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	}
 
 	protected void func_110318_g() {
-		this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 6, (int)(this.func_110319_bJ() * 100.0F)));
+		this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 6, (int)(this.getHorseJumpPower() * 100.0F)));
 	}
 
 	public void func_110322_i() {

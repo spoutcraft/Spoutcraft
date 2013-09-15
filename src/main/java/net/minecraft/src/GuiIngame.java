@@ -19,9 +19,9 @@ import org.spoutcraft.client.gui.minimap.ZanMinimap;
 import org.spoutcraft.client.inventory.CraftItemStack;
 
 public class GuiIngame extends Gui {
-	private static final ResourceLocation field_110329_b = new ResourceLocation("textures/misc/vignette.png");
-	private static final ResourceLocation field_110330_c = new ResourceLocation("textures/gui/widgets.png");
-	private static final ResourceLocation field_110328_d = new ResourceLocation("textures/misc/pumpkinblur.png");
+	private static final ResourceLocation vignetteTexPath = new ResourceLocation("textures/misc/vignette.png");
+	private static final ResourceLocation widgetsTexPath = new ResourceLocation("textures/gui/widgets.png");
+	private static final ResourceLocation pumpkinBlurTexPath = new ResourceLocation("textures/misc/pumpkinblur.png");
 	private static final RenderItem itemRenderer = new RenderItem();
 	// Spout Start - private to public static final
 	public static final Random rand = new Random();
@@ -98,12 +98,12 @@ public class GuiIngame extends Gui {
 		}
 		GL11.glBlendFunc(770, 771);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.func_110434_K().func_110577_a(field_110330_c);
+		this.mc.getTextureManager().bindTexture(widgetsTexPath);
 		InventoryPlayer var11 = this.mc.thePlayer.inventory;
 		this.zLevel = -90.0F;
 		this.drawTexturedModalRect(screenWidth / 2 - 91, screenHeight - 22, 0, 0, 182, 22);
 		this.drawTexturedModalRect(screenWidth / 2 - 91 - 1 + var11.currentItem * 20, screenHeight - 22 - 1, 0, 22, 24, 22);
-		this.mc.func_110434_K().func_110577_a(field_110324_m);
+		this.mc.getTextureManager().bindTexture(icons);
 		GL11.glEnable(3042 /* GL_BLEND */);
 		GL11.glBlendFunc(775, 769);
 		this.drawTexturedModalRect(screenWidth / 2 - 7, screenHeight / 2 - 7, 0, 0, 16, 16);
@@ -175,6 +175,57 @@ public class GuiIngame extends Gui {
 		}
 
 		mainScreen.render();
+		
+		//ToDo: this will need TLC
+		if (this.mc.thePlayer.isRidingHorse()) {
+			this.mc.mcProfiler.startSection("jumpBar");
+			this.mc.getTextureManager().bindTexture(Gui.icons);
+			var33 = this.mc.thePlayer.getHorseJumpPower();
+			var37 = 182;
+			var14 = (int)(var33 * (float)(var37 + 1));
+			var15 = var7 - 32 + 3;
+			this.drawTexturedModalRect(var11, var15, 0, 84, var37, 5);
+
+			if (var14 > 0) {
+				this.drawTexturedModalRect(var11, var15, 0, 89, var14, 5);
+			}
+
+			this.mc.mcProfiler.endSection();
+		} else if (this.mc.playerController.func_78763_f()) {
+			this.mc.mcProfiler.startSection("expBar");
+			this.mc.getTextureManager().bindTexture(Gui.icons);
+			var12 = this.mc.thePlayer.xpBarCap();
+
+			if (var12 > 0) {
+				var37 = 182;
+				var14 = (int)(this.mc.thePlayer.experience * (float)(var37 + 1));
+				var15 = var7 - 32 + 3;
+				this.drawTexturedModalRect(var11, var15, 0, 64, var37, 5);
+
+				if (var14 > 0) {
+					this.drawTexturedModalRect(var11, var15, 0, 69, var14, 5);
+				}
+			}
+
+			this.mc.mcProfiler.endSection();
+
+			if (this.mc.thePlayer.experienceLevel > 0) {
+				this.mc.mcProfiler.startSection("expLevel");
+				boolean var35 = false;
+				var14 = var35 ? 16777215 : 8453920;
+				String var42 = "" + this.mc.thePlayer.experienceLevel;
+				var16 = (var6 - var8.getStringWidth(var42)) / 2;
+				var17 = var7 - 31 - 4;
+				boolean var18 = false;
+				var8.drawString(var42, var16 + 1, var17, 0);
+				var8.drawString(var42, var16 - 1, var17, 0);
+				var8.drawString(var42, var16, var17 + 1, 0);
+				var8.drawString(var42, var16, var17 - 1, 0);
+				var8.drawString(var42, var16, var17, var14);
+				this.mc.mcProfiler.endSection();
+			}
+		}
+		
 		if (this.mc.gameSettings.showDebugInfo) {
 			this.mc.mcProfiler.startSection("debug");
 			GL11.glPushMatrix();
@@ -381,7 +432,7 @@ public class GuiIngame extends Gui {
 						}
 					}
 					
-					this.mc.func_110434_K().func_110577_a(field_110324_m);
+					this.mc.getTextureManager().bindTexture(icons);
 					byte var50 = 0;
 					boolean var48 = false;
 					byte var49;
@@ -464,19 +515,19 @@ public class GuiIngame extends Gui {
 			var3 = false;
 		}
 
-		int var4 = MathHelper.ceiling_float_int(this.mc.thePlayer.func_110143_aJ());
+		int var4 = MathHelper.ceiling_float_int(this.mc.thePlayer.getHealth());
 		int var5 = MathHelper.ceiling_float_int(this.mc.thePlayer.prevHealth);
 		this.rand.setSeed((long)(this.updateCounter * 312871));
 		boolean var6 = false;
 		FoodStats var7 = this.mc.thePlayer.getFoodStats();
 		int var8 = var7.getFoodLevel();
 		int var9 = var7.getPrevFoodLevel();
-		AttributeInstance var10 = this.mc.thePlayer.func_110148_a(SharedMonsterAttributes.field_111267_a);
+		AttributeInstance var10 = this.mc.thePlayer.getEntityAttribute(SharedMonsterAttributes.maxHealth);
 		int var11 = par1 / 2 - 91;
 		int var12 = par1 / 2 + 91;
 		int var13 = par2 - 39;
-		float var14 = (float)var10.func_111126_e();
-		float var15 = this.mc.thePlayer.func_110139_bj();
+		float var14 = (float)var10.getAttributeValue();
+		float var15 = this.mc.thePlayer.getAbsorptionAmount();
 		int var16 = MathHelper.ceiling_float_int((var14 + var15) / 2.0F / 10.0F);
 		int var17 = Math.max(10 - (var16 - 2), 3);
 		int var18 = var13 - (var16 - 1) * var17 - 10;
@@ -627,8 +678,8 @@ public class GuiIngame extends Gui {
 		} else if (var34 instanceof EntityLivingBase) {
 			this.mc.mcProfiler.endStartSection("mountHealth");
 			EntityLivingBase var38 = (EntityLivingBase)var34;
-			var35 = (int)Math.ceil((double)var38.func_110143_aJ());
-			float var37 = var38.func_110138_aP();
+			var35 = (int)Math.ceil((double)var38.getHealth());
+			float var37 = var38.getMaxHealth();
 			var26 = (int)(var37 + 0.5F) / 2;
 
 			if (var26 > 30) {
@@ -708,7 +759,7 @@ public class GuiIngame extends Gui {
 			String var8 = BossStatus.bossName;
 			var1.drawStringWithShadow(var8, var3 / 2 - var1.getStringWidth(var8) / 2, var7 - 10, 16777215);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			this.mc.func_110434_K().func_110577_a(field_110324_m);
+			this.mc.getTextureManager().bindTexture(icons);
 		}
 	}
 
@@ -718,7 +769,7 @@ public class GuiIngame extends Gui {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		this.mc.func_110434_K().func_110577_a(field_110328_d);
+		this.mc.getTextureManager().bindTexture(pumpkinBlurTexPath);
 		Tessellator var3 = Tessellator.instance;
 		var3.startDrawingQuads();
 		var3.addVertexWithUV(0.0D, (double)par2, -90.0D, 0.0D, 1.0D);
@@ -751,7 +802,7 @@ public class GuiIngame extends Gui {
 		GL11.glDepthMask(false);
 		GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_COLOR);
 		GL11.glColor4f(this.prevVignetteBrightness, this.prevVignetteBrightness, this.prevVignetteBrightness, 1.0F);
-		this.mc.func_110434_K().func_110577_a(field_110329_b);
+		this.mc.getTextureManager().bindTexture(vignetteTexPath);
 		Tessellator var4 = Tessellator.instance;
 		var4.startDrawingQuads();
 		var4.addVertexWithUV(0.0D, (double)par3, -90.0D, 0.0D, 1.0D);
@@ -776,9 +827,9 @@ public class GuiIngame extends Gui {
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, par1);		
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, par1);
 		Icon var4 = Block.portal.getBlockTextureFromSide(1);
-		this.mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+		this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 		float var5 = var4.getMinU();
 		float var6 = var4.getMinV();
 		float var7 = var4.getMaxU();
@@ -813,13 +864,13 @@ public class GuiIngame extends Gui {
 				GL11.glTranslatef((float)(-(par2 + 8)), (float)(-(par3 + 12)), 0.0F);
 			}
 
-			itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.func_110434_K(), var5, par2, par3);
+			itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.getTextureManager(), var5, par2, par3);
 
 			if (var6 > 0.0F) {
 				GL11.glPopMatrix();
 			}
 
-			itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.func_110434_K(), var5, par2, par3);
+			itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.getTextureManager(), var5, par2, par3);
 		}
 	}
 

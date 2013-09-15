@@ -615,7 +615,7 @@ public class GuiScreen extends Gui {
 	 * Handles mouse input.
 	 */
 	// Spout Start - Rewritten
-	// ToDo: needs a rewritten rewrite.
+	// ToDo: needs a rewritten rewrite AND Mac keybind toggle.
 	public void handleMouseInput() {
 		int x;
 		int y;
@@ -823,7 +823,7 @@ public class GuiScreen extends Gui {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_FOG);
 		Tessellator var2 = Tessellator.instance;
-		this.mc.func_110434_K().func_110577_a(field_110325_k);
+		this.mc.getTextureManager().bindTexture(optionsBackground);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var3 = 32.0F;
 		var2.startDrawingQuads();
@@ -993,7 +993,7 @@ public class GuiScreen extends Gui {
 	// Spout End
 
 	public static boolean isCtrlKeyDown() {
-		return Minecraft.field_142025_a ? Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220) : Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
+		return Minecraft.isRunningOnMac ? Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220) : Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
 	}
 
 	public static boolean isShiftKeyDown() {

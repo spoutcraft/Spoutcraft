@@ -96,7 +96,11 @@ public class ChunkProviderClient implements IChunkProvider {
 		return true;
 	}
 	
-	public void func_104112_b() {}
+	/**
+	 * Save extra data not associated with any Chunk.  Not saved during autosave, only during world unload.  Currently
+	 * unimplemented.
+	 */
+	public void saveExtraData() {}
 
 	/**
 	 * Unloads chunks that are marked to be unloaded. This is not guaranteed to unload every such chunk.

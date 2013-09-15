@@ -57,9 +57,9 @@ public class GuiConnecting extends GuiScreen {
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
-	public void initGui() {		
+	public void initGui() {
 		this.buttonList.clear();
-		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, I18n.func_135053_a("gui.cancel")));
+		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, I18n.getString("gui.cancel")));
 	}
 
 	/**
@@ -86,10 +86,10 @@ public class GuiConnecting extends GuiScreen {
 		this.drawDefaultBackground();
 
 		if (this.clientHandler == null) {
-			this.drawCenteredString(this.fontRenderer, I18n.func_135053_a("connect.connecting"), this.width / 2, this.height / 2 - 50, 16777215);
+			this.drawCenteredString(this.fontRenderer, I18n.getString("connect.connecting"), this.width / 2, this.height / 2 - 50, 16777215);
 			this.drawCenteredString(this.fontRenderer, "", this.width / 2, this.height / 2 - 10, 16777215);
 		} else {
-			this.drawCenteredString(this.fontRenderer, I18n.func_135053_a("connect.authorizing"), this.width / 2, this.height / 2 - 50, 16777215);
+			this.drawCenteredString(this.fontRenderer, I18n.getString("connect.authorizing"), this.width / 2, this.height / 2 - 50, 16777215);
 			this.drawCenteredString(this.fontRenderer, this.clientHandler.field_72560_a, this.width / 2, this.height / 2 - 10, 16777215);
 		}
 

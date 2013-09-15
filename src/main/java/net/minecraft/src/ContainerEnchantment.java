@@ -161,7 +161,7 @@ public class ContainerEnchantment extends Container {
 
 						if (!var5 || var7 == var6) {
 							if (var5) {
-								Item.enchantedBook.getEnchantedItemStack_do(var3, var8);
+								Item.enchantedBook.addEnchantment(var3, var8);
 							} else {
 								var3.addEnchantment(var8.enchantmentobj, var8.enchantmentLevel);
 							}

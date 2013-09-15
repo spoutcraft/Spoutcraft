@@ -94,7 +94,7 @@ public class Main {
 		System.exit(0);
 		// Spout End
 		
-		var32.func_99999_d();
+		var32.run();
 	}
 
 	private static boolean func_110121_a(String par0Str) {

@@ -41,7 +41,7 @@ public class CraftingManager {
 		this.addRecipe(new ItemStack(Block.netherFence, 6), new Object[] {"###", "###", '#', Block.netherBrick});
 		this.addRecipe(new ItemStack(Block.fenceGate, 1), new Object[] {"#W#", "#W#", '#', Item.stick, 'W', Block.planks});
 		this.addRecipe(new ItemStack(Block.jukebox, 1), new Object[] {"###", "#X#", "###", '#', Block.planks, 'X', Item.diamond});
-		this.addRecipe(new ItemStack(Item.field_111214_ch, 2), new Object[] {"~~ ", "~O ", "  ~", '~', Item.silk, 'O', Item.slimeBall});
+		this.addRecipe(new ItemStack(Item.leash, 2), new Object[] {"~~ ", "~O ", "  ~", '~', Item.silk, 'O', Item.slimeBall});
 		this.addRecipe(new ItemStack(Block.music, 1), new Object[] {"###", "#X#", "###", '#', Block.planks, 'X', Item.redstone});
 		this.addRecipe(new ItemStack(Block.bookShelf, 1), new Object[] {"###", "XXX", "###", '#', Block.planks, 'X', Item.book});
 		this.addRecipe(new ItemStack(Block.blockSnow, 1), new Object[] {"##", "##", '#', Item.snowball});

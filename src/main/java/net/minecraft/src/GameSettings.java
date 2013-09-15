@@ -165,7 +165,7 @@ public class GameSettings {
 	}
 
 	public String getKeyBindingDescription(int par1) {
-		return I18n.func_135053_a(this.keyBindings[par1].keyDescription);
+		return I18n.getString(this.keyBindings[par1].keyDescription);
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class GameSettings {
 	 * Represents a key or mouse button as a string. Args: key
 	 */
 	public static String getKeyDisplayString(int par0) {
-		return par0 < 0 ? I18n.func_135052_a("key.mouseButton", new Object[] {Integer.valueOf(par0 + 101)}): Keyboard.getKeyName(par0);
+		return par0 < 0 ? I18n.getStringParams("key.mouseButton", new Object[] {Integer.valueOf(par0 + 101)}): Keyboard.getKeyName(par0);
 	}
 
 	/**
@@ -285,7 +285,7 @@ public class GameSettings {
 
 		if (par1EnumOptions == EnumOptions.ANAGLYPH) {
 			this.anaglyph = !this.anaglyph;
-			this.mc.func_110436_a();
+			this.mc.refreshResources();
 		}
 
 		if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT) {
@@ -416,21 +416,21 @@ public class GameSettings {
 			par1 = 0;
 		}
 
-		return I18n.func_135053_a(par0ArrayOfStr[par1]);
+		return I18n.getString(par0ArrayOfStr[par1]);
 	}
 
 	/**
 	 * Gets a key binding.
 	 */
 	public String getKeyBinding(EnumOptions par1EnumOptions) {
-		String var2 = I18n.func_135053_a(par1EnumOptions.getEnumString()) + ": ";
+		String var2 = I18n.getString(par1EnumOptions.getEnumString()) + ": ";
 
 		if (par1EnumOptions.getEnumFloat()) {
 			float var5 = this.getOptionFloatValue(par1EnumOptions);
-			return par1EnumOptions == EnumOptions.SENSITIVITY ? (var5 == 0.0F ? var2 + I18n.func_135053_a("options.sensitivity.min") : (var5 == 1.0F ? var2 + I18n.func_135053_a("options.sensitivity.max") : var2 + (int)(var5 * 200.0F) + "%")) : (par1EnumOptions == EnumOptions.FOV ? (var5 == 0.0F ? var2 + I18n.func_135053_a("options.fov.min") : (var5 == 1.0F ? var2 + I18n.func_135053_a("options.fov.max") : var2 + (int)(70.0F + var5 * 40.0F))) : (par1EnumOptions == EnumOptions.GAMMA ? (var5 == 0.0F ? var2 + I18n.func_135053_a("options.gamma.min") : (var5 == 1.0F ? var2 + I18n.func_135053_a("options.gamma.max") : var2 + "+" + (int)(var5 * 100.0F) + "%")) : (par1EnumOptions == EnumOptions.CHAT_OPACITY ? var2 + (int)(var5 * 90.0F + 10.0F) + "%" : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_UNFOCUSED ? var2 + GuiNewChat.func_96130_b(var5) + "px" : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_FOCUSED ? var2 + GuiNewChat.func_96130_b(var5) + "px" : (par1EnumOptions == EnumOptions.CHAT_WIDTH ? var2 + GuiNewChat.func_96128_a(var5) + "px" : (var5 == 0.0F ? var2 + I18n.func_135053_a("options.off") : var2 + (int)(var5 * 100.0F) + "%")))))));
+			return par1EnumOptions == EnumOptions.SENSITIVITY ? (var5 == 0.0F ? var2 + I18n.getString("options.sensitivity.min") : (var5 == 1.0F ? var2 + I18n.getString("options.sensitivity.max") : var2 + (int)(var5 * 200.0F) + "%")) : (par1EnumOptions == EnumOptions.FOV ? (var5 == 0.0F ? var2 + I18n.getString("options.fov.min") : (var5 == 1.0F ? var2 + I18n.getString("options.fov.max") : var2 + (int)(70.0F + var5 * 40.0F))) : (par1EnumOptions == EnumOptions.GAMMA ? (var5 == 0.0F ? var2 + I18n.getString("options.gamma.min") : (var5 == 1.0F ? var2 + I18n.getString("options.gamma.max") : var2 + "+" + (int)(var5 * 100.0F) + "%")) : (par1EnumOptions == EnumOptions.CHAT_OPACITY ? var2 + (int)(var5 * 90.0F + 10.0F) + "%" : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_UNFOCUSED ? var2 + GuiNewChat.func_96130_b(var5) + "px" : (par1EnumOptions == EnumOptions.CHAT_HEIGHT_FOCUSED ? var2 + GuiNewChat.func_96130_b(var5) + "px" : (par1EnumOptions == EnumOptions.CHAT_WIDTH ? var2 + GuiNewChat.func_96128_a(var5) + "px" : (var5 == 0.0F ? var2 + I18n.getString("options.off") : var2 + (int)(var5 * 100.0F) + "%")))))));
 		} else if (par1EnumOptions.getEnumBoolean()) {
 			boolean var4 = this.getOptionOrdinalValue(par1EnumOptions);
-			return var4 ? var2 + I18n.func_135053_a("options.on") : var2 + I18n.func_135053_a("options.off");
+			return var4 ? var2 + I18n.getString("options.on") : var2 + I18n.getString("options.off");
 		} else if (par1EnumOptions == EnumOptions.RENDER_DISTANCE) {
 			return var2 + getTranslation(RENDER_DISTANCES, this.renderDistance);
 		} else if (par1EnumOptions == EnumOptions.DIFFICULTY) {
@@ -447,10 +447,10 @@ public class GameSettings {
 			return var2 + getTranslation(AMBIENT_OCCLUSIONS, this.ambientOcclusion);
 		} else if (par1EnumOptions == EnumOptions.GRAPHICS) {
 			if (this.fancyGraphics) {
-				return var2 + I18n.func_135053_a("options.graphics.fancy");
+				return var2 + I18n.getString("options.graphics.fancy");
 			} else {
 				String var3 = "options.graphics.fast";
-				return var2 + I18n.func_135053_a("options.graphics.fast");
+				return var2 + I18n.getString("options.graphics.fast");
 			}
 		} else {
 			return var2;

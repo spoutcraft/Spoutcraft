@@ -36,14 +36,14 @@ public class EntityWolf extends EntityTameable {
 		this.setTamed(false);
 	}
 
-	protected void func_110147_ax() {
-		super.func_110147_ax();
-		this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.30000001192092896D);
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.30000001192092896D);
 
 		if (this.isTamed()) {
-			this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(20.0D);
+			this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
 		} else {
-			this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(8.0D);
+			this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8.0D);
 		}
 	}
 
@@ -71,12 +71,12 @@ public class EntityWolf extends EntityTameable {
 	 * main AI tick function, replaces updateEntityActionState
 	 */
 	protected void updateAITick() {
-		this.dataWatcher.updateObject(18, Float.valueOf(this.func_110143_aJ()));
+		this.dataWatcher.updateObject(18, Float.valueOf(this.getHealth()));
 	}
 
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(18, new Float(this.func_110143_aJ()));
+		this.dataWatcher.addObject(18, new Float(this.getHealth()));
 		this.dataWatcher.addObject(19, new Byte((byte)0));
 		this.dataWatcher.addObject(20, new Byte((byte)BlockColored.getBlockFromDye(1)));
 	}
@@ -113,7 +113,7 @@ public class EntityWolf extends EntityTameable {
 	 * Returns the sound this mob makes while it's alive.
 	 */
 	protected String getLivingSound() {
-		return this.isAngry() ? "mob.wolf.growl" : (this.rand.nextInt(3) == 0 ? (this.isTamed() && this.dataWatcher.func_111145_d(18) < 10.0F ? "mob.wolf.whine" : "mob.wolf.panting") : "mob.wolf.bark");
+		return this.isAngry() ? "mob.wolf.growl" : (this.rand.nextInt(3) == 0 ? (this.isTamed() && this.dataWatcher.getWatchableObjectFloat(18) < 10.0F ? "mob.wolf.whine" : "mob.wolf.panting") : "mob.wolf.bark");
 	}
 
 	/**

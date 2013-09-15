@@ -404,7 +404,10 @@ public class EntityBoat extends Entity {
 		return 0.0F;
 	}
 
-	public boolean func_130002_c(EntityPlayer par1EntityPlayer) {
+	/**
+	 * First layer of player interaction
+	 */
+	public boolean interactFirst(EntityPlayer par1EntityPlayer) {
 		if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != par1EntityPlayer) {
 			return true;
 		} else {
@@ -427,7 +430,7 @@ public class EntityBoat extends Entity {
 	 * Gets the damage taken from the last hit.
 	 */
 	public float getDamageTaken() {
-		return this.dataWatcher.func_111145_d(19);
+		return this.dataWatcher.getWatchableObjectFloat(19);
 	}
 
 	/**

@@ -9,7 +9,10 @@ import com.prupe.mcpatcher.cc.Colorizer;
 public class BlockLeaves extends BlockLeavesBase {
 	public static final String[] LEAF_TYPES = new String[] {"oak", "spruce", "birch", "jungle"};
 	public static final String[][] field_94396_b = new String[][] {{"leaves_oak", "leaves_spruce", "leaves_birch", "leaves_jungle"}, {"leaves_oak_opaque", "leaves_spruce_opaque", "leaves_birch_opaque", "leaves_jungle_opaque"}};
-	private int field_94394_cP;
+	
+
+	/** 1 for fast graphic. 0 for fancy graphics. used in iconArray. */
+	private int iconType;
 	private Icon[][] iconArray = new Icon[2][];
 	int[] adjacentTreeBlocks;
 
@@ -66,7 +69,8 @@ public class BlockLeaves extends BlockLeavesBase {
 	}
 
 	/**
-	 * ejects contained items into the world, and notifies neighbours of an update, as appropriate
+	 * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a
+	 * different metadata value, but before the new metadata value is set. Args: World, x, y, z, old block ID, old metadata
 	 */
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6) {
 		byte var7 = 1;
@@ -278,7 +282,7 @@ public class BlockLeaves extends BlockLeavesBase {
 	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
 	public Icon getIcon(int par1, int par2) {
-		return (par2 & 3) == 1 ? this.iconArray[this.field_94394_cP][1] : ((par2 & 3) == 3 ? this.iconArray[this.field_94394_cP][3] : ((par2 & 3) == 2 ? this.iconArray[this.field_94394_cP][2] : this.iconArray[this.field_94394_cP][0])); 
+		return (par2 & 3) == 1 ? this.iconArray[this.iconType][1] : ((par2 & 3) == 3 ? this.iconArray[this.iconType][3] : ((par2 & 3) == 2 ? this.iconArray[this.iconType][2] : this.iconArray[this.iconType][0]));
 	}
 
 	/**
@@ -286,9 +290,9 @@ public class BlockLeaves extends BlockLeavesBase {
 	 */
 	public void setGraphicsLevel(boolean par1) {
 		this.graphicsLevel = par1;
-		this.field_94394_cP = par1 ? 0 : 1;
+		this.iconType = par1 ? 0 : 1;
 	}
-
+	
 	/**
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */

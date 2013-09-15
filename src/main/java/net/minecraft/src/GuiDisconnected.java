@@ -18,7 +18,7 @@ public class GuiDisconnected extends GuiScreen {
 
 	public GuiDisconnected(GuiScreen par1GuiScreen, String par2Str, String par3Str, Object ... par4ArrayOfObj) {		
 		this.field_98095_n = par1GuiScreen;
-		this.errorMessage = I18n.func_135053_a(par2Str);
+		this.errorMessage = I18n.getString(par2Str);
 		this.errorDetail = par3Str;
 		this.field_74247_c = par4ArrayOfObj;
 		// Spout Start
@@ -40,9 +40,9 @@ public class GuiDisconnected extends GuiScreen {
 		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, "Back to " + mc.displayGuiScreen(new GuiFavorites(this))));
 		// Spout End
 		if (this.field_74247_c != null) {
-			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(I18n.func_135052_a(this.errorDetail, this.field_74247_c), this.width - 50);
+			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(I18n.getStringParams(this.errorDetail, this.field_74247_c), this.width - 50);
 		} else {
-			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(I18n.func_135053_a(this.errorDetail), this.width - 50);
+			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(I18n.getString(this.errorDetail), this.width - 50);
 		}
 	}
 

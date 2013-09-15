@@ -217,7 +217,8 @@ public class BlockRedstoneWire extends Block {
 	}
 
 	/**
-	 * ejects contained items into the world, and notifies neighbours of an update, as appropriate
+	 * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a
+	 * different metadata value, but before the new metadata value is set. Args: World, x, y, z, old block ID, old metadata
 	 */
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6) {
 		super.breakBlock(par1World, par2, par3, par4, par5, par6);
@@ -455,14 +456,14 @@ public class BlockRedstoneWire extends Block {
 	 * the only chance you get to register icons.
 	 */
 	public void registerIcons(IconRegister par1IconRegister) {
-		this.field_94413_c = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "cross");
-		this.field_94410_cO = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "line");
-		this.field_94411_cP = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "cross_overlay");
-		this.field_94412_cQ = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "line_overlay");
+		this.field_94413_c = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross");
+		this.field_94410_cO = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line");
+		this.field_94411_cP = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross_overlay");
+		this.field_94412_cQ = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line_overlay");
 		this.blockIcon = this.field_94413_c;
 	}
 
-	public static Icon func_94409_b(String par0Str) {
+	public static Icon getRedstoneWireIcon(String par0Str) {
 		return par0Str.equals("cross") ? Block.redstoneWire.field_94413_c : (par0Str.equals("line") ? Block.redstoneWire.field_94410_cO : (par0Str.equals("cross_overlay") ? Block.redstoneWire.field_94411_cP : (par0Str.equals("line_overlay") ? Block.redstoneWire.field_94412_cQ : null)));
 	}
 }

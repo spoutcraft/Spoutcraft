@@ -28,7 +28,7 @@ public abstract class Entity {
 
 	/** The entity we are currently riding */
 	public Entity ridingEntity;
-	public boolean field_98038_p;
+	public boolean forceSpawn;
 
 	/** Reference to the World object. */
 	public World worldObj;
@@ -187,7 +187,7 @@ public abstract class Entity {
 
 	/** Whether the entity is inside a Portal */
 	protected boolean inPortal;
-	protected int field_82153_h;
+	protected int portalCounter;
 
 	/** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
 	public int dimension;
@@ -385,8 +385,8 @@ public abstract class Entity {
 
 			if (this.inPortal) {
 				if (var1.getAllowNether()) {
-					if (this.ridingEntity == null && this.field_82153_h++ >= var2) {
-						this.field_82153_h = var2;
+					if (this.ridingEntity == null && this.portalCounter++ >= var2) {
+						this.portalCounter = var2;
 						this.timeUntilPortal = this.getPortalCooldown();
 						byte var3;
 
@@ -402,12 +402,12 @@ public abstract class Entity {
 					this.inPortal = false;
 				}
 			} else {
-				if (this.field_82153_h > 0) {
-					this.field_82153_h -= 4;
+				if (this.portalCounter > 0) {
+					this.portalCounter -= 4;
 				}
 
-				if (this.field_82153_h < 0) {
-					this.field_82153_h = 0;
+				if (this.portalCounter < 0) {
+					this.portalCounter = 0;
 				}
 			}
 
@@ -488,7 +488,7 @@ public abstract class Entity {
 	 */
 	public void setFire(int par1) {
 		int var2 = par1 * 20;
-		var2 = EnchantmentProtection.func_92093_a(this, var2);
+		var2 = EnchantmentProtection.getFireTimeForEntity(this, var2);
 
 		if (this.fire < var2) {
 			this.fire = var2;
@@ -781,7 +781,7 @@ public abstract class Entity {
 			} catch (Throwable var34) {
 				CrashReport var41 = CrashReport.makeCrashReport(var34, "Checking entity tile collision");
 				CrashReportCategory var38 = var41.makeCategory("Entity being checked for collision");
-				this.func_85029_a(var38);
+				this.addEntityCrashInfo(var38);
 				throw new ReportedException(var41);
 			}
 
@@ -833,7 +833,7 @@ public abstract class Entity {
 							} catch (Throwable var14) {
 								CrashReport var12 = CrashReport.makeCrashReport(var14, "Colliding entity with tile");
 								CrashReportCategory var13 = var12.makeCategory("Tile being collided with");
-								CrashReportCategory.func_85068_a(var13, var7, var8, var9, var10, this.worldObj.getBlockMetadata(var7, var8, var9));
+								CrashReportCategory.addBlockCrashInfo(var13, var7, var8, var9, var10, this.worldObj.getBlockMetadata(var7, var8, var9));
 								throw new ReportedException(var12);
 							}
 						}
@@ -1247,7 +1247,12 @@ public abstract class Entity {
 		return par1 < var3 * var3;
 	}
 
-	public boolean addNotRiddenEntityID(NBTTagCompound par1NBTTagCompound) {
+	/**
+	 * Like writeToNBTOptional but does not check if the entity is ridden. Used for saving ridden entities with their
+	 * riders.
+	 */
+	public boolean writeMountToNBT(NBTTagCompound par1NBTTagCompound) {
+		
 		String var2 = this.getEntityString();
 
 		if (!this.isDead && var2 != null) {
@@ -1260,9 +1265,10 @@ public abstract class Entity {
 	}
 
 	/**
-	 * adds the ID of this entity to the NBT given
+	 * Either write this entity to the NBT tag given and return true, or return false without doing anything. If this
+	 * returns false the entity is not saved on disk. Ridden entities return false here as they are saved with their rider.
 	 */
-	public boolean addEntityID(NBTTagCompound par1NBTTagCompound) {
+	public boolean writeToNBTOptional(NBTTagCompound par1NBTTagCompound) {
 		String var2 = this.getEntityString();
 
 		if (!this.isDead && var2 != null && this.riddenByEntity == null) {
@@ -1300,14 +1306,14 @@ public abstract class Entity {
 			if (this.ridingEntity != null) {
 				NBTTagCompound var2 = new NBTTagCompound("Riding");
 
-				if (this.ridingEntity.addNotRiddenEntityID(var2)) {
+				if (this.ridingEntity.writeMountToNBT(var2)) {
 					par1NBTTagCompound.setTag("Riding", var2);
 				}
 			}
 		} catch (Throwable var5) {
 			CrashReport var3 = CrashReport.makeCrashReport(var5, "Saving entity NBT");
 			CrashReportCategory var4 = var3.makeCategory("Entity being saved");
-			this.func_85029_a(var4);
+			this.addEntityCrashInfo(var4);
 			throw new ReportedException(var3);
 		}
 	}
@@ -1365,19 +1371,19 @@ public abstract class Entity {
 			// Spout End
 			this.readEntityFromNBT(par1NBTTagCompound);
 			
-			if (this.func_142008_O()) {
+			if (this.shouldSetPosAfterLoading()) {
 				this.setPosition(this.posX, this.posY, this.posZ);
 			}
 			
 		} catch (Throwable var5) {
 			CrashReport var3 = CrashReport.makeCrashReport(var5, "Loading entity NBT");
 			CrashReportCategory var4 = var3.makeCategory("Entity being loaded");
-			this.func_85029_a(var4);
+			this.addEntityCrashInfo(var4);
 			throw new ReportedException(var3);
 		}
 	}
 
-	protected boolean func_142008_O() {
+	protected boolean shouldSetPosAfterLoading() {
 		return true;
 	}
 	
@@ -1398,7 +1404,7 @@ public abstract class Entity {
 	 */
 	protected abstract void writeEntityToNBT(NBTTagCompound var1);
 
-	public void func_110123_P() {}
+	public void onChunkLoad() {}
 	/**
 	 * creates a NBT list from the array of doubles passed to this function
 	 */
@@ -1490,8 +1496,13 @@ public abstract class Entity {
 		return false;
 	}
 
-	public boolean func_130002_c(EntityPlayer par1EntityPlayer) {
-		return false;
+	/**
+	 * Only used by renderer in EntityLivingBase subclasses.\nDetermines if an entity is visible or not to a specfic
+	 * player, if the entity is normally invisible.\nFor EntityLivingBase subclasses, returning false when invisible will
+	 * render the entity semitransparent.
+	 */
+	public boolean isInvisibleToPlayer(EntityPlayer par1EntityPlayer) {
+		return this.isInvisible();
 	}
 
 	/**
@@ -1931,7 +1942,10 @@ public abstract class Entity {
 		return true;
 	}
 
-	public boolean func_85031_j(Entity par1Entity) {
+	/**
+	 * Called when a player attacks an entity. If this returns true the attack will not happen.
+	 */
+	public boolean hitByEntity(Entity par1Entity) {
 		return false;
 	}
 
@@ -2010,15 +2024,22 @@ public abstract class Entity {
 		}
 	}
 
-	public float func_82146_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, Block par6Block) {
+	/**
+	 * Gets a block's resistance to this entity's explosion. Used to make rails immune to TNT minecarts' explosions and
+	 * Wither skulls more destructive.
+	 */
+	public float getBlockExplosionResistance(Explosion par1Explosion, World par2World, int par3, int par4, int par5, Block par6Block) {
 		return par6Block.getExplosionResistance(this);
 	}
 
-	public boolean func_96091_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, int par6, float par7) {
+	public boolean shouldExplodeBlock(Explosion par1Explosion, World par2World, int par3, int par4, int par5, int par6, float par7) {
 		return true;
 	}
 
-	public int func_82143_as() {
+	/**
+	 * The number of iterations PathFinder.getSafePoint will execute before giving up.
+	 */
+	public int getMaxSafePointTries() {
 		return 3;
 	}
 
@@ -2033,7 +2054,7 @@ public abstract class Entity {
 		return false;
 	}
 
-	public void func_85029_a(CrashReportCategory par1CrashReportCategory) {
+	public void addEntityCrashInfo(CrashReportCategory par1CrashReportCategory) {
 		par1CrashReportCategory.addCrashSectionCallable("Entity Type", new CallableEntityType(this));
 		par1CrashReportCategory.addCrashSection("Entity ID", Integer.valueOf(this.entityId));
 		par1CrashReportCategory.addCrashSectionCallable("Entity Name", new CallableEntityName(this));
@@ -2049,11 +2070,11 @@ public abstract class Entity {
 		return this.isBurning();
 	}
 	
-	public UUID func_110124_au() {
+	public UUID getUniqueID() {
 		return this.entityUniqueID;
 	}
 
-	public boolean func_96092_aw() {
+	public boolean isPushedByWater() {
 		return true;
 	}
 

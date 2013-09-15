@@ -245,11 +245,11 @@ public class BlockStem extends BlockFlower {
 	 * the only chance you get to register icons.
 	 */
 	public void registerIcons(IconRegister par1IconRegister) {
-		this.blockIcon = par1IconRegister.registerIcon(this.func_111023_E() + "_disconnected");
-		this.theIcon = par1IconRegister.registerIcon(this.func_111023_E() + "_connected");
+		this.blockIcon = par1IconRegister.registerIcon(this.getTextureName() + "_disconnected");
+		this.theIcon = par1IconRegister.registerIcon(this.getTextureName() + "_connected");
 	}
 
-	public Icon func_94368_p() {
+	public Icon getStemIcon() {
 		return this.theIcon;
 	}
 }

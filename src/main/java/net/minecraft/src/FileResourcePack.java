@@ -16,45 +16,45 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class FileResourcePack extends AbstractResourcePack implements Closeable {
-	public static final Splitter field_110601_c = Splitter.on('/').omitEmptyStrings().limit(3);
-	public ZipFile field_110600_d;
+	public static final Splitter entryNameSplitter = Splitter.on('/').omitEmptyStrings().limit(3);
+	public ZipFile resourcePackZipFile;
 
 	public FileResourcePack(File par1File) {
 		super(par1File);
 	}
 
-	private ZipFile func_110599_c() throws IOException {
-		if (this.field_110600_d == null) {
-			this.field_110600_d = new ZipFile(this.field_110597_b);
+	private ZipFile getResourcePackZipFile() throws IOException {
+		if (this.resourcePackZipFile == null) {
+			this.resourcePackZipFile = new ZipFile(this.resourcePackFile);
 		}
 
-		return this.field_110600_d;
+		return this.resourcePackZipFile;
 	}
 
-	protected InputStream func_110591_a(String par1Str) throws IOException {
-		ZipFile var2 = this.func_110599_c();
+	protected InputStream getInputStreamByName(String par1Str) throws IOException {
+		ZipFile var2 = this.getResourcePackZipFile();
 		ZipEntry var3 = var2.getEntry(par1Str);
 
 		if (var3 == null) {
-			throw new ResourcePackFileNotFoundException(this.field_110597_b, par1Str);
+			throw new ResourcePackFileNotFoundException(this.resourcePackFile, par1Str);
 		} else {
 			return var2.getInputStream(var3);
 		}
 	}
 
-	public boolean func_110593_b(String par1Str) {
+	public boolean hasResourceName(String par1Str) {
 		try {
-			return this.func_110599_c().getEntry(par1Str) != null;
+			return this.getResourcePackZipFile().getEntry(par1Str) != null;
 		} catch (IOException var3) {
 			return false;
 		}
 	}
 
-	public Set func_110587_b() {
+	public Set getResourceDomains() {
 		ZipFile var1;
 
 		try {
-			var1 = this.func_110599_c();
+			var1 = this.getResourcePackZipFile();
 		} catch (IOException var8) {
 			return Collections.emptySet();
 		}
@@ -67,13 +67,13 @@ public class FileResourcePack extends AbstractResourcePack implements Closeable 
 			String var5 = var4.getName();
 
 			if (var5.startsWith("assets/")) {
-				ArrayList var6 = Lists.newArrayList(field_110601_c.split(var5));
+				ArrayList var6 = Lists.newArrayList(entryNameSplitter.split(var5));
 
 				if (var6.size() > 1) {
 					String var7 = (String)var6.get(1);
 
 					if (!var7.equals(var7.toLowerCase())) {
-						this.func_110594_c(var7);
+						this.logNameNotLowercase(var7);
 					} else {
 						var3.add(var7);
 					}
@@ -94,13 +94,13 @@ public class FileResourcePack extends AbstractResourcePack implements Closeable 
 	}
 
 	public void close() {
-		if (this.field_110600_d != null) {
+		if (this.resourcePackZipFile != null) {
 			try {
-				this.field_110600_d.close();
+				this.resourcePackZipFile.close();
 			} catch (Exception ex) {
 			}
 
-			this.field_110600_d = null;
+			this.resourcePackZipFile = null;
 		}
 	}
 }
