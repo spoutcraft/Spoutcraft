@@ -112,7 +112,7 @@ public class GuiUnexpectedError extends GuiScreen {
 
 	private void generateHastie() {
 		if (generated) {
-			hastebinLink.setText("Error Link: " + ChatColor.GREEN+hastebinURL);
+			hastebinLink.setText("Error Link: " + ChatColor.GREEN + hastebinURL);
 			return;
 		}
 		try {
@@ -167,7 +167,7 @@ public class GuiUnexpectedError extends GuiScreen {
 			} else {
 				hastebinURL = response;
 			}
-			hastebinLink.setText("Error: " + ChatColor.GREEN+hastebinURL);
+			hastebinLink.setText("Error: " + ChatColor.GREEN + hastebinURL);
 			generated = true;
 		} catch (Exception e) {
 			hastebinLink.setText("Connection error!");

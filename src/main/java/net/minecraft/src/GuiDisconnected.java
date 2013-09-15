@@ -37,7 +37,7 @@ public class GuiDisconnected extends GuiScreen {
 	public void initGui() {	
 		this.buttonList.clear();
 		// Spout Start
-		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, "Back to " + SpoutClient.getInstance().getServerManager().getJoinedFromName()));
+		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, "Back to " + mc.displayGuiScreen(new GuiFavorites(this))));
 		// Spout End
 		if (this.field_74247_c != null) {
 			this.field_74245_d = this.fontRenderer.listFormattedStringToWidth(I18n.func_135052_a(this.errorDetail, this.field_74247_c), this.width - 50);
@@ -52,7 +52,7 @@ public class GuiDisconnected extends GuiScreen {
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.id == 0) {
 			// Spout Start
-			this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom());
+			this.mc.displayGuiScreen(mc.displayGuiScreen(new GuiFavorites(this)));
 			// Spout End
 		}
 	}

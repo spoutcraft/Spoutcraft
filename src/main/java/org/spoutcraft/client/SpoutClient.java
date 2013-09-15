@@ -54,9 +54,6 @@ import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.SimpleKeyManager;
 import org.spoutcraft.client.gui.SimpleWidgetManager;
 import org.spoutcraft.client.gui.minimap.MinimapConfig;
-import org.spoutcraft.client.gui.server.ServerManager;
-import org.spoutcraft.client.gui.texturepacks.TexturePacksDatabaseModel;
-import org.spoutcraft.client.gui.texturepacks.TexturePacksModel;
 import org.spoutcraft.client.inventory.SimpleMaterialManager;
 import org.spoutcraft.client.io.CRCManager;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -82,7 +79,6 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final RenderDelegate render = new MCRenderDelegate();
 	private final KeyBindingManager bindingManager = new SimpleKeyBindingManager();
 	private final Logger log = Logger.getLogger(SpoutClient.class.getName());
-	private final ServerManager serverManager = new ServerManager();
 	private long tick = 0;
 	private long inWorldTicks = 0;
 	private Thread clipboardThread = null;
@@ -108,8 +104,6 @@ public class SpoutClient extends PropertyObject implements Client {
 	private boolean showvoidfog = true;
 	private boolean flySpeed = false;
 	private Mode clientMode = Mode.Menu;
-	private TexturePacksModel textureModel = new TexturePacksModel();
-	private TexturePacksDatabaseModel textureDatabaseModel = new TexturePacksDatabaseModel();
 	private String addonFolder = Minecraft.getMinecraftDir() + File.separator + "addons";
 	private final WidgetManager widgetManager = new SimpleWidgetManager();
 	private final HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
@@ -123,7 +117,6 @@ public class SpoutClient extends PropertyObject implements Client {
 		//System.setSecurityManager(securityManager);
 
 		((SimpleKeyBindingManager)bindingManager).load();
-		serverManager.init();
 		Log.setVerbose(false);
 		Log.setLogSystem(new SilencedLogSystem());
 	}
@@ -558,18 +551,6 @@ public class SpoutClient extends PropertyObject implements Client {
 
 	public File getStatsFolder() {
 		return FileUtil.getStatsDir();
-	}
-
-	public ServerManager getServerManager() {
-		return instance.serverManager;
-	}
-
-	public TexturePacksModel getTexturePacksModel() {
-		return textureModel;
-	}
-
-	public TexturePacksDatabaseModel getTexturePacksDatabaseModel() {
-		return textureDatabaseModel;
 	}
 
 	public WidgetManager getWidgetManager() {
