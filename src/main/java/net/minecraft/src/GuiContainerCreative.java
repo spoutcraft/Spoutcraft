@@ -784,7 +784,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		if (!beforeBackground && selectedTabIndex != 12) {
 			return;
 		}
-		this.mc.func_110434_K().func_110577_a(field_110424_t);
+		this.mc.getTextureManager().bindTexture(field_110424_t);
 		//ToDo:
 		//this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/gui/allitems.png"));
 		byte var9 = 32;
