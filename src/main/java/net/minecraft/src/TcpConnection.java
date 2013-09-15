@@ -31,7 +31,9 @@ public class TcpConnection implements INetworkManager {
 
 	/** The object used for synchronization on the send queue. */
 	private final Object sendQueueLock;
-	private final ILogAgent field_98215_i;
+	
+	/** Log agent for TCP connection */
+	private final ILogAgent tcpConLogAgent;
 
 	/** The socket used by this network manager. */
 	private Socket networkSocket;
@@ -80,7 +82,9 @@ public class TcpConnection implements INetworkManager {
 
 	/** A String indicating why the network has shutdown. */
 	private String terminationReason;
-	private Object[] field_74480_w;
+	
+	/** Contains shutdown description (internal error, etc.) as string array */
+	private Object[] shutdownDescription;
 	private int field_74490_x;
 
 	/**
@@ -114,7 +118,7 @@ public class TcpConnection implements INetworkManager {
 		this.chunkDataPacketsDelay = 50;
 		this.field_74463_A = par5PrivateKey;
 		this.networkSocket = par2Socket;
-		this.field_98215_i = par1ILogAgent;
+		this.tcpConLogAgent = par1ILogAgent;
 		this.remoteSocketAddress = par2Socket.getRemoteSocketAddress();
 		this.theNetHandler = par4NetHandler;
 
@@ -176,7 +180,7 @@ public class TcpConnection implements INetworkManager {
 			int var10001;
 			int[] var10000;
 
-			if (this.field_74468_e == 0 || !this.dataPackets.isEmpty() && MinecraftServer.func_130071_aq() - ((Packet)this.dataPackets.get(0)).creationTimeMillis >= (long)this.field_74468_e) {
+			if (this.field_74468_e == 0 || !this.dataPackets.isEmpty() && MinecraftServer.getSystemTimeMillis() - ((Packet)this.dataPackets.get(0)).creationTimeMillis >= (long)this.field_74468_e) {
 				var2 = this.func_74460_a(false);
 
 				if (var2 != null) {
@@ -201,7 +205,7 @@ public class TcpConnection implements INetworkManager {
 				}
 			}
 
-			if (this.chunkDataPacketsDelay-- <= 0 && (this.field_74468_e == 0 || !this.chunkDataPackets.isEmpty() && MinecraftServer.func_130071_aq() - ((Packet)this.chunkDataPackets.get(0)).creationTimeMillis >= (long)this.field_74468_e)) {
+			if (this.chunkDataPacketsDelay-- <= 0 && (this.field_74468_e == 0 || !this.chunkDataPackets.isEmpty() && MinecraftServer.getSystemTimeMillis() - ((Packet)this.chunkDataPackets.get(0)).creationTimeMillis >= (long)this.field_74468_e)) {
 				var2 = this.func_74460_a(true);
 
 				if (var2 != null) {
@@ -289,7 +293,7 @@ public class TcpConnection implements INetworkManager {
 				return false;
 			}
 			// Spout End
-			Packet var2 = Packet.readPacket(this.field_98215_i, this.socketInputStream, this.theNetHandler.isServerHandler(), this.networkSocket);
+			Packet var2 = Packet.readPacket(this.tcpConLogAgent, this.socketInputStream, this.theNetHandler.isServerHandler(), this.networkSocket);
 
 			if (var2 != null) {
 				if (var2 instanceof Packet252SharedKey && !this.isInputBeingDecrypted) {
@@ -344,7 +348,7 @@ public class TcpConnection implements INetworkManager {
 		if (this.isRunning) {
 			this.isTerminating = true;
 			this.terminationReason = par1Str;
-			this.field_74480_w = par2ArrayOfObj;
+			this.shutdownDescription = par2ArrayOfObj;
 			this.isRunning = false;
 			(new TcpMasterThread(this)).start();
 
@@ -395,7 +399,7 @@ public class TcpConnection implements INetworkManager {
 			// Spout Start
 			ChunkNetCache.totalPacketDown.addAndGet(var2.getPacketSize());
 			// Spout End
-			if (var2 != null && !this.theNetHandler.func_142032_c()) {
+			if (var2 != null && !this.theNetHandler.isConnectionClosed()) {
 				var2.processPacket(this.theNetHandler);
 			}
 		}
@@ -403,7 +407,7 @@ public class TcpConnection implements INetworkManager {
 		this.wakeThreads();
 
 		if (this.isTerminating && this.readPackets.isEmpty()) {
-			this.theNetHandler.handleErrorMessage(this.terminationReason, this.field_74480_w);
+			this.theNetHandler.handleErrorMessage(this.terminationReason, this.shutdownDescription);
 		}
 	}
 

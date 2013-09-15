@@ -9,8 +9,8 @@ import com.prupe.mcpatcher.mob.MobRandomizer;
 
 import org.spoutcraft.client.config.Configuration;
 public class RenderEnderman extends RenderLiving {
-	private static final ResourceLocation field_110840_a = new ResourceLocation("textures/entity/enderman/enderman_eyes.png");
-	private static final ResourceLocation field_110839_f = new ResourceLocation("textures/entity/enderman/enderman.png");
+	private static final ResourceLocation endermanEyesTexture = new ResourceLocation("textures/entity/enderman/enderman_eyes.png");
+	private static final ResourceLocation endermanTextures = new ResourceLocation("textures/entity/enderman/enderman.png");
 
 	/** The model of the enderman */
 	private ModelEnderman endermanModel;
@@ -38,8 +38,8 @@ public class RenderEnderman extends RenderLiving {
 		super.doRenderLiving(par1EntityEnderman, par2, par4, par6, par8, par9);
 	}
 	
-	protected ResourceLocation func_110838_a(EntityEnderman par1EntityEnderman) {
-		return field_110839_f;
+	protected ResourceLocation getEndermanTextures(EntityEnderman par1EntityEnderman) {
+		return endermanTextures;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class RenderEnderman extends RenderLiving {
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var5 / 1.0F, (float)var6 / 1.0F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			this.func_110776_a(TextureMap.field_110575_b);
+			this.bindTexture(TextureMap.locationBlocksTexture);
 			this.renderBlocks.renderBlockAsItem(Block.blocksList[par1EntityEnderman.getCarried()], par1EntityEnderman.getCarryingData(), 1.0F);
 			GL11.glPopMatrix();
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -79,7 +79,7 @@ public class RenderEnderman extends RenderLiving {
 		} else {
 			// Spout Start
 			if (Configuration.isRandomMobTextures()) {
-				this.func_110776_a(MobRandomizer.randomTexture((EntityLivingBase)par1EntityEnderman, field_110840_a));
+				this.bindTexture(MobRandomizer.randomTexture((EntityLivingBase)par1EntityEnderman, endermanEyesTexture));
 			} else {
 				// ToDO: Fix this.
 				//loadTexture(par1EntityEnderman.getCustomTexture(org.spoutcraft.api.entity.EntitySkinType.ENDERMAN_EYES, "/mob/enderman_eyes.png"));
@@ -127,8 +127,11 @@ public class RenderEnderman extends RenderLiving {
 		this.renderEnderman((EntityEnderman)par1EntityLivingBase, par2, par4, par6, par8, par9);
 	}
 
-	protected ResourceLocation func_110775_a(Entity par1Entity) {
-		return this.func_110838_a((EntityEnderman)par1Entity);
+	/**
+	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+	 */
+	protected ResourceLocation getEntityTexture(Entity par1Entity) {
+		return this.getEndermanTextures((EntityEnderman)par1Entity);
 	}
 
 	/**

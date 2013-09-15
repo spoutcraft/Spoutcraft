@@ -50,7 +50,7 @@ public class SoundManager implements ResourceManagerReloadListener {
 
 	/** A reference to the game settings. */
 	private final GameSettings options;
-	private final File field_130085_i;
+	private final File fileAssets;
 
 	/** Identifiers of all currently playing sounds. Type: HashSet<String> */
 	private final Set playingSounds = new HashSet();
@@ -67,7 +67,7 @@ public class SoundManager implements ResourceManagerReloadListener {
 	public SoundManager(ResourceManager par1ResourceManager, GameSettings par2GameSettings, File par3File) {
 		this.ticksBeforeMusic = this.rand.nextInt(12000);
 		this.options = par2GameSettings;
-		this.field_130085_i = par3File;
+		this.fileAssets = par3File;
 		this.soundPoolSounds = new SoundPool(par1ResourceManager, "sound", true);
 		this.soundPoolStreaming = new SoundPool(par1ResourceManager, "records", false);
 		this.soundPoolMusic = new SoundPool(par1ResourceManager, "music", true);
@@ -84,29 +84,29 @@ public class SoundManager implements ResourceManagerReloadListener {
 			System.err.println("error linking with the LibraryJavaSound plug-in");
 		}
 
-		this.func_130083_h();
+		this.loadSounds();
 	}
 
-	public void func_110549_a(ResourceManager par1ResourceManager) {
+	public void onResourceManagerReload(ResourceManager par1ResourceManager) {
 		this.stopAllSounds();
-		this.closeMinecraft();
+		this.cleanup();
 		this.tryToSetLibraryAndCodecs();
 	}
 
-	private void func_130083_h() {
-		if (this.field_130085_i.isDirectory()) {
-			Collection var1 = FileUtils.listFiles(this.field_130085_i, field_130084_a, true);
+	private void loadSounds() {
+		if (this.fileAssets.isDirectory()) {
+			Collection var1 = FileUtils.listFiles(this.fileAssets, field_130084_a, true);
 			Iterator var2 = var1.iterator();
 
 			while (var2.hasNext()) {
 				File var3 = (File)var2.next();
-				this.func_130081_a(var3);
+				this.loadSoundFile(var3);
 			}
 		}
 	}
 
-	private void func_130081_a(File par1File) {
-		String var2 = this.field_130085_i.toURI().relativize(par1File.toURI()).getPath();
+	private void loadSoundFile(File par1File) {
+		String var2 = this.fileAssets.toURI().relativize(par1File.toURI()).getPath();
 		int var3 = var2.indexOf("/");
 
 		if (var3 != -1) {
@@ -167,9 +167,9 @@ public class SoundManager implements ResourceManagerReloadListener {
 	}
 
 	/**
-	 * Called when Minecraft is closing down.
+	 * Cleans up the Sound System
 	 */
-	public void closeMinecraft() {
+	public void cleanup() {
 		if (this.loaded) {
 			this.sndSystem.cleanup();
 			this.loaded = false;
@@ -239,7 +239,7 @@ public class SoundManager implements ResourceManagerReloadListener {
 						}
 						// Spout End
 						this.ticksBeforeMusic = this.rand.nextInt(12000) + 12000;
-						sndSystem.backgroundMusic("BgMusic", var1.soundUrl, var1.soundName, false);
+						this.sndSystem.backgroundMusic("BgMusic", var1.getSoundUrl(), var1.getSoundName(), false);
 						sndSystem.setVolume("BgMusic", this.options.musicVolume);
 						sndSystem.play("BgMusic");
 					}
@@ -303,7 +303,7 @@ public class SoundManager implements ResourceManagerReloadListener {
 						this.sndSystem.stop("BgMusic");
 					}
 
-					this.sndSystem.newStreamingSource(true, var5, var6.func_110457_b(), var6.func_110458_a(), false, par2, par3, par4, 2, 64.0F);
+					this.sndSystem.newStreamingSource(true, var5, var6.getSoundUrl(), var6.getSoundName(), false, par2, par3, par4, 2, 64.0F);
 					this.sndSystem.setVolume(var5, 0.5F * this.options.soundVolume);
 					this.sndSystem.play(var5);
 				}
@@ -417,7 +417,7 @@ public class SoundManager implements ResourceManagerReloadListener {
 							var8 *= par3;
 						}
 
-						this.sndSystem.newSource(par5, var6, var7.func_110457_b(), var7.func_110458_a(), false, (float)par2Entity.posX, (float)par2Entity.posY, (float)par2Entity.posZ, 2, var8);
+						this.sndSystem.newSource(par5, var6, var7.getSoundUrl(), var7.getSoundName(), false, (float)par2Entity.posX, (float)par2Entity.posY, (float)par2Entity.posZ, 2, var8);
 						this.sndSystem.setLooping(var6, true);
 						this.sndSystem.setPitch(var6, par4);
 
@@ -486,7 +486,7 @@ public class SoundManager implements ResourceManagerReloadListener {
 			if (f3 > 1.0F){
 				f5 *= f3;
 			}
-			this.sndSystem.newSource(f3 > 1.0F, s1, soundpoolentry.soundUrl, soundpoolentry.soundName, false, f, f1, f2, 2, f5);
+			this.sndSystem.newSource(f3 > 1.0F, s1, soundpoolentry.getSoundUrl(), soundpoolentry.getSoundName(), false, f, f1, f2, 2, f5);			
 			this.sndSystem.setPitch(s1, f4);
 			if (f3 > 1.0F) {
 				f3 = 1.0F;
@@ -522,7 +522,7 @@ public class SoundManager implements ResourceManagerReloadListener {
 			} else {
 				s1 = (new StringBuilder()).append("sound_").append(soundId).toString();
 			}
-			sndSystem.newSource(false, s1, soundpoolentry.soundUrl, soundpoolentry.soundName, false, 0.0F, 0.0F, 0.0F, 0, 0.0F);
+			sndSystem.newSource(false, s1, soundpoolentry.getSoundUrl(), soundpoolentry.getSoundName(), false, 0.0F, 0.0F, 0.0F, 0, 0.0F);
 			if (f > 1.0F) {
 				f = 1.0F;
 			}
@@ -550,9 +550,9 @@ public class SoundManager implements ResourceManagerReloadListener {
 
 			if (distance > 0F) {
 				this.sndSystem.removeSource("BgMusic");
-				this.sndSystem.newStreamingSource(false, "BgMusic", soundpoolentry.soundUrl, soundpoolentry.soundName, false, x, y, z, 2, distance);
+				this.sndSystem.newStreamingSource(false, "BgMusic", soundpoolentry.getSoundUrl(), soundpoolentry.getSoundName(), false, x, y, z, 2, distance);
 			} else {
-				this.sndSystem.backgroundMusic("BgMusic", soundpoolentry.soundUrl, soundpoolentry.soundName, false);
+				this.sndSystem.backgroundMusic("BgMusic", soundpoolentry.getSoundUrl(), soundpoolentry.getSoundName(), false);
 			}
 			this.sndSystem.setVolume("BgMusic", options.musicVolume * volume);
 			this.sndSystem.play("BgMusic");
@@ -576,9 +576,9 @@ public class SoundManager implements ResourceManagerReloadListener {
 		if (soundpoolentry != null) {
 			String source;
 			if (distance > 0F) {
-				source = sndSystem.quickStream(false, soundpoolentry.soundUrl, soundpoolentry.soundName, false, x, y, z, 2, distance);
+				source = sndSystem.quickStream(false, soundpoolentry.getSoundUrl(), soundpoolentry.getSoundName(), false, x, y, z, 2, distance);
 			} else {
-				source = sndSystem.quickStream(false, soundpoolentry.soundUrl, soundpoolentry.soundName, false, 0.0F, 0.0F, 0.0F, 0, 0.0F);
+				source = sndSystem.quickStream(false, soundpoolentry.getSoundUrl(), soundpoolentry.getSoundName(), false, 0.0F, 0.0F, 0.0F, 0, 0.0F);
 			}
 			this.sndSystem.setVolume(source, volume * options.soundVolume);
 			this.sndSystem.play(source);

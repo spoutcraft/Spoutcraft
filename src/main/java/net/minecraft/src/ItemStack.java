@@ -338,7 +338,7 @@ public class ItemStack {
 	}
 
 	public boolean func_111282_a(EntityPlayer par1EntityPlayer, EntityLivingBase par2EntityLivingBase) {
-		return Item.itemsList[this.itemID].func_111207_a(this, par1EntityPlayer, par2EntityLivingBase);
+		return Item.itemsList[this.itemID].itemInteractionForEntity(this, par1EntityPlayer, par2EntityLivingBase);
 	}
 
 	/**
@@ -380,7 +380,7 @@ public class ItemStack {
 		return this.itemID == par1ItemStack.itemID && this.itemDamage == par1ItemStack.itemDamage;
 	}
 
-	public String getItemName() {
+	public String getUnlocalizedName() {
 		return Item.itemsList[this.itemID].getUnlocalizedName(this);
 	}
 
@@ -598,7 +598,7 @@ public class ItemStack {
 			}
 		}
 
-		Multimap var16 = this.func_111283_C();
+		Multimap var16 = this.getAttributeModifiers();
 
 		if (!var16.isEmpty()) {
 			var3.add("");
@@ -607,20 +607,20 @@ public class ItemStack {
 			while (var15.hasNext()) {
 				Entry var18 = (Entry)var15.next();
 				AttributeModifier var21 = (AttributeModifier)var18.getValue();
-				double var10 = var21.func_111164_d();
+				double var10 = var21.getAmount();
 				double var12;
 
-				if (var21.func_111169_c() != 1 && var21.func_111169_c() != 2) {
-					var12 = var21.func_111164_d();
+				if (var21.getOperation() != 1 && var21.getOperation() != 2) {
+					var12 = var21.getAmount();
 				} else {
-					var12 = var21.func_111164_d() * 100.0D;
+					var12 = var21.getAmount() * 100.0D;
 				}
 
 				if (var10 > 0.0D) {
-					var3.add(EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("attribute.modifier.plus." + var21.func_111169_c(), new Object[] {field_111284_a.format(var12), StatCollector.translateToLocal("attribute.name." + (String)var18.getKey())}));
+					var3.add(EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("attribute.modifier.plus." + var21.getOperation(), new Object[] {field_111284_a.format(var12), StatCollector.translateToLocal("attribute.name." + (String)var18.getKey())}));
 				} else if (var10 < 0.0D) {
 					var12 *= -1.0D;
-					var3.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("attribute.modifier.take." + var21.func_111169_c(), new Object[] {field_111284_a.format(var12), StatCollector.translateToLocal("attribute.name." + (String)var18.getKey())}));
+					var3.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("attribute.modifier.take." + var21.getOperation(), new Object[] {field_111284_a.format(var12), StatCollector.translateToLocal("attribute.name." + (String)var18.getKey())}));
 				}
 			}
 		}
@@ -723,7 +723,10 @@ public class ItemStack {
 		this.stackTagCompound.setInteger("RepairCost", par1);
 	}
 	
-	public Multimap func_111283_C() {
+	/**
+	 * Gets the attribute modifiers for this ItemStack.\nWill check for an NBT tag list containing modifiers for the stack.
+	 */
+	public Multimap getAttributeModifiers() {
 		Object var1;
 
 		if (this.hasTagCompound() && this.stackTagCompound.hasKey("AttributeModifiers")) {
@@ -734,12 +737,12 @@ public class ItemStack {
 				NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
 				AttributeModifier var5 = SharedMonsterAttributes.func_111259_a(var4);
 
-				if (var5.func_111167_a().getLeastSignificantBits() != 0L && var5.func_111167_a().getMostSignificantBits() != 0L) {
+				if (var5.getID().getLeastSignificantBits() != 0L && var5.getID().getMostSignificantBits() != 0L) {
 					((Multimap)var1).put(var4.getString("AttributeName"), var5);
 				}
 			}
 		} else {
-			var1 = this.getItem().func_111205_h();
+			var1 = this.getItem().getItemAttributeModifiers();
 		}
 
 		return (Multimap)var1;

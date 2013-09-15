@@ -1,69 +1,67 @@
 package net.minecraft.src;
 
-import java.awt.image.BufferedImage;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.prupe.mcpatcher.hd.CustomAnimation;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.prupe.mcpatcher.hd.CustomAnimation;
-
 public class TextureManager implements Tickable, ResourceManagerReloadListener {
-	public final Map field_110585_a = Maps.newHashMap();
-	private final Map field_130089_b = Maps.newHashMap();
-	private final List field_110583_b = Lists.newArrayList();
-	private final Map field_110584_c = Maps.newHashMap();
-	private ResourceManager field_110582_d;
+	public final Map mapTextureObjects = Maps.newHashMap();
+	private final Map mapResourceLocations = Maps.newHashMap();
+	private final List listTickables = Lists.newArrayList();
+	private final Map mapTextureCounters = Maps.newHashMap();
+	private ResourceManager theResourceManager;
 
 	public TextureManager(ResourceManager par1ResourceManager) {
-		this.field_110582_d = par1ResourceManager;
+		this.theResourceManager = par1ResourceManager;
 	}
 
-	public void func_110577_a(ResourceLocation par1ResourceLocation) {
-		Object var2 = (TextureObject)this.field_110585_a.get(par1ResourceLocation);
+	public void bindTexture(ResourceLocation par1ResourceLocation) {
+		Object var2 = (TextureObject)this.mapTextureObjects.get(par1ResourceLocation);
 
 		if (var2 == null) {
 			var2 = new SimpleTexture(par1ResourceLocation);
-			this.func_110579_a(par1ResourceLocation, (TextureObject)var2);
+			this.loadTexture(par1ResourceLocation, (TextureObject)var2);
 		}
 
-		TextureUtil.bindTexture(((TextureObject)var2).func_110552_b());
+		TextureUtil.bindTexture(((TextureObject)var2).getGlTextureId());
 	}
 
-	public ResourceLocation func_130087_a(int par1) {
-		return (ResourceLocation)this.field_130089_b.get(Integer.valueOf(par1));
+	public ResourceLocation getResourceLocation(int par1) {
+		return (ResourceLocation)this.mapResourceLocations.get(Integer.valueOf(par1));
 	}
 
-	public boolean func_130088_a(ResourceLocation par1ResourceLocation, TextureMap par2TextureMap) {
-		if (this.func_110580_a(par1ResourceLocation, par2TextureMap)) {
-			this.field_130089_b.put(Integer.valueOf(par2TextureMap.func_130086_a()), par1ResourceLocation);
+	public boolean loadTextureMap(ResourceLocation par1ResourceLocation, TextureMap par2TextureMap) {
+		if (this.loadTickableTexture(par1ResourceLocation, par2TextureMap)) {
+			this.mapResourceLocations.put(Integer.valueOf(par2TextureMap.getTextureType()), par1ResourceLocation);
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public boolean func_110580_a(ResourceLocation par1ResourceLocation, TickableTextureObject par2TickableTextureObject) {
-		if (this.func_110579_a(par1ResourceLocation, par2TickableTextureObject)) {
-			this.field_110583_b.add(par2TickableTextureObject);
+	public boolean loadTickableTexture(ResourceLocation par1ResourceLocation, TickableTextureObject par2TickableTextureObject) {
+		if (this.loadTexture(par1ResourceLocation, par2TickableTextureObject)) {
+			this.listTickables.add(par2TickableTextureObject);
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public boolean func_110579_a(ResourceLocation par1ResourceLocation, TextureObject par2TextureObject) {
+	public boolean loadTexture(ResourceLocation par1ResourceLocation, TextureObject par2TextureObject) {
 		boolean var3 = true;
 
 		try {
-			((TextureObject)par2TextureObject).func_110551_a(this.field_110582_d);
+			((TextureObject)par2TextureObject).loadTexture(this.theResourceManager);
 		} catch (IOException var8) {
 			Minecraft.getMinecraft().getLogAgent().logWarningException("Failed to load texture: " + par1ResourceLocation, var8);
-			par2TextureObject = TextureUtil.field_111001_a;
-			this.field_110585_a.put(par1ResourceLocation, par2TextureObject);
+			par2TextureObject = TextureUtil.missingTexture;
+			this.mapTextureObjects.put(par1ResourceLocation, par2TextureObject);
 			var3 = false;
 		} catch (Throwable var9) {
 			CrashReport var5 = CrashReport.makeCrashReport(var9, "Registering texture");
@@ -73,16 +71,16 @@ public class TextureManager implements Tickable, ResourceManagerReloadListener {
 			throw new ReportedException(var5);
 		}
 
-		this.field_110585_a.put(par1ResourceLocation, par2TextureObject);
+		this.mapTextureObjects.put(par1ResourceLocation, par2TextureObject);
 		return var3;
 	}
 
-	public TextureObject func_110581_b(ResourceLocation par1ResourceLocation) {
-		return (TextureObject)this.field_110585_a.get(par1ResourceLocation);
+	public TextureObject getTexture(ResourceLocation par1ResourceLocation) {
+		return (TextureObject)this.mapTextureObjects.get(par1ResourceLocation);
 	}
 
-	public ResourceLocation func_110578_a(String par1Str, DynamicTexture par2DynamicTexture) {
-		Integer var3 = (Integer)this.field_110584_c.get(par1Str);
+	public ResourceLocation getDynamicTextureLocation(String par1Str, DynamicTexture par2DynamicTexture) {
+		Integer var3 = (Integer)this.mapTextureCounters.get(par1Str);
 
 		if (var3 == null) {
 			var3 = Integer.valueOf(1);
@@ -90,31 +88,31 @@ public class TextureManager implements Tickable, ResourceManagerReloadListener {
 			var3 = Integer.valueOf(var3.intValue() + 1);
 		}
 
-		this.field_110584_c.put(par1Str, var3);
+		this.mapTextureCounters.put(par1Str, var3);
 		ResourceLocation var4 = new ResourceLocation(String.format("dynamic/%s_%d", new Object[] {par1Str, var3}));
-		this.func_110579_a(var4, par2DynamicTexture);
+		this.loadTexture(var4, par2DynamicTexture);
 		return var4;
 	}
 
-	public void func_110550_d() {
-		Iterator var1 = this.field_110583_b.iterator();
+	public void tick() {
+		Iterator var1 = this.listTickables.iterator();
 
 		while (var1.hasNext()) {
 			Tickable var2 = (Tickable)var1.next();
-			var2.func_110550_d();
+			var2.tick();
 		}
 
 		CustomAnimation.updateAll();
 	}
 
-	public void func_110549_a(ResourceManager par1ResourceManager) {
-		Iterator var2 = this.field_110585_a.entrySet().iterator();
+	public void onResourceManagerReload(ResourceManager par1ResourceManager) {
+		Iterator var2 = this.mapTextureObjects.entrySet().iterator();
 
 		while (var2.hasNext()) {
 			Entry var3 = (Entry)var2.next();
-			this.func_110579_a((ResourceLocation)var3.getKey(), (TextureObject)var3.getValue());
+			this.loadTexture((ResourceLocation)var3.getKey(), (TextureObject)var3.getValue());
 		}
-	}	
+	}
 	
 	// Spout Start
 	public void bindTexture(int texture) {

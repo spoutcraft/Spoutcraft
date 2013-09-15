@@ -27,11 +27,10 @@ import org.spoutcraft.client.spoutworth.SpoutWorth;
 // Spout End
 
 public class RenderGlobal implements IWorldAccess {
-	private static final ResourceLocation field_110927_h = new ResourceLocation("textures/environment/moon_phases.png");
-	private static final ResourceLocation field_110928_i = new ResourceLocation("textures/environment/sun.png");
-	private static final ResourceLocation field_110925_j = new ResourceLocation("textures/environment/clouds.png");
-	private static final ResourceLocation field_110926_k = new ResourceLocation("textures/environment/end_sky.png");
-	
+	private static final ResourceLocation locationMoonPhasesPng = new ResourceLocation("textures/environment/moon_phases.png");
+	private static final ResourceLocation locationSunPng = new ResourceLocation("textures/environment/sun.png");
+	private static final ResourceLocation locationCloudsPng = new ResourceLocation("textures/environment/clouds.png");
+	private static final ResourceLocation locationEndSkyPng = new ResourceLocation("textures/environment/end_sky.png");
 	public List tileEntities = new ArrayList();
 	private WorldClient theWorld;
 
@@ -176,7 +175,7 @@ public class RenderGlobal implements IWorldAccess {
 
 	public RenderGlobal(Minecraft par1Minecraft) {
 		this.mc = par1Minecraft;
-		this.renderEngine = par1Minecraft.func_110434_K();
+		this.renderEngine = par1Minecraft.getTextureManager();
 		// Spout Start
 		byte var2 = 64;
 		byte var3 = 64;
@@ -460,8 +459,8 @@ public class RenderGlobal implements IWorldAccess {
 			--this.renderEntitiesStartupCounter;
 		} else {
 			this.theWorld.theProfiler.startSection("prepare");
-			TileEntityRenderer.instance.cacheActiveRenderInfo(this.theWorld, this.mc.func_110434_K(), this.mc.fontRenderer, this.mc.renderViewEntity, par3);
-			RenderManager.instance.cacheActiveRenderInfo(this.theWorld, this.mc.func_110434_K(), this.mc.fontRenderer, this.mc.renderViewEntity, this.mc.pointedEntityLiving, this.mc.gameSettings, par3);
+			TileEntityRenderer.instance.cacheActiveRenderInfo(this.theWorld, this.mc.getTextureManager(), this.mc.fontRenderer, this.mc.renderViewEntity, par3);
+			RenderManager.instance.cacheActiveRenderInfo(this.theWorld, this.mc.getTextureManager(), this.mc.fontRenderer, this.mc.renderViewEntity, this.mc.pointedEntityLiving, this.mc.gameSettings, par3);
 			this.countEntitiesTotal = 0;
 			this.countEntitiesRendered = 0;
 			this.countEntitiesHidden = 0;
@@ -497,8 +496,8 @@ public class RenderGlobal implements IWorldAccess {
 				if (!var8 && var7 instanceof EntityLiving) {
 					EntityLiving var9 = (EntityLiving)var7;
 
-					if (var9.func_110167_bD() && var9.func_110166_bE() != null) {
-						Entity var10 = var9.func_110166_bE();
+					if (var9.getLeashed() && var9.getLeashedToEntity() != null) {
+						Entity var10 = var9.getLeashedToEntity();
 						var8 = par2ICamera.isBoundingBoxInFrustum(var10.boundingBox);
 					}
 				}
@@ -914,7 +913,7 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			RenderHelper.disableStandardItemLighting();
 			GL11.glDepthMask(false);
-			this.renderEngine.func_110577_a(field_110926_k);
+			this.renderEngine.bindTexture(locationEndSkyPng);
 			Tessellator var21 = Tessellator.instance;
 
 			for (int var22 = 0; var22 < 6; ++var22) {
@@ -1060,7 +1059,7 @@ public class RenderGlobal implements IWorldAccess {
 			// Spout Start
 			if (SpoutClient.getInstance().getSkyManager().isSunVisible()) {
 				if (SpoutClient.getInstance().getSkyManager().getSunTextureUrl() == null || CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getSunTextureUrl()) == null) {
-					this.renderEngine.func_110577_a(SkyRenderer.setupCelestialObject(field_110928_i)); //sun
+					this.renderEngine.bindTexture(SkyRenderer.setupCelestialObject(locationSunPng));
 			} else {
 				//ToDo: Spoutcraft API get image needs to be fixed.
 				//GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture(CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getSunTextureUrl())));
@@ -1080,7 +1079,7 @@ public class RenderGlobal implements IWorldAccess {
 			// Spout Start
 			if (SpoutClient.getInstance().getSkyManager().isMoonVisible()) {
 			if (SpoutClient.getInstance().getSkyManager().getMoonTextureUrl() == null || CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl()) == null) {
-				this.renderEngine.func_110577_a(SkyRenderer.setupCelestialObject(field_110927_h)); // moon
+				this.renderEngine.bindTexture(SkyRenderer.setupCelestialObject(locationMoonPhasesPng));
 			} else {
 				// ToDo: Spoutcraft API get image needs to be fixed.
 				//GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture(CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl())));
@@ -1187,7 +1186,7 @@ public class RenderGlobal implements IWorldAccess {
 				byte var3 = 32;
 				int var4 = 256 / var3;
 				Tessellator var5 = Tessellator.instance;
-				this.renderEngine.func_110577_a(field_110925_j); // clouds
+				this.renderEngine.bindTexture(locationCloudsPng);
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				Vec3 var6 = this.theWorld.getCloudColour(par1);
@@ -1264,7 +1263,7 @@ public class RenderGlobal implements IWorldAccess {
 		int var14 = MathHelper.floor_double(var10 / 2048.0D);
 		var8 -= (double)(var13 * 2048);
 		var10 -= (double)(var14 * 2048);
-		this.renderEngine.func_110577_a(field_110925_j); // clouds
+		this.renderEngine.bindTexture(locationCloudsPng);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		Vec3 var15 = this.theWorld.getCloudColour(par1);
@@ -1548,7 +1547,7 @@ public class RenderGlobal implements IWorldAccess {
 
 		if (!this.damagedBlocks.isEmpty()) {
 			GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR);
-			this.renderEngine.func_110577_a(TextureMap.field_110575_b);
+			this.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
 			GL11.glPushMatrix();
 			GL11.glDisable(GL11.GL_ALPHA_TEST);

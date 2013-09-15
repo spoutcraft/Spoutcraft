@@ -14,7 +14,7 @@ public abstract class RenderLiving extends RendererLivingEntity {
 	}
 
 	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
-		super.func_130000_a(par1EntityLiving, par2, par4, par6, par8, par9);
+		super.doRenderLiving(par1EntityLiving, par2, par4, par6, par8, par9);
 		this.func_110827_b(par1EntityLiving, par2, par4, par6, par8, par9);
 	}
 
@@ -23,7 +23,7 @@ public abstract class RenderLiving extends RendererLivingEntity {
 	}
 
 	protected void func_110827_b(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
-		Entity var10 = par1EntityLiving.func_110166_bE();
+		Entity var10 = par1EntityLiving.getLeashedToEntity();
 
 		if (var10 != null) {
 			par4 -= (1.6D - (double)par1EntityLiving.height) * 0.5D;

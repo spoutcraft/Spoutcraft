@@ -56,7 +56,7 @@ public class RenderBiped extends RenderLiving {
 
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
-				this.func_110776_a(func_110857_a(var6, par2));
+				this.bindTexture(func_110857_a(var6, par2));
 				ModelBiped var7 = par2 == 2 ? this.field_82425_h : this.field_82423_g;
 				var7.bipedHead.showModel = par2 == 0;
 				var7.bipedHeadwear.showModel = par2 == 0;
@@ -105,7 +105,7 @@ public class RenderBiped extends RenderLiving {
 			Item var5 = var4.getItem();
 
 			if (var5 instanceof ItemArmor) {
-				this.func_110776_a(func_110858_a((ItemArmor)var5, par2, "overlay"));
+				this.bindTexture(func_110858_a((ItemArmor)var5, par2, "overlay"));
 				float var6 = 1.0F;
 				GL11.glColor3f(var6, var6, var6);
 			}
@@ -255,7 +255,10 @@ public class RenderBiped extends RenderLiving {
 		this.doRenderLiving((EntityLiving)par1EntityLivingBase, par2, par4, par6, par8, par9);
 	}
 
-	protected ResourceLocation func_110775_a(Entity par1Entity) {
+	/**
+	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+	 */
+	protected ResourceLocation getEntityTexture(Entity par1Entity) {
 		return this.func_110856_a((EntityLiving)par1Entity);
 	}
 

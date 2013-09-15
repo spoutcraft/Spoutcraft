@@ -6,8 +6,9 @@ import com.prupe.mcpatcher.mob.MobRandomizer;
 
 import org.spoutcraft.client.config.Configuration;
 public class RenderSpider extends RenderLiving {
-	private static final ResourceLocation field_110891_a = new ResourceLocation("textures/entity/spider_eyes.png");
-	private static final ResourceLocation field_110890_f = new ResourceLocation("textures/entity/spider/spider.png");
+	private static final ResourceLocation spiderEyesTextures = new ResourceLocation("textures/entity/spider_eyes.png");
+	private static final ResourceLocation spiderTextures = new ResourceLocation("textures/entity/spider/spider.png");
+	
 	public RenderSpider() {
 		super(new ModelSpider(), 1.0F);
 		this.setRenderPassModel(new ModelSpider());
@@ -27,7 +28,7 @@ public class RenderSpider extends RenderLiving {
 			// Spout Start
 			if (Configuration.isRandomMobTextures()) {
 			// MCPatcher Start
-				this.func_110776_a(MobRandomizer.randomTexture((EntityLivingBase)par1EntitySpider, field_110891_a));
+				this.bindTexture(MobRandomizer.randomTexture((EntityLivingBase)par1EntitySpider, spiderEyesTextures));
 			// MCPatcher End
 			} else {
 				//ToDo: Spoutcraft API borked.
@@ -55,8 +56,8 @@ public class RenderSpider extends RenderLiving {
 		}
 	}
 
-	protected ResourceLocation func_110889_a(EntitySpider par1EntitySpider) {
-		return field_110890_f;
+	protected ResourceLocation getSpiderTextures(EntitySpider par1EntitySpider) {
+		return spiderTextures;
 	}
 
 	protected float getDeathMaxRotation(EntityLivingBase par1EntityLivingBase) {
@@ -70,7 +71,10 @@ public class RenderSpider extends RenderLiving {
 		return this.setSpiderEyeBrightness((EntitySpider)par1EntityLivingBase, par2, par3);
 	}
 
-	protected ResourceLocation func_110775_a(Entity par1Entity) {
-		return this.func_110889_a((EntitySpider)par1Entity);
+	/**
+	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+	 */
+	protected ResourceLocation getEntityTexture(Entity par1Entity) {
+		return this.getSpiderTextures((EntitySpider)par1Entity);
 	}
 }

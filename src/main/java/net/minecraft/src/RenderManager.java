@@ -237,7 +237,7 @@ public class RenderManager {
 		} catch (Throwable var18) {
 			CrashReport var12 = CrashReport.makeCrashReport(var18, "Rendering entity in world");
 			CrashReportCategory var13 = var12.makeCategory("Entity being rendered");
-			par1Entity.func_85029_a(var13);
+			par1Entity.addEntityCrashInfo(var13);
 			CrashReportCategory var14 = var12.makeCategory("Renderer details");
 			var14.addCrashSection("Assigned renderer", var10);
 			var14.addCrashSection("Location", CrashReportCategory.func_85074_a(par2, par4, par6));

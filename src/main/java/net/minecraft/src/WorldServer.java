@@ -26,8 +26,12 @@ public class WorldServer extends World {
 	/** is false if there are no players */
 	private boolean allPlayersSleeping;
 	private int updateEntityTick;
-	private final Teleporter field_85177_Q;
-	private final SpawnerAnimals field_135059_Q = new SpawnerAnimals();
+	
+	/**
+	 * the teleporter to use when the entity is being transferred into the dimension
+	 */
+	private final Teleporter worldTeleporter;
+	private final SpawnerAnimals animalSpawner = new SpawnerAnimals();
 
 	/**
 	 * Double buffer of ServerBlockEventList[] for holding pending BlockEventData's
@@ -63,7 +67,7 @@ public class WorldServer extends World {
 			this.pendingTickListEntriesTreeSet = new TreeSet();
 		}
 
-		this.field_85177_Q = new Teleporter(this);
+		this.worldTeleporter = new Teleporter(this);
 		this.worldScoreboard = new ServerScoreboard(par1MinecraftServer);
 		ScoreboardSaveData var8 = (ScoreboardSaveData)this.mapStorage.loadData(ScoreboardSaveData.class, "scoreboard");
 
@@ -100,7 +104,7 @@ public class WorldServer extends World {
 		this.theProfiler.startSection("mobSpawner");
 
 		if (this.getGameRules().getGameRuleBooleanValue("doMobSpawning")) {
-			this.field_135059_Q.findChunksForSpawning(this, this.spawnHostileMobs, this.spawnPeacefulMobs, this.worldInfo.getWorldTotalTime() % 400L == 0L);
+			this.animalSpawner.findChunksForSpawning(this, this.spawnHostileMobs, this.spawnPeacefulMobs, this.worldInfo.getWorldTotalTime() % 400L == 0L);
 		}
 
 		this.theProfiler.endStartSection("chunkSource");
@@ -127,7 +131,7 @@ public class WorldServer extends World {
 		this.villageCollectionObj.tick();
 		this.villageSiegeObj.tick();
 		this.theProfiler.endStartSection("portalForcer");
-		this.field_85177_Q.removeStalePortalLocations(this.getTotalWorldTime());
+		this.worldTeleporter.removeStalePortalLocations(this.getTotalWorldTime());
 		this.theProfiler.endSection();
 		this.sendAndApplyBlockEvents();
 	}
@@ -464,7 +468,7 @@ public class WorldServer extends World {
 								var10 = -1;
 							}
 
-							CrashReportCategory.func_85068_a(var9, var4.xCoord, var4.yCoord, var4.zCoord, var6, var10);
+							CrashReportCategory.addBlockCrashInfo(var9, var4.xCoord, var4.yCoord, var4.zCoord, var6, var10);
 							throw new ReportedException(var8);
 						}
 					}
@@ -567,7 +571,7 @@ public class WorldServer extends World {
 	 * Called when checking if a certain block can be mined or not. The 'spawn safe zone' check is located here.
 	 */
 	public boolean canMineBlock(EntityPlayer par1EntityPlayer, int par2, int par3, int par4) {
-		return !this.mcServer.func_96290_a(this, par2, par3, par4, par1EntityPlayer);
+		return !this.mcServer.isBlockProtected(this, par2, par3, par4, par1EntityPlayer);
 	}
 
 	protected void initialize(WorldSettings par1WorldSettings) {
@@ -674,9 +678,12 @@ public class WorldServer extends World {
 		}
 	}
 
-	public void func_104140_m() {
+	/**
+	 * saves chunk data - currently only called during execution of the Save All command
+	 */
+	public void saveChunkData() {
 		if (this.chunkProvider.canSave()) {
-			this.chunkProvider.func_104112_b();
+			this.chunkProvider.saveExtraData();
 		}
 	}
 
@@ -859,6 +866,6 @@ public class WorldServer extends World {
 	}
 
 	public Teleporter getDefaultTeleporter() {
-		return this.field_85177_Q;
+		return this.worldTeleporter;
 	}
 }

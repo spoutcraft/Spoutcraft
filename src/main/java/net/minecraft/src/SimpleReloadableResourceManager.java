@@ -14,85 +14,85 @@ import java.util.Map;
 import java.util.Set;
 
 public class SimpleReloadableResourceManager implements ReloadableResourceManager {
-	private static final Joiner field_130074_a = Joiner.on(", ");
-	public final Map field_110548_a = Maps.newHashMap();
-	private final List field_110546_b = Lists.newArrayList();
-	private final Set field_135057_d = Sets.newLinkedHashSet();
-	private final MetadataSerializer field_110547_c;
+	private static final Joiner joinerResourcePacks = Joiner.on(", ");
+	public final Map domainResourceManagers = Maps.newHashMap();
+	private final List reloadListeners = Lists.newArrayList();
+	private final Set setResourceDomains = Sets.newLinkedHashSet();
+	private final MetadataSerializer rmMetadataSerializer;
 
 	public SimpleReloadableResourceManager(MetadataSerializer par1MetadataSerializer) {
-		this.field_110547_c = par1MetadataSerializer;
+		this.rmMetadataSerializer = par1MetadataSerializer;
 	}
 
-	public void func_110545_a(ResourcePack par1ResourcePack) {
+	public void reloadResourcePack(ResourcePack par1ResourcePack) {
 		FallbackResourceManager var4;
 
-		for (Iterator var2 = par1ResourcePack.func_110587_b().iterator(); var2.hasNext(); var4.func_110538_a(par1ResourcePack)) {
+		for (Iterator var2 = par1ResourcePack.getResourceDomains().iterator(); var2.hasNext(); var4.addResourcePack(par1ResourcePack)) {
 			String var3 = (String)var2.next();
-			this.field_135057_d.add(var3);
-			var4 = (FallbackResourceManager)this.field_110548_a.get(var3);
+			this.setResourceDomains.add(var3);
+			var4 = (FallbackResourceManager)this.domainResourceManagers.get(var3);
 
 			if (var4 == null) {
-				var4 = new FallbackResourceManager(this.field_110547_c);
-				this.field_110548_a.put(var3, var4);
+				var4 = new FallbackResourceManager(this.rmMetadataSerializer);
+				this.domainResourceManagers.put(var3, var4);
 			}
 		}
 	}
 
-	public Set func_135055_a() {
-		return this.field_135057_d;
+	public Set getResourceDomains() {
+		return this.setResourceDomains;
 	}
 
-	public Resource func_110536_a(ResourceLocation par1ResourceLocation) throws IOException {
-		ResourceManager var2 = (ResourceManager)this.field_110548_a.get(par1ResourceLocation.func_110624_b());
+	public Resource getResource(ResourceLocation par1ResourceLocation) throws IOException {
+		ResourceManager var2 = (ResourceManager)this.domainResourceManagers.get(par1ResourceLocation.getResourceDomain());
 
 		if (var2 != null) {
-			return var2.func_110536_a(par1ResourceLocation);
+			return var2.getResource(par1ResourceLocation);
 		} else {
 			throw new FileNotFoundException(par1ResourceLocation.toString());
 		}
 	}
 
-	public List func_135056_b(ResourceLocation par1ResourceLocation) throws IOException {
-		ResourceManager var2 = (ResourceManager)this.field_110548_a.get(par1ResourceLocation.func_110624_b());
+	public List getAllResources(ResourceLocation par1ResourceLocation) throws IOException {
+		ResourceManager var2 = (ResourceManager)this.domainResourceManagers.get(par1ResourceLocation.getResourceDomain());
 
 		if (var2 != null) {
-			return var2.func_135056_b(par1ResourceLocation);
+			return var2.getAllResources(par1ResourceLocation);
 		} else {
 			throw new FileNotFoundException(par1ResourceLocation.toString());
 		}
 	}
 
-	private void func_110543_a() {
-		this.field_110548_a.clear();
-		this.field_135057_d.clear();
+	private void clearResources() {
+		this.domainResourceManagers.clear();
+		this.setResourceDomains.clear();
 	}
 
-	public void func_110541_a(List par1List) {
-		this.func_110543_a();
-		Minecraft.getMinecraft().getLogAgent().logInfo("Reloading ResourceManager: " + field_130074_a.join(Iterables.transform(par1List, new SimpleReloadableResourceManagerINNER1(this))));
+	public void reloadResources(List par1List) {
+		this.clearResources();
+		Minecraft.getMinecraft().getLogAgent().logInfo("Reloading ResourceManager: " + joinerResourcePacks.join(Iterables.transform(par1List, new SimpleReloadableResourceManagerINNER1(this))));
 		Iterator var2 = par1List.iterator();
 
 		while (var2.hasNext()) {
 			ResourcePack var3 = (ResourcePack)var2.next();
-			this.func_110545_a(var3);
+			this.reloadResourcePack(var3);
 		}
 
-		this.func_110544_b();
+		this.notifyReloadListeners();
 	}
 
-	public void func_110542_a(ResourceManagerReloadListener par1ResourceManagerReloadListener) {
-		this.field_110546_b.add(par1ResourceManagerReloadListener);
-		par1ResourceManagerReloadListener.func_110549_a(this);
+	public void registerReloadListener(ResourceManagerReloadListener par1ResourceManagerReloadListener) {
+		this.reloadListeners.add(par1ResourceManagerReloadListener);
+		par1ResourceManagerReloadListener.onResourceManagerReload(this);
 	}
 
-	private void func_110544_b() {
+	private void notifyReloadListeners() {
 		TexturePackChangeHandler.beforeChange1(false);
-		Iterator var1 = this.field_110546_b.iterator();
+		Iterator var1 = this.reloadListeners.iterator();
 
 		while (var1.hasNext()) {
 			ResourceManagerReloadListener var2 = (ResourceManagerReloadListener)var1.next();
-			var2.func_110549_a(this);
+			var2.onResourceManagerReload(this);
 		}
 
 		TexturePackChangeHandler.afterChange1(false);

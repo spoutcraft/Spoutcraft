@@ -28,7 +28,7 @@ public abstract class Packet {
 	protected ILogAgent field_98193_m;
 
 	/** the system time in milliseconds when this packet was created. */
-	public final long creationTimeMillis = MinecraftServer.func_130071_aq();
+	public final long creationTimeMillis = MinecraftServer.getSystemTimeMillis();
 	public static long receivedID;
 	public static long receivedSize;
 

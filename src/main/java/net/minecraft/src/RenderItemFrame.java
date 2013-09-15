@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import org.spoutcraft.api.material.MaterialData;
 
 public class RenderItemFrame extends Render {
+	private static final ResourceLocation mapBackgroundTextures = new ResourceLocation("textures/map/map_background.png");
 	private final RenderBlocks renderBlocksInstance = new RenderBlocks();
 	private Icon field_94147_f;
 
@@ -35,7 +36,7 @@ public class RenderItemFrame extends Render {
 	 */
 	private void renderFrameItemAsBlock(EntityItemFrame par1EntityItemFrame) {
 		GL11.glPushMatrix();
-		this.renderManager.renderEngine.func_110577_a(TextureMap.field_110575_b);
+		this.renderManager.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 		GL11.glRotatef(par1EntityItemFrame.rotationYaw, 0.0F, 1.0F, 0.0F);
 		Block var2 = Block.planks;
 		float var3 = 0.0625F;
@@ -78,7 +79,7 @@ public class RenderItemFrame extends Render {
 			var3.getEntityItem().stackSize = 1;
 			var3.hoverStart = 0.0F;
 			// Spout Start
-			this.renderManager.renderEngine.func_110577_a(field_110789_a);
+			this.renderManager.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 			GL11.glPushMatrix();
 
 			if (var2.itemID == 318 && (MaterialData.getCustomBlock(var2.getItemDamage()) instanceof org.spoutcraft.api.material.Block)) {
@@ -112,7 +113,7 @@ public class RenderItemFrame extends Render {
 			}
 
 			if (var3.getEntityItem().getItem() == Item.map) {
-				this.renderManager.renderEngine.func_110577_a(field_110789_a);
+				this.renderManager.renderEngine.bindTexture(mapBackgroundTextures);
 				Tessellator var4 = Tessellator.instance;
 				GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
@@ -134,9 +135,9 @@ public class RenderItemFrame extends Render {
 				}
 			} else {
 				if (var3.getEntityItem().getItem() == Item.compass) {
-					TextureManager var11 = Minecraft.getMinecraft().func_110434_K();
-					var11.func_110577_a(TextureMap.field_110576_c);
-					TextureAtlasSprite var13 = ((TextureMap)var11.func_110581_b(TextureMap.field_110576_c)).func_110572_b(Item.compass.getIconIndex(var3.getEntityItem()).getIconName());
+					TextureManager var11 = Minecraft.getMinecraft().getTextureManager();
+					var11.bindTexture(TextureMap.locationItemsTexture);
+					TextureAtlasSprite var13 = ((TextureMap)var11.getTexture(TextureMap.locationItemsTexture)).getAtlasSprite(Item.compass.getIconIndex(var3.getEntityItem()).getIconName());
 
 					if (var13 instanceof TextureCompass) {
 						TextureCompass var14 = (TextureCompass)var13;
@@ -155,9 +156,9 @@ public class RenderItemFrame extends Render {
 				RenderItem.renderInFrame = false;
 
 				if (var3.getEntityItem().getItem() == Item.compass) {
-					TextureAtlasSprite var12 = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(TextureMap.field_110576_c)).func_110572_b(Item.compass.getIconIndex(var3.getEntityItem()).getIconName());
+					TextureAtlasSprite var12 = ((TextureMap)Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationItemsTexture)).getAtlasSprite(Item.compass.getIconIndex(var3.getEntityItem()).getIconName());
 
-					if (var12.func_110970_k() > 0) {
+					if (var12.getFrameCount() > 0) {
 						var12.updateAnimation();
 					}
 				}
@@ -167,7 +168,10 @@ public class RenderItemFrame extends Render {
 		}
 	}
 
-	protected ResourceLocation func_110775_a(Entity par1Entity) {
+	/**
+	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+	 */
+	protected ResourceLocation getEntityTexture(Entity par1Entity) {
 		return this.func_110788_a((EntityItemFrame)par1Entity);
 	}
 	

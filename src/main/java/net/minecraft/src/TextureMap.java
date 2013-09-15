@@ -1,5 +1,10 @@
 package net.minecraft.src;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.prupe.mcpatcher.TileLoader;
+import com.prupe.mcpatcher.hd.BorderedTexture;
+import com.prupe.mcpatcher.hd.MipmapHelper;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,19 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import com.prupe.mcpatcher.TileLoader;
-import com.prupe.mcpatcher.hd.BorderedTexture;
-import com.prupe.mcpatcher.hd.MipmapHelper;
-
 public class TextureMap extends AbstractTexture implements TickableTextureObject, IconRegister {
-	public static final ResourceLocation field_110575_b = new ResourceLocation("textures/atlas/blocks.png");
-	public static final ResourceLocation field_110576_c = new ResourceLocation("textures/atlas/items.png");
-	private final List listTextureStiched = Lists.newArrayList();
-	private final Map field_110574_e = Maps.newHashMap();
-	private final Map mapTexturesStiched = Maps.newHashMap();
+	public static final ResourceLocation locationBlocksTexture = new ResourceLocation("textures/atlas/blocks.png");
+	public static final ResourceLocation locationItemsTexture = new ResourceLocation("textures/atlas/items.png");
+	private final List listAnimatedSprites = Lists.newArrayList();
+	private final Map mapRegisteredSprites = Maps.newHashMap();
+	private final Map mapUploadedSprites = Maps.newHashMap();
 
 	/** 0 = terrain.png, 1 = items.png */
 	private final int textureType;
@@ -29,37 +27,37 @@ public class TextureMap extends AbstractTexture implements TickableTextureObject
 	public TextureMap(int par1, String par2Str) {
 		this.textureType = par1;
 		this.basePath = par2Str;
-		this.func_110573_f();
+		this.registerIcons();
 	}
 
-	private void func_110569_e() {
-		this.missingImage.func_110968_a(Lists.newArrayList(new int[][] {TextureUtil.field_110999_b}));
-		this.missingImage.func_110966_b(16);
-		this.missingImage.func_110969_c(16);
+	private void initMissingImage() {
+		this.missingImage.setFramesTextureData(Lists.newArrayList(new int[][] {TextureUtil.missingTextureData}));
+		this.missingImage.setIconWidth(16);
+		this.missingImage.setIconHeight(16);
 	}
 
-	public void func_110551_a(ResourceManager par1ResourceManager) throws IOException {
-		this.func_110569_e();
-		this.func_110571_b(par1ResourceManager);
+	public void loadTexture(ResourceManager par1ResourceManager) throws IOException {
+		this.initMissingImage();
+		this.loadTextureAtlas(par1ResourceManager);
 	}
 
-	public void func_110571_b(ResourceManager par1ResourceManager) {
+	public void loadTextureAtlas(ResourceManager par1ResourceManager) {
 		int var2 = Minecraft.getGLMaximumTextureSize();
 		Stitcher var3 = new Stitcher(var2, var2, true);
-		this.mapTexturesStiched.clear();
-		this.listTextureStiched.clear();
-		this.func_110573_f();
-		TileLoader.registerIcons(this, this.basePath, this.field_110574_e);
-		Iterator var4 = this.field_110574_e.entrySet().iterator();
+		this.mapUploadedSprites.clear();
+		this.listAnimatedSprites.clear();
+		this.registerIcons();
+		TileLoader.registerIcons(this, this.basePath, this.mapRegisteredSprites);
+		Iterator var4 = this.mapRegisteredSprites.entrySet().iterator();
 
 		while (var4.hasNext()) {
 			Entry var5 = (Entry)var4.next();
 			ResourceLocation var6 = new ResourceLocation((String)var5.getKey());
 			TextureAtlasSprite var7 = (TextureAtlasSprite)var5.getValue();
-			ResourceLocation var8 = new ResourceLocation(var6.func_110624_b(), TileLoader.getOverridePath(this.basePath, var6.func_110623_a(), ".png"));
+			ResourceLocation var8 = new ResourceLocation(var6.getResourceDomain(), TileLoader.getOverridePath(this.basePath, var6.getResourcePath(), ".png"));
 
 			try {
-				var7.func_130100_a(par1ResourceManager.func_110536_a(var8));
+				var7.loadSprite(par1ResourceManager.getResource(var8));
 			} catch (RuntimeException var13) {
 				Minecraft.getMinecraft().getLogAgent().logSevere(String.format("Unable to parse animation metadata from %s: %s", new Object[] {var8, var13.getMessage()}));
 				continue;
@@ -68,10 +66,10 @@ public class TextureMap extends AbstractTexture implements TickableTextureObject
 				continue;
 			}
 
-			var3.func_110934_a(var7);
+			var3.addSprite(var7);
 		}
 
-		var3.func_110934_a(this.missingImage);
+		var3.addSprite(this.missingImage);
 
 		try {
 			var3.doStitch();
@@ -79,8 +77,8 @@ public class TextureMap extends AbstractTexture implements TickableTextureObject
 			throw var12;
 		}
 
-		MipmapHelper.setupTexture(this.func_110552_b(), var3.func_110935_a(), var3.func_110936_b(), this.basePath);
-		HashMap var15 = Maps.newHashMap(this.field_110574_e);
+		MipmapHelper.setupTexture(this.getGlTextureId(), var3.getCurrentWidth(), var3.getCurrentHeight(), this.basePath);
+		HashMap var15 = Maps.newHashMap(this.mapRegisteredSprites);
 		Iterator var16 = var3.getStichSlots().iterator();
 		TextureAtlasSprite var17;
 
@@ -88,14 +86,14 @@ public class TextureMap extends AbstractTexture implements TickableTextureObject
 			var17 = (TextureAtlasSprite)var16.next();
 			String var18 = var17.getIconName();
 			var15.remove(var18);
-			this.mapTexturesStiched.put(var18, var17);
+			this.mapUploadedSprites.put(var18, var17);
 
 			try {
-				int[] var10000 = var17.func_110965_a(0);
-				int var10001 = var17.getOriginX();
-				int var10002 = var17.getOriginY();
-				int var10003 = var17.func_130010_a();
-				int var10004 = var17.func_110967_i();
+				int[] var10000 = var17.getFrameTextureData(0);
+				int var10001 = var17.getIconWidth();
+				int var10002 = var17.getIconHeight();
+				int var10003 = var17.getOriginX();
+				int var10004 = var17.getOriginY();
 				boolean var10005 = false;
 				boolean var10006 = false;
 				MipmapHelper.copySubTexture(var10000, var10001, var10002, var10003, var10004, this.basePath);
@@ -107,10 +105,10 @@ public class TextureMap extends AbstractTexture implements TickableTextureObject
 				throw new ReportedException(var9);
 			}
 
-			if (var17.func_130098_m()) {
-				this.listTextureStiched.add(var17);
+			if (var17.hasAnimationMetadata()) {
+				this.listAnimatedSprites.add(var17);
 			} else {
-				var17.func_130103_l();
+				var17.clearFramesTextureData();
 			}
 		}
 
@@ -122,8 +120,8 @@ public class TextureMap extends AbstractTexture implements TickableTextureObject
 		}
 	}
 
-	private void func_110573_f() {
-		this.field_110574_e.clear();
+	private void registerIcons() {
+		this.mapRegisteredSprites.clear();
 		int var2;
 		int var3;
 
@@ -155,8 +153,8 @@ public class TextureMap extends AbstractTexture implements TickableTextureObject
 		}
 	}
 
-	public TextureAtlasSprite func_110572_b(String par1Str) {
-		TextureAtlasSprite var2 = (TextureAtlasSprite)this.mapTexturesStiched.get(par1Str);
+	public TextureAtlasSprite getAtlasSprite(String par1Str) {
+		TextureAtlasSprite var2 = (TextureAtlasSprite)this.mapUploadedSprites.get(par1Str);
 
 		if (var2 == null) {
 			var2 = this.missingImage;
@@ -166,8 +164,8 @@ public class TextureMap extends AbstractTexture implements TickableTextureObject
 	}
 
 	public void updateAnimations() {
-		TextureUtil.bindTexture(this.func_110552_b());
-		Iterator var1 = this.listTextureStiched.iterator();
+		TextureUtil.bindTexture(this.getGlTextureId());
+		Iterator var1 = this.listAnimatedSprites.iterator();
 
 		while (var1.hasNext()) {
 			TextureAtlasSprite var2 = (TextureAtlasSprite)var1.next();
@@ -180,7 +178,7 @@ public class TextureMap extends AbstractTexture implements TickableTextureObject
 			(new RuntimeException("Don\'t register null!")).printStackTrace();
 		}
 
-		Object var2 = (TextureAtlasSprite)this.field_110574_e.get(par1Str);
+		Object var2 = (TextureAtlasSprite)this.mapRegisteredSprites.get(par1Str);
 
 		if (var2 == null) {
 			if (this.textureType == 1) {
@@ -195,17 +193,17 @@ public class TextureMap extends AbstractTexture implements TickableTextureObject
 				var2 = BorderedTexture.create(this.basePath, par1Str);
 			}
 
-			this.field_110574_e.put(par1Str, var2);
+			this.mapRegisteredSprites.put(par1Str, var2);
 		}
 
 		return (Icon)var2;
 	}
 
-	public int func_130086_a() {
+	public int getTextureType() {
 		return this.textureType;
 	}
 
-	public void func_110550_d() {
+	public void tick() {
 		this.updateAnimations();
 	}
 }

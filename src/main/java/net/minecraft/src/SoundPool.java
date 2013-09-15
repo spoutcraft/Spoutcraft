@@ -19,13 +19,13 @@ public class SoundPool {
 	 * Maps a name (can be sound/newsound/streaming/music/newmusic) to a list of SoundPoolEntry's.
 	 */
 	private final Map nameToSoundPoolEntriesMapping = Maps.newHashMap();
-	private final ResourceManager field_110657_c;
-	private final String field_110656_d;
+	private final ResourceManager soundResourceManager;
+	private final String soundType;
 	private final boolean isGetRandomSound;
 
 	public SoundPool(ResourceManager par1ResourceManager, String par2Str, boolean par3) {
-		this.field_110657_c = par1ResourceManager;
-		this.field_110656_d = par2Str;
+		this.soundResourceManager = par1ResourceManager;
+		this.soundType = par2Str;
 		this.isGetRandomSound = par3;
 	}
 
@@ -60,7 +60,7 @@ public class SoundPool {
 
 	private URL func_110654_c(String par1Str) throws MalformedURLException {
 		ResourceLocation var2 = new ResourceLocation(par1Str);
-		String var3 = String.format("%s:%s:%s/%s", new Object[] {"mcsounddomain", var2.func_110624_b(), this.field_110656_d, var2.func_110623_a()});
+		String var3 = String.format("%s:%s:%s/%s", new Object[] {"mcsounddomain", var2.getResourceDomain(), this.soundType, var2.getResourcePath()});
 		SoundPoolProtocolHandler var4 = new SoundPoolProtocolHandler(this);
 		return new URL((URL)null, var3, var4);
 	}
@@ -86,7 +86,7 @@ public class SoundPool {
 	}
 
 	static ResourceManager func_110655_a(SoundPool par0SoundPool) {
-		return par0SoundPool.field_110657_c;
+		return par0SoundPool.soundResourceManager;
 	}
 
 	// Spout Start

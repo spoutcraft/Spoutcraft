@@ -42,57 +42,57 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 			this.modelSign.signStick.showModel = false;
 		}
 
-		this.func_110628_a(field_110638_a);
+		this.bindTexture(field_110638_a);
 		GL11.glPushMatrix();
 		GL11.glScalef(var10, -var10, -var10);
 		this.modelSign.renderSign();
 		GL11.glPopMatrix();
 		// Spout Start
 		if (par1TileEntitySign.hasText()) {
-		EntityLiving viewer = Minecraft.theMinecraft.renderViewEntity;
-		if (viewer == null) {
-			viewer = Minecraft.theMinecraft.thePlayer;
-		}
-		if (Configuration.getSignDistance() == Integer.MAX_VALUE || viewer != null && par1TileEntitySign.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < (Configuration.getSignDistance() * Configuration.getSignDistance())) {
-		// Spout End
-		FontRenderer var17 = this.getFontRenderer();
-		var12 = 0.016666668F * var10;
-		GL11.glTranslatef(0.0F, 0.5F * var10, 0.07F * var10);
-		GL11.glScalef(var12, -var12, var12);
-		GL11.glNormal3f(0.0F, 0.0F, -1.0F * var12);
-		GL11.glDepthMask(false);
-		// Spout Start
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		byte var13 = 0;
-		// Spout End
-
-		for (int var14 = 0; var14 < par1TileEntitySign.signText.length; ++var14) {
-			String var15 = par1TileEntitySign.signText[var14];
-
-			if (var14 == par1TileEntitySign.lineBeingEdited) {
-				// Spout Start
-				int endColumnStart = Math.min(par1TileEntitySign.columnBeingEdited,  var15.length());
-				String before = "";
-				if (endColumnStart > 0) {
-					before = var15.substring(0, endColumnStart);
-				}
-				String after = "";
-				if (var15.length() - par1TileEntitySign.columnBeingEdited > 0) {
-					after = var15.substring(par1TileEntitySign.columnBeingEdited, var15.length());
-				}
-				var15 = before + "_" + after;
-				// Spout End
-				var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - par1TileEntitySign.signText.length * 5, var13);
-			} else {
-				var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - par1TileEntitySign.signText.length * 5, var13);
+			EntityLiving viewer = Minecraft.theMinecraft.renderViewEntity;
+			if (viewer == null) {
+				viewer = Minecraft.theMinecraft.thePlayer;
 			}
-		}
+			if (Configuration.getSignDistance() == Integer.MAX_VALUE || viewer != null && par1TileEntitySign.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < (Configuration.getSignDistance() * Configuration.getSignDistance())) {
+				// Spout End
+				FontRenderer var17 = this.getFontRenderer();
+				var12 = 0.016666668F * var10;
+				GL11.glTranslatef(0.0F, 0.5F * var10, 0.07F * var10);
+				GL11.glScalef(var12, -var12, var12);
+				GL11.glNormal3f(0.0F, 0.0F, -1.0F * var12);
+				GL11.glDepthMask(false);
+				// Spout Start
+				GL11.glEnable(GL11.GL_BLEND);
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				byte var13 = 0;
+				// Spout End
 
-		GL11.glDepthMask(true);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		// Spout Start
-		}
+				for (int var14 = 0; var14 < par1TileEntitySign.signText.length; ++var14) {
+					String var15 = par1TileEntitySign.signText[var14];
+
+					if (var14 == par1TileEntitySign.lineBeingEdited) {
+						// Spout Start
+						int endColumnStart = Math.min(par1TileEntitySign.columnBeingEdited,  var15.length());
+						String before = "";
+						if (endColumnStart > 0) {
+							before = var15.substring(0, endColumnStart);
+						}
+						String after = "";
+						if (var15.length() - par1TileEntitySign.columnBeingEdited > 0) {
+							after = var15.substring(par1TileEntitySign.columnBeingEdited, var15.length());
+						}
+						var15 = before + "_" + after;
+						// Spout End
+						var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - par1TileEntitySign.signText.length * 5, var13);
+					} else {
+						var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - par1TileEntitySign.signText.length * 5, var13);
+					}
+				}
+
+				GL11.glDepthMask(true);
+				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				// Spout Start
+			}
 		}
 		// Spout End
 		GL11.glPopMatrix();

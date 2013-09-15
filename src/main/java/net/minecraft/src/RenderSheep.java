@@ -6,8 +6,8 @@ import com.prupe.mcpatcher.mob.MobRandomizer;
 
 import org.spoutcraft.client.config.Configuration;
 public class RenderSheep extends RenderLiving {
-	private static final ResourceLocation field_110885_a = new ResourceLocation("textures/entity/sheep/sheep_fur.png");
-	private static final ResourceLocation field_110884_f = new ResourceLocation("textures/entity/sheep/sheep.png");
+	private static final ResourceLocation sheepTextures = new ResourceLocation("textures/entity/sheep/sheep_fur.png");
+	private static final ResourceLocation shearedSheepTextures = new ResourceLocation("textures/entity/sheep/sheep.png");
 	public RenderSheep(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3) {
 		super(par1ModelBase, par3);
 		this.setRenderPassModel(par2ModelBase);
@@ -17,7 +17,7 @@ public class RenderSheep extends RenderLiving {
 		if (par2 == 0 && !par1EntitySheep.getSheared()) {
 			// Spout Start
 			if (Configuration.isRandomMobTextures()) {
-				this.func_110776_a(MobRandomizer.randomTexture((EntityLivingBase)par1EntitySheep, field_110885_a));
+				this.bindTexture(MobRandomizer.randomTexture((EntityLivingBase)par1EntitySheep, sheepTextures));
 			} else {
 				//ToDo: Spoutcraft API borked
 				//loadTexture(par1EntitySheep.getCustomTexture(org.spoutcraft.api.entity.EntitySkinType.SHEEP_FUR, "/mob/sheep_fur.png"));
@@ -34,7 +34,7 @@ public class RenderSheep extends RenderLiving {
 	}
 	
 	protected ResourceLocation func_110883_a(EntitySheep par1EntitySheep) {
-		return field_110884_f;
+		return shearedSheepTextures;
 	}
 
 	/**
@@ -44,7 +44,10 @@ public class RenderSheep extends RenderLiving {
 		return this.setWoolColorAndRender((EntitySheep)par1EntityLivingBase, par2, par3);
 	}
 
-	protected ResourceLocation func_110775_a(Entity par1Entity) {
+	/**
+	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+	 */
+	protected ResourceLocation getEntityTexture(Entity par1Entity) {
 		return this.func_110883_a((EntitySheep)par1Entity);
 	}
 }

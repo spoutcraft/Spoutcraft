@@ -684,13 +684,13 @@ public class RenderBlocks {
 		this.renderFaceXNeg(par1BlockCauldron, (double)((float)par2 + 1.0F - var12), (double)par3, (double)par4, var16);
 		this.renderFaceZPos(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 - 1.0F + var12), var16);
 		this.renderFaceZNeg(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 + 1.0F - var12), var16);
-		Icon var17 = BlockCauldron.func_94375_b("inner");
+		Icon var17 = BlockCauldron.getCauldronIcon("inner");
 		this.renderFaceYPos(par1BlockCauldron, (double)par2, (double)((float)par3 - 1.0F + 0.25F), (double)par4, var17);
 		this.renderFaceYNeg(par1BlockCauldron, (double)par2, (double)((float)par3 + 1.0F - 0.75F), (double)par4, var17);
 		int var14 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 
 		if (var14 > 0) {
-			Icon var15 = BlockFluid.func_94424_b("water_still");
+			Icon var15 = BlockFluid.getFluidIcon("water_still");
 			ColorizeBlock.computeWaterColor();
 			var5.setColorOpaque_F(ColorizeBlock.waterColor[0], ColorizeBlock.waterColor[1], ColorizeBlock.waterColor[2]);
 
@@ -1278,7 +1278,7 @@ public class RenderBlocks {
 	 * Render piston rod up/down
 	 */
 	private void renderPistonRodUD(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14) {
-		Icon var16 = BlockPistonBase.func_94496_b("piston_side");
+		Icon var16 = BlockPistonBase.getPistonBaseIcon("piston_side");
 
 		if (this.hasOverrideBlockTexture()) {
 			var16 = this.overrideBlockTexture;
@@ -1300,7 +1300,7 @@ public class RenderBlocks {
 	 * Render piston rod south/north
 	 */
 	private void renderPistonRodSN(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14) {
-		Icon var16 = BlockPistonBase.func_94496_b("piston_side");
+		Icon var16 = BlockPistonBase.getPistonBaseIcon("piston_side");
 
 		if (this.hasOverrideBlockTexture()) {
 			var16 = this.overrideBlockTexture;
@@ -1322,7 +1322,7 @@ public class RenderBlocks {
 	 * Render piston rod east/west
 	 */
 	private void renderPistonRodEW(double par1, double par3, double par5, double par7, double par9, double par11, float par13, double par14) {
-		Icon var16 = BlockPistonBase.func_94496_b("piston_side");
+		Icon var16 = BlockPistonBase.getPistonBaseIcon("piston_side");
 
 		if (this.hasOverrideBlockTexture()) {
 			var16 = this.overrideBlockTexture;
@@ -2105,8 +2105,8 @@ public class RenderBlocks {
 	 */
 	public boolean renderBlockFire(BlockFire par1BlockFire, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
-		Icon var6 = par1BlockFire.func_94438_c(0);
-		Icon var7 = par1BlockFire.func_94438_c(1);
+		Icon var6 = par1BlockFire.getFireIcon(0);
+		Icon var7 = par1BlockFire.getFireIcon(1);
 		Icon var8 = var6;
 
 		if (this.hasOverrideBlockTexture()) {
@@ -2350,10 +2350,10 @@ public class RenderBlocks {
 	public boolean renderBlockRedstoneWire(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		int var6 = this.blockAccess.getBlockMetadata(par2, par3, par4);
-		Icon var7 = BlockRedstoneWire.func_94409_b("cross");
-		Icon var8 = BlockRedstoneWire.func_94409_b("line");
-		Icon var9 = BlockRedstoneWire.func_94409_b("cross_overlay");
-		Icon var10 = BlockRedstoneWire.func_94409_b("line_overlay");
+		Icon var7 = BlockRedstoneWire.getRedstoneWireIcon("cross");
+		Icon var8 = BlockRedstoneWire.getRedstoneWireIcon("line");
+		Icon var9 = BlockRedstoneWire.getRedstoneWireIcon("cross_overlay");
+		Icon var10 = BlockRedstoneWire.getRedstoneWireIcon("line_overlay");
 		var5.setBrightness(par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
 		float var11 = 1.0F;
 		float var13;
@@ -3469,7 +3469,7 @@ public class RenderBlocks {
 	 */
 	public void renderBlockStemBig(BlockStem par1BlockStem, int par2, int par3, double par4, double par6, double par8, double par10) {
 		Tessellator var12 = Tessellator.instance;
-		Icon var13 = par1BlockStem.func_94368_p();
+		Icon var13 = par1BlockStem.getStemIcon();
 
 		if (this.hasOverrideBlockTexture()) {
 			var13 = this.overrideBlockTexture;
@@ -3874,7 +3874,7 @@ public class RenderBlocks {
 		}
 
 		// Spout Start
-		return Configuration.ambientOcclusion && Block.lightValue[par1Block.blockID] == 0 ? this.renderStandardBlockWithAmbientOcclusion(par1Block, par2, par3, par4, var6, var7, var8) : this.renderStandardBlockWithColorMultiplier(par1Block, par2, par3, par4, var6, var7, var8);
+		return Configuration.ambientOcclusion && Block.lightValue[par1Block.blockID] == 0 ? (this.partialRenderBounds ? this.renderStandardBlockWithAmbientOcclusionPartial(par1Block, par2, par3, par4, var6, var7, var8) : this.renderStandardBlockWithAmbientOcclusion(par1Block, par2, par3, par4, var6, var7, var8)) : this.renderStandardBlockWithColorMultiplier(par1Block, par2, par3, par4, var6, var7, var8);		
 		// Spout End
 	}
 
@@ -4602,7 +4602,7 @@ public class RenderBlocks {
 	/**
 	 * Renders non-full-cube block with ambient occusion.  Args: block, x, y, z, red, green, blue (lighting)
 	 */
-	public boolean renderBlockWithAmbientOcclusion(Block par1Block, int par2, int par3, int par4, float par5, float par6, float par7) {
+	public boolean renderStandardBlockWithAmbientOcclusionPartial(Block par1Block, int par2, int par3, int par4, float par5, float par6, float par7) {
 		this.enableAO = true;
 		boolean var8 = false;
 		float var9 = 0.0F;
@@ -5485,7 +5485,7 @@ public class RenderBlocks {
 		int var6 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 		int var7 = BlockDirectional.getDirection(var6);
 		int var8 = BlockCocoa.func_72219_c(var6);
-		Icon var9 = par1BlockCocoa.func_94468_i_(var8);
+		Icon var9 = par1BlockCocoa.getCocoaIcon(var8);
 		int var10 = 4 + var8 * 2;
 		int var11 = 5 + var8 * 2;
 		double var12 = 15.0D - (double)var10;
@@ -7477,7 +7477,7 @@ public class RenderBlocks {
 
 	public Icon getIconSafe(Icon par1Icon) {
 		if (par1Icon == null) {
-			par1Icon = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(TextureMap.field_110575_b)).func_110572_b("missingno");
+			par1Icon = ((TextureMap)Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
 		}
 
 		return (Icon)par1Icon;

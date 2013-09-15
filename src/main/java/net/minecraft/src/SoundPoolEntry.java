@@ -13,11 +13,11 @@ public class SoundPoolEntry {
 		this.soundUrl = par2URL;
 	}
 
-	public String func_110458_a() {
+	public String getSoundName() {
 		return this.soundName;
 	}
 
-	public URL func_110457_b() {
+	public URL getSoundUrl() {
 		return this.soundUrl;
 	}
 }

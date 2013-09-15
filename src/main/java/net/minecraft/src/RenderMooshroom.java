@@ -9,7 +9,7 @@ import com.prupe.mcpatcher.mob.MobOverlay;
 // MCPatcher End
 
 public class RenderMooshroom extends RenderLiving {
-	private static final ResourceLocation field_110880_a = new ResourceLocation("textures/entity/cow/mooshroom.png");
+	private static final ResourceLocation mooshroomTextures = new ResourceLocation("textures/entity/cow/mooshroom.png");
 	public RenderMooshroom(ModelBase par1ModelBase, float par2) {
 		super(par1ModelBase, par2);
 	}
@@ -18,8 +18,8 @@ public class RenderMooshroom extends RenderLiving {
 		super.doRenderLiving(par1EntityMooshroom, par2, par4, par6, par8, par9);
 	}
 
-	protected ResourceLocation func_110879_a(EntityMooshroom par1EntityMooshroom) {
-		return field_110880_a;
+	protected ResourceLocation getMooshroomTextures(EntityMooshroom par1EntityMooshroom) {
+		return mooshroomTextures;
 	}
 	
 	protected void renderMooshroomEquippedItems(EntityMooshroom par1EntityMooshroom, float par2) {
@@ -29,7 +29,7 @@ public class RenderMooshroom extends RenderLiving {
 		if (par1EntityMooshroom.isChild()) {
 			MobOverlay.finishMooshroom();
 		} else {
-			this.func_110776_a(MobOverlay.setupMooshroom(par1EntityMooshroom, TextureMap.field_110575_b));
+			this.bindTexture(MobOverlay.setupMooshroom(par1EntityMooshroom, TextureMap.locationBlocksTexture));
 		// MCPatcher End
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glPushMatrix();
@@ -79,8 +79,11 @@ public class RenderMooshroom extends RenderLiving {
 		this.renderLivingMooshroom((EntityMooshroom)par1EntityLivingBase, par2, par4, par6, par8, par9);
 	}
 
-	protected ResourceLocation func_110775_a(Entity par1Entity) {
-		return this.func_110879_a((EntityMooshroom)par1Entity);
+	/**
+	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+	 */
+	protected ResourceLocation getEntityTexture(Entity par1Entity) {
+		return this.getMooshroomTextures((EntityMooshroom)par1Entity);
 	}
 
 	/**

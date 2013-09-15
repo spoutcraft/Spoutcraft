@@ -6,7 +6,8 @@ import org.lwjgl.opengl.GL12;
 import com.prupe.mcpatcher.cc.ColorizeEntity;
 
 public class RenderXPOrb extends Render {
-	private static final ResourceLocation field_110785_a = new ResourceLocation("textures/entity/experience_orb.png");
+	private static final ResourceLocation experienceOrbTextures = new ResourceLocation("textures/entity/experience_orb.png");
+
 	public RenderXPOrb() {
 		this.shadowSize = 0.15F;
 		this.shadowOpaque = 0.75F;
@@ -18,7 +19,7 @@ public class RenderXPOrb extends Render {
 	public void renderTheXPOrb(EntityXPOrb par1EntityXPOrb, double par2, double par4, double par6, float par8, float par9) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)par2, (float)par4, (float)par6);
-		this.func_110777_b(par1EntityXPOrb);
+		this.bindEntityTexture(par1EntityXPOrb);
 		int var10 = par1EntityXPOrb.getTextureByXP();
 		float var11 = (float)(var10 % 4 * 16 + 0) / 64.0F;
 		float var12 = (float)(var10 % 4 * 16 + 16) / 64.0F;
@@ -56,12 +57,15 @@ public class RenderXPOrb extends Render {
 		GL11.glPopMatrix();
 	}
 
-	protected ResourceLocation func_110784_a(EntityXPOrb par1EntityXPOrb) {
-		return field_110785_a;
+	protected ResourceLocation getExperienceOrbTextures(EntityXPOrb par1EntityXPOrb) {
+		return experienceOrbTextures;
 	}
 
-	protected ResourceLocation func_110775_a(Entity par1Entity) {
-		return this.func_110784_a((EntityXPOrb)par1Entity);
+	/**
+	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+	 */
+	protected ResourceLocation getEntityTexture(Entity par1Entity) {
+		return this.getExperienceOrbTextures((EntityXPOrb)par1Entity);
 	}
 
 	/**

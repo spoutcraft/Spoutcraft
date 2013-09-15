@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.prupe.mcpatcher.mob.MobRandomizer;
 
 public abstract class Render {
-	private static final ResourceLocation field_110778_a = new ResourceLocation("textures/misc/shadow.png");
+	private static final ResourceLocation shadowTextures = new ResourceLocation("textures/misc/shadow.png");
 	protected RenderManager renderManager;
 	protected RenderBlocks renderBlocks = new RenderBlocks();
 	protected float shadowSize;
@@ -23,24 +23,28 @@ public abstract class Render {
 	 */
 	public abstract void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9);
 
-	protected abstract ResourceLocation func_110775_a(Entity var1);
+	/**
+	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+	 */
+	protected abstract ResourceLocation getEntityTexture(Entity var1);
 
-	protected void func_110777_b(Entity par1Entity) {
-		this.func_110776_a(MobRandomizer.randomTexture(par1Entity, this.func_110775_a(par1Entity)));
+	protected void bindEntityTexture(Entity par1Entity) {
+		this.bindTexture(MobRandomizer.randomTexture(par1Entity, this.getEntityTexture(par1Entity)));
 	}
 
-	//ToDo: this probably needs to be public
-	protected void func_110776_a(ResourceLocation par1ResourceLocation) {
-		this.renderManager.renderEngine.func_110577_a(par1ResourceLocation); //Previously Public for getting images.
+	// Spout Start Protected -> Public
+	public void bindTexture(ResourceLocation par1ResourceLocation) {
+		this.renderManager.renderEngine.bindTexture(par1ResourceLocation);
 	}
+	// Spout End
 
 	/**
 	 * Renders fire on top of the entity. Args: entity, x, y, z, partialTickTime
 	 */
 	private void renderEntityOnFire(Entity par1Entity, double par2, double par4, double par6, float par8) {
 		GL11.glDisable(GL11.GL_LIGHTING);
-		Icon var9 = Block.fire.func_94438_c(0);
-		Icon var10 = Block.fire.func_94438_c(1);
+		Icon var9 = Block.fire.getFireIcon(0);
+		Icon var10 = Block.fire.getFireIcon(1);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)par2, (float)par4, (float)par6);
 		float var11 = par1Entity.width * 1.4F;
@@ -59,7 +63,7 @@ public abstract class Render {
 
 		while (var15 > 0.0F) {
 			Icon var19 = var18 % 2 == 0 ? var9 : var10;
-			this.func_110776_a(TextureMap.field_110575_b);
+			this.bindTexture(TextureMap.locationBlocksTexture);
 			float var20 = var19.getMinU();
 			float var21 = var19.getMinV();
 			float var22 = var19.getMaxU();
@@ -94,7 +98,7 @@ public abstract class Render {
 	private void renderShadow(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		this.renderManager.renderEngine.func_110577_a(field_110778_a);
+		this.renderManager.renderEngine.bindTexture(shadowTextures);
 		World var10 = this.getWorldFromRenderManager();
 		GL11.glDepthMask(false);
 		float var11 = this.shadowSize;

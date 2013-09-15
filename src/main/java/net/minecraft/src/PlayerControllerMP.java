@@ -334,7 +334,7 @@ public class PlayerControllerMP {
 	}
 
 	public EntityClientPlayerMP func_78754_a(World par1World) {
-		return new EntityClientPlayerMP(this.mc, par1World, this.mc.func_110432_I(), this.netClientHandler);
+		return new EntityClientPlayerMP(this.mc, par1World, this.mc.getSession(), this.netClientHandler);
 	}
 
 	/**

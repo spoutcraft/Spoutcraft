@@ -12,7 +12,7 @@ public class TextureClock extends TextureAtlasSprite {
 	}
 
 	public void updateAnimation() {
-		if (!this.field_110976_a.isEmpty()) {
+		if (!this.framesTextureData.isEmpty()) {
 			Minecraft var1 = Minecraft.getMinecraft();
 			double var2 = 0.0D;
 
@@ -50,13 +50,13 @@ public class TextureClock extends TextureAtlasSprite {
 			if (!FancyDial.update(this)) {
 				int var6;
 
-				for (var6 = (int)((this.field_94239_h + 1.0D) * (double)this.field_110976_a.size()) % this.field_110976_a.size(); var6 < 0; var6 = (var6 + this.field_110976_a.size()) % this.field_110976_a.size()) {
+				for (var6 = (int)((this.field_94239_h + 1.0D) * (double)this.framesTextureData.size()) % this.framesTextureData.size(); var6 < 0; var6 = (var6 + this.framesTextureData.size()) % this.framesTextureData.size()) {
 					;
 				}
 
-				if (var6 != this.field_110973_g) {
-					this.field_110973_g = var6;
-					TextureUtil.func_110998_a((int[])this.field_110976_a.get(this.field_110973_g), this.field_130223_c, this.field_130224_d, this.field_110975_c, this.field_110974_d, false, false);
+				if (var6 != this.frameCounter) {
+					this.frameCounter = var6;
+					TextureUtil.uploadTextureSub((int[])this.framesTextureData.get(this.frameCounter), this.width, this.height, this.originX, this.originY, false, false);
 				}
 			}
 		}

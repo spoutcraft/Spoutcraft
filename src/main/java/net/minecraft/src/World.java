@@ -652,7 +652,7 @@ public abstract class World implements IBlockAccess {
 					}
 
 					var9.addCrashSectionCallable("Source block type", new CallableLvl1(this, par4));
-					CrashReportCategory.func_85068_a(var9, par1, par2, par3, var5, var10);
+					CrashReportCategory.addBlockCrashInfo(var9, par1, par2, par3, var5, var10);
 					throw new ReportedException(var8);
 				}
 			}
@@ -1181,7 +1181,7 @@ public abstract class World implements IBlockAccess {
 	public boolean spawnEntityInWorld(Entity par1Entity) {
 		int var2 = MathHelper.floor_double(par1Entity.posX / 16.0D);
 		int var3 = MathHelper.floor_double(par1Entity.posZ / 16.0D);
-		boolean var4 = par1Entity.field_98038_p;
+		boolean var4 = par1Entity.forceSpawn;
 
 		if (par1Entity instanceof EntityPlayer) {
 			var4 = true;
@@ -1481,8 +1481,11 @@ public abstract class World implements IBlockAccess {
 		return this.provider.getMoonPhase(this.worldInfo.getWorldTime());
 	}
 	
-	public float func_130001_d() {
-		return WorldProvider.field_111203_a[this.provider.getMoonPhase(this.worldInfo.getWorldTime())];
+	/**
+	 * gets the current fullness of the moon expressed as a float between 1.0 and 0.0, in steps of .25
+	 */
+	public float getCurrentMoonPhaseFactor() {
+		return WorldProvider.moonPhaseFactors[this.provider.getMoonPhase(this.worldInfo.getWorldTime())];
 	}
 
 	/**
@@ -1624,7 +1627,7 @@ public abstract class World implements IBlockAccess {
 				if (var2 == null) {
 					var5.addCrashSection("Entity", "~~NULL~~");
 				} else {
-					var2.func_85029_a(var5);
+					var2.addEntityCrashInfo(var5);
 				}
 
 				throw new ReportedException(var4);
@@ -1677,7 +1680,7 @@ public abstract class World implements IBlockAccess {
 				} catch (Throwable var7) {
 					var4 = CrashReport.makeCrashReport(var7, "Ticking entity");
 					var5 = var4.makeCategory("Entity being ticked");
-					var2.func_85029_a(var5);
+					var2.addEntityCrashInfo(var5);
 					throw new ReportedException(var4);
 				}
 			}
@@ -2023,7 +2026,7 @@ public abstract class World implements IBlockAccess {
 				}
 			}
 
-			if (var11.lengthVector() > 0.0D && par3Entity.func_96092_aw()) {
+			if (var11.lengthVector() > 0.0D && par3Entity.isPushedByWater()) {
 				var11 = var11.normalize();
 				double var18 = 0.014D;
 				par3Entity.motionX += var11.xCoord * var18;
@@ -3078,9 +3081,10 @@ public abstract class World implements IBlockAccess {
 	}
 
 	/**
-	 * marks the chunk that contains this tilentity as modified and then calls worldAccesses.doNothingWithTileEntity
+	 * Args: X, Y, Z, tile entity Marks the chunk the tile entity is in as modified. This is essential as chunks that are
+	 * not marked as modified may be rolled back when exiting the game.
 	 */
-	public void updateTileEntityChunkAndDoNothing(int par1, int par2, int par3, TileEntity par4TileEntity) {
+	public void markTileEntityChunkModified(int par1, int par2, int par3, TileEntity par4TileEntity) {
 		if (this.blockExists(par1, par2, par3)) {
 			this.getChunkFromBlockCoords(par1, par3).setChunkModified();
 		}
@@ -3095,7 +3099,7 @@ public abstract class World implements IBlockAccess {
 		for (int var3 = 0; var3 < this.loadedEntityList.size(); ++var3) {
 			Entity var4 = (Entity)this.loadedEntityList.get(var3);
 
-			if ((!(var4 instanceof EntityLiving) || !((EntityLiving)var4).func_104002_bU()) && par1Class.isAssignableFrom(var4.getClass())) {
+			if ((!(var4 instanceof EntityLiving) || !((EntityLiving)var4).isNoDespawnRequired()) && par1Class.isAssignableFrom(var4.getClass())) {
 				++var2;
 			}
 		}
@@ -3329,7 +3333,7 @@ public abstract class World implements IBlockAccess {
 				}
 
 				if (var13.isInvisible()) {
-					float var18 = var13.func_82243_bO();
+					float var18 = var13.getArmorVisibility();
 
 					if (var18 < 0.1F) {
 						var18 = 0.1F;
@@ -3605,7 +3609,7 @@ public abstract class World implements IBlockAccess {
 		return this.provider.hasNoSky ? 128 : 256;
 	}
 
-	public IUpdatePlayerListBox func_82735_a(EntityMinecart par1EntityMinecart) {
+	public IUpdatePlayerListBox getMinecartSoundUpdater(EntityMinecart par1EntityMinecart) {
 		return null;
 	}
 
@@ -3680,7 +3684,7 @@ public abstract class World implements IBlockAccess {
 	 */
 	public Calendar getCurrentDate() {
 		if (this.getTotalWorldTime() % 600L == 0L) {
-			this.theCalendar.setTimeInMillis(MinecraftServer.func_130071_aq());
+			this.theCalendar.setTimeInMillis(MinecraftServer.getSystemTimeMillis());
 		}
 
 		return this.theCalendar;
@@ -3721,11 +3725,21 @@ public abstract class World implements IBlockAccess {
 		return this.worldLogAgent;
 	}
 
-	public float func_110746_b(double par1, double par3, double par5) {
-		return this.func_110750_I(MathHelper.floor_double(par1), MathHelper.floor_double(par3), MathHelper.floor_double(par5));
+	/**
+	 * returns a float value that can be used to determine how likely something is to go awry in the area. It increases
+	 * based on how long the player is within the vicinity, the lunar phase, and game difficulty. The value can be up to
+	 * 1.5 on the highest difficulty, 1.0 otherwise.
+	 */
+	public float getLocationTensionFactor(double par1, double par3, double par5) {
+		return this.getTensionFactorForBlock(MathHelper.floor_double(par1), MathHelper.floor_double(par3), MathHelper.floor_double(par5));
 	}
 
-	public float func_110750_I(int par1, int par2, int par3) {
+	/**
+	 * returns a float value that can be used to determine how likely something is to go awry in the area. It increases
+	 * based on how long the player is within the vicinity, the lunar phase, and game difficulty. The value can be up to
+	 * 1.5 on the highest difficulty, 1.0 otherwise.
+	 */
+	public float getTensionFactorForBlock(int par1, int par2, int par3) {
 		float var4 = 0.0F;
 		boolean var5 = this.difficultySetting == 3;
 

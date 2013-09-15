@@ -17,9 +17,9 @@ import org.spoutcraft.client.io.CustomTextureManager;
 //Spout End
 
 public class ItemRenderer {
-	private static final ResourceLocation field_110930_b = new ResourceLocation("textures/misc/enchanted_item_glint.png");
-	private static final ResourceLocation field_110931_c = new ResourceLocation("textures/map/map_background.png");
-	private static final ResourceLocation field_110929_d = new ResourceLocation("textures/misc/underwater.png");
+	private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+	private static final ResourceLocation RES_MAP_BACKGROUND = new ResourceLocation("textures/map/map_background.png");
+	private static final ResourceLocation RES_UNDERWATER_OVERLAY = new ResourceLocation("textures/misc/underwater.png");
 
 	/** A reference to the Minecraft object. */
 	private Minecraft mc;
@@ -43,7 +43,7 @@ public class ItemRenderer {
 
 	public ItemRenderer(Minecraft par1Minecraft) {
 		this.mc = par1Minecraft;
-		this.mapItemRenderer = new MapItemRenderer(par1Minecraft.gameSettings, par1Minecraft.func_110434_K());
+		this.mapItemRenderer = new MapItemRenderer(par1Minecraft.gameSettings, par1Minecraft.getTextureManager());
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class ItemRenderer {
 	 */
 	public void renderItem(EntityLivingBase par1EntityLivingBase, ItemStack par2ItemStack, int par3) {
 		GL11.glPushMatrix();
-		TextureManager var99 = this.mc.func_110434_K();
+		TextureManager var99 = this.mc.getTextureManager();
 		//ToDo: var99 may need additional updates.
 		// Spout Start
 		Block var4block = Block.blocksList[par2ItemStack.itemID];
@@ -78,11 +78,9 @@ public class ItemRenderer {
 
 		if (!custom) {
 			if (par2ItemStack.itemID < 256) {
-				var99.func_110577_a(var99.func_130087_a(0));
-				//this.mc.renderEngine.bindTexture("/terrain.png");
+				this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 			} else {
-				var99.func_110577_a(var99.func_130087_a(par2ItemStack.getItemSpriteNumber()));
-				//this.mc.renderEngine.bindTexture("/gui/items.png");
+				this.mc.getTextureManager().bindTexture(TextureMap.locationItemsTexture);
 			}
 		}
 
@@ -113,6 +111,8 @@ public class ItemRenderer {
 				var9 = 0;
 			}
 			// Spout end
+			//ToDo: may need this
+			//var99.bindTexture(var4.getResourceLocation(par2ItemStack.getItemSpriteNumber()));
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glTranslatef(-var10, -var11, 0.0F);
 			float var12 = 1.5F;
@@ -125,12 +125,12 @@ public class ItemRenderer {
 				ColorizeBlock.colorizeWaterBlockGL(par2ItemStack.itemID);
 			}
 
-			renderItemIn2D(var5, var7, var8, var6, var9, var4.getSheetWidth(), var4.getSheetHeight(), 0.0625F);
+			renderItemIn2D(var5, var7, var8, var6, var9, var4.getIconWidth(), var4.getIconHeight(), 0.0625F);
 			
 			if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0) {
 				GL11.glDepthFunc(GL11.GL_EQUAL);
 				GL11.glDisable(GL11.GL_LIGHTING);
-				var99.func_110577_a(field_110930_b);
+				var99.bindTexture(RES_ITEM_GLINT);
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
 				float var13 = 0.76F;
@@ -311,7 +311,7 @@ public class ItemRenderer {
 			GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(var20 * -85.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-			this.mc.func_110434_K().func_110577_a(var3.func_110306_p());
+			this.mc.getTextureManager().bindTexture(var3.getLocationSkin());
 
 			for (var12 = 0; var12 < 2; ++var12) {
 				int var24 = var12 * 2 - 1;
@@ -342,7 +342,7 @@ public class ItemRenderer {
 			GL11.glTranslatef(-1.0F, -1.0F, 0.0F);
 			var16 = 0.015625F;
 			GL11.glScalef(var16, var16, var16);
-			this.mc.func_110434_K().func_110577_a(field_110931_c);
+			this.mc.getTextureManager().bindTexture(RES_MAP_BACKGROUND);
 			Tessellator var30 = Tessellator.instance;
 			GL11.glNormal3f(0.0F, 0.0F, -1.0F);
 			var30.startDrawingQuads();
@@ -355,7 +355,7 @@ public class ItemRenderer {
 			MapData var19 = Item.map.getMapData(var8, this.mc.theWorld);
 
 			if (var19 != null) {
-				this.mapItemRenderer.renderMap(this.mc.thePlayer, this.mc.func_110434_K(), var19);
+				this.mapItemRenderer.renderMap(this.mc.thePlayer, this.mc.getTextureManager(), var19);
 			}
 
 			GL11.glPopMatrix();
@@ -470,7 +470,7 @@ public class ItemRenderer {
 			var13 = MathHelper.sin(MathHelper.sqrt_float(var20) * (float)Math.PI);
 			GL11.glRotatef(var13 * 70.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(-var22 * 20.0F, 0.0F, 0.0F, 1.0F);
-			this.mc.func_110434_K().func_110577_a(var3.func_110306_p());
+			this.mc.getTextureManager().bindTexture(var3.getLocationSkin());
 			GL11.glTranslatef(-1.0F, 3.6F, 3.5F);
 			GL11.glRotatef(120.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glRotatef(200.0F, 1.0F, 0.0F, 0.0F);
@@ -538,7 +538,7 @@ public class ItemRenderer {
 	 * Renders the texture of the block the player is inside as an overlay. Args: partialTickTime, blockTextureIndex
 	 */
 	private void renderInsideOfBlock(float par1, Icon par2Icon) {
-		this.mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+		this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 		Tessellator var3 = Tessellator.instance;
 		float var4 = 0.1F;
 		GL11.glColor4f(var4, var4, var4, 0.5F);
@@ -567,7 +567,7 @@ public class ItemRenderer {
 	 * being called. Used for the water overlay. Args: parialTickTime
 	 */
 	private void renderWarpedTextureOverlay(float par1) {
-		this.mc.func_110434_K().func_110577_a(field_110929_d);
+		this.mc.getTextureManager().bindTexture(RES_UNDERWATER_OVERLAY);
 		Tessellator var2 = Tessellator.instance;
 		float var3 = this.mc.thePlayer.getBrightness(par1);
 		GL11.glColor4f(var3, var3, var3, 0.5F);
@@ -605,8 +605,8 @@ public class ItemRenderer {
 
 		for (int var4 = 0; var4 < 2; ++var4) {
 			GL11.glPushMatrix();
-			Icon var5 = Block.fire.func_94438_c(1);
-			this.mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+			Icon var5 = Block.fire.getFireIcon(1);
+			this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 			float var6 = var5.getMinU();
 			float var7 = var5.getMaxU();
 			float var8 = var5.getMinV();
