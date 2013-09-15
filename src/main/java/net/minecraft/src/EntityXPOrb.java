@@ -189,7 +189,7 @@ public class EntityXPOrb extends Entity {
 	/**
 	 * Called when the entity is attacked.
 	 */
-	public boolean attackEntityFrom(DamageSource par1DamageSource, (float)par2) {
+	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
 		if (this.isEntityInvulnerable()) {
 			return false;
 		} else {

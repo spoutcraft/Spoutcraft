@@ -109,7 +109,7 @@ public class GuiEditSign extends GuiScreen {
 			editColumn = entitySign.signText[editLine].length();
 		}
 
-		iif (par2 == 208 || par2 == 28 || par2 == 156) { // Down
+		if (par2 == 208 || par2 == 28 || par2 == 156) { // Down
 			this.editLine = this.editLine + 1 & 3;
 			editColumn = entitySign.signText[editLine].length();
 		}

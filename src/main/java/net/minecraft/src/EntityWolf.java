@@ -105,9 +105,9 @@ public class EntityWolf extends EntityTameable {
 		} else {
 			return super.getTexture();
 		}
-		*/
+		
 		// Spout End
-	}
+	} */
 
 	/**
 	 * (abstract) Protected helper method to write subclass entity data to NBT.

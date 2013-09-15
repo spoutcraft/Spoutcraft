@@ -38,6 +38,7 @@ import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
 
+
 // Spout Start
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -801,214 +802,210 @@ public class Minecraft implements IPlayerUsage {
 					// Spout End
 					continue;
 				}
-			} catch (MinecraftError var12) {
-
-			} catch (ReportedException var13) {
-				this.addGraphicsAndWorldToCrashReport(var13.getCrashReport());
-				this.freeMemory();
-				var13.printStackTrace();
-				this.displayCrashReport(var13.getCrashReport());
-			} catch (Throwable var14) {
-				var2 = this.addGraphicsAndWorldToCrashReport(new CrashReport("Unexpected error", var14));
-				this.freeMemory();
-				var14.printStackTrace();
-				this.displayCrashReport(var2);
-			} finally {
-				// Spout Start
-				if (theWorld != null) {
-					HeightMap map = HeightMap.getHeightMap(MinimapUtils.getWorldName());
-					if (map.isDirty()) {
-						map.saveThreaded();
-					}
+			}
+		} catch (MinecraftError var12) {
+		} catch (ReportedException var13) {
+			this.addGraphicsAndWorldToCrashReport(var13.getCrashReport());
+			this.freeMemory();
+			var13.printStackTrace();
+			this.displayCrashReport(var13.getCrashReport());
+		} catch (Throwable var14) {
+			var2 = this.addGraphicsAndWorldToCrashReport(new CrashReport("Unexpected error", var14));
+			this.freeMemory();
+			var14.printStackTrace();
+			this.displayCrashReport(var2);
+		} finally {
+			// Spout Start
+			if (theWorld != null) {
+				HeightMap map = HeightMap.getHeightMap(MinimapUtils.getWorldName());
+				if (map.isDirty()) {
+					map.saveThreaded();
 				}
-				HeightMap.joinSaveThread();
-				// Spout End
-				this.shutdownMinecraftApplet();
+			}
+			HeightMap.joinSaveThread();
+			// Spout End
+			this.shutdownMinecraftApplet();
+		}
+	}
+
+	/**
+	 * Called repeatedly from run()
+	 */
+	private void runGameLoop() {
+		TexturePackChangeHandler.checkForTexturePackChange();
+
+		// Spout Start
+		this.checkGLError("First render check");
+		// Spout End
+
+		AxisAlignedBB.getAABBPool().cleanPool();
+
+		// Spout Start
+		mainThread = Thread.currentThread();
+		if (sndManager != null) {
+			sndManager.tick();
+		}
+		// Spout End
+
+		if (this.theWorld != null) {
+			this.theWorld.getWorldVec3Pool().clear();
+		}
+
+		this.mcProfiler.startSection("root");
+
+		if (Display.isCloseRequested()) {
+			this.shutdown();
+		}
+
+		// Spout Start
+		this.checkGLError("Pre*3 render");
+		// Spout End
+
+		if (this.isGamePaused && this.theWorld != null) {
+			float var1 = this.timer.renderPartialTicks;
+			this.timer.updateTimer();
+			this.timer.renderPartialTicks = var1;
+		} else {
+			this.timer.updateTimer();
+		}
+
+		// Spout Start
+		this.checkGLError("Pre pre render");
+		// Spout End
+
+		long var6 = System.nanoTime();
+		this.mcProfiler.startSection("tick");
+
+		for (int var3 = 0; var3 < this.timer.elapsedTicks; ++var3) {
+			this.runTick();
+		}
+
+		this.mcProfiler.endStartSection("preRenderErrors");
+		long var7 = System.nanoTime() - var6;
+		this.checkGLError("Pre render");
+		RenderBlocks.fancyGrass = this.gameSettings.fancyGraphics;
+		this.mcProfiler.endStartSection("sound");
+		this.sndManager.setListener(this.thePlayer, this.timer.renderPartialTicks);
+
+		if (!this.isGamePaused) {
+			this.sndManager.func_92071_g();
+		}
+
+		this.mcProfiler.endSection();
+		// Spout Start
+		if (this.thePlayer != null) {
+			this.mcProfiler.startSection("spoutclient");
+			SpoutClient.getInstance().onTick(); // Spout - tick
+			this.mcProfiler.endSection();
+			// Spout End
+		}
+
+		this.mcProfiler.startSection("render");
+		this.mcProfiler.startSection("display");
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+		if (!Keyboard.isKeyDown(65)) {
+			Display.update();
+		}
+
+		if (this.thePlayer != null && this.thePlayer.isEntityInsideOpaqueBlock()) {
+			this.gameSettings.thirdPersonView = 0;
+		}
+
+		this.mcProfiler.endSection();
+
+		if (!this.skipRenderWorld) {
+			this.mcProfiler.endStartSection("gameRenderer");
+			this.entityRenderer.updateCameraAndRender(this.timer.renderPartialTicks);
+			this.mcProfiler.endSection();
+		}
+
+		GL11.glFlush();
+		this.mcProfiler.endSection();
+
+		if (!Display.isActive() && this.fullscreen) {
+			this.toggleFullscreen();
+		}
+
+		if (this.gameSettings.showDebugInfo && this.gameSettings.showDebugProfilerChart) {
+			if (!this.mcProfiler.profilingEnabled) {
+				this.mcProfiler.clearProfiling();
+			}
+
+			this.mcProfiler.profilingEnabled = true;
+			this.displayDebugInfo(var7);
+		} else {
+			this.mcProfiler.profilingEnabled = false;
+			this.prevFrameTime = System.nanoTime();
+		}
+
+		this.guiAchievement.updateAchievementWindow();
+		this.mcProfiler.startSection("root");
+		Thread.yield();
+
+		if (Keyboard.isKeyDown(65)) {
+			Display.update();
+		}
+
+		this.screenshotListener();
+
+		if (!this.fullscreen && Display.wasResized()) {
+			this.displayWidth = Display.getWidth();
+			this.displayHeight = Display.getHeight();
+
+			if (this.displayWidth <= 0) {
+				this.displayWidth = 1;
+			}
+
+			if (this.displayHeight <= 0) {
+				this.displayHeight = 1;
+			}
+
+			this.resize(this.displayWidth, this.displayHeight);
+		}
+
+		this.checkGLError("Post render");
+		++this.fpsCounter;
+		boolean var5 = this.isGamePaused;
+		this.isGamePaused = this.isSingleplayer() && this.currentScreen != null && this.currentScreen.doesGuiPauseGame() && !this.theIntegratedServer.getPublic();
+
+		if (this.isIntegratedServerRunning() && this.thePlayer != null && this.thePlayer.sendQueue != null && this.isGamePaused != var5) {
+			((MemoryConnection)this.thePlayer.sendQueue.getNetManager()).setGamePaused(this.isGamePaused);
+		}
+
+		// Spout Start
+		this.checkGLError("Late render");
+		// Spout End
+
+		while (getSystemTime() >= this.debugUpdateTime + 1000L) {
+			debugFPS = this.fpsCounter;
+			this.debug = debugFPS + " fps, " + WorldRenderer.chunksUpdated + " chunk updates";
+			WorldRenderer.chunksUpdated = 0;
+			this.debugUpdateTime += 1000L;
+
+			// Spout Start
+			framesPerSecond = fpsCounter;
+			checkGLError("Late render before fps");
+			SpoutWorth.getInstance().updateFPS(framesPerSecond);
+			checkGLError("Late render after fps");
+			// Spout End
+
+			this.fpsCounter = 0;
+			this.usageSnooper.addMemoryStatsToSnooper();
+
+			if (!this.usageSnooper.isSnooperRunning()) {
+				this.usageSnooper.startSnooper();
 			}
 		}
 
-		/**
-		 * Called repeatedly from run()
-		 */
-		private void runGameLoop() {
-			TexturePackChangeHandler.checkForTexturePackChange();
+		this.mcProfiler.endSection();
 
-			// Spout Start
-			this.checkGLError("First render check");
-			// Spout End
-
-			AxisAlignedBB.getAABBPool().cleanPool();
-
-			// Spout Start
-			mainThread = Thread.currentThread();
-			if (sndManager != null) {
-				sndManager.tick();
-			}
-			// Spout End
-
-			if (this.theWorld != null) {
-				this.theWorld.getWorldVec3Pool().clear();
-			}
-
-			this.mcProfiler.startSection("root");
-
-			if (Display.isCloseRequested()) {
-				this.shutdown();
-			}
-
-			// Spout Start
-			this.checkGLError("Pre*3 render");
-			// Spout End
-
-			if (this.isGamePaused && this.theWorld != null) {
-				float var1 = this.timer.renderPartialTicks;
-				this.timer.updateTimer();
-				this.timer.renderPartialTicks = var1;
-			} else {
-				this.timer.updateTimer();
-			}
-
-			// Spout Start
-			this.checkGLError("Pre pre render");
-			// Spout End
-
-			long var6 = System.nanoTime();
-			this.mcProfiler.startSection("tick");
-
-			for (int var3 = 0; var3 < this.timer.elapsedTicks; ++var3) {
-				this.runTick();
-			}
-
-			this.mcProfiler.endStartSection("preRenderErrors");
-			long var7 = System.nanoTime() - var6;
-			this.checkGLError("Pre render");
-			RenderBlocks.fancyGrass = this.gameSettings.fancyGraphics;
-			this.mcProfiler.endStartSection("sound");
-			this.sndManager.setListener(this.thePlayer, this.timer.renderPartialTicks);
-
-			if (!this.isGamePaused) {
-				this.sndManager.func_92071_g();
-			}
-
-			this.mcProfiler.endSection();
-			// Spout Start
-			if (this.thePlayer != null) {
-				this.mcProfiler.startSection("spoutclient");
-				SpoutClient.getInstance().onTick(); // Spout - tick
-				this.mcProfiler.endSection();
-				// Spout End
-			}
-
-			this.mcProfiler.startSection("render");
-			this.mcProfiler.startSection("display");
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-			if (!Keyboard.isKeyDown(65)) {
-				Display.update();
-			}
-
-			if (this.thePlayer != null && this.thePlayer.isEntityInsideOpaqueBlock()) {
-				this.gameSettings.thirdPersonView = 0;
-			}
-
-			this.mcProfiler.endSection();
-
-			if (!this.skipRenderWorld) {
-				this.mcProfiler.endStartSection("gameRenderer");
-				this.entityRenderer.updateCameraAndRender(this.timer.renderPartialTicks);
-				this.mcProfiler.endSection();
-			}
-
-			GL11.glFlush();
-			this.mcProfiler.endSection();
-
-			if (!Display.isActive() && this.fullscreen) {
-				this.toggleFullscreen();
-			}
-
-			if (this.gameSettings.showDebugInfo && this.gameSettings.showDebugProfilerChart) {
-				if (!this.mcProfiler.profilingEnabled) {
-					this.mcProfiler.clearProfiling();
-				}
-
-				this.mcProfiler.profilingEnabled = true;
-				this.displayDebugInfo(var7);
-			} else {
-				this.mcProfiler.profilingEnabled = false;
-				this.prevFrameTime = System.nanoTime();
-			}
-
-			this.guiAchievement.updateAchievementWindow();
-			this.mcProfiler.startSection("root");
-			Thread.yield();
-
-			if (Keyboard.isKeyDown(65)) {
-				Display.update();
-			}
-
-			this.screenshotListener();
-
-			if (!this.fullscreen && Display.wasResized()) {
-				this.displayWidth = Display.getWidth();
-				this.displayHeight = Display.getHeight();
-
-				if (this.displayWidth <= 0) {
-					this.displayWidth = 1;
-				}
-
-				if (this.displayHeight <= 0) {
-					this.displayHeight = 1;
-				}
-
-				this.resize(this.displayWidth, this.displayHeight);
-			}
-
-			this.checkGLError("Post render");
-			++this.fpsCounter;
-			boolean var5 = this.isGamePaused;
-			this.isGamePaused = this.isSingleplayer() && this.currentScreen != null && this.currentScreen.doesGuiPauseGame() && !this.theIntegratedServer.getPublic();
-
-			if (this.isIntegratedServerRunning() && this.thePlayer != null && this.thePlayer.sendQueue != null && this.isGamePaused != var5) {
-				((MemoryConnection)this.thePlayer.sendQueue.getNetManager()).setGamePaused(this.isGamePaused);
-			}
-
-			// Spout Start
-			this.checkGLError("Late render");
-			// Spout End
-
-			while (getSystemTime() >= this.debugUpdateTime + 1000L) {
-				debugFPS = this.fpsCounter;
-				this.debug = debugFPS + " fps, " + WorldRenderer.chunksUpdated + " chunk updates";
-				WorldRenderer.chunksUpdated = 0;
-				this.debugUpdateTime += 1000L;
-
-				// Spout Start
-				framesPerSecond = fpsCounter;
-				checkGLError("Late render before fps");
-				SpoutWorth.getInstance().updateFPS(framesPerSecond);
-				checkGLError("Late render after fps");
-				// Spout End
-
-				this.fpsCounter = 0;
-				this.usageSnooper.addMemoryStatsToSnooper();
-
-				if (!this.usageSnooper.isSnooperRunning()) {
-					this.usageSnooper.startSnooper();
-				}
-			}
-
-			this.mcProfiler.endSection();
-
-			if (this.func_90020_K() > 0) {
-				Display.sync(EntityRenderer.performanceToFps(this.func_90020_K()));
-			}
-			// Spout Start
-			this.checkGLError("After sync");
-			// Spout End			
+		if (this.func_90020_K() > 0) {
+			Display.sync(EntityRenderer.performanceToFps(this.func_90020_K()));
 		}
 		// Spout Start
-		this.checkGLError("Game loop end");
-		// Spout End		
+		this.checkGLError("After sync");
+		// Spout End	
 	}
 
 	private int func_90020_K() {
@@ -1469,7 +1466,7 @@ public class Minecraft implements IPlayerUsage {
 				}
 			}
 		}
-		
+
 		if (this.currentScreen == null || this.currentScreen.allowUserInput) {
 			this.mcProfiler.endStartSection("mouse");
 			int var1
@@ -1789,7 +1786,7 @@ public class Minecraft implements IPlayerUsage {
 		this.mcProfiler.endSection();
 		this.systemTime = getSystemTime();
 	}
-	
+
 	/**
 	 * Arguments: World foldername,  World ingame name, WorldSettings
 	 */
@@ -2011,7 +2008,7 @@ public class Minecraft implements IPlayerUsage {
 	public NetClientHandler getNetHandler() {
 		return this.thePlayer != null ? this.thePlayer.sendQueue : null;
 	}
-	
+
 	public static boolean isGuiEnabled() {
 		return theMinecraft == null || !theMinecraft.gameSettings.hideGUI;
 	}
@@ -2275,7 +2272,7 @@ public class Minecraft implements IPlayerUsage {
 	public ILogAgent getLogAgent() {
 		return this.field_94139_O;
 	}
-	
+
 	public Session func_110432_I() {
 		return this.session;
 	}
