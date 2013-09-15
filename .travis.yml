@@ -3,12 +3,9 @@ language: java
 jdk: oraclejdk7
 
 # Compile and package JAR and set build properties.
-install: mvn package -Pmcp-final-unix -DbuildNumber=$TRAVIS_BUILD_NUMBER -DciSystem=travis -Dcommit=${TRAVIS_COMMIT:0:7}
+install: mvn clean package -Pmcp-final-unix -DbuildNumber=$TRAVIS_BUILD_NUMBER -DciSystem=travis -Dcommit=${TRAVIS_COMMIT:0:7}
 after_success:
-  # Get files for use with build, namely the custom Maven settings.xml.
-  - "git clone -b travis `git config --get remote.origin.url` target/travis"
-  # Check if commit s not a pull request, if git repo is official, and if branch is master. If checks pass, deploy artifacts to Maven repository.
-  - "[[ $TRAVIS_PULL_REQUEST == false ]] && [[ $TRAVIS_REPO_SLUG == Legacy/Spoutcraft ]] && [[ $TRAVIS_BRANCH == master ]] && mvn deploy --settings target/travis/settings.xml"
+  # TODO: Add deployment to downloads site.
 
 notifications:
   # Disable build status email notifications, until the issue with forks is fixed.
@@ -16,8 +13,3 @@ notifications:
   webhooks:
     # Send build information and status to Notifico.
     - http://n.tkte.ch/h/515/XKi-6poJeJINy51JH0bWKXZh
-
-env:
-  global:
-    - secure: "YWDQXr6orafZjQ179p0RYVngDXUVFFXOOunkZUIgzZ3QkIRuyjQTjX1gbNOy7/nFfwR5jcMYtOg0R2H1zqrjdrRTBn9kjU9FddgsDTKuQetrsC2zsQON5KS0zE/JyMUKfenXuqw8SxsSEGhK8Ik0EIMCjjjmDoxxXGM1IXUdCkQ="
-    - secure: "ewDlug3sHoIrUYs68H9fy2zKni9RCIMfkZnYfMTbHwh+fM4ISFO4asNrKOufGdvfMo4jQLfuRsUtlvaHqvx2OwHuB3ymjS1pOKkj1RLee/dFFd1KAnbH8Mb2ANOKMRv3y6YO+c9R1w5Fqm9woz4ONmO0ukrSNR2qMjOntbuQRHM="
