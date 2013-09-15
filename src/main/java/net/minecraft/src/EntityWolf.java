@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 public class EntityWolf extends EntityTameable {
+	// ToDO: Need Spoutcraft API Texture Override abilities.
 	private float field_70926_e;
 	private float field_70924_f;
 
@@ -15,8 +16,8 @@ public class EntityWolf extends EntityTameable {
 	private float prevTimeWolfIsShaking;
 
 	public EntityWolf(World par1World) {
-		super(par1World);		
-		this.setSize(0.6F, 0.8F);		
+		super(par1World);
+		this.setSize(0.6F, 0.8F);
 		this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, this.aiSit);
@@ -31,7 +32,7 @@ public class EntityWolf extends EntityTameable {
 		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
 		this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
 		this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-		this.targetTasks.addTask(4, new EntityAITargetNonTamed(this, EntitySheep.class, 16.0F, 200, false));
+		this.targetTasks.addTask(4, new EntityAITargetNonTamed(this, EntitySheep.class, 200, false));
 		this.setTamed(false);
 	}
 
@@ -45,7 +46,7 @@ public class EntityWolf extends EntityTameable {
 			this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(8.0D);
 		}
 	}
-	
+
 	/**
 	 * Returns true if the newer Entity AI code should be run
 	 */
@@ -88,24 +89,6 @@ public class EntityWolf extends EntityTameable {
 	}
 
 	/**
-	 * Returns the texture's file path as a String.
-	 */
-	/* ToDo: GetTexture no longer used, requires Spoutcraft API update.
-	public String getTexture() {
-		// Spout Start
-		if (isTamed()) {
-			return this.getCustomTexture(EntitySkinType.WOLF_TAMED, "/mob/wolf_tame.png");
-		}
-		if (isAngry()) {
-			return this.getCustomTexture(EntitySkinType.WOLF_ANGRY, "/mob/wolf_angry.png");
-		} else {
-			return super.getTexture();
-		}
-		
-		// Spout End
-	} */
-
-	/**
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
@@ -125,7 +108,7 @@ public class EntityWolf extends EntityTameable {
 			this.setCollarColor(par1NBTTagCompound.getByte("CollarColor"));
 		}
 	}
-	
+
 	/**
 	 * Returns the sound this mob makes while it's alive.
 	 */
@@ -297,7 +280,7 @@ public class EntityWolf extends EntityTameable {
 			this.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(8.0D);
 		}
 	}
-	
+
 	/**
 	 * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
 	 */
@@ -503,7 +486,7 @@ public class EntityWolf extends EntityTameable {
 			return false;
 		}
 	}
-	
+
 	public EntityAgeable createChild(EntityAgeable par1EntityAgeable) {
 		return this.spawnBabyAnimal(par1EntityAgeable);
 	}

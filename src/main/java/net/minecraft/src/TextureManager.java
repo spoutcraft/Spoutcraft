@@ -115,4 +115,9 @@ public class TextureManager implements Tickable, ResourceManagerReloadListener {
 			this.func_110579_a((ResourceLocation)var3.getKey(), (TextureObject)var3.getValue());
 		}
 	}	
+	
+	// Spout Start
+	public void bindTexture(int texture) {
+		TextureUtil.bindTexture(texture);
+	}
 }

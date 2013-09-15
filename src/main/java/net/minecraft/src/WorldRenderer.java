@@ -166,8 +166,10 @@ public class WorldRenderer {
 				Minecraft game = SpoutClient.getHandle();
 				int currentTexture = 0;
 				int limit = skipRenderPass.length; // MCPatcher 2.4.4 requires 4, anything less and things get missed.
-				int defaultTexture = game.renderEngine.getTexture("/terrain.png");
-				game.renderEngine.bindTexture(defaultTexture);
+				int defaultTexture = game.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+				//int defaultTexture = game.renderEngine.getTexture("/terrain.png");
+				TextureUtil.bindTexture(defaultTexture);
+				//game.renderEngine.bindTexture(defaultTexture);
 
 				List<String> hitTextures = new ArrayList<String>();
 				List<String> hitTexturesPlugins = new ArrayList<String>();
@@ -196,7 +198,8 @@ public class WorldRenderer {
 						tessellator.setTranslation((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
 					}
 
-					game.renderEngine.bindTexture(defaultTexture);
+					//game.renderEngine.bindTexture(defaultTexture);
+					TextureUtil.bindTexture(defaultTexture);
 
 					for (currentTexture = 0; currentTexture < hitTextures.size(); currentTexture++) {
 						int texture = defaultTexture;
@@ -209,7 +212,8 @@ public class WorldRenderer {
 							}
 							if (customTexture != null) {
 								texture = customTexture.getTextureID();
-								game.renderEngine.bindTexture(texture);
+								TextureUtil.bindTexture(texture);
+								//game.renderEngine.bindTexture(texture);
 								if (texture <= 0) {
 									texture = defaultTexture;
 								}
@@ -321,7 +325,8 @@ public class WorldRenderer {
 						tessellator.texture = 0;
 						GL11.glPopMatrix();
 						GL11.glEndList();
-						game.renderEngine.bindTexture(defaultTexture);
+						TextureUtil.bindTexture(defaultTexture);
+						//game.renderEngine.bindTexture(defaultTexture);
 						tessellator.setTranslation(0.0D, 0.0D, 0.0D);
 					} else {
 						rendered = false;
