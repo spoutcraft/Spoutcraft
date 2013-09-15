@@ -99,6 +99,8 @@ public class GuiSelectWorld extends GuiScreen {
 	 * returns the name of the saved game
 	 */
 	protected String getSaveName(int par1) {
+		String var2 = ((SaveFormatComparator)this.saveList.get(par1)).getDisplayName();
+		
 		if (var2 == null || MathHelper.stringNullOrLengthZero(var2)) {
 			var2 = I18n.func_135053_a("selectWorld.world") + " " + (par1 + 1);
 		}

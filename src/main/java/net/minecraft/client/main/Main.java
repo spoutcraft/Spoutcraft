@@ -11,12 +11,13 @@ import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.NonOptionArgumentSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-
 import net.minecraft.src.GameWindowListener;
 import net.minecraft.src.MainProxyAuthenticator;
 import net.minecraft.src.MainShutdownHook;
 import net.minecraft.src.Minecraft;
 import net.minecraft.src.Session;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class Main {
 	public static void main(String[] par0ArrayOfStr) {
@@ -69,12 +70,7 @@ public class Main {
 		File var29 = var17.has(var5) ? (File)var17.valueOf(var5) : new File(var28, "assets/");
 		File var30 = var17.has(var6) ? (File)var17.valueOf(var6) : new File(var28, "resourcepacks/");
 		Session var31 = new Session((String)var11.value(var17), (String)var12.value(var17));
-		Minecraft var32 = new Minecraft(var31, var23, var24, var25, var26, var28, var29, var30, var20, var27);
-		
-		//Spout Start
-		var32.addWindowListener(new GameWindowListener());
-		//Spout end
-		
+		Minecraft var32 = new Minecraft(var31, var23, var24, var25, var26, var28, var29, var30, var20, var27);		
 		String var33 = (String)var17.valueOf(var2);
 
 		if (var33 != null) {
@@ -88,6 +84,16 @@ public class Main {
 		}
 
 		Thread.currentThread().setName("Minecraft main thread");
+		
+		// Spout Start
+		SpoutClient.getHandle().shutdown();
+		try {
+			SpoutClient.getHandle().mainThread.join(10000L);
+		} catch (InterruptedException var4) {
+		}
+		System.exit(0);
+		// Spout End
+		
 		var32.func_99999_d();
 	}
 

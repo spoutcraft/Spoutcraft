@@ -283,10 +283,13 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 		return var1;
 	}
 
+	// ToDo: Needs Update
+	/*
 	public void updateCloak() {
 		this.playerCloakUrl = "http://skins.minecraft.net/MinecraftCloaks/" + StringUtils.stripControlCodes(this.username) + ".png";
 		this.cloakUrl = this.playerCloakUrl;
 	}
+	*/
 
 	/**
 	 * sets current screen to null (used on escape buttons of GUIs)

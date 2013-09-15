@@ -333,7 +333,7 @@ public class Minecraft implements IPlayerUsage {
 		} else {
 			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
 		}
-
+		
 		Display.setResizable(true);
 		Display.setTitle("Minecraft 1.6.2");
 		this.getLogAgent().logInfo("LWJGL Version: " + Sys.getVersion());
@@ -608,7 +608,7 @@ public class Minecraft implements IPlayerUsage {
 		// Part of original function
 		if (screen == null && this.theWorld == null) {
 			screen = new org.spoutcraft.client.gui.mainmenu.MainMenu();
-		} else if (par1GuiScreen == null && this.thePlayer.func_110143_aJ() <= 0.0F) {
+		} else if (screen == null && this.thePlayer.func_110143_aJ() <= 0.0F) {
 			screen = new GuiGameOver();
 		}
 

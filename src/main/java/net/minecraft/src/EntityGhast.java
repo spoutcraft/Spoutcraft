@@ -16,8 +16,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 	private int explosionStrength = 1;
 
 	public EntityGhast(World par1World) {
-		super(par1World);
-		this.texture = "/mob/ghast.png";
+		super(par1World);	
 		this.setSize(4.0F, 4.0F);
 		this.isImmuneToFire = true;
 		this.experienceValue = 5;

@@ -16,8 +16,9 @@ public class EntityOtherPlayerMP extends AbstractClientPlayer {
 		this.noClip = true;
 		this.field_71082_cx = 0.25F;
 		this.renderDistanceWeight = 10.0D;
-		this.worldObj.releaseEntitySkin(this);
-		worldObj.obtainEntitySkin(this);
+		// ToDo: needs to be redone for newer EntitySkin Calls
+		//this.worldObj.releaseEntitySkin(this);
+		//worldObj.obtainEntitySkin(this);
 		// Spout End
 	}
 
