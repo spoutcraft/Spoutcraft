@@ -7,14 +7,16 @@
 	<artifactId>spoutcraft</artifactId>
 	<version>1.5.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<url>http://www.spoutcraft.org</url>
 	<inceptionYear>2011</inceptionYear>
-	<description>Spoutcraft is a Minecraft client mod and launcher that provides users with a more customizable experience.</description>
+	<url>https://www.spoutcraft.org</url>
+	<description>Minecraft client mod and launcher that provides users with a more customizable experience.</description>
 
-	<!-- Project properties -->
+	<!-- Build properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<buildNumber>0</buildNumber>
+		<ciSystem>unknown</ciSystem>
+		<commit>unknown</commit>
 		<lwjglVersion>2.9.0</lwjglVersion>
 		<minecraftVersion>1.5.2</minecraftVersion>
 		<mcpVersion>7.51</mcpVersion>
@@ -58,8 +60,16 @@
 	<!-- Dependency repositories -->
 	<repositories>
 		<repository>
-			<id>spout-repo</id>
-			<url>http://nexus.spout.org/content/groups/public</url>
+			<id>sonatype-nexus-releases</id>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -70,14 +80,18 @@
 	<!-- Build plugin repositories -->
 	<pluginRepositories>
 		<pluginRepository>
-			<id>spout-repo</id>
-			<url>http://nexus.spout.org/content/groups/public</url>
+			<id>sonatype-nexus-releases</id>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</pluginRepository>
 	</pluginRepositories>
 
 	<!-- Build configuration -->
 	<build>
-		<defaultGoal>clean install</defaultGoal>
+		<defaultGoal>clean package</defaultGoal>
 
 		<!-- Resources to include -->
 		<resources>
@@ -563,53 +577,28 @@
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>com.sourcesense.maven</groupId>
-										<artifactId>maven-nosnapshot-plugin</artifactId>
-										<versionRange>[0.0.7,)</versionRange>
-										<goals>
-											<goal>strip</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute/>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											com.github.goldin
-										</groupId>
-										<artifactId>
-											copy-maven-plugin
-										</artifactId>
-										<versionRange>
-											[0.2.5,)
-										</versionRange>
+										<groupId>com.github.goldin</groupId>
+										<artifactId>copy-maven-plugin</artifactId>
+										<versionRange>[0.2.5,)</versionRange>
 										<goals>
 											<goal>copy</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.mojo
-										</groupId>
-										<artifactId>
-											exec-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.2.1,)
-										</versionRange>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>exec-maven-plugin</artifactId>
+										<versionRange>[1.2.1,)</versionRange>
 										<goals>
 											<goal>exec</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
