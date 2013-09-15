@@ -13,10 +13,10 @@ public class WorldServer extends World {
 	private final MinecraftServer mcServer;
 	private final EntityTracker theEntityTracker;
 	private final PlayerManager thePlayerManager;
-	private Set field_73064_N;
+	private Set pendingTickListEntriesHashSet;
 
 	/** All work to do in future ticks. */
-	private TreeSet pendingTickListEntries;
+	private TreeSet pendingTickListEntriesTreeSet;
 	public ChunkProviderServer theChunkProviderServer;
 
 	/** set by CommandServerSave{all,Off,On} */
@@ -24,8 +24,9 @@ public class WorldServer extends World {
 
 	/** is false if there are no players */
 	private boolean allPlayersSleeping;
-	private int updateEntityTick = 0;
+	private int updateEntityTick;
 	private final Teleporter field_85177_Q;
+	private final SpawnerAnimals field_135059_Q = new SpawnerAnimals();
 
 	/**
 	 * Double buffer of ServerBlockEventList[] for holding pending BlockEventData's
@@ -36,9 +37,9 @@ public class WorldServer extends World {
 	 * The index into the blockEventCache; either 0, or 1, toggled in sendBlockEventPackets  where all BlockEvent are
 	 * applied locally and send to clients.
 	 */
-	private int blockEventCacheIndex = 0;
+	private int blockEventCacheIndex;
 	private static final WeightedRandomChestContent[] bonusChestContent = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.stick.itemID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.planks.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Block.wood.blockID, 0, 1, 3, 10), new WeightedRandomChestContent(Item.axeStone.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.axeWood.itemID, 0, 1, 1, 5), new WeightedRandomChestContent(Item.pickaxeStone.itemID, 0, 1, 1, 3), new WeightedRandomChestContent(Item.pickaxeWood.itemID, 0, 1, 1, 5), new WeightedRandomChestContent(Item.appleRed.itemID, 0, 2, 3, 5), new WeightedRandomChestContent(Item.bread.itemID, 0, 2, 3, 3)};
-	private ArrayList field_94579_S = new ArrayList();
+	private List pendingTickListEntriesThisTick = new ArrayList();
 
 	/** An IntHashMap of entity IDs (integers) to their Entity objects. */
 	private IntHashMap entityIdMap;
@@ -53,12 +54,12 @@ public class WorldServer extends World {
 			this.entityIdMap = new IntHashMap();
 		}
 
-		if (this.field_73064_N == null) {
-			this.field_73064_N = new HashSet();
+		if (this.pendingTickListEntriesHashSet == null) {
+			this.pendingTickListEntriesHashSet = new HashSet();
 		}
 
-		if (this.pendingTickListEntries == null) {
-			this.pendingTickListEntries = new TreeSet();
+		if (this.pendingTickListEntriesTreeSet == null) {
+			this.pendingTickListEntriesTreeSet = new TreeSet();
 		}
 
 		this.field_85177_Q = new Teleporter(this);
@@ -87,35 +88,34 @@ public class WorldServer extends World {
 		this.provider.worldChunkMgr.cleanupCache();
 
 		if (this.areAllPlayersAsleep()) {
-			boolean var1 = false;
-
-			if (this.spawnHostileMobs && this.difficultySetting >= 1) {
-				;
+			if (this.getGameRules().getGameRuleBooleanValue("doDaylightCycle")) {
+				long var1 = this.worldInfo.getWorldTime() + 24000L;
+				this.worldInfo.setWorldTime(var1 - var1 % 24000L);
 			}
 
-			if (!var1) {
-				long var2 = this.worldInfo.getWorldTime() + 24000L;
-				this.worldInfo.setWorldTime(var2 - var2 % 24000L);
-				this.wakeAllPlayers();
-			}
+			this.wakeAllPlayers();
 		}
 
 		this.theProfiler.startSection("mobSpawner");
 
 		if (this.getGameRules().getGameRuleBooleanValue("doMobSpawning")) {
-			SpawnerAnimals.findChunksForSpawning(this, this.spawnHostileMobs, this.spawnPeacefulMobs, this.worldInfo.getWorldTotalTime() % 400L == 0L);
+			this.field_135059_Q.findChunksForSpawning(this, this.spawnHostileMobs, this.spawnPeacefulMobs, this.worldInfo.getWorldTotalTime() % 400L == 0L);
 		}
 
 		this.theProfiler.endStartSection("chunkSource");
 		this.chunkProvider.unloadQueuedChunks();
-		int var4 = this.calculateSkylightSubtracted(1.0F);
+		int var3 = this.calculateSkylightSubtracted(1.0F);
 
-		if (var4 != this.skylightSubtracted) {
-			this.skylightSubtracted = var4;
+		if (var3 != this.skylightSubtracted) {
+			this.skylightSubtracted = var3;
 		}
 
 		this.worldInfo.incrementTotalWorldTime(this.worldInfo.getWorldTotalTime() + 1L);
-		this.worldInfo.setWorldTime(this.worldInfo.getWorldTime() + 1L);
+
+		if (this.getGameRules().getGameRuleBooleanValue("doDaylightCycle")) {
+			this.worldInfo.setWorldTime(this.worldInfo.getWorldTime() + 1L);
+		}
+
 		this.theProfiler.endStartSection("tickPending");
 		this.tickUpdates(false);
 		this.theProfiler.endStartSection("tickTiles");
@@ -242,10 +242,10 @@ public class WorldServer extends World {
 			this.theProfiler.endStartSection("tickChunk");
 			var7.updateSkylight();
 			this.theProfiler.endStartSection("thunder");
-			int var10;
-			int var11;
 			int var8;
 			int var9;
+			int var10;
+			int var11;
 
 			if (this.rand.nextInt(100000) == 0 && this.isRaining() && this.isThundering()) {
 				this.updateLCG = this.updateLCG * 3 + 1013904223;
@@ -321,26 +321,28 @@ public class WorldServer extends World {
 	}
 
 	/**
-	 * Returns true if the given block will receive a scheduled tick in the future. Args: X, Y, Z, blockID
+	 * Returns true if the given block will receive a scheduled tick in this tick. Args: X, Y, Z, blockID
 	 */
-	public boolean isBlockTickScheduled(int par1, int par2, int par3, int par4) {
+	public boolean isBlockTickScheduledThisTick(int par1, int par2, int par3, int par4) {
 		NextTickListEntry var5 = new NextTickListEntry(par1, par2, par3, par4);
-		return this.field_94579_S.contains(var5);
+		return this.pendingTickListEntriesThisTick.contains(var5);
 	}
 
 	/**
 	 * Schedules a tick to a block with a delay (Most commonly the tick rate)
 	 */
 	public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5) {
-		this.func_82740_a(par1, par2, par3, par4, par5, 0);
+		this.scheduleBlockUpdateWithPriority(par1, par2, par3, par4, par5, 0);
 	}
 
-	public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6) {
+	public void scheduleBlockUpdateWithPriority(int par1, int par2, int par3, int par4, int par5, int par6) {
 		NextTickListEntry var7 = new NextTickListEntry(par1, par2, par3, par4);
 		byte var8 = 0;
 
 		if (this.scheduledUpdatesAreImmediate && par4 > 0) {
 			if (Block.blocksList[par4].func_82506_l()) {
+				var8 = 8;
+
 				if (this.checkChunksExist(var7.xCoord - var8, var7.yCoord - var8, var7.zCoord - var8, var7.xCoord + var8, var7.yCoord + var8, var7.zCoord + var8)) {
 					int var9 = this.getBlockId(var7.xCoord, var7.yCoord, var7.zCoord);
 
@@ -358,12 +360,12 @@ public class WorldServer extends World {
 		if (this.checkChunksExist(par1 - var8, par2 - var8, par3 - var8, par1 + var8, par2 + var8, par3 + var8)) {
 			if (par4 > 0) {
 				var7.setScheduledTime((long)par5 + this.worldInfo.getWorldTotalTime());
-				var7.func_82753_a(par6);
+				var7.setPriority(par6);
 			}
 
-			if (!this.field_73064_N.contains(var7)) {
-				this.field_73064_N.add(var7);
-				this.pendingTickListEntries.add(var7);
+			if (!this.pendingTickListEntriesHashSet.contains(var7)) {
+				this.pendingTickListEntriesHashSet.add(var7);
+				this.pendingTickListEntriesTreeSet.add(var7);
 			}
 		}
 	}
@@ -373,15 +375,15 @@ public class WorldServer extends World {
 	 */
 	public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5, int par6) {
 		NextTickListEntry var7 = new NextTickListEntry(par1, par2, par3, par4);
-		var7.func_82753_a(par6);
+		var7.setPriority(par6);
 
 		if (par4 > 0) {
 			var7.setScheduledTime((long)par5 + this.worldInfo.getWorldTotalTime());
 		}
 
-		if (!this.field_73064_N.contains(var7)) {
-			this.field_73064_N.add(var7);
-			this.pendingTickListEntries.add(var7);
+		if (!this.pendingTickListEntriesHashSet.contains(var7)) {
+			this.pendingTickListEntriesHashSet.add(var7);
+			this.pendingTickListEntriesTreeSet.add(var7);
 		}
 	}
 
@@ -411,9 +413,9 @@ public class WorldServer extends World {
 	 * Runs through the list of updates to run and ticks them
 	 */
 	public boolean tickUpdates(boolean par1) {
-		int var2 = this.pendingTickListEntries.size();
+		int var2 = this.pendingTickListEntriesTreeSet.size();
 
-		if (var2 != this.field_73064_N.size()) {
+		if (var2 != this.pendingTickListEntriesHashSet.size()) {
 			throw new IllegalStateException("TickNextTick list out of synch");
 		} else {
 			if (var2 > 1000) {
@@ -424,20 +426,20 @@ public class WorldServer extends World {
 			NextTickListEntry var4;
 
 			for (int var3 = 0; var3 < var2; ++var3) {
-				var4 = (NextTickListEntry)this.pendingTickListEntries.first();
+				var4 = (NextTickListEntry)this.pendingTickListEntriesTreeSet.first();
 
 				if (!par1 && var4.scheduledTime > this.worldInfo.getWorldTotalTime()) {
 					break;
 				}
 
-				this.pendingTickListEntries.remove(var4);
-				this.field_73064_N.remove(var4);
-				this.field_94579_S.add(var4);
+				this.pendingTickListEntriesTreeSet.remove(var4);
+				this.pendingTickListEntriesHashSet.remove(var4);
+				this.pendingTickListEntriesThisTick.add(var4);
 			}
 
 			this.theProfiler.endSection();
 			this.theProfiler.startSection("ticking");
-			Iterator var14 = this.field_94579_S.iterator();
+			Iterator var14 = this.pendingTickListEntriesThisTick.iterator();
 
 			while (var14.hasNext()) {
 				var4 = (NextTickListEntry)var14.next();
@@ -471,8 +473,8 @@ public class WorldServer extends World {
 			}
 
 			this.theProfiler.endSection();
-			this.field_94579_S.clear();
-			return !this.pendingTickListEntries.isEmpty();
+			this.pendingTickListEntriesThisTick.clear();
+			return !this.pendingTickListEntriesTreeSet.isEmpty();
 		}
 	}
 
@@ -488,12 +490,12 @@ public class WorldServer extends World {
 			Iterator var10;
 
 			if (var9 == 0) {
-				var10 = this.pendingTickListEntries.iterator();
+				var10 = this.pendingTickListEntriesTreeSet.iterator();
 			} else {
-				var10 = this.field_94579_S.iterator();
+				var10 = this.pendingTickListEntriesThisTick.iterator();
 
-				if (!this.field_94579_S.isEmpty()) {
-					System.out.println(this.field_94579_S.size());
+				if (!this.pendingTickListEntriesThisTick.isEmpty()) {
+					System.out.println(this.pendingTickListEntriesThisTick.size());
 				}
 			}
 
@@ -502,7 +504,7 @@ public class WorldServer extends World {
 
 				if (var11.xCoord >= var5 && var11.xCoord < var6 && var11.zCoord >= var7 && var11.zCoord < var8) {
 					if (par2) {
-						this.field_73064_N.remove(var11);
+						this.pendingTickListEntriesHashSet.remove(var11);
 						var10.remove();
 					}
 
@@ -531,15 +533,6 @@ public class WorldServer extends World {
 			par1Entity.setDead();
 		}
 
-		if (!(par1Entity.riddenByEntity instanceof EntityPlayer)) {
-			super.updateEntityWithOptionalForce(par1Entity, par2);
-		}
-	}
-
-	/**
-	 * direct call to super.updateEntityWithOptionalForce
-	 */
-	public void uncheckedUpdateEntity(Entity par1Entity, boolean par2) {
 		super.updateEntityWithOptionalForce(par1Entity, par2);
 	}
 
@@ -581,12 +574,12 @@ public class WorldServer extends World {
 			this.entityIdMap = new IntHashMap();
 		}
 
-		if (this.field_73064_N == null) {
-			this.field_73064_N = new HashSet();
+		if (this.pendingTickListEntriesHashSet == null) {
+			this.pendingTickListEntriesHashSet = new HashSet();
 		}
 
-		if (this.pendingTickListEntries == null) {
-			this.pendingTickListEntries = new TreeSet();
+		if (this.pendingTickListEntriesTreeSet == null) {
+			this.pendingTickListEntriesTreeSet = new TreeSet();
 		}
 
 		this.createSpawnPosition(par1WorldSettings);
@@ -685,7 +678,7 @@ public class WorldServer extends World {
 			this.chunkProvider.func_104112_b();
 		}
 	}
-	
+
 	/**
 	 * Saves the chunks to disk.
 	 */
@@ -695,13 +688,9 @@ public class WorldServer extends World {
 		this.mapStorage.saveAllData();
 	}
 
-	/**
-	 * Start the skin for this entity downloading, if necessary, and increment its reference counter
-	 */
-	// Spout Start - protected to public
-	public void obtainEntitySkin(Entity par1Entity) {
-	// Spout End
-		super.obtainEntitySkin(par1Entity);
+	// ToDo: Spoutcraft obtainEntitySkin
+	protected void onEntityAdded(Entity par1Entity) {
+		super.onEntityAdded(par1Entity);
 		this.entityIdMap.addKey(par1Entity.entityId, par1Entity);
 		Entity[] var2 = par1Entity.getParts();
 
@@ -712,13 +701,9 @@ public class WorldServer extends World {
 		}
 	}
 
-	/**
-	 * Decrement the reference counter for this entity's skin image data
-	 */
-	// Spout Start - protected to public
-	public void releaseEntitySkin(Entity par1Entity) {
-	// Spout End
-		super.releaseEntitySkin(par1Entity);
+	// ToDo: Spoutcraft releaseEntitySkin
+	protected void onEntityRemoved(Entity par1Entity) {
+		super.onEntityRemoved(par1Entity);
 		this.entityIdMap.removeObject(par1Entity.entityId);
 		Entity[] var2 = par1Entity.getParts();
 

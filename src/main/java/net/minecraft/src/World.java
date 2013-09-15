@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeWorld;
-import com.prupe.mcpatcher.mod.Colorizer;
+import com.prupe.mcpatcher.cc.ColorizeWorld;
+import com.prupe.mcpatcher.cc.Colorizer;
 // MCPatcher End
 // Spout Start
 import net.minecraft.client.Minecraft;
@@ -30,7 +30,7 @@ public abstract class World implements IBlockAccess {
 	/**
 	 * boolean; if true updates scheduled by scheduleBlockUpdate happen immediately
 	 */
-	public boolean scheduledUpdatesAreImmediate = false;
+	public boolean scheduledUpdatesAreImmediate;
 
 	/** A list of all Entities in all currently-loaded chunks */
 	public List loadedEntityList = new ArrayList();
@@ -51,7 +51,7 @@ public abstract class World implements IBlockAccess {
 	private long cloudColour = 16777215L;
 
 	/** How much light is subtracted from full daylight */
-	public int skylightSubtracted = 0;
+	public int skylightSubtracted;
 
 	/**
 	 * Contains the current Linear Congruential Generator seed for block updates. Used with an A value of 3 and a C value
@@ -73,7 +73,7 @@ public abstract class World implements IBlockAccess {
 	 * Set to 2 whenever a lightning bolt is generated in SSP. Decrements if > 0 in updateWeather(). Value appears to be
 	 * unused.
 	 */
-	public int lastLightningBolt = 0;
+	public int lastLightningBolt;
 
 	/** Option > Difficulty setting (0 - 3) */
 	public int difficultySetting;
@@ -169,8 +169,7 @@ public abstract class World implements IBlockAccess {
 
 	public World(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler par5Profiler, ILogAgent par6ILogAgent) {
 		this.ambientTickCountdown = this.rand.nextInt(12000);
-		this.lightUpdateBlockList = new int[32768];
-		this.isRemote = false;
+		this.lightUpdateBlockList = new int[32768];		
 		this.saveHandler = par1ISaveHandler;
 		this.theProfiler = par5Profiler;
 		this.worldInfo = new WorldInfo(par4WorldSettings, par2Str);
@@ -195,8 +194,7 @@ public abstract class World implements IBlockAccess {
 
 	public World(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler par5Profiler, ILogAgent par6ILogAgent) {
 		this.ambientTickCountdown = this.rand.nextInt(12000);
-		this.lightUpdateBlockList = new int[32768];
-		this.isRemote = false;
+		this.lightUpdateBlockList = new int[32768];		
 		this.saveHandler = par1ISaveHandler;
 		this.theProfiler = par5Profiler;
 		this.mapStorage = new MapStorage(par1ISaveHandler);
@@ -205,8 +203,8 @@ public abstract class World implements IBlockAccess {
 
 		if (par4WorldProvider != null) {
 			this.provider = par4WorldProvider;
-		} else if (this.worldInfo != null && this.worldInfo.getDimension() != 0) {
-			this.provider = WorldProvider.getProviderForDimension(this.worldInfo.getDimension());
+		} else if (this.worldInfo != null && this.worldInfo.getVanillaDimension() != 0) {
+			this.provider = WorldProvider.getProviderForDimension(this.worldInfo.getVanillaDimension());
 		} else {
 			this.provider = WorldProvider.getProviderForDimension(0);
 		}
@@ -540,8 +538,8 @@ public abstract class World implements IBlockAccess {
 	}
 
 	/**
-	 * On the client, re-renders the block. On the server, sends the block to the client (which will re-render it),
-	 * including the tile entity description packet if applicable. Args: x, y, z
+	 * On the client, re-renders the block. On the server, sends the block to the client (which will re-render it only if
+	 * the ID or MD changes), including the tile entity description packet if applicable. Args: x, y, z
 	 */
 	public void markBlockForUpdate(int par1, int par2, int par3) {
 		for (int var4 = 0; var4 < this.worldAccesses.size(); ++var4) {
@@ -660,9 +658,9 @@ public abstract class World implements IBlockAccess {
 	}
 
 	/**
-	 * Returns true if the given block will receive a scheduled tick in the future. Args: X, Y, Z, blockID
+	 * Returns true if the given block will receive a scheduled tick in this tick. Args: X, Y, Z, blockID
 	 */
-	public boolean isBlockTickScheduled(int par1, int par2, int par3, int par4) {
+	public boolean isBlockTickScheduledThisTick(int par1, int par2, int par3, int par4) {
 		return false;
 	}
 
@@ -934,13 +932,16 @@ public abstract class World implements IBlockAccess {
 	}
 
 	/**
-	 * ray traces all blocks, including non-collideable ones
+	 * Performs a raycast against all blocks in the world except liquids.
 	 */
-	public MovingObjectPosition rayTraceBlocks(Vec3 par1Vec3, Vec3 par2Vec3) {
+	public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3) {
 		return this.rayTraceBlocks_do_do(par1Vec3, par2Vec3, false, false);
 	}
 
-	public MovingObjectPosition rayTraceBlocks_do(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3) {
+	/**
+	 * Performs a raycast against all blocks in the world, and optionally liquids.
+	 */
+	public MovingObjectPosition clip(Vec3 par1Vec3, Vec3 par2Vec3, boolean par3) {
 		return this.rayTraceBlocks_do_do(par1Vec3, par2Vec3, par3, false);
 	}
 
@@ -1195,28 +1196,20 @@ public abstract class World implements IBlockAccess {
 
 			this.getChunkFromChunkCoords(var2, var3).addEntity(par1Entity);
 			this.loadedEntityList.add(par1Entity);
-			this.obtainEntitySkin(par1Entity);
+			this.onEntityAdded(par1Entity);
 			return true;
 		}
 	}
 
-	/**
-	 * Start the skin for this entity downloading, if necessary, and increment its reference counter
-	 */
-	// Spout Start - protected to public
-	public void obtainEntitySkin(Entity par1Entity) {
-		// Spout End
+	//ToDo: Was obtainEntitySkin + Spoutcraft API code
+	protected void onEntityAdded(Entity par1Entity) {
 		for (int var2 = 0; var2 < this.worldAccesses.size(); ++var2) {
 			((IWorldAccess)this.worldAccesses.get(var2)).onEntityCreate(par1Entity);
 		}
 	}
 
-	/**
-	 * Decrement the reference counter for this entity's skin image data
-	 */
-	// Spout Start - protected to public
-	public void releaseEntitySkin(Entity par1Entity) {
-		// Spout End
+	//ToDo: was releaseEntitySkin + Spoutcraft API code
+	protected void onEntityRemoved(Entity par1Entity) {
 		for (int var2 = 0; var2 < this.worldAccesses.size(); ++var2) {
 			((IWorldAccess)this.worldAccesses.get(var2)).onEntityDestroy(par1Entity);
 		}
@@ -1261,7 +1254,7 @@ public abstract class World implements IBlockAccess {
 		}
 
 		this.loadedEntityList.remove(par1Entity);
-		this.releaseEntitySkin(par1Entity);
+		this.onEntityRemoved(par1Entity);
 	}
 
 	/**
@@ -1485,6 +1478,10 @@ public abstract class World implements IBlockAccess {
 	public int getMoonPhase() {
 		return this.provider.getMoonPhase(this.worldInfo.getWorldTime());
 	}
+	
+	public float func_130001_d() {
+		return WorldProvider.field_111203_a[this.provider.getMoonPhase(this.worldInfo.getWorldTime())];
+	}
 
 	/**
 	 * Return getCelestialAngle()*2*PI
@@ -1594,7 +1591,7 @@ public abstract class World implements IBlockAccess {
 	 */
 	public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5) {}
 
-	public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6) {}
+	public void scheduleBlockUpdateWithPriority(int par1, int par2, int par3, int par4, int par5, int par6) {}
 
 	/**
 	 * Schedules a block update from the saved information in a chunk. Called when the chunk is loaded.
@@ -1652,7 +1649,7 @@ public abstract class World implements IBlockAccess {
 		}
 
 		for (var1 = 0; var1 < this.unloadedEntityList.size(); ++var1) {
-			this.releaseEntitySkin((Entity)this.unloadedEntityList.get(var1));
+			this.onEntityRemoved((Entity)this.unloadedEntityList.get(var1));
 		}
 
 		this.unloadedEntityList.clear();
@@ -1695,7 +1692,7 @@ public abstract class World implements IBlockAccess {
 				}
 
 				this.loadedEntityList.remove(var1--);
-				this.releaseEntitySkin(var2);
+				this.onEntityRemoved(var2);
 			}
 
 			this.theProfiler.endSection();
@@ -1708,7 +1705,7 @@ public abstract class World implements IBlockAccess {
 		while (var14.hasNext()) {
 			TileEntity var9 = (TileEntity)var14.next();
 
-			if (!var9.isInvalid() && var9.func_70309_m() && this.blockExists(var9.xCoord, var9.yCoord, var9.zCoord)) {
+			if (!var9.isInvalid() && var9.hasWorldObj() && this.blockExists(var9.xCoord, var9.yCoord, var9.zCoord)) {
 				try {
 					var9.updateEntity();
 				} catch (Throwable var6) {
@@ -1801,10 +1798,11 @@ public abstract class World implements IBlockAccess {
 			par1Entity.prevRotationPitch = par1Entity.rotationPitch;
 
 			if (par2 && par1Entity.addedToChunk) {
+				++par1Entity.ticksExisted;
+				
 				if (par1Entity.ridingEntity != null) {
 					par1Entity.updateRidden();
-				} else {
-					++par1Entity.ticksExisted;
+				} else {				
 					par1Entity.onUpdate();
 				}
 			}
@@ -2132,7 +2130,7 @@ public abstract class World implements IBlockAccess {
 					double var16 = par2AxisAlignedBB.minY + (par2AxisAlignedBB.maxY - par2AxisAlignedBB.minY) * (double)var12;
 					double var18 = par2AxisAlignedBB.minZ + (par2AxisAlignedBB.maxZ - par2AxisAlignedBB.minZ) * (double)var13;
 
-					if (this.rayTraceBlocks(this.getWorldVec3Pool().getVecFromPool(var14, var16, var18), par1Vec3) == null) {
+					if (this.clip(this.getWorldVec3Pool().getVecFromPool(var14, var16, var18), par1Vec3) == null) {
 						++var9;
 					}
 
@@ -2318,7 +2316,7 @@ public abstract class World implements IBlockAccess {
 		return Block.isNormalCube(this.getBlockId(par1, par2, par3));
 	}
 
-	public boolean func_85174_u(int par1, int par2, int par3) {
+	public boolean isBlockFullCube(int par1, int par2, int par3) {
 		int var4 = this.getBlockId(par1, par2, par3);
 
 		if (var4 != 0 && Block.blocksList[var4] != null) {
@@ -3110,7 +3108,7 @@ public abstract class World implements IBlockAccess {
 		this.loadedEntityList.addAll(par1List);
 
 		for (int var2 = 0; var2 < par1List.size(); ++var2) {
-			this.obtainEntitySkin((Entity)par1List.get(var2));
+			this.onEntityAdded((Entity)par1List.get(var2));
 		}
 	}
 
@@ -3353,7 +3351,7 @@ public abstract class World implements IBlockAccess {
 	 */
 	public EntityPlayer getPlayerEntityByName(String par1Str) {
 		for (int var2 = 0; var2 < this.playerEntities.size(); ++var2) {
-			if (par1Str.equals(((EntityPlayer)this.playerEntities.get(var2)).username)) {
+			if (par1Str.equals(((EntityPlayer)this.playerEntities.get(var2)).getCommandSenderName())) {
 				return (EntityPlayer)this.playerEntities.get(var2);
 			}
 		}
@@ -3680,7 +3678,7 @@ public abstract class World implements IBlockAccess {
 	 */
 	public Calendar getCurrentDate() {
 		if (this.getTotalWorldTime() % 600L == 0L) {
-			this.theCalendar.setTimeInMillis(System.currentTimeMillis());
+			this.theCalendar.setTimeInMillis(MinecraftServer.func_130071_aq());
 		}
 
 		return this.theCalendar;
@@ -3721,6 +3719,27 @@ public abstract class World implements IBlockAccess {
 		return this.worldLogAgent;
 	}
 
+	public float func_110746_b(double par1, double par3, double par5) {
+		return this.func_110750_I(MathHelper.floor_double(par1), MathHelper.floor_double(par3), MathHelper.floor_double(par5));
+	}
+
+	public float func_110750_I(int par1, int par2, int par3) {
+		float var4 = 0.0F;
+		boolean var5 = this.difficultySetting == 3;
+
+		if (this.blockExists(par1, par2, par3)) {
+			float var6 = this.func_130001_d();
+			var4 += MathHelper.clamp_float((float)this.getChunkFromBlockCoords(par1, par3).field_111204_q / 3600000.0F, 0.0F, 1.0F) * (var5 ? 1.0F : 0.75F);
+			var4 += var6 * 0.25F;
+		}
+
+		if (this.difficultySetting < 2) {
+			var4 *= (float)this.difficultySetting / 2.0F;
+		}
+
+		return MathHelper.clamp_float(var4, 0.0F, var5 ? 1.5F : 1.0F);
+	}
+	
 	// Spout Start
 	public void doColorfulStuff() {
 		for(int i = 0; i < this.playerEntities.size(); ++i) {

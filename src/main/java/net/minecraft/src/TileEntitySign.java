@@ -14,6 +14,7 @@ public class TileEntitySign extends TileEntity {
 	public int columnBeingEdited;
 	// Spout End
 	private boolean isEditable = true;
+	private EntityPlayer field_142011_d;
 
 	// Spout Start
 	private byte text = -1; //-1 means invalid cache, 0 means false, 1 means true
@@ -85,5 +86,17 @@ public class TileEntitySign extends TileEntity {
 	 */
 	public void setEditable(boolean par1) {
 		this.isEditable = par1;
+		if (!par1) {
+			this.field_142011_d = null;
+		}
+	}
+
+	public void func_142010_a(EntityPlayer par1EntityPlayer) {
+		this.field_142011_d = par1EntityPlayer;
+	}
+
+	public EntityPlayer func_142009_b() {
+		return this.field_142011_d;
+	}
 	}
 }

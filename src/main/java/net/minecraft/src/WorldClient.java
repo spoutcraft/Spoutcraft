@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
-import net.minecraft.client.Minecraft;
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
@@ -49,7 +48,11 @@ public class WorldClient extends World {
 	public void tick() {
 		super.tick();
 		this.func_82738_a(this.getTotalWorldTime() + 1L);
-		this.setWorldTime(this.getWorldTime() + 1L);
+		
+		if (this.getGameRules().getGameRuleBooleanValue("doDaylightCycle")) {
+			this.setWorldTime(this.getWorldTime() + 1L);
+		}
+		
 		this.theProfiler.startSection("reEntryProcessing");
 
 		for (int var1 = 0; var1 < 10 && !this.entitySpawnQueue.isEmpty(); ++var1) {
@@ -155,26 +158,18 @@ public class WorldClient extends World {
 		this.entityList.remove(par1Entity);
 	}
 
-	/**
-	 * Start the skin for this entity downloading, if necessary, and increment its reference counter
-	 */
-	// Spout Start - protected to public
-	public void obtainEntitySkin(Entity par1Entity) {
-	// Spout End
-		super.obtainEntitySkin(par1Entity);
+	//ToDo: was Spoutcraft obtainEntitySkin
+	protected void onEntityAdded(Entity par1Entity) {
+		super.onEntityAdded(par1Entity);
 
 		if (this.entitySpawnQueue.contains(par1Entity)) {
 			this.entitySpawnQueue.remove(par1Entity);
 		}
 	}
 
-	/**
-	 * Decrement the reference counter for this entity's skin image data
-	 */
-	// Spout Start - protected to public
-	public void releaseEntitySkin(Entity par1Entity) {
-	// Spout End
-		super.releaseEntitySkin(par1Entity);
+	//ToDO: was Spoutcraft releaseEntitySkin
+	protected void onEntityRemoved(Entity par1Entity) {
+		super.onEntityRemoved(par1Entity);
 
 		if (this.entityList.contains(par1Entity)) {
 			if (par1Entity.isEntityAlive()) {
@@ -184,6 +179,7 @@ public class WorldClient extends World {
 			}
 		}
 	}
+
 
 	/**
 	 * Add an ID to Entity mapping to entityHashSet
@@ -320,7 +316,7 @@ public class WorldClient extends World {
 		}
 
 		for (var1 = 0; var1 < this.unloadedEntityList.size(); ++var1) {
-			this.releaseEntitySkin((Entity)this.unloadedEntityList.get(var1));
+			this.onEntityRemoved((Entity)this.unloadedEntityList.get(var1));
 		}
 
 		this.unloadedEntityList.clear();
@@ -346,7 +342,7 @@ public class WorldClient extends World {
 				}
 
 				this.loadedEntityList.remove(var1--);
-				this.releaseEntitySkin(var2);
+				this.onEntityRemoved(var2);
 			}
 		}
 	}
@@ -358,6 +354,8 @@ public class WorldClient extends World {
 		CrashReportCategory var2 = super.addWorldInfoToCrashReport(par1CrashReport);
 		var2.addCrashSectionCallable("Forced entities", new CallableMPL1(this));
 		var2.addCrashSectionCallable("Retry entities", new CallableMPL2(this));
+		var2.addCrashSectionCallable("Server brand", new WorldClientINNER3(this));
+		var2.addCrashSectionCallable("Server type", new WorldClientINNER4(this));
 		return var2;
 	}
 
@@ -391,11 +389,29 @@ public class WorldClient extends World {
 		this.worldScoreboard = par1Scoreboard;
 	}
 
+	/**
+	 * Sets the world time.
+	 */
+	public void setWorldTime(long par1) {
+		if (par1 < 0L) {
+			par1 = -par1;
+			this.getGameRules().setOrCreateGameRule("doDaylightCycle", "false");
+		} else {
+			this.getGameRules().setOrCreateGameRule("doDaylightCycle", "true");
+		}
+
+		super.setWorldTime(par1);
+	}
+	
 	static Set getEntityList(WorldClient par0WorldClient) {
 		return par0WorldClient.entityList;
 	}
 
 	static Set getEntitySpawnQueue(WorldClient par0WorldClient) {
 		return par0WorldClient.entitySpawnQueue;
+	}
+	
+	static Minecraft func_142030_c(WorldClient par0WorldClient) {
+		return par0WorldClient.mc;
 	}
 }

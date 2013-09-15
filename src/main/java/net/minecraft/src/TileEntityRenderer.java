@@ -28,11 +28,11 @@ public class TileEntityRenderer {
 	public static double staticPlayerZ;
 
 	/** The RenderEngine instance used by the TileEntityRenderer */
-	public RenderEngine renderEngine;
+	public TextureManager renderEngine;
 
 	/** Reference to the World object. */
 	public World worldObj;
-	public EntityLiving entityLivingPlayer;
+	public EntityLivingBase entityLivingPlayer;
 	public float playerYaw;
 	public float playerPitch;
 
@@ -96,19 +96,19 @@ public class TileEntityRenderer {
 	 * bound EntityLiving's interpolated pitch, yaw and position. Args: world, renderengine, fontrenderer, entityliving,
 	 * partialTickTime
 	 */
-	public void cacheActiveRenderInfo(World par1World, RenderEngine par2RenderEngine, FontRenderer par3FontRenderer, EntityLiving par4EntityLiving, float par5) {
+	public void cacheActiveRenderInfo(World par1World, TextureManager par2TextureManager, FontRenderer par3FontRenderer, EntityLivingBase par4EntityLivingBase, float par5) {
 		if (this.worldObj != par1World) {
 			this.setWorld(par1World);
 		}
 
-		this.renderEngine = par2RenderEngine;
-		this.entityLivingPlayer = par4EntityLiving;
+		this.renderEngine = par2TextureManager;
+		this.entityLivingPlayer = par4EntityLivingBase;
 		this.fontRenderer = par3FontRenderer;
-		this.playerYaw = par4EntityLiving.prevRotationYaw + (par4EntityLiving.rotationYaw - par4EntityLiving.prevRotationYaw) * par5;
-		this.playerPitch = par4EntityLiving.prevRotationPitch + (par4EntityLiving.rotationPitch - par4EntityLiving.prevRotationPitch) * par5;
-		this.playerX = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par5;
-		this.playerY = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par5;
-		this.playerZ = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par5;
+		this.playerYaw = par4EntityLivingBase.prevRotationYaw + (par4EntityLivingBase.rotationYaw - par4EntityLivingBase.prevRotationYaw) * par5;
+		this.playerPitch = par4EntityLivingBase.prevRotationPitch + (par4EntityLivingBase.rotationPitch - par4EntityLivingBase.prevRotationPitch) * par5;
+		this.playerX = par4EntityLivingBase.lastTickPosX + (par4EntityLivingBase.posX - par4EntityLivingBase.lastTickPosX) * (double)par5;
+		this.playerY = par4EntityLivingBase.lastTickPosY + (par4EntityLivingBase.posY - par4EntityLivingBase.lastTickPosY) * (double)par5;
+		this.playerZ = par4EntityLivingBase.lastTickPosZ + (par4EntityLivingBase.posZ - par4EntityLivingBase.lastTickPosZ) * (double)par5;
 	}
 
 	/**

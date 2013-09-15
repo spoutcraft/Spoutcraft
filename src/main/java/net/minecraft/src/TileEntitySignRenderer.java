@@ -1,18 +1,15 @@
 package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
-// MCPatcher Start - Unused import
-//import com.prupe.mcpatcher.mod.ColorizeWorld;
-// MCPatcher End
 // Spout Start
-import net.minecraft.client.Minecraft;
+import com.prupe.mcpatcher.cc.ColorizeWorld;
 import org.spoutcraft.client.config.Configuration;
 // Spout End
 
 public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 
 	/** The ModelSign instance used by the TileEntitySignRenderer */
-	private ModelSign modelSign = new ModelSign();
+	private final ModelSign modelSign = new ModelSign();
 
 	public void renderTileEntitySignAt(TileEntitySign par1TileEntitySign, double par2, double par4, double par6, float par8) {
 		Block var9 = par1TileEntitySign.getBlockType();
@@ -47,7 +44,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 			this.modelSign.signStick.showModel = false;
 		}
 
-		this.bindTextureByName("/item/sign.png");
+		this.func_110628_a(field_110638_a);
 		GL11.glPushMatrix();
 		GL11.glScalef(var10, -var10, -var10);
 		this.modelSign.renderSign();

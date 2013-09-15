@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.ColorizeWorld;
+import com.prupe.mcpatcher.cc.ColorizeWorld;
 // MCPatcher End
 // Spout Start
 import org.spoutcraft.api.gui.Color;

@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import org.lwjgl.opengl.GL11;
 // MCPatcher Start
-import com.prupe.mcpatcher.mod.CTMUtils;
-import com.prupe.mcpatcher.mod.RenderPass;
+import com.prupe.mcpatcher.ctm.CTMUtils;
+import com.prupe.mcpatcher.ctm.RenderPass;
 // MCPatcher End
 // Spout Start
 import net.minecraft.client.Minecraft;
@@ -37,7 +37,7 @@ public class WorldRenderer {
 	public World worldObj;
 	private int glRenderList = -1;
 	private static Tessellator tessellator = Tessellator.instance;
-	public static int chunksUpdated = 0;
+	public static int chunksUpdated;
 	public int posX;
 	public int posY;
 	public int posZ;
@@ -59,7 +59,7 @@ public class WorldRenderer {
 
 	/** Pos Z clipped */
 	public int posZClip;
-	public boolean isInFrustum = false;
+	public boolean isInFrustum;
 
 	/** Should this renderer skip this render pass */
 	// MCPatcher Start
@@ -95,7 +95,7 @@ public class WorldRenderer {
 
 	/** Is the chunk lit */
 	public boolean isChunkLit;
-	private boolean isInitialized = false;
+	private boolean isInitialized;
 
 	/** All the tile entities that have special rendering code for this chunk */
 	public List tileEntityRenderers = new ArrayList();
