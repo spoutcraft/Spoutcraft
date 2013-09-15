@@ -98,5 +98,4 @@ public class TileEntitySign extends TileEntity {
 	public EntityPlayer func_142009_b() {
 		return this.field_142011_d;
 	}
-	}
 }

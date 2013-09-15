@@ -1354,7 +1354,7 @@ public class RenderBlocks {
 		int var7 = BlockPistonExtension.getDirectionMeta(var6);
 		float var8 = 0.25F;
 		float var9 = 0.375F;
-		float var10 = 0.625F
+		float var10 = 0.625F;
 		float var11 = par1Block.getBlockBrightness(this.blockAccess, par2, par3, par4);
 		float var12 = par5 ? 1.0F : 0.5F;
 		double var13 = par5 ? 16.0D : 8.0D;
