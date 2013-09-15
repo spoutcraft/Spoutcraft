@@ -1,10 +1,10 @@
 package com.prupe.mcpatcher.mob;
 
-import java.util.LinkedHashMap;
-
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
-
+import com.prupe.mcpatcher.mob.MobRandomizer$1;
+import com.prupe.mcpatcher.mob.MobRandomizer$ExtraInfo;
+import java.util.LinkedHashMap;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLivingBase;
 import net.minecraft.src.ResourceLocation;
@@ -16,7 +16,7 @@ public class MobRandomizer {
 	static void init() {}
 
 	public static ResourceLocation randomTexture(EntityLivingBase entity, ResourceLocation texture) {
-		if (texture != null && texture.func_110623_a().endsWith(".png")) {
+		if (texture != null && texture.getResourcePath().endsWith(".png")) {
 			String key = texture.toString() + ":" + entity.entityId;
 			ResourceLocation newTexture = (ResourceLocation)cache.get(key);
 

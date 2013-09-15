@@ -3,7 +3,6 @@ package com.prupe.mcpatcher.cc;
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
-
 import net.minecraft.src.ResourceLocation;
 
 final class ColorMap {

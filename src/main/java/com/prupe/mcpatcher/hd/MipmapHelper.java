@@ -1,5 +1,8 @@
 package com.prupe.mcpatcher.hd;
 
+import com.prupe.mcpatcher.Config;
+import com.prupe.mcpatcher.MCLogger;
+import com.prupe.mcpatcher.TexturePackAPI;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
@@ -16,20 +19,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
-
+import java.util.Map.Entry;
+import net.minecraft.src.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
-
-import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
-import com.prupe.mcpatcher.TexturePackAPI;
-
-import net.minecraft.src.ResourceLocation;
 
 public class MipmapHelper {
 	private static final MCLogger logger = MCLogger.getLogger("Mipmap");
@@ -99,7 +96,7 @@ public class MipmapHelper {
 		logger.finer("setupTexture(%s, %d, %dx%d, %s, %s)", new Object[] {textureName, Integer.valueOf(glTexture), Integer.valueOf(width), Integer.valueOf(height), Boolean.valueOf(blur), Boolean.valueOf(clamp)});
 		int[] rgb = new int[width * height];
 		image.getRGB(0, 0, width, height, rgb, 0, width);
-		setupTexture(rgb, width, height, 0, 0, blur, clamp, textureName.func_110623_a());
+		setupTexture(rgb, width, height, 0, 0, blur, clamp, textureName.getResourcePath());
 		return glTexture;
 	}
 

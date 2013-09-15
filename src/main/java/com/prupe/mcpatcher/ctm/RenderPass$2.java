@@ -1,11 +1,10 @@
 package com.prupe.mcpatcher.ctm;
 
-import java.util.Properties;
-
 import com.prupe.mcpatcher.BlendMethod;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
+import java.util.Properties;
 
 final class RenderPass$2 extends TexturePackChangeHandler {
 	RenderPass$2(String x0, int x1) {

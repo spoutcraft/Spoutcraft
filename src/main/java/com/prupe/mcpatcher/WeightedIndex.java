@@ -1,5 +1,8 @@
 package com.prupe.mcpatcher;
 
+import com.prupe.mcpatcher.WeightedIndex$1;
+import com.prupe.mcpatcher.WeightedIndex$2;
+
 public abstract class WeightedIndex {
 	private static final long K1 = -5435081209227447693L;
 	private static final long KMUL = -7070675565921424023L;

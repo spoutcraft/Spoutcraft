@@ -1,12 +1,11 @@
 package com.prupe.mcpatcher.ctm;
 
-import java.util.Arrays;
-import java.util.Iterator;
-
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
 import com.prupe.mcpatcher.TileLoader;
-
+import com.prupe.mcpatcher.ctm.TileOverrideImpl$BetterGrass;
+import java.util.Arrays;
+import java.util.Iterator;
 import net.minecraft.src.Block;
 import net.minecraft.src.ResourceLocation;
 

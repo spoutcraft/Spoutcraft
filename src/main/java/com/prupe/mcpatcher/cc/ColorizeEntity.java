@@ -1,11 +1,9 @@
 package com.prupe.mcpatcher.cc;
 
-import java.util.Properties;
-import java.util.Random;
-
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
-
+import java.util.Properties;
+import java.util.Random;
 import net.minecraft.src.EntitySheep;
 import net.minecraft.src.ItemDye;
 import net.minecraft.src.ResourceLocation;

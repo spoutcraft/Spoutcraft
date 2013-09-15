@@ -1,22 +1,19 @@
 package com.prupe.mcpatcher.cc;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
-import org.lwjgl.opengl.GL11;
-
 import com.prupe.mcpatcher.Config;
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
-
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Map.Entry;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class ColorizeBlock {
 	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");

@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher;
 
 import java.util.BitSet;
-
 import org.lwjgl.input.Keyboard;
 
 public class InputHandler {

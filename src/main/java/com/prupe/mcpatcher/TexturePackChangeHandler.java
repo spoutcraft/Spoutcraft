@@ -1,12 +1,12 @@
 package com.prupe.mcpatcher;
 
+import com.prupe.mcpatcher.TexturePackChangeHandler$1;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-
 import net.minecraft.src.Minecraft;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.ResourcePack;
@@ -51,13 +51,12 @@ public abstract class TexturePackChangeHandler {
 	}
 
 	public static void scheduleTexturePackRefresh() {
-		//ToDo: Fix this.
 		//MCPatcherUtils.getMinecraft().scheduleTexturePackRefresh();
 	}
 
 	public static void register(TexturePackChangeHandler handler) {
 		if (handler != null) {
-			if (Minecraft.getMinecraft().func_110442_L() != null) {
+			if (Minecraft.getMinecraft().getResourceManager() != null) {
 				try {
 					logger.info("initializing %s...", new Object[] {handler.name});
 					handler.initialize();
@@ -138,11 +137,11 @@ public abstract class TexturePackChangeHandler {
 				}
 			}
 
-			TextureManager textureManager1 = MCPatcherUtils.getMinecraft().func_110434_K();
+			TextureManager textureManager1 = MCPatcherUtils.getMinecraft().getTextureManager();
 
 			if (textureManager1 != null) {
 				HashSet texturesToUnload2 = new HashSet();
-				Iterator i$ = textureManager1.field_110585_a.entrySet().iterator();
+				Iterator i$ = textureManager1.mapTextureObjects.entrySet().iterator();
 
 				while (i$.hasNext()) {
 					Entry resource = (Entry)i$.next();

@@ -1,18 +1,18 @@
 package com.prupe.mcpatcher.ctm;
 
-import org.lwjgl.opengl.GL11;
-
 import com.prupe.mcpatcher.BlendMethod;
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
-
+import com.prupe.mcpatcher.ctm.RenderPass$1;
+import com.prupe.mcpatcher.ctm.RenderPass$2;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityLivingBase;
 import net.minecraft.src.EntityRenderer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderGlobal;
 import net.minecraft.src.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class RenderPass {
 	private static final MCLogger logger = MCLogger.getLogger("Better Glass");

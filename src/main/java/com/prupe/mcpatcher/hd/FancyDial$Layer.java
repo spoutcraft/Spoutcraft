@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.hd;
 
 import com.prupe.mcpatcher.BlendMethod;
-
 import net.minecraft.src.ResourceLocation;
 
 class FancyDial$Layer {

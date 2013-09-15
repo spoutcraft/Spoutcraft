@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
-
 import net.minecraft.src.Icon;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.TextureMap;
@@ -39,7 +38,7 @@ public class TessellatorUtils {
 					mapName = textureMap.toString();
 				}
 
-				logger.fine("new Tessellator for texture map %s gl texture %d", new Object[] {mapName, Integer.valueOf(textureMap.field_110553_a)});
+				logger.fine("new Tessellator for texture map %s gl texture %d", new Object[] {mapName, Integer.valueOf(textureMap.glTextureId)});
 				newTessellator = new Tessellator(2097152);
 				copyFields(tessellator, newTessellator, true);
 				newTessellator.textureMap = textureMap;

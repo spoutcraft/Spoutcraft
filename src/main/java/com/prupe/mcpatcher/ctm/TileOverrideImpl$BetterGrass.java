@@ -1,10 +1,8 @@
 package com.prupe.mcpatcher.ctm;
 
+import com.prupe.mcpatcher.TileLoader;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.prupe.mcpatcher.TileLoader;
-
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;

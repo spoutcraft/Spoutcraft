@@ -1,9 +1,7 @@
 package com.prupe.mcpatcher.hd;
 
-import java.util.Iterator;
-
 import com.prupe.mcpatcher.TexturePackChangeHandler;
-
+import java.util.Iterator;
 import net.minecraft.src.FontRenderer;
 
 final class FontUtils$1 extends TexturePackChangeHandler {
@@ -20,7 +18,7 @@ final class FontUtils$1 extends TexturePackChangeHandler {
 
 		while (i$.hasNext()) {
 			FontRenderer renderer = (FontRenderer)i$.next();
-			renderer.func_111272_d();
+			renderer.readFontTexture();
 		}
 	}
 }

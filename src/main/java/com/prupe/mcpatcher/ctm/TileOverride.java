@@ -1,5 +1,18 @@
 package com.prupe.mcpatcher.ctm;
 
+import com.prupe.mcpatcher.MCLogger;
+import com.prupe.mcpatcher.MCPatcherUtils;
+import com.prupe.mcpatcher.TexturePackAPI;
+import com.prupe.mcpatcher.TileLoader;
+import com.prupe.mcpatcher.ctm.TileOverrideImpl$CTM;
+import com.prupe.mcpatcher.ctm.TileOverrideImpl$Fixed;
+import com.prupe.mcpatcher.ctm.TileOverrideImpl$Horizontal;
+import com.prupe.mcpatcher.ctm.TileOverrideImpl$HorizontalVertical;
+import com.prupe.mcpatcher.ctm.TileOverrideImpl$Random1;
+import com.prupe.mcpatcher.ctm.TileOverrideImpl$Repeat;
+import com.prupe.mcpatcher.ctm.TileOverrideImpl$Top;
+import com.prupe.mcpatcher.ctm.TileOverrideImpl$Vertical;
+import com.prupe.mcpatcher.ctm.TileOverrideImpl$VerticalHorizontal;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,12 +22,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.prupe.mcpatcher.MCLogger;
-import com.prupe.mcpatcher.MCPatcherUtils;
-import com.prupe.mcpatcher.TexturePackAPI;
-import com.prupe.mcpatcher.TileLoader;
-
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Icon;
@@ -142,8 +149,8 @@ abstract class TileOverride implements ITileOverride {
 
 	protected TileOverride(ResourceLocation propertiesFile, Properties properties, TileLoader tileLoader) {
 		this.propertiesFile = propertiesFile;
-		this.texturesDirectory = propertiesFile.func_110623_a().replaceFirst("/[^/]*$", "");
-		this.baseFilename = propertiesFile.func_110623_a().replaceFirst(".*/", "").replaceFirst("\\.properties$", "");
+		this.texturesDirectory = propertiesFile.getResourcePath().replaceFirst("/[^/]*$", "");
+		this.baseFilename = propertiesFile.getResourcePath().replaceFirst(".*/", "").replaceFirst("\\.properties$", "");
 		this.tileLoader = tileLoader;
 		this.loadIcons(properties);
 
@@ -670,7 +677,7 @@ abstract class TileOverride implements ITileOverride {
 	abstract Icon getTileImpl(IBlockAccess var1, Block var2, Icon var3, int var4, int var5, int var6, int var7);
 
 	abstract Icon getTileImpl(Block var1, Icon var2, int var3, int var4);
-	
+
 	static {
 		try {
 			Class e = Class.forName("com.prupe.mcpatcher.cc.BiomeHelper");

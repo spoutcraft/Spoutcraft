@@ -1,5 +1,11 @@
 package com.prupe.mcpatcher.hd;
 
+import com.prupe.mcpatcher.Config;
+import com.prupe.mcpatcher.MCLogger;
+import com.prupe.mcpatcher.MCPatcherUtils;
+import com.prupe.mcpatcher.TexturePackAPI;
+import com.prupe.mcpatcher.TexturePackChangeHandler;
+import com.prupe.mcpatcher.hd.CustomAnimation$1;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
@@ -10,19 +16,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
-
+import java.util.Map.Entry;
+import net.minecraft.src.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
-
-import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
-import com.prupe.mcpatcher.MCPatcherUtils;
-import com.prupe.mcpatcher.TexturePackAPI;
-import com.prupe.mcpatcher.TexturePackChangeHandler;
-
-import net.minecraft.src.ResourceLocation;
 
 public class CustomAnimation implements Comparable<CustomAnimation> {
 	private static final MCLogger logger = MCLogger.getLogger("Custom Animations", "Animation");

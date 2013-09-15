@@ -1,17 +1,14 @@
 package com.prupe.mcpatcher.hd;
 
-import java.awt.image.BufferedImage;
-import java.lang.reflect.Field;
-
-import org.lwjgl.opengl.PixelFormat;
-
 import com.prupe.mcpatcher.Config;
 import com.prupe.mcpatcher.MCLogger;
-
+import java.awt.image.BufferedImage;
+import java.lang.reflect.Field;
 import net.minecraft.src.Resource;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.SimpleResource;
 import net.minecraft.src.TextureAtlasSprite;
+import org.lwjgl.opengl.PixelFormat;
 
 public class AAHelper {
 	private static final MCLogger logger = MCLogger.getLogger("Mipmap");

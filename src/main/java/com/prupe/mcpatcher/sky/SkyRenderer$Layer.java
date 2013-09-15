@@ -1,15 +1,12 @@
 package com.prupe.mcpatcher.sky;
 
-import java.util.Properties;
-
-import org.lwjgl.opengl.GL11;
-
 import com.prupe.mcpatcher.BlendMethod;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
-
+import java.util.Properties;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.Tessellator;
+import org.lwjgl.opengl.GL11;
 
 class SkyRenderer$Layer {
 	private static final int SECS_PER_DAY = 86400;
@@ -43,7 +40,7 @@ class SkyRenderer$Layer {
 	}
 
 	private boolean readTexture() {
-		this.texture = TexturePackAPI.parseResourceLocation(this.propertiesName, this.properties.getProperty("source", this.propertiesName.func_110623_a().replaceFirst("\\.properties$", ".png")));
+		this.texture = TexturePackAPI.parseResourceLocation(this.propertiesName, this.properties.getProperty("source", this.propertiesName.getResourcePath().replaceFirst("\\.properties$", ".png")));
 		return TexturePackAPI.hasResource(this.texture) ? true : this.addError("source texture %s not found", new Object[] {this.texture});
 	}
 

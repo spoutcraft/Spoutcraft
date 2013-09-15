@@ -1,5 +1,7 @@
 package com.prupe.mcpatcher;
 
+import com.prupe.mcpatcher.TexturePackAPI$1;
+import com.prupe.mcpatcher.TexturePackAPI$2;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.File;
@@ -10,15 +12,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.src.AbstractResourcePack;
 import net.minecraft.src.AbstractTexture;
 import net.minecraft.src.DefaultResourcePack;
@@ -33,6 +32,7 @@ import net.minecraft.src.SimpleReloadableResourceManager;
 import net.minecraft.src.TextureManager;
 import net.minecraft.src.TextureMap;
 import net.minecraft.src.TextureObject;
+import org.lwjgl.opengl.GL11;
 
 public class TexturePackAPI {
 	private static final MCLogger logger = MCLogger.getLogger("Texture Pack");
@@ -45,14 +45,14 @@ public class TexturePackAPI {
 		ResourceManager resourceManager = getResourceManager();
 
 		if (resourceManager instanceof SimpleReloadableResourceManager) {
-			Iterator i$ = ((SimpleReloadableResourceManager)resourceManager).field_110548_a.entrySet().iterator();
+			Iterator i$ = ((SimpleReloadableResourceManager)resourceManager).domainResourceManagers.entrySet().iterator();
 
 			while (i$.hasNext()) {
 				Entry entry = (Entry)i$.next();
 
 				if (namespace == null || namespace.equals(entry.getKey())) {
 					FallbackResourceManager resourceManager1 = (FallbackResourceManager)entry.getValue();
-					list.addAll(resourceManager1.field_110540_a);
+					list.addAll(resourceManager1.resourcePacks);
 				}
 			}
 		}
@@ -62,7 +62,7 @@ public class TexturePackAPI {
 	}
 
 	public static ResourceManager getResourceManager() {
-		return Minecraft.getMinecraft().func_110442_L();
+		return Minecraft.getMinecraft().getResourceManager();
 	}
 
 	public static boolean isDefaultTexturePack() {
@@ -76,9 +76,9 @@ public class TexturePackAPI {
 	public static boolean hasResource(ResourceLocation resource) {
 		if (resource == null) {
 			return false;
-		} else if (resource.func_110623_a().endsWith(".png")) {
+		} else if (resource.getResourcePath().endsWith(".png")) {
 			return getImage(resource) != null;
-		} else if (resource.func_110623_a().endsWith(".properties")) {
+		} else if (resource.getResourcePath().endsWith(".properties")) {
 			return getProperties(resource) != null;
 		} else {
 			InputStream is = getInputStream(resource);
@@ -101,7 +101,7 @@ public class TexturePackAPI {
 	}
 
 	public static ResourceLocation transformResourceLocation(ResourceLocation resource, String oldExt, String newExt) {
-		return new ResourceLocation(resource.func_110624_b(), resource.func_110623_a().replaceFirst(Pattern.quote(oldExt) + "$", newExt));
+		return new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath().replaceFirst(Pattern.quote(oldExt) + "$", newExt));
 	}
 
 	public static ResourceLocation parseResourceLocation(ResourceLocation baseResource, String path) {
@@ -123,7 +123,7 @@ public class TexturePackAPI {
 			}
 
 			int colon = path.indexOf(58);
-			return colon >= 0 ? new ResourceLocation(path.substring(0, colon), path.substring(colon + 1)) : (path.startsWith("~/") ? new ResourceLocation(baseResource.func_110624_b(), "mcpatcher/" + path.substring(2)) : (path.startsWith("./") ? new ResourceLocation(baseResource.func_110624_b(), baseResource.func_110623_a().replaceFirst("[^/]+$", "") + path.substring(2)) : new ResourceLocation(baseResource.func_110624_b(), path)));
+			return colon >= 0 ? new ResourceLocation(path.substring(0, colon), path.substring(colon + 1)) : (path.startsWith("~/") ? new ResourceLocation(baseResource.getResourceDomain(), "mcpatcher/" + path.substring(2)) : (path.startsWith("./") ? new ResourceLocation(baseResource.getResourceDomain(), baseResource.getResourcePath().replaceFirst("[^/]+$", "") + path.substring(2)) : new ResourceLocation(baseResource.getResourceDomain(), path)));
 		} else {
 			return null;
 		}
@@ -157,7 +157,7 @@ public class TexturePackAPI {
 			ResourcePack resourcePack = (ResourcePack)i$.next();
 
 			if (resourcePack instanceof FileResourcePack) {
-				ZipFile base = ((FileResourcePack)resourcePack).field_110600_d;
+				ZipFile base = ((FileResourcePack)resourcePack).resourcePackZipFile;
 
 				if (base != null) {
 					findResources(base, namespace, "assets/" + namespace, directory, suffix, recursive, directories, resources);
@@ -167,14 +167,14 @@ public class TexturePackAPI {
 
 				if (resourcePack instanceof DefaultResourcePack) {
 					if ("minecraft".equals(namespace)) {
-						base1 = ((DefaultResourcePack)resourcePack).field_110607_c;
+						base1 = ((DefaultResourcePack)resourcePack).fileAssets;
 
 						if (base1 != null && base1.isDirectory()) {
 							findResources(base1, namespace, directory, suffix, recursive, directories, resources);
 						}
 					}
 				} else if (resourcePack instanceof AbstractResourcePack) {
-					base1 = ((AbstractResourcePack)resourcePack).field_110597_b;
+					base1 = ((AbstractResourcePack)resourcePack).resourcePackFile;
 
 					if (base1 != null && base1.isDirectory()) {
 						base1 = new File(base1, "assets/" + namespace);
@@ -248,8 +248,8 @@ public class TexturePackAPI {
 		if (resource == null) {
 			return -1;
 		} else {
-			TextureObject texture = MCPatcherUtils.getMinecraft().func_110434_K().func_110581_b(resource);
-			return texture instanceof AbstractTexture ? ((AbstractTexture)texture).field_110553_a : -1;
+			TextureObject texture = MCPatcherUtils.getMinecraft().getTextureManager().getTexture(resource);
+			return texture instanceof AbstractTexture ? ((AbstractTexture)texture).glTextureId : -1;
 		}
 	}
 
@@ -258,7 +258,7 @@ public class TexturePackAPI {
 	}
 
 	public static void bindTexture(ResourceLocation resource) {
-		MCPatcherUtils.getMinecraft().func_110434_K().func_110577_a(resource);
+		MCPatcherUtils.getMinecraft().getTextureManager().bindTexture(resource);
 	}
 
 	public static void bindTexture(int texture) {
@@ -268,8 +268,8 @@ public class TexturePackAPI {
 	}
 
 	public static void unloadTexture(ResourceLocation resource) {
-		TextureManager textureManager = MCPatcherUtils.getMinecraft().func_110434_K();
-		TextureObject texture = textureManager.func_110581_b(resource);
+		TextureManager textureManager = MCPatcherUtils.getMinecraft().getTextureManager();
+		TextureObject texture = textureManager.getTexture(resource);
 
 		if (texture != null && !(texture instanceof TextureMap) && !(texture instanceof DynamicTexture)) {
 			if (texture instanceof AbstractTexture) {
@@ -277,7 +277,7 @@ public class TexturePackAPI {
 			}
 
 			logger.finer("unloading texture %s", new Object[] {resource});
-			textureManager.field_110585_a.remove(resource);
+			textureManager.mapTextureObjects.remove(resource);
 		}
 	}
 
@@ -289,7 +289,7 @@ public class TexturePackAPI {
 
 	protected InputStream getInputStreamImpl(ResourceLocation resource) {
 		try {
-			return Minecraft.getMinecraft().func_110442_L().func_110536_a(resource).func_110527_b();
+			return Minecraft.getMinecraft().getResourceManager().getResource(resource).getInputStream();
 		} catch (IOException var3) {
 			return null;
 		}

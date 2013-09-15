@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.hd;
 
 import com.prupe.mcpatcher.MCLogger;
-
 import net.minecraft.src.TextureAtlasSprite;
 
 public class BorderedTexture extends TextureAtlasSprite {
@@ -28,8 +27,8 @@ public class BorderedTexture extends TextureAtlasSprite {
 		this.tilesheet = tilesheet;
 	}
 
-	public void func_110971_a(int tilesheetWidth, int tilesheetHeight, int x0, int y0, boolean flipped) {
-		super.func_110971_a(tilesheetWidth, tilesheetHeight, x0, y0, flipped);
+	public void initSprite(int tilesheetWidth, int tilesheetHeight, int x0, int y0, boolean flipped) {
+		super.initSprite(tilesheetWidth, tilesheetHeight, x0, y0, flipped);
 		this.tilesheetWidth = tilesheetWidth;
 		this.tilesheetHeight = tilesheetHeight;
 		this.x0 = x0;
@@ -93,8 +92,8 @@ public class BorderedTexture extends TextureAtlasSprite {
 
 	void setBorderWidth(int border) {
 		this.border = border;
-		int width = this.getOriginX();
-		int height = this.getOriginY();
+		int width = this.getIconWidth();
+		int height = this.getIconHeight();
 
 		if (width > 0 && height > 0) {
 			logger.finer("setBorderWidth(%s, %s, %d): %dx%d -> %dx%d", new Object[] {this.tilesheet, this.getIconName(), Integer.valueOf(border), Integer.valueOf(width - 2 * border), Integer.valueOf(height - 2 * border), Integer.valueOf(width), Integer.valueOf(height)});

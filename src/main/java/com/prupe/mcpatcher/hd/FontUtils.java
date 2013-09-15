@@ -1,17 +1,16 @@
 package com.prupe.mcpatcher.hd;
 
-import java.awt.image.BufferedImage;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
-
 import com.prupe.mcpatcher.Config;
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
-
+import com.prupe.mcpatcher.hd.FontUtils$1;
+import java.awt.image.BufferedImage;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Set;
+import java.util.Map.Entry;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.ResourceLocation;
 
@@ -33,8 +32,8 @@ public class FontUtils {
 		}
 
 		if (fontRenderer.hdFont == null) {
-			String namespace = fontRenderer.defaultFont.func_110624_b();
-			String name = fontRenderer.defaultFont.func_110623_a().replaceAll(".*/", "");
+			String namespace = fontRenderer.defaultFont.getResourceDomain();
+			String name = fontRenderer.defaultFont.getResourcePath().replaceAll(".*/", "");
 			fontRenderer.hdFont = new ResourceLocation(namespace, "mcpatcher/font/" + name);
 		}
 
@@ -190,7 +189,7 @@ public class FontUtils {
 
 	public static ResourceLocation getUnicodePage(ResourceLocation resource) {
 		if (enable && resource != null) {
-			ResourceLocation newResource = new ResourceLocation(resource.func_110624_b(), resource.func_110623_a().replaceFirst("^textures/", "mcpatcher/"));
+			ResourceLocation newResource = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath().replaceFirst("^textures/", "mcpatcher/"));
 
 			if (TexturePackAPI.hasResource(newResource)) {
 				logger.fine("using %s instead of %s", new Object[] {newResource, resource});

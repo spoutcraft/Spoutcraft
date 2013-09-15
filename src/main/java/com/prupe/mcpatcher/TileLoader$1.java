@@ -33,6 +33,7 @@ final class TileLoader$1 extends TexturePackChangeHandler {
 		TileLoader.access$300().clear();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void afterChange() {
 		while (true) {
 			Iterator i$ = TileLoader.access$200().iterator();
@@ -56,7 +57,7 @@ final class TileLoader$1 extends TexturePackChangeHandler {
 					TileLoader.access$800().fine("new TextureAtlas(%s)", new Object[] {mapName});
 					TextureMap map = new TextureMap(2, mapName);
 					try {
-						map.func_110551_a(TexturePackAPI.getResourceManager());
+						map.loadTexture(TexturePackAPI.getResourceManager());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

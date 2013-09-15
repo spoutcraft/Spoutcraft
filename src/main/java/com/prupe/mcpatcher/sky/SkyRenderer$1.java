@@ -2,7 +2,6 @@ package com.prupe.mcpatcher.sky;
 
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
-
 import net.minecraft.src.WorldClient;
 
 final class SkyRenderer$1 extends TexturePackChangeHandler {

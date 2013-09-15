@@ -1,15 +1,14 @@
 package com.prupe.mcpatcher.mob;
 
+import com.prupe.mcpatcher.MCLogger;
+import com.prupe.mcpatcher.TexturePackAPI;
+import com.prupe.mcpatcher.mob.MobRuleList$MobRuleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import com.prupe.mcpatcher.MCLogger;
-import com.prupe.mcpatcher.TexturePackAPI;
-
 import net.minecraft.src.ResourceLocation;
 
 class MobRuleList {
@@ -23,8 +22,8 @@ class MobRuleList {
 
 	private MobRuleList(ResourceLocation baseSkin) {
 		this.baseSkin = baseSkin;
-		String newPath = baseSkin.func_110623_a().replaceFirst("^textures/entity/", "mcpatcher/mob/");
-		ResourceLocation newSkin = new ResourceLocation(baseSkin.func_110624_b(), newPath);
+		String newPath = baseSkin.getResourcePath().replaceFirst("^textures/entity/", "mcpatcher/mob/");
+		ResourceLocation newSkin = new ResourceLocation(baseSkin.getResourceDomain(), newPath);
 		this.allSkins = new ArrayList();
 		this.allSkins.add(baseSkin);
 		int filename = 2;
@@ -41,7 +40,7 @@ class MobRuleList {
 				} else {
 					logger.fine("found %d variations for %s", new Object[] {Integer.valueOf(this.skinCount), baseSkin});
 					ResourceLocation var10 = TexturePackAPI.transformResourceLocation(newSkin, ".png", ".properties");
-					altFilename = new ResourceLocation(newSkin.func_110624_b(), var10.func_110623_a().replaceFirst("_(eyes|overlay|tame|angry|collar|fur|invulnerable|shooting)\\.properties$", ".properties"));
+					altFilename = new ResourceLocation(newSkin.getResourceDomain(), var10.getResourcePath().replaceFirst("_(eyes|overlay|tame|angry|collar|fur|invulnerable|shooting)\\.properties$", ".properties"));
 					Properties properties = TexturePackAPI.getProperties(var10);
 
 					if (properties == null && !var10.equals(altFilename)) {

@@ -1,10 +1,8 @@
 package com.prupe.mcpatcher.ctm;
 
-import java.util.Arrays;
-
 import com.prupe.mcpatcher.Config;
 import com.prupe.mcpatcher.TessellatorUtils;
-
+import java.util.Arrays;
 import net.minecraft.src.Block;
 import net.minecraft.src.Icon;
 import net.minecraft.src.RenderBlocks;

@@ -1,5 +1,6 @@
 package com.prupe.mcpatcher;
 
+import com.prupe.mcpatcher.TileLoader$1;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -13,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import net.minecraft.src.Icon;
 import net.minecraft.src.IconRegister;
 import net.minecraft.src.Minecraft;
@@ -169,11 +169,11 @@ public class TileLoader {
 	static void init() {}
 
 	public static ResourceLocation getBlocksAtlas() {
-		return TextureMap.field_110575_b;
+		return TextureMap.locationBlocksTexture;
 	}
 
 	public static ResourceLocation getItemsAtlas() {
-		return TextureMap.field_110576_c;
+		return TextureMap.locationItemsTexture;
 	}
 
 	public TileLoader(String mapName, boolean allowOverflow, MCLogger logger) {
@@ -184,7 +184,7 @@ public class TileLoader {
 	}
 
 	private static long getTextureSize(TextureAtlasSprite texture) {
-		return texture == null ? 0L : (long)(4 * texture.getOriginX() * texture.getOriginY());
+		return texture == null ? 0L : (long)(4 * texture.getIconWidth() * texture.getIconHeight());
 	}
 
 	private static long getTextureSize(Collection<TextureAtlasSprite> textures) {
@@ -213,7 +213,7 @@ public class TileLoader {
 			}
 
 			if (!value.contains("/")) {
-				value = propertiesAddress.func_110623_a().replaceFirst("[^/]+$", "") + value;
+				value = propertiesAddress.getResourcePath().replaceFirst("[^/]+$", "") + value;
 			}
 
 			return TexturePackAPI.parseResourceLocation(propertiesAddress, value);
@@ -237,7 +237,7 @@ public class TileLoader {
 			}
 
 			if (image == null) {
-				image = generateDebugTexture(resource.func_110623_a(), 64, 64, alternate);
+				image = generateDebugTexture(resource.getResourcePath(), 64, 64, alternate);
 			}
 
 			this.tilesToRegister.add(resource);
@@ -306,7 +306,7 @@ public class TileLoader {
 						return false;
 					}
 				} else {
-					Icon icon = ((IconRegister) textureMap).registerIcon(name);
+					Icon icon = textureMap.registerIcon(name);
 					map.put(name, (TextureAtlasSprite)icon);
 
 					if (mapName.contains("_overflow")) {

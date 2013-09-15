@@ -1,16 +1,14 @@
 package com.prupe.mcpatcher.cc;
 
+import com.prupe.mcpatcher.Config;
+import com.prupe.mcpatcher.MCLogger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
-
-import com.prupe.mcpatcher.Config;
-import com.prupe.mcpatcher.MCLogger;
-
+import java.util.Map.Entry;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Entity;
 import net.minecraft.src.World;

@@ -1,13 +1,11 @@
 package com.prupe.mcpatcher.cc;
 
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-
 import com.prupe.mcpatcher.Config;
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
-
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import net.minecraft.src.EntityRenderer;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.World;

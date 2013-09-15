@@ -1,11 +1,9 @@
 package com.prupe.mcpatcher.hd;
 
-import java.util.Iterator;
-import java.util.Properties;
-
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
-
+import java.util.Iterator;
+import java.util.Properties;
 import net.minecraft.src.ResourceLocation;
 
 final class CustomAnimation$1 extends TexturePackChangeHandler {
