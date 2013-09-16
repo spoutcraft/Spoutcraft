@@ -73,10 +73,6 @@
 		<repository>
 			<id>sonatype-nexus-releases</id>
 			<url>https://oss.sonatype.org/content/repositories/releases</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
 		</repository>
 		<repository>
 			<id>sonatype-nexus-snapshots</id>
@@ -97,6 +93,10 @@
 		<pluginRepository>
 			<id>sonatype-nexus-snapshots</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 
