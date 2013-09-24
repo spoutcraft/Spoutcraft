@@ -43,7 +43,7 @@ public class TexturePackAction implements Runnable {
 			game.renderEngine.oldPack = game.renderEngine.texturePack.selectedTexturePack;
 		}
 		game.renderEngine.texturePack.setTexturePack(pack);
-		game.renderEngine.refreshTextures();
+		game.refreshResources();
 		MipMapUtils.update();
 		if (game.renderGlobal != null && game.renderGlobal.worldRenderers != null) {
 			WorldRenderer[] renderers = game.renderGlobal.worldRenderers;

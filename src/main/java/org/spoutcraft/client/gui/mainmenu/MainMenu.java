@@ -274,10 +274,10 @@ public class MainMenu extends GuiScreen {
 			mc.displayGuiScreen(new GuiSelectWorld(this));
 		}
 		if (multiplayer == btn) {
-			mc.displayGuiScreen(new GuiFavorites(this));
+			//mc.displayGuiScreen(new GuiFavorites(this));
 		}
 		if (resources == btn) {
-			mc.displayGuiScreen(new GuiScreenTemporaryResourcePackSelect());
+			//mc.displayGuiScreen(new GuiScreenTemporaryResourcePackSelect());
 		}
 		if (about == btn) {
 			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiNewAbout(this));
@@ -294,11 +294,11 @@ public class MainMenu extends GuiScreen {
 	public void drawScreen(int mouseX, int mouseY, float scroll) {
 		super.drawScreen(mouseX, mouseY, scroll);
 		if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
-			mc.displayGuiScreen(new GuiFavorites(this));
+			//mc.displayGuiScreen(new GuiFavorites(this));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			mc.displayGuiScreen(new GuiSelectWorld(this));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
-			mc.displayGuiScreen(new GuiScreenTemporaryResourcePackSelect());
+			//mc.displayGuiScreen(new GuiScreenTemporaryResourcePackSelect());
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
 			mc.displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
 		}

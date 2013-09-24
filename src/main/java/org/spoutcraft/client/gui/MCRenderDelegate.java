@@ -581,7 +581,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(ExpBar bar) {
 		if (bar.isVisible()) {			
-			int expCap = Minecraft.getMinecraft().thePlayer.xpBarCap()
+			int expCap = Minecraft.getMinecraft().thePlayer.xpBarCap();
 			if (expCap > 0) {
 				int x = (int) bar.getScreenX();
 				int y = (int) bar.getScreenY();

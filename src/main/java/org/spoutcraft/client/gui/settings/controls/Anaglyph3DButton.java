@@ -35,6 +35,6 @@ public class Anaglyph3DButton extends GenericCheckBox {
 	public void onButtonClick() {
 		Configuration.setAnaglyph3D(!Configuration.isAnaglyph3D());
 		Minecraft.getMinecraft().gameSettings.anaglyph = Configuration.isAnaglyph3D();
-		Minecraft.getMinecraft().renderEngine.refreshTextures();
+		Minecraft.getMinecraft().refreshResources();
 	}
 }

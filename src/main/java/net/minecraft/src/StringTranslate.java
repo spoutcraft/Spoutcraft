@@ -19,7 +19,9 @@ public class StringTranslate {
 	// ToDo: missing previous Spoutcraft API code, requires re-write.
 	
 	/** Is the private singleton instance of StringTranslate. */
-	private static StringTranslate instance = new StringTranslate();
+	// Spout Start
+	public static StringTranslate instance = new StringTranslate();
+	// Spout End
 	private Map languageList = Maps.newHashMap();
 
 	public StringTranslate() {

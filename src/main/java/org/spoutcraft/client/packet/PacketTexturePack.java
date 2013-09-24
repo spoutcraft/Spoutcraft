@@ -61,7 +61,7 @@ public class PacketTexturePack implements SpoutPacket {
 				RenderEngine rengine = SpoutClient.getHandle().renderEngine;
 				rengine.texturePack.setTexturePack(rengine.oldPack);
 				rengine.oldPack = null;
-				rengine.refreshTextures();
+				SpoutClient.getHandle().refreshResources();
 			}
 		} else {
 			String fileName = FileUtil.getFileName(url);

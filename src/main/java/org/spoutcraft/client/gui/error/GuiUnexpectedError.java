@@ -131,7 +131,8 @@ public class GuiUnexpectedError extends GuiScreen {
 			
 			builder.append("-----------------------------------").append("\n");
 			builder.append("Minecraft Information:\n");
-			builder.append("    Texture Pack: ").append(Minecraft.getMinecraft().texturePackList.getSelectedTexturePack().getTexturePackFileName()).append("\n");
+			// ToDO:
+			//builder.append("    Texture Pack: ").append(Minecraft.getMinecraft().texturePackList.getSelectedTexturePack().getTexturePackFileName()).append("\n");
 			//builder.append("    Texture Pack Res: ").append(TileSize.int_size + "x").append("\n");
 			builder.append("    LWJGL Version: ").append(Sys.getVersion()).append("\n");
 

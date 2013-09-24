@@ -40,9 +40,9 @@ public class ConnectedTexturesButton extends AutomatedCheckBox {
 		
 		Minecraft game = SpoutClient.getHandle();
 		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mob.CTMUtils", "reset");
-		TexturePackChangeHandler.beforeChange1();
-		game.renderEngine.refreshTextureMaps();
-		TexturePackChangeHandler.afterChange1();
+		TexturePackChangeHandler.beforeChange1(true);		
+		game.refreshResources();
+		TexturePackChangeHandler.afterChange1(true);
 		if (Minecraft.getMinecraft().theWorld != null) {
 			Minecraft.getMinecraft().renderGlobal.updateAllRenderers();
 		}

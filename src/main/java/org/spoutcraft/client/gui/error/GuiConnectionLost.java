@@ -90,7 +90,7 @@ public class GuiConnectionLost extends GuiScreen {
 		screen.attachWidget("Spoutcraft", button);
 		top += 26;
 
-		button = new ReturnToServerList().setText("Return to " + mc.displayGuiScreen(new GuiFavorites(this)));
+		button = new ReturnToServerList().setText("Return to Favorites"));
 		button.setHeight(20).setWidth(200);
 		button.setX((int) (width / 2 - button.getWidth() / 2));
 		button.setY(top);
@@ -127,7 +127,8 @@ class ReturnToMainMenu extends GenericButton {
 
 class ReturnToServerList extends GenericButton {
 	public void onButtonClick() {
-		Minecraft.getMinecraft().displayGuiScreen(mc.displayGuiScreen(new GuiFavorites(this)));
+		// ToDo:
+		//Minecraft.getMinecraft().displayGuiScreen(mc.displayGuiScreen(new GuiFavorites(this)));
 	}
 }
 
