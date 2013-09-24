@@ -89,7 +89,7 @@ public class Main {
 		SpoutClient.getHandle().shutdown();
 		try {
 			SpoutClient.getHandle().mainThread.join(10000L);
-		} catch (InterruptedException var4) {
+		} catch (InterruptedException spoutclientThreadError) {
 		}
 		System.exit(0);
 		// Spout End

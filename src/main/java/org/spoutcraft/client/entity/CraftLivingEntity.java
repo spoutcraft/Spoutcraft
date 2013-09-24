@@ -20,6 +20,7 @@
 package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityLivingBase;
 import net.minecraft.src.EntityPlayer;
 
 import org.spoutcraft.api.entity.EntitySkinType;
@@ -133,7 +134,7 @@ public class CraftLivingEntity extends CraftEntity {
 	}
 
 	public String getTitle() {		
-		return getEntityLiving().hasCustomNameTag() ? getEntityLiving().getCustomNameTag() : super.getEntityName();		
+		return getEntityLiving().hasCustomNameTag() ? getEntityLiving().getCustomNameTag() : getEntityLiving().getEntityName();		
 	}
 
 	public void setTitle(String title) {

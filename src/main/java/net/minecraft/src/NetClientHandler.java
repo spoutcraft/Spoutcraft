@@ -889,7 +889,7 @@ public class NetClientHandler extends NetHandler {
 				TileEntityFurnace var4 = new TileEntityFurnace();
 
 				if (par1Packet100OpenWindow.useProvidedWindowTitle) {
-					var4.func_94129_a(par1Packet100OpenWindow.windowTitle);
+					var4.setGuiDisplayName(par1Packet100OpenWindow.windowTitle);
 				}
 
 				var2.displayGUIFurnace(var4);

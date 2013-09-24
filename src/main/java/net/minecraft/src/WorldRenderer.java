@@ -12,6 +12,8 @@ import com.prupe.mcpatcher.ctm.RenderPass;
 
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.ICamera;
+import net.minecraft.src.Minecraft;
+import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.TileEntity;
 
 import org.spoutcraft.api.Spoutcraft;
@@ -166,10 +168,8 @@ public class WorldRenderer {
 				Minecraft game = SpoutClient.getHandle();
 				int currentTexture = 0;
 				int limit = skipRenderPass.length; // MCPatcher 2.4.4 requires 4, anything less and things get missed.
-				int defaultTexture = game.func_110434_K().func_110577_a(TextureMap.field_110575_b);
-				//int defaultTexture = game.renderEngine.getTexture("/terrain.png");
-				TextureUtil.bindTexture(defaultTexture);
-				//game.renderEngine.bindTexture(defaultTexture);
+				int defaultTexture = Minecraft.getMinecraft().renderEngine.getTextureId(new ResourceLocation("textures/atlas/blocks.png"));				
+				TextureUtil.bindTexture(defaultTexture);			
 
 				List<String> hitTextures = new ArrayList<String>();
 				List<String> hitTexturesPlugins = new ArrayList<String>();
@@ -198,7 +198,6 @@ public class WorldRenderer {
 						tessellator.setTranslation((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
 					}
 
-					//game.renderEngine.bindTexture(defaultTexture);
 					TextureUtil.bindTexture(defaultTexture);
 
 					for (currentTexture = 0; currentTexture < hitTextures.size(); currentTexture++) {

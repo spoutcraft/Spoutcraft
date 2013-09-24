@@ -24,6 +24,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.Minecraft;
+import net.minecraft.src.ResourceLocation;
 
 import org.bukkit.ChatColor;
 

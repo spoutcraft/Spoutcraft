@@ -183,17 +183,17 @@ public class GuiIngame extends Gui {
 		int var16;
 		int var33;
 		float var313;
-		short var37;		
+		short var317;		
 		
 		//ToDo: this will need TLC
 		if (this.mc.thePlayer.isRidingHorse()) {
 			this.mc.mcProfiler.startSection("jumpBar");
 			this.mc.getTextureManager().bindTexture(Gui.icons);
 			var313 = this.mc.thePlayer.getHorseJumpPower();
-			var37 = 182;
-			var14 = (int)(var313 * (float)(var37 + 1));
+			var317 = 182;
+			var14 = (int)(var313 * (float)(var317 + 1));
 			var115 = screenHeight - 32 + 3;
-			this.drawTexturedModalRect(var111, var115, 0, 84, var37, 5);
+			this.drawTexturedModalRect(var111, var115, 0, 84, var317, 5);
 
 			if (var14 > 0) {
 				this.drawTexturedModalRect(var111, var115, 0, 89, var14, 5);
@@ -206,10 +206,10 @@ public class GuiIngame extends Gui {
 			var12 = this.mc.thePlayer.xpBarCap();
 
 			if (var12 > 0) {
-				var37 = 182;
-				var14 = (int)(this.mc.thePlayer.experience * (float)(var37 + 1));
-				var115 = var7 - 32 + 3;
-				this.drawTexturedModalRect(var111, var115, 0, 64, var37, 5);
+				var317 = 182;
+				var14 = (int)(this.mc.thePlayer.experience * (float)(var317 + 1));
+				var115 = screenHeight - 32 + 3;
+				this.drawTexturedModalRect(var111, var115, 0, 64, var317, 5);
 
 				if (var14 > 0) {
 					this.drawTexturedModalRect(var111, var115, 0, 69, var14, 5);
@@ -296,7 +296,7 @@ public class GuiIngame extends Gui {
 			if (this.recordPlayingUpFor > 0) {
 				this.mc.mcProfiler.startSection("overlayMessage");
 				var33 = (float)this.recordPlayingUpFor - f;
-				int var12 = (int)(var33 * 256.0F / 20.0F);
+				var12 = (int)(var33 * 256.0F / 20.0F);
 
 				if (var12 > 255) {
 					var12 = 255;
@@ -307,7 +307,7 @@ public class GuiIngame extends Gui {
 					GL11.glTranslatef((float)(screenWidth / 2), (float)(screenHeight - 48), 0.0F);
 					GL11.glEnable(GL11.GL_BLEND);
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-					int var13 = 16777215;
+					var13 = 16777215;
 
 					if (this.recordIsPlaying) {
 						var13 = Color.HSBtoRGB(var33 / 50.0F, 0.7F, 0.6F) & 16777215;
@@ -406,7 +406,7 @@ public class GuiIngame extends Gui {
 				++var38;
 			}
 
-			int var16 = 300 / var38;
+			var16 = 300 / var38;
 
 			if (var16 > 150) {
 				var16 = 150;
