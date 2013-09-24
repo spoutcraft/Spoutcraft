@@ -50,6 +50,7 @@ public class MipMapUtils {
 		initialized = false;
 		GL11.glPushMatrix();
 		if (Configuration.getMipmapsPercent() > 0F) {
+			// ToDO: this doesn't work.
 			int terrain = Minecraft.getMinecraft().renderEngine.getTextureId(TextureMap.locationBlocksTexture);
 			initalizeTexture(terrain);
 

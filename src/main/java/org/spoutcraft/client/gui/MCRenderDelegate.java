@@ -46,6 +46,7 @@ import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiIngame;
 import net.minecraft.src.Material;
 import net.minecraft.src.Potion;
+import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.RenderHelper;
 import net.minecraft.src.RenderManager;
 import net.minecraft.src.ScaledResolution;
