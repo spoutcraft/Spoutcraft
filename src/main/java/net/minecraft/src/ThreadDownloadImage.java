@@ -17,6 +17,7 @@ class ThreadDownloadImage extends Thread {
 	final ThreadDownloadImageData imageData;
 
 	ThreadDownloadImage(ThreadDownloadImageData par1, String par2Str, IImageBuffer par3IImageBuffer) {
+		setDaemon(true);
 		this.imageData = par1;
 		this.location = par2Str;
 		this.buffer = par3IImageBuffer;
@@ -43,24 +44,30 @@ class ThreadDownloadImage extends Thread {
 				return;
 			}
 
+			BufferedImage image;
+
 			if (this.buffer == null) {
-				this.imageData.image = ImageIO.read(var1.getInputStream());
+				image = ImageIO.read(var1.getInputStream());
 			} else {
 				// Spout Start
-				BufferedImage image = ImageIO.read(var1.getInputStream());
+				image = ImageIO.read(var1.getInputStream());
 				if (image != null) {
-				this.imageData.image = this.buffer.parseUserSkin(image);
+					image = this.buffer.parseUserSkin(image);
 				} else {
-					//System.out.println("No image data found for " + location);
+					System.out.println("No image data found for " + location);
+					return;
 				}
 				// Spout End
 			}
+			imageData.getBufferedImage(image);
 		} catch (Exception var6) {
 			// Spout Start
-			//var6.printStackTrace();
+			var6.printStackTrace();
 			// Spout End
 		} finally {
-			var1.disconnect();
+			if (var1 != null) {
+				var1.disconnect();
+			}
 		}
 	}
 }

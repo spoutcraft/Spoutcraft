@@ -19,7 +19,9 @@
  */
 package org.spoutcraft.client.packet;
 
+import java.io.DataInput;
 import java.io.DataInputStream;
+import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -62,13 +64,14 @@ public class CustomPacket extends Packet {
 		//}
 	}
 
-	public void readPacketData(DataInputStream input) throws IOException {
+	@Override
+	public void readPacketData(DataInput var1) throws IOException {
 		SpoutClient.getInstance().setSpoutActive(true);
 		final boolean prevOutdated = outdated;
-		int packetId = -1;
-		packetId = input.readShort();
-		int version = input.readShort(); // Packet version
-		int length = input.readInt(); // Packet size
+		int packetId;
+		packetId = var1.readShort();
+		int version = var1.readShort(); // Packet version
+		int length = var1.readInt(); // Packet size
 		//System.out.println("Reading Packet: " + PacketType.getPacketFromId(packetId) + " Size: " + length + " bytes, version: " + version);
 		if (packetId > -1 && version > -1) {
 			try {
@@ -80,19 +83,19 @@ public class CustomPacket extends Packet {
 		}
 		try {
 			if (this.packet == null) {
-				input.skipBytes(length);
+				var1.skipBytes(length);
 				System.out.println("Unknown packet " + packetId + ". Skipping contents.");
 				return;
 			} else if (packet.getVersion() != version) {
-				input.skipBytes(length);
+				var1.skipBytes(length);
 				// Keep server admins from going insane
 				if (nags[packetId]-- > 0) {
 					System.out.println("Invalid Packet ID: " + packetId + ". Current v: " + packet.getVersion() + " Receieved v: " + version + " Skipping contents.");
 				}
-				outdated = outdated ? true : version > packet.getVersion();
+				outdated = outdated || version > packet.getVersion();
 			} else {
 				byte[] data = new byte[length];
-				input.readFully(data);
+				var1.readFully(data);
 
 				SpoutInputStream stream = new SpoutInputStream(ByteBuffer.wrap(data));
 				packet.readData(stream);
@@ -109,29 +112,28 @@ public class CustomPacket extends Packet {
 		}
 	}
 
-	SpoutOutputStream stream = new SpoutOutputStream();
-
-	public void writePacketData(DataOutputStream output) throws IOException {
+	@Override
+	public void writePacketData(DataOutput var1) throws IOException {
 		if (packet == null) {
-			output.writeShort(-1);
-			output.writeShort(-1);
-			output.writeInt(0);
+			var1.writeShort(-1);
+			var1.writeShort(-1);
+			var1.writeInt(0);
 			return;
 		}
 		//System.out.println("Writing Packet Data for " + packet.getPacketType());
-		output.writeShort(packet.getPacketType().getId());
-		output.writeShort(packet.getVersion());
-
-		stream.getRawBuffer().clear();
+		var1.writeShort(packet.getPacketType().getId());
+		var1.writeShort(packet.getVersion());
+		final SpoutOutputStream stream = new SpoutOutputStream();
 		packet.writeData(stream);
 		ByteBuffer buffer = stream.getRawBuffer();
 		byte[] data = new byte[buffer.capacity() - buffer.remaining()];
 		System.arraycopy(buffer.array(), 0, data, 0, data.length);
 
-		output.writeInt(data.length);
-		output.write(data, 0, data.length);
+		var1.writeInt(data.length);
+		var1.write(data, 0, data.length);
 	}
 
+	@Override
 	public void processPacket(NetHandler netHandler) {
 		if (packet != null) {
 			if (success) {
@@ -160,9 +162,5 @@ public class CustomPacket extends Packet {
 				}
 			}
 		}
-	}
-
-	public static void addClassMapping() {
-		addIdClassMapping(195, true, true, CustomPacket.class);
 	}
 }
