@@ -49,8 +49,8 @@ public class AutosaveButton extends AutomatedButton {
 		}
 		Configuration.write();
 
-		if (Minecraft.theMinecraft.theWorld != null) {
-			//Minecraft.theMinecraft.theWorld.autosavePeriod = getAutosaveTicks();
+		if (Minecraft.getMinecraft().theWorld != null) {
+			//Minecraft.getMinecraft().theWorld.autosavePeriod = getAutosaveTicks();
 		}
 	}
 

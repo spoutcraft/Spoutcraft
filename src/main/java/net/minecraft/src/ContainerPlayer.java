@@ -42,7 +42,7 @@ public class ContainerPlayer extends Container {
 
 	// Spout Start - Inventory sorting
 	public IInventory getIInventory() {
-		return Minecraft.theMinecraft.thePlayer.inventory;
+		return Minecraft.getMinecraft().thePlayer.inventory;
 	}
 
 	@Override

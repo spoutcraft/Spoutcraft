@@ -62,14 +62,14 @@ public class ImageManager {
 	public void loadGLImage() {
 		synchronized (image) {
 			if (hasGLImage && hasChanged) {
-				Minecraft.theMinecraft.renderEngine.deleteTexture(glImage);
+				Minecraft.getMinecraft().renderEngine.deleteTexture(glImage);
 				GL11.glPushMatrix();
-				glImage = Minecraft.theMinecraft.renderEngine.allocateAndSetupTexture(image);
+				glImage = Minecraft.getMinecraft().renderEngine.allocateAndSetupTexture(image);
 				GL11.glPopMatrix();
 				hasChanged = false;
 			} else if (!hasGLImage) {
 				GL11.glPushMatrix();
-				glImage = Minecraft.theMinecraft.renderEngine.allocateAndSetupTexture(image);
+				glImage = Minecraft.getMinecraft().renderEngine.allocateAndSetupTexture(image);
 				GL11.glPopMatrix();
 				hasGLImage = true;
 				hasChanged = false;

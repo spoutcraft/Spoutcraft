@@ -248,7 +248,7 @@ public class SpoutcraftWorld {
 	}
 
 	public boolean isMultiplayerWorld() {
-		return Minecraft.theMinecraft.isMultiplayerWorld();
+		return Minecraft.getMinecraft().isMultiplayerWorld();
 	}
 
 	public CraftEntity getEntityFromId(int id) {

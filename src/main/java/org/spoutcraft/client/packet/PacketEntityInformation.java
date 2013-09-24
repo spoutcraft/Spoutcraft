@@ -72,7 +72,7 @@ public class PacketEntityInformation implements CompressablePacket {
 	}
 
 	public void run(int playerId) {
-		if (Minecraft.theMinecraft.theWorld instanceof WorldClient) {
+		if (Minecraft.getMinecraft().theWorld instanceof WorldClient) {
 			ByteBuffer rawData = ByteBuffer.allocate(data.length);
 			rawData.put(data);
 			for (int i = 0; i < data.length / 20; i++) {

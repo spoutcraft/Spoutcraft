@@ -60,9 +60,9 @@ public class MapRenderer {
 	 *			screen height
 	 */
 	public void onRenderTick(int scWidth, int scHeight) {
-		if (this.oldDir != Minecraft.theMinecraft.thePlayer.rotationYaw) {
-			this.direction += this.oldDir - Minecraft.theMinecraft.thePlayer.rotationYaw;
-			this.oldDir = Minecraft.theMinecraft.thePlayer.rotationYaw;
+		if (this.oldDir != Minecraft.getMinecraft().thePlayer.rotationYaw) {
+			this.direction += this.oldDir - Minecraft.getMinecraft().thePlayer.rotationYaw;
+			this.oldDir = Minecraft.getMinecraft().thePlayer.rotationYaw;
 		}
 
 		if (this.direction >= 360.0f)
@@ -298,8 +298,8 @@ public class MapRenderer {
 			GL11.glTranslated(-map.renderSize / 4d, map.renderSize / 4d, 0);
 			GL11.glPushMatrix();
 			GL11.glRotatef(this.direction - 180f, 0f, 0f, 1f);
-			double px = Minecraft.theMinecraft.thePlayer.posX;
-			double pz = Minecraft.theMinecraft.thePlayer.posZ;
+			double px = Minecraft.getMinecraft().thePlayer.posX;
+			double pz = Minecraft.getMinecraft().thePlayer.posZ;
 			int x = focus.x;
 			int z = focus.z;
 
@@ -324,8 +324,8 @@ public class MapRenderer {
 			GL11.glTranslated(-map.renderSize / 4d, map.renderSize / 4d - 4, 0);
 			GL11.glRotatef(90f, 0, 0, 1f);
 			RenderUtil.drawRectangle(map.renderSize / 4, 0, map.renderSize / 4 + 2, 2, 0xff0000);
-			double px = Minecraft.theMinecraft.thePlayer.posX;
-			double pz = Minecraft.theMinecraft.thePlayer.posZ;
+			double px = Minecraft.getMinecraft().thePlayer.posX;
+			double pz = Minecraft.getMinecraft().thePlayer.posZ;
 			double x = focus.x;
 			double z = focus.z;
 
@@ -366,8 +366,8 @@ public class MapRenderer {
 	}
 
 	private void renderWaypoints() {
-		double playerX = Minecraft.theMinecraft.thePlayer.posX;
-		double playerZ = Minecraft.theMinecraft.thePlayer.posZ;
+		double playerX = Minecraft.getMinecraft().thePlayer.posX;
+		double playerZ = Minecraft.getMinecraft().thePlayer.posZ;
 		for (Waypoint pt : MinimapConfig.getInstance().getWaypoints(MinimapUtils.getWorldName())) {
 			if (pt.enabled) {
 				double wayX = playerX - pt.x;
@@ -447,17 +447,17 @@ public class MapRenderer {
 		if (MinimapConfig.getInstance().isCoords()) {
 			GL11.glPushMatrix();
 			GL11.glScalef(0.5f, 0.5f, 1.0f);
-			String xy = ((int) Minecraft.theMinecraft.thePlayer.posX) + ", " + ((int) Minecraft.theMinecraft.thePlayer.posZ);
-			int m = Minecraft.theMinecraft.fontRenderer.getStringWidth(xy) / 2;
-			Minecraft.theMinecraft.fontRenderer.drawString(xy, scWidth * 2 - 32 * 2 - m, 146, 0xffffff);
-			xy = Integer.toString((int) (Minecraft.theMinecraft.thePlayer.posY - 1.620d)); // Substract eyes pos
-			m = Minecraft.theMinecraft.fontRenderer.getStringWidth(xy) / 2;
-			Minecraft.theMinecraft.fontRenderer.drawString(xy, scWidth * 2 - 32 * 2 - m, 156, 0xffffff);
+			String xy = ((int) Minecraft.getMinecraft().thePlayer.posX) + ", " + ((int) Minecraft.getMinecraft().thePlayer.posZ);
+			int m = Minecraft.getMinecraft().fontRenderer.getStringWidth(xy) / 2;
+			Minecraft.getMinecraft().fontRenderer.drawString(xy, scWidth * 2 - 32 * 2 - m, 146, 0xffffff);
+			xy = Integer.toString((int) (Minecraft.getMinecraft().thePlayer.posY - 1.620d)); // Substract eyes pos
+			m = Minecraft.getMinecraft().fontRenderer.getStringWidth(xy) / 2;
+			Minecraft.getMinecraft().fontRenderer.drawString(xy, scWidth * 2 - 32 * 2 - m, 156, 0xffffff);
 			if (MinimapConfig.getInstance().getFocussedWaypoint() != null) {
 				String text = (int) distanceToFocus + "m";
 				int y = MinimapConfig.getInstance().getFocussedWaypoint().y;
 				if (distanceToFocus < 10) {
-					double py = Minecraft.theMinecraft.thePlayer.posY;
+					double py = Minecraft.getMinecraft().thePlayer.posY;
 					if (y < py - 3) {
 						text = "\\/ " + text;
 					}
@@ -465,8 +465,8 @@ public class MapRenderer {
 						text = "/\\ " + text;
 					}
 				}
-				m = Minecraft.theMinecraft.fontRenderer.getStringWidth(text);
-				Minecraft.theMinecraft.fontRenderer.drawString(text, scWidth * 2 - 32 * 2 - m / 2, 166, 0xffffff);
+				m = Minecraft.getMinecraft().fontRenderer.getStringWidth(text);
+				Minecraft.getMinecraft().fontRenderer.drawString(text, scWidth * 2 - 32 * 2 - m / 2, 166, 0xffffff);
 			}
 			GL11.glPopMatrix();
 		}
@@ -507,7 +507,7 @@ public class MapRenderer {
 		GL11.glPushMatrix();
 		GL11.glScalef(0.5f, 0.5f, 1.0f);
 		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
-		Minecraft.theMinecraft.fontRenderer.drawString("N", -66, 60, 0xffffff);
+		Minecraft.getMinecraft().fontRenderer.drawString("N", -66, 60, 0xffffff);
 		GL11.glPopMatrix();
 
 		dir += 90;
@@ -515,7 +515,7 @@ public class MapRenderer {
 		GL11.glPushMatrix();
 		GL11.glScalef(0.5f, 0.5f, 1.0f);
 		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-dir))), (64.0D * Math.cos(Math.toRadians(-dir))), 0.0D);
-		Minecraft.theMinecraft.fontRenderer.drawString("E", -66, 60, 0xffffff);
+		Minecraft.getMinecraft().fontRenderer.drawString("E", -66, 60, 0xffffff);
 		GL11.glPopMatrix();
 
 		dir += 90;
@@ -523,7 +523,7 @@ public class MapRenderer {
 		GL11.glPushMatrix();
 		GL11.glScalef(0.5f, 0.5f, 1.0f);
 		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
-		Minecraft.theMinecraft.fontRenderer.drawString("S", -66, 60, 0xffffff);
+		Minecraft.getMinecraft().fontRenderer.drawString("S", -66, 60, 0xffffff);
 		GL11.glPopMatrix();
 
 		dir += 90;
@@ -531,7 +531,7 @@ public class MapRenderer {
 		GL11.glPushMatrix();
 		GL11.glScalef(0.5f, 0.5f, 1.0f);
 		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
-		Minecraft.theMinecraft.fontRenderer.drawString("W", -66, 60, 0xffffff);
+		Minecraft.getMinecraft().fontRenderer.drawString("W", -66, 60, 0xffffff);
 		GL11.glPopMatrix();
 	}
 }

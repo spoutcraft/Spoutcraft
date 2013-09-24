@@ -38,7 +38,7 @@ public class ServerLightButton extends AutomatedCheckBox {
 
 	@Override
 	public String getTooltip() {
-		if (Minecraft.theMinecraft.theWorld == null || Minecraft.theMinecraft.theWorld.isRemote) {
+		if (Minecraft.getMinecraft().theWorld == null || Minecraft.getMinecraft().theWorld.isRemote) {
 			return super.getTooltip();
 		}
 		return "Has no effect in Single Player";

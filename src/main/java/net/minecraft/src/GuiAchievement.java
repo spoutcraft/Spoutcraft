@@ -170,7 +170,7 @@ public class GuiAchievement extends Gui {
 				}
 				//ToDo: this toRender() thing may need to go away.
 				if (toRender != null) {
-					this.itemRender.renderItemAndEffectIntoGUI(this.theGame.fontRenderer, this.theGame.func_110434_K(), this.theAchievement.theItemStack, var5 + 8, var6 + 8);
+					this.itemRender.renderItemAndEffectIntoGUI(this.theGame.fontRenderer, this.theGame.getTextureManager(), this.theAchievement.theItemStack, var5 + 8, var6 + 8);
 				}
 				// Spout End
 				GL11.glDisable(GL11.GL_LIGHTING);

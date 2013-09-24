@@ -34,7 +34,7 @@ public class ViewBobbingButton extends GenericCheckBox {
 	@Override
 	public void onButtonClick() {
 		Configuration.setViewBobbing(!Configuration.isViewBobbing());
-		Minecraft.theMinecraft.gameSettings.viewBobbing = Configuration.isViewBobbing();
+		Minecraft.getMinecraft().gameSettings.viewBobbing = Configuration.isViewBobbing();
 		Configuration.write();
 	}
 }

@@ -35,6 +35,6 @@ public class ControlsButton extends GenericButton {
 
 	@Override
 	public void onButtonClick() {
-		Minecraft.theMinecraft.displayGuiScreen(new GuiControls(parent), false);
+		Minecraft.getMinecraft().displayGuiScreen(new GuiControls(parent), false);
 	}
 }

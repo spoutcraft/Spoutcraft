@@ -79,7 +79,7 @@ public class SpoutcraftChunk{
 		int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 0xFF);
 		short old = customBlockData[key];
 		customBlockData[key] = id;
-		Minecraft.theMinecraft.theWorld.markBlockForRenderUpdate(x, y, z);
+		Minecraft.getMinecraft().theWorld.markBlockForRenderUpdate(x, y, z);
 		return old;
 	}
 
@@ -89,7 +89,7 @@ public class SpoutcraftChunk{
 
 	public void setCustomBlockIds(short[] ids) {
 		customBlockData = ids;
-		Minecraft.theMinecraft.theWorld.markBlockRangeForRenderUpdate(x * 16, 0, z * 16, x * 16 + 15, 255, z * 16 + 15);
+		Minecraft.getMinecraft().theWorld.markBlockRangeForRenderUpdate(x * 16, 0, z * 16, x * 16 + 15, 255, z * 16 + 15);
 	}
 
 	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block) {
@@ -116,7 +116,7 @@ public class SpoutcraftChunk{
 		int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 0xFF);
 		byte old = customBlockRotations[key];
 		customBlockRotations[key] = rot;
-		Minecraft.theMinecraft.theWorld.markBlockForRenderUpdate(x, y, z);
+		Minecraft.getMinecraft().theWorld.markBlockForRenderUpdate(x, y, z);
 		return old;
 	}
 
@@ -126,7 +126,7 @@ public class SpoutcraftChunk{
 
 	public void setCustomBlockData(byte[] data) {
 		customBlockRotations = data;
-		Minecraft.theMinecraft.theWorld.markBlockRangeForRenderUpdate(x * 16, 0, z * 16, x * 16 + 15, 255, z * 16 + 15);
+		Minecraft.getMinecraft().theWorld.markBlockRangeForRenderUpdate(x * 16, 0, z * 16, x * 16 + 15, 255, z * 16 + 15);
 	}
 
 	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block, byte data) {

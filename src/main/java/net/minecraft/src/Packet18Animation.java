@@ -48,7 +48,7 @@ public class Packet18Animation extends Packet {
 		if (entityId == -42) {
 			SpoutClient.getInstance().setSpoutVersion(1);
 			((NetClientHandler) par1NetHandler).addToSendQueue(this);
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)Minecraft.getMinecraft().gameSettings.renderDistance));
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketFullVersion(SpoutClient.getClientVersion()));
 			System.out.println("Detected SpoutPlugin enabled server.");
 			if (this.mc.currentScreen instanceof GuiDownloadTerrain) { 

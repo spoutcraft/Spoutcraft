@@ -40,8 +40,8 @@ public class FancyGrassButton extends AutomatedCheckBox {
 		Configuration.write();
 		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
 
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		if (Minecraft.getMinecraft().theWorld != null) {
+			Minecraft.getMinecraft().renderGlobal.updateAllRenderers();
 		}
 	}
 }

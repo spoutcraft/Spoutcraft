@@ -31,11 +31,11 @@ public class DifficultyButton extends GenericButton {
 
 	@Override
 	public String getText() {
-		if (Minecraft.theMinecraft.theWorld != null && Minecraft.theMinecraft.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
+		if (Minecraft.getMinecraft().theWorld != null && Minecraft.getMinecraft().theWorld.getWorldInfo().isHardcoreModeEnabled()) {
 			return "Difficulty: Hardcore";
 		}
 		String difficulty;
-		switch(Minecraft.theMinecraft.gameSettings.difficulty) {
+		switch(Minecraft.getMinecraft().gameSettings.difficulty) {
 			case 0: difficulty = "Peaceful"; break;
 			case 1: difficulty = "Easy"; break;
 			case 2: difficulty = "Normal"; break;
@@ -47,13 +47,13 @@ public class DifficultyButton extends GenericButton {
 
 	@Override
 	public String getTooltip() {
-		if (Minecraft.theMinecraft.theWorld == null) {
+		if (Minecraft.getMinecraft().theWorld == null) {
 			return "Can not change difficulty outside of the game";
 		}
-		if (!Minecraft.theMinecraft.isSingleplayer()) {
+		if (!Minecraft.getMinecraft().isSingleplayer()) {
 			return "Can not change difficulty in multiplayer";
 		}
-		if (Minecraft.theMinecraft.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
+		if (Minecraft.getMinecraft().theWorld.getWorldInfo().isHardcoreModeEnabled()) {
 			return "Can not change difficulty in hardcore mode";
 		}
 		return super.getTooltip();
@@ -61,13 +61,13 @@ public class DifficultyButton extends GenericButton {
 
 	@Override
 	public boolean isEnabled() {
-		if (Minecraft.theMinecraft.theWorld == null) {
+		if (Minecraft.getMinecraft().theWorld == null) {
 			return false;
 		}
-		if (!Minecraft.theMinecraft.isSingleplayer()) {
+		if (!Minecraft.getMinecraft().isSingleplayer()) {
 			return false;
 		}
-		if (Minecraft.theMinecraft.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
+		if (Minecraft.getMinecraft().theWorld.getWorldInfo().isHardcoreModeEnabled()) {
 			return false;
 		}
 		return true;
@@ -75,10 +75,10 @@ public class DifficultyButton extends GenericButton {
 
 	@Override
 	public void onButtonClick() {
-		Minecraft.theMinecraft.gameSettings.difficulty++;
-		if (Minecraft.theMinecraft.gameSettings.difficulty > 3) {
-			Minecraft.theMinecraft.gameSettings.difficulty = 0;
+		Minecraft.getMinecraft().gameSettings.difficulty++;
+		if (Minecraft.getMinecraft().gameSettings.difficulty > 3) {
+			Minecraft.getMinecraft().gameSettings.difficulty = 0;
 		}
-		Minecraft.theMinecraft.gameSettings.saveOptions();
+		Minecraft.getMinecraft().gameSettings.saveOptions();
 	}
 }

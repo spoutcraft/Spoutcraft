@@ -26,15 +26,15 @@ import org.spoutcraft.api.gui.GenericSlider;
 public class SoundEffectsSlider extends GenericSlider {
 	public SoundEffectsSlider() {
 		super("Sound");
-		setSliderPosition(Minecraft.theMinecraft.gameSettings.soundVolume);
+		setSliderPosition(Minecraft.getMinecraft().gameSettings.soundVolume);
 		setTooltip("Sound Volume\nControls the volume of all the sound effects in game.");
 	}
 
 	@Override
 	public void onSliderDrag(float old, float newPos) {
-		Minecraft.theMinecraft.gameSettings.soundVolume = newPos;
-		Minecraft.theMinecraft.gameSettings.saveOptions();
-		Minecraft.theMinecraft.sndManager.onSoundOptionsChanged();
+		Minecraft.getMinecraft().gameSettings.soundVolume = newPos;
+		Minecraft.getMinecraft().gameSettings.saveOptions();
+		Minecraft.getMinecraft().sndManager.onSoundOptionsChanged();
 	}
 
 	public String getText() {

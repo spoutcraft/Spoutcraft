@@ -90,6 +90,6 @@ public class MinecraftTessellatorWrapper implements MinecraftTessellator {
 	}
 
 	public int getMCTexture(String texture) {
-		return Minecraft.theMinecraft.renderEngine.getTexture(texture);
+		return Minecraft.getMinecraft().renderEngine.getTexture(texture);
 	}
 }

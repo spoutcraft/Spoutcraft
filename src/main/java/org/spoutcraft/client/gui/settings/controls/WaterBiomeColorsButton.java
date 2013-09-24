@@ -36,8 +36,8 @@ public class WaterBiomeColorsButton extends GenericCheckBox {
 		Configuration.setWaterBiomeColors(!Configuration.isWaterBiomeColors());
 		Configuration.write();
 
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		if (Minecraft.getMinecraft().theWorld != null) {
+			Minecraft.getMinecraft().renderGlobal.updateAllRenderers();
 		}
 	}
 }

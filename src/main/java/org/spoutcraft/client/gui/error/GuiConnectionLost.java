@@ -115,19 +115,19 @@ public class GuiConnectionLost extends GuiScreen {
 
 class ReconnectButton extends GenericButton {
 	public void onButtonClick() {
-		Minecraft.theMinecraft.displayGuiScreen(new GuiConnecting(Minecraft.theMinecraft, GuiConnectionLost.lastServerIp, GuiConnectionLost.lastServerPort));
+		Minecraft.getMinecraft().displayGuiScreen(new GuiConnecting(Minecraft.getMinecraft(), GuiConnectionLost.lastServerIp, GuiConnectionLost.lastServerPort));
 	}
 }
 
 class ReturnToMainMenu extends GenericButton {
 	public void onButtonClick() {
-		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
+		Minecraft.getMinecraft().displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 }
 
 class ReturnToServerList extends GenericButton {
 	public void onButtonClick() {
-		Minecraft.theMinecraft.displayGuiScreen(mc.displayGuiScreen(new GuiFavorites(this)));
+		Minecraft.getMinecraft().displayGuiScreen(mc.displayGuiScreen(new GuiFavorites(this)));
 	}
 }
 

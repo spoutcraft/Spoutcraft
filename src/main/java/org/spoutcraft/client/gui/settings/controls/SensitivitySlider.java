@@ -26,14 +26,14 @@ import org.spoutcraft.api.gui.GenericSlider;
 public class SensitivitySlider extends GenericSlider {
 	public SensitivitySlider() {
 		super("Sensitivity");
-		setSliderPosition(Minecraft.theMinecraft.gameSettings.mouseSensitivity);
+		setSliderPosition(Minecraft.getMinecraft().gameSettings.mouseSensitivity);
 		setTooltip("Sensitivity\nAdjusts the sensitivity of the mouse in game.");
 	}
 
 	@Override
 	public void onSliderDrag(float old, float newPos) {
-		Minecraft.theMinecraft.gameSettings.mouseSensitivity = newPos;
-		Minecraft.theMinecraft.gameSettings.saveOptions();
+		Minecraft.getMinecraft().gameSettings.mouseSensitivity = newPos;
+		Minecraft.getMinecraft().gameSettings.saveOptions();
 	}
 
 	public String getText() {

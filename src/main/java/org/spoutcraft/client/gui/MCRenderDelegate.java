@@ -121,11 +121,11 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public int getTextWidth(String text) {
-		return Minecraft.theMinecraft.fontRenderer.getStringWidth(text);
+		return Minecraft.getMinecraft().fontRenderer.getStringWidth(text);
 	}
 
 	public void render(ArmorBar bar) {
-		float armorPercent = Minecraft.theMinecraft.thePlayer.inventory.getTotalArmorValue() / 0.2f;
+		float armorPercent = Minecraft.getMinecraft().thePlayer.inventory.getTotalArmorValue() / 0.2f;
 		if (bar.isVisible() && bar.getMaxNumShields() > 0) {
 			int y = (int) bar.getScreenY();
 			float armorPercentPerIcon = 100f / bar.getMaxNumShields();
@@ -147,9 +147,9 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(BubbleBar bar) {
-		if (Minecraft.theMinecraft.thePlayer.isInsideOfMaterial(Material.water)) {
-			int bubbles = (int) Math.ceil(((double) (Minecraft.theMinecraft.thePlayer.getAir() - 2) * bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir));
-			int poppingBubbles = (int) Math.ceil(((double) Minecraft.theMinecraft.thePlayer.getAir() * bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir)) - bubbles;
+		if (Minecraft.getMinecraft().thePlayer.isInsideOfMaterial(Material.water)) {
+			int bubbles = (int) Math.ceil(((double) (Minecraft.getMinecraft().thePlayer.getAir() - 2) * bar.getMaxNumBubbles()) / (Minecraft.getMinecraft().thePlayer.maxAir));
+			int poppingBubbles = (int) Math.ceil(((double) Minecraft.getMinecraft().thePlayer.getAir() * bar.getMaxNumBubbles()) / (Minecraft.getMinecraft().thePlayer.maxAir)) - bubbles;
 			if (bar.isVisible()) {
 				for (int bubble = 0; bubble < bubbles + poppingBubbles; bubble++) {
 					if (bubble < bubbles) {
@@ -164,8 +164,8 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(GenericButton button) {
 		if (button.isVisible()) {
-			FontRenderer font = Minecraft.theMinecraft.fontRenderer;
-			SpoutClient.getHandle().renderEngine.bindTexture("/gui/gui.png");
+			FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/gui/container/creative_inventory/tabs.png"));			
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) Math.floor(button.getScreenX()), (float) Math.floor(button.getScreenY()), 0);
 			float width = (float) (button.getWidth() < 200 ? button.getWidth() : 200);
@@ -319,7 +319,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(GenericSlider slider) {
 		if (slider.isVisible()) {
-			SpoutClient.getHandle().renderEngine.bindTexture("/gui/gui.png");
+			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/gui/container/creative_inventory/tabs.png"));
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			float width = (float) (slider.getWidth() < 200 ? slider.getWidth() : 200);
 			GL11.glTranslatef((float) slider.getScreenX(), (float) slider.getScreenY(), 0);
@@ -464,9 +464,9 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(HealthBar bar) {
-		int health = Minecraft.theMinecraft.thePlayer.health;
-		boolean whiteOutlinedHearts = Minecraft.theMinecraft.thePlayer.hurtResistantTime / 3 % 2 == 1;
-		if (Minecraft.theMinecraft.thePlayer.hurtResistantTime < 10) {
+		int health = Minecraft.getMinecraft().thePlayer.health;
+		boolean whiteOutlinedHearts = Minecraft.getMinecraft().thePlayer.hurtResistantTime / 3 % 2 == 1;
+		if (Minecraft.getMinecraft().thePlayer.hurtResistantTime < 10) {
 			whiteOutlinedHearts = false;
 		}
 		float healthPercent = health / 0.2f;
@@ -480,12 +480,12 @@ public class MCRenderDelegate implements RenderDelegate {
 
 				int iconType = 16;
 
-				if (Minecraft.theMinecraft.thePlayer.isPotionActive(Potion.poison)) {
+				if (Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.poison)) {
 					iconType += 36;
 				}
 
 				byte hardcore = 0;
-				if (Minecraft.theMinecraft.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
+				if (Minecraft.getMinecraft().theWorld.getWorldInfo().isHardcoreModeEnabled()) {
 					hardcore = 5 * 9;
 				}
 
@@ -544,7 +544,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(HungerBar bar) {
-		FoodStats foodStats = Minecraft.theMinecraft.thePlayer.getFoodStats();
+		FoodStats foodStats = Minecraft.getMinecraft().thePlayer.getFoodStats();
 
 		int foodLevel = foodStats.getFoodLevel();
 		float foodPercent = foodLevel / 0.2f;
@@ -554,7 +554,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			int foodIcon = 16;
 			byte foodOutline = 0;
 
-			if (Minecraft.theMinecraft.thePlayer.isPotionActive(Potion.hunger)) {
+			if (Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.hunger)) {
 				foodIcon += 36;
 				foodOutline = 13;
 			}
@@ -563,7 +563,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				int x = (int) bar.getScreenX() - icon * bar.getIconOffset();
 				int y = (int) bar.getScreenY();
 
-				if (Minecraft.theMinecraft.thePlayer.getFoodStats().getSaturationLevel() <= 0.0F && bar.getUpdateCounter() % (foodLevel * 3 + 1) == 0) {
+				if (Minecraft.getMinecraft().thePlayer.getFoodStats().getSaturationLevel() <= 0.0F && bar.getUpdateCounter() % (foodLevel * 3 + 1) == 0) {
 					y += GuiIngame.rand.nextInt(3) - 1;
 				}
 
@@ -580,21 +580,21 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(ExpBar bar) {
-		if (bar.isVisible()) {
-			int expCap = Minecraft.theMinecraft.thePlayer.xpBarCap();
+		if (bar.isVisible()) {			
+			int expCap = Minecraft.getMinecraft().thePlayer.xpBarCap()
 			if (expCap > 0) {
 				int x = (int) bar.getScreenX();
 				int y = (int) bar.getScreenY();
-				int exp = (int) (Minecraft.theMinecraft.thePlayer.experience * 183.0F);
+				int exp = (int) (Minecraft.getMinecraft().thePlayer.experience * 183.0F);
 				RenderUtil.drawTexturedModalRectangle(x, y, 0, 64, 182, 5, 0f);
 				if (exp > 0) {
 					RenderUtil.drawTexturedModalRectangle(x, y, 0, 69, exp, 5, 0f);
 				}
 			}
 
-			if (Minecraft.theMinecraft.playerController.func_78763_f() && Minecraft.theMinecraft.thePlayer.experienceLevel > 0) {
+			if (Minecraft.getMinecraft().playerController.func_78763_f() && Minecraft.getMinecraft().thePlayer.experienceLevel > 0) {
 				int color = 8453920;
-				String level = "" + Minecraft.theMinecraft.thePlayer.experienceLevel;
+				String level = "" + Minecraft.getMinecraft().thePlayer.experienceLevel;
 				FontRenderer font = SpoutClient.getHandle().fontRenderer;
 				int x = (int) (bar.getScreenX() + (183 / 2) - (font.getStringWidth(level) / 2));
 				int y = (int) bar.getScreenY() - 6;

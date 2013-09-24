@@ -213,13 +213,13 @@ public class SpoutWorth {
 		}
 		if (Configuration.getRenderDistance() != 0) {
 			Configuration.setRenderDistance(Configuration.getRenderDistance() - 1);
-			Minecraft.theMinecraft.gameSettings.renderDistance = Configuration.getRenderDistance();
+			Minecraft.getMinecraft().gameSettings.renderDistance = Configuration.getRenderDistance();
 			Configuration.write();
 			return;
 		}
 		if (Configuration.getAdvancedOpenGL() != 0) {
 			Configuration.setAdvancedOpenGL(0);
-			Minecraft.theMinecraft.gameSettings.advancedOpengl = false;
+			Minecraft.getMinecraft().gameSettings.advancedOpengl = false;
 			Configuration.write();
 			return;
 		}
@@ -261,7 +261,7 @@ public class SpoutWorth {
 		}
 		if (Configuration.getRenderDistance() < 2) {
 			Configuration.setRenderDistance(Configuration.getRenderDistance() + 1);
-			Minecraft.theMinecraft.gameSettings.renderDistance = Configuration.getRenderDistance();
+			Minecraft.getMinecraft().gameSettings.renderDistance = Configuration.getRenderDistance();
 			if (--downgrade == 0) {
 				Configuration.write();
 				return;
@@ -269,7 +269,7 @@ public class SpoutWorth {
 		}
 		if (Configuration.getAdvancedOpenGL() == 2 || Configuration.getAdvancedOpenGL() == 0) {
 			Configuration.setAdvancedOpenGL(1);
-			Minecraft.theMinecraft.gameSettings.advancedOpengl = true;
+			Minecraft.getMinecraft().gameSettings.advancedOpengl = true;
 			if (--downgrade == 0) {
 				Configuration.write();
 				return;

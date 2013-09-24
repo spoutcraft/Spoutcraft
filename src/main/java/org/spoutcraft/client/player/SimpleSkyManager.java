@@ -63,7 +63,7 @@ public class SimpleSkyManager implements SkyManager {
 	public void setStarFrequency(int frequency) {
 		starFrequency = frequency;
 		starFrequency = Math.min(starFrequency, 1000000);
-		Minecraft.theMinecraft.renderGlobal.refreshStars();
+		Minecraft.getMinecraft().renderGlobal.refreshStars();
 	}
 
 	public boolean isStarsVisible() {

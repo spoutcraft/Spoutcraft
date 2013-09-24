@@ -1786,17 +1786,17 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 		if (isSneaking()) {
 			return;
 		}
-		if (Minecraft.theMinecraft.isGamePaused) {
+		if (Minecraft.getMinecraft().isGamePaused) {			
 			return;
 		}
-		if (Minecraft.theMinecraft.thePlayer.getDistanceSqToEntity(this) > 16) {
+		if (Minecraft.getMinecraft().thePlayer.getDistanceSqToEntity(this) > 16) {
 			return;
 		}
 
 		if (vip != null) {
 			for (Entry<String, Integer> particle : vip.getParticles().entrySet()) {
 				if (rand.nextInt(particle.getValue()) == 0) {
-					Minecraft.theMinecraft.renderGlobal.spawnParticle(particle.getKey(), posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, 0, 0, 0.0F);
+					Minecraft.getMinecraft().renderGlobal.spawnParticle(particle.getKey(), posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, 0, 0, 0.0F);
 				}
 			}
 		}

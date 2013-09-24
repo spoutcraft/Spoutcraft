@@ -62,7 +62,7 @@ public class MapWidget extends GenericScrollable {
 
 	private static MapWidgetRenderer renderer = null;
 
-	private Point lastPlayerPos = new Point((int) Minecraft.theMinecraft.thePlayer.posX, (int) Minecraft.theMinecraft.thePlayer.posZ);
+	private Point lastPlayerPos = new Point((int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posZ);
 	private static Random random = new Random();
 
 	public MapWidget(GuiScreen parent) {
@@ -293,7 +293,7 @@ public class MapWidget extends GenericScrollable {
 			String fileName = "minimap " + df.format(new Date());
 			File desktop = new File(System.getProperty("user.home"), "Desktop");
 			if (!desktop.exists()) {
-				desktop = new File(Minecraft.getMinecraftDir(), "screenshots");
+				desktop = new File(Minecraft.getMinecraft().mcDataDir, "screenshots");
 			}
 			String fullFileName = fileName;
 			int duplicate = 0;

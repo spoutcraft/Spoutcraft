@@ -118,4 +118,15 @@ public class TextureManager implements Tickable, ResourceManagerReloadListener {
 	public void bindTexture(int texture) {
 		TextureUtil.bindTexture(texture);
 	}
+	
+	public void getTextureId(ResourceLocation par1ResourceLocation) {
+		Object var2 = (TextureObject)this.mapTextureObjects.get(par1ResourceLocation);
+
+		if (var2 == null) {
+			var2 = new SimpleTexture(par1ResourceLocation);
+			this.loadTexture(par1ResourceLocation, (TextureObject)var2);
+		}
+
+		return ((TextureObject)var2).getGlTextureId();
+	}
 }

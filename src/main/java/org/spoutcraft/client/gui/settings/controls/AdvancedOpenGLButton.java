@@ -45,7 +45,7 @@ public class AdvancedOpenGLButton extends AutomatedButton {
 			Configuration.setAdvancedOpenGL(0);
 		}
 		Configuration.write();
-		Minecraft.theMinecraft.gameSettings.advancedOpengl = Configuration.getAdvancedOpenGL() != 0;
-		Minecraft.theMinecraft.renderGlobal.setAllRenderesVisible();
+		Minecraft.getMinecraft().gameSettings.advancedOpengl = Configuration.getAdvancedOpenGL() != 0;
+		Minecraft.getMinecraft().renderGlobal.setAllRenderesVisible();
 	}
 }

@@ -76,8 +76,8 @@ public class MapCalculator implements Runnable {
 		if (MinimapConfig.getInstance().isCavemap()) {
 			Chunk chunk = world.getChunkFromBlockCoords(x, z);
 			cmdist.setSeed((x & 0xffff) | ((z & 0xffff) << 16));
-			float dist = distance((int) Minecraft.theMinecraft.thePlayer.posX, (int) Minecraft.theMinecraft.thePlayer.posZ, x, z);
-			int y = (int) Minecraft.theMinecraft.thePlayer.posY;
+			float dist = distance((int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posZ, x, z);
+			int y = (int) Minecraft.getMinecraft().thePlayer.posY;
 			if (dist > 5)
 				y -= (cmdist.nextInt((int) (dist)) - ((int) dist / 2));
 			x &= 0xf;
@@ -183,11 +183,11 @@ public class MapCalculator implements Runnable {
 	}
 
 	private void mapCalc() {
-		if (Minecraft.theMinecraft.thePlayer == null || Minecraft.theMinecraft.theWorld == null)
+		if (Minecraft.getMinecraft().thePlayer == null || Minecraft.getMinecraft().theWorld == null)
 			return;
 		try {
 			final boolean square = MinimapConfig.getInstance().isSquare();
-			final World data = Minecraft.theMinecraft.theWorld;
+			final World data = Minecraft.getMinecraft().theWorld;
 			int renderSize;
 			int startX;
 			int startZ;
@@ -216,7 +216,7 @@ public class MapCalculator implements Runnable {
 				}
 				map.square = square;
 
-				map.update(Minecraft.theMinecraft.thePlayer.posX, Minecraft.theMinecraft.thePlayer.posZ);
+				map.update(Minecraft.getMinecraft().thePlayer.posX, Minecraft.getMinecraft().thePlayer.posZ);
 				renderSize = map.renderSize;
 				startX = (int) (map.getPlayerX() - map.renderOff);
 				startZ = (int) (map.getPlayerZ() - map.renderOff);
@@ -345,18 +345,18 @@ public class MapCalculator implements Runnable {
 	 * Check if a render is necessary, and if so, do one.
 	 */
 	private void tryARender() {
-		if (Minecraft.theMinecraft.thePlayer == null || Minecraft.theMinecraft.theWorld == null)
+		if (Minecraft.getMinecraft().thePlayer == null || Minecraft.getMinecraft().theWorld == null)
 			return;
 		try {
-			double x = Minecraft.theMinecraft.thePlayer.posX;
-			double z = Minecraft.theMinecraft.thePlayer.posZ;
+			double x = Minecraft.getMinecraft().thePlayer.posX;
+			double z = Minecraft.getMinecraft().thePlayer.posZ;
 			if (MinimapConfig.getInstance().isEnabled() && map.isDirty(x, z)) {
 //				long start = System.currentTimeMillis();
 				if (MinimapConfig.getInstance().getScanRadius() > 0) {
 					int radius = MinimapConfig.getInstance().getScanRadius() << 4;
 					for (int cx = (int) (x - radius); cx <= (int) (x + radius); cx += 16) {
 						for (int cz = (int) (z - radius); cz <= (int) (z + radius); cz += 16) {
-							Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords((int) cx, (int) cz);
+							Chunk chunk = Minecraft.getMinecraft().theWorld.getChunkFromBlockCoords((int) cx, (int) cz);
 							org.spoutcraft.client.chunkcache.HeightMapAgent.scanChunk(chunk);
 						}
 					}
@@ -412,7 +412,7 @@ public class MapCalculator implements Runnable {
 	 * Called each tick of the render.
 	 */
 	void onRenderTick() {
-		if (Minecraft.theMinecraft != null && Minecraft.theMinecraft.theWorld != null) {
+		if (Minecraft.getMinecraft() != null && Minecraft.getMinecraft().theWorld != null) {
 			tryARender();
 		}
 	}

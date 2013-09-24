@@ -6,6 +6,11 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
 	private ThreadDownloadImageData downloadImageCape;
 	private ResourceLocation locationSkin;
 	private ResourceLocation locationCape;
+	
+	// Spout Start
+	public String displayName = null;
+	public int maxAir = 300;
+	// Spout End
 
 	public AbstractClientPlayer(World par1World, String par2Str) {
 		super(par1World, par2Str);

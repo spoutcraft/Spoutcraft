@@ -26,7 +26,7 @@ import org.spoutcraft.api.gui.MinecraftFont;
 
 public class MinecraftFontWrapper implements MinecraftFont {
 	public int getTextWidth(String text) {
-		return Minecraft.theMinecraft.fontRenderer.getStringWidth(text);
+		return Minecraft.getMinecraft().fontRenderer.getStringWidth(text);
 	}
 
 	public boolean isAllowedChar(char ch) {
@@ -43,14 +43,14 @@ public class MinecraftFontWrapper implements MinecraftFont {
 	}
 
 	public void drawString(String text, int x, int y, int color) {
-		Minecraft.theMinecraft.fontRenderer.drawString(text, x, y, color);
+		Minecraft.getMinecraft().fontRenderer.drawString(text, x, y, color);
 	}
 
 	public void drawCenteredString(String text, int x, int y, int color) {
-		Minecraft.theMinecraft.fontRenderer.drawString(text, x, y - getTextWidth(text) / 2, color);
+		Minecraft.getMinecraft().fontRenderer.drawString(text, x, y - getTextWidth(text) / 2, color);
 	}
 
 	public void drawShadowedString(String text, int x, int y, int color) {
-		Minecraft.theMinecraft.fontRenderer.drawStringWithShadow(text, x, y, color);
+		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, x, y, color);
 	}
 }

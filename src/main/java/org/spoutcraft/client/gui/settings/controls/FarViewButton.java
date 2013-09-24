@@ -35,8 +35,8 @@ public class FarViewButton extends AutomatedCheckBox {
 		Configuration.setFarView(!Configuration.isFarView());
 		Configuration.write();
 
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		if (Minecraft.getMinecraft().theWorld != null) {
+			Minecraft.getMinecraft().renderGlobal.updateAllRenderers();
 		}
 	}
 }

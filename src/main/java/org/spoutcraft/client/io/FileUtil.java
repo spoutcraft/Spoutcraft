@@ -128,7 +128,7 @@ public class FileUtil {
 	}
 
 	public static File getSelectedTexturePackZip() {
-		String fileName = Minecraft.theMinecraft.renderEngine.texturePack.selectedTexturePack.getTexturePackFileName();
+		String fileName = Minecraft.getMinecraft().renderEngine.texturePack.selectedTexturePack.getTexturePackFileName();
 		File file = new File(getTexturePackDir(), fileName);
 		if (!file.exists()) {
 			file = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), fileName);

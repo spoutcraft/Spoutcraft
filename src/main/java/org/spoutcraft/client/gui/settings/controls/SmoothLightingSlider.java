@@ -34,9 +34,9 @@ public class SmoothLightingSlider extends GenericSlider {
 	@Override
 	public void onSliderDrag(float old, float newPos) {
 		Configuration.setSmoothLighting(newPos);
-		Minecraft.theMinecraft.gameSettings.ambientOcclusion = Configuration.getSmoothLighting() > 0F ? 0 : 2;
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.loadRenderers();
+		Minecraft.getMinecraft().gameSettings.ambientOcclusion = Configuration.getSmoothLighting() > 0F ? 0 : 2;
+		if (Minecraft.getMinecraft().theWorld != null) {
+			Minecraft.getMinecraft().renderGlobal.loadRenderers();
 		}
 		Configuration.write();
 	}

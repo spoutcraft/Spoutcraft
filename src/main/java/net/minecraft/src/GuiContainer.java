@@ -8,10 +8,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.src.Minecraft;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
@@ -195,7 +196,7 @@ public abstract class GuiContainer extends GuiScreen {
 							handleMouseClick(null, slot, 0, 0); // Merge with the existing stack we found
 
 							// Move onto the next item to merge if this one is completely used up
-							ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+							ItemStack cursor = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
 							if (cursor == null) {
 								break;
 							}
@@ -204,7 +205,7 @@ public abstract class GuiContainer extends GuiScreen {
 				}
 
 				// If we didn't merge all of the item, put it back
-				ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+				ItemStack cursor = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
 				if (cursor != null) {
 					handleMouseClick(null, orig, 0, 0);
 				}
@@ -214,8 +215,8 @@ public abstract class GuiContainer extends GuiScreen {
 
 	@SuppressWarnings("unchecked")
 	public void sortPlayerInventory(boolean byName) {
-		// To keep mp compatibility, fake window clicks
-		InventoryPlayer inventory = Minecraft.theMinecraft.thePlayer.inventory;
+		// To keep mp compatibility, fake window clicks		
+		InventoryPlayer inventory = Minecraft.getMinecraft().thePlayer.inventory;
 		for (int itemPass = 0; itemPass < getNumItems(inventory); itemPass++) {
 			for (int pass = 0; pass < inventory.mainInventory.length; pass++) {
 				ArrayList<ItemStack> items = new ArrayList<ItemStack>();
@@ -245,7 +246,7 @@ public abstract class GuiContainer extends GuiScreen {
 							// Left click place item down
 							handleMouseClick(null, newSlot, 0, 0);
 
-							ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+							ItemStack cursor = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
 							if (cursor != null) {
 								handleMouseClick(null, origSlot, 0, 0);
 							}
@@ -289,7 +290,7 @@ public abstract class GuiContainer extends GuiScreen {
 							// Left click place item down
 							handleMouseClick(newSlot, 0, 0, 0);
 
-							ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+							ItemStack cursor = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
 							if (cursor != null) {
 								handleMouseClick(origSlot, 0, 0, 0);
 							}

@@ -50,13 +50,13 @@ public class BetterGrassButton extends AutomatedButton {
 		Configuration.write();
 		
 		Minecraft game = SpoutClient.getHandle();
-		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mob.CTMUtils", "reset");
-		TexturePackChangeHandler.beforeChange1();
-		game.renderEngine.refreshTextureMaps();
-		TexturePackChangeHandler.afterChange1();
+		TexturePackChangeHandler.earlyInitialize("com.prupe.mcpatcher.mob.CTMUtils", "reset");		
+		TexturePackChangeHandler.beforeChange1(true);
+		game.refreshResources();
+		TexturePackChangeHandler.afterChange1(true);
 		
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		if (game.getMinecraft().theWorld != null) {
+			game.renderGlobal.updateAllRenderers();			
 		}
 	}
 }

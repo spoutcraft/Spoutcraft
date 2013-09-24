@@ -26,9 +26,9 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 
 public class TileEntityComparator implements Comparator<TileEntity>{
-	private int playerX = MathHelper.floor_double(Minecraft.theMinecraft.thePlayer.posX);
-	private int playerY = MathHelper.floor_double(Minecraft.theMinecraft.thePlayer.posY);
-	private int playerZ = MathHelper.floor_double(Minecraft.theMinecraft.thePlayer.posZ);
+	private int playerX = MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.posX);
+	private int playerY = MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.posY);
+	private int playerZ = MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.posZ);
 
 	@Override
 	public int compare(TileEntity o1, TileEntity o2) {

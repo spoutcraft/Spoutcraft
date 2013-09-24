@@ -50,14 +50,14 @@ public class GuiScaleButton extends GenericButton {
 		int guiScale = Configuration.getGuiScale();
 		guiScale += 1;
 		guiScale &= 3;
-		Minecraft.theMinecraft.gameSettings.guiScale = guiScale;
+		Minecraft.getMinecraft().gameSettings.guiScale = guiScale;
 		Configuration.setGuiScale(guiScale);
 		Configuration.write();
 
 		// Redisplay the video screen.
-		ScaledResolution var3 = new ScaledResolution(Minecraft.theMinecraft.gameSettings, Minecraft.theMinecraft.displayWidth, Minecraft.theMinecraft.displayHeight);
+		ScaledResolution var3 = new ScaledResolution(Minecraft.getMinecraft().gameSettings, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
 		int width = var3.getScaledWidth();
 		int height = var3.getScaledHeight();
-		SpoutClient.getHandle().currentScreen.setWorldAndResolution(Minecraft.theMinecraft, width, height);
+		SpoutClient.getHandle().currentScreen.setWorldAndResolution(Minecraft.getMinecraft(), width, height);
 	}
 }

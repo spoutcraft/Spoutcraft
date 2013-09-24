@@ -26,14 +26,14 @@ import org.spoutcraft.api.gui.GenericSlider;
 public class FieldOfViewSlider extends GenericSlider {
 	public FieldOfViewSlider() {
 		super("Field of View");
-		setSliderPosition(Minecraft.theMinecraft.gameSettings.fovSetting);
+		setSliderPosition(Minecraft.getMinecraft().gameSettings.fovSetting);
 		setTooltip("Field of View\nAdjusts the field of view in game.");
 	}
 
 	@Override
 	public void onSliderDrag(float old, float newPos) {
-		Minecraft.theMinecraft.gameSettings.fovSetting = newPos;
-		Minecraft.theMinecraft.gameSettings.saveOptions();
+		Minecraft.getMinecraft().gameSettings.fovSetting = newPos;
+		Minecraft.getMinecraft().gameSettings.saveOptions();
 	}
 
 	public String getText() {

@@ -164,16 +164,16 @@ public class Configuration {
 	}
 
 	private static void updateMCConfig() {
-		Minecraft.theMinecraft.gameSettings.ambientOcclusion = Configuration.isAmbientOcclusion() ? 2 : 0;
-		Minecraft.theMinecraft.gameSettings.anaglyph = Configuration.isAnaglyph3D();
-		Minecraft.theMinecraft.gameSettings.renderDistance = Configuration.getRenderDistance();
-		Minecraft.theMinecraft.gameSettings.fancyGraphics = Configuration.isFancyGraphics();
-		Minecraft.theMinecraft.gameSettings.advancedOpengl = Configuration.getAdvancedOpenGL() !=0;
-		Minecraft.theMinecraft.gameSettings.guiScale = Configuration.getGuiScale();
-		Minecraft.theMinecraft.gameSettings.viewBobbing = Configuration.isViewBobbing();
-		Minecraft.theMinecraft.gameSettings.gammaSetting = Configuration.getBrightnessSlider();
+		Minecraft.getMinecraft().gameSettings.ambientOcclusion = Configuration.isAmbientOcclusion() ? 2 : 0;
+		Minecraft.getMinecraft().gameSettings.anaglyph = Configuration.isAnaglyph3D();
+		Minecraft.getMinecraft().gameSettings.renderDistance = Configuration.getRenderDistance();
+		Minecraft.getMinecraft().gameSettings.fancyGraphics = Configuration.isFancyGraphics();
+		Minecraft.getMinecraft().gameSettings.advancedOpengl = Configuration.getAdvancedOpenGL() !=0;
+		Minecraft.getMinecraft().gameSettings.guiScale = Configuration.getGuiScale();
+		Minecraft.getMinecraft().gameSettings.viewBobbing = Configuration.isViewBobbing();
+		Minecraft.getMinecraft().gameSettings.gammaSetting = Configuration.getBrightnessSlider();
 
-		Minecraft.theMinecraft.gameSettings.limitFramerate = Configuration.getPerformance();
+		Minecraft.getMinecraft().gameSettings.limitFramerate = Configuration.getPerformance();
 		if (vsync != (Configuration.getPerformance() == 3)) {
 			vsync = Configuration.getPerformance() == 3;
 			org.lwjgl.opengl.Display.setVSyncEnabled(vsync);

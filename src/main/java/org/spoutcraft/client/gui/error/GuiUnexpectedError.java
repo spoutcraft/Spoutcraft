@@ -131,7 +131,7 @@ public class GuiUnexpectedError extends GuiScreen {
 			
 			builder.append("-----------------------------------").append("\n");
 			builder.append("Minecraft Information:\n");
-			builder.append("    Texture Pack: ").append(Minecraft.theMinecraft.texturePackList.getSelectedTexturePack().getTexturePackFileName()).append("\n");
+			builder.append("    Texture Pack: ").append(Minecraft.getMinecraft().texturePackList.getSelectedTexturePack().getTexturePackFileName()).append("\n");
 			//builder.append("    Texture Pack Res: ").append(TileSize.int_size + "x").append("\n");
 			builder.append("    LWJGL Version: ").append(Sys.getVersion()).append("\n");
 
@@ -192,7 +192,7 @@ class CopyErrorURL extends GenericButton {
 
 class IgnoreErrorButton extends GenericButton {
 	public void onButtonClick() {
-		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
+		Minecraft.getMinecraft().displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 }
 
@@ -202,12 +202,12 @@ class ReportErrorButton extends GenericButton {
 			URL url = new URL("http://spout.in/issues");
 			Desktop.getDesktop().browse(url.toURI());
 		} catch (Exception e) { }
-		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
+		Minecraft.getMinecraft().displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 }
 
 class ExitGameButton extends GenericButton {
 	public void onButtonClick() {
-		Minecraft.theMinecraft.shutdownMinecraftApplet();
+		Minecraft.getMinecraft().shutdownMinecraftApplet();
 	}
 }

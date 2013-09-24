@@ -35,7 +35,7 @@ public class BrightnessSlider extends GenericSlider {
 	public void onSliderDrag(float oldPos, float newPos) {
 		Configuration.setBrightnessSlider(newPos);
 		Configuration.write();
-		Minecraft.theMinecraft.gameSettings.gammaSetting = Configuration.getBrightnessSlider();
+		Minecraft.getMinecraft().gameSettings.gammaSetting = Configuration.getBrightnessSlider();
 	}
 
 	public String getText() {

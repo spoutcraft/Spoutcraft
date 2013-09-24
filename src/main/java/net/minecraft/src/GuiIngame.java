@@ -176,6 +176,16 @@ public class GuiIngame extends Gui {
 
 		mainScreen.render();
 		
+		int var11;
+		int var12;
+		int var13;
+		int var14;
+		int var15;
+		int var17;
+		int var16;
+		float var33;
+		short var37;		
+		
 		//ToDo: this will need TLC
 		if (this.mc.thePlayer.isRidingHorse()) {
 			this.mc.mcProfiler.startSection("jumpBar");
@@ -183,7 +193,7 @@ public class GuiIngame extends Gui {
 			var33 = this.mc.thePlayer.getHorseJumpPower();
 			var37 = 182;
 			var14 = (int)(var33 * (float)(var37 + 1));
-			var15 = var7 - 32 + 3;
+			var15 = screenHeight - 32 + 3;
 			this.drawTexturedModalRect(var11, var15, 0, 84, var37, 5);
 
 			if (var14 > 0) {
@@ -214,14 +224,14 @@ public class GuiIngame extends Gui {
 				boolean var35 = false;
 				var14 = var35 ? 16777215 : 8453920;
 				String var42 = "" + this.mc.thePlayer.experienceLevel;
-				var16 = (var6 - var8.getStringWidth(var42)) / 2;
-				var17 = var7 - 31 - 4;
+				var16 = (screenWidth- font.getStringWidth(var42)) / 2;
+				var17 = screenHeight - 31 - 4;
 				boolean var18 = false;
-				var8.drawString(var42, var16 + 1, var17, 0);
-				var8.drawString(var42, var16 - 1, var17, 0);
-				var8.drawString(var42, var16, var17 + 1, 0);
-				var8.drawString(var42, var16, var17 - 1, 0);
-				var8.drawString(var42, var16, var17, var14);
+				font.drawString(var42, var16 + 1, var17, 0);
+				font.drawString(var42, var16 - 1, var17, 0);
+				font.drawString(var42, var16, var17 + 1, 0);
+				font.drawString(var42, var16, var17 - 1, 0);
+				font.drawString(var42, var16, var17, var14);
 				this.mc.mcProfiler.endSection();
 			}
 		}
@@ -230,7 +240,7 @@ public class GuiIngame extends Gui {
 			this.mc.mcProfiler.startSection("debug");
 			GL11.glPushMatrix();
 			if (Configuration.getFastDebug() != 2) {
-				font.drawStringWithShadow("Minecraft 1.5.2 (" + this.mc.debug + ")", 2, 2, 16777215);
+				font.drawStringWithShadow("Minecraft 1.6.2 (" + this.mc.debug + ")", 2, 2, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 				font.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -316,16 +326,17 @@ public class GuiIngame extends Gui {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GL11.glPushMatrix();
-
-		int var12;
-		int var13;
+		
 		int var38;
+		// Spout Start
+		float pHealth;
+		float ppHealth;
 
 		if (Configuration.showHotbarText) {
 			String var35;
 			String custom = null;
-			var12 = this.mc.thePlayer.getHealth();
-			var13 = this.mc.thePlayer.prevHealth;
+			pHealth = this.mc.thePlayer.getHealth();
+			ppHealth = this.mc.thePlayer.prevHealth;
 			String var34 = "" + this.mc.thePlayer.experienceLevel;
 			var38 = (screenWidth - font.getStringWidth(var34)) / 2;
 			this.mc.mcProfiler.startSection("toolHighlight");

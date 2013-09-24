@@ -233,8 +233,8 @@ public class PrecacheManager {
 			}
 		}
 
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		if (Minecraft.getMinecraft().theWorld != null) {
+			Minecraft.getMinecraft().renderGlobal.updateAllRenderers();
 			if (spoutDebug) {
 				System.out.println("[Spoutcraft] Updating renderer...");
 			}

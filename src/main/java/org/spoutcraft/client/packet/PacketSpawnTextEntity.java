@@ -64,7 +64,7 @@ public class PacketSpawnTextEntity implements SpoutPacket {
 
 	@Override
 	public void run(int playerId) {
-		EntityText entity = new EntityText(Minecraft.theMinecraft.theWorld);
+		EntityText entity = new EntityText(Minecraft.getMinecraft().theWorld);
 		entity.setPosition(posX, posY, posZ);
 		entity.setScale(scale);
 		entity.setText(text);
@@ -73,7 +73,7 @@ public class PacketSpawnTextEntity implements SpoutPacket {
 		entity.motionY = moveY;
 		entity.motionZ = moveZ;
 		entity.setDuration(duration);
-		Minecraft.theMinecraft.theWorld.spawnEntityInWorld(entity);
+		Minecraft.getMinecraft().theWorld.spawnEntityInWorld(entity);
 	}
 
 	@Override

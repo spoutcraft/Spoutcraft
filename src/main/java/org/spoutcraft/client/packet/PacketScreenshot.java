@@ -79,7 +79,7 @@ public class PacketScreenshot implements SpoutPacket {
 		}
 		try {
 			SpoutClient.getInstance().getActivePlayer().showAchievement("Sending screenshot...", "Screenshot requested", 321);
-			BufferedImage screenshot = ScreenShotHelper.getScreenshot(Minecraft.theMinecraft.displayWidth, Minecraft.theMinecraft.displayHeight);
+			BufferedImage screenshot = ScreenShotHelper.getScreenshot(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
 			PacketScreenshot packet = new PacketScreenshot(screenshot);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
 		} catch (IOException ioe) {

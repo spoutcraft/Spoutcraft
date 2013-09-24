@@ -70,11 +70,11 @@ public class ZanMinimap {
 	 * @param mc Minecraft instance to initialize obfhub.game with
 	 */
 	public void onRenderTick() {
-		if (Minecraft.theMinecraft.thePlayer == null || SpoutClient.getInstance().getRawWorld() == null) {
+		if (Minecraft.getMinecraft().thePlayer == null || SpoutClient.getInstance().getRawWorld() == null) {
 			return;
 		}
 
-		if (Minecraft.theMinecraft.currentScreen != null && !(isTransparentMenu() || isChatMenu())) {
+		if (Minecraft.getMinecraft().currentScreen != null && !(isTransparentMenu() || isChatMenu())) {
 			return;
 		}
 
@@ -93,11 +93,11 @@ public class ZanMinimap {
 		renderer.onRenderTick(scWidth, scHeight);
 	}
 
-	private boolean isTransparentMenu() {
-		return Minecraft.theMinecraft.currentScreen instanceof GuiIngameMenu || Minecraft.theMinecraft.currentScreen instanceof GuiAdvancedOptions || Minecraft.theMinecraft.currentScreen instanceof GuiSimpleOptions || Minecraft.theMinecraft.currentScreen instanceof GuiMinimapMenu || Minecraft.theMinecraft.currentScreen instanceof GuiMoveMinimap;
+	private boolean isTransparentMenu() {		
+		return Minecraft.getMinecraft().currentScreen instanceof GuiIngameMenu || Minecraft.getMinecraft().currentScreen instanceof GuiAdvancedOptions || Minecraft.getMinecraft().currentScreen instanceof GuiSimpleOptions || Minecraft.getMinecraft().currentScreen instanceof GuiMinimapMenu || Minecraft.getMinecraft().currentScreen instanceof GuiMoveMinimap;
 	}
 
 	private boolean isChatMenu() {
-		return Minecraft.theMinecraft.currentScreen instanceof GuiChat || Minecraft.theMinecraft.currentScreen instanceof GuiSleepMP;
+		return Minecraft.getMinecraft().currentScreen instanceof GuiChat || Minecraft.getMinecraft().currentScreen instanceof GuiSleepMP;
 	}
 }

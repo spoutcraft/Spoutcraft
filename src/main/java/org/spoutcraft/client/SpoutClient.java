@@ -400,8 +400,8 @@ public class SpoutClient extends PropertyObject implements Client {
 		getHandle().mcProfiler.endStartSection("mipmapping");
 		MipMapUtils.onTick();
 		getHandle().mcProfiler.endStartSection("special_effects");
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.theWorld.doColorfulStuff();
+		if (Minecraft.getMinecraft().theWorld != null) {
+			Minecraft.getMinecraft().theWorld.doColorfulStuff();
 			inWorldTicks++;
 		}
 		getHandle().mcProfiler.endStartSection("entity_info");
@@ -438,7 +438,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			clipboardThread.interrupt();
 			clipboardThread = null;
 		}
-		Minecraft.theMinecraft.sndManager.stopMusic();
+		Minecraft.getMinecraft().sndManager.stopMusic();
 		PacketDecompressionThread.endThread();
 		MaterialData.reset();
 		FileDownloadThread.preCacheCompleted.lazySet(0);
@@ -464,13 +464,13 @@ public class SpoutClient extends PropertyObject implements Client {
 		PacketDecompressionThread.startThread();
 		MipMapUtils.initializeMipMaps();
 		MipMapUtils.update();
-		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
+		player.getMainScreen().toggleSurvivalHUD(!Minecraft.getMinecraft().playerController.isInCreativeMode());
 		inWorldTicks = 0L;
 		MinimapConfig.getInstance().getServerWaypoints().clear();
 	}
 
-	public static Minecraft getHandle() {
-		return Minecraft.theMinecraft;
+	public static Minecraft getHandle() {		
+		return Minecraft.getMinecraft();
 	}
 
 	public EntityPlayer getPlayerFromId(int id) {

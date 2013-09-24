@@ -49,8 +49,8 @@ public class ClearWaterToggleButton extends GenericCheckBox {
 
 		Block.waterStill.setLightOpacity(isChecked() ? 1 : 3);
 		Block.waterMoving.setLightOpacity(isChecked() ? 1 : 3);
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		if (Minecraft.getMinecraft().theWorld != null) {
+			Minecraft.getMinecraft().renderGlobal.updateAllRenderers();
 		}
 	}
 }

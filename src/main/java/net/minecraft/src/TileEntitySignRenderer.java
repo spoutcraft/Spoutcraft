@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
+import net.minecraft.src.Minecraft;
 
+import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.config.Configuration;
 
 public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
@@ -49,9 +50,9 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		GL11.glPopMatrix();
 		// Spout Start
 		if (par1TileEntitySign.hasText()) {
-			EntityLiving viewer = Minecraft.theMinecraft.renderViewEntity;
+			EntityLiving viewer = Minecraft.getMinecraft().renderViewEntity;			
 			if (viewer == null) {
-				viewer = Minecraft.theMinecraft.thePlayer;
+				viewer = Minecraft.getMinecraft().thePlayer;
 			}
 			if (Configuration.getSignDistance() == Integer.MAX_VALUE || viewer != null && par1TileEntitySign.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < (Configuration.getSignDistance() * Configuration.getSignDistance())) {
 				// Spout End

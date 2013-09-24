@@ -30,11 +30,11 @@ import net.minecraft.src.Slot;
 public class InventoryUtil {
 	public static void replaceItem(int id, int damage) {
 		int slot = -1;
-		InventoryPlayer inventory = Minecraft.theMinecraft.thePlayer.inventory;
+		InventoryPlayer inventory = Minecraft.getMinecraft().thePlayer.inventory;
 		for (int i = 0; i < inventory.mainInventory.length; i++) {
 			if (inventory.mainInventory[i] != null && i != inventory.currentItem) {
 				if (inventory.mainInventory[i].itemID == id && (damage == -1 || (damage == inventory.mainInventory[i].getItemDamage()))) {
-					if (!Minecraft.theMinecraft.isMultiplayerWorld()) {
+					if (!Minecraft.getMinecraft().isMultiplayerWorld()) {
 						inventory.mainInventory[inventory.currentItem].stackSize = inventory.mainInventory[i].stackSize;
 						inventory.mainInventory[inventory.currentItem].setItemDamage(inventory.mainInventory[i].getItemDamage());
 						inventory.mainInventory[i] = null;
@@ -44,15 +44,15 @@ public class InventoryUtil {
 				}
 			}
 		}
-		if (Minecraft.theMinecraft.isMultiplayerWorld() && slot > -1) {
-			int window = Minecraft.theMinecraft.thePlayer.openContainer.windowId;
+		if (Minecraft.getMinecraft().isMultiplayerWorld() && slot > -1) {
+			int window = Minecraft.getMinecraft().thePlayer.openContainer.windowId;
 			ItemStack replacement = inventory.mainInventory[slot].copy();
 
-			Minecraft.theMinecraft.playerController.windowClick(window, slot < 9 ? slot + 36 : slot, 0, 0, Minecraft.theMinecraft.thePlayer);
-			Minecraft.theMinecraft.playerController.windowClick(window, inventory.currentItem + 36, 0, 0, Minecraft.theMinecraft.thePlayer);
-			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet101CloseWindow(window));
-			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.queued = true;
-			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.packetQueueTime = System.currentTimeMillis() + 30L;
+			Minecraft.getMinecraft().playerController.windowClick(window, slot < 9 ? slot + 36 : slot, 0, 0, Minecraft.getMinecraft().thePlayer);
+			Minecraft.getMinecraft().playerController.windowClick(window, inventory.currentItem + 36, 0, 0, Minecraft.getMinecraft().thePlayer);
+			((EntityClientPlayerMP)Minecraft.getMinecraft().thePlayer).sendQueue.addToSendQueue(new Packet101CloseWindow(window));
+			((EntityClientPlayerMP)Minecraft.getMinecraft().thePlayer).sendQueue.queued = true;
+			((EntityClientPlayerMP)Minecraft.getMinecraft().thePlayer).sendQueue.packetQueueTime = System.currentTimeMillis() + 30L;
 
 			ItemStack current = inventory.mainInventory[inventory.currentItem];
 			if (replacement != null && current != null) {

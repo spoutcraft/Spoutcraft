@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import com.prupe.mcpatcher.mob.MobRandomizer$ExtraInfo;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -97,7 +98,12 @@ public abstract class EntityLivingBase extends Entity {
 	/**
 	 * Damage taken in the last hit. Mobs are resistant to damage less than this for a short time after taking damage.
 	 */
-	protected float lastDamage;
+	// Spout Start
+	public float lastDamage;
+	private EntityData entityData = new EntityData();
+	public String displayName = null;
+	public int maxAir = 300;
+	// Spout End
 
 	/** used to check whether entity is jumping. */
 	protected boolean isJumping;
@@ -251,7 +257,9 @@ public abstract class EntityLivingBase extends Entity {
 				this.mountEntity((Entity)null);
 			}
 		} else {
-			this.setAir(300);
+			// Spout Start - 300 to maxAir
+			this.setAir(maxAir);
+			// Spout End
 		}
 
 		this.prevCameraPitch = this.cameraPitch;
@@ -1007,7 +1015,8 @@ public abstract class EntityLivingBase extends Entity {
 	 * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health second
 	 * with the reduced value. Args: damageAmount
 	 */
-	protected void damageEntity(DamageSource par1DamageSource, float par2) {
+	// Spout Start Protected > Public
+	public void damageEntity(DamageSource par1DamageSource, float par2) {
 		if (!this.isEntityInvulnerable()) {
 			par2 = this.applyArmorCalculations(par1DamageSource, par2);
 			par2 = this.applyPotionDamageCalculations(par1DamageSource, par2);

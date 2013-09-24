@@ -35,12 +35,12 @@ public class CraftLivingEntity extends CraftEntity {
 		return (EntityLiving) handle;
 	}
 
-	public int getHealth() {
-		return getEntityLiving().health;
+	public float getHealth() {
+		return getEntityLiving().getHeldItem();
 	}
 
-	public void setHealth(int health) {
-		getEntityLiving().health = health;
+	public void setHealth(float health) {
+		getEntityLiving().setHealth(health);
 	}
 
 	public double getEyeHeight() {
@@ -92,7 +92,7 @@ public class CraftLivingEntity extends CraftEntity {
 		getEntityLiving().maxAir = ticks;
 	}
 
-	public void damage(int amount) {
+	public void damage(float amount) {
 		getEntityLiving().damageEntity(net.minecraft.src.DamageSource.generic, amount);
 	}
 
@@ -120,7 +120,7 @@ public class CraftLivingEntity extends CraftEntity {
 		return getEntityLiving().lastDamage;
 	}
 
-	public void setLastDamage(int damage) {
+	public void setLastDamage(float damage) {
 		getEntityLiving().lastDamage = damage;
 	}
 
@@ -132,18 +132,18 @@ public class CraftLivingEntity extends CraftEntity {
 		getEntityLiving().hurtResistantTime = ticks;
 	}
 
-	public String getTitle() {
-		return getEntityLiving().displayName;
+	public String getTitle() {		
+		return getEntityLiving().hasCustomNameTag() ? getEntityLiving().getCustomNameTag() : super.getEntityName();		
 	}
 
 	public void setTitle(String title) {
-		getEntityLiving().displayName = title;
+		getEntityLiving().setCustomNameTag(title);
 	}
 
-	public void resetTitle() {
-		getEntityLiving().displayName = null;
+	public void resetTitle() {		
 		if (handle instanceof EntityPlayer) {
-			getEntityLiving().displayName = ((EntityPlayer)handle).username;
+			//ToDO:
+			//getEntityLiving().displayName = ((EntityPlayer)handle).username;
 		}
 	}
 

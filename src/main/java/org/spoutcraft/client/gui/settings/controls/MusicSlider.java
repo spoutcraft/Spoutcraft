@@ -26,15 +26,15 @@ import org.spoutcraft.api.gui.GenericSlider;
 public class MusicSlider extends GenericSlider {
 	public MusicSlider() {
 		super("Music");
-		setSliderPosition(Minecraft.theMinecraft.gameSettings.musicVolume);
+		setSliderPosition(Minecraft.getMinecraft().gameSettings.musicVolume);
 		setTooltip("Music Volume\nControls the volume of all the music in game.");
 	}
 
 	@Override
 	public void onSliderDrag(float old, float newPos) {
-		Minecraft.theMinecraft.gameSettings.musicVolume = newPos;
-		Minecraft.theMinecraft.gameSettings.saveOptions();
-		Minecraft.theMinecraft.sndManager.onSoundOptionsChanged();
+		Minecraft.getMinecraft().gameSettings.musicVolume = newPos;
+		Minecraft.getMinecraft().gameSettings.saveOptions();
+		Minecraft.getMinecraft().sndManager.onSoundOptionsChanged();
 	}
 
 	public String getText() {

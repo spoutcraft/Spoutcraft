@@ -43,8 +43,8 @@ public class ConnectedTexturesButton extends AutomatedCheckBox {
 		TexturePackChangeHandler.beforeChange1();
 		game.renderEngine.refreshTextureMaps();
 		TexturePackChangeHandler.afterChange1();
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		if (Minecraft.getMinecraft().theWorld != null) {
+			Minecraft.getMinecraft().renderGlobal.updateAllRenderers();
 		}
 	}
 }

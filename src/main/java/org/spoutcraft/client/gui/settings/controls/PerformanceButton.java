@@ -46,7 +46,7 @@ public class PerformanceButton extends AutomatedButton {
 		Configuration.setPerformance(Configuration.getPerformance() + 1);
 		Configuration.setPerformance(Configuration.getPerformance() & 3);
 		Configuration.write();
-		Minecraft.theMinecraft.gameSettings.limitFramerate = Configuration.getPerformance();
+		Minecraft.getMinecraft().gameSettings.limitFramerate = Configuration.getPerformance();
 		Display.setVSyncEnabled(Configuration.getPerformance() == 3);
 	}
 }

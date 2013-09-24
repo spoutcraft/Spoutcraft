@@ -46,7 +46,7 @@ public class AccessoryHandler {
 
 	public static void addAccessory(String player, Accessory n, String url) {
 		if (!(downloaded.contains(url))) {
-			Minecraft.theMinecraft.renderEngine.obtainImageData(url, new HDImageBufferDownload());
+			Minecraft.getMinecraft().renderEngine.obtainImageData(url, new HDImageBufferDownload());
 			downloaded.add(url);
 		}
 		Set<Pair<Accessory, String>> acs = sacs.get(player);

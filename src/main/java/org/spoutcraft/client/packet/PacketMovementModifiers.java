@@ -61,11 +61,11 @@ public class PacketMovementModifiers implements SpoutPacket {
 	}
 
 	public void run(int playerId) {
-		Minecraft.theMinecraft.thePlayer.getData().setGravityMod(gravityMod);
-		Minecraft.theMinecraft.thePlayer.getData().setWalkingMod(walkingMod);
-		Minecraft.theMinecraft.thePlayer.getData().setSwimmingMod(swimmingMod);
-		Minecraft.theMinecraft.thePlayer.getData().setJumpingMod(jumpingMod);
-		Minecraft.theMinecraft.thePlayer.getData().setAirspeedMod(airspeedMod);
+		Minecraft.getMinecraft().thePlayer.getData().setGravityMod(gravityMod);
+		Minecraft.getMinecraft().thePlayer.getData().setWalkingMod(walkingMod);
+		Minecraft.getMinecraft().thePlayer.getData().setSwimmingMod(swimmingMod);
+		Minecraft.getMinecraft().thePlayer.getData().setJumpingMod(jumpingMod);
+		Minecraft.getMinecraft().thePlayer.getData().setAirspeedMod(airspeedMod);
 	}
 
 	public void failure(int playerId) {

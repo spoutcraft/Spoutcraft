@@ -47,9 +47,9 @@ public class FancyGraphicsButton extends AutomatedButton {
 				check.onButtonClick();
 			}
 		}
-		Minecraft.theMinecraft.gameSettings.fancyGraphics = Configuration.isFancyGraphics();
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		Minecraft.getMinecraft().gameSettings.fancyGraphics = Configuration.isFancyGraphics();
+		if (Minecraft.getMinecraft().theWorld != null) {
+			Minecraft.getMinecraft().renderGlobal.updateAllRenderers();
 		}
 		custom = false;
 	}

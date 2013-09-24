@@ -38,8 +38,8 @@ public class RandomMobTextureButton extends AutomatedCheckBox {
 		Configuration.write();
 
 		TexturePackChangeHandler.scheduleTexturePackRefresh();
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		if (Minecraft.getMinecraft().theWorld != null) {
+			Minecraft.getMinecraft().renderGlobal.updateAllRenderers();
 		}
 	}
 }

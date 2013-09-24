@@ -39,7 +39,7 @@ public class SpoutPlayer extends CraftHumanEntity {
 	}
 
 	public boolean isOnline() {
-		return Minecraft.theMinecraft.isMultiplayerWorld();
+		return Minecraft.getMinecraft().isMultiplayerWorld();
 	}
 
 	public boolean isSneaking() {
