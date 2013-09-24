@@ -38,11 +38,11 @@ public class FileUtil {
 	private static final String[] validExtensions = {"txt", "yml", "xml", "png", "jpg", "ogg", "midi", "wav", "zip"};
 	private static final HashMap<String, String> fileNameCache = new HashMap<String, String>();
 	public static File getSpoutcraftBaseDir() {
-		return Minecraft.getMinecraftDir();
+		return Minecraft.getMinecraft().mcDataDir;
 	}
 
 	public static File getCacheDir() {
-		File directory = new File(Minecraft.getMinecraftDir(), "cache");
+		File directory = new File(Minecraft.getMinecraft().mcDataDir, "cache");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
@@ -50,7 +50,7 @@ public class FileUtil {
 	}
 
 	public static File getConfigDir() {
-		File directory = new File(Minecraft.getMinecraftDir(), "config");
+		File directory = new File(Minecraft.getMinecraft().mcDataDir, "config");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
@@ -66,7 +66,7 @@ public class FileUtil {
 	}
 
 	public static File getStatsDir() {
-		File directory = new File(Minecraft.getMinecraftDir(), "stats");
+		File directory = new File(Minecraft.getMinecraft().mcDataDir, "stats");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
@@ -74,7 +74,7 @@ public class FileUtil {
 	}
 
 	public static void migrateOldFiles() {
-		File directory = new File(Minecraft.getMinecraftDir(), "spout");
+		File directory = new File(Minecraft.getMinecraft().mcDataDir, "spout");
 		if (directory.exists()) {
 			try {
 				FileUtils.copyDirectory(directory, getCacheDir(), true);
@@ -120,20 +120,11 @@ public class FileUtil {
 	}
 
 	public static File getTexturePackDir() {
-		File directory = new File(Minecraft.getMinecraftDir(), "texturepacks");
+		File directory = new File(Minecraft.getMinecraft().mcDataDir, "texturepacks");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
 		return directory;
-	}
-
-	public static File getSelectedTexturePackZip() {
-		String fileName = Minecraft.getMinecraft().renderEngine.texturePack.selectedTexturePack.getTexturePackFileName();
-		File file = new File(getTexturePackDir(), fileName);
-		if (!file.exists()) {
-			file = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), fileName);
-		}
-		return file;
 	}
 
 	public static String getFileName(String url) {

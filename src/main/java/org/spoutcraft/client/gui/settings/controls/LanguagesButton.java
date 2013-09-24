@@ -35,6 +35,7 @@ public class LanguagesButton extends GenericButton {
 
 	@Override
 	public void onButtonClick() {
-		Minecraft.getMinecraft().displayGuiScreen(new GuiLanguage(parent, Minecraft.getMinecraft().gameSettings));
+		//ToDO: broken
+		//Minecraft.getMinecraft().displayGuiScreen(new GuiLanguage(parent, Minecraft.getMinecraft().gameSettings));
 	}
 }

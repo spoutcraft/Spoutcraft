@@ -119,7 +119,7 @@ public class TextureManager implements Tickable, ResourceManagerReloadListener {
 		TextureUtil.bindTexture(texture);
 	}
 	
-	public void getTextureId(ResourceLocation par1ResourceLocation) {
+	public int getTextureId(ResourceLocation par1ResourceLocation) {
 		Object var2 = (TextureObject)this.mapTextureObjects.get(par1ResourceLocation);
 
 		if (var2 == null) {

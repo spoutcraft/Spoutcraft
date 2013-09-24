@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.server.GuiFavorites;
 
 public class GuiDisconnected extends GuiScreen {
 

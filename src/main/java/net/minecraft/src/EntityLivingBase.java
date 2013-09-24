@@ -9,6 +9,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+//Spout Start
+import org.spoutcraft.api.entity.EntitySkinType;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.entity.EntityData;
+import org.spoutcraft.client.io.CustomTextureManager;
+//Spout End
+
 public abstract class EntityLivingBase extends Entity {
 	private static final UUID sprintingSpeedBoostModifierUUID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
 	private static final AttributeModifier sprintingSpeedBoostModifier = (new AttributeModifier(sprintingSpeedBoostModifierUUID, "Sprinting speed boost", 0.30000001192092896D, 2)).setSaved(false);
@@ -24,7 +32,7 @@ public abstract class EntityLivingBase extends Entity {
 	public int swingProgressInt;
 	public int arrowHitTimer;
 	public float prevHealth;
-
+	
 	/**
 	 * The amount of time remaining this entity should act 'hurt'. (Visual appearance of red tint)
 	 */
@@ -101,7 +109,7 @@ public abstract class EntityLivingBase extends Entity {
 	// Spout Start
 	public float lastDamage;
 	private EntityData entityData = new EntityData();
-	public String displayName = null;
+	public String displayName = null;	
 	public int maxAir = 300;
 	// Spout End
 
@@ -1877,4 +1885,53 @@ public abstract class EntityLivingBase extends Entity {
 	public boolean isOnTeam(Team par1Team) {
 		return this.getTeam() != null ? this.getTeam().isSameTeam(par1Team) : false;
 	}
+	
+	// Spout Start
+	public EntityData getData() {
+		return entityData;
+	}
+
+	public void setData(EntityData e) {
+		this.entityData = e;
+	}
+
+	public String getCustomTextureUrl(byte id){
+		if (getData().getCustomTextures() == null) {
+			return null;
+		}
+		return getData().getCustomTextures().get(id);
+	}
+
+	public String getCustomTexture(byte id){
+		if(getCustomTextureUrl(id) != null ) {
+			return CustomTextureManager.getTexturePathFromUrl(getCustomTextureUrl(id));
+		}
+		return null;
+	}
+
+	public String getCustomTexture(EntitySkinType type, String def) {
+		String tex = getCustomTexture(type.getId());
+		if (tex == null) {
+			tex = def;
+		}
+		return tex;
+	}
+
+	public void setCustomTexture(String url, byte id){
+		if (url != null) {
+			CustomTextureManager.downloadTexture(url);
+		}
+		if (getData().getCustomTextures() != null) {
+			getData().getCustomTextures().put(id, url);
+		}
+	}
+
+	public void setTextureToRender(byte textureToRender) {
+		getData().setTextureToRender(textureToRender);
+	}
+
+	public byte getTextureToRender() {
+		return getData().getTextureToRender();
+	}
+	// Spout End
 }

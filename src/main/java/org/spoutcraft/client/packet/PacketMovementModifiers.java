@@ -60,7 +60,7 @@ public class PacketMovementModifiers implements SpoutPacket {
 		output.writeDouble(airspeedMod);
 	}
 
-	public void run(int playerId) {
+	public void run(int playerId) {		
 		Minecraft.getMinecraft().thePlayer.getData().setGravityMod(gravityMod);
 		Minecraft.getMinecraft().thePlayer.getData().setWalkingMod(walkingMod);
 		Minecraft.getMinecraft().thePlayer.getData().setSwimmingMod(swimmingMod);

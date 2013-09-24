@@ -31,6 +31,7 @@ import org.lwjgl.opengl.GLContext;
 import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.src.Minecraft;
+import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.TextureMap;
 
 import org.spoutcraft.api.material.CustomBlock;
@@ -51,7 +52,7 @@ public class MipMapUtils {
 		GL11.glPushMatrix();
 		if (Configuration.getMipmapsPercent() > 0F) {
 			// ToDO: this doesn't work.
-			int terrain = Minecraft.getMinecraft().renderEngine.getTextureId(TextureMap.locationBlocksTexture);
+			int terrain = Minecraft.getMinecraft().renderEngine.getTextureId(new ResourceLocation("textures/atlas/blocks.png"));
 			initalizeTexture(terrain);
 
 			for (CustomBlock block : MaterialData.getCustomBlocks()) {
@@ -112,7 +113,7 @@ public class MipMapUtils {
 			initializeMipMaps();
 		}
 		MipMapUtils.targetFade = Configuration.getMipmapsPercent();
-		int terrain = Minecraft.getMinecraft().renderEngine.getTextureId(TextureMap.locationBlocksTexture);
+		int terrain = Minecraft.getMinecraft().renderEngine.getTextureId(new ResourceLocation("textures/atlas/blocks.png"));
 		update(terrain);
 
 		for (CustomBlock block : MaterialData.getCustomBlocks()) {
@@ -154,7 +155,7 @@ public class MipMapUtils {
 
 	public static void onTick() {
 		if (updateTerrain) {			
-			int terrain = Minecraft.getMinecraft().renderEngine.getTextureId(TextureMap.locationBlocksTexture);
+			int terrain = Minecraft.getMinecraft().renderEngine.getTextureId(new ResourceLocation("textures/atlas/blocks.png"));
 			onTick(terrain, targetFade, currentFade);
 
 			if (targetFade != currentFade) {

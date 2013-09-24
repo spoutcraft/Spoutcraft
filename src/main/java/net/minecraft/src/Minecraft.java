@@ -224,7 +224,7 @@ public class Minecraft implements IPlayerUsage {
 	public Minecraft(Session par1Session, int par2, int par3, boolean par4, boolean par5, File par6File, File par7File, File par8File, Proxy par9Proxy, String par10Str) {		
 		MCPatcherUtils.setMinecraft(this, par6File, "1.6.2", "4.1.0_04");
 		this.timer = new Timer(20.0F);
-		this.usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.func_130071_aq());
+		this.usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.getSystemTimeMillis());
 		this.systemTime = getSystemTime();
 		this.mcProfiler = new Profiler();
 		this.field_83002_am = -1L;

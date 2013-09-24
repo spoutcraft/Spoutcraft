@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.src.Minecraft;
+import net.minecraft.src.RenderHelper;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -484,6 +485,8 @@ public abstract class GuiContainer extends GuiScreen {
 				this.zLevel = 0.0F;
 				itemRenderer.zLevel = 0.0F;
 		}
+		//ToDo: might need this
+		//this.func_102021_a(var4, par2, par3);
 	}
 
 	/**
@@ -491,6 +494,8 @@ public abstract class GuiContainer extends GuiScreen {
 	 * x position, current mouse y position.
 	 */
 	protected void drawCreativeTabHoveringText(String par1Str, int par2, int par3) {
+		//Todo: may need this instead:
+		//this.func_102021_a(Arrays.asList(new String[] {par1Str}), par2, par3);
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -522,6 +527,74 @@ public abstract class GuiContainer extends GuiScreen {
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 	}
 
+	protected void func_102021_a(List par1List, int par2, int par3) {
+		if (!par1List.isEmpty()) {
+			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+			RenderHelper.disableStandardItemLighting();
+			GL11.glDisable(GL11.GL_LIGHTING);
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			int var4 = 0;
+			Iterator var5 = par1List.iterator();
+
+			while (var5.hasNext()) {
+				String var6 = (String)var5.next();
+				int var7 = this.fontRenderer.getStringWidth(var6);
+
+				if (var7 > var4) {
+					var4 = var7;
+				}
+			}
+
+			int var14 = par2 + 12;
+			int var15 = par3 - 12;
+			int var8 = 8;
+
+			if (par1List.size() > 1) {
+				var8 += 2 + (par1List.size() - 1) * 10;
+			}
+
+			if (var14 + var4 > this.width) {
+				var14 -= 28 + var4;
+			}
+
+			if (var15 + var8 + 6 > this.height) {
+				var15 = this.height - var8 - 6;
+			}
+
+			this.zLevel = 300.0F;
+			itemRenderer.zLevel = 300.0F;
+			int var9 = -267386864;
+			this.drawGradientRect(var14 - 3, var15 - 4, var14 + var4 + 3, var15 - 3, var9, var9);
+			this.drawGradientRect(var14 - 3, var15 + var8 + 3, var14 + var4 + 3, var15 + var8 + 4, var9, var9);
+			this.drawGradientRect(var14 - 3, var15 - 3, var14 + var4 + 3, var15 + var8 + 3, var9, var9);
+			this.drawGradientRect(var14 - 4, var15 - 3, var14 - 3, var15 + var8 + 3, var9, var9);
+			this.drawGradientRect(var14 + var4 + 3, var15 - 3, var14 + var4 + 4, var15 + var8 + 3, var9, var9);
+			int var10 = 1347420415;
+			int var11 = (var10 & 16711422) >> 1 | var10 & -16777216;
+			this.drawGradientRect(var14 - 3, var15 - 3 + 1, var14 - 3 + 1, var15 + var8 + 3 - 1, var10, var11);
+			this.drawGradientRect(var14 + var4 + 2, var15 - 3 + 1, var14 + var4 + 3, var15 + var8 + 3 - 1, var10, var11);
+			this.drawGradientRect(var14 - 3, var15 - 3, var14 + var4 + 3, var15 - 3 + 1, var10, var10);
+			this.drawGradientRect(var14 - 3, var15 + var8 + 2, var14 + var4 + 3, var15 + var8 + 3, var11, var11);
+
+			for (int var12 = 0; var12 < par1List.size(); ++var12) {
+				String var13 = (String)par1List.get(var12);
+				this.fontRenderer.drawStringWithShadow(var13, var14, var15, -1);
+
+				if (var12 == 0) {
+					var15 += 2;
+				}
+
+				var15 += 10;
+			}
+
+			this.zLevel = 0.0F;
+			itemRenderer.zLevel = 0.0F;
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			RenderHelper.enableStandardItemLighting();
+			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		}
+	}
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */

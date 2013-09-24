@@ -157,8 +157,6 @@ public class GuiIngame extends Gui {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		this.mc.mcProfiler.endSection();
 
-		float var33;
-
 		if (this.mc.thePlayer.getSleepTimer() > 0) {
 			GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
 			GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
@@ -176,28 +174,29 @@ public class GuiIngame extends Gui {
 
 		mainScreen.render();
 		
-		int var11;
+		int var111;
 		int var12;
 		int var13;
 		int var14;
-		int var15;
-		int var17;
+		int var115;
+		int var117;
 		int var16;
-		float var33;
+		int var33;
+		float var313;
 		short var37;		
 		
 		//ToDo: this will need TLC
 		if (this.mc.thePlayer.isRidingHorse()) {
 			this.mc.mcProfiler.startSection("jumpBar");
 			this.mc.getTextureManager().bindTexture(Gui.icons);
-			var33 = this.mc.thePlayer.getHorseJumpPower();
+			var313 = this.mc.thePlayer.getHorseJumpPower();
 			var37 = 182;
-			var14 = (int)(var33 * (float)(var37 + 1));
-			var15 = screenHeight - 32 + 3;
-			this.drawTexturedModalRect(var11, var15, 0, 84, var37, 5);
+			var14 = (int)(var313 * (float)(var37 + 1));
+			var115 = screenHeight - 32 + 3;
+			this.drawTexturedModalRect(var111, var115, 0, 84, var37, 5);
 
 			if (var14 > 0) {
-				this.drawTexturedModalRect(var11, var15, 0, 89, var14, 5);
+				this.drawTexturedModalRect(var111, var115, 0, 89, var14, 5);
 			}
 
 			this.mc.mcProfiler.endSection();
@@ -209,11 +208,11 @@ public class GuiIngame extends Gui {
 			if (var12 > 0) {
 				var37 = 182;
 				var14 = (int)(this.mc.thePlayer.experience * (float)(var37 + 1));
-				var15 = var7 - 32 + 3;
-				this.drawTexturedModalRect(var11, var15, 0, 64, var37, 5);
+				var115 = var7 - 32 + 3;
+				this.drawTexturedModalRect(var111, var115, 0, 64, var37, 5);
 
 				if (var14 > 0) {
-					this.drawTexturedModalRect(var11, var15, 0, 69, var14, 5);
+					this.drawTexturedModalRect(var111, var115, 0, 69, var14, 5);
 				}
 			}
 
@@ -225,13 +224,13 @@ public class GuiIngame extends Gui {
 				var14 = var35 ? 16777215 : 8453920;
 				String var42 = "" + this.mc.thePlayer.experienceLevel;
 				var16 = (screenWidth- font.getStringWidth(var42)) / 2;
-				var17 = screenHeight - 31 - 4;
+				var117 = screenHeight - 31 - 4;
 				boolean var18 = false;
-				font.drawString(var42, var16 + 1, var17, 0);
-				font.drawString(var42, var16 - 1, var17, 0);
-				font.drawString(var42, var16, var17 + 1, 0);
-				font.drawString(var42, var16, var17 - 1, 0);
-				font.drawString(var42, var16, var17, var14);
+				font.drawString(var42, var16 + 1, var117, 0);
+				font.drawString(var42, var16 - 1, var117, 0);
+				font.drawString(var42, var16, var117 + 1, 0);
+				font.drawString(var42, var16, var117 - 1, 0);
+				font.drawString(var42, var16, var117, var14);
 				this.mc.mcProfiler.endSection();
 			}
 		}
@@ -413,12 +412,12 @@ public class GuiIngame extends Gui {
 				var16 = 150;
 			}
 
-			var17 = (screenWidth - var38 * var16) / 2;
+			var117 = (screenWidth - var38 * var16) / 2;
 			byte var44 = 10;
-			drawRect(var17 - 1, var44 - 1, var17 + var16 * var38, var44 + 9 * var40, Integer.MIN_VALUE);
+			drawRect(var117 - 1, var44 - 1, var117 + var16 * var38, var44 + 9 * var40, Integer.MIN_VALUE);
 
 			for (int var19 = 0; var19 < var13; ++var19) {
-				int var20 = var17 + var19 % var38 * var16;
+				int var20 = var117 + var19 % var38 * var16;
 				int var47 = var44 + var19 / var38 * 9;
 				drawRect(var20, var47, var20 + var16 - 1, var47 + 8, 553648127);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

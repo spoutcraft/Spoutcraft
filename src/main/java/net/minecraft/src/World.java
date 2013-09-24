@@ -3744,8 +3744,8 @@ public abstract class World implements IBlockAccess {
 		boolean var5 = this.difficultySetting == 3;
 
 		if (this.blockExists(par1, par2, par3)) {
-			float var6 = this.func_130001_d();
-			var4 += MathHelper.clamp_float((float)this.getChunkFromBlockCoords(par1, par3).field_111204_q / 3600000.0F, 0.0F, 1.0F) * (var5 ? 1.0F : 0.75F);
+			float var6 = this.getCurrentMoonPhaseFactor();
+			var4 += MathHelper.clamp_float((float)this.getChunkFromBlockCoords(par1, par3).inhabitedTime / 3600000.0F, 0.0F, 1.0F) * (var5 ? 1.0F : 0.75F);
 			var4 += var6 * 0.25F;
 		}
 

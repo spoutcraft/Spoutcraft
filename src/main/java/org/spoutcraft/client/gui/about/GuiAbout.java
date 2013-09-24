@@ -28,6 +28,8 @@ import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.Minecraft;
+import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.Tessellator;
 
 import org.spoutcraft.api.gui.Color;
@@ -332,15 +334,14 @@ public class GuiAbout extends GuiScreen {
 
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		SpoutClient.getHandle().renderEngine.bindTexture("/gui/gui.png");
+		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("gui/gui.png"));		
 		RenderUtil.drawTexturedModalRectangle(this.width - 14, getInvertedScaledHeight(this.height), 0, 208, 16, 16, 0f);
-
 		GL11.glDisable(2912 /*GL_FOG*/);
 		GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
 		this.overlayBackground(0, 30, 255, 255);
 		this.overlayBackground(this.height - 50, this.height, 255, 255);
 		drawCenteredString(this.fontRenderer, "About", this.width / 2, 16, 0xffffff);
-		SpoutClient.getHandle().renderEngine.bindTexture("/title/mclogo.png");
+		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/title/mojang.png"));		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((0.0325f * this.width), (this.height - 40), 0);
@@ -417,7 +418,8 @@ public class GuiAbout extends GuiScreen {
 
 	private void overlayBackground(int var1, int var2, int var3, int var4) {
 		Tessellator var5 = Tessellator.instance;
-		SpoutClient.getHandle().renderEngine.bindTexture("/gui/background.png");
+		//ToDo: This is the wrong location for this file.
+		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("gui/background.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var6 = 32.0F;
 		var5.startDrawingQuads();

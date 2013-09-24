@@ -22,7 +22,7 @@ import org.spoutcraft.api.gui.GenericComboBox;
 import org.spoutcraft.api.gui.GenericComboBox.ComboBoxView;
 import org.spoutcraft.api.gui.GenericGradient;
 import org.spoutcraft.api.gui.GenericOverlayScreen;
-import org.spoutcraft.api.gui.Keyboard;
+//import org.spoutcraft.api.gui.Keyboard;
 import org.spoutcraft.api.gui.ListWidget;
 import org.spoutcraft.api.gui.ListWidgetItem;
 import org.spoutcraft.api.gui.Orientation;
@@ -65,8 +65,7 @@ public class GuiScreen extends Gui {
 	public boolean allowUserInput;
 
 	/** The FontRenderer used by GuiScreen */
-	protected FontRenderer fontRenderer;
-	public GuiParticle guiParticles;
+	protected FontRenderer fontRenderer;	
 
 	/** The button that was just pressed. */
 	private GuiButton selectedButton;

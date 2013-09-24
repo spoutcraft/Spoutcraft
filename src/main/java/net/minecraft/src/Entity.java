@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.EntityPlayer;
 
 import org.spoutcraft.client.entity.CraftEntityFactory;
 
@@ -884,6 +885,13 @@ public abstract class Entity {
 		}
 	}
 
+	/**
+	 * First layer of player interaction
+	 */
+	public boolean interactFirst(EntityPlayer par1EntityPlayer) {
+		return false;
+	}
+	
 	/**
 	 * returns the bounding box for this entity
 	 */

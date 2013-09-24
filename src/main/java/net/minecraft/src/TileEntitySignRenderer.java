@@ -43,14 +43,14 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 			this.modelSign.signStick.showModel = false;
 		}
 
-		this.bindTexture(field_110638_a);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/items/sign.png"));
 		GL11.glPushMatrix();
 		GL11.glScalef(var10, -var10, -var10);
 		this.modelSign.renderSign();
 		GL11.glPopMatrix();
 		// Spout Start
 		if (par1TileEntitySign.hasText()) {
-			EntityLiving viewer = Minecraft.getMinecraft().renderViewEntity;			
+			EntityLivingBase viewer = Minecraft.getMinecraft().renderViewEntity;			
 			if (viewer == null) {
 				viewer = Minecraft.getMinecraft().thePlayer;
 			}

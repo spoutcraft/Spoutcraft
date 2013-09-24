@@ -89,16 +89,20 @@ public class PacketSkinURL implements SpoutPacket {
 			}
 
 			if (!"none".equals(this.skinURL)) {
-				e.skinUrl = this.skinURL;
+				// ToDO: broken
+				//e.skinUrl = this.skinURL;
 			}
 			if (!"none".equals(this.cloakURL)) {
-				e.updateCloak(cloakURL);
+				//Todo broken
+				//e.updateCloak(cloakURL);
 			}
 
 			if (release) {
-				e.worldObj.releaseEntitySkin(e);
+				//Todo broken
+				// e.worldObj.releaseEntitySkin(e);
 			}
-			e.worldObj.obtainEntitySkin(e);
+			//ToDO broken
+			//e.worldObj.obtainEntitySkin(e);
 
 		}
 	}

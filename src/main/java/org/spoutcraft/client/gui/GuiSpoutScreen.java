@@ -57,7 +57,8 @@ public abstract class GuiSpoutScreen extends GuiScreen {
 
 	@Override
 	public void setWorldAndResolution(Minecraft var1, int var2, int var3) {
-		this.guiParticles = new GuiParticle(var1);
+		//ToDo: broken
+		//this.guiParticles = new GuiParticle(var1);
 		this.mc = var1;
 		this.fontRenderer = var1.fontRenderer;
 		this.width = var2;

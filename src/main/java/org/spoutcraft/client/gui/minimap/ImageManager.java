@@ -61,6 +61,8 @@ public class ImageManager {
 
 	public void loadGLImage() {
 		synchronized (image) {
+			// ToDo: all broken
+			/*
 			if (hasGLImage && hasChanged) {
 				Minecraft.getMinecraft().renderEngine.deleteTexture(glImage);
 				GL11.glPushMatrix();
@@ -75,7 +77,7 @@ public class ImageManager {
 				hasChanged = false;
 			} else if (glImage > 0) {
 				SpoutClient.getHandle().renderEngine.bindTexture(glImage);
-			}
+			} */
 		}
 	}
 }

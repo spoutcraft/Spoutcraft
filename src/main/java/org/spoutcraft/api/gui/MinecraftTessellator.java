@@ -20,8 +20,6 @@
 package org.spoutcraft.api.gui;
 
 public interface MinecraftTessellator {
-	public int getMCTexture(String texture);
-
 	public void draw();
 
 	public void startDrawingQuads();

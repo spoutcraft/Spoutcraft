@@ -90,7 +90,7 @@ public class GuiConnectionLost extends GuiScreen {
 		screen.attachWidget("Spoutcraft", button);
 		top += 26;
 
-		button = new ReturnToServerList().setText("Return to Favorites"));
+		button = new ReturnToServerList().setText("Return to Favorites");
 		button.setHeight(20).setWidth(200);
 		button.setX((int) (width / 2 - button.getWidth() / 2));
 		button.setY(top);

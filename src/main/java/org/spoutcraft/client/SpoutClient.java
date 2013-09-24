@@ -54,6 +54,7 @@ import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.SimpleKeyManager;
 import org.spoutcraft.client.gui.SimpleWidgetManager;
 import org.spoutcraft.client.gui.minimap.MinimapConfig;
+import org.spoutcraft.client.gui.server.ServerManager;
 import org.spoutcraft.client.inventory.SimpleMaterialManager;
 import org.spoutcraft.client.io.CRCManager;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -77,6 +78,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final BiomeManager biomeManager = new SimpleBiomeManager();
 	private final MaterialManager materialManager = new SimpleMaterialManager();
 	private final RenderDelegate render = new MCRenderDelegate();
+	private final ServerManager serverManager = new ServerManager();
 	private final KeyBindingManager bindingManager = new SimpleKeyBindingManager();
 	private final Logger log = Logger.getLogger(SpoutClient.class.getName());
 	private long tick = 0;
@@ -104,7 +106,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private boolean showvoidfog = true;
 	private boolean flySpeed = false;
 	private Mode clientMode = Mode.Menu;
-	private String addonFolder = Minecraft.getMinecraftDir() + File.separator + "addons";
+	private String addonFolder = Minecraft.getMinecraft().mcDataDir + File.separator + "addons";
 	private final WidgetManager widgetManager = new SimpleWidgetManager();
 	private final HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
 	private boolean active = false;
@@ -496,6 +498,10 @@ public class SpoutClient extends PropertyObject implements Client {
 	public Logger getLogger() {
 		return log;
 	}
+	
+	public ServerManager getServerManager() {
+		return instance.serverManager;
+	}
 
 	public Mode getMode() {
 		return clientMode;
@@ -514,7 +520,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public File getUpdateFolder() {
-		return new File(Minecraft.getMinecraftDir(), "addons" + File.separator + "updates");
+		return new File(Minecraft.getMinecraft().mcDataDir, "addons" + File.separator + "updates");
 	}
 
 	public String getVersion() {
@@ -544,11 +550,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public File getTexturePackFolder() {
 		return FileUtil.getTexturePackDir();
 	}
-
-	public File getSelectedTexturePackZip() {
-		return FileUtil.getSelectedTexturePackZip();
-	}
-
+	
 	public File getStatsFolder() {
 		return FileUtil.getStatsDir();
 	}

@@ -50,8 +50,9 @@ public class StringTranslate {
 	/**
 	 * Return the StringTranslate singleton instance
 	 */
-	static StringTranslate getInstance() {
-		return instance;
+	// Spout Start > Public
+	public static StringTranslate getInstance() {
+		return instance;		
 	}
 
 	public static synchronized void func_135063_a(Map par0Map) {

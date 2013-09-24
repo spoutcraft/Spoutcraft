@@ -465,7 +465,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(HealthBar bar) {
-		int health = Minecraft.getMinecraft().thePlayer.health;
+		float health = Minecraft.getMinecraft().thePlayer.getHealth();
 		boolean whiteOutlinedHearts = Minecraft.getMinecraft().thePlayer.hurtResistantTime / 3 % 2 == 1;
 		if (Minecraft.getMinecraft().thePlayer.hurtResistantTime < 10) {
 			whiteOutlinedHearts = false;
@@ -826,7 +826,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		// Draw scrollbars
 		if (gs.needsScrollBar(Orientation.HORIZONTAL)) {
-			SpoutClient.getHandle().renderEngine.bindTexture("/gui/allitems.png");
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/tabs.png"));
 			double scrollX = 0;
 			double p = (double) scrollLeft / (double) gs.getMaximumScrollPosition(Orientation.HORIZONTAL);
 			scrollX = 3 + p * (gs.getViewportSize(Orientation.HORIZONTAL) - 16.0 - 6);
@@ -834,8 +834,8 @@ public class MCRenderDelegate implements RenderDelegate {
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			RenderUtil.drawTexturedModalRectangle((int) scrollX, (int) (gs.getHeight() - 16), 232, 0, 12, 15, 0f);
 		}
-		if (gs.needsScrollBar(Orientation.VERTICAL)) {
-			SpoutClient.getHandle().renderEngine.bindTexture("/gui/allitems.png");
+		if (gs.needsScrollBar(Orientation.VERTICAL)) {			
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/tabs.png")); //allitems.png
 			double scrollY = 0;
 			double p = (double) scrollTop / (double) gs.getMaximumScrollPosition(Orientation.VERTICAL);
 			scrollY = 3 + p * (gs.getViewportSize(Orientation.VERTICAL) - 16.0 - 6);

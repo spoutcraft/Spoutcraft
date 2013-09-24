@@ -87,7 +87,8 @@ public class ScreenUtil {
 				toOpen = new GuiGameOver();
 				break;
 			case CHANGE_LANGUAGE:
-				toOpen = new GuiLanguage(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()), SpoutClient.getHandle().gameSettings);
+				//TODO: broken
+				//toOpen = new GuiLanguage(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()), SpoutClient.getHandle().gameSettings);
 				break;
 			case MINIMAP_SETTINGS:
 				toOpen = new GuiMinimapMenu(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));

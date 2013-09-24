@@ -35,8 +35,8 @@ public class CraftLivingEntity extends CraftEntity {
 		return (EntityLiving) handle;
 	}
 
-	public float getHealth() {
-		return getEntityLiving().getHeldItem();
+	public float getHealth() {		
+		return getEntityLiving().getHealth();
 	}
 
 	public void setHealth(float health) {
@@ -116,7 +116,7 @@ public class CraftLivingEntity extends CraftEntity {
 		getEntityLiving().maxHurtResistantTime = ticks;
 	}
 
-	public int getLastDamage() {
+	public float getLastDamage() {		
 		return getEntityLiving().lastDamage;
 	}
 

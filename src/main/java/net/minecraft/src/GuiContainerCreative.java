@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.src.Minecraft;
+import net.minecraft.src.ResourceLocation;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -575,8 +578,8 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 					var4.set(var12, EnumChatFormatting.GRAY + (String)var4.get(var12));
 				}
 			}
-
-			this.func_102021_a(var4, par2, par3);
+			// ToDO: might need this for tooltip
+			//this.func_102021_a(var4, par2, par3);
 		} else {
 			super.drawItemStackTooltip(par1ItemStack, par2, par3);
 		}
@@ -783,10 +786,8 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 	public void renderInInventory(boolean beforeBackground) {
 		if (!beforeBackground && selectedTabIndex != 12) {
 			return;
-		}
-		this.mc.getTextureManager().bindTexture(field_110424_t);
-		//ToDo:
-		//this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/gui/allitems.png"));
+		}		
+		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/tabs.png"));
 		byte var9 = 32;
 
 		int startY = 0;

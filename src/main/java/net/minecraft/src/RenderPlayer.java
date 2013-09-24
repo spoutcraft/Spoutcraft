@@ -319,8 +319,8 @@ public class RenderPlayer extends RenderLiving {
 
 	protected void renderPlayerScale(AbstractClientPlayer par1AbstractClientPlayer, float par2) {
 		float var3 = 0.9375F;
-		// Spout Start
-		VIP vip = par1AbstractClientEntityPlayer.vip;
+		// Spout Start		          
+		VIP vip = par1AbstractClientPlayer.vip;
 		if (vip != null) {
 			var3 = vip.getScale();
 		}

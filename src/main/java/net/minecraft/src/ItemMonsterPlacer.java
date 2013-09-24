@@ -65,7 +65,7 @@ public class ItemMonsterPlacer extends Item {
 
 			if (var14 != null) {
 				if (var14 instanceof EntityLivingBase && par1ItemStack.hasDisplayName()) {
-					((EntityLiving)var14).func_94058_c(par1ItemStack.getDisplayName());
+					((EntityLiving)var14).setCustomNameTag(par1ItemStack.getDisplayName());
 				}
 
 				if (!par2EntityPlayer.capabilities.isCreativeMode) {
@@ -107,7 +107,7 @@ public class ItemMonsterPlacer extends Item {
 
 						if (var8 != null) {
 							if (var8 instanceof EntityLivingBase && par1ItemStack.hasDisplayName()) {
-								((EntityLiving)var8).func_94058_c(par1ItemStack.getDisplayName());
+								((EntityLiving)var8).setCustomNameTag(par1ItemStack.getDisplayName());
 							}
 
 							if (!par3EntityPlayer.capabilities.isCreativeMode) {
@@ -140,7 +140,7 @@ public class ItemMonsterPlacer extends Item {
 					var8.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
 					var10.rotationYawHead = var10.rotationYaw;
 					var10.renderYawOffset = var10.rotationYaw;
-					var10.func_110161_a((EntityLivingData)null);
+					var10.onSpawnWithEgg((EntityLivingData)null);
 					par0World.spawnEntityInWorld(var8);
 					var10.playLivingSound();
 				}
@@ -164,6 +164,6 @@ public class ItemMonsterPlacer extends Item {
 
 	public void registerIcons(IconRegister par1IconRegister) {
 		super.registerIcons(par1IconRegister);
-		this.theIcon = par1IconRegister.registerIcon(this.func_111208_A() + "_overlay");
+		this.theIcon = par1IconRegister.registerIcon(this.getIconString() + "_overlay");
 	}
 }

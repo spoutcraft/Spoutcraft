@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import java.util.Random;
 
+import net.minecraft.src.Minecraft;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.newdawn.slick.opengl.Texture;
@@ -109,9 +111,9 @@ public class RenderItem extends Render {
 				if (!custom) {
 					if (var10.itemID < 256) {
 						//ToDO: Fix these
-						//this.loadTexture("/terrain.png");
+						Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/terrain.png"));
 					} else {
-						//this.loadTexture("/gui/items.png");
+						Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/items.png"));
 					}
 				}
 				// Spout End
@@ -133,7 +135,7 @@ public class RenderItem extends Render {
 						GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 					}
 
-					//this.loadTexture("/terrain.png");
+					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/terrain.png"));
 					float var25 = 0.25F;
 					int var24 = var21.getRenderType();
 
@@ -168,7 +170,7 @@ public class RenderItem extends Render {
 							GL11.glScalef(0.5F, 0.5F, 0.5F);
 						}
 
-						this.loadTexture("/gui/items.png");
+						Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/items.png"));
 
 						for (int var14 = 0; var14 <= 1; ++var14) {
 							this.random.setSeed(187L);
@@ -197,10 +199,10 @@ public class RenderItem extends Render {
 						Icon var23 = var10.getIconIndex();
 
 						if (var10.getItemSpriteNumber() == 0) {
-							//this.loadTexture("/terrain.png");
+							Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/terrain.png"));
 						} else {
 							if (!custom) {
-								//this.loadTexture("/gui/items.png");
+								Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/items.png"));
 							}
 						}
 
@@ -288,9 +290,9 @@ public class RenderItem extends Render {
 
 				//ToDo: this may need to be removed.
 				if (var18.getItemSpriteNumber() == 0 && Block.blocksList[var18.itemID] != null) {
-					this.bindTexture(TextureMap.locationBlocksTexture);
+					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/terrain.png"));
 				} else {
-					this.bindTexture(TextureMap.locationItemsTexture);
+					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/items.png"));
 				}
 
 				GL11.glColor4f(par5, par6, par7, 1.0F);
@@ -370,7 +372,7 @@ public class RenderItem extends Render {
 		float var13;
 
 		if (par3ItemStack.getItemSpriteNumber() == 0 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
-			par2TextureManager.bindTexture(TextureMap.locationBlocksTexture);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/terrain.png"));
 			Block var15 = Block.blocksList[var6];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
@@ -395,7 +397,7 @@ public class RenderItem extends Render {
 			GL11.glPopMatrix();
 		} else if (Item.itemsList[var6].requiresMultipleRenderPasses()) {
 			GL11.glDisable(GL11.GL_LIGHTING);
-			par2TextureManager.bindTexture(TextureMap.locationItemsTexture);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/items.png"));
 
 			for (int var9 = 0; var9 <= 1; ++var9) {
 				Icon var10 = Item.itemsList[var6].getIconFromDamageForRenderPass(var7, var9);
