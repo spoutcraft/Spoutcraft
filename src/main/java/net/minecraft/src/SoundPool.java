@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

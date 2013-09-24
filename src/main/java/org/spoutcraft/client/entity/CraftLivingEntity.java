@@ -28,7 +28,7 @@ import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.api.util.MutableLocation;
 
 public class CraftLivingEntity extends CraftEntity {
-	public CraftLivingEntity(EntityLiving living) {
+	public CraftLivingEntity(EntityLivingBase living) {
 		super(living);
 	}
 

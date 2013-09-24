@@ -181,7 +181,7 @@ public class GuiIngame extends Gui {
 		int var115;
 		int var117;
 		int var16;
-		int var33;
+		float var33;
 		float var313;
 		short var317;		
 		

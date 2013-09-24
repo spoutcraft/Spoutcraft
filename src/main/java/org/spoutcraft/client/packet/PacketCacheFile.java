@@ -30,6 +30,7 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.Minecraft;
+import net.minecraft.src.Packet0KeepAlive;
 
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;

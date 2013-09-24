@@ -35,7 +35,8 @@ public class CustomEntityDiggingFX extends EntityDiggingFX {
 	private Texture textureBinding = null;
 	GenericBlockDesign design;
 	public CustomEntityDiggingFX(World var1, double var2, double var4, double var6, double var8, double var10, double var12, Block block, int var15, int var16, Texture textureBinding, GenericBlockDesign design) {
-		super(var1, var2, var4, var6, var8, var10, var12, block, var15, var16, Minecraft.getMinecraft().renderEngine);
+		//TODO: this class isn't actually being called but I think I can use it to display the custom entity Digging FX for custom blocks which I want.
+		//super(var1, var2, var4, var6, var8, var10, var12, block, var15, var16, Minecraft.getMinecraft().renderEngine);
 		this.textureBinding = textureBinding;
 		this.design = design;
 	}
