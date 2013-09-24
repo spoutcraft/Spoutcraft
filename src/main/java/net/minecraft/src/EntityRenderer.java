@@ -8,7 +8,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
-import org.lwjgl.util.glu.Protect;
+import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.*;
 
 import com.prupe.mcpatcher.cc.ColorizeWorld;
@@ -516,7 +516,7 @@ public class EntityRenderer {
 			GL11.glScaled(this.cameraZoom, this.cameraZoom, 1.0D);
 		}
 
-		Protect.gluPerspective(this.getFOVModifier(par1, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
+		GLU.gluPerspective(this.getFOVModifier(par1, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
 		float var4;
 
 		if (this.mc.playerController.enableEverythingIsScrewedUpMode()) {
@@ -598,7 +598,7 @@ public class EntityRenderer {
 				GL11.glScaled(this.cameraZoom, this.cameraZoom, 1.0D);
 			}
 
-			Protect.gluPerspective(this.getFOVModifier(par1, false), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
+			GLU.gluPerspective(this.getFOVModifier(par1, false), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
 
 			if (this.mc.playerController.enableEverythingIsScrewedUpMode()) {
 				float var4 = 0.6666667F;

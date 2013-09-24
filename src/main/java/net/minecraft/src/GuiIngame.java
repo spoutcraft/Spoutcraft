@@ -175,6 +175,7 @@ public class GuiIngame extends Gui {
 		mainScreen.render();
 		
 		int var111;
+		var111 = screenWidth / 2 - 91;
 		int var12;
 		int var13;
 		int var14;

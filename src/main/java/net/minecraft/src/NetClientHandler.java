@@ -900,13 +900,13 @@ public class NetClientHandler extends NetHandler {
 				TileEntityDispenser var7 = new TileEntityDispenser();
 
 				if (par1Packet100OpenWindow.useProvidedWindowTitle) {
-					var4.setGuiDisplayName(par1Packet100OpenWindow.windowTitle);
+					var7.setCustomName(par1Packet100OpenWindow.windowTitle);
 				}
 
 				var2.displayGUIDispenser(var7);
 				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
 				break;
-
+				
 			case 4:
 				var2.displayGUIEnchantment(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ), par1Packet100OpenWindow.useProvidedWindowTitle ? par1Packet100OpenWindow.windowTitle : null);
 				var2.openContainer.windowId = par1Packet100OpenWindow.windowId;
