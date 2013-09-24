@@ -296,7 +296,7 @@ public class RenderItem extends Render {
 				}
 
 				GL11.glColor4f(par5, par6, par7, 1.0F);
-				ItemRenderer.renderItemIn2D(var8, var26, var11, var25, var12, ((Icon)par2Icon).getOriginX(), ((Icon)par2Icon).getOriginY(), var16);
+				ItemRenderer.renderItemIn2D(var8, var26, var11, var25, var12, ((Icon)par2Icon).getIconWidth(), ((Icon)par2Icon).getIconHeight(), var16);				
 
 				if (var18.hasEffect()) {
 					GL11.glDepthFunc(GL11.GL_EQUAL);

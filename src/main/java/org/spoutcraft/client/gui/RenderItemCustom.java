@@ -19,6 +19,7 @@
  */
 package org.spoutcraft.client.gui;
 
+import net.minecraft.src.Icon;
 import net.minecraft.src.RenderItem;
 import net.minecraft.src.Tessellator;
 

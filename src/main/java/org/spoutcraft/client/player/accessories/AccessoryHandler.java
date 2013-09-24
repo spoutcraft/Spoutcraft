@@ -46,7 +46,8 @@ public class AccessoryHandler {
 
 	public static void addAccessory(String player, Accessory n, String url) {
 		if (!(downloaded.contains(url))) {
-			Minecraft.getMinecraft().renderEngine.obtainImageData(url, new HDImageBufferDownload());
+			//ToDo: Broken
+			//Minecraft.getMinecraft().renderEngine.obtainImageData(url, new HDImageBufferDownload());
 			downloaded.add(url);
 		}
 		Set<Pair<Accessory, String>> acs = sacs.get(player);
@@ -72,9 +73,11 @@ public class AccessoryHandler {
 			return;
 		}
 		for (Pair<Accessory, String> a : acs) {
+			//ToDo: Broken
+			/*
 			if (renderer.loadDownloadableImageTexture(a.getRight(), null)) {
 				a.getLeft().render(player, f, par2);
-			}
+			} */
 		}
 	}
 
