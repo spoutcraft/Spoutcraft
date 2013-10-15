@@ -111,7 +111,7 @@ public class RenderItem extends Render {
 				if (!custom) {
 					if (var10.itemID < 256) {
 						//ToDO: Fix these
-						Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/terrain.png"));
+						Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
 					} else {
 						Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/items.png"));
 					}
@@ -135,7 +135,7 @@ public class RenderItem extends Render {
 						GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 					}
 
-					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/terrain.png"));
+					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
 					float var25 = 0.25F;
 					int var24 = var21.getRenderType();
 
@@ -199,7 +199,7 @@ public class RenderItem extends Render {
 						Icon var23 = var10.getIconIndex();
 
 						if (var10.getItemSpriteNumber() == 0) {
-							Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/terrain.png"));
+							Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
 						} else {
 							if (!custom) {
 								Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/items.png"));
@@ -290,7 +290,7 @@ public class RenderItem extends Render {
 
 				//ToDo: this may need to be removed.
 				if (var18.getItemSpriteNumber() == 0 && Block.blocksList[var18.itemID] != null) {
-					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/terrain.png"));
+					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
 				} else {
 					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/items.png"));
 				}
@@ -372,7 +372,7 @@ public class RenderItem extends Render {
 		float var13;
 
 		if (par3ItemStack.getItemSpriteNumber() == 0 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
-			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/terrain.png"));
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
 			Block var15 = Block.blocksList[var6];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);

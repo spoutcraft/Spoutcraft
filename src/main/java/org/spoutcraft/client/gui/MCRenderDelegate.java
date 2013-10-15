@@ -166,7 +166,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	public void render(GenericButton button) {
 		if (button.isVisible()) {
 			FontRenderer font = Minecraft.getMinecraft().fontRenderer;
-			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/gui/container/creative_inventory/tabs.png"));			
+			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/gui/widgets.png"));			
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) Math.floor(button.getScreenX()), (float) Math.floor(button.getScreenY()), 0);
 			float width = (float) (button.getWidth() < 200 ? button.getWidth() : 200);
@@ -320,7 +320,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(GenericSlider slider) {
 		if (slider.isVisible()) {
-			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/gui/container/creative_inventory/tabs.png"));
+			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/gui/widgets.png"));
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			float width = (float) (slider.getWidth() < 200 ? slider.getWidth() : 200);
 			GL11.glTranslatef((float) slider.getScreenX(), (float) slider.getScreenY(), 0);
@@ -826,7 +826,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		// Draw scrollbars
 		if (gs.needsScrollBar(Orientation.HORIZONTAL)) {
-			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/tabs.png"));
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/widgets.png"));
 			double scrollX = 0;
 			double p = (double) scrollLeft / (double) gs.getMaximumScrollPosition(Orientation.HORIZONTAL);
 			scrollX = 3 + p * (gs.getViewportSize(Orientation.HORIZONTAL) - 16.0 - 6);
@@ -835,7 +835,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			RenderUtil.drawTexturedModalRectangle((int) scrollX, (int) (gs.getHeight() - 16), 232, 0, 12, 15, 0f);
 		}
 		if (gs.needsScrollBar(Orientation.VERTICAL)) {			
-			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/tabs.png")); //allitems.png
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/widgets.png")); //allitems.png
 			double scrollY = 0;
 			double p = (double) scrollTop / (double) gs.getMaximumScrollPosition(Orientation.VERTICAL);
 			scrollY = 3 + p * (gs.getViewportSize(Orientation.VERTICAL) - 16.0 - 6);

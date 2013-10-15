@@ -85,15 +85,6 @@ public class Main {
 
 		Thread.currentThread().setName("Minecraft main thread");
 		
-		// Spout Start
-		SpoutClient.getHandle().shutdown();
-		try {
-			SpoutClient.getHandle().mainThread.join(10000L);
-		} catch (InterruptedException spoutclientThreadError) {
-		}
-		System.exit(0);
-		// Spout End
-		
 		var32.run();
 	}
 

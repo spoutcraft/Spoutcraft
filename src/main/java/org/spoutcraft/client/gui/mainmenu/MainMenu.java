@@ -57,6 +57,7 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
+import org.spoutcraft.client.gui.server.GuiFavorites;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.special.Holiday;
@@ -211,7 +212,8 @@ public class MainMenu extends GuiScreen {
 		resources = new GenericButton(translate.translateKey("options.resourcepack"));
 		resources.setGeometry(width - 110, height - 105, 100, 20);
 
-		buildNumber = new GenericLabel(SpoutClient.getClientVersion());
+		//buildNumber = new GenericLabel(SpoutClient.getClientVersion());
+		buildNumber = new GenericLabel("  1.6.2 Beta");
 		textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(buildNumber.getText());
 		buildNumber.setTextColor(new Color(0x6CC0DC));
 		buildNumber.setGeometry(Math.min(90 - textWidth, width - 296 - textWidth), height - 99, 75, 20);
@@ -274,7 +276,7 @@ public class MainMenu extends GuiScreen {
 			mc.displayGuiScreen(new GuiSelectWorld(this));
 		}
 		if (multiplayer == btn) {
-			//mc.displayGuiScreen(new GuiFavorites(this));
+			mc.displayGuiScreen(new GuiFavorites(this));
 		}
 		if (resources == btn) {
 			//mc.displayGuiScreen(new GuiScreenTemporaryResourcePackSelect());

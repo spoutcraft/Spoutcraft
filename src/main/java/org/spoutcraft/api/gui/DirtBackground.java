@@ -38,7 +38,7 @@ public class DirtBackground extends GenericWidget{
 	public void render() {
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glDisable(2912 /*GL_FOG*/);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/tabs.png"));
+		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/creative_inventory/tabs.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var3 = 32.0F;
 		Spoutcraft.getTessellator().startDrawingQuads();

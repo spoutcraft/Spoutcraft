@@ -397,7 +397,9 @@ public class TcpConnection implements INetworkManager {
 		while (var1-- >= 0) {
 			Packet var2 = (Packet)this.readPackets.poll();
 			// Spout Start
-			ChunkNetCache.totalPacketDown.addAndGet(var2.getPacketSize());
+			if (var2 != null) {
+				ChunkNetCache.totalPacketDown.addAndGet(var2.getPacketSize());	
+			}
 			// Spout End
 			if (var2 != null && !this.theNetHandler.isConnectionClosed()) {
 				var2.processPacket(this.theNetHandler);
