@@ -10,7 +10,7 @@ public abstract class RenderLiving extends RendererLivingEntity {
 	}
 
 	protected boolean func_130007_b(EntityLiving par1EntityLiving) {
-		return super.func_110813_b(par1EntityLiving) && (par1EntityLiving.getAlwaysRenderNameTagForRender() || par1EntityLiving.hasCustomNameTag() && par1EntityLiving == this.renderManager.field_96451_i);
+		return super.specialRender(par1EntityLiving) && (par1EntityLiving.getAlwaysRenderNameTagForRender() || par1EntityLiving.hasCustomNameTag() && par1EntityLiving == this.renderManager.field_96451_i);
 	}
 
 	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
@@ -100,10 +100,6 @@ public abstract class RenderLiving extends RendererLivingEntity {
 
 			GL11.glEnable(GL11.GL_CULL_FACE);
 		}
-	}
-
-	protected boolean func_110813_b(EntityLivingBase par1EntityLivingBase) {
-		return this.func_130007_b((EntityLiving)par1EntityLivingBase);
 	}
 
 	public void renderPlayer(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9) {
