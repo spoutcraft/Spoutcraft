@@ -3,7 +3,11 @@ package net.minecraft.src;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.IntBuffer;
+
 import javax.imageio.ImageIO;
+
+import net.minecraft.src.Minecraft;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -11,6 +15,9 @@ public class TextureUtil {
 	private static final IntBuffer dataBuffer = GLAllocation.createDirectIntBuffer(4194304);
 	public static final DynamicTexture missingTexture = new DynamicTexture(16, 16);
 	public static final int[] missingTextureData = missingTexture.getTextureData();
+	// Spout Start
+	public static int boundTexture;
+	// Spout End
 
 	public static int glGenTextures() {
 		return GL11.glGenTextures();
@@ -110,11 +117,19 @@ public class TextureUtil {
 		dataBuffer.position(0).limit(par2);
 	}
 
-	// Spout Start
-	public static void bindTexture(int par0) {
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, par0);
+	public static void bindTexture(int texture) {
+		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+	}
+
+	public void setBoundTexture(int texture) {
+		this.boundTexture = texture;
+	}
+	
+	public void resetBoundTexture() {
+		this.boundTexture = -1;
 	}
 	// Spout End
+
 
 	public static int[] readImageData(ResourceManager par0ResourceManager, ResourceLocation par1ResourceLocation) throws IOException {
 		BufferedImage var2 = ImageIO.read(par0ResourceManager.getResource(par1ResourceLocation).getInputStream());

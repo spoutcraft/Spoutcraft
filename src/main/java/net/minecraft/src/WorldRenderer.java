@@ -205,7 +205,7 @@ public class WorldRenderer {
 						// First pass (currentTexture == 0) is for the default terrain.png texture. Subsquent passes are for custom textures
 						// This design is to avoid unnessecary glBindTexture calls.
 						if (currentTexture > 0) {
-							Texture customTexture = CustomTextureManager.getTextureFromUrl(hitTexturesPlugins.get(currentTexture), hitTextures.get(currentTexture));
+							Texture customTexture = CustomTextureManager.getTextureFromUrl(hitTexturesPlugins.get(currentTexture), hitTextures.get(currentTexture));							
 							if (customTexture == null) {
 								customTexture = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
 							}

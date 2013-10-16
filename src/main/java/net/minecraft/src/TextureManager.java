@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class TextureManager implements Tickable, ResourceManagerReloadListener {
 	public final Map mapTextureObjects = Maps.newHashMap();
@@ -15,6 +17,9 @@ public class TextureManager implements Tickable, ResourceManagerReloadListener {
 	private final List listTickables = Lists.newArrayList();
 	private final Map mapTextureCounters = Maps.newHashMap();
 	private ResourceManager theResourceManager;
+	// Spout Start
+	public int boundTexture;
+	// Spout End
 
 	public TextureManager(ResourceManager par1ResourceManager) {
 		this.theResourceManager = par1ResourceManager;
@@ -116,8 +121,16 @@ public class TextureManager implements Tickable, ResourceManagerReloadListener {
 	
 	// Spout Start
 	public void bindTexture(int texture) {
-		TextureUtil.bindTexture(texture);
+		if (texture != this.boundTexture) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+			this.boundTexture = texture;
+		}
 	}
+	
+	public void resetBoundTexture() {
+		this.boundTexture = -1;
+	}
+	// Spout End
 	
 	public int getTextureId(ResourceLocation par1ResourceLocation) {
 		Object var2 = (TextureObject)this.mapTextureObjects.get(par1ResourceLocation);

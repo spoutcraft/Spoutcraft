@@ -787,7 +787,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		if (!beforeBackground && selectedTabIndex != 12) {
 			return;
 		}		
-		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/tabs.png"));
+		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/creative_inventory/tabs.png"));
 		byte var9 = 32;
 
 		int startY = 0;
