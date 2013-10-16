@@ -51,6 +51,7 @@ import net.minecraft.src.EntityWolf;
 import net.minecraft.src.EntityZombie;
 
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.FileUtil;
 
 public class WatchedEntity {
 	public static HashMap<Class<? extends Entity>, String> mobFaceTextures = new HashMap<Class<? extends Entity>, String>();
@@ -88,10 +89,10 @@ public class WatchedEntity {
 	private final String path;
 	public WatchedEntity(Entity entity) {
 		this.entity = entity;
-		path = "/res/mobface/" + mobFaceTextures.get(entity.getClass());
+		path = FileUtil.getAssetsDir().getPath()+"/mobface/" + mobFaceTextures.get(entity.getClass());
 	}
 
 	public Texture getTexture() {
-		return CustomTextureManager.getTextureFromJar(path);
+		return CustomTextureManager.getTextureFromPath(path);
 	}
 }

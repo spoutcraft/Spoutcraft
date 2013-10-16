@@ -23,6 +23,8 @@ import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.FileUtil;
+
 public class WorldRenderer {
 
 	/** Reference to the World object. */
@@ -169,7 +171,7 @@ public class WorldRenderer {
 				int currentTexture = 0;
 				int limit = skipRenderPass.length; // MCPatcher 2.4.4 requires 4, anything less and things get missed.
 				int defaultTexture = Minecraft.getMinecraft().renderEngine.getTextureId(new ResourceLocation("textures/atlas/blocks.png"));				
-				TextureUtil.bindTexture(defaultTexture);			
+				TextureUtil.bindTexture(defaultTexture);
 
 				List<String> hitTextures = new ArrayList<String>();
 				List<String> hitTexturesPlugins = new ArrayList<String>();
@@ -207,7 +209,7 @@ public class WorldRenderer {
 						if (currentTexture > 0) {
 							Texture customTexture = CustomTextureManager.getTextureFromUrl(hitTexturesPlugins.get(currentTexture), hitTextures.get(currentTexture));							
 							if (customTexture == null) {
-								customTexture = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
+								customTexture = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/block/spout.png");
 							}
 							if (customTexture != null) {
 								texture = customTexture.getTextureID();

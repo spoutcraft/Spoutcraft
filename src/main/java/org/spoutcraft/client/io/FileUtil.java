@@ -41,6 +41,14 @@ public class FileUtil {
 		return Minecraft.getMinecraft().mcDataDir;
 	}
 
+	public static File getAssetsDir() {
+		File directory = new File(Minecraft.getMinecraft().mcDataDir, "assets");
+		if (!directory.exists()) {
+			directory.mkdir();
+		}		
+		return directory;
+	}
+	
 	public static File getCacheDir() {
 		File directory = new File(Minecraft.getMinecraft().mcDataDir, "cache");
 		if (!directory.exists()) {

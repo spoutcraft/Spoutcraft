@@ -117,7 +117,7 @@ public class CustomTextureManager {
 		if (textures.containsKey(path)) {
 			return textures.get(path);
 		}
-
+		
 		Texture texture = null;
 		// Check inside jar
 		try {
@@ -169,7 +169,7 @@ public class CustomTextureManager {
 		Texture tex = getTextureFromUrl(null, url);
 		if (tex == null) {
 			CustomTextureManager.downloadTexture(url, true);
-			tex = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
+			tex = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/block/spout.png");
 		}
 		return tex;
 	}

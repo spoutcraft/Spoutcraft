@@ -38,6 +38,7 @@ import org.spoutcraft.api.gui.WidgetAnchor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.FileUtil;
 
 public class GuiConnectionLost extends GuiScreen {
 	public static String lastServerIp;
@@ -75,7 +76,7 @@ public class GuiConnectionLost extends GuiScreen {
 		screen.attachWidget("Spoutcraft", label);
 
 		LocalTexture texture = new LocalTexture();
-		texture.setUrl("/res/misc/disconnected.png").setX((int) (width / 2 - 64)).setY(top);
+		texture.setUrl(FileUtil.getAssetsDir().getPath()+"/misc/disconnected.png").setX((int) (width / 2 - 64)).setY(top);
 		texture.setHeight(128).setWidth(128);
 		screen.attachWidget("Spoutcraft", texture);
 
@@ -133,7 +134,7 @@ class ReturnToServerList extends GenericButton {
 
 class LocalTexture extends GenericTexture {
 	public void render() {
-		Texture texture = CustomTextureManager.getTextureFromJar(getUrl());
+		Texture texture = CustomTextureManager.getTextureFromPath(getUrl());
 		if (texture != null) {
 			GL11.glTranslatef((float) getScreenX(), (float) getScreenY(), 0); // Moves texture into place
 			((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(texture, (int)getWidth(), (int)getHeight(), isDrawingAlphaChannel());

@@ -90,6 +90,7 @@ import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.FileUtil;
 
 public class MCRenderDelegate implements RenderDelegate {
 	private Color scrollBarColor = new Color(0.26F, 0.26F, 0.26F, 0.33F);
@@ -398,7 +399,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		String url = texture.getUrl();
 		org.newdawn.slick.opengl.Texture textureBinding;
 		if (texture.isLocal()) {
-			textureBinding = CustomTextureManager.getTextureFromJar(url);
+			textureBinding = CustomTextureManager.getTextureFromPath(url);
 		} else {
 			textureBinding = CustomTextureManager.getTextureFromUrl(addon, url);
 		}
@@ -611,7 +612,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	public void render(GenericCheckBox checkBox) {
 		if (checkBox.isVisible()) {
 			GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F);
-			Texture checkBoxCross = CustomTextureManager.getTextureFromJar("/res/ui/box_check.png");
+			Texture checkBoxCross = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/ui/box_check.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) Math.floor(checkBox.getScreenX()), (float) Math.floor(checkBox.getScreenY()), 0);
 			renderBaseBox(checkBox, true);
@@ -629,7 +630,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(GenericRadioButton radioButton) {
 		if (radioButton.isVisible()) {
-			Texture radio = CustomTextureManager.getTextureFromJar("/res/ui/box_radio.png");
+			Texture radio = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/ui/box_radio.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) Math.floor(radioButton.getScreenX()), (float) Math.floor(radioButton.getScreenY()), 0);
 			renderBaseBox(radioButton, true);
@@ -650,11 +651,11 @@ public class MCRenderDelegate implements RenderDelegate {
 	public void renderBaseBox(Control box, boolean blend) {
 		Texture usedTexture = null;
 		if (box.isEnabled() && isHovering(box)) {
-			usedTexture = CustomTextureManager.getTextureFromJar("/res/ui/box_hover.png");
+			usedTexture = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/ui/box_hover.png");
 		} else if (box.isEnabled()) {
-			usedTexture = CustomTextureManager.getTextureFromJar("/res/ui/box_normal.png");
+			usedTexture = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/ui/box_normal.png");
 		} else {
-			usedTexture = CustomTextureManager.getTextureFromJar("/res/ui/box_disabled.png");
+			usedTexture = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/ui/box_disabled.png");
 		}
 		drawTexture(usedTexture, 20, 20, blend);
 	}
@@ -908,9 +909,9 @@ public class MCRenderDelegate implements RenderDelegate {
 			render((GenericButton) comboBox);
 			Texture text;
 			if (comboBox.isOpen()) {
-				text = CustomTextureManager.getTextureFromJar("/res/ui/box_ascending.png");
+				text = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/ui/box_ascending.png");
 			} else {
-				text = CustomTextureManager.getTextureFromJar("/res/ui/box_descending.png");
+				text = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/ui/box_descending.png");
 			}
 			GL11.glTranslated(comboBox.getWidth() - 16, 3, 0);
 			RenderUtil.drawRectangle(0, -3, 16, (int) comboBox.getHeight()-3, 0x33000000);

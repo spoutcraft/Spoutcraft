@@ -38,6 +38,7 @@ import org.spoutcraft.api.gui.Gradient;
 import org.spoutcraft.api.gui.RenderUtil;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.FileUtil;
 
 public class GuiAbout extends GuiScreen {
 	private float scrolled = 0f;
@@ -51,9 +52,9 @@ public class GuiAbout extends GuiScreen {
 	private static final int SCREEN_START = 60;
 	private static final int SCREEN_END = 94;
 	private static final float SCROLL_FACTOR = 10f;
-	Texture spoutcraftTexture = CustomTextureManager.getTextureFromJar("/res/logo/spoutcraft.png");
-	Texture beastNodeLogo = CustomTextureManager.getTextureFromJar("/res/logo/beastnode.png");
-	Texture minecraftBizLogo = CustomTextureManager.getTextureFromJar("/res/logo/minecraft_biz.png");
+	Texture spoutcraftTexture = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/logo/spoutcraft.png");
+	Texture beastNodeLogo = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/logo/beastnode.png");
+	Texture minecraftBizLogo = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/logo/minecraft_biz.png");
 	private int sourceY = -1;
 	private int sourceWidth = -1;
 	private boolean hoveringLink = false;
