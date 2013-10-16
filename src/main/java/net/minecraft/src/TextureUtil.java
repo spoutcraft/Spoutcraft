@@ -15,9 +15,6 @@ public class TextureUtil {
 	private static final IntBuffer dataBuffer = GLAllocation.createDirectIntBuffer(4194304);
 	public static final DynamicTexture missingTexture = new DynamicTexture(16, 16);
 	public static final int[] missingTextureData = missingTexture.getTextureData();
-	// Spout Start
-	public static int boundTexture;
-	// Spout End
 
 	public static int glGenTextures() {
 		return GL11.glGenTextures();
@@ -120,14 +117,7 @@ public class TextureUtil {
 	public static void bindTexture(int texture) {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 	}
-
-	public void setBoundTexture(int texture) {
-		this.boundTexture = texture;
-	}
 	
-	public void resetBoundTexture() {
-		this.boundTexture = -1;
-	}
 	// Spout End
 
 
