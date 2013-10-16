@@ -109,7 +109,6 @@ public class RenderItem extends Render {
 				GL11.glPushMatrix(); // the push from above
 				if (!custom) {
 					if (var10.itemID < 256) {
-						//ToDO: Fix these
 						Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
 					} else {
 						Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/items.png"));
@@ -134,7 +133,9 @@ public class RenderItem extends Render {
 						GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 					}
 
-					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
+					if (!custom) {
+						Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
+					}
 					float var25 = 0.25F;
 					int var24 = var21.getRenderType();
 

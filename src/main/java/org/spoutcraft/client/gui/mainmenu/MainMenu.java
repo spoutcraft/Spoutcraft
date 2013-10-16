@@ -38,6 +38,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.src.GuiIngameMenu;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiSelectWorld;
+import net.minecraft.src.GuiScreenTemporaryResourcePackSelect;
 import net.minecraft.src.StringTranslate;
 
 import org.bukkit.ChatColor;
@@ -279,7 +280,7 @@ public class MainMenu extends GuiScreen {
 			mc.displayGuiScreen(new GuiFavorites(this));
 		}
 		if (resources == btn) {
-			//mc.displayGuiScreen(new GuiScreenTemporaryResourcePackSelect());
+			this.mc.displayGuiScreen(new GuiScreenTemporaryResourcePackSelect(this, this.mc.gameSettings));
 		}
 		if (about == btn) {
 			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiNewAbout(this));
