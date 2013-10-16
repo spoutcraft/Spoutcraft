@@ -235,7 +235,7 @@ public class MCPatcherUtils {
 		}
 
 		System.out.println();
-		Config.load(minecraftDir);
+		//Config.load(minecraftDir);
 	}
 
 	public static Minecraft getMinecraft() {

@@ -184,7 +184,6 @@ public class Tessellator {
 				if (this.textureMap != null && SpoutClient.getHandle().renderEngine.boundTexture <= 0) {
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.textureMap.getGlTextureId());
 				} else if (this.texture > 0) {
-					//ToDO: need to be re-written
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture);
 				}
 				// MCPatcher && Spout End

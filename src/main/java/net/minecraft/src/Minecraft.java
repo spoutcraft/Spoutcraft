@@ -335,7 +335,7 @@ public class Minecraft implements IPlayerUsage {
 		}
 		
 		Display.setResizable(true);
-		Display.setTitle("Minecraft 1.6.2");
+		Display.setTitle("Spoutcraft 1.6.2");
 		this.getLogAgent().logInfo("LWJGL Version: " + Sys.getVersion());
 
 		if (Util.getOSType() != EnumOS.MACOS) {

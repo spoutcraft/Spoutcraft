@@ -63,7 +63,11 @@ public class GuiIngameMenu extends GuiScreen {
 				this.mc.theWorld.sendQuittingDisconnectingPacket();
 				this.mc.loadWorld((WorldClient)null);
 				// Spout Start
-				break;
+				if (fromSingle) {
+					this.mc.displayGuiScreen(new GuiSelectWorld(this));  
+				} else {        
+					this.mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
+				} 
 				// Spout End
 			case 2:
 			case 3:
