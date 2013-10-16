@@ -43,7 +43,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 			this.modelSign.signStick.showModel = false;
 		}
 
-		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/items/sign.png"));
+		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/entity/sign.png"));
 		GL11.glPushMatrix();
 		GL11.glScalef(var10, -var10, -var10);
 		this.modelSign.renderSign();
