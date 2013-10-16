@@ -188,7 +188,6 @@ public class RenderPlayer extends RenderLiving {
 		float var14;
 
 		if (var24 && var25 && var26) {
-			// ToDO: Cloak Here?
 			this.bindTexture(par1AbstractClientPlayer.getLocationCape());
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 0.0F, 0.125F);

@@ -5,9 +5,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+//Spout Start
+import org.bukkit.ChatColor;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
+import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
+import org.spoutcraft.client.packet.PacketRenderDistance;
+import org.spoutcraft.client.player.ClientPlayer;
+import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.client.special.VIP;
+//Spout End
 
 public abstract class EntityPlayer extends EntityLivingBase implements ICommandSender {
 
@@ -378,32 +387,6 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 	protected void closeScreen() {
 		this.openContainer = this.inventoryContainer;
 	}
-
-	//ToDo:  Superclass updateCloak() no longer exists
-	/*
-	// Spout Start
-	public void updateCloak() {
-		updateCloak("http://cdn.spout.org/game/vanilla/cape/" + ChatColor.stripColor(this.username) + ".png");
-	}
-	// Spout End
-
-	// Spout Start
-	public void updateCloak(String cloak) {
-		// Spout Easter Egg
-		String tempName = ChatColor.stripColor(username);
-		VIP vip = Resources.getVIP(tempName);
-		playerCloakUrl = cloak;
-		if (vip != null && vip.getCape() != null) {
-			playerCloakUrl = vip.getCape();
-		} else {
-			Holiday holiday = Resources.getHoliday();
-			if (holiday != null && holiday.getCape() != null) {
-				playerCloakUrl = holiday.getCape();
-			}
-		}
-		this.cloakUrl = this.playerCloakUrl;
-	} */
-	// Spout End
 
 	/**
 	 * Called when a player mounts an entity. e.g. mounts a pig, mounts a boat.
@@ -1898,7 +1881,15 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 	 * Returns the translated name of the entity.
 	 */
 	public String getTranslatedEntityName() {
-		return ScorePlayerTeam.formatPlayerName(this.getTeam(), this.username);
+		String displayName = "";
+		VIP vip = Resources.getVIP(ChatColor.stripColor(this.username));
+		if (vip != null) {
+			this.displayName = vip.getTitle();
+			System.out.println("VIP found: " + vip.getTitle());
+		} else {
+			displayName = ScorePlayerTeam.formatPlayerName(this.getTeam(), this.username);
+		}
+		return displayName;
 	}
 
 	public void setAbsorptionAmount(float par1) {
