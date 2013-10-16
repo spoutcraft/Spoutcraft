@@ -271,7 +271,6 @@ public class GuiScreen extends Gui {
 	}
 
 	private void handleClickOnSlot(Slot slot, int button) {
-		System.out.println("handleClickOnSlot: " + slot + ", " + button);
 		try {
 			if (mc.thePlayer == null) {
 				return;

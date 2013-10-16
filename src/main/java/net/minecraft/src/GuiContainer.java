@@ -676,7 +676,6 @@ public abstract class GuiContainer extends GuiScreen {
 
 	private void func_94066_g() {
 		ItemStack var1 = this.mc.thePlayer.inventory.getItemStack();
-
 		if (var1 != null && this.field_94076_q) {
 			this.field_94069_F = var1.stackSize;
 			ItemStack var4;
@@ -919,8 +918,8 @@ public abstract class GuiContainer extends GuiScreen {
 					if (var9) {
 						this.field_94075_K = var4 != null && var4.getHasStack() ? var4.getStack() : null;
 					}
-
-					this.handleMouseClick(var4, var8, par3, var9 ? 1 : 0);
+					// ToDo:  Fixes dragging itemStack bug, but may be important later.
+					//this.handleMouseClick(var4, var8, par3, var9 ? 1 : 0);
 				}
 			}
 		}
