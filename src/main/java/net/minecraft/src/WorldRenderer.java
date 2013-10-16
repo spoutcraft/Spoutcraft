@@ -29,6 +29,7 @@ import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.FileUtil;
 // Spout End
 
 public class WorldRenderer {
@@ -215,7 +216,7 @@ public class WorldRenderer {
 						if (currentTexture > 0) {
 							Texture customTexture = CustomTextureManager.getTextureFromUrl(hitTexturesPlugins.get(currentTexture), hitTextures.get(currentTexture));
 							if (customTexture == null) {
-								customTexture = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
+								customTexture = CustomTextureManager.getTextureFromPath(FileUtil.getAssetsDir().getPath()+"/block/spout.png");
 							}
 							if (customTexture != null) {
 								texture = customTexture.getTextureID();

@@ -119,13 +119,14 @@ public class MainMenu extends GuiScreen {
 		StringBuilder builder = new StringBuilder();
 		backgrounds.clear();
 		while (true) {
-			builder.append("/res/background/");
+			builder.append(FileUtil.getAssetsDir().getPath());
+			builder.append("/background/"); 
 			builder.append(timeOfDay);
 			builder.append("/");
 			builder.append(timeOfDay);
 			builder.append(picture);
 			builder.append(pass == 0 ? ".png" : ".jpg");
-			if (CustomTextureManager.getTextureFromJar(builder.toString()) != null) {
+			if (CustomTextureManager.getTextureFromPath(builder.toString()) != null) {
 				backgrounds.add(builder.toString());
 				picture++;
 				pass = 0;
@@ -235,7 +236,7 @@ public class MainMenu extends GuiScreen {
 		float scale = ((width - 225F) / textWidth);
 		splashText.setScale(Math.min(1.5F, scale));
 
-		logo = new ScaledTexture("/res/logo/spoutcraft.png");
+		logo = new ScaledTexture(FileUtil.getAssetsDir().getPath()+"/logo/spoutcraft.png");
 		((ScaledTexture) logo).setScale(Math.min(1F, (width - 135F) / 256F));
 		logo.setGeometry(15, height - 185, 256, 64);
 		logo.setLocal(true);
@@ -406,7 +407,7 @@ class BackgroundTexture extends GenericTexture {
 
 	@Override
 	public void render() {
-		org.newdawn.slick.opengl.Texture tex = CustomTextureManager.getTextureFromJar(getUrl());
+		org.newdawn.slick.opengl.Texture tex = CustomTextureManager.getTextureFromPath(getUrl());
 		GL11.glPushMatrix();
 		if (tex != null) {
 			if (Configuration.getMainMenuState() != 3) {
