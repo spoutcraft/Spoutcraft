@@ -44,6 +44,7 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.ClientTexture;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.gui.mainmenu.MainMenu;
+import org.spoutcraft.client.io.FileUtil;
 
 public class GuiNewAbout extends GuiSpoutScreen {
 	private GuiScreen parent;
@@ -79,8 +80,8 @@ public class GuiNewAbout extends GuiSpoutScreen {
 		labelSpoutcraftVersion = new GenericLabel(SpoutClient.getClientVersion() + "\nLicensed under LGPLv3");
 		labelMinecraftVersion = new GenericLabel(MainMenu.mcVersion + "\nCopyright Mojang AB" );
 		labelSpoutcraftVersion.setAlign(WidgetAnchor.TOP_RIGHT);
-		textureSpoutcraft = new ClientTexture("/res/logo/spoutcraft.png");
-		textureMinecraft = new ClientTexture("/res/logo/minecraft.png");
+		textureSpoutcraft = new ClientTexture(FileUtil.getAssetsDir().getPath() + "/logo/spoutcraft.png");
+		textureMinecraft = new ClientTexture(FileUtil.getAssetsDir().getPath() + "/logo/minecraft.png");
 
 		getScreen().attachWidgets("Spoutcraft", title, buttonDone, scroll, labelMinecraftVersion, labelSpoutcraftVersion, textureMinecraft, textureSpoutcraft);
 
