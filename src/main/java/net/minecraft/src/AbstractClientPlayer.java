@@ -1,5 +1,12 @@
 package net.minecraft.src;
 
+import org.bukkit.ChatColor;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.Configuration;
+import org.spoutcraft.client.special.Holiday;
+import org.spoutcraft.client.special.Resources;
+import org.spoutcraft.client.special.VIP;
+
 public abstract class AbstractClientPlayer extends EntityPlayer {
 	public static final ResourceLocation locationStevePng = new ResourceLocation("textures/entity/steve.png");
 	private ThreadDownloadImageData downloadImageSkin;
@@ -64,7 +71,22 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
 	}
 
 	public static String getCapeUrl(String par0Str) {
-		return String.format("http://skins.minecraft.net/MinecraftCloaks/%s.png", new Object[] {StringUtils.stripControlCodes(par0Str)});
+		// Spout Start
+		String cleanUserName = ChatColor.stripColor(par0Str);
+		VIP vip = Resources.getVIP(cleanUserName);
+		
+		String playerCloakUrl = String.format("http://skins.minecraft.net/MinecraftCloaks/%s.png", new Object[] {StringUtils.stripControlCodes(par0Str)});
+		
+		if (vip != null && vip.getCape() != null) {
+			playerCloakUrl = vip.getCape();
+		} else {
+			Holiday holiday = Resources.getHoliday();
+			if (holiday != null && holiday.getCape() != null) {
+				playerCloakUrl = holiday.getCape();
+			}
+		}		
+		return playerCloakUrl;
+		// Spout End
 	}
 
 	public static ResourceLocation getLocationSkin(String par0Str) {
