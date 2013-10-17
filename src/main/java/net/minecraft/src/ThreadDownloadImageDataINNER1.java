@@ -27,9 +27,7 @@ class ThreadDownloadImageDataINNER1 extends Thread {
 			var1.setDoInput(true);
 			var1.setDoOutput(false);
 			var1.connect();
-			
-			System.out.println("HTTP InnerClass Response Code: "  + var1.getResponseCode());
-			
+
 			if (var1.getResponseCode() / 100 == 2) {
 				BufferedImage var2 = ImageIO.read(var1.getInputStream());
 

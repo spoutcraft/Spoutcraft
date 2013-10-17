@@ -134,17 +134,16 @@ public class CraftLivingEntity extends CraftEntity {
 	}
 
 	public String getTitle() {		
-		return getEntityLiving().hasCustomNameTag() ? getEntityLiving().getCustomNameTag() : getEntityLiving().getEntityName();		
+		return getEntityLiving().displayName;
 	}
 
 	public void setTitle(String title) {
-		getEntityLiving().setCustomNameTag(title);
+		getEntityLiving().displayName = title;
 	}
 
 	public void resetTitle() {		
 		if (handle instanceof EntityPlayer) {
-			//ToDO:
-			//getEntityLiving().displayName = ((EntityPlayer)handle).username;
+			getEntityLiving().displayName = ((EntityPlayer)handle).username;
 		}
 	}
 

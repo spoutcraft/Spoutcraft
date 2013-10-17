@@ -43,7 +43,8 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 	public float prevCameraYaw;
 	public float cameraYaw;
 	// Spout Start
-	public String username;	
+	public String username;
+	public String displayName;
 	public String playerCloakUrl;
 	// Spout End
 
@@ -129,7 +130,10 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 
 	public EntityPlayer(World par1World, String par2Str) {
 		super(par1World);
-		this.username = par2Str; //ToDO: VIP Name Setup / Colors Etc go here.
+		this.username = par2Str;
+		// Spout Start
+		this.displayName = par2Str;
+		// Spout End
 		this.inventoryContainer = new ContainerPlayer(this.inventory, !par1World.isRemote, this);
 		this.openContainer = this.inventoryContainer;
 		this.yOffset = 1.62F;
@@ -466,18 +470,18 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 		this.inventory.decrementAnimations();
 		this.prevCameraYaw = this.cameraYaw;
 		super.onLivingUpdate();
-		
+
 		AttributeInstance var1 = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
 
 		if (!this.worldObj.isRemote) {
 			var1.setAttribute((double)this.capabilities.getWalkSpeed());
 		}
-		
+
 		this.jumpMovementFactor = this.speedInAir;
 
 		// Spout Start - No sprinting while moving backwards
 		if (this.isSprinting() && this.movementInput.moveForward >= 0F) {
-		// Spout End			
+			// Spout End			
 			this.jumpMovementFactor = (float)((double)this.jumpMovementFactor + (double)this.speedInAir * 0.3D);
 		}
 
@@ -774,7 +778,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 	public void displayGUIHopper(TileEntityHopper par1TileEntityHopper) {}
 
 	public void displayGUIHopperMinecart(EntityMinecartHopper par1EntityMinecartHopper) {}
-	
+
 	public void displayGUIHorse(EntityHorse par1EntityHorse, IInventory par2IInventory) {}
 
 	public void displayGUIEnchantment(int par1, int par2, int par3, String par4Str) {}
@@ -891,7 +895,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 	 */
 	// Spout Start - protected to public
 	public void damageEntity(DamageSource par1DamageSource, float par2) {
-	// Spout End
+		// Spout End
 		if (!this.isEntityInvulnerable()) {
 			if (!par1DamageSource.isUnblockable() && this.isBlocking() && par2 > 0.0F) {
 				par2 = (1.0F + par2) * 0.5F;
@@ -1155,7 +1159,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 				return EnumStatus.NOT_SAFE;
 			}
 		}
-		
+
 		if (this.isRiding()) {
 			this.mountEntity((Entity)null);
 		}
@@ -1170,20 +1174,20 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 			float var7 = 0.5F;
 
 			switch (var5) {
-				case 0:
-					var7 = 0.9F;
-					break;
+			case 0:
+				var7 = 0.9F;
+				break;
 
-				case 1:
-					var9 = 0.1F;
-					break;
+			case 1:
+				var9 = 0.1F;
+				break;
 
-				case 2:
-					var7 = 0.1F;
-					break;
+			case 2:
+				var7 = 0.1F;
+				break;
 
-				case 3:
-					var9 = 0.9F;
+			case 3:
+				var9 = 0.9F;
 			}
 
 			this.func_71013_b(var5);
@@ -1209,20 +1213,20 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 		this.field_71089_bV = 0.0F;
 
 		switch (par1) {
-			case 0:
-				this.field_71089_bV = -1.8F;
-				break;
+		case 0:
+			this.field_71089_bV = -1.8F;
+			break;
 
-			case 1:
-				this.field_71079_bU = 1.8F;
-				break;
+		case 1:
+			this.field_71079_bU = 1.8F;
+			break;
 
-			case 2:
-				this.field_71089_bV = 1.8F;
-				break;
+		case 2:
+			this.field_71089_bV = 1.8F;
+			break;
 
-			case 3:
-				this.field_71079_bU = -1.8F;
+		case 3:
+			this.field_71079_bU = -1.8F;
 		}
 	}
 
@@ -1301,17 +1305,17 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 			int var2 = BlockBed.getDirection(var1);
 
 			switch (var2) {
-				case 0:
-					return 90.0F;
+			case 0:
+				return 90.0F;
 
-				case 1:
-					return 0.0F;
+			case 1:
+				return 0.0F;
 
-				case 2:
-					return 270.0F;
+			case 2:
+				return 270.0F;
 
-				case 3:
-					return 180.0F;
+			case 3:
+				return 180.0F;
 			}
 		}
 
@@ -1438,7 +1442,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 	public float getAIMoveSpeed() {
 		return (float)this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
 	}
-	
+
 	/**
 	 * Adds a value to a movement statistic field - like run, walk, swin or climb.
 	 */
@@ -1578,7 +1582,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 	public ItemStack getCurrentArmor(int par1) {
 		return this.inventory.armorItemInSlot(par1);
 	}
-	
+
 	/**
 	 * This method increases the player's current amount of experience.
 	 */
@@ -1881,15 +1885,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 	 * Returns the translated name of the entity.
 	 */
 	public String getTranslatedEntityName() {
-		String displayName = "";
-		VIP vip = Resources.getVIP(ChatColor.stripColor(this.username));
-		if (vip != null) {
-			this.displayName = vip.getTitle();
-			System.out.println("VIP found: " + vip.getTitle());
-		} else {
-			displayName = ScorePlayerTeam.formatPlayerName(this.getTeam(), this.username);
-		}
-		return displayName;
+		return ScorePlayerTeam.formatPlayerName(this.getTeam(), this.username);
 	}
 
 	public void setAbsorptionAmount(float par1) {
@@ -1902,5 +1898,14 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 
 	public float getAbsorptionAmount() {
 		return this.getDataWatcher().getWatchableObjectFloat(17);
+	}
+
+	// Spout Start
+	public String getDisplayName() {		
+		return this.displayName;
+	}
+
+	public void setDisplayName(String var1) {		
+		this.displayName = var1;
 	}
 }

@@ -2,7 +2,12 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 
+import org.bukkit.ChatColor;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.player.accessories.AccessoryHandler;
+import org.spoutcraft.client.player.accessories.AccessoryType;
 import org.spoutcraft.client.special.VIP;
+import org.spoutcraft.client.special.Resources;
 
 public class RenderPlayer extends RenderLiving {
 	private static final ResourceLocation steveTextures = new ResourceLocation("textures/entity/steve.png");
@@ -318,8 +323,10 @@ public class RenderPlayer extends RenderLiving {
 
 	protected void renderPlayerScale(AbstractClientPlayer par1AbstractClientPlayer, float par2) {
 		float var3 = 0.9375F;
-		// Spout Start		          
-		VIP vip = par1AbstractClientPlayer.vip;
+		// Spout Start
+		String cleanUserName = ChatColor.stripColor(par1AbstractClientPlayer.getEntityName());
+		VIP vip = Resources.getVIP(cleanUserName);
+		
 		if (vip != null) {
 			var3 = vip.getScale();
 		}
