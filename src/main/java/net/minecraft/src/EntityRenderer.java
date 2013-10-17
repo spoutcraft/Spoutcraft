@@ -1628,7 +1628,7 @@ public class EntityRenderer {
 	 */
 	
 	private void setupFog(int par1, float par2) {
-		EntityLivingBase var3 = this.mc.renderViewEntity;
+		EntityLiving var3 = this.mc.renderViewEntity;
 		boolean var4 = false;
 
 		if (var3 instanceof EntityPlayer) {
@@ -1674,85 +1674,124 @@ public class EntityRenderer {
 				if (GLContext.getCapabilities().GL_NV_fog_distance) {
 					GL11.glFogi(34138, 34139);
 				}
-			} else if (this.cloudFog) {
-				GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
-				// Spout Start
-				float density = 0.1F;
-				if (var3.isPotionActive(Potion.waterBreathing)) {
-					density = 0.05F;
-				}
-				if (Configuration.isClearWater()) {
-					density = 0.02F;
-				}
-				GL11.glFogf(GL11.GL_FOG_DENSITY, density);
-				// Spout End
-			} else if (var5 > 0 && Block.blocksList[var5].blockMaterial == Material.water) {
-				GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
-				// Spout Start
-				if (Configuration.isClearWater() || (var3.isPotionActive(Potion.waterBreathing))) {
-				// Spout End
-					GL11.glFogf(GL11.GL_FOG_DENSITY, 0.05F);
-				} else {
-					GL11.glFogf(GL11.GL_FOG_DENSITY, 0.1F - (float)EnchantmentHelper.getRespiration(var3) * 0.03F);
-				}
-			} else if (var5 > 0 && Block.blocksList[var5].blockMaterial == Material.lava) {
-				GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
-				GL11.glFogf(GL11.GL_FOG_DENSITY, 2.0F);
 			} else {
-				var6 = this.farPlaneDistance;
+				float var8;
+				float var9;
+				float var10;
+				float var11;
+				float var12;
 
-				if (this.mc.theWorld.provider.getWorldHasVoidParticles() && !var4) {
-					double var10 = (double)((var3.getBrightnessForRender(par2) & 15728640) >> 20) / 16.0D + (var3.lastTickPosY + (var3.posY - var3.lastTickPosY) * (double)par2 + 4.0D) / 32.0D;
+				if (this.cloudFog) {
+					GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
+					// Spout Start
+					float density = 0.1F;
+					if (var3.isPotionActive(Potion.waterBreathing)) {
+						density = 0.05F;
+					}
+					if (Configuration.isClearWater()) {
+						density = 0.02F;
+					}
+					GL11.glFogf(GL11.GL_FOG_DENSITY, density);
+					// Spout End
+					GL11.glFogf(GL11.GL_FOG_DENSITY, 0.1F);
+					var6 = 1.0F;
+					var12 = 1.0F;
+					var8 = 1.0F;
 
-					if (var10 < 1.0D) {
-						if (var10 < 0.0D) {
-							var10 = 0.0D;
-						}
+					if (this.mc.gameSettings.anaglyph) {
+						var9 = (var6 * 30.0F + var12 * 59.0F + var8 * 11.0F) / 100.0F;
+						var10 = (var6 * 30.0F + var12 * 70.0F) / 100.0F;
+						var11 = (var6 * 30.0F + var8 * 70.0F) / 100.0F;
+					}
+				} else if (var5 > 0 && Block.blocksList[var5].blockMaterial == Material.water) {
+					GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
+					// Spout Start
+					float density = 0.1F;
+					if (Configuration.isClearWater() || (var3.isPotionActive(Potion.waterBreathing))) {
+						density = 0.05F;
+					} else {
+						density = 0.1F;
+					}
+					 GL11.glFogf(GL11.GL_FOG_DENSITY, density);
+					// Spout End
+					var6 = 0.4F;
+					var12 = 0.4F;
+					var8 = 0.9F;
 
-						var10 *= var10;
-						float var9 = 100.0F * (float)var10;
+					if (this.mc.gameSettings.anaglyph) {
+						var9 = (var6 * 30.0F + var12 * 59.0F + var8 * 11.0F) / 100.0F;
+						var10 = (var6 * 30.0F + var12 * 70.0F) / 100.0F;
+						var11 = (var6 * 30.0F + var8 * 70.0F) / 100.0F;
+					}
+				} else if (var5 > 0 && Block.blocksList[var5].blockMaterial == Material.lava) {
+					GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
+					GL11.glFogf(GL11.GL_FOG_DENSITY, 2.0F);
+					var6 = 0.4F;
+					var12 = 0.3F;
+					var8 = 0.3F;
 
-						if (var9 < 5.0F) {
-							var9 = 5.0F;
-						}
+					if (this.mc.gameSettings.anaglyph) {
+						var9 = (var6 * 30.0F + var12 * 59.0F + var8 * 11.0F) / 100.0F;
+						var10 = (var6 * 30.0F + var12 * 70.0F) / 100.0F;
+						var11 = (var6 * 30.0F + var8 * 70.0F) / 100.0F;
+					}
+				} else {
+					var6 = this.farPlaneDistance;
 
-						if (var6 > var9) {
-							var6 = var9;
+					if (this.mc.theWorld.provider.getWorldHasVoidParticles() && !var4) {
+						double var13 = (double)((var3.getBrightnessForRender(par2) & 15728640) >> 20) / 16.0D + (var3.lastTickPosY + (var3.posY - var3.lastTickPosY) * (double)par2 + 4.0D) / 32.0D;
+
+						if (var13 < 1.0D) {
+							if (var13 < 0.0D) {
+								var13 = 0.0D;
+							}
+
+							var13 *= var13;
+							var9 = 100.0F * (float)var13;
+
+							if (var9 < 5.0F) {
+								var9 = 5.0F;
+							}
+
+							if (var6 > var9) {
+								var6 = var9;
+							}
 						}
 					}
-				}
-				
-				// Spout Start
-				if (!Configuration.isVoidFog()) {
-					var6 = 0.8F * this.farPlaneDistance;					
-				}
-				// Spout End
 
-				GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_LINEAR);
-
-				if (par1 < 0) {
-					GL11.glFogf(GL11.GL_FOG_START, 0.0F);
-					GL11.glFogf(GL11.GL_FOG_END, var6 * 0.8F);
-				} else {
-					GL11.glFogf(GL11.GL_FOG_START, var6 * 0.25F);
-					GL11.glFogf(GL11.GL_FOG_END, var6);
-				}
-
-				if (GLContext.getCapabilities().GL_NV_fog_distance) {
 					// Spout Start
-					//TODO: Previous fog calculation may work better.
-					//GL11.glFogi(34138, 34139);
-					if (Configuration.isFancyFog()) {
-						GL11.glFogi('\u855a', '\u855b');
-					} else {
-						GL11.glFogi('\u855a', '\u855c');
+					if (!Configuration.isVoidFog()) {
+						var6 = 0.8F * this.farPlaneDistance;
+						var12 = this.farPlaneDistance;
 					}
 					// Spout End
-				}
 
-				if (this.mc.theWorld.provider.doesXZShowFog((int)var3.posX, (int)var3.posZ)) {
-					GL11.glFogf(GL11.GL_FOG_START, var6 * 0.05F);
-					GL11.glFogf(GL11.GL_FOG_END, Math.min(var6, 192.0F) * 0.5F);
+					GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_LINEAR);
+
+					if (par1 < 0) {
+						GL11.glFogf(GL11.GL_FOG_START, 0.0F);
+						GL11.glFogf(GL11.GL_FOG_END, var6 * 0.8F);
+					} else {
+						GL11.glFogf(GL11.GL_FOG_START, var6 * 0.25F);
+						GL11.glFogf(GL11.GL_FOG_END, var6);
+					}
+
+					if (GLContext.getCapabilities().GL_NV_fog_distance) {
+						// Spout Start
+						//TODO: Previous fog calculation may work better.
+						//GL11.glFogi(34138, 34139);
+						if (Configuration.isFancyFog()) {
+							GL11.glFogi('\u855a', '\u855b');
+						} else {
+							GL11.glFogi('\u855a', '\u855c');
+						}
+						// Spout End
+					}
+
+					if (this.mc.theWorld.provider.doesXZShowFog((int)var3.posX, (int)var3.posZ)) {
+						GL11.glFogf(GL11.GL_FOG_START, var6 * 0.05F);
+						GL11.glFogf(GL11.GL_FOG_END, Math.min(var6, 192.0F) * 0.5F);
+					}
 				}
 			}
 
