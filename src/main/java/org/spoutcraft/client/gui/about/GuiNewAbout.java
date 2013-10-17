@@ -67,8 +67,14 @@ public class GuiNewAbout extends GuiSpoutScreen {
 	}
 
 	private static void updateRoot() {
-		try {
-			root = (HashMap<String, Object>) (new Yaml()).load((new FileReader(new File(FileUtil.getAssetsDir(), "/" + "about.yml"))));
+		File myFile = new File(FileUtil.getAssetsDir(), "about.yml");
+		
+		while (!myFile.exists()) {
+			;
+		}
+		
+		try {			
+			root = (HashMap<String, Object>) (new Yaml()).load((new FileReader(myFile)));
 		} catch (Exception ex) {
 			Logger.getLogger(GuiNewAbout.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -84,8 +90,8 @@ public class GuiNewAbout extends GuiSpoutScreen {
 		buttonDone = new GenericButton("Main Menu");
 		scroll = new GenericScrollArea();
 		
-		labelSpoutcraftVersion = new GenericLabel(SpoutClient.getClientVersion() + "\nLicensed under LGPLv3");
-		labelMinecraftVersion = new GenericLabel(MainMenu.mcVersion + "\nCopyright Mojang AB" );
+		labelSpoutcraftVersion = new GenericLabel(SpoutClient.getSpoutcraftVersion() + SpoutClient.getSpoutcraftBuild() + "\nLicensed under LGPLv3");
+		labelMinecraftVersion = new GenericLabel("Copyright Mojang AB");
 		labelSpoutcraftVersion.setAlign(WidgetAnchor.TOP_RIGHT);
 		textureSpoutcraft = new ClientTexture(FileUtil.getAssetsDir().getPath()+"/logo/spoutcraft.png");
 		textureMinecraft = new ClientTexture(FileUtil.getAssetsDir().getPath()+"/logo/minecraft.png");

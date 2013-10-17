@@ -365,7 +365,7 @@ public class Minecraft implements IPlayerUsage {
 		}
 
 		// Spout Start
-		System.out.println("Spoutcraft Version: " + SpoutClient.getClientVersion());
+		System.out.println("Spoutcraft Version: " + SpoutClient.getSpoutcraftVersion() + SpoutClient.getSpoutcraftBuild());
 		System.out.println("Starting texture pack initialization...");
 		// Spout End
 

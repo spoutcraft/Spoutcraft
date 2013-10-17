@@ -214,8 +214,7 @@ public class MainMenu extends GuiScreen {
 		resources = new GenericButton(translate.translateKey("options.resourcepack"));
 		resources.setGeometry(width - 110, height - 105, 100, 20);
 
-		//buildNumber = new GenericLabel(SpoutClient.getClientVersion());
-		buildNumber = new GenericLabel("1.6.2 b3");
+		buildNumber = new GenericLabel(SpoutClient.getSpoutcraftVersion() + SpoutClient.getSpoutcraftBuild());		
 		textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(buildNumber.getText());
 		buildNumber.setTextColor(new Color(0x6CC0DC));
 		buildNumber.setGeometry(Math.min(90 - textWidth, width - 296 - textWidth), height - 99, 75, 20);
@@ -227,7 +226,7 @@ public class MainMenu extends GuiScreen {
 		options.setGeometry(Math.min(159, width - 227), height - 105, 51, 20);
 
 		quit = new GenericButton(translate.translateKey("menu.quit"));
-		quit.setGeometry(Math.min(220, width - 166), height - 105, 51, 20);
+		quit.setGeometry(Math.min(220, width - 166), height - 105, 61, 20);
 
 		background.setGeometry(0, 0, width, height);
 		background.setPriority(RenderPriority.Highest);
