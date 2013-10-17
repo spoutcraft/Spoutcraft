@@ -1628,7 +1628,7 @@ public class EntityRenderer {
 	 */
 	
 	private void setupFog(int par1, float par2) {
-		EntityLiving var3 = this.mc.renderViewEntity;
+		EntityLivingBase var3 = this.mc.renderViewEntity;
 		boolean var4 = false;
 
 		if (var3 instanceof EntityPlayer) {
