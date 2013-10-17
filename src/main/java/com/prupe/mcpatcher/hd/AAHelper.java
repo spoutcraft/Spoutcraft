@@ -10,6 +10,10 @@ import net.minecraft.src.SimpleResource;
 import net.minecraft.src.TextureAtlasSprite;
 import org.lwjgl.opengl.PixelFormat;
 
+//Spout Start
+import org.spoutcraft.client.config.Configuration;
+//Spout End
+
 public class AAHelper {
 	private static final MCLogger logger = MCLogger.getLogger("Mipmap");
 	private static final int debugColor = Config.getBoolean("Extended HD", "debugBorder", false) ? -16776961 : 0;
@@ -17,9 +21,9 @@ public class AAHelper {
 	private static Field addressField;
 
 	public static PixelFormat setupPixelFormat(PixelFormat pixelFormat) {
-		if (aaSamples > 1) {
-			logger.config("setting AA samples to %d", new Object[] {Integer.valueOf(aaSamples)});
-			return pixelFormat.withSamples(aaSamples);
+		if (Configuration.getAASampling() > 1) {
+			logger.config("setting AA samples to %d", new Object[] {Integer.valueOf(Configuration.getAASampling())});
+			return pixelFormat.withSamples(Configuration.getAASampling());
 		} else {
 			return pixelFormat;
 		}
@@ -80,13 +84,13 @@ public class AAHelper {
 	}
 
 	static boolean useAAForTexture(String texture) {
-		return (aaSamples > 1 || MipmapHelper.anisoLevel > 1) && MipmapHelper.useMipmapsForTexture(texture);
+		return (Configuration.getAASampling() > 1 || MipmapHelper.anisoLevel > 1) && MipmapHelper.useMipmapsForTexture(texture);
 	}
 
 	private static int getBorderWidth(int size) {
 		int border;
 
-		if (aaSamples <= 1 && MipmapHelper.anisoLevel <= 1) {
+		if (Configuration.getAASampling() <= 1 && MipmapHelper.anisoLevel <= 1) {
 			border = 0;
 		} else if (MipmapHelper.mipmapEnabled && MipmapHelper.maxMipmapLevel > 0) {
 			border = 1 << Math.max(Math.min(MipmapHelper.maxMipmapLevel, 4), 0);

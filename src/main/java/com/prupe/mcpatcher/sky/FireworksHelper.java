@@ -12,6 +12,10 @@ import net.minecraft.src.EntityFireworkSparkFX;
 import net.minecraft.src.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+//Spout Start
+import org.spoutcraft.client.config.Configuration;
+//Spout End
+
 public class FireworksHelper {
 	private static final int LIT_LAYER = 3;
 	private static final int EXTRA_LAYER = 4;
@@ -29,7 +33,7 @@ public class FireworksHelper {
 	}
 
 	public static void setParticleBlendMethod(int layer) {
-		if (enable && layer == 4 && blendMethod != null) {
+		if (Configuration.isFancyClouds() && layer == 4 && blendMethod != null) {
 			blendMethod.applyBlending();
 		} else {
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

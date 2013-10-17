@@ -20,6 +20,10 @@ import net.minecraft.src.Icon;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 
+//Spout Start
+import org.spoutcraft.client.config.Configuration;
+//Spout End
+
 public class CTMUtils {
 	private static final MCLogger logger = MCLogger.getLogger("Connected Textures", "CTM");
 	private static final boolean enableStandard = Config.getBoolean("Connected Textures", "standard", true);
@@ -239,7 +243,11 @@ public class CTMUtils {
 	}
 
 	static boolean access$900() {
-		return enableGrass;
+		if (Configuration.betterGrass !=0) {
+			return true;
+		} else {
+			return false;
+		}		
 	}
 
 	static int access$1000() {
