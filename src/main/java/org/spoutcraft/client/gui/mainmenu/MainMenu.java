@@ -215,7 +215,7 @@ public class MainMenu extends GuiScreen {
 		resources.setGeometry(width - 110, height - 105, 100, 20);
 
 		//buildNumber = new GenericLabel(SpoutClient.getClientVersion());
-		buildNumber = new GenericLabel("  1.6.2 Beta");
+		buildNumber = new GenericLabel("1.6.2 b3");
 		textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(buildNumber.getText());
 		buildNumber.setTextColor(new Color(0x6CC0DC));
 		buildNumber.setGeometry(Math.min(90 - textWidth, width - 296 - textWidth), height - 99, 75, 20);

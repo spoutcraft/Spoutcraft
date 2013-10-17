@@ -19,6 +19,8 @@
  */
 package org.spoutcraft.client.gui.about;
 
+import java.io.File;
+import java.io.FileReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,6 +46,7 @@ import org.spoutcraft.client.gui.ClientTexture;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.gui.mainmenu.MainMenu;
 import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class GuiNewAbout extends GuiSpoutScreen {
 	private GuiScreen parent;
@@ -56,12 +59,16 @@ public class GuiNewAbout extends GuiSpoutScreen {
 	private static HashMap<String, Object> root;
 
 	static {
+		CustomTextureManager.downloadFile(FileUtil.getAssetsDir(), "about.yml", "http://get.spout.org/about.yml", true);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {}
 		updateRoot();
 	}
 
 	private static void updateRoot() {
 		try {
-			root = (HashMap<String, Object>) (new Yaml()).load((new URL("http://get.spout.org/about.yml")).openStream());
+			root = (HashMap<String, Object>) (new Yaml()).load((new FileReader(new File(FileUtil.getAssetsDir(), "/" + "about.yml"))));
 		} catch (Exception ex) {
 			Logger.getLogger(GuiNewAbout.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -76,6 +83,7 @@ public class GuiNewAbout extends GuiSpoutScreen {
 		title = new GenericLabel("About");
 		buttonDone = new GenericButton("Main Menu");
 		scroll = new GenericScrollArea();
+		
 		labelSpoutcraftVersion = new GenericLabel(SpoutClient.getClientVersion() + "\nLicensed under LGPLv3");
 		labelMinecraftVersion = new GenericLabel(MainMenu.mcVersion + "\nCopyright Mojang AB" );
 		labelSpoutcraftVersion.setAlign(WidgetAnchor.TOP_RIGHT);

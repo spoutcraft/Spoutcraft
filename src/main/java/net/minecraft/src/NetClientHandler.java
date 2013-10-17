@@ -1307,21 +1307,22 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleCustomPayload(Packet250CustomPayload par1Packet250CustomPayload) {
-		// ToDo: ServerSide Texture Pack Configuration Option was here
 		if ("MC|TrList".equals(par1Packet250CustomPayload.channel)) {
-			DataInputStream var2 = new DataInputStream(new ByteArrayInputStream(par1Packet250CustomPayload.data));
+			if (Configuration.isServerTexturePromptsEnabled()) {
+				DataInputStream var2 = new DataInputStream(new ByteArrayInputStream(par1Packet250CustomPayload.data));
 
-			try {
-				int var3 = var2.readInt();
-				GuiScreen var4 = this.mc.currentScreen;
+				try {
+					int var3 = var2.readInt();
+					GuiScreen var4 = this.mc.currentScreen;
 
-				if (var4 != null && var4 instanceof GuiMerchant && var3 == this.mc.thePlayer.openContainer.windowId) {
-					IMerchant var5 = ((GuiMerchant)var4).getIMerchant();
-					MerchantRecipeList var6 = MerchantRecipeList.readRecipiesFromStream(var2);
-					var5.setRecipes(var6);
+					if (var4 != null && var4 instanceof GuiMerchant && var3 == this.mc.thePlayer.openContainer.windowId) {
+						IMerchant var5 = ((GuiMerchant)var4).getIMerchant();
+						MerchantRecipeList var6 = MerchantRecipeList.readRecipiesFromStream(var2);
+						var5.setRecipes(var6);
+					}
+				} catch (IOException var7) {
+					var7.printStackTrace();
 				}
-			} catch (IOException var7) {
-				var7.printStackTrace();
 			}
 		} else if ("MC|Brand".equals(par1Packet250CustomPayload.channel)) {
 			this.mc.thePlayer.func_142020_c(new String(par1Packet250CustomPayload.data, Charsets.UTF_8));

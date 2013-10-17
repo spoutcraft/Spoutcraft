@@ -22,6 +22,7 @@ public abstract class EntityLiving extends EntityLivingBase {
 	protected final EntityAITasks targetTasks;
 
 	/** The active target the Task system uses for tracking */
+	//Spout Start	
 	private EntityLivingBase attackTarget;
 	private EntitySenses senses;
 
@@ -1006,5 +1007,5 @@ public abstract class EntityLiving extends EntityLivingBase {
 		}
 
 		this.field_110170_bx = null;
-	}
+	}	
 }

@@ -26,7 +26,7 @@ public enum EntitySkinType {
 	WOLF_ANGRY(3),
 	WOLF_TAMED(4),
 	PIG_SADDLE(5),
-	GHAST_MOUTH(6),
+	GHAST_MOUTH(6),	
 	ENDERMAN_EYES(7),
 	;
 

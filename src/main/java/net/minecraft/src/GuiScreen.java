@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.CheckBox;
 import org.spoutcraft.api.gui.ComboBox;
@@ -65,7 +64,8 @@ public class GuiScreen extends Gui {
 	public boolean allowUserInput;
 
 	/** The FontRenderer used by GuiScreen */
-	protected FontRenderer fontRenderer;	
+	protected FontRenderer fontRenderer;
+	public GuiParticle guiParticles;
 
 	/** The button that was just pressed. */
 	private GuiButton selectedButton;
@@ -564,6 +564,7 @@ public class GuiScreen extends Gui {
 	 */
 	public void setWorldAndResolution(Minecraft par1Minecraft, int par2, int par3) {		
 		this.mc = par1Minecraft;
+		this.guiParticles = new GuiParticle(par1Minecraft);
 		this.fontRenderer = par1Minecraft.fontRenderer;
 		this.width = par2;
 		this.height = par3;

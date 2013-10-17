@@ -960,10 +960,9 @@ public class EntityRenderer {
 					throw new ReportedException(var10);
 				}
 
-				//ToDo: Broken
-				//if (this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
-				//	this.mc.currentScreen.guiParticles.draw(par1);
-				//}
+				if (this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
+					this.mc.currentScreen.guiParticles.draw(par1);
+				}
 				
 				if (this.mc.currentScreen!= null) {
 					this.mc.currentScreen.drawScreenPre(var16, var17, par1);
@@ -971,10 +970,9 @@ public class EntityRenderer {
 					System.out.println("SpoutDebug:  CurrentScreen was null prior to trying to drawScreenPre");
 				}
 
-				//ToDo: Broken
-				//if (this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
-				//	this.mc.currentScreen.guiParticles.draw(par1);
-				//}
+				if (this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
+					this.mc.currentScreen.guiParticles.draw(par1);
+				}
 			}
 		}
 	}
@@ -1037,13 +1035,12 @@ public class EntityRenderer {
 
 			GL11.glEnable(GL11.GL_FOG);
 			this.setupFog(1, par1);
-
-			// ToDo: This needs to be fixed, otherwise AO won't work correctly
-			// MCPatcher Start
-			//if (RenderPass.setAmbientOcclusion(this.mc.gameSettings.ambientOcclusion >= 2)) {
-			// MCPatcher End
-			//	GL11.glShadeModel(GL11.GL_SMOOTH);
-			//}
+			
+			// Spout Start
+			if (RenderPass.setAmbientOcclusion(this.mc.gameSettings.ambientOcclusion >= 2)) {
+			// Spout End
+				GL11.glShadeModel(GL11.GL_SMOOTH);
+			}
 
 			this.mc.mcProfiler.endStartSection("culling");
 			Frustrum var14 = new Frustrum();
@@ -1112,12 +1109,12 @@ public class EntityRenderer {
 			if (this.mc.gameSettings.fancyGraphics) {
 				this.mc.mcProfiler.endStartSection("water");
 
-				// ToDo: Needs AO configuration update for Spoutcraft
-				// Spout End
-				//if (RenderPass.setAmbientOcclusion(this.mc.gameSettings.ambientOcclusion >= 2)) {
+				
 				// Spout Start
-				//	GL11.glShadeModel(GL11.GL_SMOOTH);
-				//}
+				if (RenderPass.setAmbientOcclusion(this.mc.gameSettings.ambientOcclusion >= 2)) {
+				// Spout End
+					GL11.glShadeModel(GL11.GL_SMOOTH);
+				}
 
 				GL11.glColorMask(false, false, false, false);
 				int var18 = var5.sortAndRender(var4, 1, (double)par1);
@@ -1629,7 +1626,6 @@ public class EntityRenderer {
 	 * Sets up the fog to be rendered. If the arg passed in is -1 the fog starts at 0 and goes to 80% of far plane distance
 	 * and is used for sky rendering.
 	 */
-	// ToDo: FancyFog from Spoutcraft API needs to be rebuilt.
 	
 	private void setupFog(int par1, float par2) {
 		EntityLivingBase var3 = this.mc.renderViewEntity;
@@ -1680,11 +1676,21 @@ public class EntityRenderer {
 				}
 			} else if (this.cloudFog) {
 				GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
-				GL11.glFogf(GL11.GL_FOG_DENSITY, 0.1F);
+				// Spout Start
+				float density = 0.1F;
+				if (var3.isPotionActive(Potion.waterBreathing)) {
+					density = 0.05F;
+				}
+				if (Configuration.isClearWater()) {
+					density = 0.02F;
+				}
+				GL11.glFogf(GL11.GL_FOG_DENSITY, density);
+				// Spout End
 			} else if (var5 > 0 && Block.blocksList[var5].blockMaterial == Material.water) {
 				GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
-
-				if (var3.isPotionActive(Potion.waterBreathing)) {
+				// Spout Start
+				if (Configuration.isClearWater() || (var3.isPotionActive(Potion.waterBreathing))) {
+				// Spout End
 					GL11.glFogf(GL11.GL_FOG_DENSITY, 0.05F);
 				} else {
 					GL11.glFogf(GL11.GL_FOG_DENSITY, 0.1F - (float)EnchantmentHelper.getRespiration(var3) * 0.03F);
@@ -1715,6 +1721,12 @@ public class EntityRenderer {
 						}
 					}
 				}
+				
+				// Spout Start
+				if (!Configuration.isVoidFog()) {
+					var6 = 0.8F * this.farPlaneDistance;					
+				}
+				// Spout End
 
 				GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_LINEAR);
 
@@ -1727,7 +1739,15 @@ public class EntityRenderer {
 				}
 
 				if (GLContext.getCapabilities().GL_NV_fog_distance) {
-					GL11.glFogi(34138, 34139);
+					// Spout Start
+					//TODO: Previous fog calculation may work better.
+					//GL11.glFogi(34138, 34139);
+					if (Configuration.isFancyFog()) {
+						GL11.glFogi('\u855a', '\u855b');
+					} else {
+						GL11.glFogi('\u855a', '\u855c');
+					}
+					// Spout End
 				}
 
 				if (this.mc.theWorld.provider.doesXZShowFog((int)var3.posX, (int)var3.posZ)) {

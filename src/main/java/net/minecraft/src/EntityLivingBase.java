@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+
 //Spout Start
 import org.spoutcraft.api.entity.EntitySkinType;
 import org.spoutcraft.api.material.CustomBlock;
@@ -106,7 +107,9 @@ public abstract class EntityLivingBase extends Entity {
 	/**
 	 * Damage taken in the last hit. Mobs are resistant to damage less than this for a short time after taking damage.
 	 */
-	// Spout Start
+	
+	//Spout Start
+	protected String texture = "/mob/char.png";
 	public float lastDamage;
 	private EntityData entityData = new EntityData();
 	public String displayName = null;	

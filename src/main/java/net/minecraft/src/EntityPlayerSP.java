@@ -51,9 +51,6 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 		// Spout Start
 		((ClientPlayer) spoutEnty).setPlayer(this);
 		SpoutClient.getInstance().player = (ClientPlayer) spoutEnty;
-		// ToDo: needs update
-		//this.worldObj.releaseEntitySkin(this);
-		//this.worldObj.obtainEntitySkin(this);
 		// Spout End
 	}
 
@@ -282,14 +279,6 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
 		return var1;
 	}
-
-	// ToDo: Needs Update
-	/*
-	public void updateCloak() {
-		this.playerCloakUrl = "http://skins.minecraft.net/MinecraftCloaks/" + StringUtils.stripControlCodes(this.username) + ".png";
-		this.cloakUrl = this.playerCloakUrl;
-	}
-	*/
 
 	/**
 	 * sets current screen to null (used on escape buttons of GUIs)

@@ -1,5 +1,9 @@
 package net.minecraft.src;
 
+//Spout Start
+import org.spoutcraft.api.entity.EntitySkinType;
+//Spout End
+
 public class EntityGhast extends EntityFlying implements IMob {
 	public int courseChangeCooldown;
 	public double waypointX;
@@ -54,8 +58,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 	/**
 	 * Called to update the entity's position/logic.
 	 */
-	// ToDo: Requires Update.
-	/*
+	
 	public void onUpdate() {
 		super.onUpdate();
 		byte var1 = this.dataWatcher.getWatchableObjectByte(16);
@@ -63,7 +66,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 		// Spout Start
 		setTextureToRender((byte) (var1 == 1 ? EntitySkinType.GHAST_MOUTH.getId() : 0));
 		// Spout End
-	} */
+	}
 
 	protected void updateEntityActionState() {
 		if (!this.worldObj.isRemote && this.worldObj.difficultySetting == 0) {

@@ -61,6 +61,12 @@ public class CustomTextureManager {
 		}
 	}
 
+	public static void downloadFile(File destination, String filename, String url, boolean ignoreEnding) {
+		System.out.println("DownloadFile called");
+		Download download = new Download(filename, destination, url, null);
+		FileDownloadThread.getInstance().addToDownloadQueue(download);
+	}
+	
 	public static void downloadTexture(String plugin, String url) {
 		downloadTexture(plugin, url, false);
 	}
