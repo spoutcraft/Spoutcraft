@@ -168,9 +168,9 @@ public class GuiAchievement extends Gui {
 						toRender = new ItemStack(itemId, 1, data);
 					}
 				}
-				//ToDo: this toRender() thing may need to go away.
+
 				if (toRender != null) {
-					this.itemRender.renderItemAndEffectIntoGUI(this.theGame.fontRenderer, this.theGame.getTextureManager(), this.theAchievement.theItemStack, var5 + 8, var6 + 8);
+					this.itemRender.renderItemAndEffectIntoGUI(this.theGame.fontRenderer, this.theGame.getTextureManager(), toRender, var5 + 8, var6 + 8);
 				}
 				// Spout End
 				GL11.glDisable(GL11.GL_LIGHTING);
