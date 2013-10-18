@@ -32,8 +32,8 @@ public class CraftLivingEntity extends CraftEntity {
 		super(living);
 	}
 
-	public EntityLiving getEntityLiving() {
-		return (EntityLiving) handle;
+	public EntityLivingBase getEntityLiving() {
+		return (EntityLivingBase) handle;
 	}
 
 	public float getHealth() {		
