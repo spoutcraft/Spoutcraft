@@ -46,6 +46,7 @@ import org.spoutcraft.client.gui.ClientTexture;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.gui.mainmenu.MainMenu;
 import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.client.io.DownloadAssets;
 import org.spoutcraft.client.io.CustomTextureManager;
 
 public class GuiNewAbout extends GuiSpoutScreen {
@@ -59,19 +60,12 @@ public class GuiNewAbout extends GuiSpoutScreen {
 	private static HashMap<String, Object> root;
 
 	static {
-		CustomTextureManager.downloadFile(FileUtil.getAssetsDir(), "about.yml", "http://get.spout.org/about.yml", true);
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {}
 		updateRoot();
 	}
 
 	private static void updateRoot() {
-		File myFile = new File(FileUtil.getAssetsDir(), "about.yml");
-		
-		while (!myFile.exists()) {
-			;
-		}
+		DownloadAssets.downloadFile(FileUtil.getConfigDir(), "about.yml", "http://get.spout.org/about.yml", false);
+		File myFile = new File(FileUtil.getConfigDir(), "about.yml");
 		
 		try {			
 			root = (HashMap<String, Object>) (new Yaml()).load((new FileReader(myFile)));

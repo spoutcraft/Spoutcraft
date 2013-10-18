@@ -147,23 +147,6 @@ public class MainMenu extends GuiScreen {
 		try {
 			if (splashes.isEmpty()) {
 				File splashTextFile = new File(FileUtil.getConfigDir(), "splashes.txt");
-				// Refresh every day
-				if (!splashTextFile.exists() || (System.currentTimeMillis() - splashTextFile.lastModified() > (1L * 24 * 60 * 60 * 1000))) {
-					URL test = new URL("http://cdn.spout.org/splashes.txt");
-					HttpURLConnection urlConnect = (HttpURLConnection) test.openConnection();
-					System.setProperty("http.agent", "");
-					urlConnect.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19");
-
-					File temp = new File(FileUtil.getConfigDir(), "splashes.temp");
-					if (temp.exists()) {
-						temp.delete();
-					}
-
-					splashTextFile.delete();
-
-					FileUtils.copyInputStreamToFile(urlConnect.getInputStream(), temp);
-					FileUtils.moveFile(temp, splashTextFile);
-				}
 				br = new BufferedReader(new FileReader(splashTextFile));
 				String line;
 				splashes.clear();

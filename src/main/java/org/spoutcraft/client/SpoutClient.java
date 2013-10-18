@@ -60,6 +60,7 @@ import org.spoutcraft.client.io.CRCManager;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.client.io.DownloadAssets;
 import org.spoutcraft.client.packet.CustomPacket;
 import org.spoutcraft.client.packet.PacketEntityInformation;
 import org.spoutcraft.client.packet.PacketManager;
@@ -116,12 +117,11 @@ public class SpoutClient extends PropertyObject implements Client {
 		if (!Thread.currentThread().getName().equals("Minecraft main thread")) {
 			throw new SecurityException("Main thread name mismatch");
 		}
-		//System.setSecurityManager(securityManager);
-
 		serverManager.init();
 		((SimpleKeyBindingManager)bindingManager).load();
 		Log.setVerbose(false);
 		Log.setLogSystem(new SilencedLogSystem());
+		DownloadAssets.getHttpAssets();
 	}
 
 	private class SilencedLogSystem implements LogSystem {

@@ -30,8 +30,8 @@ import org.bukkit.util.config.Configuration;
 import org.spoutcraft.client.io.FileUtil;
 
 public enum Resources implements YAMLResource {
-	Special (new File(FileUtil.getAssetsDir(), "special.yml")),
-	VIP (new File(FileUtil.getAssetsDir(), "vip.yml")),
+	Special (new File(FileUtil.getConfigDir(), "special.yml")),
+	VIP (new File(FileUtil.getConfigDir(), "vip.yml")),
 	;
 
 	final BaseYAMLResource resource;
