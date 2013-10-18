@@ -247,8 +247,8 @@ public class Minecraft implements IPlayerUsage {
 		this.proxy = par9Proxy;
 		this.startTimerHackThread();
 		this.session = par1Session;
-		this.mcLogAgent.logInfo("Setting user: " + par1Session.getUsername());
-		this.mcLogAgent.logInfo("(Session ID is " + par1Session.getSessionID() + ")");
+		//this.mcLogAgent.logInfo("Setting user: " + par1Session.getUsername());
+		//this.mcLogAgent.logInfo("(Session ID is " + par1Session.getSessionID() + ")");
 		this.isDemo = par5;
 		this.displayWidth = par2;
 		this.displayHeight = par3;
@@ -257,7 +257,7 @@ public class Minecraft implements IPlayerUsage {
 		this.fullscreen = par4;
 		ImageIO.setUseCache(false);
 		StatList.nopInit();
-		// ToDo: this probably isn't going to work since this class no longer extends runnable
+		
 		// Spout Start
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			public void run() {
@@ -337,7 +337,7 @@ public class Minecraft implements IPlayerUsage {
 		
 		Display.setResizable(true);
 		Display.setTitle("Spoutcraft 1.6.2");
-		this.getLogAgent().logInfo("LWJGL Version: " + Sys.getVersion());
+		//this.getLogAgent().logInfo("LWJGL Version: " + Sys.getVersion());
 
 		if (Util.getOSType() != EnumOS.MACOS) {
 			try {
@@ -366,8 +366,8 @@ public class Minecraft implements IPlayerUsage {
 		}
 
 		// Spout Start
-		System.out.println("Spoutcraft Version: " + SpoutClient.getSpoutcraftVersion() + SpoutClient.getSpoutcraftBuild());
-		System.out.println("Starting texture pack initialization...");
+		System.out.println("\nSpoutcraft Version: " + SpoutClient.getSpoutcraftVersion() + SpoutClient.getSpoutcraftBuild());
+		System.out.println("\nStarting texture pack initialization...");
 		// Spout End
 
 		OpenGlHelper.initializeTextures();

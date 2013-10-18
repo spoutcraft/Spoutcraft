@@ -32,9 +32,9 @@ public class LANModel extends ServerModel {
 		try {
 			dns = JmDNS.create();
 			dns.addServiceListener(SERVICE, new MinecraftServiceListener(this));
-			System.out.println("Listening for ZeroConf Service '" + SERVICE + "' ...");
+			//System.out.println("Listening for ZeroConf Service '" + SERVICE + "' ...");
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

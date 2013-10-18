@@ -152,7 +152,6 @@ public class SpoutClient extends PropertyObject implements Client {
 	public static SpoutClient getInstance() {
 		if (instance == null) {
 			Spoutcraft.setClient(new SpoutClient());
-			System.out.println("Starting SpoutClient. Available Memory: " + Runtime.getRuntime().maxMemory() / (1024*1024) + " mb");
 		}
 		return instance;
 	}

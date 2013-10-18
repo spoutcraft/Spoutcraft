@@ -14,6 +14,8 @@ import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import net.minecraft.src.Minecraft;
 
+import org.lwjgl.Sys;
+
 public class MCPatcherUtils {
 	private static File minecraftDir = null;
 	private static boolean isGame;
@@ -218,18 +220,20 @@ public class MCPatcherUtils {
 		minecraftDir = minecraftDir.getAbsoluteFile();
 		minecraftVersion = minecraftVersion1;
 		patcherVersion = patcherVersion1;
+
 		System.out.println();
 		System.out.printf("MCPatcherUtils initialized:\n", new Object[0]);
 		System.out.printf("Game directory:    %s\n", new Object[] {minecraftDir});
 		System.out.printf("Minecraft version: %s\n", new Object[] {minecraftVersion});
 		System.out.printf("MCPatcher version: %s\n", new Object[] {patcherVersion});
+		System.out.printf("LWJGL version: %s\n", new Object[] {Sys.getVersion()});
 		System.out.printf("Max heap memory:   %.1fMB\n", new Object[] {Float.valueOf((float)Runtime.getRuntime().maxMemory() / 1048576.0F)});
 
 		try {
 			Class e = Class.forName("sun.misc.VM");
 			Method method = e.getDeclaredMethod("maxDirectMemory", new Class[0]);
 			long memory = ((Long)method.invoke((Object)null, new Object[0])).longValue();
-			System.out.printf("Max direct memory: %.1fMB\n", new Object[] {Float.valueOf((float)memory / 1048576.0F)});
+			System.out.printf("Max direct memory: %.1fMB", new Object[] {Float.valueOf((float)memory / 1048576.0F)});
 		} catch (Throwable var8) {
 			var8.printStackTrace();
 		}
