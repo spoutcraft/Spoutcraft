@@ -50,6 +50,7 @@ import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.client.gui.minimap.MinimapConfig;
 import org.spoutcraft.client.gui.minimap.MinimapUtils;
 import org.spoutcraft.client.gui.minimap.Waypoint;
+import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.packet.PacketScreenAction;
 import org.spoutcraft.client.packet.ScreenAction;
 import org.spoutcraft.client.packet.SpoutPacket;
@@ -340,7 +341,7 @@ public class Minecraft implements IPlayerUsage {
 
 		if (Util.getOSType() != EnumOS.MACOS) {
 			try {
-				Display.setIcon(new ByteBuffer[] {this.readImage(new File(this.fileAssets, "/icons/icon_16x16.png")), this.readImage(new File(this.fileAssets, "/icons/icon_32x32.png"))});
+				Display.setIcon(new ByteBuffer[] {this.readImage(new File(FileUtil.getAssetsDir(), "/icon/icon_16x16.png")), this.readImage(new File(FileUtil.getAssetsDir(), "/icon/icon_32x32.png"))});
 			} catch (IOException var5) {
 				var5.printStackTrace();
 			}

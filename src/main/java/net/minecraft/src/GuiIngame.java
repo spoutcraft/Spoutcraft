@@ -202,9 +202,10 @@ public class GuiIngame extends Gui {
 
 			this.mc.mcProfiler.endSection();
 		} else if (this.mc.playerController.func_78763_f()) {
-			this.mc.mcProfiler.startSection("expBar");
+			
 			// Spout -> Removed, we have our own.
 			/*
+			this.mc.mcProfiler.startSection("expBar");
 			this.mc.getTextureManager().bindTexture(Gui.icons);
 			var12 = this.mc.thePlayer.xpBarCap();
 
@@ -218,10 +219,12 @@ public class GuiIngame extends Gui {
 					this.drawTexturedModalRect(var111, var115, 0, 69, var14, 5);
 				}
 			}
-			*/
+			
 
 			this.mc.mcProfiler.endSection();
 
+			// Spout Start -> We have our own
+			
 			if (this.mc.thePlayer.experienceLevel > 0) {
 				this.mc.mcProfiler.startSection("expLevel");
 				boolean var35 = false;
@@ -237,6 +240,7 @@ public class GuiIngame extends Gui {
 				font.drawString(var42, var16, var117, var14);
 				this.mc.mcProfiler.endSection();
 			}
+			*/
 		}
 		
 		if (this.mc.gameSettings.showDebugInfo) {
