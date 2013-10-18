@@ -203,6 +203,8 @@ public class GuiIngame extends Gui {
 			this.mc.mcProfiler.endSection();
 		} else if (this.mc.playerController.func_78763_f()) {
 			this.mc.mcProfiler.startSection("expBar");
+			// Spout -> Removed, we have our own.
+			/*
 			this.mc.getTextureManager().bindTexture(Gui.icons);
 			var12 = this.mc.thePlayer.xpBarCap();
 
@@ -216,6 +218,7 @@ public class GuiIngame extends Gui {
 					this.drawTexturedModalRect(var111, var115, 0, 69, var14, 5);
 				}
 			}
+			*/
 
 			this.mc.mcProfiler.endSection();
 
