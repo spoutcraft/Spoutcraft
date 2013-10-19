@@ -68,6 +68,14 @@ public class DownloadAssets {
 				}
 			}
 
+			if (!(new File(FileUtil.getConfigDir() + "/client.yml").exists())) {
+				File newFile = new File(FileUtil.getConfigDir() + "/client.yml");
+				File oldFile = new File(pathToOldConfig + "/client.yml");
+				if (oldFile.exists()) {
+					FileUtils.moveFile(oldFile, newFile);
+				}
+			}
+			
 			if (!(new File(FileUtil.getConfigDir() + "/favorites.yml").exists())) {
 				File newFile = new File(FileUtil.getConfigDir() + "/favorites.yml");
 				File oldFile = new File(pathToOldConfig + "/favorites.yml");
