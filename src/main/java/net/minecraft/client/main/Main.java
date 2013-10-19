@@ -37,7 +37,7 @@ public class Main {
 		ArgumentAcceptingOptionSpec var9 = var1.accepts("proxyUser").withRequiredArg();
 		ArgumentAcceptingOptionSpec var10 = var1.accepts("proxyPass").withRequiredArg();
 		ArgumentAcceptingOptionSpec var11 = var1.accepts("username").withRequiredArg().defaultsTo("Player" + Minecraft.getSystemTime() % 1000L, new String[0]);
-		ArgumentAcceptingOptionSpec var12 = var1.accepts("session").withRequiredArg();
+		ArgumentAcceptingOptionSpec var12 = var1.accepts("session").withRequiredArg().defaultsTo("Invalid Session ID", new String[0]);
 		ArgumentAcceptingOptionSpec var13 = var1.accepts("version").withRequiredArg().required();
 		ArgumentAcceptingOptionSpec var14 = var1.accepts("width").withRequiredArg().ofType(Integer.class).defaultsTo(Integer.valueOf(854), new Integer[0]);
 		ArgumentAcceptingOptionSpec var15 = var1.accepts("height").withRequiredArg().ofType(Integer.class).defaultsTo(Integer.valueOf(480), new Integer[0]);
