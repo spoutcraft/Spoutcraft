@@ -97,7 +97,7 @@ public class DownloadAssets {
 				File newFile = new File(FileUtil.getConfigDir() + "/shortcuts.yml");
 				File oldFile = new File(pathToOldConfig + "/shortcuts.yml");
 				if (oldFile.exists()) {
-					FileUtils.moveFile(oldFile, newFile);
+					FileUtils.copyFile(oldFile, newFile);
 				}			
 			}
 		} catch (Exception e) {
@@ -118,7 +118,7 @@ public class DownloadAssets {
 				File newFile = new File(FileUtil.getSpoutcraftBaseDir() + "/options.txt");
 				File oldFile = new File(pathToOldConfig + "/options.txt");
 				if (oldFile.exists()) {
-					FileUtils.moveFile(oldFile, newFile);
+					FileUtils.copyFile(oldFile, newFile);
 				}			
 			}		
 		} catch (Exception e) {
