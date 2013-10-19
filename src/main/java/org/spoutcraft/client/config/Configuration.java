@@ -56,7 +56,7 @@ public class Configuration {
 	private static int performance = 0;
 	private static int chunkRenderPasses = 2;
 	private static int renderDistance = 0;
-	private static int signDistance = 16;
+	public static int signDistance = 16;
 	public static boolean cheatsky = true;
 	private static boolean forcesky = false;
 	private static boolean showsky = true;

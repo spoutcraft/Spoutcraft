@@ -54,7 +54,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 			if (viewer == null) {
 				viewer = Minecraft.getMinecraft().thePlayer;
 			}
-			if (Configuration.getSignDistance() == Integer.MAX_VALUE || viewer != null && par1TileEntitySign.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < (Configuration.getSignDistance() * Configuration.getSignDistance())) {
+			if (Configuration.signDistance == Integer.MAX_VALUE || viewer != null && par1TileEntitySign.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < (Configuration.signDistance * Configuration.signDistance)) {
 				// Spout End
 				FontRenderer var17 = this.getFontRenderer();
 				var12 = 0.016666668F * var10;
