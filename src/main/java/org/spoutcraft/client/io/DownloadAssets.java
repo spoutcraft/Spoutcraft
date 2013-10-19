@@ -52,13 +52,14 @@ public class DownloadAssets {
 			pathToOldConfig = URLDecoder.decode(pathToOldConfig, "UTF-8");
 		} catch (java.io.UnsupportedEncodingException ignore) { }
 
-		File relative = new File(pathToOldConfig + "/../../.spoutcraft/config");
+		File relative = new File(pathToOldConfig + "/../../../../../.spoutcraft/config");
 
 		try {
 			pathToOldConfig = relative.getCanonicalPath();
 		} catch (IOException e) {
 			pathToOldConfig = relative.getAbsolutePath();
 		}
+
 		try {
 			if (!(new File(FileUtil.getConfigDir() + "/bindings.yml").exists())) {
 				File newFile = new File(FileUtil.getConfigDir() + "/bindings.yml");
@@ -103,13 +104,15 @@ public class DownloadAssets {
 			e.printStackTrace();
 		}
 		
-		relative = new File(pathToOldConfig + "/../../.spoutcraft");
+		relative = new File(pathToOldConfig + "/..");
+
 
 		try {
 			pathToOldConfig = relative.getCanonicalPath();
 		} catch (IOException e) {
 			pathToOldConfig = relative.getAbsolutePath();
 		}
+
 		try {
 			if (!(new File(FileUtil.getSpoutcraftBaseDir() + "/options.txt").exists())) {
 				File newFile = new File(FileUtil.getSpoutcraftBaseDir() + "/options.txt");
