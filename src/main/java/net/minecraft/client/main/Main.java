@@ -18,6 +18,7 @@ import net.minecraft.src.Minecraft;
 import net.minecraft.src.Session;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.DownloadAssets;
 
 public class Main {
 	public static void main(String[] par0ArrayOfStr) {
@@ -84,7 +85,7 @@ public class Main {
 		}
 
 		Thread.currentThread().setName("Minecraft main thread");
-		
+		DownloadAssets.importOldConfig();
 		var32.run();
 	}
 

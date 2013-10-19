@@ -21,10 +21,13 @@ package org.spoutcraft.client.io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 
 import org.apache.commons.io.FileUtils;
+import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
 
 public class DownloadAssets {
@@ -35,27 +38,84 @@ public class DownloadAssets {
 		downloadFile(FileUtil.getConfigDir(), "special.yml", "http://get.spout.org/special.yml", false);
 		downloadFile(FileUtil.getConfigDir(), "splashes.txt", "http://cdn.spout.org/splashes.txt", false);
 	}
-	
+
 	public static void importOldConfig() {
 		// This method must execute before constructores creates blank ones.
-		if (!(new File(FileUtil.getConfigDir() + "/bindings.yml").exists())) {
-			// Needs Bindings
+		String pathToOldConfig;
+		File jar = new File(CustomTextureManager.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+		try {
+			pathToOldConfig = jar.getCanonicalPath();
+		} catch (IOException e1) {
+			pathToOldConfig = jar.getAbsolutePath();
+		}
+		try {
+			pathToOldConfig = URLDecoder.decode(pathToOldConfig, "UTF-8");
+		} catch (java.io.UnsupportedEncodingException ignore) { }
+
+		File relative = new File(pathToOldConfig + "/../../.spoutcraft/config");
+
+		try {
+			pathToOldConfig = relative.getCanonicalPath();
+		} catch (IOException e) {
+			pathToOldConfig = relative.getAbsolutePath();
+		}
+		try {
+			if (!(new File(FileUtil.getConfigDir() + "/bindings.yml").exists())) {
+				File newFile = new File(FileUtil.getConfigDir() + "/bindings.yml");
+				File oldFile = new File(pathToOldConfig + "/bindings.yml");
+				if (oldFile.exists()) {
+					FileUtils.moveFile(oldFile, newFile);
+				}
+			}
+
+			if (!(new File(FileUtil.getConfigDir() + "/favorites.yml").exists())) {
+				File newFile = new File(FileUtil.getConfigDir() + "/favorites.yml");
+				File oldFile = new File(pathToOldConfig + "/favorites.yml");
+				if (oldFile.exists()) {
+					FileUtils.moveFile(oldFile, newFile);
+				}
+			}
+
+			if (!(new File(FileUtil.getConfigDir() + "/minimap.yml").exists())) {
+				File newFile = new File(FileUtil.getConfigDir() + "/minimap.yml");
+				File oldFile = new File(pathToOldConfig + "/minimap.yml");
+				if (oldFile.exists()) {
+					FileUtils.moveFile(oldFile, newFile);
+				}
+			}
+
+			if (!(new File(FileUtil.getConfigDir() + "/shortcuts.yml").exists())) {
+				File newFile = new File(FileUtil.getConfigDir() + "/shortcuts.yml");
+				File oldFile = new File(pathToOldConfig + "/shortcuts.yml");
+				if (oldFile.exists()) {
+					FileUtils.moveFile(oldFile, newFile);
+				}			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		if (!(new File(FileUtil.getConfigDir() + "/favorites.yml").exists())) {
-			// Needs Favorites
+		relative = new File(pathToOldConfig + "/../../.spoutcraft");
+
+		try {
+			pathToOldConfig = relative.getCanonicalPath();
+		} catch (IOException e) {
+			pathToOldConfig = relative.getAbsolutePath();
 		}
-		
-		if (!(new File(FileUtil.getConfigDir() + "/minimap.yml").exists())) {
-			// Needs MiniMap Config
-		}
-		
-		if (!(new File(FileUtil.getConfigDir() + "/shortcuts.yml").exists())) {
-			// Needs Shortcuts
+		try {
+			if (!(new File(FileUtil.getSpoutcraftBaseDir() + "/options.txt").exists())) {
+				File newFile = new File(FileUtil.getSpoutcraftBaseDir() + "/options.txt");
+				File oldFile = new File(pathToOldConfig + "/options.txt");
+				if (oldFile.exists()) {
+					FileUtils.moveFile(oldFile, newFile);
+				}			
+			}		
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-		
-	public static void threadedDownloadFile(File destination, String filename, String url) {		
+
+	public static void threadedDownloadFile(File destination, String filename, String url) {
 		Download download = new Download(filename, destination, url, null);
 		FileDownloadThread.getInstance().addToDownloadQueue(download);
 	}
