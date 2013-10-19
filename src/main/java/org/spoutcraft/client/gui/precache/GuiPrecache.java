@@ -21,26 +21,60 @@ package org.spoutcraft.client.gui.precache;
 
 import net.minecraft.src.GuiScreen;
 
-import org.bukkit.ChatColor;
+import org.lwjgl.opengl.GL11;
 
+import org.bukkit.ChatColor;
 import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericTexture;
 import org.spoutcraft.api.gui.WidgetAnchor;
+import org.spoutcraft.api.gui.Texture;
+import org.spoutcraft.client.io.FileUtil;
 
 public class GuiPrecache extends GuiScreen {
 	public GenericLabel statusText;
+	Texture background, logo;
 
 	@Override
 	public void initGui() {
+		
+		logo = new ScaledTexture(FileUtil.getAssetsDir().getPath()+"/logo/spoutcraft.png");
+		((ScaledTexture) logo).setScale(Math.min(1F, (width - 135F) / 256F));
+		logo.setGeometry((width / 2)-64, (height / 2)-60, 128, 32);
+		
+		logo.setLocal(true);
+		logo.setDrawAlphaChannel(true);
+		
 		statusText = new GenericLabel();
 		statusText.setAnchor(WidgetAnchor.CENTER_CENTER);
 		statusText.setAlign(WidgetAnchor.CENTER_CENTER);
-		statusText.setText(ChatColor.BLUE + "Spoutcraft" + "\n" + " " + "\n" + ChatColor.WHITE + "Loading terrain and custom resources" + "\n" + "\n" + ChatColor.MAGIC + "ShowMagic");
-		getScreen().attachWidgets("Spoutcraft", statusText);
+		statusText.setText(ChatColor.WHITE + "Loading terrain and custom resources" + "\n" + "\n" + ChatColor.MAGIC + "ShowMagic");
+		getScreen().attachWidgets("Spoutcraft", logo, statusText);
 	}
 
 	@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		this.drawBackground(0);
 		super.drawScreen(par1, par2, par3);
+	}
+}
+
+class ScaledTexture extends GenericTexture {
+	float scale;
+
+	ScaledTexture(String path) {
+		super(path);
+	}
+
+	public ScaledTexture setScale(float scale) {
+		this.scale = scale;
+		return this;
+	}
+
+	@Override
+	public void render() {
+		GL11.glPushMatrix();
+		GL11.glScalef(scale, 1F, 1F);
+		super.render();
+		GL11.glPopMatrix();
 	}
 }
