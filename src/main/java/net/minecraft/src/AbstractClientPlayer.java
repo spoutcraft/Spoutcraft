@@ -20,8 +20,6 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
 	}
 
 	protected void setupCustomSkin() {
-		System.out.println("Setting up custom skins");
-
 		if (this.username != null && !this.username.isEmpty()) {
 			this.locationSkin = getLocationSkin(this.username);
 			this.locationCape = getLocationCape(this.username);
