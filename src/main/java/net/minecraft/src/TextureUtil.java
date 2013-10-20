@@ -43,6 +43,13 @@ public class TextureUtil {
 			GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, par3, par4 + var9, par1, var10, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, dataBuffer);
 		}
 	}
+	// Spout Start
+	public static int allocateAndSetupTexture(BufferedImage par1BufferedImage) {
+		int var2 = GL11.glGenTextures();
+		uploadTextureImageAllocate(var2, par1BufferedImage, false, false);
+		return var2;
+	}
+	// Spout End
 
 	public static int uploadTextureImageAllocate(int par0, BufferedImage par1BufferedImage, boolean par2, boolean par3) {
 		allocateTexture(par0, par1BufferedImage.getWidth(), par1BufferedImage.getHeight());

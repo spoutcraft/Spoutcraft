@@ -127,6 +127,14 @@ public class TextureManager implements Tickable, ResourceManagerReloadListener {
 		}
 	}
 	
+	/**
+	 * Deletes a single GL texture
+	 */
+	public void deleteTexture(int par1) {
+		this.mapTextureObjects.remove(par1);		
+		GL11.glDeleteTextures(par1);
+	}
+	
 	public void resetBoundTexture() {
 		this.boundTexture = -1;
 	}

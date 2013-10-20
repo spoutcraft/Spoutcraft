@@ -24,6 +24,7 @@ import java.awt.image.BufferedImage;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.Minecraft;
+import net.minecraft.src.TextureUtil;
 
 import org.spoutcraft.client.SpoutClient;
 
@@ -61,23 +62,21 @@ public class ImageManager {
 
 	public void loadGLImage() {
 		synchronized (image) {
-			// ToDo: all broken
-			/*
 			if (hasGLImage && hasChanged) {
 				Minecraft.getMinecraft().renderEngine.deleteTexture(glImage);
 				GL11.glPushMatrix();
-				glImage = Minecraft.getMinecraft().renderEngine.allocateAndSetupTexture(image);
+				glImage = TextureUtil.allocateAndSetupTexture(image);
 				GL11.glPopMatrix();
 				hasChanged = false;
 			} else if (!hasGLImage) {
 				GL11.glPushMatrix();
-				glImage = Minecraft.getMinecraft().renderEngine.allocateAndSetupTexture(image);
+				glImage = TextureUtil.allocateAndSetupTexture(image);
 				GL11.glPopMatrix();
 				hasGLImage = true;
 				hasChanged = false;
 			} else if (glImage > 0) {
 				SpoutClient.getHandle().renderEngine.bindTexture(glImage);
-			} */
+			} 
 		}
 	}
 }
