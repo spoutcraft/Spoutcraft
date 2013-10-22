@@ -112,6 +112,7 @@ public abstract class EntityLivingBase extends Entity {
 	protected String texture = "/mob/char.png";
 	public float lastDamage;
 	private EntityData entityData = new EntityData();
+	public String username = null;
 	public String displayName = null;	
 	public int maxAir = 300;
 	// Spout End
@@ -1935,6 +1936,14 @@ public abstract class EntityLivingBase extends Entity {
 
 	public byte getTextureToRender() {
 		return getData().getTextureToRender();
+	}
+	
+	public void setDisplayName(String var1) {
+		this.displayName = var1;
+	}
+	
+	public String getDisplayName() {
+		return this.displayName;
 	}
 	// Spout End
 }

@@ -461,14 +461,15 @@ public abstract class RendererLivingEntity extends Render {
 					double var10 = par1EntityPlayer.getDistanceSqToEntity(this.renderManager.livingPlayer);
 					float var12 = par1EntityPlayer.isSneaking() ? 32.0F : 64.0F;
 					String title = par1EntityPlayer.getDisplayName();
-
-					if (var10 < (double)(var12 * var12)) {						
-						String cleanUserName = ChatColor.stripColor(title);
+					if (var10 < (double)(var12 * var12)) {
+						String cleanUserName = ChatColor.stripColor(par1EntityPlayer.username);
 						VIP vip = Resources.getVIP(cleanUserName);
 						float var92 = 0.0F;
 						if (vip != null) {
 							title = vip.getTitle();
 							var92 = vip.getScale();
+						} else {
+							title = par1EntityPlayer.displayName;
 						}
 						float alpha = 0.25F;
 						

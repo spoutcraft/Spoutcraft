@@ -3,14 +3,10 @@ package net.minecraft.src;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.lang.ref.Reference;
-import java.lang.ref.SoftReference;
 import java.util.List;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-
-import org.spoutcraft.client.chunkcache.ChunkNetCache;
 
 public class Packet56MapChunks extends Packet {
 	private int[] chunkPostX;
@@ -24,7 +20,7 @@ public class Packet56MapChunks extends Packet {
 
 	/** total size of the compressed data */
 	private int dataLength;
-	
+
 	/**
 	 * Whether or not the chunk data contains a light nibble array. This is true in the main world, false in the end +
 	 * nether.
@@ -74,9 +70,7 @@ public class Packet56MapChunks extends Packet {
 			var11.end();
 		}
 	}
-	// Spout Start
-	private Reference<byte[]> inflateBufferCache = new SoftReference<byte[]>(null);
-	// Spout End
+
 	/**
 	 * Abstract. Reads the raw packet data from the data stream.
 	 */
@@ -95,28 +89,17 @@ public class Packet56MapChunks extends Packet {
 		}
 
 		par1DataInput.readFully(chunkDataNotCompressed, 0, this.dataLength);
-
-		// Spout Start
-		byte[] inflateBuffer = inflateBufferCache.get();
-		int requiredLength = 196864 * var2;
-		if (inflateBuffer == null || inflateBuffer.length < requiredLength) {
-			inflateBuffer = new byte[requiredLength];
-			inflateBufferCache = new SoftReference<byte[]>(inflateBuffer);
-		}
+		byte[] var3 = new byte[196864 * var2];
 		Inflater var4 = new Inflater();
 		var4.setInput(chunkDataNotCompressed, 0, this.dataLength);
 
-		int length = 0;
 		try {
-			length = var4.inflate(inflateBuffer);
+			var4.inflate(var3);
 		} catch (DataFormatException var12) {
 			throw new IOException("Bad compressed data format");
 		} finally {
 			var4.end();
 		}
-
-		byte[] var3 = ChunkNetCache.handle(inflateBuffer, length, this.dataLength, 16 * var2, Integer.MAX_VALUE, Integer.MAX_VALUE);
-		// Spout End
 
 		int var5 = 0;
 

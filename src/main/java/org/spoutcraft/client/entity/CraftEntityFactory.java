@@ -19,7 +19,7 @@
  */
 package org.spoutcraft.client.entity;
 
-import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityLivingBase;
 import net.minecraft.src.EntityPlayerSP;
 
 import org.spoutcraft.client.player.ClientPlayer;
@@ -29,8 +29,8 @@ public class CraftEntityFactory {
 		if (aThis instanceof EntityPlayerSP) {
 			return ClientPlayer.getInstance();
 		}
-		if (aThis instanceof EntityLiving) {
-			return new CraftLivingEntity((EntityLiving)aThis);
+		if (aThis instanceof EntityLivingBase) {
+			return new CraftLivingEntity((EntityLivingBase)aThis);
 		}
 		return null; // Should not break, got most of the important stuff
 	}

@@ -42,9 +42,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 	protected int flyToggleTimer;	
 	public float prevCameraYaw;
 	public float cameraYaw;
-	// Spout Start
-	public String username;
-	public String displayName;
+	// Spout Start	
 	public String playerCloakUrl;
 	// Spout End
 
@@ -132,7 +130,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 		super(par1World);
 		this.username = par2Str;
 		// Spout Start
-		this.displayName = par2Str;
+		//super.setUserName(par2Str);
 		// Spout End
 		this.inventoryContainer = new ContainerPlayer(this.inventory, !par1World.isRemote, this);
 		this.openContainer = this.inventoryContainer;
@@ -1898,14 +1896,5 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 
 	public float getAbsorptionAmount() {
 		return this.getDataWatcher().getWatchableObjectFloat(17);
-	}
-
-	// Spout Start
-	public String getDisplayName() {		
-		return this.displayName;
-	}
-
-	public void setDisplayName(String var1) {		
-		this.displayName = var1;
-	}
+	}	
 }

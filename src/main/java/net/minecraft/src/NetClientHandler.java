@@ -458,14 +458,7 @@ public class NetClientHandler extends NetHandler {
 		}
 	}
 
-	// Spout Start
-	private boolean cachePacketSent = false;
-	// Spout End
-
 	public void handleFlying(Packet10Flying par1Packet10Flying) {
-		// Spout Start
-		sendCacheSetupPacket();
-		// Spout End
 		EntityClientPlayerMP var2 = this.mc.thePlayer;
 		double var3 = var2.posX;
 		double var5 = var2.posY;
@@ -751,26 +744,11 @@ public class NetClientHandler extends NetHandler {
 		this.mc.theWorld.setWorldTime(par1Packet4UpdateTime.time);
 	}
 
-	public void handleSpawnPosition(Packet6SpawnPosition par1Packet6SpawnPosition) {
-		// Spout Start
-		sendCacheSetupPacket();
-		// Spout End
+	public void handleSpawnPosition(Packet6SpawnPosition par1Packet6SpawnPosition) {		
 		this.mc.thePlayer.setSpawnChunk(new ChunkCoordinates(par1Packet6SpawnPosition.xPosition, par1Packet6SpawnPosition.yPosition, par1Packet6SpawnPosition.zPosition), true);
 		this.mc.theWorld.getWorldInfo().setSpawnPosition(par1Packet6SpawnPosition.xPosition, par1Packet6SpawnPosition.yPosition, par1Packet6SpawnPosition.zPosition);
 	}
-
-	// Spout Start
-	private void sendCacheSetupPacket() {
-		if (!cachePacketSent) {
-			cachePacketSent = true;
-			//this.netManager.addToSendQueue(new Packet250CustomPayload("ChkCache:setHash", new byte[1]));
-		}
-	}
-	// Spout End
-
-	/**
-	 * Packet handler
-	 */
+	
 	/**
 	 * Packet handler
 	 */

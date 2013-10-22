@@ -13,7 +13,6 @@ import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.InGameHUD;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.chunkcache.ChunkNetCache;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.ZanMinimap;
 import org.spoutcraft.client.inventory.CraftItemStack;
@@ -277,24 +276,7 @@ public class GuiIngame extends Gui {
 				}
 
 				this.drawString(font, String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround), Integer.valueOf(this.mc.theWorld.getHeightValue(var47, var23))}), 2, 104, 14737632);
-
-				// Spout Start
-				boolean cacheInUse = ChunkNetCache.cacheInUse.get();
-				int y = 115;
-				font.drawStringWithShadow("Network Info", 2, y += 11, 0xFFFFFF);
-				if (!cacheInUse) {
-					font.drawStringWithShadow("Chunk Network Cache: Inactive", 22, y += 11, 0xE0E0E0);
-				} else {
-					font.drawStringWithShadow("Chunk Network Cache: Active", 22, y += 11, 0xE0E0E0);
-					font.drawStringWithShadow("Cache hit: " + ChunkNetCache.hitPercentage.get() + "%", 22, y += 10, 0xE0E0E0);
-				}
-				font.drawStringWithShadow("Average Cube Size: " + ChunkNetCache.averageChunkSize.get() / 10.0 + " bytes", 22, y += 10, 0xE0E0E0);
-				long logTime = System.currentTimeMillis() - ChunkNetCache.loggingStart.get();
-				long kbpsUp = (80000L * ChunkNetCache.totalPacketUp.get()) / 1024 / logTime;
-				long kbpsDown = (80000L * ChunkNetCache.totalPacketDown.get()) / 1024 / logTime;
-				font.drawStringWithShadow("Upstream: " + (kbpsUp / 10.0) + "kbps (" + (ChunkNetCache.totalPacketUp.get() / 1024) + "kB)", 22, y += 11, 0xE0E0E0);
-				font.drawStringWithShadow("Downstream: " + (kbpsDown / 10.0) + "kbps (" + (ChunkNetCache.totalPacketDown.get() / 1024) + "kB)", 22, y += 11, 0xE0E0E0);
-				// Spout End
+				
 			} else {
 				font.drawStringWithShadow(Integer.toString(Minecraft.framesPerSecond), 4, 2, 0xFFE303);
 			}

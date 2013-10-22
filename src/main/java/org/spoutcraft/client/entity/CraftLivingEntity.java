@@ -141,7 +141,8 @@ public class CraftLivingEntity extends CraftEntity {
 		getEntityLiving().displayName = title;
 	}
 
-	public void resetTitle() {		
+	public void resetTitle() {
+		getEntityLiving().displayName = null;
 		if (handle instanceof EntityPlayer) {
 			getEntityLiving().displayName = ((EntityPlayer)handle).username;
 		}

@@ -8,7 +8,6 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.chunkcache.ChunkNetCache;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
 
 public class Packet51MapChunk extends Packet {
@@ -106,22 +105,14 @@ public class Packet51MapChunk extends Packet {
 		Inflater var4 = new Inflater();
 		var4.setInput(temp, 0, this.tempLength);
 
-		// Spout Start
-		int length = 0;
 		try {
-			length = var4.inflate(inflateBuffer);
+			var4.inflate(this.compressedChunkData);
 		} catch (DataFormatException var9) {
 			throw new IOException("Bad compressed data format");
 		} finally {
 			var4.end();
 		}
-		byte[] uncachedData = ChunkNetCache.handle(inflateBuffer, length, this.tempLength, this.includeInitialize ? 16 : var2, xCh, zCh);
-		if (uncachedData == null) {
-			yChMin = -1;
-			yChMax = -1;
-		} else {
-			this.compressedChunkData = uncachedData;
-		}
+
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(xCh, zCh));
 		// Spout End
 	}

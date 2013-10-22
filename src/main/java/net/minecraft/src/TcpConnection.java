@@ -20,11 +20,6 @@ import javax.crypto.SecretKey;
 
 import net.minecraft.server.MinecraftServer;
 
-import org.spoutcraft.client.chunkcache.ChunkNetCache;
-
-//Spout Start
-//Spout End
-
 public class TcpConnection implements INetworkManager {
 	public static AtomicInteger field_74471_a = new AtomicInteger();
 	public static AtomicInteger field_74469_b = new AtomicInteger();
@@ -129,10 +124,6 @@ public class TcpConnection implements INetworkManager {
 			System.err.println(var7.getMessage());
 		}
 
-		// Spout Start
-		ChunkNetCache.reset();
-		// Spout End
-
 		this.socketInputStream = new DataInputStream(par2Socket.getInputStream());
 		this.socketOutputStream = new DataOutputStream(new BufferedOutputStream(par2Socket.getOutputStream(), 5120));
 		this.readThread = new TcpReaderThread(this, par3Str + " read thread");
@@ -185,10 +176,6 @@ public class TcpConnection implements INetworkManager {
 
 				if (var2 != null) {
 					Packet.writePacket(var2, this.socketOutputStream);
-
-					// Spout Start
-					ChunkNetCache.totalPacketUp.addAndGet(var2.getPacketSize());
-					// Spout End
 
 					if (var2 instanceof Packet252SharedKey && !this.isOutputEncrypted) {
 						if (!this.theNetHandler.isServerHandler()) {
@@ -396,11 +383,7 @@ public class TcpConnection implements INetworkManager {
 
 		while (var1-- >= 0) {
 			Packet var2 = (Packet)this.readPackets.poll();
-			// Spout Start
-			if (var2 != null) {
-				ChunkNetCache.totalPacketDown.addAndGet(var2.getPacketSize());	
-			}
-			// Spout End
+
 			if (var2 != null && !this.theNetHandler.isConnectionClosed()) {
 				var2.processPacket(this.theNetHandler);
 			}
