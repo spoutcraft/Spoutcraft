@@ -7,14 +7,16 @@
 	<artifactId>spoutcraft</artifactId>
 	<version>1.6.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<url>http://www.spoutcraft.org</url>
 	<inceptionYear>2011</inceptionYear>
-	<description>Spoutcraft is a Minecraft client mod and launcher that provides users with a more customizable experience.</description>
+	<url>https://github.com/Spoutcraft/Spoutcraft</url>
+	<description>Minecraft client mod that provides a more customizable experience.</description>
 
 	<!-- Project properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<buildNumber>0</buildNumber><!-- DO NOT TOUCH! -->
+		<buildNumber>0</buildNumber>
+		<ciSystem>unknown</ciSystem>
+		<commit>unknown</commit>
 		<lwjglVersion>2.9.0</lwjglVersion>
 		<minecraftVersion>1.6.2</minecraftVersion>
 		<minecraft_Version>1_6_2</minecraft_Version>
@@ -39,21 +41,21 @@
 
 	<!-- Source code access -->
 	<scm>
-		<connection>scm:git:git://github.com/Legacy/Spoutcraft.git</connection>
-		<developerConnection>scm:git:git@github.com:Legacy/Spoutcraft.git</developerConnection>
-		<url>https://github.com/Legacy/Spoutcraft</url>
+		<connection>scm:git:git://github.com/Spoutcraft/Spoutcraft.git</connection>
+		<developerConnection>scm:git:git@github.com:Spoutcraft/Spoutcraft.git</developerConnection>
+		<url>https://github.com/Spoutcraft/Spoutcraft</url>
 	</scm>
 
 	<!-- Continuous integration -->
 	<ciManagement>
 		<system>travis</system>
-		<url>https://travis-ci.org/Legacy/Spoutcraft</url>
+		<url>https://travis-ci.org/Spoutcraft/Spoutcraft</url>
 	</ciManagement>
 
 	<!-- Issue management -->
 	<issueManagement>
-		<system>jira</system>
-		<url>http://issues.spout.org/browse/LEGACY</url>
+		<system>forums</system>
+		<url>http://spoutcraft.org/forums/</url>
 	</issueManagement>
 
 	<!-- Dependency repositories -->
@@ -691,7 +693,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.4</version>
+				<version>3.1</version>
 				<configuration>
 					<excludes>
 						<exclude>**/*</exclude>
