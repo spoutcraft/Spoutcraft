@@ -22,7 +22,6 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityLivingBase;
 import net.minecraft.src.EntityPlayer;
 

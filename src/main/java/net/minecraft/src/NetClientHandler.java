@@ -1049,7 +1049,8 @@ public class NetClientHandler extends NetHandler {
 		}
 
 		if (!var2 && this.mc.thePlayer != null) {
-			this.mc.thePlayer.sendChatToPlayer(ChatMessageComponent.createFromText("Unable to locate sign at " + par1Packet130UpdateSign.xPosition + ", " + par1Packet130UpdateSign.yPosition + ", " + par1Packet130UpdateSign.zPosition));
+			// Disable this notification until I can find cause.
+			//this.mc.thePlayer.sendChatToPlayer(ChatMessageComponent.createFromText("Unable to locate sign at " + par1Packet130UpdateSign.xPosition + ", " + par1Packet130UpdateSign.yPosition + ", " + par1Packet130UpdateSign.zPosition));
 		}
 	}
 

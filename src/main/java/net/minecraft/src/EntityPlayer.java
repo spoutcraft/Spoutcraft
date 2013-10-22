@@ -129,9 +129,6 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 	public EntityPlayer(World par1World, String par2Str) {
 		super(par1World);
 		this.username = par2Str;
-		// Spout Start
-		//super.setUserName(par2Str);
-		// Spout End
 		this.inventoryContainer = new ContainerPlayer(this.inventory, !par1World.isRemote, this);
 		this.openContainer = this.inventoryContainer;
 		this.yOffset = 1.62F;
