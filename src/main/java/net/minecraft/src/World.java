@@ -171,7 +171,11 @@ public abstract class World implements IBlockAccess {
 
 	public World(ISaveHandler par1ISaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler par5Profiler, ILogAgent par6ILogAgent) {
 		this.ambientTickCountdown = this.rand.nextInt(12000);
-		this.lightUpdateBlockList = new int[32768];		
+		if (Configuration.optimizedLightingUpdates) {
+			this.lightUpdateBlockList = new int[256];
+		} else {
+			this.lightUpdateBlockList = new int[32768];
+		}		
 		this.saveHandler = par1ISaveHandler;
 		this.theProfiler = par5Profiler;
 		this.worldInfo = new WorldInfo(par4WorldSettings, par2Str);
@@ -196,7 +200,11 @@ public abstract class World implements IBlockAccess {
 
 	public World(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler par5Profiler, ILogAgent par6ILogAgent) {
 		this.ambientTickCountdown = this.rand.nextInt(12000);
-		this.lightUpdateBlockList = new int[32768];		
+		if (Configuration.optimizedLightingUpdates) {
+			this.lightUpdateBlockList = new int[256];
+		} else {
+			this.lightUpdateBlockList = new int[32768];
+		}	
 		this.saveHandler = par1ISaveHandler;
 		this.theProfiler = par5Profiler;
 		this.mapStorage = new MapStorage(par1ISaveHandler);

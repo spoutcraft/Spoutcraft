@@ -95,6 +95,7 @@ public class Configuration {
 	private static boolean serverTexturePromptsEnabled = true;
 	public static boolean showHotbarText = true;
 	public static int aaSampling = 0;
+	public static boolean optimizedLightingUpdates = true;
 
 	// Config specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
@@ -750,10 +751,19 @@ public class Configuration {
 	
 	public static synchronized boolean isShowingHotbarText() {
 		return showHotbarText;
-	}
+	}	
 	
 	public static synchronized void setShowingHotbarText(boolean showingHotbarText) {
 		Configuration.showHotbarText = showingHotbarText;
+		onPropertyChange();
+	}
+	
+	public static synchronized boolean isOptimizedLightingUpdates() {
+		return optimizedLightingUpdates;
+	}
+	
+	public static synchronized void setOptimizedLightingUpdates(boolean optimizedLightingUpdates) {
+		Configuration.optimizedLightingUpdates = optimizedLightingUpdates;
 		onPropertyChange();
 	}
 }
