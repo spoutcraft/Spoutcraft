@@ -374,7 +374,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		top += 22;
 
 		control = new OptimizedLightingUpdatesButton().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		control.setWidth(150).setHeight(20).setX(center).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
