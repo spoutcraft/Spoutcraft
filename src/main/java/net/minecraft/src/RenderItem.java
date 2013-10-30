@@ -290,12 +290,13 @@ public class RenderItem extends Render {
 			for (int var20 = 0; var20 < var27; ++var20) {
 				GL11.glTranslatef(0.0F, 0.0F, var16 + var17);
 
-				//ToDo: this may need to be removed.
+				//Don't need this
+				/*
 				if (var18.getItemSpriteNumber() == 0 && Block.blocksList[var18.itemID] != null) {
 					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
 				} else {
 					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/items.png"));
-				}
+				}*/
 
 				GL11.glColor4f(par5, par6, par7, 1.0F);
 				ItemRenderer.renderItemIn2D(var8, var26, var11, var25, var12, ((Icon)par2Icon).getIconWidth(), ((Icon)par2Icon).getIconHeight(), var16);				
