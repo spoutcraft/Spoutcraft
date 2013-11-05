@@ -44,6 +44,8 @@ public class SpoutItem extends Item {
 		if (customItem instanceof Food) {
 			if (player.canEat(false)) {
 				player.setItemInUse(item, 32);
+			} else {
+				player.setEating(true);
 			}
 		}
 		return item;

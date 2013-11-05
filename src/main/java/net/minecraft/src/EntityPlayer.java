@@ -5,13 +5,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.newdawn.slick.opengl.Texture;
+
+import net.minecraft.src.ItemStack;
+
+
 //Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.block.design.BlockDesign;
+import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
+import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.special.Resources;
@@ -102,7 +110,8 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 	/**
 	 * This is the item that is in use when the player is holding down the useItemButton (e.g., bow, food, sword)
 	 */
-	private ItemStack itemInUse;
+	// Spout Start Private > Public
+	public ItemStack itemInUse;
 
 	/**
 	 * This field starts off equal to getMaxItemUseDuration and is decremented on each tick
@@ -337,7 +346,27 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 				var5.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 				var5.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
 				var5 = var5.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
-				this.worldObj.spawnParticle("iconcrack_" + par1ItemStack.getItem().itemID, var5.xCoord, var5.yCoord, var5.zCoord, var4.xCoord, var4.yCoord + 0.05D, var4.zCoord);
+				// Spout Start
+				if (par1ItemStack.itemID == 318) {
+					BlockDesign design = null;
+					Texture texture = null;
+					org.spoutcraft.api.material.CustomItem item = MaterialData.getCustomItem(par1ItemStack.getItemDamage());
+					if (item != null) {
+						String textureURI = item.getTexture();
+						if (textureURI == null) {
+							org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(par1ItemStack.getItemDamage());
+							design = block != null ? block.getBlockDesign() : null;
+							textureURI = design != null ? design.getTextureURL() : null;
+						}
+						if (textureURI != null) {
+							texture = CustomTextureManager.getTextureFromUrl(item.getAddon(), textureURI);
+						}
+					}
+					this.worldObj.spawnParticle("iconcrack_" + par1ItemStack.getItem().itemID, var5.xCoord, var5.yCoord, var5.zCoord, var4.xCoord, var4.yCoord + 0.05D, var4.zCoord, texture);
+				} else {
+					this.worldObj.spawnParticle("iconcrack_" + par1ItemStack.getItem().itemID, var5.xCoord, var5.yCoord, var5.zCoord, var4.xCoord, var4.yCoord + 0.05D, var4.zCoord);
+				}
+				// Spout End
 			}
 
 			this.playSound("random.eat", 0.5F + 0.5F * (float)this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);

@@ -251,7 +251,7 @@ public class WorldRenderer {
 										}
 
 										if (design != null) {
-											customTexture = design.getTexureURL();
+											customTexture = design.getTextureURL();
 											customTextureAddon = design.getTextureAddon();
 										}
 

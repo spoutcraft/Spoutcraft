@@ -57,7 +57,7 @@ public class MipMapUtils {
 
 			for (CustomBlock block : MaterialData.getCustomBlocks()) {
 				if (block.getBlockDesign() != null) {
-					String texture = block.getBlockDesign().getTexureURL();
+					String texture = block.getBlockDesign().getTextureURL();
 					String textureAddon = block.getBlockDesign().getTextureAddon();
 					if (texture != null && textureAddon != null) {
 						Texture tex = CustomTextureManager.getTextureFromUrl(textureAddon, texture);
@@ -118,7 +118,7 @@ public class MipMapUtils {
 
 		for (CustomBlock block : MaterialData.getCustomBlocks()) {
 			if (block.getBlockDesign() != null) {
-				String texture = block.getBlockDesign().getTexureURL();
+				String texture = block.getBlockDesign().getTextureURL();
 				String textureAddon = block.getBlockDesign().getTextureAddon();
 				if (texture != null && textureAddon != null) {
 					Texture tex = CustomTextureManager.getTextureFromUrl(textureAddon, texture);
@@ -161,7 +161,7 @@ public class MipMapUtils {
 			if (targetFade != currentFade) {
 				for (CustomBlock block : MaterialData.getCustomBlocks()) {
 					if (block.getBlockDesign() != null) {
-						String texture = block.getBlockDesign().getTexureURL();
+						String texture = block.getBlockDesign().getTextureURL();
 						String textureAddon = block.getBlockDesign().getTextureAddon();
 						if (texture != null && textureAddon != null) {
 							Texture tex = CustomTextureManager.getTextureFromUrl(textureAddon, texture);

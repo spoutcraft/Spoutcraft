@@ -31,8 +31,18 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 import net.minecraft.src.Minecraft;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.World;
 
+import org.spoutcraft.api.block.design.BlockDesign;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.CustomItem;
+import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.gui.minimap.ZanMinimap;
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class CustomTextureManager {
 	static HashMap<String, Texture> textures = new HashMap<String, Texture>();
@@ -199,5 +209,47 @@ public class CustomTextureManager {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	// Don't call this method, for future use.
+	protected Texture getTextureFromCoords(World world, int x, int y, int z) {
+		short customId = 0;
+		Texture texture = null;
+		if (SpoutClient.getInstance().getRawWorld() != null) {
+			SpoutcraftChunk sChunk = Spoutcraft.getChunkAt(SpoutClient.getInstance().getRawWorld(), x, y, z);
+			customId = sChunk.getCustomBlockId(x, y, z);	
+			short[] customBlockIds = sChunk.getCustomBlockIds();
+			byte[] customBlockData = sChunk.getCustomBlockData();			
+
+			if (customId > 0) {
+				CustomBlock block = MaterialData.getCustomBlock(customId);
+				if (block != null) {
+					BlockDesign design = block.getBlockDesign(customBlockData[customId]);
+					if (design != null) {
+						texture = getTextureFromUrl(block.getAddon(), design.getTextureURL());					
+					}
+				}
+			}
+		}
+		return texture;
+	}
+
+	// Don't call this method, for future use.
+	protected Texture getTextureFromItemStack(ItemStack itemStack) {
+		BlockDesign design = null;
+		Texture texture = null;
+		org.spoutcraft.api.material.CustomItem item = MaterialData.getCustomItem(itemStack.getItemDamage());
+		if (item != null) {
+			String textureURI = item.getTexture();
+			if (textureURI == null) {
+				org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(itemStack.getItemDamage());
+				design = block != null ? block.getBlockDesign() : null;
+				textureURI = design != null ? design.getTextureURL() : null;
+			}
+			if (textureURI != null) {
+				texture = CustomTextureManager.getTextureFromUrl(item.getAddon(), textureURI);				
+			}			
+		}
+		return texture;
 	}
 }

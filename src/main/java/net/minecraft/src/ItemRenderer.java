@@ -52,7 +52,6 @@ public class ItemRenderer {
 	public void renderItem(EntityLivingBase par1EntityLivingBase, ItemStack par2ItemStack, int par3) {
 		GL11.glPushMatrix();
 		TextureManager var99 = this.mc.getTextureManager();
-		//ToDo: var99 may need additional updates.
 		// Spout Start
 		Block var4block = Block.blocksList[par2ItemStack.itemID];
 		boolean custom = false;
@@ -64,7 +63,7 @@ public class ItemRenderer {
 				if (textureURI == null) {
 					org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(par2ItemStack.getItemDamage());
 					design = block != null ? block.getBlockDesign() : null;
-					textureURI = design != null ? design.getTexureURL() : null;
+					textureURI = design != null ? design.getTextureURL() : null;
 				}
 				if (textureURI != null) {
 					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon(), textureURI);

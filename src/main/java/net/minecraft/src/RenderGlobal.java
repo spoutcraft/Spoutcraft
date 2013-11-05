@@ -13,6 +13,8 @@ import java.util.Random;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 
+import org.newdawn.slick.opengl.Texture;
+
 import com.prupe.mcpatcher.cc.ColorizeWorld;
 import com.prupe.mcpatcher.ctm.RenderPass;
 import com.prupe.mcpatcher.sky.SkyRenderer;
@@ -1757,13 +1759,17 @@ public class RenderGlobal implements IWorldAccess {
 	 * Spawns a particle. Arg: particleType, x, y, z, velX, velY, velZ
 	 */
 	public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {
+		spawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
+	}
+	
+	public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12, Texture texture) {
 		// Spout Start
 		if (mc == null || theWorld == null || mc.renderViewEntity == null) {
 			return;
 		}
 		// Spout End
 		try {
-			this.doSpawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
+			this.doSpawnParticle(par1Str, par2, par4, par6, par8, par10, par12, texture);
 		} catch (Throwable var17) {
 			CrashReport var15 = CrashReport.makeCrashReport(var17, "Exception while adding particle");
 			CrashReportCategory var16 = var15.makeCategory("Particle being added");
@@ -1773,13 +1779,19 @@ public class RenderGlobal implements IWorldAccess {
 		}
 	}
 
+	// Spout Start
+	public EntityFX doSpawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {
+		return doSpawnParticle(par1Str, par2, par4, par6, par8, par10, par12, null);
+	}
+	// Spout End
+	
 	/**
 	 * Spawns a particle. Arg: particleType, x, y, z, velX, velY, velZ
 	 */
-	public EntityFX doSpawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {
+	// Spout Start > Modified Particle Spawner
+	public EntityFX doSpawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12, Texture texture) {
 		if (this.mc != null && this.mc.renderViewEntity != null && this.mc.effectRenderer != null) {
 			int var14 = this.mc.gameSettings.particleSetting;
-
 			if (var14 == 1 && this.theWorld.rand.nextInt(3) == 0) {
 				var14 = 2;
 			}
@@ -1897,18 +1909,17 @@ public class RenderGlobal implements IWorldAccess {
 						if (par1Str.startsWith("iconcrack_")) {
 							var27 = par1Str.split("_", 3);
 							var25 = Integer.parseInt(var27[1]);
-
 							if (var27.length > 2) {
 								var26 = Integer.parseInt(var27[2]);
-								var21 = new EntityBreakingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Item.itemsList[var25], var26);
+								var21 = new EntityBreakingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Item.itemsList[var25], var26, texture);
 							} else {
-								var21 = new EntityBreakingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Item.itemsList[var25], 0);
+								var21 = new EntityBreakingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Item.itemsList[var25], 0, texture);
 							}
 						} else if (par1Str.startsWith("tilecrack_")) {
 							var27 = par1Str.split("_", 3);
 							var25 = Integer.parseInt(var27[1]);
 							var26 = Integer.parseInt(var27[2]);
-							var21 = (new EntityDiggingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Block.blocksList[var25], var26)).applyRenderColor(var26);
+							var21 = (new EntityDiggingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Block.blocksList[var25], var26, texture)).applyRenderColor(var26);
 						}
 					}
 
@@ -2139,7 +2150,6 @@ public class RenderGlobal implements IWorldAccess {
 					Block var40 = Block.blocksList[var20];
 					this.mc.sndManager.playSound(var40.stepSound.getBreakSound(), (float)par3 + 0.5F, (float)par4 + 0.5F, (float)par5 + 0.5F, (var40.stepSound.getVolume() + 1.0F) / 2.0F, var40.stepSound.getPitch() * 0.8F);
 				}
-
 				this.mc.effectRenderer.addBlockDestroyEffects(par3, par4, par5, par6 & 4095, par6 >> 12 & 255);
 				break;
 

@@ -89,7 +89,7 @@ public class RenderItem extends Render {
 					if (textureURI == null) {
 						org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
 						design = block != null ? block.getBlockDesign() : null;
-						textureURI = design != null ? design.getTexureURL() : null;
+						textureURI = design != null ? design.getTextureURL() : null;
 					}
 					if (textureURI != null) {
 						Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon(), textureURI);
@@ -383,7 +383,7 @@ public class RenderItem extends Render {
 				if (textureURI == null) {
 					org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var7);
 					design = block != null ? block.getBlockDesign() : null;
-					textureURI = design != null ? design.getTexureURL() : null;
+					textureURI = design != null ? design.getTextureURL() : null;
 				}
 				if (textureURI != null) {
 					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon(), textureURI);

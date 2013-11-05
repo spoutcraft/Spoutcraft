@@ -8,6 +8,19 @@ import org.lwjgl.opengl.GL11;
 
 import com.prupe.mcpatcher.sky.FireworksHelper;
 
+import org.newdawn.slick.opengl.Texture;
+
+//Spout Start
+import org.spoutcraft.api.block.design.BlockDesign;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.block.SpoutcraftChunk;
+import org.spoutcraft.client.config.Configuration;
+//Spout End
+
 public class EffectRenderer {
 	private static final ResourceLocation particleTextures = new ResourceLocation("textures/particle/particles.png");
 	/** Reference to the World object. */
@@ -71,17 +84,17 @@ public class EffectRenderer {
 		for (int var8 = 0; var8 < 5; ++var8) {
 			if (!FireworksHelper.skipThisLayer(this.fxLayers[var8].isEmpty(), var8)) {
 				switch (var8) {
-					case 0:
-					default:
-						this.renderer.bindTexture(particleTextures);
-						break;
+				case 0:
+				default:
+					this.renderer.bindTexture(particleTextures);
+					break;
 
-					case 1:
-						this.renderer.bindTexture(TextureMap.locationBlocksTexture);
-						break;
+				case 1:
+					this.renderer.bindTexture(TextureMap.locationBlocksTexture);
+					break;
 
-					case 2:
-						this.renderer.bindTexture(TextureMap.locationItemsTexture);
+				case 2:
+					this.renderer.bindTexture(TextureMap.locationItemsTexture);
 				}
 
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -138,6 +151,29 @@ public class EffectRenderer {
 	public void addBlockDestroyEffects(int par1, int par2, int par3, int par4, int par5) {
 		if (par4 != 0) {
 			Block var6 = Block.blocksList[par4];
+			// Spout Start
+			Texture texture = null;			
+			short customId = 0;
+			if (SpoutClient.getInstance().getRawWorld() != null) {
+				SpoutcraftChunk sChunk = Spoutcraft.getChunkAt(SpoutClient.getInstance().getRawWorld(), par1, par2, par3);
+				customId = sChunk.getCustomBlockId(par1, par2, par3);
+				short[] customBlockIds = sChunk.getCustomBlockIds();
+				byte[] customBlockData = sChunk.getCustomBlockData();
+				if (customId > 0) {
+					if (Configuration.displayCustomParticles) {
+						CustomBlock block = MaterialData.getCustomBlock(customId);
+						if (block != null) {
+							BlockDesign design = block.getBlockDesign(customBlockData[customId]);
+							if (design != null) {
+								texture = CustomTextureManager.getTextureFromUrl(block.getAddon(), design.getTextureURL());
+							}
+						}
+					} else {
+						return;
+					}
+				}
+			}
+			// Spout End
 			byte var7 = 4;
 
 			for (int var8 = 0; var8 < var7; ++var8) {
@@ -146,7 +182,7 @@ public class EffectRenderer {
 						double var11 = (double)par1 + ((double)var8 + 0.5D) / (double)var7;
 						double var13 = (double)par2 + ((double)var9 + 0.5D) / (double)var7;
 						double var15 = (double)par3 + ((double)var10 + 0.5D) / (double)var7;
-						this.addEffect((new EntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)par1 - 0.5D, var13 - (double)par2 - 0.5D, var15 - (double)par3 - 0.5D, var6, par5)).applyColourMultiplier(par1, par2, par3));
+						this.addEffect((new EntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)par1 - 0.5D, var13 - (double)par2 - 0.5D, var15 - (double)par3 - 0.5D, var6, par5, texture)).applyColourMultiplier(par1, par2, par3));
 					}
 				}
 			}
@@ -161,6 +197,34 @@ public class EffectRenderer {
 
 		if (var5 != 0) {
 			Block var6 = Block.blocksList[var5];
+
+			// Spout Start
+			Texture texture = null;
+
+			short customId = 0;
+			if (SpoutClient.getInstance().getRawWorld() != null) {
+				SpoutcraftChunk sChunk = Spoutcraft.getChunkAt(SpoutClient.getInstance().getRawWorld(), par1, par2, par3);
+				customId = sChunk.getCustomBlockId(par1, par2, par3);
+				short[] customBlockIds = sChunk.getCustomBlockIds();
+				byte[] customBlockData = sChunk.getCustomBlockData();
+
+				if (customId > 0) {
+					if (Configuration.displayCustomParticles) {
+						CustomBlock block = MaterialData.getCustomBlock(customId);
+						if (block != null) {
+							BlockDesign design = block.getBlockDesign(customBlockData[customId]);
+							if (design != null) {
+								texture = CustomTextureManager.getTextureFromUrl(block.getAddon(), design.getTextureURL());
+							}
+						}
+					} else {
+						return;
+					}
+				}
+
+			}
+			// Spout End
+
 			float var7 = 0.1F;
 			double var8 = (double)par1 + this.rand.nextDouble() * (var6.getBlockBoundsMaxX() - var6.getBlockBoundsMinX() - (double)(var7 * 2.0F)) + (double)var7 + var6.getBlockBoundsMinX();
 			double var10 = (double)par2 + this.rand.nextDouble() * (var6.getBlockBoundsMaxY() - var6.getBlockBoundsMinY() - (double)(var7 * 2.0F)) + (double)var7 + var6.getBlockBoundsMinY();
@@ -190,7 +254,7 @@ public class EffectRenderer {
 				var8 = (double)par1 + var6.getBlockBoundsMaxX() + (double)var7;
 			}
 
-			this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, this.worldObj.getBlockMetadata(par1, par2, par3))).applyColourMultiplier(par1, par2, par3).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
+			this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, this.worldObj.getBlockMetadata(par1, par2, par3), texture)).applyColourMultiplier(par1, par2, par3).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
 		}
 	}
 

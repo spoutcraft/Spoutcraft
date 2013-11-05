@@ -177,7 +177,7 @@ public interface BlockDesign {
 	 * Gets the texture URL associated with this block
 	 * @return texture URL
 	 */
-	public String getTexureURL();
+	public String getTextureURL();
 
 	/**
 	 * Gets the name of the addon associated with this blocks texture

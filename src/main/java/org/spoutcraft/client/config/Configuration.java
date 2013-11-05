@@ -95,7 +95,8 @@ public class Configuration {
 	private static boolean serverTexturePromptsEnabled = true;
 	public static boolean showHotbarText = true;
 	public static int aaSampling = 0;
-	public static boolean optimizedLightingUpdates = true;
+	public static boolean optimizedLightingUpdates = false;
+	public static boolean displayCustomParticles = false;
 
 	// Config specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
@@ -764,6 +765,15 @@ public class Configuration {
 	
 	public static synchronized void setOptimizedLightingUpdates(boolean optimizedLightingUpdates) {
 		Configuration.optimizedLightingUpdates = optimizedLightingUpdates;
+		onPropertyChange();
+	}
+	
+	public static synchronized boolean isDisplayCustomParticles() {
+		return displayCustomParticles;
+	}
+	
+	public static synchronized void setDisplayCustomParticles(boolean displayCustomParticles) {
+		Configuration.displayCustomParticles = displayCustomParticles;
 		onPropertyChange();
 	}
 }

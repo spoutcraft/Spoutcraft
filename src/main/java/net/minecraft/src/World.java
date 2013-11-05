@@ -14,6 +14,8 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import com.prupe.mcpatcher.cc.ColorizeWorld;
 import com.prupe.mcpatcher.cc.Colorizer;
 
+import org.newdawn.slick.opengl.Texture;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.NBTTagCompound;
 
@@ -1170,11 +1172,18 @@ public abstract class World implements IBlockAccess {
 	 * Spawns a particle.  Args particleName, x, y, z, velX, velY, velZ
 	 */
 	public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {
+		spawnParticle(par1Str, par2, par4, par6, par8, par10, par12, null);
+	}
+	
+	// Spout Start
+	// Custom Particle Methods
+	public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12, Texture texture) {
 		for (int var14 = 0; var14 < this.worldAccesses.size(); ++var14) {
-			((IWorldAccess)this.worldAccesses.get(var14)).spawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
+			((IWorldAccess)this.worldAccesses.get(var14)).spawnParticle(par1Str, par2, par4, par6, par8, par10, par12, texture);
 		}
 	}
-
+	// Spout End
+	
 	/**
 	 * adds a lightning bolt to the list of lightning bolts in this world.
 	 */

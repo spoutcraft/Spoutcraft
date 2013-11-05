@@ -59,6 +59,7 @@ import org.spoutcraft.client.gui.settings.controls.ConnectedTexturesButton;
 import org.spoutcraft.client.gui.settings.controls.ControlsButton;
 import org.spoutcraft.client.gui.settings.controls.DelayedTooltipCheckbox;
 import org.spoutcraft.client.gui.settings.controls.DifficultyButton;
+import org.spoutcraft.client.gui.settings.controls.DisplayCustomParticlesButton;
 import org.spoutcraft.client.gui.settings.controls.FancyCloudsButton;
 import org.spoutcraft.client.gui.settings.controls.FancyFogButton;
 import org.spoutcraft.client.gui.settings.controls.FancyGraphicsButton;
@@ -374,7 +375,11 @@ public class GuiAdvancedOptions extends GuiScreen {
 		top += 22;
 
 		control = new OptimizedLightingUpdatesButton().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(center).setY(top);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		
+		control = new DisplayCustomParticlesButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;

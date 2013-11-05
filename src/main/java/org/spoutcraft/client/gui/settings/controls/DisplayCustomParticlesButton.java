@@ -23,16 +23,16 @@ import net.minecraft.src.Minecraft;
 
 import org.spoutcraft.client.config.Configuration;
 
-public class OptimizedLightingUpdatesButton extends AutomatedCheckBox {
-	public OptimizedLightingUpdatesButton() {
-		super("Reduced CPU Lighting");
-		setChecked(Configuration.isOptimizedLightingUpdates());
-		setTooltip("Reduces the amount of lighting updates per tick.\nTurn on to improve FPS.\nThis Setting Requires Restart!");
+public class DisplayCustomParticlesButton extends AutomatedCheckBox {
+	public DisplayCustomParticlesButton() {
+		super("Display Custom Particles");
+		setChecked(Configuration.isDisplayCustomParticles());
+		setTooltip("Displays the particles when breaking custom blocks or items!\nNot working 100% correctly yet...");
 	}
 
 	@Override
 	public void onButtonClick() {
-		Configuration.setOptimizedLightingUpdates(!Configuration.isOptimizedLightingUpdates());
+		Configuration.setDisplayCustomParticles(!Configuration.isDisplayCustomParticles());
 		Configuration.write();		
 	}
 }

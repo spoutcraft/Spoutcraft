@@ -285,7 +285,7 @@ public class GenericBlockDesign implements BlockDesign {
 		return this;
 	}
 
-	public String getTexureURL() {
+	public String getTextureURL() {
 		return textureURL;
 	}
 
