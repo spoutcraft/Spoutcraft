@@ -28,6 +28,7 @@ import org.spoutcraft.api.gui.ListWidgetItem;
 public class ServerModel extends AbstractListModel {
 	protected List<ServerItem> items = new ArrayList<ServerItem>();
 	protected GuiFavorites gui;
+	protected GuiStaticServerList servergui;
 	private boolean polling = false;
 
 	@Override
@@ -44,7 +45,12 @@ public class ServerModel extends AbstractListModel {
 	}
 
 	public void onSelected(int item, boolean doubleClick) {
-		gui.updateButtons();
+		if (gui != null) {
+			gui.updateButtons();
+		}
+		if (servergui != null) {
+			servergui.updateButtons();
+		}
 	}
 
 	public synchronized boolean isPolling() {
@@ -56,6 +62,10 @@ public class ServerModel extends AbstractListModel {
 		if (gui != null) {
 			gui.updateButtons();
 		}
+		
+		if (servergui != null) {
+			servergui.updateButtons();
+		}
 	}
 
 	public void setCurrentGUI(GuiFavorites gui) {
@@ -64,5 +74,13 @@ public class ServerModel extends AbstractListModel {
 
 	public GuiFavorites getCurrentGui() {
 		return gui;
+	}
+	
+	public void setStaticServerGUI(GuiStaticServerList gui) {
+		this.servergui = gui;
+	}
+
+	public GuiStaticServerList getStaticServerGui() {
+		return servergui;
 	}
 }

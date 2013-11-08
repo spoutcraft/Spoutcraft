@@ -35,6 +35,7 @@ public class DownloadAssets {
 	public static void getHttpAssets() {
 		// Get web services assets
 		downloadFile(FileUtil.getConfigDir(), "vip.yml", "http://get.spout.org/vip.yml", true);
+		downloadFile(FileUtil.getConfigDir(), "servers.yml", "http://www.inspirenxe.com/spoutcraft/serverlist/servers.yml", true);
 		downloadFile(FileUtil.getConfigDir(), "special.yml", "http://get.spout.org/special.yml", false);
 		downloadFile(FileUtil.getConfigDir(), "splashes.txt", "http://cdn.spout.org/splashes.txt", false);
 	}
@@ -145,7 +146,7 @@ public class DownloadAssets {
 					temp.delete();
 				}
 
-				getFile.delete();
+				boolean deletedFile = getFile.delete();
 
 				FileUtils.copyInputStreamToFile(urlConnect.getInputStream(), temp);
 				FileUtils.moveFile(temp, getFile);

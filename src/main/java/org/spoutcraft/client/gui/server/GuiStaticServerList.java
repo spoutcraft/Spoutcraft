@@ -21,6 +21,8 @@ package org.spoutcraft.client.gui.server;
 
 import net.minecraft.src.GuiScreen;
 
+import org.lwjgl.Sys;
+
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericButton;
@@ -31,25 +33,25 @@ import org.spoutcraft.api.gui.TextField;
 import org.spoutcraft.api.gui.GenericListView;
 import org.spoutcraft.client.SpoutClient;
 
-public class GuiFavorites extends GuiScreen {
+public class GuiStaticServerList extends GuiScreen {
 	private GuiScreen parent;
 
 	// GUI stuff
-	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit, buttonMainMenu, buttonServerList, buttonQuickJoin, buttonMoveUp, buttonMoveDown, buttonRefresh;
+	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit, buttonMainMenu, buttonFavoritesList, buttonQuickJoin, buttonMoveUp, buttonMoveDown, buttonRefresh,buttonAddServer;;
 	private GenericLabel labelTitle;
 	private TextField textQuickJoin;
-	private GenericListView view;
-	public ServerModel model = SpoutClient.getInstance().getServerManager().getFavorites();
+	private GenericListView view;	
+	public ServerModel model = SpoutClient.getInstance().getServerManager().getStaticServerList();	
 	private long pollTime = 0L;
 
-	public GuiFavorites(GuiScreen parent) {
+	public GuiStaticServerList(GuiScreen parent) {
 		this.parent = parent;
-		model.setCurrentGUI(this);
+		model.setStaticServerGUI(this);
 	}
 
 	@Override
 	public void initGui() {
-		labelTitle = new GenericLabel("Favorite Servers");
+		labelTitle = new GenericLabel("Spoutcraft Servers");
 		labelTitle.setY(12).setX(width / 2 - mc.fontRenderer.getStringWidth(labelTitle.getText()) / 2);
 		labelTitle.setHeight(15).setWidth(mc.fontRenderer.getStringWidth(labelTitle.getText()) / 2);
 		getScreen().attachWidget("Spoutcraft", labelTitle);
@@ -103,31 +105,21 @@ public class GuiFavorites extends GuiScreen {
 		buttonJoin.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget("Spoutcraft", buttonJoin);
 
-		buttonAdd = new GenericButton("Add Favorite");
-		buttonAdd.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget("Spoutcraft", buttonAdd);
-
-		buttonEdit = new GenericButton("Edit");
-		buttonEdit.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget("Spoutcraft", buttonEdit);
-
 		top += 25;
-
-		buttonDelete = new DeleteFavoriteButton(this);
-		buttonDelete.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget("Spoutcraft", buttonDelete);
-
-		buttonServerList = new GenericButton("Public Servers");
-		buttonServerList.setX(center).setY(top).setWidth(cellWidth)
+		buttonAddServer = new GenericButton("Add Your Server");
+		buttonAddServer.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget("Spoutcraft", buttonAddServer);
+		
+		buttonFavoritesList = new GenericButton("Favorites");
+		buttonFavoritesList.setX(center).setY(top).setWidth(cellWidth)
 				.setHeight(20);
-		getScreen().attachWidget("Spoutcraft", buttonServerList);
+		getScreen().attachWidget("Spoutcraft", buttonFavoritesList);
 
 		buttonMainMenu = new GenericButton("Main Menu");
 		buttonMainMenu.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget("Spoutcraft", buttonMainMenu);
 		refresh();
 		updateButtons();
-		SpoutClient.getInstance().getServerManager().staticServers.load();
 	}
 
 	private class QuickJoin extends GenericTextField {
@@ -153,32 +145,16 @@ public class GuiFavorites extends GuiScreen {
 		if (btn.equals(buttonMainMenu)) {
 			SpoutClient.getHandle().displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 		}
-		if (btn.equals(buttonServerList)) {
-			//SpoutClient.getHandle().displayGuiScreen(new GuiServerList());
-			SpoutClient.getHandle().displayGuiScreen(new GuiStaticServerList(this));  //Use static version until WebAPI is updated.
+		if (btn.equals(buttonAddServer)) {
+			Sys.openURL("http://spoutcraft.org/resources/categories/servers.7/");
+		}		
+		if (btn.equals(buttonFavoritesList)) {
+			SpoutClient.getHandle().displayGuiScreen(new GuiFavorites(this));
 		}
 		if (btn.equals(buttonQuickJoin)) {
 			doQuickJoin();
 		}
-		if (btn.equals(buttonAdd)) {
-			String address = "";
-			if (model instanceof FavoritesModel) {
-				address = textQuickJoin.getText();
-			} else if (model instanceof LANModel) {
-				ServerItem item = (ServerItem) view.getSelectedItem();
-				address = item.ip + ":" + item.port;
-			}
-			SpoutClient.getHandle().displayGuiScreen(new GuiAddFavorite(address, this));
-		}
-		if (btn.equals(buttonEdit)) {
-			ServerItem item = (ServerItem) view.getSelectedItem();
-			// Produces a "hang" why ever :(
-			if (item != null) {
-				SpoutClient.getHandle().displayGuiScreen(new GuiAddFavorite(item, this));
-			} else {
-				updateButtons();
-			}
-		}
+		
 		if (btn.equals(buttonJoin)) {
 			ServerItem item = null;
 			if (view.getSelectedRow() > -1) {
@@ -191,22 +167,22 @@ public class GuiFavorites extends GuiScreen {
 				updateButtons();
 			}
 		}
-		FavoritesModel fav = null;
-		if (model instanceof FavoritesModel) {
-			fav = (FavoritesModel) model;
+		StaticServerModel sslist = null;
+		if (model instanceof StaticServerModel) {
+			sslist = (StaticServerModel) model;
 		}
-		if (btn.equals(buttonMoveUp) && fav != null) {
+		if (btn.equals(buttonMoveUp) && sslist != null) {
 			if (view.getSelectedRow() != -1) {
-				fav.move(view.getSelectedRow(), view.getSelectedRow() - 1);
+				sslist.move(view.getSelectedRow(), view.getSelectedRow() - 1);
 				view.shiftSelection(-1);
-				fav.save();
+				sslist.save();
 			}
 		}
-		if (btn.equals(buttonMoveDown) && fav != null) {
+		if (btn.equals(buttonMoveDown) && sslist != null) {
 			if (view.getSelectedRow() != -1) {
-				fav.move(view.getSelectedRow(), view.getSelectedRow() + 1);
+				sslist.move(view.getSelectedRow(), view.getSelectedRow() + 1);
 				view.shiftSelection(1);
-				fav.save();
+				sslist.save();
 			}
 		}
 		if (btn.equals(buttonRefresh)) {
@@ -219,14 +195,6 @@ public class GuiFavorites extends GuiScreen {
 		for (int i = 0; i < model.getSize(); i++) {
 			ServerItem item = (ServerItem) model.getItem(i);
 			item.poll();
-		}
-	}
-
-	public void deleteCurrentFavorite() {
-		if (model instanceof FavoritesModel) {
-			FavoritesModel fav = (FavoritesModel) model;
-			fav.removeServer((ServerItem) view.getSelectedItem());
-			fav.save();
 		}
 	}
 
@@ -253,16 +221,13 @@ public class GuiFavorites extends GuiScreen {
 		}
 
 		// GUI has not been initialized
-		if (buttonEdit == null) {
+		if (buttonJoin == null) {
 			return;
 		}
-		buttonEdit.setEnabled(enable);
-		buttonDelete.setEnabled(enable);
-		buttonJoin.setEnabled(enable);
-		buttonDelete.setText("Delete");
+		
+		buttonJoin.setEnabled(enable);		
 		buttonMoveDown.setEnabled(enable);
-		buttonMoveUp.setEnabled(enable);
-		buttonAdd.setEnabled(true);
+		buttonMoveUp.setEnabled(enable);		
 
 		if (model.isPolling()) {
 			buttonRefresh.setEnabled(false);

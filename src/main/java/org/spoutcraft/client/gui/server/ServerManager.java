@@ -29,6 +29,7 @@ import org.spoutcraft.client.gui.mainmenu.MainMenu;
 public class ServerManager {
 	private FavoritesModel favorites;
 	private ServerListModel serverList;
+	public StaticServerModel staticServers;
 	private LANModel lanModel;
 	private GuiScreen joinedFrom;
 	private String screenName;
@@ -36,12 +37,18 @@ public class ServerManager {
 	public void init() {
 		favorites = new FavoritesModel();
 		favorites.load();
+		staticServers = new StaticServerModel();
+		//staticServers.load();
 		serverList = new ServerListModel();
 		lanModel = new LANModel();
 	}
 
 	public FavoritesModel getFavorites() {
 		return favorites;
+	}
+	
+	public StaticServerModel getStaticServerList() {
+		return staticServers;
 	}
 
 	public ServerListModel getServerList() {
