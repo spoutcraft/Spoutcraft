@@ -1759,7 +1759,7 @@ public class RenderGlobal implements IWorldAccess {
 	 * Spawns a particle. Arg: particleType, x, y, z, velX, velY, velZ
 	 */
 	public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {
-		spawnParticle(par1Str, par2, par4, par6, par8, par10, par12);
+		spawnParticle(par1Str, par2, par4, par6, par8, par10, par12, null);
 	}
 	
 	public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12, Texture texture) {
