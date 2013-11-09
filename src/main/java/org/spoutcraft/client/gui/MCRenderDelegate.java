@@ -827,7 +827,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		// Draw scrollbars
 		if (gs.needsScrollBar(Orientation.HORIZONTAL)) {
-			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/widgets.png"));
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/creative_inventory/tabs.png"));
 			double scrollX = 0;
 			double p = (double) scrollLeft / (double) gs.getMaximumScrollPosition(Orientation.HORIZONTAL);
 			scrollX = 3 + p * (gs.getViewportSize(Orientation.HORIZONTAL) - 16.0 - 6);
@@ -836,7 +836,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			RenderUtil.drawTexturedModalRectangle((int) scrollX, (int) (gs.getHeight() - 16), 232, 0, 12, 15, 0f);
 		}
 		if (gs.needsScrollBar(Orientation.VERTICAL)) {			
-			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/widgets.png")); //allitems.png
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/creative_inventory/tabs.png"));
 			double scrollY = 0;
 			double p = (double) scrollTop / (double) gs.getMaximumScrollPosition(Orientation.VERTICAL);
 			scrollY = 3 + p * (gs.getViewportSize(Orientation.VERTICAL) - 16.0 - 6);
