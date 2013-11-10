@@ -282,9 +282,13 @@ public abstract class RendererLivingEntity extends Render {
 			}
 
 			GL11.glRotatef(var5 * this.getDeathMaxRotation(par1EntityLivingBase), 0.0F, 0.0F, 1.0F);
-		} else if ((par1EntityLivingBase.getEntityName().equals("Dinnerbone") || par1EntityLivingBase.getEntityName().equals("Grumm")) && (!(par1EntityLivingBase instanceof EntityPlayer) || !((EntityPlayer)par1EntityLivingBase).getHideCape())) {
-			GL11.glTranslatef(0.0F, par1EntityLivingBase.height + 0.1F, 0.0F);
-			GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+		} else {
+			String var6 = EnumChatFormatting.func_110646_a(par1EntityLivingBase.getEntityName());
+
+			if ((var6.equals("Dinnerbone") || var6.equals("Grumm")) && (!(par1EntityLivingBase instanceof EntityPlayer) || !((EntityPlayer)par1EntityLivingBase).getHideCape())) {
+				GL11.glTranslatef(0.0F, par1EntityLivingBase.height + 0.1F, 0.0F);
+				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+			}
 		}
 	}
 

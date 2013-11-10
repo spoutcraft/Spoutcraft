@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher;
 
 import com.prupe.mcpatcher.TexturePackAPI$1;
-import com.prupe.mcpatcher.TexturePackAPI$2;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.File;
@@ -10,9 +9,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -61,6 +62,17 @@ public class TexturePackAPI {
 		return list;
 	}
 
+	public static Set<String> getNamespaces() {
+		HashSet set = new HashSet();
+		ResourceManager resourceManager = getResourceManager();
+
+		if (resourceManager instanceof SimpleReloadableResourceManager) {
+			set.addAll(((SimpleReloadableResourceManager)resourceManager).domainResourceManagers.keySet());
+		}
+
+		return set;
+	}
+
 	public static ResourceManager getResourceManager() {
 		return Minecraft.getMinecraft().getResourceManager();
 	}
@@ -106,6 +118,8 @@ public class TexturePackAPI {
 
 	public static ResourceLocation parseResourceLocation(ResourceLocation baseResource, String path) {
 		if (path != null && !path.equals("")) {
+			boolean absolute = false;
+
 			if (path.startsWith("%blur%")) {
 				path = path.substring(6);
 			}
@@ -116,14 +130,16 @@ public class TexturePackAPI {
 
 			if (path.startsWith("/")) {
 				path = path.substring(1);
+				absolute = true;
 			}
 
 			if (path.startsWith("assets/minecraft/")) {
 				path = path.substring(17);
+				absolute = true;
 			}
 
 			int colon = path.indexOf(58);
-			return colon >= 0 ? new ResourceLocation(path.substring(0, colon), path.substring(colon + 1)) : (path.startsWith("~/") ? new ResourceLocation(baseResource.getResourceDomain(), "mcpatcher/" + path.substring(2)) : (path.startsWith("./") ? new ResourceLocation(baseResource.getResourceDomain(), baseResource.getResourcePath().replaceFirst("[^/]+$", "") + path.substring(2)) : new ResourceLocation(baseResource.getResourceDomain(), path)));
+			return colon >= 0 ? new ResourceLocation(path.substring(0, colon), path.substring(colon + 1)) : (path.startsWith("~/") ? new ResourceLocation(baseResource.getResourceDomain(), "mcpatcher/" + path.substring(2)) : (path.startsWith("./") ? new ResourceLocation(baseResource.getResourceDomain(), baseResource.getResourcePath().replaceFirst("[^/]+$", "") + path.substring(2)) : (!absolute && !path.contains("/") ? new ResourceLocation(baseResource.getResourceDomain(), baseResource.getResourcePath().replaceFirst("[^/]+$", "") + path) : new ResourceLocation(baseResource.getResourceDomain(), path))));
 		} else {
 			return null;
 		}
@@ -134,19 +150,28 @@ public class TexturePackAPI {
 	}
 
 	public static List<ResourceLocation> listResources(String directory, String suffix, boolean recursive, boolean directories, boolean sortByFilename) {
+		return listResources((String)null, directory, suffix, recursive, directories, sortByFilename);
+	}
+
+	public static List<ResourceLocation> listResources(String namespace, String directory, String suffix, boolean recursive, boolean directories, boolean sortByFilename) {
 		if (suffix == null) {
 			suffix = "";
 		}
 
 		ArrayList resources = new ArrayList();
-		findResources("minecraft", directory, suffix, recursive, directories, resources);
 
-		if (sortByFilename) {
-			Collections.sort(resources, new TexturePackAPI$1());
+		if (MCPatcherUtils.isNullOrEmpty(namespace)) {
+			Iterator i$ = getNamespaces().iterator();
+
+			while (i$.hasNext()) {
+				String namespace1 = (String)i$.next();
+				findResources(namespace1, directory, suffix, recursive, directories, resources);
+			}
 		} else {
-			Collections.sort(resources, new TexturePackAPI$2());
+			findResources(namespace, directory, suffix, recursive, directories, resources);
 		}
 
+		Collections.sort(resources, new TexturePackAPI$1(sortByFilename));
 		return resources;
 	}
 
@@ -248,7 +273,7 @@ public class TexturePackAPI {
 		if (resource == null) {
 			return -1;
 		} else {
-			TextureObject texture = MCPatcherUtils.getMinecraft().getTextureManager().getTexture(resource);
+			TextureObject texture = Minecraft.getMinecraft().getTextureManager().getTexture(resource);
 			return texture instanceof AbstractTexture ? ((AbstractTexture)texture).glTextureId : -1;
 		}
 	}
@@ -257,8 +282,12 @@ public class TexturePackAPI {
 		return getTextureIfLoaded(resource) >= 0;
 	}
 
+	public static TextureObject getTextureObject(ResourceLocation resource) {
+		return Minecraft.getMinecraft().getTextureManager().getTexture(resource);
+	}
+
 	public static void bindTexture(ResourceLocation resource) {
-		MCPatcherUtils.getMinecraft().getTextureManager().bindTexture(resource);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(resource);
 	}
 
 	public static void bindTexture(int texture) {
@@ -268,7 +297,7 @@ public class TexturePackAPI {
 	}
 
 	public static void unloadTexture(ResourceLocation resource) {
-		TextureManager textureManager = MCPatcherUtils.getMinecraft().getTextureManager();
+		TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
 		TextureObject texture = textureManager.getTexture(resource);
 
 		if (texture != null && !(texture instanceof TextureMap) && !(texture instanceof DynamicTexture)) {

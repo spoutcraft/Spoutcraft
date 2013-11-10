@@ -7,39 +7,42 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
-import net.minecraft.src.Minecraft;
-
-import org.lwjgl.Sys;
 
 public class MCPatcherUtils {
-	private static File minecraftDir = null;
+	private static File minecraftDir;
+	private static File gameDir;
 	private static boolean isGame;
-	private static Minecraft minecraft;
 	private static String minecraftVersion;
 	private static String patcherVersion;
 	public static final String EXTENDED_HD = "Extended HD";
+	public static final String HD_TEXTURES = "HD Textures";
 	public static final String HD_FONT = "HD Font";
 	public static final String RANDOM_MOBS = "Random Mobs";
 	public static final String CUSTOM_COLORS = "Custom Colors";
 	public static final String CONNECTED_TEXTURES = "Connected Textures";
 	public static final String BETTER_SKIES = "Better Skies";
+	public static final String BETTER_GRASS = "Better Grass";
 	public static final String BETTER_GLASS = "Better Glass";
 	public static final String CUSTOM_ITEM_TEXTURES = "Custom Item Textures";
 	public static final String GLSL_SHADERS = "GLSL Shaders";
 	public static final String BASE_MOD = "__Base";
 	public static final String BASE_TEXTURE_PACK_MOD = "__TexturePackBase";
 	public static final String BASE_TILESHEET_MOD = "__TilesheetBase";
+	public static final String NBT_MOD = "__NBT";
 	public static final String CUSTOM_ANIMATIONS = "Custom Animations";
 	public static final String MIPMAP = "Mipmap";
 	public static final String GL11_CLASS = "org.lwjgl.opengl.GL11";
 	public static final String UTILS_CLASS = "com.prupe.mcpatcher.MCPatcherUtils";
 	public static final String LOGGER_CLASS = "com.prupe.mcpatcher.MCLogger";
 	public static final String CONFIG_CLASS = "com.prupe.mcpatcher.Config";
+	public static final String JSON_UTILS_CLASS = "com.prupe.mcpatcher.JsonUtils";
 	public static final String PROFILER_API_CLASS = "com.prupe.mcpatcher.ProfilerAPI";
 	public static final String INPUT_HANDLER_CLASS = "com.prupe.mcpatcher.InputHandler";
 	public static final String TEXTURE_PACK_API_CLASS = "com.prupe.mcpatcher.TexturePackAPI";
@@ -54,6 +57,10 @@ public class MCPatcherUtils {
 	public static final String FANCY_DIAL_CLASS = "com.prupe.mcpatcher.hd.FancyDial";
 	public static final String FONT_UTILS_CLASS = "com.prupe.mcpatcher.hd.FontUtils";
 	public static final String MIPMAP_HELPER_CLASS = "com.prupe.mcpatcher.hd.MipmapHelper";
+	public static final String FANCY_COMPASS_CLASS = "com.prupe.mcpatcher.hd.FancyCompass";
+	public static final String TEXTURE_UTILS_CLASS = "com.prupe.mcpatcher.hd.TextureUtils";
+	public static final String TILE_SIZE_CLASS = "com.prupe.mcpatcher.hd.TileSize";
+	public static final String NBT_RULE_CLASS = "com.prupe.mcpatcher.NBTRule";
 	public static final String RANDOM_MOBS_CLASS = "com.prupe.mcpatcher.mob.MobRandomizer";
 	public static final String MOB_RULE_LIST_CLASS = "com.prupe.mcpatcher.mob.MobRuleList";
 	public static final String MOB_OVERLAY_CLASS = "com.prupe.mcpatcher.mob.MobOverlay";
@@ -73,6 +80,7 @@ public class MCPatcherUtils {
 	public static final String GLASS_PANE_RENDERER_CLASS = "com.prupe.mcpatcher.ctm.GlassPaneRenderer";
 	public static final String RENDER_PASS_CLASS = "com.prupe.mcpatcher.ctm.RenderPass";
 	public static final String RENDER_PASS_API_CLASS = "com.prupe.mcpatcher.ctm.RenderPassAPI";
+	public static final String SUPER_TESSELLATOR_CLASS = "com.prupe.mcpatcher.ctm.SuperTessellator";
 	public static final String SKY_RENDERER_CLASS = "com.prupe.mcpatcher.sky.SkyRenderer";
 	public static final String FIREWORKS_HELPER_CLASS = "com.prupe.mcpatcher.sky.FireworksHelper";
 	public static final String CIT_UTILS_CLASS = "com.prupe.mcpatcher.cit.CITUtils";
@@ -104,17 +112,31 @@ public class MCPatcherUtils {
 	}
 
 	static boolean setGameDir(File dir) {
-		if (dir != null && dir.isDirectory() && (new File(dir, "libraries")).isDirectory() && (new File(dir, "versions")).isDirectory()) {
+		if (dir != null && dir.isDirectory() && (new File(dir, "assets")).isDirectory() && (new File(dir, "libraries")).isDirectory() && (new File(dir, "versions")).isDirectory() && (new File(dir, "launcher_profiles.json")).isFile()) {
 			minecraftDir = dir.getAbsoluteFile();
 		} else {
 			minecraftDir = null;
 		}
 
-		return Config.load(minecraftDir);
+		gameDir = minecraftDir;
+		return minecraftDir != null && Config.load(minecraftDir, false);
 	}
 
 	public static File getMinecraftPath(String ... subdirs) {
 		File f = minecraftDir;
+		String[] arr$ = subdirs;
+		int len$ = subdirs.length;
+
+		for (int i$ = 0; i$ < len$; ++i$) {
+			String s = arr$[i$];
+			f = new File(f, s);
+		}
+
+		return f;
+	}
+
+	public static File getGamePath(String ... subdirs) {
+		File f = gameDir;
 		String[] arr$ = subdirs;
 		int len$ = subdirs.length;
 
@@ -214,39 +236,63 @@ public class MCPatcherUtils {
 		}
 	}
 
-	public static void setMinecraft(Minecraft minecraft1, File minecraftDir, String minecraftVersion1, String patcherVersion1) {
-		isGame = true;
-		minecraft = minecraft1;
-		minecraftDir = minecraftDir.getAbsoluteFile();
-		minecraftVersion = minecraftVersion1;
-		patcherVersion = patcherVersion1;
+	public static boolean isNullOrEmpty(String s) {
+		return s == null || s.trim().isEmpty();
+	}
 
+	public static boolean isNullOrEmpty(Collection<?> c) {
+		return c == null || c.isEmpty();
+	}
+
+	public static boolean isNullOrEmpty(Map <? , ? > m) {
+		return m == null || m.isEmpty();
+	}
+
+	public static void setMinecraft(File gameDir, File assetsDir, String minecraftVersion, String patcherVersion) {
+		isGame = true;
+		Config.setReadOnly(true);
+		boolean defaultMCDir;
+
+		if (assetsDir == null) {
+			minecraftDir = getDefaultGameDir();
+			defaultMCDir = true;
+		} else {
+			minecraftDir = assetsDir.getParentFile().getAbsoluteFile();
+			defaultMCDir = false;
+		}
+
+		boolean defaultGameDir;
+
+		if (gameDir == null) {
+			gameDir = minecraftDir;
+			defaultGameDir = true;
+		} else {
+			gameDir = gameDir.getAbsoluteFile();
+			defaultGameDir = false;
+		}
+
+		minecraftVersion = minecraftVersion;
+		patcherVersion = patcherVersion;
 		System.out.println();
 		System.out.printf("MCPatcherUtils initialized:\n", new Object[0]);
-		System.out.printf("Game directory:    %s\n", new Object[] {minecraftDir});
-		System.out.printf("Minecraft version: %s\n", new Object[] {minecraftVersion});
-		System.out.printf("MCPatcher version: %s\n", new Object[] {patcherVersion});
-		System.out.printf("LWJGL version: %s\n", new Object[] {Sys.getVersion()});
-		System.out.printf("Max heap memory:   %.1fMB\n", new Object[] {Float.valueOf((float)Runtime.getRuntime().maxMemory() / 1048576.0F)});
+		System.out.printf("Minecraft directory: %s%s\n", new Object[] {minecraftDir, defaultMCDir ? " (default)" : ""});		
+		System.out.printf("Game directory:      %s%s\n", new Object[] {gameDir, defaultGameDir ? " (default)" : ""});		
+		System.out.printf("Minecraft version:   %s\n", new Object[] {minecraftVersion});
+		System.out.printf("MCPatcher version:   %s\n", new Object[] {patcherVersion});
+		System.out.printf("Max heap memory:     %.1fMB\n", new Object[] {Float.valueOf((float)Runtime.getRuntime().maxMemory() / 1048576.0F)});
 
 		try {
 			Class e = Class.forName("sun.misc.VM");
 			Method method = e.getDeclaredMethod("maxDirectMemory", new Class[0]);
 			long memory = ((Long)method.invoke((Object)null, new Object[0])).longValue();
-			System.out.printf("Max direct memory: %.1fMB", new Object[] {Float.valueOf((float)memory / 1048576.0F)});
-		} catch (Throwable var8) {
-			var8.printStackTrace();
+			System.out.printf("Max direct memory: %.1fMB\n", new Object[] {Float.valueOf((float)memory / 1048576.0F)});
+		} catch (Throwable var10) {
+			var10.printStackTrace();
 		}
 
+		Config.load(minecraftDir, true);
+		//System.out.printf("Launcher profile:  %s\n", new Object[] {Config.getInstance().getSelectedProfileName()});
 		System.out.println();
-		//Config.load(minecraftDir);
-	}
-
-	public static Minecraft getMinecraft() {
-		if (minecraft == null) {
-			System.out.println("Getting Minecraft, returned Error because it was null");
-		}
-		return minecraft;
 	}
 
 	public static String getMinecraftVersion() {

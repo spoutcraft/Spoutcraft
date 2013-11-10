@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import net.minecraft.src.Icon;
-import net.minecraft.src.IconRegister;
 import net.minecraft.src.Minecraft;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.Tessellator;
@@ -210,10 +209,6 @@ public class TileLoader {
 		} else if (!value.equals("null") && !value.equals("none") && !value.equals("default") && !value.equals("")) {
 			if (!value.endsWith(".png")) {
 				value = value + ".png";
-			}
-
-			if (!value.contains("/")) {
-				value = propertiesAddress.getResourcePath().replaceFirst("[^/]+$", "") + value;
 			}
 
 			return TexturePackAPI.parseResourceLocation(propertiesAddress, value);

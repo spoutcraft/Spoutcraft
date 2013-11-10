@@ -5,7 +5,7 @@
 	<name>Spoutcraft</name>
 	<groupId>org.spoutcraft</groupId>
 	<artifactId>spoutcraft</artifactId>
-	<version>1.6.2-SNAPSHOT</version>
+	<version>1.6.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<inceptionYear>2011</inceptionYear>
 	<url>https://github.com/Spoutcraft/Spoutcraft</url>
@@ -18,10 +18,10 @@
 		<ciSystem>unknown</ciSystem>
 		<commit>unknown</commit>
 		<lwjglVersion>2.9.0</lwjglVersion>
-		<minecraftVersion>1.6.2</minecraftVersion>
-		<minecraft_Version>1_6_2</minecraft_Version>
-		<mcpVersion>8.05</mcpVersion>
-		<mcp_Version>805</mcp_Version>
+		<minecraftVersion>1.6.4</minecraftVersion>
+		<minecraft_Version>1_6_4</minecraft_Version>
+		<mcpVersion>8.11</mcpVersion>
+		<mcp_Version>811</mcp_Version>
 	</properties>
 
 	<!-- Organization information -->

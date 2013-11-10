@@ -26,7 +26,7 @@ final class CustomAnimation$1 extends TexturePackChangeHandler {
 
 		CustomAnimation.access$200().clear();
 		MipmapHelper.reset();
-		FancyDial.refresh();
+		FancyDial.clearAll();
 	}
 
 	public void afterChange() {
@@ -42,5 +42,7 @@ final class CustomAnimation$1 extends TexturePackChangeHandler {
 				}
 			}
 		}
+
+		FancyDial.registerAnimations();
 	}
 }

@@ -80,6 +80,5 @@ final class TileOverrideImpl$BetterGrass implements ITileOverride {
 
 	public Icon getTile(Block block, Icon origIcon, int face, int metadata) {
 		return null;
-	}
-	
+	}	
 }

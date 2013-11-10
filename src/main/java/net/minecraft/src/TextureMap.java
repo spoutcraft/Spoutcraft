@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 public class TextureMap extends AbstractTexture implements TickableTextureObject, IconRegister {
 	public static final ResourceLocation locationBlocksTexture = new ResourceLocation("textures/atlas/blocks.png");
 	public static final ResourceLocation locationItemsTexture = new ResourceLocation("textures/atlas/items.png");
-	private final List listAnimatedSprites = Lists.newArrayList();
+	public final List listAnimatedSprites = Lists.newArrayList();
 	private final Map mapRegisteredSprites = Maps.newHashMap();
 	private final Map mapUploadedSprites = Maps.newHashMap();
 

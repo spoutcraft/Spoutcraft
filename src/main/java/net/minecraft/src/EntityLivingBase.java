@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.prupe.mcpatcher.cc.ColorizeEntity;
 import com.prupe.mcpatcher.mob.MobRandomizer$ExtraInfo;
 
 import java.util.Collection;
@@ -161,6 +162,7 @@ public abstract class EntityLivingBase extends Entity {
 	/** Number of ticks since last jump */
 	private int jumpTicks;
 	private float field_110151_bq;
+	public int overridePotionColor;
 
 	public EntityLivingBase(World par1World) {
 		super(par1World);
@@ -522,23 +524,23 @@ public abstract class EntityLivingBase extends Entity {
 		int var11;
 
 		if (this.potionsNeedUpdate) {
-			if (!this.worldObj.isRemote) {
-				if (this.activePotionsMap.isEmpty()) {
-					this.dataWatcher.updateObject(8, Byte.valueOf((byte)0));
-					this.dataWatcher.updateObject(7, Integer.valueOf(0));
-					this.setInvisible(false);
-				} else {
-					var11 = PotionHelper.calcPotionLiquidColor(this.activePotionsMap.values());
-					this.dataWatcher.updateObject(8, Byte.valueOf((byte)(PotionHelper.func_82817_b(this.activePotionsMap.values()) ? 1 : 0)));
-					this.dataWatcher.updateObject(7, Integer.valueOf(var11));
-					this.setInvisible(this.isPotionActive(Potion.invisibility.id));
-				}
+			if (this.activePotionsMap.isEmpty()) {
+				this.dataWatcher.updateObject(8, Byte.valueOf((byte)0));
+				this.dataWatcher.updateObject(7, Integer.valueOf(0));
+				this.overridePotionColor = 0;
+				this.setInvisible(false);
+			} else {
+				var11 = PotionHelper.calcPotionLiquidColor(this.activePotionsMap.values());
+				this.dataWatcher.updateObject(8, Byte.valueOf((byte)(PotionHelper.func_82817_b(this.activePotionsMap.values()) ? 1 : 0)));
+				this.dataWatcher.updateObject(7, Integer.valueOf(var11));
+				this.overridePotionColor = var11;
+				this.setInvisible(this.isPotionActive(Potion.invisibility.id));
 			}
 
 			this.potionsNeedUpdate = false;
 		}
 
-		var11 = this.dataWatcher.getWatchableObjectInt(7);
+		var11 = ColorizeEntity.getPotionEffectColor(this.dataWatcher.getWatchableObjectInt(7), this);
 		boolean var12 = this.dataWatcher.getWatchableObjectByte(8) > 0;
 
 		if (var11 > 0) {

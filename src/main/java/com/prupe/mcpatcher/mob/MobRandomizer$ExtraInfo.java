@@ -3,7 +3,6 @@ package com.prupe.mcpatcher.mob;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,7 +17,6 @@ public final class MobRandomizer$ExtraInfo {
 	private static final long MULTIPLIER = 25214903917L;
 	private static final long ADDEND = 11L;
 	private static final long MASK = 281474976710655L;
-	private static Method getBiomeNameAt;
 	private static final HashMap<Integer, MobRandomizer$ExtraInfo> allInfo = new HashMap();
 	private static final HashMap<WeakReference<EntityLivingBase>, MobRandomizer$ExtraInfo> allRefs = new HashMap();
 	private static final ReferenceQueue<EntityLivingBase> refQueue = new ReferenceQueue();
@@ -28,7 +26,7 @@ public final class MobRandomizer$ExtraInfo {
 	private final int origX;
 	private final int origY;
 	private final int origZ;
-	private String origBiome;
+	private Integer origBiome;
 
 	MobRandomizer$ExtraInfo(EntityLivingBase entity) {
 		this(entity, getSkinId(entity.entityId), (int)entity.posX, (int)entity.posY, (int)entity.posZ);
@@ -44,11 +42,11 @@ public final class MobRandomizer$ExtraInfo {
 	}
 
 	private void setBiome() {
-		if (this.origBiome == null && getBiomeNameAt != null) {
+		if (this.origBiome == null && MobRuleList.getBiomeIDAt != null) {
 			try {
-				this.origBiome = (String)getBiomeNameAt.invoke((Object)null, new Object[] {Integer.valueOf(this.origX), Integer.valueOf(this.origY), Integer.valueOf(this.origZ)});
+				this.origBiome = (Integer)MobRuleList.getBiomeIDAt.invoke((Object)null, new Object[] {Integer.valueOf(this.origX), Integer.valueOf(this.origY), Integer.valueOf(this.origZ)});
 			} catch (Throwable var2) {
-				getBiomeNameAt = null;
+				MobRuleList.getBiomeIDAt = null;
 				var2.printStackTrace();
 			}
 		}
@@ -182,23 +180,7 @@ public final class MobRandomizer$ExtraInfo {
 		return x0.origZ;
 	}
 
-	static String access$500(MobRandomizer$ExtraInfo x0) {
+	static Integer access$500(MobRandomizer$ExtraInfo x0) {
 		return x0.origBiome;
-	}
-
-	static {
-		try {
-			Class e = Class.forName("com.prupe.mcpatcher.cc.BiomeHelper");
-			getBiomeNameAt = e.getDeclaredMethod("getBiomeNameAt", new Class[] {Integer.TYPE, Integer.TYPE, Integer.TYPE});
-			getBiomeNameAt.setAccessible(true);
-		} catch (Throwable var1) {
-			;
-		}
-
-		if (getBiomeNameAt == null) {
-			MobRandomizer.access$600().warning("biome integration failed", new Object[0]);
-		} else {
-			MobRandomizer.access$600().fine("biome integration active", new Object[0]);
-		}
 	}
 }

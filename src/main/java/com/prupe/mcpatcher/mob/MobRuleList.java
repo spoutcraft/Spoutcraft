@@ -3,7 +3,9 @@ package com.prupe.mcpatcher.mob;
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.mob.MobRuleList$MobRuleEntry;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +21,8 @@ class MobRuleList {
 	private final List<ResourceLocation> allSkins;
 	private final int skinCount;
 	private final List<MobRuleList$MobRuleEntry> entries;
+	private static Method parseBiomeList;
+	static Method getBiomeIDAt;
 
 	private MobRuleList(ResourceLocation baseSkin) {
 		this.baseSkin = baseSkin;
@@ -82,7 +86,7 @@ class MobRuleList {
 		}
 	}
 
-	ResourceLocation getSkin(long key, int i, int j, int k, String biome) {
+	ResourceLocation getSkin(long key, int i, int j, int k, Integer biome) {
 		if (this.entries == null) {
 			int i$1 = (int)(key % (long)this.skinCount);
 
@@ -121,5 +125,29 @@ class MobRuleList {
 
 	static void clear() {
 		allRules.clear();
+	}
+
+	static Method access$000() {
+		return parseBiomeList;
+	}
+
+	static Method access$002(Method x0) {
+		parseBiomeList = x0;
+		return x0;
+	}
+
+	static {
+		try {
+			Class e = Class.forName("com.prupe.mcpatcher.cc.BiomeHelper");
+			parseBiomeList = e.getDeclaredMethod("parseBiomeList", new Class[] {String.class, BitSet.class});
+			getBiomeIDAt = e.getDeclaredMethod("getBiomeIDAt", new Class[] {Integer.TYPE, Integer.TYPE, Integer.TYPE});
+			parseBiomeList.setAccessible(true);
+			getBiomeIDAt.setAccessible(true);
+			logger.fine("biome integration active", new Object[0]);
+		} catch (Throwable var1) {
+			parseBiomeList = null;
+			getBiomeIDAt = null;
+			logger.warning("biome integration failed", new Object[0]);
+		}
 	}
 }

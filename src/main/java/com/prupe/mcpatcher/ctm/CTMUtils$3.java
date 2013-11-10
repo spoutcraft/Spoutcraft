@@ -18,10 +18,4 @@ final class CTMUtils$3 extends CTMUtils$TileOverrideIterator {
 	Icon getTile(ITileOverride override, Block block, Icon currentIcon) {
 		return override.getTile(block, currentIcon, this.val$face, this.val$metadata);
 	}
-
-	@Override
-	public ITileOverride next() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

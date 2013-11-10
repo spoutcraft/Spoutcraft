@@ -1,7 +1,7 @@
 package com.prupe.mcpatcher.sky;
 
-import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.WorldClient;
 
 final class SkyRenderer$1 extends TexturePackChangeHandler {
@@ -15,7 +15,7 @@ final class SkyRenderer$1 extends TexturePackChangeHandler {
 
 	public void afterChange() {
 		if (SkyRenderer.access$100()) {
-			WorldClient world = MCPatcherUtils.getMinecraft().theWorld;
+			WorldClient world = Minecraft.getMinecraft().theWorld;
 
 			if (world != null) {
 				SkyRenderer.access$200(world.provider.dimensionId);

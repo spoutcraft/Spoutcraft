@@ -16,7 +16,6 @@ import net.minecraft.src.World;
 public class ColorizeWorld {
 	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
 	private static final int fogBlendRadius = Config.getInt("Custom Colors", "fogBlendRadius", 7);
-	private static final float fogBlendScale = (float)Math.pow((double)(2 * fogBlendRadius + 1), -2.0D);
 	private static final String TEXT_KEY = "text.";
 	private static final String TEXT_CODE_KEY = "text.code.";
 	private static final int CLOUDS_DEFAULT = 0;
@@ -131,27 +130,10 @@ public class ColorizeWorld {
 
 	public static boolean computeFogColor(int index) {
 		if (index >= 0 && index < Colorizer.fixedColorMaps.length && fogCamera != null && Colorizer.fixedColorMaps[index].isCustom()) {
-			float[] f = new float[3];
 			int x = (int)fogCamera.posX;
 			int y = (int)fogCamera.posY;
 			int z = (int)fogCamera.posZ;
-			Colorizer.setColor[0] = 0.0F;
-			Colorizer.setColor[1] = 0.0F;
-			Colorizer.setColor[2] = 0.0F;
-
-			for (int i = -fogBlendRadius; i <= fogBlendRadius; ++i) {
-				for (int j = -fogBlendRadius; j <= fogBlendRadius; ++j) {
-					int rgb = ColorizeBlock.colorizeBiome(16777215, index, x + i, y, z + j);
-					Colorizer.intToFloat3(rgb, f);
-					Colorizer.setColor[0] += f[0];
-					Colorizer.setColor[1] += f[1];
-					Colorizer.setColor[2] += f[2];
-				}
-			}
-
-			Colorizer.setColor[0] *= fogBlendScale;
-			Colorizer.setColor[1] *= fogBlendScale;
-			Colorizer.setColor[2] *= fogBlendScale;
+			Colorizer.fixedColorMaps[index].colorizeWithBlending(x, y, z, fogBlendRadius, Colorizer.setColor);
 			return true;
 		} else {
 			return false;

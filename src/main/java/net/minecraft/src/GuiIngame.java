@@ -246,7 +246,7 @@ public class GuiIngame extends Gui {
 			this.mc.mcProfiler.startSection("debug");
 			GL11.glPushMatrix();
 			if (Configuration.getFastDebug() != 2) {
-				font.drawStringWithShadow("Spoutcraft 1.6.2 (" + this.mc.debug + ")", 2, 2, 16777215);
+				font.drawStringWithShadow("Spoutcraft 1.6.4 (" + this.mc.debug + ")", 2, 2, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 				font.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
