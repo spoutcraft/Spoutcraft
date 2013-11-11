@@ -1,0 +1,130 @@
+####################
+##### Peeps #####
+####################
+"Wulfspider":
+    "title": "&9Wulfspider\n&l&oServant of the Moon"
+    "cape": "http://i.imgur.com/rrdybjD.png"
+    "scale": 1.20
+    "accessories":
+        "bracelet": "http://i.imgur.com/5TPZ9.png"
+        "sunglasses": "http://i.imgur.com/8WChC.png"
+        "ears": "http://i.imgur.com/nM32O.png"
+
+#######################
+### Spoutcraft Team ###
+#######################
+"mcsnetworks":
+    "title": "&6Dockter\n&9Spoutcraft Dev"
+    "cape": "http://cdn.spout.org/img/cape/hd/1024x512/spout_1.png"
+    "scale": 1.20
+
+"NinjaGrinch":
+    "title": "&2Mr. Grinch"
+    "cape": "http://cdn.spout.org/img/cape/hd/1024x512/spout_1.png"
+    "particles":
+        "smoke": 40
+"NinjaZidane":
+    "title": "&1Zidane"
+    "cape": "http://cdn.spout.org/img/cape/hd/1024x512/spout_1.png"
+    "particles":
+        "largesmoke": 40
+
+#####################
+## Community Staff ##
+#####################
+"Owexz":
+    "title": "&aOwexz"
+    "cape": "http://cdn.spout.org/img/cape/hd/1024x512/spout_1.png"
+    "particles":
+        "portal": 20
+"midget_3111":
+    "title": "&6midget_3111\n&1Blue Feet"
+    "cape": "http://cdn.spout.org/img/cape/hd/1024x512/spout_1.png"
+    "scale": 0.80
+    "particles":
+        "portal": 30
+        "note": 40
+
+####################
+#### VIP DONOR #####
+####################
+"wikwikwiki":
+    "title": "wikwikwiki"
+    "cape": "http://cdn.spout.org/img/cape/wikwikwiki_cape_1.png"
+    "particles":
+        "flame": 20
+"draconis99":
+    "title": "&9Draconis"
+    "cape": "http://cdn.spout.org/game/vanilla/cape/draconis99.png"
+    "armor": "http://cdn.spout.org/game/vanilla/armor/draconis"
+    "scale": 1.15
+    "particles":
+        "dripWater": 48
+
+####################
+## DIAMOND DONOR ###
+####################
+"dunem666":
+    "title": "&bDunem\n&eLifeMMO &6Admin"
+    "cape": ""
+
+####################
+#### GOLD DONOR ####
+####################
+"Inscrutable":
+    "title": "Inscrutable"
+    "cape": "http://i.imgur.com/6sDtkXS.png"
+
+####################
+#### IRON DONOR ####
+####################
+
+
+####################
+### STONE DONOR ####
+####################
+"Wiltificate":
+    "title": "Wiltificate"
+    "cape": "http://i.imgur.com/rrdybjD.png"
+    "accessories":
+        "tophat": "http://i.imgur.com/EN4oNS2.png"
+
+####################
+#### WOOD DONOR ####
+####################
+"CallMeRatty":
+    "title": "CallMeRatty"
+    "cape": "http://cdn.spout.org/img/cape/hd/1024x512/dr_doom_ff.png"
+    "accessories":
+        "bracelet": "http://i.imgur.com/5TPZ9.png"
+"Grinjr":
+    "title": "&4Grinjr\n&6Spottedfire's &8Boyfriend"
+    "cape": "http://i.imgur.com/To8fkSX.png"
+    "accessories":
+        "bracelet": "http://i.imgur.com/5TPZ9.png"
+"destruktoid":
+    "title": "destruktoid"
+    "cape": "http://cdn.spout.org/img/cape/hd/1024x512/dr_doom.png"
+    "accessories":
+        "bracelet": "http://i4.minus.com/jBpSIivNY5QAO.png"
+
+####################
+#### DIRT DONOR ####
+####################
+"worm424":
+    "title": "worm424"
+    "cape": "http://i.imgur.com/EeFQyRY.png"
+"Freelix2000":
+    "title": "Freelix2000"
+    "cape": "http://i.imgur.com/RKoWij6.png"
+"jayxavdeath":
+    "title": "jayxavdeath"
+    "cape": "http://cdn.spout.org/img/cape/hd/1024x512/mojang_2_clean.png"
+"Hexidicial":
+    "title": "&4Hexidic"
+    "cape": "http://ccraft.me/gallery/1366934564862859067.png"
+"thebestkiller":
+    "title": "thebestkiller\n&eLifeMMO &6Mod"
+"LawrieSmeaton":
+    "title": "LawrieSmeaton"
+    "cape": "http://cdn.spout.org/img/cape/hd/1024x512/mojang_2_clean.png"

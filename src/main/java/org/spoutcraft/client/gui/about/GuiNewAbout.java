@@ -64,7 +64,7 @@ public class GuiNewAbout extends GuiSpoutScreen {
 	}
 
 	private static void updateRoot() {
-		DownloadAssets.downloadFile(FileUtil.getConfigDir(), "about.yml", "http://get.spout.org/about.yml", false);
+		DownloadAssets.downloadFile(FileUtil.getConfigDir(), "about.yml", "https://raw.github.com/Spoutcraft/Spoutcraft/master/assets/about.yml", false);
 		File myFile = new File(FileUtil.getConfigDir(), "about.yml");
 		
 		try {			

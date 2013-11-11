@@ -1,0 +1,18 @@
+"halloween":
+  "start": "1320076800000"
+  "end": "1320163200000"
+  "cape": "http://cdn.spout.org/img/cape/halloween_cape_1.png"
+  "splash": "Boo! Mwahaha! Happy Halloween!"
+  "particles": "false"
+"christmas":
+  "start": "1324746000000"
+  "end": "1324918800000"
+  "cape": "http://cdn.spout.org/img/cape/christmas_cape_2.png"
+  "splash": "Happy Holidays from the Spoutcraft Team!"
+  "particles": "false"
+"newyear":
+  "start": "1325350800000"
+  "end": "1322845200000"
+  "cape": "http://cdn.spout.org/img/cape/newyears_cape_1.png"
+  "splash": "Happy New Year from the Spoutcraft Team!"
+  "particles": "false"

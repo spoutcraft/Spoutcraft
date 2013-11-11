@@ -27,17 +27,17 @@ import java.net.URL;
 import java.net.URLDecoder;
 
 import org.apache.commons.io.FileUtils;
+
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
 
 public class DownloadAssets {
-	
 	public static void getHttpAssets() {
-		// Get web services assets
-		downloadFile(FileUtil.getConfigDir(), "vip.yml", "http://get.spout.org/vip.yml", true);
-		downloadFile(FileUtil.getConfigDir(), "servers.yml", "http://www.inspirenxe.com/spoutcraft/serverlist/servers.yml", true);
-		downloadFile(FileUtil.getConfigDir(), "special.yml", "http://get.spout.org/special.yml", false);
-		downloadFile(FileUtil.getConfigDir(), "splashes.txt", "http://cdn.spout.org/splashes.txt", false);
+		// Get dynamic assets from web
+		downloadFile(FileUtil.getConfigDir(), "vip.yml", "https://raw.github.com/Spoutcraft/Spoutcraft/master/assets/vip.yml", true);
+		downloadFile(FileUtil.getConfigDir(), "servers.yml", "https://raw.github.com/Spoutcraft/Spoutcraft/master/assets/servers.yml", true);
+		downloadFile(FileUtil.getConfigDir(), "special.yml", "https://raw.github.com/Spoutcraft/Spoutcraft/master/assets/special.yml", false);
+		downloadFile(FileUtil.getConfigDir(), "splashes.txt", "https://raw.github.com/Spoutcraft/Spoutcraft/master/assets/splashes.txt", false);
 	}
 
 	public static void importOldConfig() {
@@ -77,7 +77,7 @@ public class DownloadAssets {
 					FileUtils.moveFile(oldFile, newFile);
 				}
 			}
-			
+
 			if (!(new File(FileUtil.getConfigDir() + "/favorites.yml").exists())) {
 				File newFile = new File(FileUtil.getConfigDir() + "/favorites.yml");
 				File oldFile = new File(pathToOldConfig + "/favorites.yml");
@@ -99,12 +99,12 @@ public class DownloadAssets {
 				File oldFile = new File(pathToOldConfig + "/shortcuts.yml");
 				if (oldFile.exists()) {
 					FileUtils.copyFile(oldFile, newFile);
-				}			
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		relative = new File(pathToOldConfig + "/..");
 
 
@@ -120,8 +120,8 @@ public class DownloadAssets {
 				File oldFile = new File(pathToOldConfig + "/options.txt");
 				if (oldFile.exists()) {
 					FileUtils.copyFile(oldFile, newFile);
-				}			
-			}		
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -131,7 +131,7 @@ public class DownloadAssets {
 		Download download = new Download(filename, destination, url, null);
 		FileDownloadThread.getInstance().addToDownloadQueue(download);
 	}
-	
+
 	public static void downloadFile(File destination, String filename, String url, boolean forceOverwrite) {
 		File getFile = new File(destination, File.separator + filename);
 		// Refresh every day if file exists and not forced overwrite.

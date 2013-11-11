@@ -1,0 +1,39 @@
+options:
+    section-margin: 20
+    column-margin: 20
+columns:
+    column1:
+        section1: 
+            title: "What is Spoutcraft?"
+            text: "Spoutcraft is a modification for the Minecraft client that plays exactly like the official game. Its goal is to give developers an easy to use platform for building and distributing mods, while providing a rich gameplay experience for users."
+        section2:
+            title: "What is SpoutcraftPlugin?"
+            text: "SpoutcraftPlugin is a Bukkit plugin development platform that allows for previously impossible tasks, such as custom items, blocks and GUI."
+        section4:
+            title: "Contributors"
+            table: 
+                "Bukkit": "Bukkit Server API"
+                "lahwran": "Fast Events and Minimap Logic"
+                "Zeerix": "Threading Code"
+                "Karlthepagan": "OptiTick Code"
+                "Kahr": "HD Textures Code"
+                "Jeckari": "Custom Texture Code"
+                "knowbuddy": "GUI Optimizations"
+                "ThVortex": "FontRenderer Fixes"
+                "AngryKhan": "HD Skins and Capes Mod"
+    column2:
+        section2:
+            title: "Team"
+            table: 
+                "Dockter": "Lead Developer"
+                "Zidane": "Spoutcraft Dev"
+                "Grinch": "Spoutcraft Dev"
+                "Wulfspider": "Guy Who Was Mistaken for Notch"
+        section3:
+            title: "Contact"
+            table:
+                "Forums": "http://spoutcraft.org/forums"
+                "IRC": "#spoutcraft on irc.esper.net"
+        section4:
+            title: "Note"
+            text: "Spoutcraft and SpoutcraftPlugin are open source. You can browse the source code at https://github.com/Spoutcraft"
