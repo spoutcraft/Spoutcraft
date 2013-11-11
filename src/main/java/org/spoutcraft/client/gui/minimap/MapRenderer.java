@@ -105,6 +105,9 @@ public class MapRenderer {
 			if (MinimapConfig.getInstance().isSquare()) {
 				// Scale
 				GL11.glPushMatrix();
+				GL11.glTranslatef(-34.0f, 30.0F, 0.0F);
+				GL11.glRotatef(-90F, 0.0F, 0.0F, 1.0F);
+				GL11.glTranslatef(32.0F, -(32.0F), 0.0F);
 				switch (MinimapConfig.getInstance().getZoom()) {
 				case 0:
 					GL11.glScalef(8F, 8F, 1F);
@@ -130,8 +133,8 @@ public class MapRenderer {
 					map.loadHeightImage();
 
 					drawOnMap();
+					GL11.glRotatef(90f, 0.0f, 0.0f, 1.0f);
 				}
-
 				GL11.glPopMatrix();
 
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -145,7 +148,7 @@ public class MapRenderer {
 						texman.loadMinimap();
 					} else {
 						GL11.glScalef(138F / 256F, 138F / 256F, 1F);
-						GL11.glTranslatef(-54, 0, 0);
+						GL11.glTranslatef(-55, 3, 0);
 						texman.loadWhiteMinimap();
 					}
 					drawOnMap();
@@ -161,8 +164,12 @@ public class MapRenderer {
 				try {
 					GL11.glPushMatrix();
 					texman.loadMMArrow();
-					GL11.glTranslatef(-34.0F, 30.0F, 0.0F);
-					GL11.glRotatef(-this.direction + 90F, 0.0F, 0.0F, 1.0F);
+					if (MinimapConfig.getInstance().isShowBackground()) {
+						GL11.glTranslatef(-34.0F, 30.0F, 0.0F);
+					} else {
+						GL11.glTranslatef(-36.0F, 32.0F, 0.0F);
+					}
+					GL11.glRotatef(-this.direction, 0.0F, 0.0F, 1.0F);
 					GL11.glTranslatef(32.0F, -(32.0F), 0.0F);
 					drawOnMap();
 				} catch (Exception e) {
@@ -174,9 +181,8 @@ public class MapRenderer {
 
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-				// render directions with fudge factor to make them line up
 				GL11.glPushMatrix();
-				GL11.glTranslatef(-2, 2, 0.0F);
+				GL11.glTranslatef(-2, 2, 0.0F); // Lines up compass directions when rendering on square map
 				drawDirections();
 				drawFocusSquare();
 				GL11.glPopMatrix();
@@ -187,7 +193,7 @@ public class MapRenderer {
 				map.loadColorImage();
 
 				GL11.glTranslatef(-32.0f, 32.0F, 0.0F);
-				GL11.glRotatef(this.direction + 90.0F, 0.0F, 0.0F, 1.0F);
+				GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(32.0F, -(32.0F), 0.0F);
 
 				switch (MinimapConfig.getInstance().getZoom()) {
@@ -202,9 +208,6 @@ public class MapRenderer {
 				case 2:
 					GL11.glScalef(2F, 2F, 1F);
 					GL11.glTranslatef(33F, 1F, 0F);
-					break;
-				case 3:
-					GL11.glTranslatef(2F, 2F, 0F);
 					break;
 				}
 
@@ -224,6 +227,25 @@ public class MapRenderer {
 				renderWaypoints();
 				renderEntities();
 				drawRound();
+
+				try {
+					GL11.glPushMatrix();
+					texman.loadMMArrow();
+					if (MinimapConfig.getInstance().isShowBackground()) {
+						GL11.glTranslatef(-32.0f, 32.0F, 0.0F);
+					} else {
+						GL11.glTranslatef(-31.0f, 31.0F, 0.0F);
+					}
+					GL11.glRotatef(-this.direction, 0.0F, 0.0F, 1.0F);
+					GL11.glTranslatef(32.0F, -(32.0F), 0.0F);
+					drawOnMap();
+				} catch (Exception e) {
+//					System.err.println("Error: minimap arrow not found!");
+					e.printStackTrace();
+				} finally {
+					GL11.glPopMatrix();
+				}
+
 				drawDirections();
 				GL11.glPushMatrix();
 				drawFocusRound();
@@ -239,6 +261,8 @@ public class MapRenderer {
 		if (!MinimapConfig.getInstance().isShowingEntities()) {
 			return;
 		}
+		boolean isSquare = MinimapConfig.getInstance().isSquare();
+		boolean isShowBackground = MinimapConfig.getInstance().isShowBackground();
 		double playerX = map.getPlayerX();
 		double playerZ = map.getPlayerZ();
 
@@ -252,18 +276,24 @@ public class MapRenderer {
 				int circleX = MathHelper.floor_double(playerX);
 				int circleY = MathHelper.floor_double(playerZ);
 
-				if (MinimapConfig.getInstance().isSquare()) {
-					render = Math.abs(playerX - (int) e.posX) < map.renderSize && Math.abs(playerZ - (int) e.posZ) < map.renderSize;
+				if (isSquare) {
+					render = Math.abs(playerX - (int) e.posX) < (map.renderSize / 2) - 6 && Math.abs(playerZ - (int) e.posZ) < (map.renderSize / 2) - 6;
 				} else {
-					render = MinimapUtils.insideCircle(circleX, circleY, map.renderSize / 2, (int) e.posX, (int) e.posZ);
+					render = MinimapUtils.insideCircle(circleX, circleY, (map.renderSize / 2) - 4, (int) e.posX, (int) e.posZ);
 				}
 				Texture tex = w.getTexture();
 				if (render && tex != null) {
 					GL11.glPushMatrix();
-					GL11.glTranslatef(-32.0f, 32.0F, 0.0F);
-					if (!MinimapConfig.getInstance().isSquare()) {
-						GL11.glRotatef((this.direction + 90.0F), 0.0F, 0.0F, 1.0F);
+					if (isSquare && isShowBackground) { // Square Map with ancient-style texture
+						GL11.glTranslatef(-34.0f, 30.0f, 0.0f);
+					} else if (isSquare) { // Square Map with basic texture
+						GL11.glTranslatef(-36.0f, 32.0f, 0.0f);
+					} else if (isShowBackground) { // Round Map with ancient-style texture
+						GL11.glTranslatef(-32.0f, 32.0f, 0.0f);
+					} else { // Round Map with basic texture
+						GL11.glTranslatef(-31.0f, 31.0f, 0.0f);
 					}
+					GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
 					switch (MinimapConfig.getInstance().getZoom()) {
 					case 0:
 						GL11.glTranslated(-entityZ, entityX, 0F);
@@ -274,16 +304,14 @@ public class MapRenderer {
 					case 2:
 						GL11.glTranslated(-entityZ * 0.25F, entityX * 0.28F, 0F);
 						break;
-					case 3:
-						GL11.glTranslated(-entityZ * 0.125F, entityX * 0.125F, 0F);
-						break;
 					}
 					GL11.glScaled(0.05, 0.05, 0.05);
-					GL11.glTranslated(-32f, -32f, 0);
-					GL11.glRotatef(180, 0, 0, 1);
-					if (!MinimapConfig.getInstance().isSquare()) {
-						GL11.glRotatef(-(this.direction + 90f), 0, 0, 1);
+					if (MinimapConfig.getInstance().isSquare()) {
+						GL11.glTranslated(-34f, -30f, 0); // Handles entity face offset for the square map
+					} else {
+						GL11.glTranslated(-32f, -32f, 0); // Handles entity face offset for the round map
 					}
+					GL11.glRotatef(-90, 0, 0, 1); // Handles entity face orientation
 					tex.bind();
 					drawOnMap();
 					GL11.glPopMatrix();
@@ -401,9 +429,6 @@ public class MapRenderer {
 					case 2:
 						GL11.glTranslated(wayY * 0.25F, -wayX * 0.28F, 0F);
 						break;
-					case 3:
-						GL11.glTranslated(wayY * 0.125F, -wayX * 0.125F, 0F);
-						break;
 					}
 					GL11.glScalef(0.25F, 0.25F, 1F);
 
@@ -478,8 +503,8 @@ public class MapRenderer {
 			if (MinimapConfig.getInstance().isShowBackground()) {
 				texman.loadRoundmap();
 			} else {
-				GL11.glScaled(0.95F, 0.95F, 1F);
-				GL11.glTranslatef(-2F, 2F, 0);
+				GL11.glScaled(0.97F, 0.97F, 1F);
+				GL11.glTranslatef(-0.50F, 0.50F, 0);
 				texman.loadWhiteRoundmap();
 			}
 			drawOnMap();
@@ -503,19 +528,34 @@ public class MapRenderer {
 		if (!MinimapConfig.getInstance().isDirections()) {
 			return;
 		}
-		float dir = this.direction;
+		float dir = -180;
+		int xPosition;
+		int yPosition;
+		boolean isSquare = MinimapConfig.getInstance().isSquare();
+		boolean isShowBackground = MinimapConfig.getInstance().isShowBackground();
+
+		if (isSquare && isShowBackground) { // Square Map with ancient-style texture
+			xPosition = -66;
+			yPosition = 54;
+		} else if (isSquare) { // Square Map with basic texture
+			xPosition = -70;
+			yPosition = 57;
+		} else { // Round Map
+			xPosition = -66;
+			yPosition = 60;
+		}
 		GL11.glPushMatrix();
 		GL11.glScalef(0.5f, 0.5f, 1.0f);
 		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
-		Minecraft.getMinecraft().fontRenderer.drawString("N", -66, 60, 0xffffff);
+		Minecraft.getMinecraft().fontRenderer.drawString("N", xPosition, yPosition, 0xffffff);
 		GL11.glPopMatrix();
 
 		dir += 90;
 
 		GL11.glPushMatrix();
 		GL11.glScalef(0.5f, 0.5f, 1.0f);
-		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-dir))), (64.0D * Math.cos(Math.toRadians(-dir))), 0.0D);
-		Minecraft.getMinecraft().fontRenderer.drawString("E", -66, 60, 0xffffff);
+		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
+		Minecraft.getMinecraft().fontRenderer.drawString("E", xPosition, yPosition, 0xffffff);
 		GL11.glPopMatrix();
 
 		dir += 90;
@@ -523,7 +563,7 @@ public class MapRenderer {
 		GL11.glPushMatrix();
 		GL11.glScalef(0.5f, 0.5f, 1.0f);
 		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
-		Minecraft.getMinecraft().fontRenderer.drawString("S", -66, 60, 0xffffff);
+		Minecraft.getMinecraft().fontRenderer.drawString("S", xPosition, yPosition, 0xffffff);
 		GL11.glPopMatrix();
 
 		dir += 90;
@@ -531,7 +571,7 @@ public class MapRenderer {
 		GL11.glPushMatrix();
 		GL11.glScalef(0.5f, 0.5f, 1.0f);
 		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
-		Minecraft.getMinecraft().fontRenderer.drawString("W", -66, 60, 0xffffff);
+		Minecraft.getMinecraft().fontRenderer.drawString("W", xPosition, yPosition, 0xffffff);
 		GL11.glPopMatrix();
 	}
 }

@@ -27,11 +27,10 @@ import org.spoutcraft.api.gui.GenericComboBox;
 public class ZoomModeButton extends GenericComboBox {
 	public ZoomModeButton() {
 		setTooltip("Changes the zoom level of the minimap.");
-		List<String> names = new ArrayList<String>(3);
+		List<String> names = new ArrayList<String>(2);
 		names.add("Zoom: 0");
 		names.add("Zoom: 1");
 		names.add("Zoom: 2");
-		names.add("Zoom: 3");
 		setItems(names);
 		setSelection(MinimapConfig.getInstance().getZoom());
 	}

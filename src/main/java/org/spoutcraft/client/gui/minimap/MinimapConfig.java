@@ -52,8 +52,8 @@ public class MinimapConfig {
 	private boolean cavemap = false;
 	private boolean firstrun = true;
 	private boolean scale = false;
-	private float xAdjust = 0;
-	private float yAdjust = 0;
+	private float xAdjust = -5;
+	private float yAdjust = 5;
 	private float sizeAdjust = 1F;
 	private boolean directions = true;
 	private boolean deathpoints = true;

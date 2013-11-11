@@ -30,6 +30,8 @@ public class SquareToggleCheckBox extends GenericCheckBox {
 
 	@Override
 	public void onButtonClick() {
+		MinimapConfig.getInstance().setAdjustX(-5);
+		MinimapConfig.getInstance().setAdjustY(5);
 		MinimapConfig.getInstance().setSquare(isChecked());
 	}
 }

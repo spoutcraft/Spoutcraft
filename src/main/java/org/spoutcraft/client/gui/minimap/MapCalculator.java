@@ -204,9 +204,6 @@ public class MapCalculator implements Runnable {
 						case 2:
 							map.renderSize = Map.ZOOM_2;
 							break;
-						case 3:
-							map.renderSize = Map.ZOOM_3;
-							break;
 						default:
 							map.renderSize = Map.ZOOM_2;
 							break;
