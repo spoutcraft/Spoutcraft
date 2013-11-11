@@ -8,6 +8,10 @@ import net.minecraft.src.Icon;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 
+//Spout Start
+import org.spoutcraft.client.config.Configuration;
+//Spout End
+
 public class GlassPaneRenderer {
 	private static final boolean enable = Config.getBoolean("Connected Textures", "glassPane", true);
 	public static boolean active;
@@ -20,7 +24,7 @@ public class GlassPaneRenderer {
 	private static double v1;
 
 	public static void render(RenderBlocks renderBlocks, Block blockPane, Icon origIcon, int i, int j, int k, boolean connectNorth, boolean connectSouth, boolean connectWest, boolean connectEast) {
-		if (!enable) {
+		if (!Configuration.isConnectedTextures()) {
 			active = false;
 		} else {
 			active = true;
