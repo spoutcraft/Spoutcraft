@@ -19,11 +19,15 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.gui.CheckBox;
 import org.spoutcraft.api.gui.Control;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericGradient;
@@ -35,13 +39,21 @@ import org.spoutcraft.api.gui.WidgetAnchor;
 import org.spoutcraft.client.SpoutClient;
 
 public class GuiMinimapMenu extends GuiScreen {
-	private Button doneButton = null, positionButton = null, advancedMobsButton = null;
+	private List<Control> hideable;
+	private Button doneButton = null, positionButton = null, toggleCheckBox = null, advancedMobsButton = null;
 	GuiScreen parent;
 	public GuiMinimapMenu(GuiScreen parent) {
 		this.parent = parent;
 	}
 
+	private void setControlsEnabled(boolean enabled) {
+		for (Control control: hideable) {
+		    control.setEnabled(enabled);
+		}
+	}
+
 	public void initGui() {
+		hideable = new ArrayList<Control>();
 		Control control;
 
 		GenericScrollArea screen = new GenericScrollArea();
@@ -75,6 +87,7 @@ public class GuiMinimapMenu extends GuiScreen {
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
 		screen.attachWidget("Spoutcraft", label);
+
 		top += 11;
 
 		Gradient linebreak = new GenericGradient();
@@ -82,21 +95,21 @@ public class GuiMinimapMenu extends GuiScreen {
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget("Spoutcraft", linebreak);
+
 		top += 6;
 
 		positionButton = new GenericButton("Move Minimap");
 		positionButton.setGeometry(width / 2 - 75, top, 150, 20);
 		screen.attachWidget("Spoutcraft", positionButton);
 
-		top += 22;
-
-		top += 5;
+		top += 27;
 
 		label = new GenericLabel("Minimap Configuration");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
 		screen.attachWidget("Spoutcraft", label);
+
 		top += 11;
 
 		linebreak = new GenericGradient();
@@ -104,11 +117,12 @@ public class GuiMinimapMenu extends GuiScreen {
 		linebreak.setTopColor(grey);
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget("Spoutcraft", linebreak);
+
 		top += 6;
 
-		control = new MinimapToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget("Spoutcraft", control);
+		toggleCheckBox = new MinimapToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
+		toggleCheckBox.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget("Spoutcraft", toggleCheckBox);
 
 		control = new ColorToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
@@ -116,26 +130,36 @@ public class GuiMinimapMenu extends GuiScreen {
 
 		control.setEnabled(false);
 		control.setTooltip("Feature broken.");
+
 		top += 22;
 
 		control = new CoordsToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 
+		hideable.add(control);
+
 		control = new SquareToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
+
 		top += 22;
+
+		hideable.add(control);
 
 		control = new ScaleToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget("Spoutcraft", control);
+
+		hideable.add(control);
 
 		control = new DirectionsToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
+
+		hideable.add(control);
 
 		control = new MinimapModeButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
@@ -150,9 +174,13 @@ public class GuiMinimapMenu extends GuiScreen {
 
 		top += 22;
 
+		hideable.add(control);
+
 		control = new DeathpointsCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget("Spoutcraft", control);
+
+		hideable.add(control);
 
 		control = new BackgroundCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
@@ -160,9 +188,13 @@ public class GuiMinimapMenu extends GuiScreen {
 
 		top += 22;
 
+		hideable.add(control);
+
 		control = new HeightMapCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget("Spoutcraft", control);
+
+		hideable.add(control);
 
 		control = new ScanRadiusSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
@@ -170,14 +202,22 @@ public class GuiMinimapMenu extends GuiScreen {
 
 		top += 22;
 
+		hideable.add(control);
+
 		control = new ShowEntitiesCheckbox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget("Spoutcraft", control);
+
+		hideable.add(control);
 
 		advancedMobsButton = new GenericButton("Filter Mobs").setAlign(WidgetAnchor.TOP_CENTER);
 		advancedMobsButton.setWidth(150).setHeight(20).setX(right).setY(top);
 		advancedMobsButton.setTooltip("Select which mobs are shown on the minimap");
 		screen.attachWidget("Spoutcraft", advancedMobsButton);
+
+		hideable.add(advancedMobsButton);
+
+		setControlsEnabled(MinimapConfig.getInstance().isEnabled());
 	}
 
 	@Override
@@ -189,6 +229,9 @@ public class GuiMinimapMenu extends GuiScreen {
 
 	@Override
 	protected void buttonClicked(Button btn) {
+		if (btn.equals(toggleCheckBox)) {
+		    setControlsEnabled(((CheckBox) btn).isChecked());
+		}
 		if (btn.equals(doneButton)) {
 			MinimapConfig.getInstance().save();
 			SpoutClient.getHandle().displayGuiScreen(parent);
