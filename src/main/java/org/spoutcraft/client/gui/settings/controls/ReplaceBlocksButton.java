@@ -25,7 +25,7 @@ import org.spoutcraft.client.config.Configuration;
 public class ReplaceBlocksButton extends GenericCheckBox {
 	public ReplaceBlocksButton() {
 		super("Auto Replace Blocks");
-		setChecked(Configuration.isReplaceTools());
+		setChecked(Configuration.isReplaceBlocks());
 		setTooltip("Replaces used up blocks with spares from your inventory");
 	}
 
