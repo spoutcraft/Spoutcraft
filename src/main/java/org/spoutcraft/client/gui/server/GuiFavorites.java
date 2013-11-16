@@ -35,7 +35,7 @@ public class GuiFavorites extends GuiScreen {
 	private GuiScreen parent;
 
 	// GUI stuff
-	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit, buttonMainMenu, buttonServerList, buttonQuickJoin, buttonMoveUp, buttonMoveDown, buttonRefresh;
+	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit, buttonMainMenu, buttonServerList, buttonClear, buttonQuickJoin, buttonMoveUp, buttonMoveDown, buttonRefresh;
 	private GenericLabel labelTitle;
 	private TextField textQuickJoin;
 	private GenericListView view;
@@ -88,10 +88,14 @@ public class GuiFavorites extends GuiScreen {
 			text = textQuickJoin.getText();
 		}
 		textQuickJoin = new QuickJoin();
-		textQuickJoin.setX(left + 2).setY(top + 2).setHeight(16).setWidth(cellWidth * 2 + 5 - 4);
+		textQuickJoin.setX(left + 2).setY(top + 2).setHeight(16).setWidth((cellWidth * 2 + 5 - 4) - (cellWidth/2));
 		textQuickJoin.setMaximumCharacters(0);
 		textQuickJoin.setText(text);
 		getScreen().attachWidget("Spoutcraft", textQuickJoin);
+
+		buttonClear = new GenericButton("Clear");
+		buttonClear.setX(left + 10 + (cellWidth*2) - (cellWidth/2)).setY(top).setWidth((cellWidth/2) - 5).setHeight(20);
+		getScreen().attachWidget("Spoutcraft", buttonClear);
 
 		buttonQuickJoin = new GenericButton("Quick Join");
 		buttonQuickJoin.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
@@ -156,6 +160,9 @@ public class GuiFavorites extends GuiScreen {
 		if (btn.equals(buttonServerList)) {
 			//SpoutClient.getHandle().displayGuiScreen(new GuiServerList());
 			SpoutClient.getHandle().displayGuiScreen(new GuiStaticServerList(this));  //Use static version until WebAPI is updated.
+		}
+		if (btn.equals(buttonClear)) {
+			textQuickJoin.setText("");
 		}
 		if (btn.equals(buttonQuickJoin)) {
 			doQuickJoin();
@@ -302,6 +309,7 @@ public class GuiFavorites extends GuiScreen {
 				model.setPolling(false);
 			}
 		}
+		buttonClear.setEnabled(textQuickJoin.getText().length() > 0);
 		buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
 		super.updateScreen();
 	}
