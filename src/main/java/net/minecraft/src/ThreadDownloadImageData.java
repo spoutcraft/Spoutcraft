@@ -3,6 +3,8 @@ package net.minecraft.src;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import org.spoutcraft.client.HDImageBufferDownload;
+
 public class ThreadDownloadImageData extends AbstractTexture {
 	private final String imageUrl;
 	private final IImageBuffer imageBuffer;
@@ -13,7 +15,9 @@ public class ThreadDownloadImageData extends AbstractTexture {
 
 	public ThreadDownloadImageData(String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer) {
 		this.imageUrl = par1Str;
-		this.imageBuffer = par3IImageBuffer;
+		// Spout Start
+		this.imageBuffer = new HDImageBufferDownload();
+		// Spout End
 		this.imageLocation = par2ResourceLocation != null ? new SimpleTexture(par2ResourceLocation) : null;
 	}
 
