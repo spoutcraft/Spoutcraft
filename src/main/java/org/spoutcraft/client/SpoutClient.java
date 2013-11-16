@@ -29,6 +29,7 @@ import org.newdawn.slick.util.Log;
 import org.newdawn.slick.util.LogSystem;
 
 import net.minecraft.src.Minecraft;
+import net.minecraft.src.AbstractClientPlayer;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityPlayer;
@@ -483,6 +484,18 @@ public class SpoutClient extends PropertyObject implements Client {
 		return Minecraft.getMinecraft();
 	}
 
+	public AbstractClientPlayer getAbstractPlayerFromId(int id) {
+		if (getHandle().thePlayer.entityId == id) {
+			return getHandle().thePlayer;
+		}
+		WorldClient world = (WorldClient)getHandle().theWorld;
+		Entity e = world.getEntityByID(id);
+		if (e instanceof AbstractClientPlayer) {
+			return (AbstractClientPlayer) e;
+		}
+		return null;
+	}
+	
 	public EntityPlayer getPlayerFromId(int id) {
 		if (getHandle().thePlayer.entityId == id) {
 			return getHandle().thePlayer;
