@@ -37,7 +37,7 @@ public class GuiStaticServerList extends GuiScreen {
 	private GuiScreen parent;
 
 	// GUI stuff
-	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit, buttonMainMenu, buttonFavoritesList, buttonQuickJoin, buttonMoveUp, buttonMoveDown, buttonRefresh,buttonAddServer;;
+	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit, buttonMainMenu, buttonFavoritesList, buttonClear, buttonQuickJoin, buttonMoveUp, buttonMoveDown, buttonRefresh,buttonAddServer;;
 	private GenericLabel labelTitle;
 	private TextField textQuickJoin;
 	private GenericListView view;	
@@ -51,7 +51,7 @@ public class GuiStaticServerList extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		labelTitle = new GenericLabel("Spoutcraft Servers");
+		labelTitle = new GenericLabel("Public Servers");
 		labelTitle.setY(12).setX(width / 2 - mc.fontRenderer.getStringWidth(labelTitle.getText()) / 2);
 		labelTitle.setHeight(15).setWidth(mc.fontRenderer.getStringWidth(labelTitle.getText()) / 2);
 		getScreen().attachWidget("Spoutcraft", labelTitle);
@@ -90,11 +90,15 @@ public class GuiStaticServerList extends GuiScreen {
 			text = textQuickJoin.getText();
 		}
 		textQuickJoin = new QuickJoin();
-		textQuickJoin.setX(left + 2).setY(top + 2).setHeight(16).setWidth(cellWidth * 2 + 5 - 4);
+		textQuickJoin.setX(left + 2).setY(top + 2).setHeight(16).setWidth((cellWidth * 2 + 5 - 4) - (cellWidth/2));
 		textQuickJoin.setMaximumCharacters(0);
 		textQuickJoin.setText(text);
 		getScreen().attachWidget("Spoutcraft", textQuickJoin);
 
+		buttonClear = new GenericButton("Clear");
+		buttonClear.setX(left + 10 + (cellWidth*2) - (cellWidth/2)).setY(top).setWidth((cellWidth/2) - 5).setHeight(20);
+		getScreen().attachWidget("Spoutcraft", buttonClear);
+		
 		buttonQuickJoin = new GenericButton("Quick Join");
 		buttonQuickJoin.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget("Spoutcraft", buttonQuickJoin);
@@ -151,6 +155,11 @@ public class GuiStaticServerList extends GuiScreen {
 		if (btn.equals(buttonFavoritesList)) {
 			SpoutClient.getHandle().displayGuiScreen(new GuiFavorites(this));
 		}
+
+		if (btn.equals(buttonClear)) {
+			  textQuickJoin.setText("");
+		}
+
 		if (btn.equals(buttonQuickJoin)) {
 			doQuickJoin();
 		}
@@ -267,6 +276,7 @@ public class GuiStaticServerList extends GuiScreen {
 				model.setPolling(false);
 			}
 		}
+		buttonClear.setEnabled(textQuickJoin.getText().length() > 0);
 		buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
 		super.updateScreen();
 	}
