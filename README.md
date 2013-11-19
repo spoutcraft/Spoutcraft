@@ -1,6 +1,6 @@
 Spoutcraft
 ==========
-[![Build Status](https://travis-ci.org/Spoutcraft/Spoutcraft.png?branch=master)](https://travis-ci.org/Spoutcraft/Spoutcraft) [![Coverage Status](https://coveralls.io/repos/Spoutcraft/Spoutcraft/badge.png)](https://coveralls.io/r/Spoutcraft/Spoutcraft)  
+[![Build Status](https://travis-ci.org/Spoutcraft/Spoutcraft.png?branch=master)](https://travis-ci.org/Spoutcraft/Spoutcraft)  
 Spoutcraft is a Minecraft client mod that provides users with a simple and more customizable Minecraft experience. Servers running SpoutcraftPlugin push content to Spoutcraft users as needed; such as custom items, blocks, and user skins, capes, and other accessories. Players can then enjoy custom server experiences without having to manually modify their client for each server.
 
 [Homepage] | [Forums] | [Twitter] | [Facebook]

@@ -24,10 +24,24 @@
 		<mcp_Version>811</mcp_Version>
 	</properties>
 
+	<!-- Project developers -->
+	<developers>
+		<developer>
+			<id>mcsnetworks</id>
+			<name>Mike Howe</name>
+			<email>dockter@almuramc.com</email>
+		</developer>
+		<developer>
+			<id>Wulfspider</id>
+			<name>Luke Spragg</name>
+			<email>the@wulf.im</email>
+		</developer>
+	</developers>
+
 	<!-- Organization information -->
 	<organization>
-		<name>Spout LLC</name>
-		<url>http://www.spout.org</url>
+		<name>SpoutcraftDev</name>
+		<url>http://spoutcraft.org/</url>
 	</organization>
 
 	<!-- License information -->
@@ -55,7 +69,7 @@
 	<!-- Issue management -->
 	<issueManagement>
 		<system>forums</system>
-		<url>http://spoutcraft.org/forums/</url>
+		<url>http://spoutcraft.org/issues/</url>
 	</issueManagement>
 
 	<!-- Dependency repositories -->
@@ -698,22 +712,6 @@
 					<excludes>
 						<exclude>**/*</exclude>
 					</excludes>
-				</configuration>
-			</plugin>
-			<!-- Coveralls reporting plugin  -->
-			<plugin>
-				<groupId>org.eluder.coveralls</groupId>
-				<artifactId>coveralls-maven-plugin</artifactId>
-				<version>2.0.1</version>
-			</plugin>
-			<!-- Cobertura test coverage plugin -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<format>xml</format>
-					<maxmem>256m</maxmem>
 				</configuration>
 			</plugin>
 		</plugins>

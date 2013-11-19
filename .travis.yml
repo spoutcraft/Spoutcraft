@@ -3,7 +3,7 @@ language: java
 jdk: oraclejdk7
 
 # Compile and package JAR and set build properties.
-install: mvn clean package cobertura:cobertura coveralls:cobertura -Pmcp-final-unix -DbuildNumber=$TRAVIS_BUILD_NUMBER -DciSystem=travis -Dcommit=${TRAVIS_COMMIT:0:7} -DserviceJobId=$TRAVIS_JOB_ID
+install: mvn clean package -Pmcp-final-unix -DbuildNumber=$TRAVIS_BUILD_NUMBER -DciSystem=travis -Dcommit=${TRAVIS_COMMIT:0:7}
 after_success:
   # TODO: Add deployment to downloads site.
 
