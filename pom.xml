@@ -80,7 +80,7 @@
 		</repository>
 		<repository>
 			<id>minecraft-libraries</id>
-			<url>http://download.minecraft.net/libraries</url>
+			<url>https://s3.amazonaws.com/Minecraft.Download/libraries</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
