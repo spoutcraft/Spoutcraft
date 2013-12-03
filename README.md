@@ -39,7 +39,7 @@ This project uses Maven to handle its dependencies.
 [Forums]: http://spoutcraft.org/forums/
 [License]: http://www.gnu.org/licenses/lgpl.html
 [Technic Launcher]: http://www.technicpack.net/download
-[Download]: http://spoutcraft.org/download/
+[Download]: http://spoutcraft.org/downloads/
 [Source]: https://github.com/Spoutcraft/Spoutcraft
 [Source Download]: https://github.com/Spoutcraft/Spoutcraft/archive/master.zip
 [Issues]: http://spoutcraft.org/issues/
