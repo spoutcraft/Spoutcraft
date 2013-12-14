@@ -50,8 +50,8 @@ public class AccessoryHandler {
 
 	public static void addAccessory(String player, Accessory n, String url) {
 		TextureManager tm= Minecraft.getMinecraft().getTextureManager();
-		Object texture = new ThreadDownloadImageData(url, new ResourceLocation("accessories/" + n.getType().toString()+ ".png"), new HDImageBufferDownload());		
-		tm.loadTexture(new ResourceLocation("accessories/" + n.getType().toString()+ ".png"), (TextureObject)texture);
+		Object texture = new ThreadDownloadImageData(url, (ResourceLocation)null, new HDImageBufferDownload());		
+		tm.loadTexture(new ResourceLocation("accessories/" + n.getType().toString()), (TextureObject)texture);
 		
 		Set<Pair<Accessory, String>> acs = sacs.get(player);
 		if (acs == null) {
@@ -76,7 +76,7 @@ public class AccessoryHandler {
 			return;
 		}
 		for (Pair<Accessory, String> a : acs) {
-			RenderManager.instance.renderEngine.bindTexture(new ResourceLocation("accessories/" + a.getLeft().getType().toString() + ".png"));
+			RenderManager.instance.renderEngine.bindTexture(new ResourceLocation("accessories/" + a.getLeft().getType().toString()));
 			a.getLeft().render(player, f, par2);
 		}
 	}
