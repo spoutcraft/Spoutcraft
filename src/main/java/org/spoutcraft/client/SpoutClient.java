@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org//>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -74,7 +74,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private static final Thread dataMiningThread = new DataMiningThread();
 	private static final String version = "Unknown Version";
 	public static final String spoutcraftVersion = "1.6.4";
-	public static final String spoutcraftBuild = " - b4";
+	public static final String spoutcraftBuild = " - b6";
 	private final SimpleSkyManager skyManager = new SimpleSkyManager();
 	private final PacketManager packetManager = new PacketManager();
 	private final BiomeManager biomeManager = new SimpleBiomeManager();

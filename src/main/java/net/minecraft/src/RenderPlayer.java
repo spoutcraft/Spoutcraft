@@ -116,6 +116,11 @@ public class RenderPlayer extends RenderLiving {
 		if (par1AbstractClientPlayer.isSneaking() && !(par1AbstractClientPlayer instanceof EntityPlayerSP)) {
 			var14 -= 0.125D;
 		}
+		
+		// Spout Start - VIP
+		if (!AccessoryHandler.isHandled(par1AbstractClientPlayer.username)) {
+			AccessoryHandler.addVIPAccessoriesFor(par1AbstractClientPlayer);
+		}
 
 		super.doRenderLiving(par1AbstractClientPlayer, par2, var14, par6, par8, par9);
 		this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow = this.modelBipedMain.aimedBow = false;
@@ -166,6 +171,12 @@ public class RenderPlayer extends RenderLiving {
 
 			GL11.glPopMatrix();
 		}
+		
+		// Spout Start
+		if (!par1AbstractClientPlayer.isInvisible()){
+			AccessoryHandler.renderAllAccessories(par1AbstractClientPlayer, 0.0625F, par2);
+		}
+		// Spout End
 
 		if (par1AbstractClientPlayer.getCommandSenderName().equals("deadmau5") && par1AbstractClientPlayer.getTextureSkin().isTextureUploaded()) {
 			this.bindTexture(par1AbstractClientPlayer.getLocationSkin());

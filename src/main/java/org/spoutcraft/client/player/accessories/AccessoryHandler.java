@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org//>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -31,6 +31,10 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.RenderManager;
 import net.minecraft.src.RenderPlayer;
+import net.minecraft.src.TextureManager;
+import net.minecraft.src.ResourceLocation;
+import net.minecraft.src.ThreadDownloadImageData;
+import net.minecraft.src.TextureObject;
 
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.special.VIP;
@@ -45,11 +49,10 @@ public class AccessoryHandler {
 	}
 
 	public static void addAccessory(String player, Accessory n, String url) {
-		if (!(downloaded.contains(url))) {
-			//ToDo: Broken
-			//Minecraft.getMinecraft().renderEngine.obtainImageData(url, new HDImageBufferDownload());
-			downloaded.add(url);
-		}
+		TextureManager tm= Minecraft.getMinecraft().getTextureManager();
+		Object texture = new ThreadDownloadImageData(url, new ResourceLocation("accessories/" + n.getType().toString()+ ".png"), new HDImageBufferDownload());		
+		tm.loadTexture(new ResourceLocation("accessories/" + n.getType().toString()+ ".png"), (TextureObject)texture);
+		
 		Set<Pair<Accessory, String>> acs = sacs.get(player);
 		if (acs == null) {
 			acs = new HashSet<Pair<Accessory, String>>();
@@ -73,11 +76,8 @@ public class AccessoryHandler {
 			return;
 		}
 		for (Pair<Accessory, String> a : acs) {
-			//ToDo: Broken
-			/*
-			if (renderer.loadDownloadableImageTexture(a.getRight(), null)) {
-				a.getLeft().render(player, f, par2);
-			} */
+			RenderManager.instance.renderEngine.bindTexture(new ResourceLocation("accessories/" + a.getLeft().getType().toString() + ".png"));
+			a.getLeft().render(player, f, par2);
 		}
 	}
 
