@@ -51,6 +51,7 @@ import org.spoutcraft.client.gui.settings.controls.MusicSlider;
 import org.spoutcraft.client.gui.settings.controls.OptimalGameplayButton;
 import org.spoutcraft.client.gui.settings.controls.ResetButton;
 import org.spoutcraft.client.gui.settings.controls.SoundEffectsSlider;
+import org.spoutcraft.client.gui.settings.controls.TexturesButton;
 
 public class GuiSimpleOptions extends GuiScreen {
 	GuiScreen parent = null;
@@ -84,7 +85,7 @@ public class GuiSimpleOptions extends GuiScreen {
 
 		int left = (int)(width / 2  - 155);
 		int right = (int)(width / 2 + 5);
-		int center = (int)(width / 2 - 80);
+		int center = (int)(width / 2 - 75);
 
 		control = new ResetButton(parent).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
@@ -135,6 +136,11 @@ public class GuiSimpleOptions extends GuiScreen {
 
 		control = new DifficultyButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		top += 22;
+		
+		control = new TexturesButton(this).setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(center).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 

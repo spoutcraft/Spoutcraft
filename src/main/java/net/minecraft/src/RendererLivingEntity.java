@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
 import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.player.accessories.AccessoryHandler;
@@ -457,9 +457,7 @@ public abstract class RendererLivingEntity extends Render {
 			EntityPlayer par1EntityPlayer = (EntityPlayer) par1EntityLiving;
 			
 			if (!par1EntityPlayer.isInvisible()) {
-				
-				if(Minecraft.isGuiEnabled() && (par1EntityPlayer != this.renderManager.livingPlayer || (Minecraft.theMinecraft.gameSettings.thirdPersonView != 0 && Minecraft.theMinecraft.currentScreen == null))) {
-					
+				if(Minecraft.isGuiEnabled() && (par1EntityPlayer != this.renderManager.livingPlayer || (Minecraft.theMinecraft.gameSettings.thirdPersonView != 0 && Minecraft.theMinecraft.currentScreen == null))) {					
 					float var8 = 1.6F;
 					float var9 = 0.016666668F * var8;
 					double var10 = par1EntityPlayer.getDistanceSqToEntity(this.renderManager.livingPlayer);
@@ -473,7 +471,11 @@ public abstract class RendererLivingEntity extends Render {
 							title = vip.getTitle();
 							var92 = vip.getScale();
 						} else {
-							title = par1EntityPlayer.displayName;
+							if (par1EntityPlayer.displayName != null) {
+								title = par1EntityPlayer.displayName;
+							} else {
+								title = par1EntityPlayer.getEntityName();
+							}
 						}
 						float alpha = 0.25F;
 						

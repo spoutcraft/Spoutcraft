@@ -28,7 +28,7 @@ public class RenderPlayer extends RenderLiving {
 	/**
 	 * Set the specified armor model as the player model. Args: player, armorSlot, partialTick
 	 */
-	//ToDo: Missing Spoutcraft API Custom Armor API code
+	
 	protected int setArmorModel(AbstractClientPlayer par1AbstractClientPlayer, int par2, float par3) {
 		ItemStack var4 = par1AbstractClientPlayer.inventory.armorItemInSlot(3 - par2);
 
@@ -121,7 +121,7 @@ public class RenderPlayer extends RenderLiving {
 		if (!AccessoryHandler.isHandled(par1AbstractClientPlayer.username)) {
 			AccessoryHandler.addVIPAccessoriesFor(par1AbstractClientPlayer);
 		}
-
+		// Spout End - VIP
 		super.doRenderLiving(par1AbstractClientPlayer, par2, var14, par6, par8, par9);
 		this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow = this.modelBipedMain.aimedBow = false;
 		this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = false;
@@ -135,7 +135,7 @@ public class RenderPlayer extends RenderLiving {
 	/**
 	 * Method for adding special render rules
 	 */
-	//ToDo: missing Accessorize API code and CustomMaterial code
+	
 	protected void renderSpecials(AbstractClientPlayer par1AbstractClientPlayer, float par2) {
 		float var3 = 1.0F;
 		GL11.glColor3f(var3, var3, var3);

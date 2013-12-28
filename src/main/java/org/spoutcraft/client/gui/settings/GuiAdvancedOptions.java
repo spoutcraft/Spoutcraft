@@ -102,6 +102,7 @@ import org.spoutcraft.client.gui.settings.controls.SmoothLightingSlider;
 import org.spoutcraft.client.gui.settings.controls.SnooperButton;
 import org.spoutcraft.client.gui.settings.controls.SoundEffectsSlider;
 import org.spoutcraft.client.gui.settings.controls.StarsToggleButton;
+import org.spoutcraft.client.gui.settings.controls.TexturesButton;
 import org.spoutcraft.client.gui.settings.controls.TimeButton;
 import org.spoutcraft.client.gui.settings.controls.ViewBobbingButton;
 import org.spoutcraft.client.gui.settings.controls.VoidFogButton;
@@ -202,6 +203,11 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		control = new DifficultyButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		top += 22;
+
+		control = new TexturesButton(this).setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(center).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
