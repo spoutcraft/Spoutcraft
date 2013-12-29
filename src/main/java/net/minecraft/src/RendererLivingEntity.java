@@ -2,10 +2,12 @@ package net.minecraft.src;
 
 import java.util.Random;
 
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.player.accessories.AccessoryHandler;
 import org.spoutcraft.client.player.accessories.AccessoryType;
 import org.spoutcraft.client.special.VIP;
@@ -383,73 +385,27 @@ public abstract class RendererLivingEntity extends Render {
 	 * Passes the specialRender and renders it
 	 */
 	
-	/*
-	protected void passSpecialRender(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6) {
-		if (this.specialRender(par1EntityLivingBase)) {
-			float var8 = 1.6F;
-			float var9 = 0.016666668F * var8;
-			double var10 = par1EntityLivingBase.getDistanceSqToEntity(this.renderManager.livingPlayer);
-			float var12 = par1EntityLivingBase.isSneaking() ? 32.0F : 64.0F;
-			
-			if (var10 < (double)(var12 * var12)) {
-				String var13 = par1EntityLivingBase.getTranslatedEntityName();
-				if (par1EntityLivingBase instanceof EntityPlayer) {
-					System.out.println("Trying to display: " + var13);
-				}
-				if (par1EntityLivingBase.isSneaking()) {
-					FontRenderer var14 = this.getFontRendererFromRenderManager();
-					GL11.glPushMatrix();
-					GL11.glTranslatef((float)par2 + 0.0F, (float)par4 + par1EntityLivingBase.height + 0.5F, (float)par6);
-					GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-					GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-					GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-					GL11.glScalef(-var9, -var9, var9);
-					GL11.glDisable(GL11.GL_LIGHTING);
-					GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
-					GL11.glDepthMask(false);
-					GL11.glEnable(GL11.GL_BLEND);
-					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-					Tessellator var15 = Tessellator.instance;
-					GL11.glDisable(GL11.GL_TEXTURE_2D);
-					var15.startDrawingQuads();
-					int var16 = var14.getStringWidth(var13) / 2;
-					var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-					var15.addVertex((double)(-var16 - 1), -1.0D, 0.0D);
-					var15.addVertex((double)(-var16 - 1), 8.0D, 0.0D);
-					var15.addVertex((double)(var16 + 1), 8.0D, 0.0D);
-					var15.addVertex((double)(var16 + 1), -1.0D, 0.0D);
-					var15.draw();
-					GL11.glEnable(GL11.GL_TEXTURE_2D);
-					GL11.glDepthMask(true);
-					var14.drawString(var13, -var14.getStringWidth(var13) / 2, 0, 553648127);
-					GL11.glEnable(GL11.GL_LIGHTING);
-					GL11.glDisable(GL11.GL_BLEND);
-					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-					GL11.glPopMatrix();
-				} else {
-					this.func_96449_a(par1EntityLivingBase, par2, par4, par6, var13, var9, var10);
-				}
-			}
-		}
-	}
-	
-	*/
-	
 	protected boolean specialRender(EntityLivingBase par1EntityLivingBase) {
 		return Minecraft.isGuiEnabled() && par1EntityLivingBase != this.renderManager.livingPlayer && !par1EntityLivingBase.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer) && par1EntityLivingBase.riddenByEntity == null;
 	}	
 	
 	protected void passSpecialRender(EntityLivingBase par1EntityLiving, double par2, double par4, double par6) {
-		// Spout Start - Include renderName method here previously located in RenderPlayer.
-		if (!(par1EntityLiving instanceof EntityPlayer)) { // Renderer for Entities since they can have a custom name (wolves for example)
+		// Spout Start
+		if (!(par1EntityLiving instanceof EntityPlayer)) {
 			if (Minecraft.isDebugInfoEnabled() && SpoutClient.getInstance().isEntityLabelCheat()) {
-				this.renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4, par6, 64);
-			} else if (par1EntityLiving == this.renderManager.field_96451_i) {
+				this.renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4, par6, 64); // Debug Entity ID 			
+			} else if (Configuration.displayEntityNamesinRange) {
 				String title = par1EntityLiving.getTranslatedEntityName();
+				if (Configuration.displayAnimalHeatinColor && par1EntityLiving instanceof EntityAnimal) {
+					EntityAnimal animal = (EntityAnimal) par1EntityLiving;
+					if (animal.getGrowingAge() == 0 && !animal.isInLove()) { // Animal is in heat.
+						title = ChatColor.DARK_AQUA + title;
+					}
+				}
 				if (title != null && !title.equals("[hide]")) {
 					String lines[] = title.split("\\n");
 					for (int i = 0; i < lines.length; i++){
-						renderLivingLabel(par1EntityLiving, lines[i], par2, par4 + (0.275D * (lines.length - i - 1)), par6, 64);
+						renderLivingLabel(par1EntityLiving, lines[i], par2, par4 + (0.275D * (lines.length - i - 1)), par6, 8); // Render Entity Name @ 64 sqft distance and below.				
 					}
 				}
 			}
@@ -478,6 +434,10 @@ public abstract class RendererLivingEntity extends Render {
 							}
 						}
 						float alpha = 0.25F;
+						
+						if (!Configuration.displayPlayerNames3rdPerson && par1EntityPlayer == this.renderManager.livingPlayer) {
+							return;
+						}
 						
 						if (!title.equals("[hide]")) {
 							String lines[] = title.split("\\n");
@@ -559,7 +519,6 @@ public abstract class RendererLivingEntity extends Render {
 	 */
 	protected void renderLivingLabel(EntityLivingBase par1EntityLivingBase, String par2Str, double par3, double par5, double par7, int par9) {
 		double var10 = par1EntityLivingBase.getDistanceSqToEntity(this.renderManager.livingPlayer);
-
 		if (var10 <= (double)(par9 * par9)) {
 			FontRenderer var12 = this.getFontRendererFromRenderManager();
 			float var13 = 1.6F;

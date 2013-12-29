@@ -59,7 +59,10 @@ import org.spoutcraft.client.gui.settings.controls.ConnectedTexturesButton;
 import org.spoutcraft.client.gui.settings.controls.ControlsButton;
 import org.spoutcraft.client.gui.settings.controls.DelayedTooltipCheckbox;
 import org.spoutcraft.client.gui.settings.controls.DifficultyButton;
+import org.spoutcraft.client.gui.settings.controls.DisplayAnimalHeatinColorButton;
 import org.spoutcraft.client.gui.settings.controls.DisplayCustomParticlesButton;
+import org.spoutcraft.client.gui.settings.controls.DisplayPlayerNames3rdPersonButton;
+import org.spoutcraft.client.gui.settings.controls.DisplayEntityNamesinRangeButton;
 import org.spoutcraft.client.gui.settings.controls.FancyCloudsButton;
 import org.spoutcraft.client.gui.settings.controls.FancyFogButton;
 import org.spoutcraft.client.gui.settings.controls.FancyGraphicsButton;
@@ -363,19 +366,16 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control = new ConnectedTexturesButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget("Spoutcraft", control);
-
-		control = new ServerLightButton().setAlign(WidgetAnchor.TOP_CENTER);
+		
+		control = new DisplayAnimalHeatinColorButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
+
 
 		top += 22;
 
 		control = new RandomMobTextureButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget("Spoutcraft", control);
-
-		control = new AmbientOcclusionButton().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
@@ -385,6 +385,24 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.attachWidget("Spoutcraft", control);
 		
 		control = new DisplayCustomParticlesButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+
+		top += 22;
+		control = new ServerLightButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		
+		control = new DisplayEntityNamesinRangeButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+
+		top += 22;
+		control = new AmbientOcclusionButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		
+		control = new DisplayPlayerNames3rdPersonButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 

@@ -97,6 +97,9 @@ public class Configuration {
 	public static int aaSampling = 0;
 	public static boolean optimizedLightingUpdates = false;
 	public static boolean displayCustomParticles = false;
+	public static boolean displayEntityNamesinRange = false;
+	public static boolean displayPlayerNames3rdPerson = true;
+	public static boolean displayAnimalHeatinColor = false;
 
 	// Config specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
@@ -774,6 +777,33 @@ public class Configuration {
 	
 	public static synchronized void setDisplayCustomParticles(boolean displayCustomParticles) {
 		Configuration.displayCustomParticles = displayCustomParticles;
+		onPropertyChange();
+	}
+	
+	public static synchronized boolean isDisplayEntityNamesinRange() {
+		return displayEntityNamesinRange;
+	}
+	
+	public static synchronized void setDisplayEntityNamesinRange(boolean var1) {
+		Configuration.displayEntityNamesinRange = var1;
+		onPropertyChange();
+	}
+	
+	public static synchronized boolean isDisplayAnimalHeatinColor() {
+		return displayAnimalHeatinColor;
+	}
+	
+	public static synchronized void setDisplayAnimalHeatinColor(boolean var1) {
+		Configuration.displayAnimalHeatinColor = var1;
+		onPropertyChange();
+	}
+	
+	public static synchronized boolean isDisplayPlayerNames3rdPerson() {
+		return displayPlayerNames3rdPerson;
+	}
+	
+	public static synchronized void setDisplayPlayerNames3rdPerson(boolean var1) {
+		Configuration.displayPlayerNames3rdPerson = var1;
 		onPropertyChange();
 	}
 }
