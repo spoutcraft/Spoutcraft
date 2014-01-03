@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.bukkit.ChatColor;
 
 import net.minecraft.src.Minecraft;
 import net.minecraft.src.EntityPlayer;
@@ -37,6 +38,7 @@ import net.minecraft.src.ThreadDownloadImageData;
 import net.minecraft.src.TextureObject;
 
 import org.spoutcraft.client.HDImageBufferDownload;
+import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.client.special.VIP;
 
 public class AccessoryHandler {
@@ -82,7 +84,8 @@ public class AccessoryHandler {
 	}
 
 	public static void addVIPAccessoriesFor(EntityPlayer player) {
-		VIP vip = player.vip;
+		String cleanUserName = ChatColor.stripColor(player.username);
+		VIP vip = Resources.getVIP(cleanUserName);
 		if (vip == null) {
 			return;
 		}
