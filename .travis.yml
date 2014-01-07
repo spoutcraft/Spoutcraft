@@ -5,7 +5,7 @@ jdk: oraclejdk7
 # Perform steps before compile/package
 before_install:
   # Install older version of Maven (3.0.5) for compatibility
-  - "cd /usr/local && wget http://apache.spinellicreations.com/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz && tar -xzf apache-maven-3.0.5-bin.tar.gz && ln -s apache-maven-3.0.5-bin maven && export PATH=/usr/local/maven/bin:${PATH}"
+  - "sudo cd /usr/local && sudo wget http://apache.spinellicreations.com/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz && sudo tar -xzf apache-maven-3.0.5-bin.tar.gz && sudo ln -s apache-maven-3.0.5-bin maven && sudo export PATH=/usr/local/maven/bin:${PATH}"
 
 # Compile and package JAR and set build properties
 install: mvn clean package -Pmcp-final-unix -DbuildNumber=$TRAVIS_BUILD_NUMBER -DciSystem=travis -Dcommit=${TRAVIS_COMMIT:0:7}
