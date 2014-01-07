@@ -2,14 +2,27 @@
 language: java
 jdk: oraclejdk7
 
+# Perform steps before compile/package
+before_install:
+  - "whereis maven"
+
 # Compile and package JAR and set build properties.
 install: mvn clean package -Pmcp-final-unix -DbuildNumber=$TRAVIS_BUILD_NUMBER -DciSystem=travis -Dcommit=${TRAVIS_COMMIT:0:7}
+
+# Perform steps after compilation/test success
 after_success:
   # TODO: Add deployment to downloads site.
 
+# Notification services
 notifications:
   # Disable build status email notifications, until the issue with forks is fixed.
   email: false
   webhooks:
     # Send build information and status to Notifico.
     - http://n.tkte.ch/h/515/XKi-6poJeJINy51JH0bWKXZh
+
+# Environmental system variables
+env:
+  global:
+    # Make the log output cleaner
+    - TERM=dumb
