@@ -1,15 +1,29 @@
-# Source language and JDK version to use.
+# Source language and JDK version to use
 language: java
 jdk: oraclejdk7
 
-# Compile and package JAR and set build properties.
-install: mvn clean package -Pmcp-final-unix -DbuildNumber=$TRAVIS_BUILD_NUMBER -DciSystem=travis -Dcommit=${TRAVIS_COMMIT:0:7}
-after_success:
-  # TODO: Add deployment to downloads site.
+# Perform steps before compile/package
+before_install:
+  # Install older version of Maven (3.0.5) for compatibility
+  - "cd /usr/local && sudo wget http://apache.spinellicreations.com/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz && sudo tar -xzf apache-maven-3.0.5-bin.tar.gz && sudo ln -s apache-maven-3.0.5-bin maven && export PATH=/usr/local/maven/bin:${PATH} && cd $TRAVIS_BUILD_DIR"
 
+# Compile and package JAR and set build properties
+install: mvn clean package -Pmcp-final-unix -DbuildNumber=$TRAVIS_BUILD_NUMBER -DciSystem=travis -Dcommit=${TRAVIS_COMMIT:0:7}
+
+# Perform steps after compilation/test success
+after_success:
+  # TODO: Add deployment to downloads site
+
+# Notification services
 notifications:
-  # Disable build status email notifications, until the issue with forks is fixed.
+  # Disable build status email notifications, until the issue with forks is fixed
   email: false
   webhooks:
-    # Send build information and status to Notifico.
+    # Send build information and status to Notifico
     - http://n.tkte.ch/h/515/XKi-6poJeJINy51JH0bWKXZh
+
+# Environmental system variables
+env:
+  global:
+    # Make the log output cleaner
+    - TERM=dumb

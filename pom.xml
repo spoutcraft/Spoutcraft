@@ -80,11 +80,7 @@
 		</repository>
 		<repository>
 			<id>minecraft-libraries</id>
-			<url>https://s3.amazonaws.com/Minecraft.Download/libraries</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
+			<url>https://libraries.minecraft.net</url>
 		</repository>
 		<repository>
 			<id>sonatype-nexus-releases</id>
