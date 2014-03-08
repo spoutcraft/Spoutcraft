@@ -41,7 +41,7 @@ public class Configuration {
 	private static boolean waterBiomeColors = true;
 	private static float brightnessSlider = 1F;
 	public static boolean chatColorAssist = false;
-	private static boolean fancyClouds = false;
+	public static boolean fancyClouds = false;
 	private static boolean fancyFog = false;
 	private static boolean fancyGraphics = false;
 	public static boolean fancyGrass = false;
@@ -100,6 +100,7 @@ public class Configuration {
 	public static boolean displayEntityNamesinRange = false;
 	public static boolean displayPlayerNames3rdPerson = true;
 	public static boolean displayAnimalHeatinColor = false;
+	public static boolean fancyItems = true;
 
 	// Config specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
@@ -804,6 +805,15 @@ public class Configuration {
 	
 	public static synchronized void setDisplayPlayerNames3rdPerson(boolean var1) {
 		Configuration.displayPlayerNames3rdPerson = var1;
+		onPropertyChange();
+	}
+	
+	public static synchronized boolean isFancyItems() {
+		return fancyItems;
+	}
+	
+	public static synchronized void setFancyItems(boolean var1) {
+		Configuration.fancyItems = var1;
 		onPropertyChange();
 	}
 }

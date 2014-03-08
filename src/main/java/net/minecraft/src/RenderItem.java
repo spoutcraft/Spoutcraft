@@ -11,6 +11,7 @@ import org.spoutcraft.api.block.design.BlockDesign;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.Configuration;
 
 //Spout Start
 //Spout End
@@ -31,22 +32,7 @@ public class RenderItem extends Render {
 		this.shadowSize = 0.15F;
 		this.shadowOpaque = 0.75F;
 	}
-
-	// Spout Start
-	//ToDO: Render bindTexture calls no longer implemented like this
-	/*
-	@Override
-	protected void loadTexture(String texture) {
-		if (this.renderManager != null && this.renderManager.renderEngine != null) {
-			int textureId = this.renderManager.renderEngine.getTexture(texture);
-			if (textureId >= 0) {
-
-				//this.renderManager.renderEngine.bindTexture(textureId);
-			}
-		}
-	}
-	// Spout End
-	 */
+	
 	/**
 	 * Renders the item
 	 */
@@ -260,7 +246,7 @@ public class RenderItem extends Render {
 		}
 		// Spout End
 
-		if (this.renderManager.options.fancyGraphics) {
+		if (this.renderManager.options.fancyGraphics || Configuration.fancyItems) {
 			GL11.glPushMatrix();
 
 			if (renderInFrame) {

@@ -67,6 +67,7 @@ import org.spoutcraft.client.gui.settings.controls.FancyCloudsButton;
 import org.spoutcraft.client.gui.settings.controls.FancyFogButton;
 import org.spoutcraft.client.gui.settings.controls.FancyGraphicsButton;
 import org.spoutcraft.client.gui.settings.controls.FancyGrassButton;
+import org.spoutcraft.client.gui.settings.controls.FancyItemsButton;
 import org.spoutcraft.client.gui.settings.controls.FancyLightingButton;
 import org.spoutcraft.client.gui.settings.controls.FancyParticlesButton;
 import org.spoutcraft.client.gui.settings.controls.FancyTreesButton;
@@ -366,16 +367,20 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control = new ConnectedTexturesButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget("Spoutcraft", control);
-		
-		control = new DisplayAnimalHeatinColorButton().setAlign(WidgetAnchor.TOP_CENTER);
+
+		control = new FancyItemsButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
-
+		graphicCheckboxes.add((CheckBox) control);
 
 		top += 22;
 
 		control = new RandomMobTextureButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		
+		control = new DisplayAnimalHeatinColorButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 
 		top += 22;
