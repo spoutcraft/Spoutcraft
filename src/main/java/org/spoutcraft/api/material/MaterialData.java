@@ -576,7 +576,6 @@ public class MaterialData {
 	public static final Item diamondHorseArmor = new GenericItem("Diamond Horse Armor", 419);
 	public static final Item lead = new GenericItem("Lead", 420);
 	public static final Item nameTag = new GenericItem("Name Tag", 421);
-	public static final Item minecartCommandBlock = new GenericItem("Minecart Command Block", 422);
 	public static final Item goldMusicDisc = new GenericItem("Music Disc", 2256);
 	public static final Item greenMusicDisc = new GenericItem("Music Disc", 2257);
 	public static final Item orangeMusicDisc = new GenericItem("Music Disc", 2258);
