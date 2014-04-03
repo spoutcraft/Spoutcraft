@@ -19,11 +19,15 @@
  */
 package org.spoutcraft.client.packet;
 
+import net.minecraft.src.Minecraft;
+import net.minecraft.src.GuiConfirmOpenLink;
+
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 
 import java.io.IOException;
 import java.net.URL;
+
 
 public class PacketSendLink implements SpoutPacket {
     protected URL link;
@@ -44,7 +48,11 @@ public class PacketSendLink implements SpoutPacket {
 
     @Override
     public void run(int playerId) {
-        //TODO Do something interesting here Dockter
+    	if (link != null) {
+			try {
+				Minecraft.getMinecraft().displayGuiScreen(new GuiConfirmOpenLink(Minecraft.getMinecraft().currentScreen, link.toString(), 0, false));
+			} catch (Exception e) { }
+		}
     }
 
     @Override
