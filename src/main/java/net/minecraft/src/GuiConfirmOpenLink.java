@@ -47,6 +47,8 @@ public class GuiConfirmOpenLink extends GuiYesNo {
 				Sys.openURL(this.field_92028_p);
 			} catch (Exception e) {}
 			this.mc.displayGuiScreen(null);
+		} else if (par1GuiButton.id == 1) {
+			this.mc.displayGuiScreen(null);
 		}
 		// Spout End
 	}
