@@ -946,8 +946,8 @@ public class MCRenderDelegate implements RenderDelegate {
 				id = 318;
 				data = temp;
 			}
-			renderer.renderItemIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, new net.minecraft.src.ItemStack(id, genericSlot.doesRenderAmount() ? 0 : item.getAmount(), data), 0, 0);
-			renderer.renderItemOverlayIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, new net.minecraft.src.ItemStack(id, genericSlot.doesRenderAmount() ? 0 : item.getAmount(), data), 0, 0);
+			renderer.renderItemIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, new net.minecraft.src.ItemStack(id, !genericSlot.doesRenderAmount() ? 0 : item.getAmount(), data), 0, 0);
+			renderer.renderItemOverlayIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, new net.minecraft.src.ItemStack(id, !genericSlot.doesRenderAmount() ? 0 : item.getAmount(), data), 0, 0);
 		}
 		GL11.glEnable(GL11.GL_LIGHTING);
 		RenderHelper.disableStandardItemLighting();
