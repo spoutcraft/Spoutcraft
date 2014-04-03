@@ -70,4 +70,17 @@ public interface Slot extends Control {
 
 	public Slot setDepth(int depth);
 	public int getDepth();
+
+    /**
+     * Returns if Spoutcraft will render the amount of items in the {@link net.minecraft.src.ItemStack} within the slot
+     * @return True if the slot renders item amount, false if not
+     */
+    public boolean doesRenderAmount();
+
+    /**
+     * Sets if Spoutcraft will render the amount of items in the {@link net.minecraft.src.ItemStack} or not
+     * @param renderAmount True to render, false if not
+     * @return This object, for training
+     */
+    public Slot setRenderAmount(boolean renderAmount);
 }
