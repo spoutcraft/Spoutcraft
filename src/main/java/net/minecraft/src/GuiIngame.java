@@ -8,7 +8,6 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.InGameHUD;
 import org.spoutcraft.api.material.MaterialData;
@@ -335,7 +334,9 @@ public class GuiIngame extends Gui {
 					custom = Spoutcraft.getMaterialManager().getToolTip(new CraftItemStack(this.highlightingItemStack));
 				}
 				if (custom != null) {
-					var35 = custom;
+					String[] split = custom.split("\n");
+					String newCustom = split[0];
+					var35 = newCustom;
 				} else {
 					var35 = this.highlightingItemStack.getDisplayName();
 				}
