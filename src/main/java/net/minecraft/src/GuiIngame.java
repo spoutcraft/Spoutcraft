@@ -320,6 +320,7 @@ public class GuiIngame extends Gui {
 		float pHealth;
 		float ppHealth;
 
+		// Hotbar Text
 		if (Configuration.showHotbarText) {
 			String var35;
 			String custom = null;
