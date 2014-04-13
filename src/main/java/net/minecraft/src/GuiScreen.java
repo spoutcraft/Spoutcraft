@@ -313,7 +313,6 @@ public class GuiScreen extends Gui {
 				}
 				int amount = stackInSlot.getTypeId() == 0 ? 0 : stackInSlot.getAmount();
 				amount += putAmount;
-				System.out.println(amount);
 				int maxStackSize = toPut.getMaxStackSize();
 				if (maxStackSize == -1) {
 					maxStackSize = 64;
