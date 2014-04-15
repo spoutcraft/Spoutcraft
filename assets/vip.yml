@@ -48,6 +48,12 @@
 ####################
 #### VIP DONOR #####
 ####################
+"wifee":
+    "title": "Wifee"
+    "cape": "http://cdn.spout.org/img/cape/hd/1024x512/spout_1.png"
+     "scale": 0.75
+    "particles":
+        "flame": 20
 "wikwikwiki":
     "title": "wikwikwiki"
     "cape": "http://cdn.spout.org/img/cape/wikwikwiki_cape_1.png"
