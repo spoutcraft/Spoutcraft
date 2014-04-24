@@ -112,6 +112,8 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final WidgetManager widgetManager = new SimpleWidgetManager();
 	private final HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
 	private boolean active = false;
+	public boolean xrayMode = false;
+	public static int[] visibleBlocks = new int[] {133, 132, 131, 120, 129, 122, 120, 119, 118, 117, 116, 115, 111, 103, 100, 151, 152, 153, 154, 155, 158, 99, 98, 96, 95, 89, 85, 74, 73, 72, 71, 70, 66, 65, 59, 57, 56, 54, 52, 51, 50, 48, 46, 44, 43, 42, 41, 40, 39, 34, 33, 30, 29, 28, 27, 26, 25, 22, 21, 18, 17, 16, 15, 14, 11, 10, 9, 8, 5};
 
 	private SpoutClient() {
 		instance = this;

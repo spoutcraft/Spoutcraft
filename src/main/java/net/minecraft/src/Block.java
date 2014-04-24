@@ -10,6 +10,7 @@ import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.util.FastLocation;
 import org.spoutcraft.api.util.FixedLocation;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 public class Block {
 
@@ -369,7 +370,7 @@ public class Block {
 	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
 	 */
 	public boolean renderAsNormalBlock() {
-		return true;
+		return !SpoutClient.getInstance().xrayMode;
 	}
 
 	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
@@ -448,47 +449,68 @@ public class Block {
 	 */
 	// Spout Start
 	public float getBlockBrightness(IBlockAccess par1IBlockAccess, int x, int y, int z) {
-		int light = lightValue[par1IBlockAccess.getBlockId(x, y, z)];
-		if (customIds != null) {
-			int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 256);
-			short customId = customIds[key];
-			if (customId > 0) {
-				CustomBlock block = MaterialData.getCustomBlock(customId);
-				if (block != null) {
-					light = block.getLightLevel();
+		if (SpoutClient.getInstance().xrayMode) {
+			return 1000.0F;
+		} else {
+			int light = lightValue[par1IBlockAccess.getBlockId(x, y, z)];
+			if (customIds != null) {
+				int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 256);
+				short customId = customIds[key];
+				if (customId > 0) {
+					CustomBlock block = MaterialData.getCustomBlock(customId);
+					if (block != null) {
+						light = block.getLightLevel();
+					}
 				}
 			}
+			return par1IBlockAccess.getBrightness(x, y, z, light);
 		}
-		return par1IBlockAccess.getBrightness(x, y, z, light);
-	// Spout End
+		// Spout End
 	}
 
 	/**
 	 * Goes straight to getLightBrightnessForSkyBlocks for Blocks, does some fancy computing for Fluids
 	 */
 	// Spout Start
-	public int getMixedBrightnessForBlock(IBlockAccess par1IBlockAccess, int x, int y, int z) {
-		int light = lightValue[par1IBlockAccess.getBlockId(x, y, z)];
-		if (customIds != null) {
-			int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 256);
-			short customId = customIds[key];
-			if (customId > 0) {
-				CustomBlock block = MaterialData.getCustomBlock(customId);
-				if (block != null) {
-					light = block.getLightLevel();
+	public int getMixedBrightnessForBlock(IBlockAccess par1IBlockAccess, int x, int y, int z) {		
+		if (SpoutClient.getInstance().xrayMode) {
+			return 15728640;
+		} else {
+			int light = lightValue[par1IBlockAccess.getBlockId(x, y, z)];
+			if (customIds != null) {
+				int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 256);
+				short customId = customIds[key];
+				if (customId > 0) {
+					CustomBlock block = MaterialData.getCustomBlock(customId);
+					if (block != null) {
+						light = block.getLightLevel();
+					}
 				}
 			}
+			return par1IBlockAccess.getLightBrightnessForSkyBlocks(x, y, z, light);
 		}
-		return par1IBlockAccess.getLightBrightnessForSkyBlocks(x, y, z, light);
-	// Spout End
+		// Spout End
 	}
 
 	/**
 	 * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
 	 * coordinates.  Args: blockAccess, x, y, z, side
 	 */
-	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-		return par5 == 0 && this.minY > 0.0D ? true : (par5 == 1 && this.maxY < 1.0D ? true : (par5 == 2 && this.minZ > 0.0D ? true : (par5 == 3 && this.maxZ < 1.0D ? true : (par5 == 4 && this.minX > 0.0D ? true : (par5 == 5 && this.maxX < 1.0D ? true : !par1IBlockAccess.isBlockOpaqueCube(par2, par3, par4))))));
+	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {		
+		int[] var6;
+		int var7;
+
+		if (SpoutClient.getInstance().xrayMode) {
+			var6 = SpoutClient.getInstance().visibleBlocks;
+			for (var7 = 0; var7 < var6.length; ++var7) {
+				if (this.blockID == var6[var7]) {
+					return true;
+				}
+			}
+			return false;
+		} else {
+			return par5 == 0 && this.minY > 0.0D ? true : (par5 == 1 && this.maxY < 1.0D ? true : (par5 == 2 && this.minZ > 0.0D ? true : (par5 == 3 && this.maxZ < 1.0D ? true : (par5 == 4 && this.minX > 0.0D ? true : (par5 == 5 && this.maxX < 1.0D ? true : !par1IBlockAccess.isBlockOpaqueCube(par2, par3, par4))))));
+		}
 	}
 
 	/**

@@ -8,6 +8,7 @@ import java.util.UUID;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.EntityPlayer;
 
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.entity.CraftEntityFactory;
 
 public abstract class Entity {
@@ -280,7 +281,7 @@ public abstract class Entity {
 	 */
 	protected void setSize(float par1, float par2) {
 		float var3;
-		
+
 		if (par1 != this.width || par2 != this.height) {
 			var3 = this.width;			
 			this.width = par1;
@@ -518,7 +519,7 @@ public abstract class Entity {
 		List var8 = this.worldObj.getCollidingBoundingBoxes(this, var7);
 		return !var8.isEmpty() ? false : !this.worldObj.isAnyLiquid(var7);
 	}
-	
+
 	/**
 	 * Tries to moves the entity by the passed in displacement. Args: x, y, z
 	 */
@@ -891,7 +892,7 @@ public abstract class Entity {
 	public boolean interactFirst(EntityPlayer par1EntityPlayer) {
 		return false;
 	}
-	
+
 	/**
 	 * returns the bounding box for this entity
 	 */
@@ -986,7 +987,7 @@ public abstract class Entity {
 
 	public boolean isInsideOfMaterial(Material material, float offset) {
 		double var2 = this.posY + (double)this.getEyeHeight() + offset;
-	// Spout End
+		// Spout End
 		int var4 = MathHelper.floor_double(this.posX);
 		int var5 = MathHelper.floor_float((float)MathHelper.floor_double(var2));
 		int var6 = MathHelper.floor_double(this.posZ);
@@ -994,7 +995,7 @@ public abstract class Entity {
 
 		// Spout Start
 		if (var7 != 0 && Block.blocksList[var7].blockMaterial == material) {
-		// Spout End
+			// Spout End
 			float var8 = BlockFluid.getFluidHeightPercent(this.worldObj.getBlockMetadata(var4, var5, var6)) - 0.11111111F;
 			float var9 = (float)(var5 + 1) - var8;
 			return var2 < (double)var9;
@@ -1042,9 +1043,13 @@ public abstract class Entity {
 		int var3 = MathHelper.floor_double(this.posZ);
 
 		if (this.worldObj.blockExists(var2, 0, var3)) {
-			double var4 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66D;
-			int var6 = MathHelper.floor_double(this.posY - (double)this.yOffset + var4);
-			return this.worldObj.getLightBrightnessForSkyBlocks(var2, var6, var3, 0);
+			if (SpoutClient.getInstance().xrayMode) {
+				return 15728640;
+			} else {
+				double var4 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66D;
+				int var6 = MathHelper.floor_double(this.posY - (double)this.yOffset + var4);
+				return this.worldObj.getLightBrightnessForSkyBlocks(var2, var6, var3, 0);
+			}
 		} else {
 			return 0;
 		}
@@ -1058,9 +1063,13 @@ public abstract class Entity {
 		int var3 = MathHelper.floor_double(this.posZ);
 
 		if (this.worldObj.blockExists(var2, 0, var3)) {
-			double var4 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66D;
-			int var6 = MathHelper.floor_double(this.posY - (double)this.yOffset + var4);
-			return this.worldObj.getLightBrightness(var2, var6, var3);
+			if (SpoutClient.getInstance().xrayMode) {
+				return 1000.0F;
+			} else {
+				double var4 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66D;
+				int var6 = MathHelper.floor_double(this.posY - (double)this.yOffset + var4);
+				return this.worldObj.getLightBrightness(var2, var6, var3);
+			}
 		} else {
 			return 0.0F;
 		}
@@ -1260,7 +1269,7 @@ public abstract class Entity {
 	 * riders.
 	 */
 	public boolean writeMountToNBT(NBTTagCompound par1NBTTagCompound) {
-		
+
 		String var2 = this.getEntityString();
 
 		if (!this.isDead && var2 != null) {
@@ -1378,11 +1387,11 @@ public abstract class Entity {
 			}
 			// Spout End
 			this.readEntityFromNBT(par1NBTTagCompound);
-			
+
 			if (this.shouldSetPosAfterLoading()) {
 				this.setPosition(this.posX, this.posY, this.posZ);
 			}
-			
+
 		} catch (Throwable var5) {
 			CrashReport var3 = CrashReport.makeCrashReport(var5, "Loading entity NBT");
 			CrashReportCategory var4 = var3.makeCategory("Entity being loaded");
@@ -1394,7 +1403,7 @@ public abstract class Entity {
 	protected boolean shouldSetPosAfterLoading() {
 		return true;
 	}
-	
+
 	/**
 	 * Returns the string that identifies this Entity's class
 	 */
@@ -1622,7 +1631,7 @@ public abstract class Entity {
 			par1Entity.riddenByEntity = this;
 		}
 	}
-	
+
 	/**
 	 * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX, posY,
 	 * posZ, yaw, pitch
@@ -1785,7 +1794,7 @@ public abstract class Entity {
 	 */
 	// Spout Start - protected to public
 	public void setFlag(int par1, boolean par2) {
-	// Spout End
+		// Spout End
 		byte var3 = this.dataWatcher.getWatchableObjectByte(0);
 
 		if (par2) {
@@ -2004,7 +2013,7 @@ public abstract class Entity {
 				var5 = var2.worldServerForDimension(0);
 				this.dimension = 0;
 			}
-			
+
 			this.worldObj.removeEntity(this);
 			this.isDead = false;
 			this.worldObj.theProfiler.startSection("reposition");
@@ -2014,13 +2023,13 @@ public abstract class Entity {
 
 			if (var6 != null) {
 				var6.copyDataFrom(this, true);
-				
+
 				if (var3 == 1 && par1 == 1) {
 					ChunkCoordinates var7 = var5.getSpawnPoint();
 					var7.posY = this.worldObj.getTopSolidOrLiquidBlock(var7.posX, var7.posZ);
 					var6.setLocationAndAngles((double)var7.posX, (double)var7.posY, (double)var7.posZ, var6.rotationYaw, var6.rotationPitch);
 				}
-				
+
 				var5.spawnEntityInWorld(var6);
 			}
 
@@ -2077,7 +2086,7 @@ public abstract class Entity {
 	public boolean canRenderOnFire() {
 		return this.isBurning();
 	}
-	
+
 	public UUID getUniqueID() {
 		return this.entityUniqueID;
 	}
