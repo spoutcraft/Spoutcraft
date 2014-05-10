@@ -62,12 +62,8 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
 
 	private static ThreadDownloadImageData getDownloadImage(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer) {
 		TextureManager var4 = Minecraft.getMinecraft().getTextureManager();
-		Object var5 = var4.getTexture(par0ResourceLocation); // Spout Removed -> Don't cache skin image objects.
-		
-		if (!(Minecraft.getMinecraft().currentScreen instanceof GuiDownloadTerrain)) {
-			var5 = null;
-		}
-		
+		Object var5 = var4.getTexture(par0ResourceLocation);
+
 		if (var5 == null) {		
 			var5 = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
 			var4.loadTexture(par0ResourceLocation, (TextureObject)var5);
