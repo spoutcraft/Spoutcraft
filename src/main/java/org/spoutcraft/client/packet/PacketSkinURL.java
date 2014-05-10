@@ -90,11 +90,12 @@ public class PacketSkinURL implements SpoutPacket {
 
 			if (!"none".equals(this.skinURL)) {
 				e.customSkinUrl = this.skinURL;
+				e.forceUpdate = true;
 			}
 			if (!"none".equals(this.cloakURL)) {
 				e.customCapeUrl = this.cloakURL;
 			}
-									
+
 			e.setupCustomSkin();
 
 		}

@@ -17,6 +17,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
 	private ResourceLocation locationCape;
 	public String customCapeUrl;
 	public String customSkinUrl;
+	public static boolean forceUpdate = false;
 	
 	public AbstractClientPlayer(World par1World, String par2Str) {
 		super(par1World, par2Str);
@@ -64,6 +65,11 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
 		TextureManager var4 = Minecraft.getMinecraft().getTextureManager();
 		Object var5 = var4.getTexture(par0ResourceLocation);
 
+		if (forceUpdate){
+			var5 = null;
+			forceUpdate = false;
+		}
+		
 		if (var5 == null) {		
 			var5 = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
 			var4.loadTexture(par0ResourceLocation, (TextureObject)var5);
