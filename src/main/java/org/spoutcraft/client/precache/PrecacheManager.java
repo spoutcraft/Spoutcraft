@@ -47,7 +47,8 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.precache.GuiPrecache;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.client.packet.PacketRequestPrecache;
+import org.spoutcraft.client.packet.builtin.PacketRequestPrecache;
+import org.spoutcraft.client.packet.builtin.PacketPreCacheCompleted;
 
 public class PrecacheManager {
 	public static boolean spoutDebug = false;
@@ -258,7 +259,7 @@ public class PrecacheManager {
 			// Prevent closing a plugin created menu from opening the downloading terrain
 			SpoutClient.getHandle().clearPreviousScreen();
 		}
-		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new org.spoutcraft.client.packet.PacketPreCacheCompleted());
+		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketPreCacheCompleted());
 	}
 
 	public static void setPreloadGuiText(String text) {

@@ -7,7 +7,7 @@ import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
-import org.spoutcraft.client.packet.PacketRenderDistance;
+import org.spoutcraft.client.packet.builtin.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
 // Spout End
 

@@ -25,15 +25,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import org.spoutcraft.client.packet.CompressablePacket;
+import org.spoutcraft.client.packet.CompressiblePacket;
 import org.spoutcraft.client.packet.SpoutPacket;
 
 public class PacketDecompressionThread extends Thread {
 	private static PacketDecompressionThread instance = null;
 
 	private static final int QUEUE_CAPACITY = 1024 * 10;
-	private final LinkedBlockingDeque<CompressablePacket> queue = new LinkedBlockingDeque<CompressablePacket>(QUEUE_CAPACITY);
-	private final List<CompressablePacket> decompressed = Collections.synchronizedList(new LinkedList<CompressablePacket>());
+	private final LinkedBlockingDeque<CompressiblePacket> queue = new LinkedBlockingDeque<CompressiblePacket>(QUEUE_CAPACITY);
+	private final List<CompressiblePacket> decompressed = Collections.synchronizedList(new LinkedList<CompressiblePacket>());
 
 	private PacketDecompressionThread() {
 	}
@@ -59,7 +59,7 @@ public class PacketDecompressionThread extends Thread {
 		return instance;
 	}
 
-	public static void add(CompressablePacket packet) {
+	public static void add(CompressiblePacket packet) {
 		if (instance != null) {
 			instance.queue.add(packet);
 		}
@@ -68,7 +68,7 @@ public class PacketDecompressionThread extends Thread {
 	public void run() {
 		while (!isInterrupted()) {
 			try {
-				CompressablePacket packet = queue.take();
+				CompressiblePacket packet = queue.take();
 				packet.decompress();
 				synchronized(decompressed) {
 					decompressed.add(packet);
@@ -81,7 +81,7 @@ public class PacketDecompressionThread extends Thread {
 
 	public static void onTick() {
 		synchronized(instance.decompressed) {
-			Iterator<CompressablePacket> i = instance.decompressed.iterator();
+			Iterator<CompressiblePacket> i = instance.decompressed.iterator();
 			while (i.hasNext()) {
 				SpoutPacket packet = i.next();
 				try {

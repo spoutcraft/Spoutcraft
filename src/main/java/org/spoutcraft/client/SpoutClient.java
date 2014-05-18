@@ -63,7 +63,7 @@ import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.io.DownloadAssets;
 import org.spoutcraft.client.packet.CustomPacket;
-import org.spoutcraft.client.packet.PacketEntityInformation;
+import org.spoutcraft.client.packet.builtin.PacketEntityInformation;
 import org.spoutcraft.client.packet.PacketManager;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.player.SimpleBiomeManager;

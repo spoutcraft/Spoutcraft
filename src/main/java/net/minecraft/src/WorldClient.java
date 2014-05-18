@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
-import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
+import org.spoutcraft.client.packet.builtin.PacketCustomBlockChunkOverride;
 
 public class WorldClient extends World {
 

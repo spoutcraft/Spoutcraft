@@ -8,7 +8,7 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
+import org.spoutcraft.client.packet.builtin.PacketCustomBlockChunkOverride;
 
 public class Packet51MapChunk extends Packet {
 

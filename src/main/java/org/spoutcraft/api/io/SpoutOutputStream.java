@@ -19,10 +19,18 @@
  */
 package org.spoutcraft.api.io;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.UUID;
+import java.util.zip.GZIPOutputStream;
 
+import net.minecraft.src.NBTBase;
+import net.minecraft.src.NBTTagCompound;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.api.material.Material;
@@ -170,5 +178,39 @@ public class SpoutOutputStream extends OutputStream{
 		replacement.put(buffer.array());
 		replacement.position(buffer.position());
 		buffer = replacement;
+	}
+
+	public void writeNBTTagCompound(NBTTagCompound compound) throws IOException {
+		if (compound == null) {
+			throw new IOException("Attempt made to send null NBTTagCompound to the client!");
+		}
+		final byte[] compressed = compress(compound);
+		if (compressed.length > Short.MAX_VALUE) {
+			throw new IOException("NBTTagCompound is too large to be sent to the client!");
+		}
+		if (compressed.length == 0) {
+			throw new IOException("Attempt made to send zero length NBTTagCompound to the client!");
+		}
+		writeShort((short) compressed.length);
+		write(compressed);
+	}
+
+	private byte[] compress(NBTBase base) throws IOException {
+		final ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
+
+		try (DataOutputStream dataoutputstream = new DataOutputStream(new GZIPOutputStream(bytearrayoutputstream))) {
+			dataoutputstream.writeByte(base.getId());
+			if (base.getId() != 0) {
+				dataoutputstream.writeUTF("");
+
+				final Method nbtWrite = base.getClass().getDeclaredMethod("write", new Class[] {DataOutput.class});
+				nbtWrite.setAccessible(true);
+				nbtWrite.invoke(base, dataoutputstream);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return bytearrayoutputstream.toByteArray();
 	}
 }

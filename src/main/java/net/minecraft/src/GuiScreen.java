@@ -43,10 +43,10 @@ import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.CustomScreen;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.ScreenUtil;
-import org.spoutcraft.client.packet.PacketComboBox;
-import org.spoutcraft.client.packet.PacketControlAction;
-import org.spoutcraft.client.packet.PacketKeyPress;
-import org.spoutcraft.client.packet.PacketSlotClick;
+import org.spoutcraft.client.packet.builtin.PacketComboBox;
+import org.spoutcraft.client.packet.builtin.PacketControlAction;
+import org.spoutcraft.client.packet.builtin.PacketKeyPress;
+import org.spoutcraft.client.packet.builtin.PacketSlotClick;
 
 public class GuiScreen extends Gui {	
 

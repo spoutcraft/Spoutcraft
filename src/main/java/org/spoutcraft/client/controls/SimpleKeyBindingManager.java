@@ -46,7 +46,7 @@ import org.spoutcraft.api.keyboard.KeyBindingPress;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.controls.GuiControls;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.client.packet.PacketKeyBinding;
+import org.spoutcraft.client.packet.builtin.PacketKeyBinding;
 
 public class SimpleKeyBindingManager implements KeyBindingManager {
 	private ArrayList<KeyBinding> bindings;

@@ -25,7 +25,7 @@ import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.api.material.Food;
 
-public class GenericCustomFood extends GenericCustomItem implements Food{
+public class GenericCustomFood extends GenericCustomItem implements Food {
 	private int hunger;
 	public GenericCustomFood(String addon, String name, String texture, int hungerRestored) {
 		super(addon, name, texture);

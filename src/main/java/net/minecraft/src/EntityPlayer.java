@@ -7,22 +7,12 @@ import java.util.Map.Entry;
 
 import org.newdawn.slick.opengl.Texture;
 
-import net.minecraft.src.ItemStack;
-
-
 //Spout Start
-import org.bukkit.ChatColor;
-import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.block.design.BlockDesign;
 import org.spoutcraft.api.material.MaterialData;
-import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.Configuration;
-import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.client.packet.PacketRenderDistance;
-import org.spoutcraft.client.player.ClientPlayer;
-import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.client.special.VIP;
 //Spout End
 

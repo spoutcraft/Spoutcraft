@@ -20,7 +20,7 @@ import thedudeguy.paulscode.sound.codecs.CodecJOrbis;
 
 import org.spoutcraft.api.sound.Music;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.packet.PacketMusicChange;
+import org.spoutcraft.client.packet.builtin.PacketMusicChange;
 
 // Spout Start - Unused import
 //import paulscode.sound.codecs.CodecJOrbis;

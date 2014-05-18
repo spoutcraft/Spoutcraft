@@ -1,0 +1,63 @@
+/*
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.spoutcraft.client.packet.builtin;
+
+import java.io.IOException;
+
+import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.api.material.block.GenericCustomBlock;
+import org.spoutcraft.client.packet.PacketType;
+import org.spoutcraft.client.packet.SpoutPacket;
+
+public class PacketGenericBlock extends SpoutPacket {
+	GenericCustomBlock block = new GenericCustomBlock();
+	public PacketGenericBlock() {
+	}
+
+	@Override
+	public void readData(SpoutInputStream input) throws IOException {
+		block.readData(input);
+	}
+
+	@Override
+	public void writeData(SpoutOutputStream output) throws IOException {
+	}
+
+	@Override
+	public void run(int playerId) {
+		block.setItemDrop(new ItemStack(block, 1));
+	}
+
+	@Override
+	public void failure(int playerId) {
+	}
+
+	@Override
+	public PacketType getPacketType() {
+		return PacketType.PacketGenericBlock;
+	}
+
+	@Override
+	public int getVersion() {
+		return block.getVersion();
+	}
+}

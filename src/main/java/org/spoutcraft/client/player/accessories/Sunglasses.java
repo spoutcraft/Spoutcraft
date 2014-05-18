@@ -22,6 +22,8 @@ package org.spoutcraft.client.player.accessories;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.ModelRenderer;
+import org.spoutcraft.client.player.accessories.Accessory;
+import org.spoutcraft.client.player.accessories.AccessoryType;
 
 public class Sunglasses extends Accessory {
 	public ModelRenderer SunglassesFront;

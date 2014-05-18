@@ -5,8 +5,8 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.packet.PacketFullVersion;
-import org.spoutcraft.client.packet.PacketRenderDistance;
+import org.spoutcraft.client.packet.builtin.PacketFullVersion;
+import org.spoutcraft.client.packet.builtin.PacketRenderDistance;
 
 public class Packet18Animation extends Packet {
 

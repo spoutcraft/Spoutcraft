@@ -20,9 +20,7 @@
 package org.spoutcraft.client.packet;
 
 import java.io.DataInput;
-import java.io.DataInputStream;
 import java.io.DataOutput;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -35,10 +33,10 @@ import org.spoutcraft.client.PacketDecompressionThread;
 import org.spoutcraft.client.SpoutClient;
 
 public class CustomPacket extends Packet {
+	public static final int NAG_MSG_AMT = 10;
 	public SpoutPacket packet;
 	private boolean success = false;
 	private static final int[] nags;
-	protected static final int NAG_MSG_AMT = 10;
 	protected static boolean outdated = false;
 
 	static {
@@ -137,8 +135,8 @@ public class CustomPacket extends Packet {
 	public void processPacket(NetHandler netHandler) {
 		if (packet != null) {
 			if (success) {
-				if (packet instanceof CompressablePacket) {
-					PacketDecompressionThread.add((CompressablePacket)packet);
+				if (packet instanceof CompressiblePacket) {
+					PacketDecompressionThread.add((CompressiblePacket)packet);
 				} else {
 					SpoutClient.getHandle().mcProfiler.startSection("spoutpacket_" + packet.getClass().getSimpleName());
 					try {

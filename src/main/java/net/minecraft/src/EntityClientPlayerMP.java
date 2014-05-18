@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import org.spoutcraft.api.gui.ScreenType;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.packet.PacketKeyPress;
+import org.spoutcraft.client.packet.builtin.PacketKeyPress;
 
 public class EntityClientPlayerMP extends EntityPlayerSP {
 	public NetClientHandler sendQueue;
