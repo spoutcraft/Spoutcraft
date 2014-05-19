@@ -19,10 +19,21 @@
  */
 package org.spoutcraft.api.io;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.UUID;
+import java.util.zip.GZIPInputStream;
 
+import net.minecraft.src.NBTBase;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.NBTTagEnd;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.api.material.Material;
@@ -57,17 +68,22 @@ public class SpoutInputStream extends InputStream{
 		return new MutableVector(x,y,z);
 	}
 
-	public ItemStack readItemStack(ItemStack item) {
-		int id = readInt();
-		short dura = readShort();
-		short amt = readShort();
-		return new ItemStack(id, amt, dura);
+	public net.minecraft.src.ItemStack readItemStack() throws IOException {
+		final int id = readInt();
+		net.minecraft.src.ItemStack nmsStack = null;
+
+		if (id >= 0) {
+			final byte amount = (byte) read();
+			final short damage = readShort();
+			nmsStack = new net.minecraft.src.ItemStack(id, amount, damage);
+			nmsStack.setTagCompound(readNBTTagCompound());
+		}
+
+		return nmsStack;
 	}
 
 	public Material readMaterial() {
-		int id = readInt();
-		short dura = readShort();
-		return MaterialData.getMaterial(id, dura);
+		return MaterialData.getMaterial(readInt(), readShort());
 	}
 
 	public UUID readUUID() {
@@ -145,5 +161,40 @@ public class SpoutInputStream extends InputStream{
 
 	public ByteBuffer getRawBuffer() {
 		return buffer;
+	}
+
+	public NBTTagCompound readNBTTagCompound() throws IOException {
+		final short len = readShort();
+		final byte[] compressed = new byte[len];
+		read(compressed);
+		final NBTBase tag = decompress(compressed);
+		if (tag instanceof NBTTagCompound) {
+			return (NBTTagCompound) tag;
+		} else {
+			throw new IOException("Attempt to get NBTTagCompound but the tag's class is " + tag.getClass().getSimpleName());
+		}
+	}
+
+
+	private NBTBase decompress(byte[] compressed) throws IOException {
+		try (DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(compressed))))) {
+			final byte typeId = datainputstream.readByte();
+			if (typeId == 0) {
+				return new NBTTagEnd();
+			}
+			readString();
+			// TODO: Check this
+			NBTBase found = NBTBase.newTag(typeId, "");
+			if (found == null) {
+				throw new IOException("NBTTag sent from client does not exist on this server (hack?)!");
+			}
+			final Method nbtLoad = found.getClass().getDeclaredMethod("load", new Class[] {DataInput.class, Integer.class});
+			nbtLoad.setAccessible(true);
+			nbtLoad.invoke(found, datainputstream, 0);
+			return found;
+		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
