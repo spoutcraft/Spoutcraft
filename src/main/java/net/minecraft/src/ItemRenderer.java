@@ -84,7 +84,9 @@ public class ItemRenderer {
 		}
 
 		if (design != null) {
+			GL11.glDisable(GL11.GL_LIGHTING);
 			design.renderItemstack(null, -0.5F, -0.5F, -0.5F, 0, 1F, rand);
+			GL11.glEnable(GL11.GL_LIGHTING);
 		}
 		else if(var4block != null && RenderBlocks.renderItemIn3d(var4block.getRenderType())) {
 			this.renderBlocksInstance.renderBlockAsItem(Block.blocksList[par2ItemStack.itemID], par2ItemStack.getItemDamage(), 1.0F);

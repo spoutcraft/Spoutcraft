@@ -389,7 +389,9 @@ public class RenderItem extends Render {
 		}
 
 		if (design != null && custom) {
+			GL11.glDisable(GL11.GL_LIGHTING);
 			design.renderItemOnHUD((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
+			GL11.glEnable(GL11.GL_LIGHTING);
 		} else if (par3ItemStack.getItemSpriteNumber() == 0 && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType())) {
 			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
 			Block var15 = Block.blocksList[var6];
