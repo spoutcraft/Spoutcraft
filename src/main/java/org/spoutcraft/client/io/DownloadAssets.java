@@ -34,10 +34,10 @@ import org.spoutcraft.client.io.FileUtil;
 public class DownloadAssets {
 	public static void getHttpAssets() {
 		// Get dynamic assets from web
-		downloadFile(FileUtil.getConfigDir(), "vip.yml", "https://raw.github.com/Spoutcraft/Spoutcraft/master/assets/vip.yml", true);
-		downloadFile(FileUtil.getConfigDir(), "servers.yml", "https://raw.github.com/Spoutcraft/Spoutcraft/master/assets/servers.yml", true);
-		downloadFile(FileUtil.getConfigDir(), "special.yml", "https://raw.github.com/Spoutcraft/Spoutcraft/master/assets/special.yml", false);
-		downloadFile(FileUtil.getConfigDir(), "splashes.txt", "https://raw.github.com/Spoutcraft/Spoutcraft/master/assets/splashes.txt", false);
+		downloadFile(FileUtil.getConfigDir(), "vip.yml", "http://solder.inspirenxe.org/resources/spoutcraft/vip.yml", true);
+		downloadFile(FileUtil.getConfigDir(), "servers.yml", "http://solder.inspirenxe.org/resources/spoutcraft/servers.yml", true);
+		downloadFile(FileUtil.getConfigDir(), "special.yml", "http://solder.inspirenxe.org/resources/spoutcraft/special.yml", false);
+		downloadFile(FileUtil.getConfigDir(), "splashes.txt", "http://solder.inspirenxe.org/resources/spoutcraft/splashes.txt", false);
 	}
 
 	public static void importOldConfig() {

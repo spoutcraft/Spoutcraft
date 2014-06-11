@@ -72,9 +72,9 @@ import org.spoutcraft.client.player.SimpleSkyManager;
 public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
 	private static final Thread dataMiningThread = new DataMiningThread();
-	private static final String version = "Spoutcraft 1.6.4 / b16";
+	private static final String version = "Spoutcraft 1.6.4 / b17";
 	public static final String spoutcraftVersion = "1.6.4";
-	public static final String spoutcraftBuild = " - b16";
+	public static final String spoutcraftBuild = " - b17";
 	private final SimpleSkyManager skyManager = new SimpleSkyManager();
 	private final PacketManager packetManager = new PacketManager();
 	private final BiomeManager biomeManager = new SimpleBiomeManager();

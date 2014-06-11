@@ -56,7 +56,7 @@ public class GuiPrecache extends GuiScreen {
 		statusText.setAnchor(WidgetAnchor.CENTER_CENTER);
 		statusText.setAlign(WidgetAnchor.CENTER_CENTER);
 		statusText.shiftYPos(20);
-		statusText.setText("Activating Cached Resources...");
+		statusText.setText("Activating cached resources...");
 		getScreen().attachWidgets("Spoutcraft", logo, defaultText, statusText);
 	}
 	
