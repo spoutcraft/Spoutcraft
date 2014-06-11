@@ -37,7 +37,7 @@ public class GuiStaticServerList extends GuiScreen {
 	private GuiScreen parent;
 
 	// GUI stuff
-	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit, buttonMainMenu, buttonFavoritesList, buttonClear, buttonQuickJoin, buttonMoveUp, buttonMoveDown, buttonRefresh,buttonAddServer;;
+	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit, buttonMainMenu, buttonFavoritesList, buttonClear, buttonQuickJoin, buttonMoveUp, buttonMoveDown, buttonRefresh,buttonAddServer, buttonAddtoFavorites;
 	private GenericLabel labelTitle;
 	private TextField textQuickJoin;
 	private GenericListView view;	
@@ -109,6 +109,10 @@ public class GuiStaticServerList extends GuiScreen {
 		buttonJoin.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget("Spoutcraft", buttonJoin);
 
+		buttonAddtoFavorites = new GenericButton("Add this to Favorites");
+		buttonAddtoFavorites.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget("Spoutcraft", buttonAddtoFavorites);
+
 		top += 25;
 		buttonAddServer = new GenericButton("Add Your Server");
 		buttonAddServer.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
@@ -162,6 +166,18 @@ public class GuiStaticServerList extends GuiScreen {
 
 		if (btn.equals(buttonQuickJoin)) {
 			doQuickJoin();
+		}
+		
+		if (btn.equals(buttonAddtoFavorites)) {
+			ServerItem item = null;
+			if (view.getSelectedRow() > -1) {
+				item = (ServerItem) model.getItem(view.getSelectedRow());
+			}
+			if (item != null) {
+				SpoutClient.getInstance().getServerManager().getFavorites().addServer(item);
+				SpoutClient.getInstance().getServerManager().getFavorites().save();
+				SpoutClient.getHandle().displayGuiScreen(new GuiFavorites(this));
+			}
 		}
 		
 		if (btn.equals(buttonJoin)) {
@@ -234,9 +250,10 @@ public class GuiStaticServerList extends GuiScreen {
 			return;
 		}
 		
-		buttonJoin.setEnabled(enable);		
+		buttonJoin.setEnabled(enable);
 		buttonMoveDown.setEnabled(enable);
-		buttonMoveUp.setEnabled(enable);		
+		buttonMoveUp.setEnabled(enable);
+		buttonAddtoFavorites.setEnabled(enable);
 
 		if (model.isPolling()) {
 			buttonRefresh.setEnabled(false);
@@ -250,6 +267,7 @@ public class GuiStaticServerList extends GuiScreen {
 		if (view.getSelectedItem() instanceof ServerItem) {
 			ServerItem item = (ServerItem) view.getSelectedItem();
 			buttonJoin.setEnabled(item.isCompatible(SpoutClient.spoutcraftVersion));
+			buttonAddtoFavorites.setEnabled(true);
 		}
 	}
 

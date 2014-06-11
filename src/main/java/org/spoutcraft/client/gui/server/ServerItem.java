@@ -36,7 +36,6 @@ import org.spoutcraft.api.gui.RenderUtil;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.client.io.MirrorUtils;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.util.NetworkUtils;
 
@@ -295,10 +294,6 @@ public class ServerItem implements ListWidgetItem {
 	public void onClick(int x, int y, boolean doubleClick) {
 		if (doubleClick) {
 			if (isCompatible(SpoutClient.spoutcraftVersion)) {
-				if (databaseId != -1) {
-					String url = MirrorUtils.getMirrorUrl("/popular.php?uid=", "http://servers.spout.org/popular.php?uid=");
-					NetworkUtils.pingUrl(url + databaseId);
-				}
 				SpoutClient.getInstance().getServerManager().join(this, isFavorite?favorites.getCurrentGui():serverList.getCurrentGui(), isFavorite?"Favorites":"Server List");
 			}
 		}
