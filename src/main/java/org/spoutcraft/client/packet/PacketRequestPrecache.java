@@ -21,6 +21,10 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
+import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.Minecraft;
+import net.minecraft.src.Packet0KeepAlive;
+
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 
@@ -46,6 +50,7 @@ public class PacketRequestPrecache implements SpoutPacket {
 
 	@Override
 	public void run(int playerId) {
+		((EntityClientPlayerMP)Minecraft.getMinecraft().thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
 	}
 
 	@Override

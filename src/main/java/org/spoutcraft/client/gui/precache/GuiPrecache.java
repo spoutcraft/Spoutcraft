@@ -20,9 +20,10 @@
 package org.spoutcraft.client.gui.precache;
 
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.Minecraft;
+import net.minecraft.src.Packet0KeepAlive;
 
 import org.lwjgl.opengl.GL11;
-
 import org.bukkit.ChatColor;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericTexture;
@@ -31,8 +32,9 @@ import org.spoutcraft.api.gui.Texture;
 import org.spoutcraft.client.io.FileUtil;
 
 public class GuiPrecache extends GuiScreen {
-	public GenericLabel statusText;
+	public GenericLabel statusText, defaultText;
 	Texture background, logo;
+	private int updateCounter;
 
 	@Override
 	public void initGui() {
@@ -44,11 +46,31 @@ public class GuiPrecache extends GuiScreen {
 		logo.setLocal(true);
 		logo.setDrawAlphaChannel(true);
 		
+		defaultText = new GenericLabel();
+		defaultText.setAnchor(WidgetAnchor.CENTER_CENTER);
+		defaultText.setAlign(WidgetAnchor.CENTER_CENTER);
+		defaultText.setText(ChatColor.WHITE + "Loading terrain and custom resources");
+		//  + "\n" + "\n" + ChatColor.MAGIC + "ShowMagic"
+		
 		statusText = new GenericLabel();
 		statusText.setAnchor(WidgetAnchor.CENTER_CENTER);
 		statusText.setAlign(WidgetAnchor.CENTER_CENTER);
-		statusText.setText(ChatColor.WHITE + "Loading terrain and custom resources" + "\n" + "\n" + ChatColor.MAGIC + "ShowMagic");
-		getScreen().attachWidgets("Spoutcraft", logo, statusText);
+		statusText.shiftYPos(20);
+		statusText.setText("Activating Cached Resources...");
+		getScreen().attachWidgets("Spoutcraft", logo, defaultText, statusText);
+	}
+	
+	@Override
+	public void updateScreen() {
+		++this.updateCounter;
+
+		if (this.updateCounter % 20 == 0) {
+			Minecraft.getMinecraft().getNetHandler().addToSendQueue(new Packet0KeepAlive());
+		}
+
+		if (Minecraft.getMinecraft().getNetHandler() != null) {
+			Minecraft.getMinecraft().getNetHandler().processReadPackets();
+		}
 	}
 
 	@Override
