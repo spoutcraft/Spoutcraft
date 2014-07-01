@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Map.Entry;
 import net.minecraft.src.Minecraft;
 import net.minecraft.src.ResourceLocation;
@@ -51,7 +52,8 @@ public abstract class TexturePackChangeHandler {
 	}
 
 	public static void scheduleTexturePackRefresh() {
-		//MCPatcherUtils.getMinecraft().scheduleTexturePackRefresh();
+		// ToDO:
+		//Minecraft.getMinecraft().scheduleTexturePackRefresh();
 	}
 
 	public static void register(TexturePackChangeHandler handler) {
@@ -116,32 +118,41 @@ public abstract class TexturePackChangeHandler {
 			startMem = runtime.totalMemory() - runtime.freeMemory();
 			List resourcePacks = TexturePackAPI.getResourcePacks((String)null);
 			logger.fine("%s resource packs (%d selected):", new Object[] {initializing ? "initializing" : "changing", Integer.valueOf(resourcePacks.size())});
-			Iterator textureManager = resourcePacks.iterator();
+			Iterator namespaces = resourcePacks.iterator();
 
-			while (textureManager.hasNext()) {
-				ResourcePack texturesToUnload = (ResourcePack)textureManager.next();
-				logger.fine("resource pack: %s", new Object[] {texturesToUnload});
+			while (namespaces.hasNext()) {
+				ResourcePack textureManager = (ResourcePack)namespaces.next();
+				logger.fine("resource pack: %s", new Object[] {textureManager.getPackName()});
 			}
 
-			textureManager = handlers.iterator();
+			Set namespaces1 = TexturePackAPI.getNamespaces();
+			logger.fine("%d resource namespaces:", new Object[] {Integer.valueOf(namespaces1.size())});
+			Iterator textureManager1 = namespaces1.iterator();
 
-			while (textureManager.hasNext()) {
-				TexturePackChangeHandler texturesToUnload1 = (TexturePackChangeHandler)textureManager.next();
+			while (textureManager1.hasNext()) {
+				String texturesToUnload = (String)textureManager1.next();
+				logger.fine("namespace: %s", new Object[] {texturesToUnload});
+			}
+
+			textureManager1 = handlers.iterator();
+
+			while (textureManager1.hasNext()) {
+				TexturePackChangeHandler texturesToUnload1 = (TexturePackChangeHandler)textureManager1.next();
 
 				try {
 					logger.info("refreshing %s (pre)...", new Object[] {texturesToUnload1.name});
 					texturesToUnload1.beforeChange();
-				} catch (Throwable var9) {
-					var9.printStackTrace();
+				} catch (Throwable var10) {
+					var10.printStackTrace();
 					logger.severe("%s.beforeChange failed", new Object[] {texturesToUnload1.name});
 				}
 			}
 
-			TextureManager textureManager1 = MCPatcherUtils.getMinecraft().getTextureManager();
+			TextureManager textureManager2 = Minecraft.getMinecraft().getTextureManager();
 
-			if (textureManager1 != null) {
+			if (textureManager2 != null) {
 				HashSet texturesToUnload2 = new HashSet();
-				Iterator i$ = textureManager1.mapTextureObjects.entrySet().iterator();
+				Iterator i$ = textureManager2.mapTextureObjects.entrySet().iterator();
 
 				while (i$.hasNext()) {
 					Entry resource = (Entry)i$.next();

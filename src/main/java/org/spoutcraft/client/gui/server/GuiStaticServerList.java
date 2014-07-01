@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@ public class GuiStaticServerList extends GuiScreen {
 	private GuiScreen parent;
 
 	// GUI stuff
-	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit, buttonMainMenu, buttonFavoritesList, buttonQuickJoin, buttonMoveUp, buttonMoveDown, buttonRefresh,buttonAddServer;;
+	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit, buttonMainMenu, buttonFavoritesList, buttonClear, buttonQuickJoin, buttonMoveUp, buttonMoveDown, buttonRefresh,buttonAddServer, buttonAddtoFavorites;
 	private GenericLabel labelTitle;
 	private TextField textQuickJoin;
 	private GenericListView view;	
@@ -51,7 +51,7 @@ public class GuiStaticServerList extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		labelTitle = new GenericLabel("Spoutcraft Servers");
+		labelTitle = new GenericLabel("Public Servers");
 		labelTitle.setY(12).setX(width / 2 - mc.fontRenderer.getStringWidth(labelTitle.getText()) / 2);
 		labelTitle.setHeight(15).setWidth(mc.fontRenderer.getStringWidth(labelTitle.getText()) / 2);
 		getScreen().attachWidget("Spoutcraft", labelTitle);
@@ -90,11 +90,15 @@ public class GuiStaticServerList extends GuiScreen {
 			text = textQuickJoin.getText();
 		}
 		textQuickJoin = new QuickJoin();
-		textQuickJoin.setX(left + 2).setY(top + 2).setHeight(16).setWidth(cellWidth * 2 + 5 - 4);
+		textQuickJoin.setX(left + 2).setY(top + 2).setHeight(16).setWidth((cellWidth * 2 + 5 - 4) - (cellWidth/2));
 		textQuickJoin.setMaximumCharacters(0);
 		textQuickJoin.setText(text);
 		getScreen().attachWidget("Spoutcraft", textQuickJoin);
 
+		buttonClear = new GenericButton("Clear");
+		buttonClear.setX(left + 10 + (cellWidth*2) - (cellWidth/2)).setY(top).setWidth((cellWidth/2) - 5).setHeight(20);
+		getScreen().attachWidget("Spoutcraft", buttonClear);
+		
 		buttonQuickJoin = new GenericButton("Quick Join");
 		buttonQuickJoin.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget("Spoutcraft", buttonQuickJoin);
@@ -104,6 +108,10 @@ public class GuiStaticServerList extends GuiScreen {
 		buttonJoin = new GenericButton("Join Server");
 		buttonJoin.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget("Spoutcraft", buttonJoin);
+
+		buttonAddtoFavorites = new GenericButton("Add this to Favorites");
+		buttonAddtoFavorites.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget("Spoutcraft", buttonAddtoFavorites);
 
 		top += 25;
 		buttonAddServer = new GenericButton("Add Your Server");
@@ -151,8 +159,25 @@ public class GuiStaticServerList extends GuiScreen {
 		if (btn.equals(buttonFavoritesList)) {
 			SpoutClient.getHandle().displayGuiScreen(new GuiFavorites(this));
 		}
+
+		if (btn.equals(buttonClear)) {
+			  textQuickJoin.setText("");
+		}
+
 		if (btn.equals(buttonQuickJoin)) {
 			doQuickJoin();
+		}
+		
+		if (btn.equals(buttonAddtoFavorites)) {
+			ServerItem item = null;
+			if (view.getSelectedRow() > -1) {
+				item = (ServerItem) model.getItem(view.getSelectedRow());
+			}
+			if (item != null) {
+				SpoutClient.getInstance().getServerManager().getFavorites().addServer(item);
+				SpoutClient.getInstance().getServerManager().getFavorites().save();
+				SpoutClient.getHandle().displayGuiScreen(new GuiFavorites(this));
+			}
 		}
 		
 		if (btn.equals(buttonJoin)) {
@@ -225,9 +250,10 @@ public class GuiStaticServerList extends GuiScreen {
 			return;
 		}
 		
-		buttonJoin.setEnabled(enable);		
+		buttonJoin.setEnabled(enable);
 		buttonMoveDown.setEnabled(enable);
-		buttonMoveUp.setEnabled(enable);		
+		buttonMoveUp.setEnabled(enable);
+		buttonAddtoFavorites.setEnabled(enable);
 
 		if (model.isPolling()) {
 			buttonRefresh.setEnabled(false);
@@ -241,6 +267,7 @@ public class GuiStaticServerList extends GuiScreen {
 		if (view.getSelectedItem() instanceof ServerItem) {
 			ServerItem item = (ServerItem) view.getSelectedItem();
 			buttonJoin.setEnabled(item.isCompatible(SpoutClient.spoutcraftVersion));
+			buttonAddtoFavorites.setEnabled(true);
 		}
 	}
 
@@ -267,6 +294,7 @@ public class GuiStaticServerList extends GuiScreen {
 				model.setPolling(false);
 			}
 		}
+		buttonClear.setEnabled(textQuickJoin.getText().length() > 0);
 		buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
 		super.updateScreen();
 	}

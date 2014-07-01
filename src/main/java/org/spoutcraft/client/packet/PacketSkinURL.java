@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.AbstractClientPlayer;
 
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
@@ -69,7 +69,7 @@ public class PacketSkinURL implements SpoutPacket {
 	}
 
 	public void run(int PlayerId) {
-		EntityPlayer e = SpoutClient.getInstance().getPlayerFromId(entityId);
+		AbstractClientPlayer e = SpoutClient.getInstance().getAbstractPlayerFromId(entityId);
 		if (e != null) {
 			// Check if these are the Minecraft skin/cape, if so, use defaults instead
 			String mcSkin = "http://s3.amazonaws.com/MinecraftSkins/" + e.username + ".png";
@@ -89,20 +89,14 @@ public class PacketSkinURL implements SpoutPacket {
 			}
 
 			if (!"none".equals(this.skinURL)) {
-				// ToDO: broken
-				//e.skinUrl = this.skinURL;
+				e.customSkinUrl = this.skinURL;
+				e.forceUpdate = true;
 			}
 			if (!"none".equals(this.cloakURL)) {
-				//Todo broken
-				//e.updateCloak(cloakURL);
+				e.customCapeUrl = this.cloakURL;
 			}
 
-			if (release) {
-				//Todo broken
-				// e.worldObj.releaseEntitySkin(e);
-			}
-			//ToDO broken
-			//e.worldObj.obtainEntitySkin(e);
+			e.setupCustomSkin();
 
 		}
 	}

@@ -6,9 +6,12 @@ import net.minecraft.src.TileEntityChest;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+// Spout Start
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.block.SpoutcraftChunk;
+// Spout End
 
 public class TileEntityChestRenderer extends TileEntitySpecialRenderer {
 	private static final ResourceLocation RES_TRAPPED_DOUBLE = new ResourceLocation("textures/entity/chest/trapped_double.png");

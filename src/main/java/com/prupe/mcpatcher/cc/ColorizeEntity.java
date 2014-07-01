@@ -4,6 +4,7 @@ import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import java.util.Properties;
 import java.util.Random;
+import net.minecraft.src.EntityLivingBase;
 import net.minecraft.src.EntitySheep;
 import net.minecraft.src.ItemDye;
 import net.minecraft.src.ResourceLocation;
@@ -100,6 +101,10 @@ public class ColorizeEntity {
 			Colorizer.setColorF(myceliumColors[random.nextInt(myceliumColors.length)]);
 			return true;
 		}
+	}
+
+	public static int getPotionEffectColor(int defaultColor, EntityLivingBase entity) {
+		return defaultColor == 0 ? defaultColor : entity.overridePotionColor;
 	}
 
 	static {

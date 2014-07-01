@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -401,7 +401,46 @@ public class BlockColor {
 		setDefaultColor(155, 0, 0xE9F1B6); // quartz block
 		setDefaultColor(155, 1, 0xE9F1B6); // quartz column
 		setDefaultColor(155, 2, 0xE9F1B6); // quartz column 2
-		setDefaultColor(156, 0, 0xADB388); // quartz stairs		
+		setDefaultColor(156, 0, 0xADB388); // quartz stairs
+		
+		// New on 11/15/13
+		//setDefaultColor(157, 0, 0xADB388); // activator rail
+		setDefaultColor(158, 0, 0x8F8F8F); // dropper
+		setDefaultColor(159, 0, 0xD1B1A1); // white stained clay
+		setDefaultColor(159, 1, 0xA75929); // orange stained clay
+		setDefaultColor(159, 2, 0x95576C); // magenta stained clay
+		setDefaultColor(159, 3, 0x726E8A); // lite blue stained clay
+		setDefaultColor(159, 4, 0xBC8726); // yellow stained clay
+		setDefaultColor(159, 5, 0x647332); // lime stained clay
+		setDefaultColor(159, 6, 0xA04E4D); // pink stained clay
+		setDefaultColor(159, 7, 0x3A2A23); // gray stained clay
+		setDefaultColor(159, 8, 0x856960); // light gray stained clay
+		setDefaultColor(159, 9, 0x55585A); // cyan stained clay
+		setDefaultColor(159, 10, 0x764656); // purple stained clay
+		setDefaultColor(159, 11, 0x333366); // blue stained clay
+		setDefaultColor(159, 12, 0x4C3121); // brown stained clay
+		setDefaultColor(159, 13, 0x4E552C); // green stained clay
+		setDefaultColor(159, 14, 0x993333); // red stained clay
+		setDefaultColor(159, 15, 0x100A07); // block stained clay
+		setDefaultColor(170, 0, 0x846C0E); // hay bale
+		setDefaultColor(171, 0, 0xFFFFFF); // white carpet
+		setDefaultColor(171, 1, 0xDA8836); // orange carpet
+		setDefaultColor(171, 2, 0xBC60C4); // magenta carpet
+		setDefaultColor(171, 3, 0x859FD3); // light blue carpet
+		setDefaultColor(171, 4, 0xBFB32B); // yellow carpet
+		setDefaultColor(171, 5, 0x50C244); // lime carpet
+		setDefaultColor(171, 6, 0xDA9EAD); // pink carpet
+		setDefaultColor(171, 7, 0x424242); // gray carpet
+		setDefaultColor(171, 8, 0x979D9D); // light gray carpet
+		setDefaultColor(171, 9, 0x2E6F8A); // cyan carpet
+		setDefaultColor(171, 10, 0x8946C2); // purple carpet
+		setDefaultColor(171, 11, 0x28327E); // blue carpet
+		setDefaultColor(171, 12, 0x4C301E); // brown carpet
+		setDefaultColor(171, 13, 0x3D5220); // green carpet
+		setDefaultColor(171, 14, 0xA53A35); // red carpet
+		setDefaultColor(171, 15, 0x1D1B1B); // black carpet
+		setDefaultColor(172, 0, 0x965E45); // hardened clay
+		setDefaultColor(173, 0, 0x0D0D0D); // block of coal
 	}
 
 	private static BlockColor instance(int argb, TintType tint) {

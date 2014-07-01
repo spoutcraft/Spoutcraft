@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 import net.minecraft.src.MapColor;
 import net.minecraft.src.Potion;
+import net.minecraft.src.PotionHelper;
 
 public class ColorizeItem {
 	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
@@ -22,6 +23,11 @@ public class ColorizeItem {
 	static void reset() {
 		spawnerEggShellColors.clear();
 		spawnerEggSpotColors.clear();
+
+		if (PotionHelper.field_77925_n != null) {
+			PotionHelper.field_77925_n.clear();
+		}
+
 		waterBottleColor = 3694022;
 		Potion len$;
 

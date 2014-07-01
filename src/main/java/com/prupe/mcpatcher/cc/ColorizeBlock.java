@@ -211,23 +211,9 @@ public class ColorizeBlock {
 
 	private static int colorizeWithBlending(ColorMap colorMap, int defaultColor, int i, int j, int k) {
 		if (colorMap != null && colorMap.isCustom() && blockBlendRadius > 0) {
-			float[] sum = new float[3];
-			float[] sample = new float[3];
-
-			for (int di = -blockBlendRadius; di <= blockBlendRadius; ++di) {
-				for (int dk = -blockBlendRadius; dk <= blockBlendRadius; ++dk) {
-					int rgb = colorMap.colorize(defaultColor, i + di, j, k + dk);
-					Colorizer.intToFloat3(rgb, sample);
-					sum[0] += sample[0];
-					sum[1] += sample[1];
-					sum[2] += sample[2];
-				}
-			}
-
-			sum[0] *= blockBlendScale;
-			sum[1] *= blockBlendScale;
-			sum[2] *= blockBlendScale;
-			return Colorizer.float3ToInt(sum);
+			float[] f = new float[3];
+			colorMap.colorizeWithBlending(i, j, k, blockBlendRadius, f);
+			return Colorizer.float3ToInt(f);
 		} else {
 			return defaultColor;
 		}

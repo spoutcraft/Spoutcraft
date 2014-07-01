@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -34,6 +34,7 @@ import org.spoutcraft.api.io.SpoutOutputStream;
 public class GenericSlot extends GenericControl implements Slot {
 	private ItemStack stack = new ItemStack(0);
 	private int depth = 16;
+    private boolean renderAmount = true;
 
 	public WidgetType getType() {
 		return WidgetType.Slot;
@@ -60,6 +61,15 @@ public class GenericSlot extends GenericControl implements Slot {
 		setTooltip(Spoutcraft.getMaterialManager().getToolTip(stack));
 		return this;
 	}
+
+    public boolean doesRenderAmount() {
+        return renderAmount;
+    }
+
+    public GenericSlot setRenderAmount(boolean renderAmount) {
+        this.renderAmount = renderAmount;
+        return this;
+    }
 
 	public boolean onItemPut(ItemStack item) {
 		return true;
@@ -92,13 +102,14 @@ public class GenericSlot extends GenericControl implements Slot {
 		setItem(new ItemStack(input.readInt(), (int) input.readShort(), input.readShort()));
 		depth = input.readInt();
 
+        renderAmount = input.readBoolean();
 		boolean hasDisplayName = input.readBoolean();
-		if (hasDisplayName == true) {
+		if (hasDisplayName) {
 			stack.setDisplayName(input.readString());
 		}
 
 		boolean hasLore = input.readBoolean();
-		if (hasLore == true) {
+		if (hasLore) {
 			// TODO: Gather lore
 			int lsize = input.readInt();
 			List<String> lore = new ArrayList<String>();
@@ -110,8 +121,8 @@ public class GenericSlot extends GenericControl implements Slot {
 		}
 
 		boolean hasEnchants = input.readBoolean();
-		if (hasEnchants == true) {
-			int esize = input.readInt();
+		if (hasEnchants) {
+            int esize = input.readInt();
 			HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
 			for (int i = 0; i<esize; i++) {
 				int ekey = input.readInt();
@@ -134,5 +145,7 @@ public class GenericSlot extends GenericControl implements Slot {
 		output.writeShort((short)stack.getAmount());
 		output.writeShort(stack.getDurability());
 		output.writeInt(depth);
-	}
+        //TODO Server probably doesn't need to know this but eh what the hell...
+        output.writeBoolean(renderAmount);
+    }
 }

@@ -1,7 +1,6 @@
 package com.prupe.mcpatcher.ctm;
 
 import com.prupe.mcpatcher.Config;
-
 import com.prupe.mcpatcher.TessellatorUtils;
 import java.util.Arrays;
 import net.minecraft.src.Block;

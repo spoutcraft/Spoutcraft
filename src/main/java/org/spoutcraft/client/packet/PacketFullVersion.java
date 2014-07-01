@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -31,11 +31,7 @@ public class PacketFullVersion implements SpoutPacket {
 	}
 
 	public PacketFullVersion(String versionString) {
-		try {
-			version = versionString.split("b")[1];
-		} catch (Exception e) {
-			version = versionString;
-		}
+		version = versionString;
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {

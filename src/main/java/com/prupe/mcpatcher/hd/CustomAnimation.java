@@ -45,8 +45,6 @@ public class CustomAnimation implements Comparable<CustomAnimation> {
 	private boolean error;
 
 	public static void updateAll() {
-		FancyDial.updateAll();
-
 		if (!pending.isEmpty()) {
 			try {
 				checkPendingAnimations();
@@ -63,8 +61,6 @@ public class CustomAnimation implements Comparable<CustomAnimation> {
 			CustomAnimation animation = (CustomAnimation)i$.next();
 			animation.update();
 		}
-
-		FancyDial.postUpdateAll();
 	}
 
 	private static void checkPendingAnimations() {
@@ -335,7 +331,7 @@ public class CustomAnimation implements Comparable<CustomAnimation> {
 	private int getDelay() {
 		return this.tileDelay[this.currentFrame];
 	}
-	
+
 	static Map access$000() {
 		return pending;
 	}

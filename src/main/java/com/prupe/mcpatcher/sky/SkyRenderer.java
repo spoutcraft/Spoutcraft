@@ -2,13 +2,13 @@ package com.prupe.mcpatcher.sky;
 
 import com.prupe.mcpatcher.Config;
 import com.prupe.mcpatcher.MCLogger;
-import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import com.prupe.mcpatcher.TexturePackChangeHandler;
 import com.prupe.mcpatcher.sky.SkyRenderer$1;
 import com.prupe.mcpatcher.sky.SkyRenderer$Layer;
 import com.prupe.mcpatcher.sky.SkyRenderer$WorldEntry;
 import java.util.HashMap;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.World;
@@ -27,7 +27,7 @@ public class SkyRenderer {
 		if (TexturePackAPI.isDefaultTexturePack()) {
 			active = false;
 		} else {
-			int worldType = MCPatcherUtils.getMinecraft().theWorld.provider.dimensionId;
+			int worldType = Minecraft.getMinecraft().theWorld.provider.dimensionId;
 			SkyRenderer$WorldEntry newEntry = getWorldEntry(worldType);
 
 			if (newEntry != currentWorld && currentWorld != null) {

@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -59,11 +59,15 @@ import org.spoutcraft.client.gui.settings.controls.ConnectedTexturesButton;
 import org.spoutcraft.client.gui.settings.controls.ControlsButton;
 import org.spoutcraft.client.gui.settings.controls.DelayedTooltipCheckbox;
 import org.spoutcraft.client.gui.settings.controls.DifficultyButton;
+import org.spoutcraft.client.gui.settings.controls.DisplayAnimalHeatinColorButton;
 import org.spoutcraft.client.gui.settings.controls.DisplayCustomParticlesButton;
+import org.spoutcraft.client.gui.settings.controls.DisplayPlayerNames3rdPersonButton;
+import org.spoutcraft.client.gui.settings.controls.DisplayEntityNamesinRangeButton;
 import org.spoutcraft.client.gui.settings.controls.FancyCloudsButton;
 import org.spoutcraft.client.gui.settings.controls.FancyFogButton;
 import org.spoutcraft.client.gui.settings.controls.FancyGraphicsButton;
 import org.spoutcraft.client.gui.settings.controls.FancyGrassButton;
+import org.spoutcraft.client.gui.settings.controls.FancyItemsButton;
 import org.spoutcraft.client.gui.settings.controls.FancyLightingButton;
 import org.spoutcraft.client.gui.settings.controls.FancyParticlesButton;
 import org.spoutcraft.client.gui.settings.controls.FancyTreesButton;
@@ -102,6 +106,7 @@ import org.spoutcraft.client.gui.settings.controls.SmoothLightingSlider;
 import org.spoutcraft.client.gui.settings.controls.SnooperButton;
 import org.spoutcraft.client.gui.settings.controls.SoundEffectsSlider;
 import org.spoutcraft.client.gui.settings.controls.StarsToggleButton;
+import org.spoutcraft.client.gui.settings.controls.TexturesButton;
 import org.spoutcraft.client.gui.settings.controls.TimeButton;
 import org.spoutcraft.client.gui.settings.controls.ViewBobbingButton;
 import org.spoutcraft.client.gui.settings.controls.VoidFogButton;
@@ -202,6 +207,11 @@ public class GuiAdvancedOptions extends GuiScreen {
 
 		control = new DifficultyButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		top += 22;
+
+		control = new TexturesButton(this).setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(center).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 		top += 22;
 
@@ -358,17 +368,18 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 
-		control = new ServerLightButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control = new FancyItemsButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
+		graphicCheckboxes.add((CheckBox) control);
 
 		top += 22;
 
 		control = new RandomMobTextureButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget("Spoutcraft", control);
-
-		control = new AmbientOcclusionButton().setAlign(WidgetAnchor.TOP_CENTER);
+		
+		control = new DisplayAnimalHeatinColorButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 
@@ -379,6 +390,24 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.attachWidget("Spoutcraft", control);
 		
 		control = new DisplayCustomParticlesButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+
+		top += 22;
+		control = new ServerLightButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		
+		control = new DisplayEntityNamesinRangeButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+
+		top += 22;
+		control = new AmbientOcclusionButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		
+		control = new DisplayPlayerNames3rdPersonButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 

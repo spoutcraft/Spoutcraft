@@ -25,7 +25,7 @@ public class PotionHelper {
 
 	/** Potion effect amplifier map */
 	private static final HashMap potionAmplifiers = new HashMap();
-	private static final HashMap field_77925_n;
+	public static final HashMap field_77925_n;
 
 	/** An array of possible potion prefix names, as translation IDs. */
 	private static final String[] potionPrefixes;

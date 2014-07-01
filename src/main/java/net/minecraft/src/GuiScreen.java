@@ -313,7 +313,6 @@ public class GuiScreen extends Gui {
 				}
 				int amount = stackInSlot.getTypeId() == 0 ? 0 : stackInSlot.getAmount();
 				amount += putAmount;
-				System.out.println(amount);
 				int maxStackSize = toPut.getMaxStackSize();
 				if (maxStackSize == -1) {
 					maxStackSize = 64;
@@ -939,8 +938,7 @@ public class GuiScreen extends Gui {
 			drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, (j3 - 3) + 1, j4, j4);
 			drawGradientRect(l2 - 3, j3 + l3 + 2, l2 + k3 + 3, j3 + l3 + 3, k4, k4);
 
-			//this.drawGradientRect(x - 3 + offsetX, y - 3 + offsetY, x +
-			//tooltipWidth + 3 + offsetX, y + tooltipHeight + offsetY, -1073741824, -1073741824);
+			this.drawGradientRect(x - 3 + offsetX, y - 3 + offsetY, x + tooltipWidth + 3 + offsetX, y + tooltipHeight + offsetY, -1073741824, -1073741824);
 
 			//int i = 0;
 			GL11.glColor4f(1f, 1f, 1f, 1f);

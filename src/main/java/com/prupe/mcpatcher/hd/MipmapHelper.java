@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,6 +23,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
 import net.minecraft.src.ResourceLocation;
+import net.minecraft.src.TextureAtlasSprite;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL12;
@@ -107,26 +109,90 @@ public class MipmapHelper {
 	}
 
 	public static void copySubTexture(int[] rgb, int width, int height, int x, int y, String textureName) {
-		IntBuffer buffer = getPooledBuffer(width * height * 4).asIntBuffer();
-		buffer.put(rgb).position(0);
-		int mipmaps = getMipmapLevelsForCurrentTexture();
-		logger.finest("copySubTexture %s %d,%d %dx%d %d mipmaps", new Object[] {textureName, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height), Integer.valueOf(mipmaps)});
+		if (rgb == null) {
+			logger.error("copySubTexture %s %d,%d %dx%d: rgb data is null", new Object[] {textureName, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height)});
+		} else {
+			IntBuffer buffer = getPooledBuffer(width * height * 4).asIntBuffer();
+			buffer.put(rgb).position(0);
+			int mipmaps = getMipmapLevelsForCurrentTexture();
+			logger.finest("copySubTexture %s %d,%d %dx%d %d mipmaps", new Object[] {textureName, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height), Integer.valueOf(mipmaps)});
 
-		for (int level = 0; width > 0 && height > 0; height >>= 1) {
-			GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, level, x, y, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, buffer);
-			checkGLError("%s: glTexSubImage2D(%d, %d, %d, %d, %d)", new Object[] {textureName, Integer.valueOf(level), Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height)});
+			for (int level = 0; width > 0 && height > 0; height >>= 1) {
+				GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, level, x, y, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, buffer);
+				checkGLError("%s: glTexSubImage2D(%d, %d, %d, %d, %d)", new Object[] {textureName, Integer.valueOf(level), Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height)});
 
-			if (level >= mipmaps) {
-				break;
+				if (level >= mipmaps) {
+					break;
+				}
+
+				IntBuffer newBuffer = getPooledBuffer(width * height).asIntBuffer();
+				scaleHalf(buffer, width, height, newBuffer, 0);
+				buffer = newBuffer;
+				++level;
+				x >>= 1;
+				y >>= 1;
+				width >>= 1;
+			}
+		}
+	}
+
+	public static void copySubTexture(TextureAtlasSprite texture, int index) {
+		int width = texture.getIconWidth();
+		int height = texture.getIconHeight();
+		int x;
+		int y;
+
+		if (texture.mipmaps == null || texture.mipmaps.size() != texture.framesTextureData.size()) {
+			texture.mipmaps = new ArrayList(texture.framesTextureData.size());
+			x = getMipmapLevelsForCurrentTexture();
+
+			if (x > 0) {
+				logger.fine("generating %d mipmaps for tile %s", new Object[] {Integer.valueOf(x), texture.getIconName()});
 			}
 
-			IntBuffer newBuffer = getPooledBuffer(width * height).asIntBuffer();
-			scaleHalf(buffer, width, height, newBuffer, 0);
-			buffer = newBuffer;
-			++level;
-			x >>= 1;
-			y >>= 1;
-			width >>= 1;
+			for (y = 0; y < texture.framesTextureData.size(); ++y) {
+				texture.mipmaps.add(generateMipmaps((int[])texture.framesTextureData.get(y), width, height, x));
+			}
+		}
+
+		x = texture.getOriginX();
+		y = texture.getOriginY();
+		IntBuffer[] mipmapData = (IntBuffer[])texture.mipmaps.get(index);
+
+		if (mipmapData != null) {
+			for (int level = 0; level < mipmapData.length; ++level) {
+				GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, level, x, y, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, mipmapData[level]);
+				x >>= 1;
+				y >>= 1;
+				width >>= 1;
+				height >>= 1;
+			}
+		}
+	}
+
+	private static IntBuffer[] generateMipmaps(int[] rgb, int width, int height, int mipmaps) {
+		if (rgb == null) {
+			return null;
+		} else {
+			ArrayList mipmapData = new ArrayList();
+			IntBuffer buffer = newIntBuffer(width * height * 4);
+			buffer.put(rgb).position(0);
+			int level = 0;
+
+			while (true) {
+				mipmapData.add(buffer);
+
+				if (width <= 0 || height <= 0 || level >= mipmaps) {
+					return (IntBuffer[])mipmapData.toArray(new IntBuffer[mipmapData.size()]);
+				}
+
+				IntBuffer newBuffer = newIntBuffer(width * height);
+				scaleHalf(buffer, width, height, newBuffer, 0);
+				buffer = newBuffer;
+				++level;
+				width >>= 1;
+				height >>= 1;
+			}
 		}
 	}
 
@@ -234,6 +300,12 @@ public class MipmapHelper {
 		}
 
 		return image;
+	}
+
+	private static IntBuffer newIntBuffer(int size) {
+		ByteBuffer buffer = ByteBuffer.allocateDirect(size);
+		buffer.order(ByteOrder.LITTLE_ENDIAN);
+		return buffer.asIntBuffer();
 	}
 
 	private static ByteBuffer getPooledBuffer(int size) {

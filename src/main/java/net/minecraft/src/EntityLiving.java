@@ -634,8 +634,8 @@ public abstract class EntityLiving extends EntityLivingBase {
 		return this.equipment[par1];
 	}
 
-	public ItemStack func_130225_q(int var1) {
-		return this.equipment[var1 + 1];
+	public ItemStack func_130225_q(int par1) {
+		return this.equipment[par1 + 1];
 	}
 
 	/**

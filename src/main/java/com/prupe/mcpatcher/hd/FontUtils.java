@@ -17,6 +17,7 @@ import net.minecraft.src.ResourceLocation;
 public class FontUtils {
 	private static final MCLogger logger = MCLogger.getLogger("HD Font");
 	private static final boolean enable = Config.getBoolean("Extended HD", "hdFont", true);
+	private static final boolean enableNonHD = Config.getBoolean("Extended HD", "nonHDFontWidth", false);
 	private static final int ROWS = 16;
 	private static final int COLS = 16;
 	public static final char[] AVERAGE_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123467890".toCharArray();
@@ -32,22 +33,25 @@ public class FontUtils {
 		}
 
 		if (fontRenderer.hdFont == null) {
-			String namespace = fontRenderer.defaultFont.getResourceDomain();
+			String newFont = fontRenderer.defaultFont.getResourceDomain();
 			String name = fontRenderer.defaultFont.getResourcePath().replaceAll(".*/", "");
-			fontRenderer.hdFont = new ResourceLocation(namespace, "mcpatcher/font/" + name);
+			fontRenderer.hdFont = new ResourceLocation(newFont, "mcpatcher/font/" + name);
 		}
+
+		ResourceLocation newFont1;
 
 		if (enable && TexturePackAPI.hasResource(fontRenderer.hdFont)) {
 			logger.fine("using %s instead of %s", new Object[] {fontRenderer.hdFont, fontRenderer.defaultFont});
 			fontRenderer.isHD = true;
-			fontRenderer.fontAdj = 0.0F;
-			return fontRenderer.hdFont;
+			newFont1 = fontRenderer.hdFont;
 		} else {
 			logger.fine("using default %s", new Object[] {fontRenderer.defaultFont});
-			fontRenderer.isHD = false;
-			fontRenderer.fontAdj = 1.0F;
-			return fontRenderer.defaultFont;
+			fontRenderer.isHD = enable && enableNonHD;
+			newFont1 = fontRenderer.defaultFont;
 		}
+
+		fontRenderer.fontAdj = fontRenderer.isHD ? 0.0F : 1.0F;
+		return newFont1;
 	}
 
 	public static float[] computeCharWidthsf(FontRenderer fontRenderer, ResourceLocation filename, BufferedImage image, int[] rgb, int[] charWidth, float fontAdj) {
@@ -58,10 +62,10 @@ public class FontUtils {
 			fontRenderer.fontAdj = fontAdj;
 
 			for (width = 0; width < charWidth.length; ++width) {
-				charWidthf[width] = (float)charWidth[width] + fontAdj;
+				charWidthf[width] = (float)charWidth[width];
 			}
 
-			charWidthf[32] = 4.0F + fontAdj;
+			charWidthf[32] = 4.0F;
 			return charWidthf;
 		} else {
 			allRenderers.add(fontRenderer);

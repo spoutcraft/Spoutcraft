@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import org.spoutcraft.client.config.Configuration;
 public class ReplaceBlocksButton extends GenericCheckBox {
 	public ReplaceBlocksButton() {
 		super("Auto Replace Blocks");
-		setChecked(Configuration.isReplaceTools());
+		setChecked(Configuration.isReplaceBlocks());
 		setTooltip("Replaces used up blocks with spares from your inventory");
 	}
 

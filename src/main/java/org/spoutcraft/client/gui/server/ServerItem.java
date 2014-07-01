@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -36,7 +36,6 @@ import org.spoutcraft.api.gui.RenderUtil;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.client.io.MirrorUtils;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.util.NetworkUtils;
 
@@ -133,8 +132,7 @@ public class ServerItem implements ListWidgetItem {
 	public void render(int x, int y, int width, int height) {
 		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
 		if (databaseId != -1) {
-			//String iconUrl = "http://cdn.spout.org/server/thumb/" + databaseId + ".png";
-			String iconUrl = "http://www.inspirenxe.com/spoutcraft/serverlist/images/" + databaseId + ".png";
+			String iconUrl = "http://solder.inspirenxe.org/resources/spoutcraft/servers/images/" + databaseId + ".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl("Spoutcraft", iconUrl);
 			if (icon == null) {
 				CustomTextureManager.downloadTexture("Spoutcraft", iconUrl, true);
@@ -296,10 +294,6 @@ public class ServerItem implements ListWidgetItem {
 	public void onClick(int x, int y, boolean doubleClick) {
 		if (doubleClick) {
 			if (isCompatible(SpoutClient.spoutcraftVersion)) {
-				if (databaseId != -1) {
-					String url = MirrorUtils.getMirrorUrl("/popular.php?uid=", "http://servers.spout.org/popular.php?uid=");
-					NetworkUtils.pingUrl(url + databaseId);
-				}
 				SpoutClient.getInstance().getServerManager().join(this, isFavorite?favorites.getCurrentGui():serverList.getCurrentGui(), isFavorite?"Favorites":"Server List");
 			}
 		}
@@ -418,17 +412,17 @@ public class ServerItem implements ListWidgetItem {
 	
 	public boolean isCompatible(String version) {
 		// Update the following method to allow users to login to server based on conditional versioning response.		
-		if (version.equals("1.6.2")) {
+		if (version.equals("1.6.4")) {
 			if (getVersion().equals("1.6.1")) {
 				return false;
 			}
 			
 			if (getVersion().equals("1.6.2")) {
-				return true;
+				return false;
 			}
 			
 			if (getVersion().equals("1.6.4")) {
-				return false;
+				return true;
 			}			
 		}
 		return false;

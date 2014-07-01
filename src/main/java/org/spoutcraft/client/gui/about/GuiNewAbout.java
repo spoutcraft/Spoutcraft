@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -64,7 +64,7 @@ public class GuiNewAbout extends GuiSpoutScreen {
 	}
 
 	private static void updateRoot() {
-		DownloadAssets.downloadFile(FileUtil.getConfigDir(), "about.yml", "http://get.spout.org/about.yml", false);
+		DownloadAssets.downloadFile(FileUtil.getConfigDir(), "about.yml", "http://solder.inspirenxe.org/resources/spoutcraft/about.yml", true);
 		File myFile = new File(FileUtil.getConfigDir(), "about.yml");
 		
 		try {			

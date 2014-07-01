@@ -3,7 +3,9 @@ package com.prupe.mcpatcher.cc;
 import com.prupe.mcpatcher.MCLogger;
 import com.prupe.mcpatcher.MCPatcherUtils;
 import java.lang.reflect.Method;
+import java.util.BitSet;
 import net.minecraft.src.BiomeGenBase;
+import net.minecraft.src.Minecraft;
 
 class BiomeHelper {
 	private static final MCLogger logger = MCLogger.getLogger("Custom Colors");
@@ -12,22 +14,40 @@ class BiomeHelper {
 	private static int lastI;
 	private static int lastK;
 
-	static String getBiomeNameAt(int i, int j, int k) {
-		BiomeGenBase biome = getBiomeGenAt(i, j, k);
+	static void parseBiomeList(String list, BitSet bits) {
+		if (!MCPatcherUtils.isNullOrEmpty(list)) {
+			String[] arr$ = list.toLowerCase().split("\\s+");
+			int len$ = arr$.length;
 
-		if (biome == null) {
-			return "";
-		} else {
-			String biomeName = biome.biomeName;
-			return biomeName == null ? "" : biomeName.toLowerCase().replace(" ", "");
+			for (int i$ = 0; i$ < len$; ++i$) {
+				String s = arr$[i$];
+
+				if (!s.isEmpty()) {
+					BiomeGenBase[] arr$1 = BiomeGenBase.biomeList;
+					int len$1 = arr$1.length;
+
+					for (int i$1 = 0; i$1 < len$1; ++i$1) {
+						BiomeGenBase biome = arr$1[i$1];
+
+						if (biome != null && biome.biomeName != null && s.equals(biome.biomeName.toLowerCase().replace(" ", ""))) {
+							bits.set(biome.biomeID);
+						}
+					}
+				}
+			}
 		}
+	}
+
+	static int getBiomeIDAt(int i, int j, int k) {
+		BiomeGenBase biome = getBiomeGenAt(i, j, k);
+		return biome == null ? BiomeGenBase.biomeList.length : biome.biomeID;
 	}
 
 	static BiomeGenBase getBiomeGenAt(int i, int j, int k) {
 		if (lastBiome == null || i != lastI || k != lastK) {
 			lastI = i;
 			lastK = k;
-			lastBiome = MCPatcherUtils.getMinecraft().theWorld.getBiomeGenForCoords(i, k);
+			lastBiome = Minecraft.getMinecraft().theWorld.getBiomeGenForCoords(i, k);
 		}
 
 		return lastBiome;

@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 
 public class TextureAtlasSprite implements Icon {
 	private final String iconName;
-	protected List framesTextureData = Lists.newArrayList();
+	public List framesTextureData = Lists.newArrayList();
 	private AnimationMetadataSection animationMetadata;
 	protected boolean rotated;
 	protected int originX;
@@ -26,6 +26,7 @@ public class TextureAtlasSprite implements Icon {
 	private float maxV;
 	protected int frameCounter;
 	protected int tickCounter;
+	public List mipmaps = null;
 
 	public TextureAtlasSprite(String par1Str) {
 		this.iconName = par1Str;
@@ -142,10 +143,7 @@ public class TextureAtlasSprite implements Icon {
 			int var3 = this.animationMetadata.getFrameIndex(this.frameCounter);
 
 			if (var1 != var3 && var3 >= 0 && var3 < this.framesTextureData.size()) {
-				int[] var10000 = (int[])this.framesTextureData.get(var3);
-				boolean var10005 = false;
-				boolean var10006 = false;
-				MipmapHelper.copySubTexture(var10000, this.width, this.height, this.originX, this.originY, this.iconName);
+				MipmapHelper.copySubTexture(this, var3);
 			}
 		}
 	}

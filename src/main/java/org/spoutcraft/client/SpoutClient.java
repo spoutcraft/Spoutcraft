@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ import org.newdawn.slick.util.Log;
 import org.newdawn.slick.util.LogSystem;
 
 import net.minecraft.src.Minecraft;
+import net.minecraft.src.AbstractClientPlayer;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityPlayer;
@@ -71,9 +72,9 @@ import org.spoutcraft.client.player.SimpleSkyManager;
 public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
 	private static final Thread dataMiningThread = new DataMiningThread();
-	private static final String version = "Unknown Version";
-	public static final String spoutcraftVersion = "1.6.2";
-	public static final String spoutcraftBuild = " - b15";
+	private static final String version = "Spoutcraft 1.6.4 / b18";
+	public static final String spoutcraftVersion = "1.6.4";
+	public static final String spoutcraftBuild = " - b18";
 	private final SimpleSkyManager skyManager = new SimpleSkyManager();
 	private final PacketManager packetManager = new PacketManager();
 	private final BiomeManager biomeManager = new SimpleBiomeManager();
@@ -111,6 +112,8 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final WidgetManager widgetManager = new SimpleWidgetManager();
 	private final HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
 	private boolean active = false;
+	public boolean xrayMode = false;
+	public static int[] visibleBlocks = new int[] {133, 132, 131, 120, 129, 122, 120, 119, 118, 117, 116, 115, 111, 103, 100, 151, 152, 153, 154, 155, 158, 99, 98, 96, 95, 89, 85, 74, 73, 72, 71, 70, 66, 65, 59, 57, 56, 54, 52, 51, 50, 48, 46, 44, 43, 42, 41, 40, 39, 34, 33, 30, 29, 28, 27, 26, 25, 22, 21, 18, 17, 16, 15, 14, 11, 10, 9, 8, 5};
 
 	private SpoutClient() {
 		instance = this;
@@ -483,6 +486,18 @@ public class SpoutClient extends PropertyObject implements Client {
 		return Minecraft.getMinecraft();
 	}
 
+	public AbstractClientPlayer getAbstractPlayerFromId(int id) {
+		if (getHandle().thePlayer.entityId == id) {
+			return getHandle().thePlayer;
+		}
+		WorldClient world = (WorldClient)getHandle().theWorld;
+		Entity e = world.getEntityByID(id);
+		if (e instanceof AbstractClientPlayer) {
+			return (AbstractClientPlayer) e;
+		}
+		return null;
+	}
+	
 	public EntityPlayer getPlayerFromId(int id) {
 		if (getHandle().thePlayer.entityId == id) {
 			return getHandle().thePlayer;

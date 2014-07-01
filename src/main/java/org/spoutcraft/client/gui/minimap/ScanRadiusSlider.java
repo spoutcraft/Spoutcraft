@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -26,13 +26,12 @@ public class ScanRadiusSlider extends GenericSlider {
 	private static final int MIN_RADIUS = 0, MAX_RADIUS = 7;
 
 	public ScanRadiusSlider() {
-		updateText();
 		updateSliderPosition();
 		setTooltip("Sets how far the overview-map scans the map when you move.\nHigher values will mean increased lag when you move");
 	}
 
-	private void updateText() {
-		int radius = MinimapConfig.getInstance().getScanRadius();
+	public String getText() {
+		int radius = (int) (this.getSliderPosition() * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS);
 		ChatColor color = ChatColor.WHITE;
 		if (radius > 3) {
 			color = ChatColor.YELLOW;
@@ -46,7 +45,7 @@ public class ScanRadiusSlider extends GenericSlider {
 		if (radius > 6) {
 			color = ChatColor.DARK_RED;
 		}
-		setText(color + "Scan Radius: " + radius + " chunks");
+		return color + "Scan Radius: " + radius + " chunks";
 	}
 
 	private void updateSliderPosition() {
@@ -58,7 +57,6 @@ public class ScanRadiusSlider extends GenericSlider {
 		int newradius = (int) (newPos * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS);
 		MinimapConfig.getInstance().setScanRadius(newradius);
 		MinimapConfig.getInstance().save();
-		updateText();
 		updateSliderPosition();
 	}
 }

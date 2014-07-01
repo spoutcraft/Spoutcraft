@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -47,8 +47,8 @@ public class ServerListModel extends AbstractAPIModel {
 
 	public ServerListModel() {
 		API = "http://servers.spout.org/api2.php";
-		//refreshAPIData(API + "?random", 0, true);
-		loadCountries();
+		//refreshAPIData(API + "?random", 0, true);		
+		//loadCountries();
 	}
 
 	public String getAPI() {

@@ -2,11 +2,11 @@ package com.prupe.mcpatcher.cc;
 
 import com.prupe.mcpatcher.Config;
 import com.prupe.mcpatcher.MCLogger;
-import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.TexturePackAPI;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import net.minecraft.src.EntityRenderer;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.World;
 
@@ -77,7 +77,7 @@ public final class Lightmap {
 		float sun = Colorizer.clamp(world.lastLightningBolt > 0 ? 1.0F : 1.1666666F * (world.getSunBrightness(1.0F) - 0.2F)) * (float)(this.width - 1);
 		float torch = Colorizer.clamp(renderer.torchFlickerX + 0.5F) * (float)(this.width - 1);
 		float nightVisionStrength = renderer.getNightVisionStrength(partialTick);
-		float gamma = Colorizer.clamp(MCPatcherUtils.getMinecraft().gameSettings.gammaSetting);
+		float gamma = Colorizer.clamp(Minecraft.getMinecraft().gameSettings.gammaSetting);
 		int s;
 
 		for (s = 0; s < 16; ++s) {

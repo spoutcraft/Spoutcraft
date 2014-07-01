@@ -223,7 +223,7 @@ public class Minecraft implements IPlayerUsage {
 	// Spout End
 
 	public Minecraft(Session par1Session, int par2, int par3, boolean par4, boolean par5, File par6File, File par7File, File par8File, Proxy par9Proxy, String par10Str) {		
-		MCPatcherUtils.setMinecraft(this, par6File, "1.6.2", "4.1.0_04");
+		MCPatcherUtils.setMinecraft(par6File, par7File, "1.6.4", "4.2.2");
 		this.timer = new Timer(20.0F);
 		this.usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.getSystemTimeMillis());
 		this.systemTime = getSystemTime();
@@ -336,7 +336,7 @@ public class Minecraft implements IPlayerUsage {
 		}
 		
 		Display.setResizable(true);
-		Display.setTitle("Spoutcraft 1.6.2");
+		Display.setTitle("Spoutcraft 1.6.4");
 		//this.getLogAgent().logInfo("LWJGL Version: " + Sys.getVersion());
 
 		if (Util.getOSType() != EnumOS.MACOS) {

@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -41,7 +41,7 @@ public class Configuration {
 	private static boolean waterBiomeColors = true;
 	private static float brightnessSlider = 1F;
 	public static boolean chatColorAssist = false;
-	private static boolean fancyClouds = false;
+	public static boolean fancyClouds = false;
 	private static boolean fancyFog = false;
 	private static boolean fancyGraphics = false;
 	public static boolean fancyGrass = false;
@@ -97,6 +97,10 @@ public class Configuration {
 	public static int aaSampling = 0;
 	public static boolean optimizedLightingUpdates = false;
 	public static boolean displayCustomParticles = false;
+	public static boolean displayEntityNamesinRange = false;
+	public static boolean displayPlayerNames3rdPerson = true;
+	public static boolean displayAnimalHeatinColor = false;
+	public static boolean fancyItems = true;
 
 	// Config specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
@@ -774,6 +778,42 @@ public class Configuration {
 	
 	public static synchronized void setDisplayCustomParticles(boolean displayCustomParticles) {
 		Configuration.displayCustomParticles = displayCustomParticles;
+		onPropertyChange();
+	}
+	
+	public static synchronized boolean isDisplayEntityNamesinRange() {
+		return displayEntityNamesinRange;
+	}
+	
+	public static synchronized void setDisplayEntityNamesinRange(boolean var1) {
+		Configuration.displayEntityNamesinRange = var1;
+		onPropertyChange();
+	}
+	
+	public static synchronized boolean isDisplayAnimalHeatinColor() {
+		return displayAnimalHeatinColor;
+	}
+	
+	public static synchronized void setDisplayAnimalHeatinColor(boolean var1) {
+		Configuration.displayAnimalHeatinColor = var1;
+		onPropertyChange();
+	}
+	
+	public static synchronized boolean isDisplayPlayerNames3rdPerson() {
+		return displayPlayerNames3rdPerson;
+	}
+	
+	public static synchronized void setDisplayPlayerNames3rdPerson(boolean var1) {
+		Configuration.displayPlayerNames3rdPerson = var1;
+		onPropertyChange();
+	}
+	
+	public static synchronized boolean isFancyItems() {
+		return fancyItems;
+	}
+	
+	public static synchronized void setFancyItems(boolean var1) {
+		Configuration.fancyItems = var1;
 		onPropertyChange();
 	}
 }

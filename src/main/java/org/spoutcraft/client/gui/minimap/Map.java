@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -73,7 +73,6 @@ public class Map {
 	public int updatedist = 4;
 
 	// Denotes the width or the diameter of a map
-	public static final int ZOOM_3 = 512;
 	public static final int ZOOM_2 = 256;
 	public static final int ZOOM_1 = 128;
 	public static final int ZOOM_0 = 64;

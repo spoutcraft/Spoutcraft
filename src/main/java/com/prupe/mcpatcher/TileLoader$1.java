@@ -33,7 +33,6 @@ final class TileLoader$1 extends TexturePackChangeHandler {
 		TileLoader.access$300().clear();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void afterChange() {
 		while (true) {
 			Iterator i$ = TileLoader.access$200().iterator();
@@ -55,14 +54,13 @@ final class TileLoader$1 extends TexturePackChangeHandler {
 					TileLoader.access$602(false);
 					String mapName = loader.mapName + "_overflow" + TileLoader.access$704(loader);
 					TileLoader.access$800().fine("new TextureAtlas(%s)", new Object[] {mapName});
-					TextureMap map = new TextureMap(2, mapName);
+					TextureMap map = new TextureMap(2, mapName);					
 					try {
 						map.loadTexture(TexturePackAPI.getResourceManager());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 					if (TileLoader.access$600()) {
 						TileLoader.access$100().add(map);
 						break;

@@ -8,7 +8,6 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.InGameHUD;
 import org.spoutcraft.api.material.MaterialData;
@@ -246,7 +245,7 @@ public class GuiIngame extends Gui {
 			this.mc.mcProfiler.startSection("debug");
 			GL11.glPushMatrix();
 			if (Configuration.getFastDebug() != 2) {
-				font.drawStringWithShadow("Spoutcraft 1.6.2 (" + this.mc.debug + ")", 2, 2, 16777215);
+				font.drawStringWithShadow("Spoutcraft 1.6.4 (" + this.mc.debug + ")", 2, 2, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 				font.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -321,6 +320,7 @@ public class GuiIngame extends Gui {
 		float pHealth;
 		float ppHealth;
 
+		// Hotbar Text
 		if (Configuration.showHotbarText) {
 			String var35;
 			String custom = null;
@@ -335,7 +335,9 @@ public class GuiIngame extends Gui {
 					custom = Spoutcraft.getMaterialManager().getToolTip(new CraftItemStack(this.highlightingItemStack));
 				}
 				if (custom != null) {
-					var35 = custom;
+					String[] split = custom.split("\n");
+					String newCustom = split[0];
+					var35 = newCustom;
 				} else {
 					var35 = this.highlightingItemStack.getDisplayName();
 				}

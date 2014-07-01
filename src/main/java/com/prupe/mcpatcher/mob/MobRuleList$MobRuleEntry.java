@@ -2,16 +2,14 @@ package com.prupe.mcpatcher.mob;
 
 import com.prupe.mcpatcher.MCPatcherUtils;
 import com.prupe.mcpatcher.WeightedIndex;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.lang.reflect.Method;
+import java.util.BitSet;
 import java.util.Properties;
-import java.util.Set;
 
 class MobRuleList$MobRuleEntry {
 	final int[] skins;
 	final WeightedIndex weightedIndex;
-	private final Set<String> biomes;
+	private final BitSet biomes;
 	private final int minHeight;
 	private final int maxHeight;
 
@@ -38,20 +36,27 @@ class MobRuleList$MobRuleEntry {
 			}
 		}
 
-		WeightedIndex var10 = WeightedIndex.create(skins.length, properties.getProperty("weights." + index, ""));
+		WeightedIndex var11 = WeightedIndex.create(skins.length, properties.getProperty("weights." + index, ""));
 
-		if (var10 == null) {
+		if (var11 == null) {
 			return null;
 		} else {
-			HashSet biomes = new HashSet();
-			String biomeList = properties.getProperty("biomes." + index, "").trim().toLowerCase();
+			String biomeList = MCPatcherUtils.getStringProperty(properties, "biomes." + index, "");
+			BitSet biomes;
 
-			if (!biomeList.equals("")) {
-				Collections.addAll(biomes, biomeList.split("\\s+"));
-			}
-
-			if (biomes.isEmpty()) {
+			if (biomeList.isEmpty()) {
 				biomes = null;
+			} else {
+				biomes = new BitSet();
+
+				if (MobRuleList.access$000() != null) {
+					try {
+						MobRuleList.access$000().invoke((Object)null, new Object[] {biomeList, biomes});
+					} catch (Throwable var10) {
+						var10.printStackTrace();
+						MobRuleList.access$002((Method)null);
+					}
+				}
 			}
 
 			int minHeight = MCPatcherUtils.getIntProperty(properties, "minHeight." + index, -1);
@@ -62,11 +67,11 @@ class MobRuleList$MobRuleEntry {
 				maxHeight = Integer.MAX_VALUE;
 			}
 
-			return new MobRuleList$MobRuleEntry(skins, var10, biomes, minHeight, maxHeight);
+			return new MobRuleList$MobRuleEntry(skins, var11, biomes, minHeight, maxHeight);
 		}
 	}
 
-	MobRuleList$MobRuleEntry(int[] skins, WeightedIndex weightedIndex, HashSet<String> biomes, int minHeight, int maxHeight) {
+	MobRuleList$MobRuleEntry(int[] skins, WeightedIndex weightedIndex, BitSet biomes, int minHeight, int maxHeight) {
 		this.skins = skins;
 		this.weightedIndex = weightedIndex;
 		this.biomes = biomes;
@@ -74,28 +79,26 @@ class MobRuleList$MobRuleEntry {
 		this.maxHeight = maxHeight;
 	}
 
-	boolean match(int i, int j, int k, String biome) {
-		return this.biomes != null && !this.biomes.contains(biome) ? false : this.minHeight < 0 || j >= this.minHeight && j <= this.maxHeight;
+	boolean match(int i, int j, int k, Integer biome) {
+		return this.biomes != null && (biome == null || !this.biomes.get(biome.intValue())) ? false : this.minHeight < 0 || j >= this.minHeight && j <= this.maxHeight;
 	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("skins:");
-		int[] i$ = this.skins;
-		int s = i$.length;
+		int[] i = this.skins;
+		int len$ = i.length;
 
-		for (int i$1 = 0; i$1 < s; ++i$1) {
-			int i = i$[i$1];
-			sb.append(' ').append(i + 1);
+		for (int i$ = 0; i$ < len$; ++i$) {
+			int i1 = i[i$];
+			sb.append(' ').append(i1 + 1);
 		}
 
 		if (this.biomes != null) {
 			sb.append(", biomes:");
-			Iterator var6 = this.biomes.iterator();
 
-			while (var6.hasNext()) {
-				String var7 = (String)var6.next();
-				sb.append(' ').append(var7);
+			for (int var6 = this.biomes.nextSetBit(0); var6 >= 0; var6 = this.biomes.nextSetBit(var6 + 1)) {
+				sb.append(' ').append(var6);
 			}
 		}
 

@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import javax.crypto.SecretKey;
 
 import com.google.common.base.Charsets;
@@ -133,14 +134,6 @@ public class NetClientHandler extends NetHandler {
 		if (this.netManager != null) {
 			this.netManager.wakeThreads();
 		}
-
-		// Spout Start - Close downloading terrain screen if precache managage was never called.
-		if (mc.currentScreen instanceof GuiDownloadTerrain) {
-			if (System.currentTimeMillis() > timeout) {
-				mc.displayGuiScreen(null, false);
-			}
-		}
-		// Spout End
 	}
 
 	public void handleServerAuthData(Packet253ServerAuthData par1Packet253ServerAuthData) {
@@ -197,7 +190,7 @@ public class NetClientHandler extends NetHandler {
 		this.mc.thePlayer.dimension = par1Packet1Login.dimension;
 		// Spout Start
 		if (!(this.mc.currentScreen instanceof GuiPrecache)) { 
-		this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
+			this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
 		}
 		//this.mc.displayGuiScreen(new org.spoutcraft.client.gui.precache.GuiPrecache());
 		System.out.println("Starting cache manager... " + System.currentTimeMillis());
@@ -491,15 +484,10 @@ public class NetClientHandler extends NetHandler {
 			this.mc.thePlayer.prevPosY = this.mc.thePlayer.posY;
 			this.mc.thePlayer.prevPosZ = this.mc.thePlayer.posZ;
 			this.doneLoadingTerrain = true;
-
-			// Spout Start
-			if (SpoutClient.getInstance().isSpoutEnabled()) {
-				if (FileDownloadThread.preCacheCompleted.get() == 0L) {
-					return;
-				}
+			
+			if (!(this.mc.currentScreen instanceof GuiPrecache)) {
+				this.mc.displayGuiScreen((GuiScreen)null);
 			}
-			// Spout End
-			this.mc.displayGuiScreen((GuiScreen)null);
 		}
 	}
 

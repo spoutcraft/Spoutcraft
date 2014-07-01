@@ -47,7 +47,7 @@ public class TextureClock extends TextureAtlasSprite {
 			this.field_94240_i *= 0.8D;
 			this.field_94239_h += this.field_94240_i;
 
-			if (!FancyDial.update(this)) {
+			if (!FancyDial.update(this, false)) {
 				int var6;
 
 				for (var6 = (int)((this.field_94239_h + 1.0D) * (double)this.framesTextureData.size()) % this.framesTextureData.size(); var6 < 0; var6 = (var6 + this.framesTextureData.size()) % this.framesTextureData.size()) {

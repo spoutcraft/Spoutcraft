@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -52,8 +52,8 @@ public class MinimapConfig {
 	private boolean cavemap = false;
 	private boolean firstrun = true;
 	private boolean scale = false;
-	private float xAdjust = 0;
-	private float yAdjust = 0;
+	private float xAdjust = -5;
+	private float yAdjust = 5;
 	private float sizeAdjust = 1F;
 	private boolean directions = true;
 	private boolean deathpoints = true;

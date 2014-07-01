@@ -1179,7 +1179,7 @@ public class RenderGlobal implements IWorldAccess {
 			return;
 		}
 		if (this.mc.theWorld.provider.isSurfaceWorld()) {
-			if (ColorizeWorld.drawFancyClouds(this.mc.gameSettings.fancyGraphics)) {
+			if (ColorizeWorld.drawFancyClouds(Configuration.fancyClouds)) {
 		// Spout End
 				this.renderCloudsFancy(par1);
 			} else {

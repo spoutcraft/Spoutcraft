@@ -119,6 +119,7 @@ public class LineRenderer {
 			Tessellator tessellator = Tessellator.instance;
 			tessellator.startDrawingQuads();
 			GL11.glDisable(GL11.GL_CULL_FACE);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			dx += this.sx + this.plusSX;
 			dy += this.sy + this.plusSY;
 			dz += this.sz + this.plusSZ;

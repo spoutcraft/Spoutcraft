@@ -15,7 +15,7 @@ import com.prupe.mcpatcher.ctm.TileOverrideImpl$Vertical;
 import com.prupe.mcpatcher.ctm.TileOverrideImpl$VerticalHorizontal;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.BitSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -61,7 +61,8 @@ abstract class TileOverride implements ITileOverride {
 	private static final int CONNECT_BY_BLOCK = 0;
 	private static final int CONNECT_BY_TILE = 1;
 	private static final int CONNECT_BY_MATERIAL = 2;
-	private static Method getBiomeNameAt;
+	private static Method parseBiomeList;
+	private static Method getBiomeIDAt;
 	private final ResourceLocation propertiesFile;
 	private final String texturesDirectory;
 	private final String baseFilename;
@@ -74,7 +75,7 @@ abstract class TileOverride implements ITileOverride {
 	private final int metadata;
 	private final int connectType;
 	private final boolean innerSeams;
-	private final Set<String> biomes;
+	private final BitSet biomes;
 	private final int minHeight;
 	private final int maxHeight;
 	private final List<ResourceLocation> tileNames = new ArrayList();
@@ -177,28 +178,27 @@ abstract class TileOverride implements ITileOverride {
 		}
 
 		flags = 0;
-		String[] var12 = properties.getProperty("faces", "all").trim().toLowerCase().split("\\s+");
-		int connectType1 = var12.length;
-		int biomes;
-		String biomeList;
+		String[] var13 = properties.getProperty("faces", "all").trim().toLowerCase().split("\\s+");
+		int connectType1 = var13.length;
+		int biomeList;
 
-		for (biomes = 0; biomes < connectType1; ++biomes) {
-			biomeList = var12[biomes];
+		for (biomeList = 0; biomeList < connectType1; ++biomeList) {
+			String e = var13[biomeList];
 
-			if (biomeList.equals("bottom")) {
+			if (e.equals("bottom")) {
 				flags |= 1;
-			} else if (biomeList.equals("top")) {
+			} else if (e.equals("top")) {
 				flags |= 2;
-			} else if (biomeList.equals("north")) {
+			} else if (e.equals("north")) {
 				flags |= 4;
-			} else if (biomeList.equals("south")) {
+			} else if (e.equals("south")) {
 				flags |= 8;
-			} else if (biomeList.equals("east")) {
+			} else if (e.equals("east")) {
 				flags |= 32;
-			} else if (biomeList.equals("west")) {
+			} else if (e.equals("west")) {
 				flags |= 16;
-			} else if (!biomeList.equals("side") && !biomeList.equals("sides")) {
-				if (biomeList.equals("all")) {
+			} else if (!e.equals("side") && !e.equals("sides")) {
+				if (e.equals("all")) {
 					flags = -1;
 				}
 			} else {
@@ -207,44 +207,49 @@ abstract class TileOverride implements ITileOverride {
 		}
 
 		this.faces = flags;
-		int var11 = 0;
-		int[] var13 = MCPatcherUtils.parseIntegerList(properties.getProperty("metadata", "0-31"), 0, 31);
-		biomes = var13.length;
+		int var12 = 0;
+		int[] var14 = MCPatcherUtils.parseIntegerList(properties.getProperty("metadata", "0-31"), 0, 31);
+		biomeList = var14.length;
 
-		for (int var15 = 0; var15 < biomes; ++var15) {
-			int i = var13[var15];
-			var11 |= 1 << i;
+		for (int var16 = 0; var16 < biomeList; ++var16) {
+			int i = var14[var16];
+			var12 |= 1 << i;
 		}
 
-		this.metadata = var11;
-		String var14 = properties.getProperty("connect", "").trim().toLowerCase();
+		this.metadata = var12;
+		String var15 = properties.getProperty("connect", "").trim().toLowerCase();
 
-		if (var14.equals("")) {
+		if (var15.equals("")) {
 			this.connectType = this.matchTiles.isEmpty() ? 0 : 1;
-		} else if (var14.equals("block")) {
+		} else if (var15.equals("block")) {
 			this.connectType = 0;
-		} else if (var14.equals("tile")) {
+		} else if (var15.equals("tile")) {
 			this.connectType = 1;
-		} else if (var14.equals("material")) {
+		} else if (var15.equals("material")) {
 			this.connectType = 2;
 		} else {
-			this.error("invalid connect type %s", new Object[] {var14});
+			this.error("invalid connect type %s", new Object[] {var15});
 			this.connectType = 0;
 		}
 
 		this.innerSeams = MCPatcherUtils.getBooleanProperty(properties, "innerSeams", false);
-		HashSet var16 = new HashSet();
-		biomeList = properties.getProperty("biomes", "").trim().toLowerCase();
+		String var17 = properties.getProperty("biomes", "");
 
-		if (!biomeList.equals("")) {
-			Collections.addAll(var16, biomeList.split("\\s+"));
+		if (var17.isEmpty()) {
+			this.biomes = null;
+		} else {
+			this.biomes = new BitSet();
+
+			if (parseBiomeList != null) {
+				try {
+					parseBiomeList.invoke((Object)null, new Object[] {var17, this.biomes});
+				} catch (Throwable var11) {
+					var11.printStackTrace();
+					parseBiomeList = null;
+				}
+			}
 		}
 
-		if (var16.isEmpty()) {
-			var16 = null;
-		}
-
-		this.biomes = var16;
 		this.minHeight = MCPatcherUtils.getIntProperty(properties, "minHeight", -1);
 		this.maxHeight = MCPatcherUtils.getIntProperty(properties, "maxHeight", Integer.MAX_VALUE);
 		this.renderPass = MCPatcherUtils.getIntProperty(properties, "renderPass", -1);
@@ -301,6 +306,8 @@ abstract class TileOverride implements ITileOverride {
 									this.addIcon(resource1);
 								} else {
 									this.warn("could not find image %s", new Object[] {resource1});
+									// ToDO:
+									//this.tileNames.add((Object)null);
 								}
 							}
 						} catch (NumberFormatException var13) {
@@ -310,11 +317,14 @@ abstract class TileOverride implements ITileOverride {
 						ResourceLocation var16 = TileLoader.parseTileAddress(this.propertiesFile, token);
 
 						if (var16 == null) {
+							// ToDo:
 							this.tileNames.add((ResourceLocation)null);
 						} else if (TexturePackAPI.hasResource(var16)) {
 							this.addIcon(var16);
 						} else {
 							this.warn("could not find image %s", new Object[] {var16});
+							// ToDO:
+							//this.tileNames.add((Object)null);
 						}
 					}
 				}
@@ -494,8 +504,8 @@ abstract class TileOverride implements ITileOverride {
 		if (this.exclude(neighbor, face, neighborMeta)) {
 			return false;
 		} else {
-			int orientation = getOrientationFromMetadata(blockID, metadata);
-			int neighborOrientation = getOrientationFromMetadata(neighborID, neighborMeta);
+			int orientation = getOrientationFromMetadata(block, metadata);
+			int neighborOrientation = getOrientationFromMetadata(neighbor, neighborMeta);
 
 			if ((orientation & -65536) != (neighborOrientation & -65536)) {
 				return false;
@@ -542,7 +552,7 @@ abstract class TileOverride implements ITileOverride {
 			return true;
 		} else {
 			if (this.metadata != -1 && metadata >= 0 && metadata < 32) {
-				int altMetadata = getOrientationFromMetadata(block.blockID, metadata) & 65535;
+				int altMetadata = getOrientationFromMetadata(block, metadata) & 65535;
 
 				if ((this.metadata & (1 << metadata | 1 << altMetadata)) == 0) {
 					return true;
@@ -553,20 +563,24 @@ abstract class TileOverride implements ITileOverride {
 		}
 	}
 
-	private static int getOrientationFromMetadata(int blockID, int metadata) {
+	private static int getOrientationFromMetadata(Block block, int metadata) {
 		int newMeta = metadata;
 		int orientation = 0;
 
-		switch (blockID) {
-			case 17:
-				newMeta = metadata & -13;
-
+		switch (block.getRenderType()) {
+			case 31:
 				switch (metadata & 12) {
+					case 0:
+						newMeta = metadata & -13;
+						return orientation | newMeta;
+
 					case 4:
+						newMeta = metadata & -13;
 						orientation = 65536;
 						return orientation | newMeta;
 
 					case 8:
+						newMeta = metadata & -13;
 						orientation = 131072;
 						return orientation | newMeta;
 
@@ -574,7 +588,7 @@ abstract class TileOverride implements ITileOverride {
 						return orientation | newMeta;
 				}
 
-			case 155:
+			case 39:
 				switch (metadata) {
 					case 3:
 						newMeta = 2;
@@ -623,6 +637,46 @@ abstract class TileOverride implements ITileOverride {
 		}
 	}
 
+	private static int remapFaceByRenderType(Block block, int metadata, int face) {
+		switch (block.getRenderType()) {
+			case 8:
+				switch (metadata) {
+					case 2:
+					case 3:
+					case 4:
+					case 5:
+						return metadata;
+
+					default:
+						return face;
+				}
+
+			case 20:
+				switch (metadata) {
+					case 1:
+						return 2;
+
+					case 2:
+						return 5;
+
+					case 3:
+					case 5:
+					case 6:
+					case 7:
+					default:
+						break;
+
+					case 4:
+						return 3;
+
+					case 8:
+						return 4;
+				}
+		}
+
+		return face;
+	}
+
 	public final Icon getTile(IBlockAccess blockAccess, Block block, Icon origIcon, int i, int j, int k, int face) {
 		if (this.icons == null) {
 			this.error("no images loaded, disabling", new Object[0]);
@@ -632,19 +686,26 @@ abstract class TileOverride implements ITileOverride {
 			return null;
 		} else if (block != null && !RenderPassAPI.instance.skipThisRenderPass(block, this.renderPass)) {
 			int metadata = blockAccess.getBlockMetadata(i, j, k);
-			this.setupOrientation(getOrientationFromMetadata(block.blockID, metadata), face);
+			this.setupOrientation(getOrientationFromMetadata(block, metadata), face);
+			face = remapFaceByRenderType(block, metadata, face);
 
 			if (this.exclude(block, face, metadata)) {
 				return null;
 			} else if (j >= this.minHeight && j <= this.maxHeight) {
-				if (this.biomes != null && getBiomeNameAt != null) {
+				if (this.biomes != null) {
+					if (getBiomeIDAt == null) {
+						return null;
+					}
+
 					try {
-						if (!this.biomes.contains(getBiomeNameAt.invoke((Object)null, new Object[] {Integer.valueOf(i), Integer.valueOf(j), Integer.valueOf(k)}))) {
+						int e = ((Integer)getBiomeIDAt.invoke((Object)null, new Object[] {Integer.valueOf(i), Integer.valueOf(j), Integer.valueOf(k)})).intValue();
+
+						if (!this.biomes.get(e)) {
 							return null;
 						}
 					} catch (Throwable var10) {
 						var10.printStackTrace();
-						getBiomeNameAt = null;
+						getBiomeIDAt = null;
 					}
 				}
 
@@ -665,7 +726,7 @@ abstract class TileOverride implements ITileOverride {
 			this.error("method=%s is not supported for non-standard blocks", new Object[] {this.getMethod()});
 			return null;
 		} else if (this.minHeight < 0 && this.maxHeight >= Integer.MAX_VALUE && this.biomes == null) {
-			this.setupOrientation(getOrientationFromMetadata(block.blockID, metadata), face);
+			this.setupOrientation(getOrientationFromMetadata(block, metadata), face);
 			return this.exclude(block, face, metadata) ? null : this.getTileImpl(block, origIcon, face, metadata);
 		} else {
 			return null;
@@ -677,20 +738,19 @@ abstract class TileOverride implements ITileOverride {
 	abstract Icon getTileImpl(IBlockAccess var1, Block var2, Icon var3, int var4, int var5, int var6, int var7);
 
 	abstract Icon getTileImpl(Block var1, Icon var2, int var3, int var4);
-
+	
 	static {
 		try {
 			Class e = Class.forName("com.prupe.mcpatcher.cc.BiomeHelper");
-			getBiomeNameAt = e.getDeclaredMethod("getBiomeNameAt", new Class[] {Integer.TYPE, Integer.TYPE, Integer.TYPE});
-			getBiomeNameAt.setAccessible(true);
-		} catch (Throwable var1) {
-			;
-		}
-
-		if (getBiomeNameAt == null) {
-			logger.warning("biome integration failed", new Object[0]);
-		} else {
+			parseBiomeList = e.getDeclaredMethod("parseBiomeList", new Class[] {String.class, BitSet.class});
+			getBiomeIDAt = e.getDeclaredMethod("getBiomeIDAt", new Class[] {Integer.TYPE, Integer.TYPE, Integer.TYPE});
+			parseBiomeList.setAccessible(true);
+			getBiomeIDAt.setAccessible(true);
 			logger.fine("biome integration active", new Object[0]);
+		} catch (Throwable var1) {
+			parseBiomeList = null;
+			getBiomeIDAt = null;
+			logger.warning("biome integration failed", new Object[0]);
 		}
 	}
 }

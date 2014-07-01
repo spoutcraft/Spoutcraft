@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.prupe.mcpatcher.cc.ColorizeEntity;
 import com.prupe.mcpatcher.mob.MobRandomizer$ExtraInfo;
 
 import java.util.Collection;
@@ -161,6 +162,7 @@ public abstract class EntityLivingBase extends Entity {
 	/** Number of ticks since last jump */
 	private int jumpTicks;
 	private float field_110151_bq;
+	public int overridePotionColor;
 
 	public EntityLivingBase(World par1World) {
 		super(par1World);
@@ -522,23 +524,23 @@ public abstract class EntityLivingBase extends Entity {
 		int var11;
 
 		if (this.potionsNeedUpdate) {
-			if (!this.worldObj.isRemote) {
-				if (this.activePotionsMap.isEmpty()) {
-					this.dataWatcher.updateObject(8, Byte.valueOf((byte)0));
-					this.dataWatcher.updateObject(7, Integer.valueOf(0));
-					this.setInvisible(false);
-				} else {
-					var11 = PotionHelper.calcPotionLiquidColor(this.activePotionsMap.values());
-					this.dataWatcher.updateObject(8, Byte.valueOf((byte)(PotionHelper.func_82817_b(this.activePotionsMap.values()) ? 1 : 0)));
-					this.dataWatcher.updateObject(7, Integer.valueOf(var11));
-					this.setInvisible(this.isPotionActive(Potion.invisibility.id));
-				}
+			if (this.activePotionsMap.isEmpty()) {
+				this.dataWatcher.updateObject(8, Byte.valueOf((byte)0));
+				this.dataWatcher.updateObject(7, Integer.valueOf(0));
+				this.overridePotionColor = 0;
+				this.setInvisible(false);
+			} else {
+				var11 = PotionHelper.calcPotionLiquidColor(this.activePotionsMap.values());
+				this.dataWatcher.updateObject(8, Byte.valueOf((byte)(PotionHelper.func_82817_b(this.activePotionsMap.values()) ? 1 : 0)));
+				this.dataWatcher.updateObject(7, Integer.valueOf(var11));
+				this.overridePotionColor = var11;
+				this.setInvisible(this.isPotionActive(Potion.invisibility.id));
 			}
 
 			this.potionsNeedUpdate = false;
 		}
 
-		var11 = this.dataWatcher.getWatchableObjectInt(7);
+		var11 = ColorizeEntity.getPotionEffectColor(this.dataWatcher.getWatchableObjectInt(7), this);
 		boolean var12 = this.dataWatcher.getWatchableObjectByte(8) > 0;
 
 		if (var11 > 0) {
@@ -920,6 +922,9 @@ public abstract class EntityLivingBase extends Entity {
 	 */
 	protected void fall(float par1) {
 		super.fall(par1);
+		// Spout Start - Gravity mod
+		par1 *= getData().getGravityMod();
+		// Spout End
 		PotionEffect var2 = this.getActivePotionEffect(Potion.jump);
 		float var3 = var2 != null ? (float)(var2.getAmplifier() + 1) : 0.0F;
 		int var4 = MathHelper.ceiling_float_int(par1 - 3.0F - var3);
@@ -1266,7 +1271,10 @@ public abstract class EntityLivingBase extends Entity {
 	 * Causes this entity to do an upwards motion (jumping).
 	 */
 	protected void jump() {
-		this.motionY = 0.41999998688697815D;
+
+		// Spout Start - Added jumping modifier
+		this.motionY = 0.41999998688697815D * getData().getJumpingMod();
+		// Spout End
 
 		if (this.isPotionActive(Potion.jump)) {
 			this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
@@ -1289,19 +1297,25 @@ public abstract class EntityLivingBase extends Entity {
 
 		if (this.isInWater() && (!(this instanceof EntityPlayer) || !((EntityPlayer)this).capabilities.isFlying)) {
 			var10 = this.posY;
-			this.moveFlying(par1, par2, this.isAIEnabled() ? 0.04F : 0.02F);
+			// Spout Start - Swimming mod
+			this.moveFlying(par1, par2, ((float) ((this.isAIEnabled() ? 0.04F : 0.02F) * getData().getSwimmingMod())));
+			// Spout End
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.800000011920929D;
 			this.motionY *= 0.800000011920929D;
 			this.motionZ *= 0.800000011920929D;
-			this.motionY -= 0.02D;
+			// Spout Start - Added gravity modifier
+			this.motionY -= 0.02D * getData().getGravityMod();
+			// Spout End
 
 			if (this.isCollidedHorizontally && this.isOffsetPositionInLiquid(this.motionX, this.motionY + 0.6000000238418579D - this.posY + var10, this.motionZ)) {
 				this.motionY = 0.30000001192092896D;
 			}
 		} else if (this.handleLavaMovement() && (!(this instanceof EntityPlayer) || !((EntityPlayer)this).capabilities.isFlying)) {
 			var10 = this.posY;
-			this.moveFlying(par1, par2, 0.02F);
+			// Spout Start - Added swimming modifier
+			this.moveFlying(par1, par2, (float)(0.02F * getData().getSwimmingMod()));
+			// Spout End
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.5D;
 			this.motionY *= 0.5D;
@@ -1327,9 +1341,21 @@ public abstract class EntityLivingBase extends Entity {
 			float var5;
 
 			if (this.onGround) {
-				var5 = this.getAIMoveSpeed() * var8;
+				if (this.isAIEnabled()) {
+					// Spout Start
+					var5 = (float) (this.getAIMoveSpeed() * getData().getWalkingMod());
+					// Spout End
+				} else {
+					// Spout Start
+					var5 = (float) (this.landMovementFactor * getData().getWalkingMod());
+					// Spout End
+				}
+
+				var5 *= var8;
 			} else {
-				var5 = this.jumpMovementFactor;
+				// Spout Start - Added AirSpeed modifier
+				var5 = (float) (this.jumpMovementFactor * getData().getAirspeedMod());
+				// Spout End
 			}
 
 			this.moveFlying(par1, par2, var5);
@@ -1341,6 +1367,19 @@ public abstract class EntityLivingBase extends Entity {
 
 				if (var6 > 0) {
 					var3 = Block.blocksList[var6].slipperiness * 0.91F;
+					// Spout Start
+					int x = MathHelper.floor_double(this.posX);
+					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
+					int z = MathHelper.floor_double(this.posZ);
+					org.spoutcraft.client.block.SpoutcraftChunk chunk = org.spoutcraft.api.Spoutcraft.getChunkAt(worldObj, x, y, z);
+					short customId = chunk.getCustomBlockId(x, y, z);
+					if (customId > 0) {
+						CustomBlock block = MaterialData.getCustomBlock(customId);
+						if (block != null) {
+							var3 = block.getFriction() * 0.98F;
+						}
+					}
+					// Spout End
 				}
 			}
 
@@ -1389,7 +1428,9 @@ public abstract class EntityLivingBase extends Entity {
 					this.motionY = 0.0D;
 				}
 			} else {
-				this.motionY -= 0.08D;
+				// Spout Start - Added gravity modifier
+				this.motionY -= 0.08D * getData().getGravityMod();
+				// Spout End
 			}
 
 			this.motionY *= 0.9800000190734863D;

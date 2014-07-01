@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -51,6 +51,7 @@ import org.spoutcraft.client.packet.PacketRequestPrecache;
 
 public class PrecacheManager {
 	public static boolean spoutDebug = false;
+	public static int toDownload, downloaded = 0;
 	/**
 	 * PrecacheTuple - Holds Plugin Name, Version, and CRC
 	 * Boolean - Is this cached or not?
@@ -78,6 +79,7 @@ public class PrecacheManager {
 			FileUtil.deleteDirectory(temp);
 		}
 		plugins.put(plugin, false);
+		toDownload++;
 	}
 
 	/**
@@ -155,9 +157,12 @@ public class PrecacheManager {
 		final PrecacheTuple next = getNextToCache();
 
 		// Let the user know we are precaching
-		if (spoutDebug) {
-			setPreloadGuiText(ChatColor.BLUE + "Spoutcraft" + "\n" + " " + "\n" + ChatColor.WHITE + "Downloading Custom Content for:  " + ChatColor.ITALIC + next.getPlugin() + " " + next.getVersion());
+		downloaded++;
+		setPreloadGuiText(ChatColor.WHITE + "Downloading resources, files remaining:  " + ChatColor.ITALIC + (toDownload-downloaded));
+		if (toDownload-downloaded == 0) {
+			setPreloadGuiText(ChatColor.WHITE + "Activating downloaded resources...");
 		}
+		
 		// Send SpoutPlugin a request for the pre-cache zip
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRequestPrecache(next.getPlugin()));
 	}
@@ -170,7 +175,7 @@ public class PrecacheManager {
 		return new File(FileUtil.getCacheDir(), plugin + ".zip");
 	}
 
-	public static void loadPrecache() {
+	public static void loadPrecache() {		
 		// Unzip
 		final File cacheRoot = FileUtil.getCacheDir();
 

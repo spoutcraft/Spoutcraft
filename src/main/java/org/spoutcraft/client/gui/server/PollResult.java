@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -35,7 +35,6 @@ import java.net.URLEncoder;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.io.MirrorUtils;
 import org.spoutcraft.client.util.NetworkUtils;
 
 public class PollResult {
@@ -265,7 +264,6 @@ public class PollResult {
 					GuiServerInfo screen = (GuiServerInfo) SpoutClient.getHandle().currentScreen;
 					screen.updateData();
 				}
-				sendDCData();
 				try {
 					sock.close();
 					input.close();
@@ -273,85 +271,5 @@ public class PollResult {
 				} catch(Exception e) {}
 			}
 		}
-	}
-
-	/**
-	 * Sends ping, player count, and maximum players to the server list database.
-	 * No personal data (aside your IP) will be transferred and the IP won't be
-	 * saved. Sending this data to the server makes for a more accurate ping calculation
-	 * and will give you better search results when you order by ping. Our server then
-	 * doesn't have to ping all the servers on its own.
-	 */
-	protected static void sendDCData() {
-		if (send != null) {
-			return;
-		}
-		send = new Thread() {
-			public void run() {
-				while (numPolling > 0) {
-					try {
-						Thread.sleep(20);
-					} catch (InterruptedException e) {
-						return;
-					}
-				}
-				String api = MirrorUtils.getMirrorUrl("senddata.php", "http://servers.spout.org/senddata.php");
-				String json = "{";
-				int res = 0;
-				for (PollResult result:recentResults.valueCollection()) {
-					if (result.databaseId != -1 && !result.sent) {
-						int ping = result.ping > 0 ? result.ping : -1;
-						if (res > 0) {
-							json += ",";
-						}
-						json +="\"" + res + "\":{";
-
-						json += keyValue("uid", result.databaseId) + ",";
-						json += keyValue("ping", ping) + ",";
-						json += keyValue("players", result.players) + ",";
-						json += keyValue("maxplayers", result.maxPlayers);
-						json +="}";
-						result.sent = true;
-						res ++;
-					}
-				}
-				json += "}";
-
-				if (res > 0) {
-					URL url;
-					try {
-						url = new URL(api);
-					} catch (MalformedURLException e) {
-						return;
-					}
-					try {
-						String data = URLEncoder.encode("json", "UTF-8") + "=" + URLEncoder.encode(json, "UTF-8");
-						URLConnection conn = url.openConnection();
-						conn.setDoOutput(true);
-						OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-						wr.write(data);
-						wr.flush();
-
-						BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-						while (rd.readLine() != null) {
-						}
-						wr.close();
-						rd.close();
-					} catch (IOException e) {
-					}
-
-				}
-				send = null;
-			}
-
-			public String keyValue(String key, Object value) {
-				if (value instanceof Number) {
-					return "\"" + key + "\":" + value;
-				} else {
-					return "\"" + key + "\":\"" + value + "\"";
-				}
-			}
-		};
-		send.start();
 	}
 }

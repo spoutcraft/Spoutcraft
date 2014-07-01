@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -136,11 +136,15 @@ public class MaterialData {
 	public static final Block cobblestoneDoubleSlabs = new DoubleSlabs("Stone Double Slab", 43, 3);
 	public static final Block brickDoubleSlabs = new DoubleSlabs("Brick Double Slab", 43, 4);
 	public static final Block stoneBrickDoubleSlabs = new DoubleSlabs("Stone Brick Double Slab", 43, 5);
+	public static final Block netherBrickDoubleSlabs = new DoubleSlabs("Nether Brick Double Slab", 43, 6);
+	public static final Block squartzBrickDoubleSlabs = new DoubleSlabs("Quartz Brick Double Slab", 43, 7);
 	public static final Block stoneSlab = new Slab("Stone Slab", 44, 0);
 	public static final Block sandstoneSlab = new Slab("Sandstone Slab", 44, 1);
 	public static final Block cobblestoneSlab = new Slab("Stone Slab", 44, 3);
 	public static final Block brickSlab = new Slab("Brick Slab", 44, 4);
 	public static final Block stoneBrickSlab = new Slab("Stone Brick Slab", 44, 5);
+	public static final Block netherBrickSlab = new Slab("Nether Brick Slab", 44, 6);
+	public static final Block quartzBrickSlab = new Slab("Quartz Brick Slab", 44, 7);
 	public static final Block brick = new Solid("Brick Block", 45);
 	public static final Block tnt = new Solid("TNT", 46);
 	public static final Block bookshelf = new Solid("Bookshelf", 47);
@@ -232,6 +236,7 @@ public class MaterialData {
 	public static final Block spruceWoodSlab = new Slab("Spruce Wood Slab", 126, 1);
 	public static final Block birchWoodSlab = new Slab("Birch Wood Slab", 126, 2);
 	public static final Block jungleWoodSlab = new Slab("Jungle Wood Slab", 126, 3);
+	public static final Block cocoa = new Solid("Cocoa", 127);
 	public static final Block sandstoneStairs = new Solid("Sandstone Stairs", 128);
 	public static final Block emeraldOre = new Solid("Emerald Ore", 129);
 	public static final Block enderChest = new Solid("Ender Chest", 130);
@@ -241,6 +246,66 @@ public class MaterialData {
 	public static final Block spruceWoodStairs = new Solid("Spruce Wood Stairs", 134);
 	public static final Block birchWoodStairs = new Solid("Birch Wood Stairs", 135);
 	public static final Block jungleWoodStairs = new Solid("Jungle Wood Stairs", 136);
+	public static final Block command = new Solid("Command", 137);
+	public static final Block beacon = new Solid("Beacon", 138);
+	public static final Block cobblewall = new Solid("Cobblestone Wall", 139);
+	public static final Block mossyCobbleWall = new Solid("Mossy Cobblestone Wall", 139,1);
+	public static final Block flowerpot = new Solid("Flower Pot", 140);
+	public static final Block carrot = new Solid("Carrot", 141);
+	public static final Block potato = new Solid("Potato", 142);
+	public static final Block woodbutton = new Solid("Wood Button", 143);
+	public static final Block skull = new Solid("Skull", 144);
+	public static final Block anvil = new Solid("Anvil", 145);
+	public static final Block chestTrapped = new Solid("Trapped Chest", 146);
+	public static final Block pressurePlateGold = new Solid("Weighted Pressure Plate (Light)", 147);
+	public static final Block pressurePlateIron = new Solid("Weighted Pressure Plate (Heavy)", 148);
+	public static final Block redstoneComparatorIdle = new Solid("Redstone Comparator (inactive)", 149);
+	public static final Block redstoneComparatorActive = new Solid("Redstone Comparator (active)", 150);
+	public static final Block daylightSensor =  new Solid("Daylight Sensor", 151);
+	public static final Block blockRedstone = new Solid("Redstone Block", 152);
+	public static final Block oreNetherQuartz = new Solid("Nether Quartz Ore", 153);
+	public static final Block hopperBlock = new Solid("Hopper", 154);
+	public static final Block blockNetherQuartz = new Solid("Quartz Block", 155);
+	public static final Block chiseledQuartzBlock = new Solid("Chiseled Quarts Block", 155,1);
+	public static final Block pillarQuartzBlock = new Solid("Chiseled Quarts Block", 155,2);
+	public static final Block stairsNetherQuartz = new Solid("Quartz Stairs", 156);
+	public static final Block railActivator = new Solid("Activator Rail", 157);
+	public static final Block dropper = new Solid("Dropper", 158);
+	public static final Block stainedClay = new Solid("White Stained Clay", 159);
+	public static final Block orangeStainedClay = new Solid("Orange Stained Clay", 159, 1);
+	public static final Block magentaStainedClay = new Solid("Magenta Stained Clay", 159, 2);
+	public static final Block liteBlueStainedClay = new Solid("Light Blue Stained Clay", 159, 3);
+	public static final Block yellowStainedClay = new Solid("Yellow Stained Clay", 159, 4);
+	public static final Block limeStainedClay = new Solid("Lime Stained Clay", 159, 5);
+	public static final Block pinkStainedClay = new Solid("Pink Stained Clay", 159, 6);
+	public static final Block grayStainedClay = new Solid("Orange Stained Clay", 159, 7);
+	public static final Block liteGrayStainedClay = new Solid("Light Gray Stained Clay", 159, 8);
+	public static final Block cyanStainedClay = new Solid("Cyan Stained Clay", 159, 9);
+	public static final Block purpleStainedClay = new Solid("Purple Stained Clay", 159, 10);
+	public static final Block blueStainedClay = new Solid("Blue Stained Clay", 159, 11);
+	public static final Block brownStainedClay = new Solid("Brown Stained Clay", 159, 12);
+	public static final Block greenStainedClay = new Solid("Green Stained Clay", 159, 13);
+	public static final Block redStainedClay = new Solid("Red Stained Clay", 159, 14);
+	public static final Block blackStainedClay = new Solid("Black Stained Clay", 159, 15);
+	public static final Block hay = new Solid("Hay", 170);
+	public static final Block carpet = new Solid("White Carpet", 171);
+	public static final Block orangeCarpet = new Solid("Orange Carpet", 171, 1);
+	public static final Block magentaCarpet = new Solid("Magenta Carpet", 171, 2);
+	public static final Block liteBlueCarpet = new Solid("Light Blue Carpet", 171, 3);
+	public static final Block yellowCarpet = new Solid("Yellow Carpet", 171, 4);
+	public static final Block limeCarpet = new Solid("Lime Carpet", 171, 5);
+	public static final Block pinkCarpet = new Solid("Pink Carpet", 171, 6);
+	public static final Block grayCarpet = new Solid("Gray Carpet", 171, 7);
+	public static final Block liteGrayCarpet = new Solid("Light Gray Carpet", 171, 8);
+	public static final Block cyanCarpet = new Solid("Cyan Carpet", 171, 9);
+	public static final Block purpleCarpet = new Solid("Purple Carpet", 171, 10);
+	public static final Block blueCarpet = new Solid("Blue Carpet", 171, 11);
+	public static final Block brownCarpet = new Solid("Brown Carpet", 171, 12);
+	public static final Block greenCarpet = new Solid("Green Carpet", 171, 13);
+	public static final Block redCarpet = new Solid("Red Carpet", 171, 14);
+	public static final Block blackCarpet = new Solid("Black Carpet", 171, 15);
+	public static final Block hardenedClay = new Solid("Hardened Clay", 172);
+	public static final Block coalBlock = new Solid("Coal Block", 173);
 	public static final Item ironShovel = new GenericTool("Iron Shovel", 256);
 	public static final Item ironPickaxe = new GenericTool("Iron Pickaxe", 257);
 	public static final Item ironAxe = new GenericTool("Iron Axe", 258);
@@ -486,6 +551,31 @@ public class MaterialData {
 	public static final Item bookAndQuill = new GenericItem("Book And Quill", 386);
 	public static final Item writtenBook = new GenericItem("Written Book", 387);
 	public static final Item emerald = new GenericItem("Emerald", 388);
+	public static final Item itemframe = new GenericItem("Item Frame", 389);
+	public static final Item flowerpotitem = new GenericItem("Flower Pot Item", 390);
+	public static final Item carrotitem = new GenericItem("Carrot Item", 391);
+	public static final Item potatoitem = new GenericItem("Potato Item", 392);
+	public static final Item bakedpotato = new GenericItem("Baked Potato", 393);
+	public static final Item poisonouspotato = new GenericItem("Poisonous Potato", 394);
+	public static final Item emptymap = new GenericItem("Empty Map", 395);
+	public static final Item goldencarrot = new GenericItem("Golden Carrot", 396);
+	public static final Item skullitem = new GenericItem("Skull Item", 397);
+	public static final Item carrotstick = new GenericItem("Carrot Stick", 398, 1);
+	public static final Item netherstar = new GenericItem("Nether Star", 399);
+	public static final Item pumpkinpie = new GenericItem("Pumpkin Pie", 400);
+	public static final Item firework = new GenericItem("Firework", 401);
+	public static final Item fireworkcharge = new GenericItem("Firework Charge", 402);
+	public static final Item enchantedbook = new GenericItem("Enchanted Book", 403);
+	public static final Item redstoneComparator = new GenericItem("Redstone Comparator", 404);
+	public static final Item netherBrickItem = new GenericItem("Nether Brick", 405);
+	public static final Item netherQuartzItem = new GenericItem("Nether Quarts", 406);
+	public static final Item minecartTNT = new GenericItem("Minecart TNT", 407);
+	public static final Item minecartHopper = new GenericItem("Minecart Hopper", 408);
+	public static final Item ironHorseArmor = new GenericItem("Iron Horse Armor", 417);
+	public static final Item goldHorseArmor = new GenericItem("Gold Horse Armor", 418);
+	public static final Item diamondHorseArmor = new GenericItem("Diamond Horse Armor", 419);
+	public static final Item lead = new GenericItem("Lead", 420);
+	public static final Item nameTag = new GenericItem("Name Tag", 421);
 	public static final Item goldMusicDisc = new GenericItem("Music Disc", 2256);
 	public static final Item greenMusicDisc = new GenericItem("Music Disc", 2257);
 	public static final Item orangeMusicDisc = new GenericItem("Music Disc", 2258);
@@ -497,7 +587,6 @@ public class MaterialData {
 	public static final Item whiteMusicDisc = new GenericItem("Music Disc", 2264);
 	public static final Item forestGreenMusicDisc = new GenericItem("Music Disc", 2265);
 	public static final Item brokenMusicDisc = new GenericItem("Music Disc", 2266);
-
 	static {
 		reset();
 	}

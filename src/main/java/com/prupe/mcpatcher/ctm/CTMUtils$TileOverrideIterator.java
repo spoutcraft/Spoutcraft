@@ -57,7 +57,7 @@ abstract class CTMUtils$TileOverrideIterator implements Iterator<ITileOverride> 
 		}
 	}
 
-	public ITileOverride rNext() {
+	public ITileOverride next() {
 		if (!this.foundNext) {
 			throw new IllegalStateException("next called before hasNext() == true");
 		} else {
@@ -90,7 +90,7 @@ abstract class CTMUtils$TileOverrideIterator implements Iterator<ITileOverride> 
 					return this.lastMatchedOverride;
 				}
 
-				override = this.rNext();
+				override = this.next();
 				newIcon = this.getTile(override, this.block, this.currentIcon);
 			} while (newIcon == null);
 
@@ -108,5 +108,4 @@ abstract class CTMUtils$TileOverrideIterator implements Iterator<ITileOverride> 
 	}
 
 	abstract Icon getTile(ITileOverride var1, Block var2, Icon var3);
-	
 }

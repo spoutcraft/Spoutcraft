@@ -30,11 +30,6 @@ public class CTMUtils {
 	private static final boolean enableNonStandard = Config.getBoolean("Connected Textures", "nonStandard", true);
 	private static final boolean enableGrass = Config.getBoolean("Connected Textures", "grass", false);
 	private static final int maxRecursion = Config.getInt("Connected Textures", "maxRecursion", 4);
-	static final int BLOCK_ID_LOG = 17;
-	static final int BLOCK_ID_QUARTZ = 155;
-	static final int BLOCK_ID_GLASS = 20;
-	static final int BLOCK_ID_GLASS_PANE = 102;
-	static final int BLOCK_ID_BOOKSHELF = 47;
 	static final int BLOCK_ID_GRASS = 2;
 	static final int BLOCK_ID_MYCELIUM = 110;
 	static final int BLOCK_ID_SNOW = 78;

@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -30,6 +30,8 @@ public class SquareToggleCheckBox extends GenericCheckBox {
 
 	@Override
 	public void onButtonClick() {
+		MinimapConfig.getInstance().setAdjustX(-5);
+		MinimapConfig.getInstance().setAdjustY(5);
 		MinimapConfig.getInstance().setSquare(isChecked());
 	}
 }

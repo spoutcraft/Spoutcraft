@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -87,8 +87,9 @@ public enum PacketType {
 	PacketAccessory(62, org.spoutcraft.client.player.accessories.PacketAccessory.class),
 	PacketValidatePrecache(63, PacketValidatePrecache.class),
 	PacketRequestPrecache(64, PacketRequestPrecache.class),
-	PacketSendPrecache(65, PacketSendPrecache.class);
-
+	PacketSendPrecache(65, PacketSendPrecache.class),
+    PacketSendLink(66, PacketSendLink.class);
+    
 	private final int id;
 	private final Class<? extends SpoutPacket> packetClass;
 	private static final HashMap<Integer, PacketType> lookupId = new HashMap<Integer, PacketType>();

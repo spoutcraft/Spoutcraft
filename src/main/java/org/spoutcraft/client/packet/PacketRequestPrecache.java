@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011 Spout LLC <http://www.spout.org/>
+ * Copyright (c) 2011 SpoutcraftDev <http://spoutcraft.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -20,6 +20,10 @@
 package org.spoutcraft.client.packet;
 
 import java.io.IOException;
+
+import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.Minecraft;
+import net.minecraft.src.Packet0KeepAlive;
 
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
@@ -46,6 +50,7 @@ public class PacketRequestPrecache implements SpoutPacket {
 
 	@Override
 	public void run(int playerId) {
+		((EntityClientPlayerMP)Minecraft.getMinecraft().thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
 	}
 
 	@Override

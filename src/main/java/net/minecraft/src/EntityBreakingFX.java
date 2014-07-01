@@ -60,13 +60,13 @@ public class EntityBreakingFX extends EntityFX {
 		float var11 = var10 + 0.015609375F;
 		float var12 = 0.1F * this.particleScale;
 
-		if (currentTexture == null && this.particleIcon != null) {
+		if (this.particleIcon != null) {
 			var8 = this.particleIcon.getInterpolatedU((double)(this.particleTextureJitterX / 4.0F * 16.0F));
 			var9 = this.particleIcon.getInterpolatedU((double)((this.particleTextureJitterX + 1.0F) / 4.0F * 16.0F));
 			var10 = this.particleIcon.getInterpolatedV((double)(this.particleTextureJitterY / 4.0F * 16.0F));
 			var11 = this.particleIcon.getInterpolatedV((double)((this.particleTextureJitterY + 1.0F) / 4.0F * 16.0F));
 		}
-
+	
 		// ToDo: More work needed here to set the custom X/Y coords of the vertex calculations since we are not using icons for custom blocks.
 		float var13 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)par2 - interpPosX);
 		float var14 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)par2 - interpPosY);

@@ -5,7 +5,7 @@
 	<name>Spoutcraft</name>
 	<groupId>org.spoutcraft</groupId>
 	<artifactId>spoutcraft</artifactId>
-	<version>1.6.2-SNAPSHOT</version>
+	<version>1.6.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<inceptionYear>2011</inceptionYear>
 	<url>https://github.com/Spoutcraft/Spoutcraft</url>
@@ -18,16 +18,30 @@
 		<ciSystem>unknown</ciSystem>
 		<commit>unknown</commit>
 		<lwjglVersion>2.9.0</lwjglVersion>
-		<minecraftVersion>1.6.2</minecraftVersion>
-		<minecraft_Version>1_6_2</minecraft_Version>
-		<mcpVersion>8.05</mcpVersion>
-		<mcp_Version>805</mcp_Version>
+		<minecraftVersion>1.6.4</minecraftVersion>
+		<minecraft_Version>1_6_4</minecraft_Version>
+		<mcpVersion>8.11</mcpVersion>
+		<mcp_Version>811</mcp_Version>
 	</properties>
+
+	<!-- Project developers -->
+	<developers>
+		<developer>
+			<id>mcsnetworks</id>
+			<name>Mike Howe</name>
+			<email>dockter@almuramc.com</email>
+		</developer>
+		<developer>
+			<id>Wulfspider</id>
+			<name>Luke Spragg</name>
+			<email>the@wulf.im</email>
+		</developer>
+	</developers>
 
 	<!-- Organization information -->
 	<organization>
-		<name>Spout LLC</name>
-		<url>http://www.spout.org</url>
+		<name>SpoutcraftDev</name>
+		<url>http://spoutcraft.org/</url>
 	</organization>
 
 	<!-- License information -->
@@ -55,7 +69,7 @@
 	<!-- Issue management -->
 	<issueManagement>
 		<system>forums</system>
-		<url>http://spoutcraft.org/forums/</url>
+		<url>http://spoutcraft.org/issues/</url>
 	</issueManagement>
 
 	<!-- Dependency repositories -->
@@ -66,11 +80,7 @@
 		</repository>
 		<repository>
 			<id>minecraft-libraries</id>
-			<url>http://download.minecraft.net/libraries</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
+			<url>https://libraries.minecraft.net</url>
 		</repository>
 		<repository>
 			<id>sonatype-nexus-releases</id>
