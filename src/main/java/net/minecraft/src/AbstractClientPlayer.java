@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import net.minecraft.src.Minecraft;
+import net.minecraft.src.StringUtils;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
@@ -83,9 +84,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
 		if (par1Str != null) {
 			return par1Str;
 		} else {
-			// Spout Start
-			return String.format("http://cdn.spout.org/game/vanilla/skin/%s.png", new Object[] {StringUtils.stripControlCodes(par0Str)});
-			// Spout End
+			return String.format("http://skins.minecraft.net/MinecraftSkins/%s.png", new Object[] {StringUtils.stripControlCodes(par0Str)});
 		}
 	}	
 

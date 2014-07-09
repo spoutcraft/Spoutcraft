@@ -78,13 +78,13 @@ public class PacketSkinURL implements SpoutPacket {
 				//System.out.println(e.username + " is going to be sent skinURL: " + skinURL + " from SpoutPlugin's API.");
 			}
 			if (this.skinURL.equalsIgnoreCase(mcSkin)) {
-				this.skinURL = "http://cdn.spout.org/game/vanilla/skin/" + e.username + ".png";
+				this.skinURL = "http://skins.minecraft.net/MinecraftSkins/" + e.username + ".png";
 			}
 			if (this.cloakURL.equalsIgnoreCase(mcCape)) {
 				if (e.vip != null && e.vip.getCape() != null) {
 					this.cloakURL = e.vip.getCape();
 				} else {
-					this.cloakURL = "http://cdn.spout.org/game/vanilla/cape/" + e.username + ".png";
+					this.cloakURL = "http://skins.minecraft.net/MinecraftCloaks/" + e.username + ".png";
 				}
 			}
 
