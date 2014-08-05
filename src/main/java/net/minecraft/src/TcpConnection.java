@@ -20,6 +20,11 @@ import javax.crypto.SecretKey;
 
 import net.minecraft.server.MinecraftServer;
 
+// Spout
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.precache.GuiPrecache;
+// End Spout
+
 public class TcpConnection implements INetworkManager {
 	public static AtomicInteger field_74471_a = new AtomicInteger();
 	public static AtomicInteger field_74469_b = new AtomicInteger();
@@ -372,8 +377,11 @@ public class TcpConnection implements INetworkManager {
 		}
 
 		if (this.readPackets.isEmpty()) {
-			if (this.field_74490_x++ == 1200) {
-				this.networkShutdown("disconnect.timeout", new Object[0]);
+			// Spout (added if check for GuiPrecache so empty KeepAlive packets from server don't cause disconnect)
+			if (!(SpoutClient.getHandle().currentScreen instanceof GuiPrecache)) {
+				if (this.field_74490_x++ == 1200) {					
+					this.networkShutdown("disconnect.timeout", new Object[0]);
+				}
 			}
 		} else {
 			this.field_74490_x = 0;
