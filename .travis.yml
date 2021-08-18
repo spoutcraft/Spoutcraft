@@ -27,3 +27,7 @@ env:
   global:
     # Make the log output cleaner
     - TERM=dumb
+
+cache:
+  directories:
+  - $HOME/.m2
